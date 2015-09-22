@@ -13,12 +13,12 @@ schemas:
     clusterUpdate: !include schemas/clusterUpdate.xml
     dfwsection: !include schemas/dfwsection.xml
     dfwrule: !include schemas/dfwrule.xml
-    edgecreate: !include schemas/edgecreate.xml
     ipaddressrequest: !include schemas/ipaddressrequest.xml
     ippool: !include schemas/ippool.xml
     ipset: !include schemas/ipset.xml
     logicalswitchCreate: !include schemas/logicalswitchCreate.xml
     logicalSwitchVmAttach: !include schemas/logicalswitchVmAttach.xml
+    macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml 
     ssoConfig: !include schemas/ssoconfig.xml
     vcConfig: !include schemas/vcconfig.xml
     vdsContext: !include schemas/vdscontext.xml
@@ -568,6 +568,17 @@ securitySchemes:
       delete:
         displayName: ipAddressRelease
         description: Release an IP Address allocation in the Pool
+/2.0/services/ipam/pools/{scopeId}/ipaddresses: # NOTE: This one looks pretty dicey. Based on pg 104 "Query all IP Pools on Scope." It might be documented incorrectly, need to test this uri
+  displayName: ipPoolsScope
+  description: IP pools on the specified scope
+  uriParameters:
+    scopeId:
+      required: true
+      displayName: scopeId
+      description: globalroot-0 or datacenterId in upgrade use cases
+  get:
+    displayName: ipPoolsScopeRead
+    description: Retrieve all IP pools on the specified scope
 /2.0/services/securitytags/tag: # PDF page 106
   displayName: securityTag
   description: Working with security tags
@@ -631,53 +642,20 @@ securitySchemes:
     get:
       displayName: ssoStatusRead
       description: Query the SSO configuration status of NSX Manager
-/2.0/services/usermgmt:
+/2.0/services/usermgmt/user/{userId}: # PDF page 78
   displayName: userMgmt
-  description: User Management Operations
-  /user/{userId}: # PDF page 78
-    displayName: userMgmtUser
-    description: Manage users
-    uriParameters:
-      userId:
-        required: true
-        displayName: userId
-        description: user ID
-    get:
-      displayName: userMgmtUserRead
-      description: Get information about a user
-    delete:
-      displayName: userMgmtUserDelete
-      description: Remove the NSX role for a vCenter user
-  /role/{userId}: # PDF page 80
-    displayName: userRoleMgmt
-    description: Manage roles for users
-    uriParameters:
-      userId:
-        required: true
-        displayName: userId
-        description: user to retrieve role information from
-    get: 
-      displayName: userMgmtRoleRead
-      description: Retrieve a user's role (possible roles are super_user, vshield_admin, enterprise_admin, security_admin, and audit)
-    post:
-      displayName: userMgmtRoleCreate
-      description: Add role and resources for a user
-      queryParameters:
-        isGroup:
-          displayName: isGroup
-          description: Set to "true" to apply to a group; set to "false" to apply to an individual user
-          required: true
-          type: boolean
-      body:
-        application/xml: # TODO
-    put:
-      displayName: userMgmtRoleUpdate
-      description: Change a user's role
-      body:
-        application/xml: # TODO
-    delete:
-      displayName: userMgmtRoleDelete
-      description: Delete the role assignment for specified vCenter user. Once this role is deleted, the user is removed from NSX Manager. You cannot delete the role for a local user.
+  description: Manage users
+  uriParameters:
+    userId:
+      required: true
+      displayName: userId
+      description: user ID
+  get:
+    displayName: userMgmtRead
+    description: Get information about a user
+  delete:
+    displayName: userMgmtDelete
+    description: Remove the NSX role for a vCenter user
   /enablestate/{value}:
     displayName: userMgmtState
     description: Change the state of a user account (enabled/disabled)
@@ -690,182 +668,206 @@ securitySchemes:
     put:
       displayName: userMgmtStateUpdate
       description: Enable or disable a user account
-  /users/vsm:
-    displayName: userNSXManagerInfo
+/2.0/services/usermgmt/role/{userId}: # PDF page 80
+  displayName: userRoleMgmt
+  description: Manage roles for users
+  uriParameters:
+    userId:
+      required: true
+      displayName: userId
+      description: user to retrieve role information from
+  get: 
+    displayName: userRoleMgmtRead
+    description: Retrieve a user's role (possible roles are super_user, vshield_admin, enterprise_admin, security_admin, and audit)
+  post:
+    displayName: userRoleMgmtCreate
+    description: Add role and resources for a user
+    queryParameters:
+      isGroup:
+        displayName: isGroup
+        description: Set to "true" to apply to a group; set to "false" to apply to an individual user
+        required: true
+        type: boolean
+    body:
+      application/xml: # TODO
+  put:
+    displayName: userRoleMgmtUpdate
+    description: Change a user's role
+    body:
+      application/xml: # TODO
+  delete:
+    displayName: userRoleMgmtDelete
+    description: Delete the role assignment for specified vCenter user. Once this role is deleted, the user is removed from NSX Manager. You cannot delete the role for a local user.
+/2.0/services/usermgmt/users/vsm:
+  displayName: userNSXManagerInfo
+  description: Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
+  get:
+    displayName: userNSXManagerInfoRead
     description: Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
-    get:
-      displayName: userNSXManagerInfoRead
-      description: Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
-  /roles:
-    displayName: userMgmtRoles
-    description: NSX Manager user management operations on roles
-    get:
-      displayName: userMgmtRoleRead
-      description: Read all possible roles in NSX Manager 
-  /scopingobjects:
-    displayName: userScopingObjects
+/2.0/services/usermgmt/roles:
+  displayName: userMgmtRoles
+  description: NSX Manager user management operations on roles
+  get:
+    displayName: userMgmtRoleRead
+    description: Read all possible roles in NSX Manager 
+/2.0/services/usermgmt/scopingobjects:
+  displayName: userScopingObjects
+  description: Retrieve a list of objects that can be used to define a user's access scope
+  get:
+    displayName: userScopingObjectsRead
     description: Retrieve a list of objects that can be used to define a user's access scope
-    get:
-      displayName: userScopingObjectsRead
-      description: Retrieve a list of objects that can be used to define a user's access scope
-/2.0/services/securitygroup/:
-  displayName: secGroup
-  description: Operations on securitygroups
-  /bulk/{scopeId}:
-    displayName: secGroupGlobal
+/2.0/services/securitygroup/bulk/{scopeId}:
+  displayName: secGroupGlobal
+  description: Create a new security group on a global scope
+  uriParameters:
+     scopeId:
+       required: true
+       displayName: scopeId
+       description: In the current version the scopeId will always be globalroot-0
+  post:
+    displayName: secGroupGlobalCreate
     description: Create a new security group on a global scope
-    uriParameters:
-       scopeId:
-         required: true
-         displayName: scopeId
-         description: In the current version the scopeId will always be globalroot-0
-    post:
-      displayName: secGroupGlobalCreate
-      description: Create a new security group on a global scope
-      body:
-        application/xml: # TODO
-  /bulk/{objectId}:
-    displayName: secGroupBulkObject
+    body:
+      application/xml: # TODO
+/2.0/services/securitygroup/bulk/{objectId}:
+  displayName: secGroupBulkObject
+  description: Update a specific security group
+  uriParameters:
+    objectId:
+      required: true
+      displayName: objectId
+      description: Security group to modify
+  put:
+    displayName: secGroupBulkObjectUpdate
     description: Update a specific security group
-    uriParameters:
-      objectId:
-        required: true
-        displayName: objectId
-        description: Security group to modify
-    put:
-      displayName: secGroupBulkObjectUpdate
-      description: Update a specific security group
-      body:
-        application/xml: # TODO
-  /scope/{scopeId}:
-    displayName: secGroupScope
-    description: Operations to list information about security groups on a given scope
-    uriParameters:
-      scopeId:
-        required: true
-        displayName: scopeId
-        description: scopeId can be globalroot-0 or datacenterID/portgroupID in upgrade use cases
+    body:
+      application/xml: # TODO
+/2.0/services/securitygroup/scope/{scopeId}:
+  displayName: secGroupScope
+  description: Operations to list information about security groups on a given scope
+  uriParameters:
+    scopeId:
+      required: true
+      displayName: scopeId
+      description: scopeId can be globalroot-0 or datacenterID/portgroupID in upgrade use cases
+  get:
+    displayName: secGroupScopeRead
+    description: List all the security groups created on a specific scope
+  /memberTypes:
+    displayName: secGroupScopeMembers
+    description: Information on valid elements that can be added to a security group
     get:
-      displayName: secGroupScopeRead
-      description: List all the security groups created on a specific scope
-    /memberTypes:
-      displayName: secGroupScopeMembers
-      description: Information on valid elements that can be added to a security group
-      get:
-        displayName: secGroupScopeMembersRead
-        description: Retrieve a list of valid elements that can be added to a security group.
-    /members/{memberType}:
-      displayName: secGroupScopeMemberType
+      displayName: secGroupScopeMembersRead
+      description: Retrieve a list of valid elements that can be added to a security group.
+  /members/{memberType}:
+    displayName: secGroupScopeMemberType
+    description: Retrieve members of a specific type under a scope
+    uriParameters:
+      memberType:
+        required: true
+        displayName: memberType
+        description: Specific member type
+    get:
+      displayName: secGroupScopeMemberTypeRead
       description: Retrieve members of a specific type under a scope
-      uriParameters:
-        memberType:
-          required: true
-          displayName: memberType
-          description: Specific member type
-      get:
-        displayName: secGroupScopeMemberTypeRead
-        description: Retrieve members of a specific type under a scope
-  /{objectId}:
-    displayName: secGroupObject
-    description: Operations for an individual security group
-    uriParameters:
-      objectId:
+/2.0/services/securitygroup/{objectId}:
+  displayName: secGroup
+  description: Operations for an individual security group
+  uriParameters:
+    objectId:
+      required: true
+      displayName: objectId
+      description: Specified security group
+  get:
+    displayName: secGroupRead
+    description: Retrieve all members of the specified security group
+  delete:
+    displayName: secGroupDelete
+    description: Delete an existing security group
+    queryParameters:
+      force:
+        displayName: force
         required: true
-        displayName: objectId
-        description: Specified security group
-    get:
-      displayName: secGroupObjectRead
-      description: Retrieve all members of the specified security group
+        type: boolean
+  /members/{memberMoref}:
+    displayName: secGroupMember
+    description: Operations on members of an individual security group
+    uriParameters:
+      memberMoref:
+        required: true
+        displayName: memberMoref
+        description: Security group member
+    put:
+      displayName: secGroupMemberUpdate
+      description: Add a new member to specified security group
     delete:
-      displayName: secGroupObjectDelete
-      description: Delete an existing security group
-      queryParameters:
-        force:
-          displayName: force
-          required: true
-          type: boolean
-    /members/{memberMoref}:
-      displayName: secGroupMember
-      description: Operations on members of an individual security group
-      uriParameters:
-        memberMoref:
-          required: true
-          displayName: memberMoref
-          description: Security group member
-      put:
-        displayName: secGroupMemberUpdate
-        description: Add a new member to specified security group
-      delete:
-        displayName: secGroupMemberDelete
-        description: Delete member from specified security group
-    /translation/virtualmachines:
-      displayName: secGroupVMNodes
-      get:
-        displayName: secGroupVMNodesRead
-        description: Retrieve list of VmNode entities that belong to a specific security group.
-    /translation/ipaddresses:
-      displayName: secGroupIPNodes
-      get:
-        displayName: secGroupIPNodesRead
-        description: Retrieve list of IpNode entities that belong to a specific security group.
-    /translation/macaddresses:
-      displayName: secGroupMacNodes
-      get:
-        displayName: secGroupMacNodesRead
-        description: Retrieve list of MacNode entities that belong to a specific security group.
-    /translation/vnics:
-      displayName: secGroupVnicNodes
-      get:
-        displayName: secGroupVnicNodesRead
-        description: Retrieve list of VnicNode entities that belong to a specific security group.
-  /lookup/virtualmachine/{virtualMachineId}:
-    displayName: secGroupLookupVM
+      displayName: secGroupMemberDelete
+      description: Delete member from specified security group
+  /translation/virtualmachines:
+    displayName: secGroupVMNodes
+    get:
+      displayName: secGroupVMNodesRead
+      description: Retrieve list of VmNode entities that belong to a specific security group.
+  /translation/ipaddresses:
+    displayName: secGroupIPNodes
+    get:
+      displayName: secGroupIPNodesRead
+      description: Retrieve list of IpNode entities that belong to a specific security group.
+  /translation/macaddresses:
+    displayName: secGroupMacNodes
+    get:
+      displayName: secGroupMacNodesRead
+      description: Retrieve list of MacNode entities that belong to a specific security group.
+  /translation/vnics:
+    displayName: secGroupVnicNodes
+    get:
+      displayName: secGroupVnicNodesRead
+      description: Retrieve list of VnicNode entities that belong to a specific security group.
+/2.0/services/securitygroup/lookup/virtualmachine/{virtualMachineId}:
+  displayName: secGroupLookupVM
+  description: Retrieve list of security groups that the specified virtual machine belongs to.
+  uriParameters:
+    virtualMachineId:
+      required: true
+      displayName: virtualMachineId
+      description: Specified virtual machine
+  get:
+    displayName: secGroupLookupVMRead
     description: Retrieve list of security groups that the specified virtual machine belongs to.
-    uriParameters:
-      virtualMachineId:
-        required: true
-        displayName: virtualMachineId
-        description: Specified virtual machine
-    get:
-      displayName: secGroupLookupVMRead
-      description: Retrieve list of security groups that the specified virtual machine belongs to.
-  /internal/scope/{scopeId}:
-    displayName: secGroupInternal
-    description: Information on internal security groups
-    uriParameters:
-      scopeId:
-        required: true
-        displayName: scopeId
-        description: Specified transport zone (scope)
-    get:
-      displayName: secGroupInternalRead
-      description: Retrieve all internal security groups on the NSX Manager. These are used internally by the system and should not be created or modified by end users.
-/2.0/services/ipset:
-  displayName: ipset
-  description: Operations on IP Sets
-  /scope/{scopeMoref}:
+/2.0/services/securitygroup/internal/scope/{scopeId}:
+  displayName: secGroupInternal
+  description: Information on internal security groups
+  uriParameters:
+    scopeId:
+      required: true
+      displayName: scopeId
+      description: Specified transport zone (scope)
+  get:
+    displayName: secGroupInternalRead
+    description: Retrieve all internal security groups on the NSX Manager. These are used internally by the system and should not be created or modified by end users.
+/2.0/services/ipset/scope/{scopeMoref}:
+  displayName: ipsetList
+  uriParameters:
+    scopeMoref:
+      required: true
+      displayName: ipsetScopeMoref
+      description: In the current version this scope-ref will always be globalroot-0
+  get:
     displayName: ipsetList
-    uriParameters:
-      scopeMoref:
-        required: true
-        displayName: ipsetScopeMoref
-        description: In the current version this scope-ref will always be globalroot-0
-    get:
-      displayName: ipsetList
-      description: Retrieve all configured IPSets
-  /{scopeMoref}: 
+    description: Retrieve all configured IPSets
+/2.0/services/ipset/{scopeMoref}: 
+  displayName: ipsetCreate
+  uriParameters:
+    scopeMoref:
+      required: true
+      displayName: ipsetScopeMoref
+      description: In the current version this scope-ref will always be globalroot-0
+  post:
     displayName: ipsetCreate
-    uriParameters:
-      scopeMoref:
-        required: true
-        displayName: ipsetScopeMoref
-        description: In the current version this scope-ref will always be globalroot-0
-    post:
-      displayName: ipsetCreate
-      description: creates a new IPset
-      body:
-        application/xml:
-          schema: ipset
+    description: creates a new IPset
+    body:
+      application/xml:
+        schema: ipset
 /2.0/services/vcconfig: #PDF pg 55
   displayName: vCenterConfig
   description: Configuring NSX Manager with vCenter Server 
@@ -1535,41 +1537,38 @@ securitySchemes:
       get:
         displayName: dlpViolatingFilesContextCSV
         description: Get violated regulations and violating files for the resource in CSV format
-/1.0/eventcontrol:
-  displayName: eventControl
-  description: eventControl Operations
-  /vm/{vmID}/request: #PDF pg 360 
-    displayName: dataCollectionVM
+/1.0/eventcontrol/vm/{vmID}/request: #PDF pg 360 
+  displayName: dataCollectionVM
+  description: Enable or disable data collection on a virtual machine 
+  uriParameters:
+    vmID:
+      displayName: vmID 
+      description: MOID of the guest vm 
+      required: true 
+  post:
+    displayName: dataCollectionVMCreate
     description: Enable or disable data collection on a virtual machine 
-    uriParameters:
-      vmID:
-        displayName: vmID 
-        description: MOID of the guest vm 
-        required: true 
-    post:
-      displayName: dataCollectionVMCreate
-      description: Enable or disable data collection on a virtual machine 
-      body:
-        application/xml: #TODO pg 360
-  /eventcontrol-root/request: #PDF pg 360 
+    body:
+      application/xml: #TODO pg 360
+/1.0/eventcontrol/eventcontrol-root/request: #PDF pg 360 
+  displayName: dataCollectionKillSwitch
+  description: Data collection kill switch on/off 
+  post:
     displayName: dataCollectionKillSwitch
-    description: Data collection kill switch on/off 
-    post:
-      displayName: dataCollectionKillSwitch
-      description: Turn on/off data collection at global level 
-      body:
-        application/xml: #TODO pg 360
-  /config/vm/{vmID}: #PDF pg 361 
-    displayName: dataCollectionVMInfo
-    description: Retrieve per vm configuration for data collection 
-    uriParameters:
-      vmID:
-        displayName: vmID 
-        description: MOID of the guest vm 
-        required: true 
-    get:
-      displayName: dataCollectionVMInfoRead 
-      description: Retrieve per vm configuration for data collection
+    description: Turn on/off data collection at global level 
+    body:
+      application/xml: #TODO pg 360
+/1.0/eventcontrol/eventcontrol/config/vm/{vmID}: #PDF pg 361 
+  displayName: dataCollectionVMInfo
+  description: Retrieve per vm configuration for data collection 
+  uriParameters:
+    vmID:
+      displayName: vmID 
+      description: MOID of the guest vm 
+      required: true 
+  get:
+    displayName: dataCollectionVMInfoRead 
+    description: Retrieve per vm configuration for data collection
 /3.0/ai: #PDF pg 362
   displayName: activityMonitoring 
   description: Activity monitoring 
@@ -1771,119 +1770,116 @@ securitySchemes:
       get:
         displayName: specificSecgroupDetailsRead
         description: Retrieve details about specific security group
-/1.0/directory:
+/3.0/directory/updateDomain: #PDF pg370 
   displayName: domain
-  description: LDAP / Domain Operations
-  /updateDomain: #PDF pg370 
-    displayName: domainUpdate
-    description: Working with domains
-    post:
-      displayName: domainCreate 
-      description: Register or update a domain with NSX Manager 
-      body:
-        application/xml: #TODO pg 370 
-  /listDomains: 
-    displayName: domainList
+  description: Working with domains
+  post:
+    displayName: domainCreate 
+    description: Register or update a domain with NSX Manager 
+    body:
+      application/xml: #TODO pg 370 
+/1.0/directory/listDomains: 
+  displayName: domainList
+  description: Retrieve all agent discovered (or configured) LDAP domains 
+  get:
+    displayName: domainListRead 
     description: Retrieve all agent discovered (or configured) LDAP domains 
-    get:
-      displayName: domainListRead 
-      description: Retrieve all agent discovered (or configured) LDAP domains 
-  /deleteDomain/{ID}:
+/1.0/directory/deleteDomain/{ID}:
+  displayName: domainDelete
+  description: Delete domain 
+  uriParameters:
+    ID:
+      required: true 
+      displayName: ID 
+      description: Domain ID 
+  delete:
     displayName: domainDelete
     description: Delete domain 
-    uriParameters:
-      ID:
-        required: true 
-        displayName: ID 
-        description: Domain ID 
-    delete:
-      displayName: domainDelete
-      description: Delete domain 
-  /directory: #PDF pg 372 
-    displayName: ldapEventLogServer
-    description: Working with LDAP servers and EventLog servers
-    /updateLdapServer:
+/1.0/directory: #PDF pg 372 
+  displayName: ldapEventLogServer
+  description: Working with LDAP servers and EventLog servers
+  /updateLdapServer:
+    displayName: ldapServerCreate
+    description: Create LDAP server 
+    post:
       displayName: ldapServerCreate
       description: Create LDAP server 
-      post:
-        displayName: ldapServerCreate
-        description: Create LDAP server 
-        body:
-          application/xml: #TODO pg 372 
-    /listLdapServersForDomain/{domainID}:
-      displayName: ldapServerDomain 
+      body:
+        application/xml: #TODO pg 372 
+  /listLdapServersForDomain/{domainID}:
+    displayName: ldapServerDomain 
+    description: Query LDAP servers for a domain 
+    uriParameters:
+      domainID:
+        displayName: domainID 
+        description: Specified domain 
+        required: true 
+    get:
+      displayName: ldapServerDomainRead
       description: Query LDAP servers for a domain 
-      uriParameters:
-        domainID:
-          displayName: domainID 
-          description: Specified domain 
-          required: true 
-      get:
-        displayName: ldapServerDomainRead
-        description: Query LDAP servers for a domain 
-    /fullSync/{domainID}:
+  /fullSync/{domainID}:
+    displayName: ldapServerSync
+    description: Start LDAP full sync 
+    uriParameters:
+      domainID:
+        displayName: domainID 
+        description: Specified domain 
+        required: true     
+    put:
       displayName: ldapServerSync
       description: Start LDAP full sync 
-      uriParameters:
-        domainID:
-          displayName: domainID 
-          description: Specified domain 
-          required: true     
-      put:
-        displayName: ldapServerSync
-        description: Start LDAP full sync 
-    /deltaSync/{domainID}:
+  /deltaSync/{domainID}:
+    displayName: ldapServerDeltaSync
+    description: Start LDAP delta sync 
+    uriParameters:
+      domainID:
+        displayName: domainID 
+        description: Specified domain 
+        required: true   
+    put:
       displayName: ldapServerDeltaSync
       description: Start LDAP delta sync 
-      uriParameters:
-        domainID:
-          displayName: domainID 
-          description: Specified domain 
-          required: true   
-      put:
-        displayName: ldapServerDeltaSync
-        description: Start LDAP delta sync 
-    /deleteLdapServer/{serverID}:
+  /deleteLdapServer/{serverID}:
+    displayName: ldapServerDelete
+    description: Delete LDAP server 
+    uriParameters:
+      serverID:
+        required: true 
+        displayName: serverID 
+        description: Specified LDAP server 
+    delete:
       displayName: ldapServerDelete
-      description: Delete LDAP server 
-      uriParameters:
-        serverID:
-          required: true 
-          displayName: serverID 
-          description: Specified LDAP server 
-      delete:
-        displayName: ldapServerDelete
-        description: Delete LDAP server     
-    /updateEventLogServer:
+      description: Delete LDAP server     
+  /updateEventLogServer:
+    displayName: eLogServerCreate
+    description: Create EventLog server 
+    post:
       displayName: eLogServerCreate
       description: Create EventLog server 
-      post:
-        displayName: eLogServerCreate
-        description: Create EventLog server 
-        body:
-          application/xml: #TODO pg 372
-    /listEventLogServersForDomain/{domainID}:
+      body:
+        application/xml: #TODO pg 372
+  /listEventLogServersForDomain/{domainID}:
+    displayName: eLogServerDomainRead 
+    description: Query EventLog servers for a domain 
+    uriParameters:
+      domainID:
+        required: true 
+        displayName: domainID 
+        description: Specified domain 
+    get:
       displayName: eLogServerDomainRead 
       description: Query EventLog servers for a domain 
-      uriParameters:
-        domainID:
-          required: true 
-          displayName: domainID 
-          description: Specified domain 
-      get:
-        displayName: eLogServerDomainRead 
-        description: Query EventLog servers for a domain 
-    /deleteEventLogServer/{serverID}:
+  /deleteEventLogServer/{serverID}:
+    displayName: eLogServerDelete
+    description: Delete EventLog server 
+    uriParameters:
+      serverID:
+        required: true 
+        displayName: serverID 
+        description: Specified EventLog server ID 
+    delete:
       displayName: eLogServerDelete
       description: Delete EventLog server 
-      uriParameters:
-        serverID:
-          required: true 
-          displayName: serverID 
-          description: Specified EventLog server ID 
-      delete:
-        displayName: eLogServerDelete
-        description: Delete EventLog server 
 /1.0/identity: #PDF pg 373 
   displayName: mappingLists 
   description: Working with mapping lists 
@@ -1980,68 +1976,90 @@ securitySchemes:
     post:
       displayName: syslogDisable
       description: Disable syslog support 
-/2.0/si:
-  displayName: solutionIntegration
-  description: Operations for solution Integrations
-  /host/{hostID}/agents: #PDF pg 49
-    displayName: hostAgents
-    description: Agents on a specified host 
-    uriParameters:
-      hostID:
-        required: true
-        displayName: hostID 
-        description: Specified host 
-    get:
-      displayName: hostAgentsRead
-      description: Retrieve all agents on the host
-  /agent/{agentID}: #PDF pg 50
-    displayName: agentInformation
-    description: Agent details (host components and appliances)
-    uriParameters:
-      agentID:
-        required: true 
-        displayName: agentID
-        description: Specified agent 
-    get:
-      displayName: agentInformationRead
-      description: Retrieve agent details 
-  /deployment/{deploymentunitID}/agents: #PDF pg 51
-    displayName: deploymentAgents
-    description: Agents for a specified deployment 
-    uriParameters:
-      deploymentunitID:
-        required: true 
-        displayName: deploymentunitID
-        description: Specified deployment 
-    get:
-      displayName: deploymentAgentsRead
-      description: Retrieve all agents for the specified deployment 
-  /fabric/sync/conflicts: #PDF pg 52 
-    displayName: agentConflicts
-    description: Working with conflicting agencies
-    get:
-      displayName: agentConflictsRead
-      description: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the allowed operations on them
-    put:
-      displayName: agentConflictsUpdate
-      description: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
-      body: 
-        application/xml: #PDF pg 53 (three different schemas)
+/2.0/si/host/{hostID}/agents: #PDF pg 49
+  displayName: hostAgents
+  description: Agents on a specified host 
+  uriParameters:
+    hostID:
+      required: true
+      displayName: hostID 
+      description: Specified host 
+  get:
+    displayName: hostAgentsRead
+    description: Retrieve all agents on the host
+/2.0/si/agent/{agentID}: #PDF pg 50
+  displayName: agentInformation
+  description: Agent details (host components and appliances)
+  uriParameters:
+    agentID:
+      required: true 
+      displayName: agentID
+      description: Specified agent 
+  get:
+    displayName: agentInformationRead
+    description: Retrieve agent details 
+/2.0/si/deployment/{deploymentunitID}/agents: #PDF pg 51
+  displayName: deploymentAgents
+  description: Agents for a specified deployment 
+  uriParameters:
+    deploymentunitID:
+      required: true 
+      displayName: deploymentunitID
+      description: Specified deployment 
+  get:
+    displayName: deploymentAgentsRead
+    description: Retrieve all agents for the specified deployment 
+/2.0/si/fabric/sync/conflicts: #PDF pg 52 
+  displayName: agentConflicts
+  description: Working with conflicting agencies
+  get:
+    displayName: agentConflictsRead
+    description: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the allowed operations on them
+  put:
+    displayName: agentConflictsUpdate
+    description: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
+    body: 
+      application/xml: #PDF pg 53 (three different schemas)
+/2.0/services/ipset/{ipsetId}:
+  displayName: ipset
+  uriParameters:
+    ipsetId:
+      required: true
+      displayName: ipsetId
+      description: The IPset to be queried or changed
+  get:
+    displayName: ipsetRead
+    description: Retrieve an individual IPset
+  put:
+    displayName: ipsetUpdate
+    description: Modify an existing IPset
+  delete:
+    displayName: ipsetDelete
+    description: delete an IPset
 /2.0/services/macset/{scopeId}:
-  displayName: macsetScopes
-  description: Create or list MACsets on a specified scope
+  displayName: macsetScopeCreate
+  description: Create MACset on a specified scope
   uriParameters:
     scopeId:
       required: true
       displayName: scopeId
       description: Can be globalroot-0 or datacenterId in upgrade use cases
   post:
-    displayName: macsetScopesCreate
+    displayName: macsetScopeCreate
     description: Create a MACset on a specified scope
     body:
-      application/xml: # TODO
+      application/xml: 
+        schema: macsetCreateUpdate
+/2.0/services/macset/scope/{scopeId}:
+  displayName: macsetScopeRead 
+  description: List MACsets on a specified scope
+  uriParameters:
+    scopeId:
+      required: true
+      displayName: scopeId
+      description: Can be globalroot-0 or datacenterId in upgrade use cases
   get:
-    displayName: macsetScopesRead
+    displayName: macsetScopeRead
     description: List MACsets created on a specified scope
 /2.0/services/macset/{macsetId}:
   displayName: macset
@@ -2058,7 +2076,8 @@ securitySchemes:
     displayName: macsetUpdate
     description: Modify an existing MACset
     body:
-      application/xml: # TODO (not the same as macset create/post)
+      application/xml: 
+        schema: macsetCreateUpdate
   delete:
     displayName: macsetDelete
     description: Delete a MACset
@@ -2232,478 +2251,475 @@ securitySchemes:
       delete:
         displayName: vShieldSolutionDeactivate
         description: Deactivate a solution on a host
-/4.0/firewall:
-  displayName: dfw
-  description: Distributed Firewall Operations
-  /globalroot-0/config:
-    displayName: dfwConfig
-    description: Global Distributed Firewall Rules configuration
+/4.0/firewall/globalroot-0/config:
+  displayName: dfwConfig
+  description: Global Distributed Firewall Rules configuration
+  get:
+    displayName: dfwConfigShow
+    description: Global Distributed Firewall Rules configuration, use query Parameters to filter
+    queryParameters:
+      ruleType:
+        required: false
+        displayName: ruleType
+        description: ruleType can be LAYER3, LAYER2, L3REDIRECT. Rule Type is mandatory if other search parameters are sent
+      source:
+        required: false
+        displayName: source
+        description: source/destination can contain IPv4/v6 address or vm‐id
+      ruleId:
+        required: false
+        displayName: ruleId
+        description: filter by ruleId
+      comment:
+        required: false
+        displayName: comment
+        description: comment can contain any portion of the comment entered for the rules. Search is case insensitive
+      name:
+        required: false
+        displayName: name
+        description: name can contain any portion of the rulename entered for the rules. Search is case insensitive
+      siProfile:
+        required: false
+        displayName: siProfile
+        description: siProfile can contain any portion of the ServiceProfile name associated with L3redirectrule. Search is case insensitive.
+      edgeId:
+        required: false
+        displayName: edgeId
+        description: edgeId is the EdgeID, that displays rules applicable to the specified Edge
+      action:
+        required: false
+        displayName: action
+        description: Filter for specific action (allow, deny)
+  put:
+    displayName: dfwConfigUpdate
+    description: This will update the complete firewall configuration in all sections. You will need to get the Etag value out of the GET (dfwConfigShow) first. Then pass the modified version of the whole firewall configuration in the GET body
+    headers:
+      if-match:
+        required: true
+        displayName: if-match
+        description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+    body:
+      application/xml:
+  delete:
+    displayName: dfwConfigDelete
+    description: Restores default configuration, which means one defaultLayer3 section with default allow rule and one defaultLayer2Section with default allow rule
+  /layer3sections:
+    displayName: dfwL3Section
+    description: L3 Firewall Operations on specific section specified by name (in a query Parameter)
     get:
-      displayName: dfwConfigShow
-      description: Global Distributed Firewall Rules configuration, use query Parameters to filter
+      displayName: dfwL3SectionRead
+      description: Read a specific section of the DFW config specified by name
       queryParameters:
-        ruleType:
-          required: false
-          displayName: ruleType
-          description: ruleType can be LAYER3, LAYER2, L3REDIRECT. Rule Type is mandatory if other search parameters are sent
-        source:
-          required: false
-          displayName: source
-          description: source/destination can contain IPv4/v6 address or vm‐id
-        ruleId:
-          required: false
-          displayName: ruleId
-          description: filter by ruleId
-        comment:
-          required: false
-          displayName: comment
-          description: comment can contain any portion of the comment entered for the rules. Search is case insensitive
         name:
           required: false
           displayName: name
-          description: name can contain any portion of the rulename entered for the rules. Search is case insensitive
-        siProfile:
-          required: false
-          displayName: siProfile
-          description: siProfile can contain any portion of the ServiceProfile name associated with L3redirectrule. Search is case insensitive.
-        edgeId:
-          required: false
-          displayName: edgeId
-          description: edgeId is the EdgeID, that displays rules applicable to the specified Edge
-        action:
-          required: false
-          displayName: action
-          description: Filter for specific action (allow, deny)
-    put:
-      displayName: dfwConfigUpdate
-      description: This will update the complete firewall configuration in all sections. You will need to get the Etag value out of the GET (dfwConfigShow) first. Then pass the modified version of the whole firewall configuration in the GET body
-      headers:
-        if-match:
-          required: true
-          displayName: if-match
-          description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-      body:
-        application/xml:
-    delete:
-      displayName: dfwConfigDelete
-      description: Restores default configuration, which means one defaultLayer3 section with default allow rule and one defaultLayer2Section with default allow rule
-    /layer3sections:
-      displayName: dfwL3Section
-      description: L3 Firewall Operations on specific section specified by name (in a query Parameter)
-      get:
-        displayName: dfwL3SectionRead
-        description: Read a specific section of the DFW config specified by name
-        queryParameters:
-          name:
-            required: false
-            displayName: name
-            description: Name of the Section to read
-      post:
-        displayName: dfwL3SectionCreate
-        description: Creates a new L3 Firewall Section with a number of rules
-        body:
-         application/xml:
-          schema: dfwsection
-      /{sectionId}:
-        displayName: dfwL3SectionId
-        description: L3 Firewall Operations on specific section specified by section ID
-        uriParameters:
-          sectionId:
-            required: true
-            displayName: sectionId
-            description: The ID of the section beeing added, updated or deleted
-        get:
-          displayName: dfwL3SectionIdRead
-          description: Read a specific section of the DFW config specified by Id
-        put:
-          displayName: dfwL3SectionIdUpdate
-          description: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
-                       and then update the section by supplying the Etag value received in the read in the If-Match header
-          headers:
-            If-match:
-              required: true
-              displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-          body:
-            application/xml:
-        delete:
-          displayName: dfwL3SectionIdDelete
-          description: Deletes a L3 section and its content by ID
-        /rules:
-          displayName: dfwL3Rules
-          description: Operations to add one or more L3 Rules
-          post:
-            displayName: dfwL3RulesAdd
-            description: Add a L3 Rule
-            headers:
-              If-match:
-                required: true
-                displayName: If-match
-                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-            body:
-              application/xml:
-                schema: dfwrule
-          /{ruleId}:
-            displayName: dfwL3Rule
-            description: Operations on L3 rules in sections identified by section Id and Rule Id
-            uriParameters:
-              ruleId:
-                required: true
-                displayName: ruleId
-                description: The ID of the rule beeing read, updated or deleted
-            get:
-              displayName: dfwL3RuleRead
-              description: Read the configuration of a specific rule identified by rule Id
-            put:
-              displayName: dfwL3RuleUpdate
-              description: Updates a L3 DFW Rule. To do this you need to read it first, make your changes,
-                           and then update the section by supplying the Etag value received in the read in the If-Match header
-              headers:
-                If-match:
-                  required: true
-                  displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-              body:
-                application/xml:
-            delete:
-              displayName: dfwL3RuleDelete
-              description: Delete a specific rule identified by rule Id
-              headers:
-                If-match:
-                  required: true
-                  displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-      /{sectionName}:
-        displayName: dfwL3SectionName
-        description: L3 Firewall Update Operations on specific section specified by section Name
-        put:
-          displayName: dfwL3SectionNameUpdate
-          description: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
-                       and then update the section by supplying the Etag value received in the read in the If-Match header
-          headers:
-            If-match:
-              required: true
-              displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-          body:
-            application/xml: 
-    /layer2sections:
-      displayName: dfwL2Section
-      description: L2 Firewall Operations on specific section specified by name (in a query Parameter)
-      get:
-        displayName: dfwL2SectionRead
-        description: Read a specific section of the DFW config specified by name
-        queryParameters:
-          name:
-            required: false
-            displayName: name
-            description: Name of the Section to read
-      post:
-        displayName: dfwL2SectionCreate
-        description: Creates a new L2 Firewall Section with a number of rules
-        body:
-         application/xml:
-          schema: dfwsection
-      /{sectionId}:
-        displayName: dfwL2SectionId
-        description: L2 Firewall Operations on specific section specified by section ID
-        uriParameters:
-          sectionId:
-            required: true
-            displayName: sectionId
-            description: The ID of the section beeing added, updated or deleted
-        get:
-          displayName: dfwL2SectionIdRead
-          description: Read a specific section of the DFW config specified by Id
-        put:
-          displayName: dfwL2SectionIdUpdate
-          description: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
-                       and then update the section by supplying the Etag value received in the read in the If-Match header
-          headers:
-            If-match:
-              required: true
-              displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-          body:
-            application/xml:
-        delete:
-          displayName: dfwL2SectionIdDelete
-          description: Deletes a L2 section and its content by ID
-        /rules:
-          displayName: dfwL2Rules
-          description: Operations to add one or more L2 Rules
-          post:
-            displayName: dfwL2RulesAdd
-            description: Add L2 Rule
-            headers:
-              If-match:
-                required: true
-                displayName: If-match
-                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-            body:
-              application/xml:
-                schema: dfwrule
-          /{ruleId}:
-            displayName: dfwL2Rule
-            description: Operations on L2 rules in sections identified by section Id and Rule Id
-            uriParameters:
-              ruleId:
-                required: true
-                displayName: ruleId
-                description: The ID of the rule beeing read, updated or deleted
-            get:
-              displayName: dfwL2RuleRead
-              description: Read the configuration of a specific rule identified by rule Id
-            put:
-              displayName: dfwL2RuleUpdate
-              description: Updates a L2 DFW Rule. To do this you need to read it first, make your changes,
-                          and then update the section by supplying the Etag value received in the read in the If-Match header
-              headers:
-                If-match:
-                  required: true
-                  displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-              body:
-                application/xml:
-            delete:
-              displayName: dfwL2RuleDelete
-              description: Delete a specific rule identified by rule Id
-              headers:
-                If-match:
-                  required: true
-                  displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-      /{sectionName}:
-        displayName: dfwL2SectionName
-        description: L3 Firewall Update Operations on specific section specified by section Name
-        put:
-          displayName: dfwL2SectionNameUpdate
-          description: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
-                       and then update the section by supplying the Etag value received in the read in the If-Match header
-          headers:
-            If-match:
-              required: true
-              displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
-          body:
-            application/xml:
-    /layer3redirectsections:
-      displayName: layer3RedirectSections
-      description: Layer3 redirect sections and rules 
-      post:
-        displayName: layer3RedirectSectionsCreate
-        description: Add L3 redirect section 
-        body:
-          application/xml: #TODO pg 295 
-      /{section}:
-        displayName: section 
-        description: Layer3 redirect section
-        uriParameters:
-          section:
-            required: true 
-            displayName: section
-            description: Specify section by ID or name 
-        get:
-          displayName: sectionRead 
-          description: Get L3 redirect section configuration 
-        put:
-          displayName: sectionUpdate
-          description: Modify L3 Redirect section. You will need to get the Etag value out of the GET first. Then pass the modified version of the whole redirect section configuration in the GET body
-          headers:
-            if-match: 
-              required: true 
-              displayName: if-match 
-              description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
-          body:
-            application/xml: #TODO pg 296
-        delete:
-          displayName: sectionDelete 
-          description: Delete specified L3 redirect section 
-        /rules:
-          displayName: rules 
-          description: L3 redirect rules for specified section 
-          post:
-            displayName: rulesCreate 
-            description: Add L3 redirect rule 
-            body:
-              application/xml: #TODO pg 297
-          /{ruleID}:
-            displayName: rule 
-            description: Rule for specified section 
-            uriParameters:
-              ruleID:
-                displayName: ruleID 
-                required: true 
-                description: Specified redirect rule 
-            get:
-              displayName: ruleRead 
-              description: Get L3 redirect rule 
-            put:
-              displayName: ruleUpdate 
-              description: Modify L3 redirect rule. You will need Etag value from the response header of GET call. Then, pass Etag value as the if-match header in PUT call 
-              headers:
-                if-match:
-                  required: true 
-                  displayName: if-match
-                  description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
-              body:
-                application/xml: #TODO pg 298 
-            delete:
-              displayName: ruleDelete 
-              description: Delete specified L3 redirect rule 
-    /layer3redirect/profiles:
-      displayName: serviceInsertionProfiles
-      description: Service Insertion profiles that can be applied to layer3 redirect rules 
-      get:
-        displayName: serviceInsertionProfilesRead
-        description: Retrieve the Service Insertion profiles 
-  /globalroot-0/state:
-    displayName: dfwUpgrade
-    description: Upgrading distributed firewall 
-    get:
-      displayName: dfwUpgradeRead
-      description: Get current state of firewall functioning after NSX upgrade 
-    put:
-      displayName: dfwUpgradeEnable
-      description: Enable distributed firewall 
-  /globalroot-0/status:
-    displayName: dfwStatus
-    description: Firewall configuration status 
-    get:
-      displayName: dfwStatusRead
-      description: Get firewall configuration status 
-    /layer3sections/{sectionID}:
-      displayName: L3SectionStatus
-      description: L3 section status 
-      uriParameters:
-        sectionID:
-          required: true 
-          displayName: sectionID 
-          description: Section ID 
-      get:
-        displayName: L3SectionStatusRead
-        description: Get Layer3 status 
-    /layer2sections/{sectionID}:
-      displayName: L2SectionStatus
-      description: L2 section status 
-      uriParameters:
-        sectionID:
-          required: true 
-          displayName: sectionID 
-          description: Section ID 
-      get:
-        displayName: L2SectionStatusRead
-        description: Get Layer2 status 
-  /globalroot-0/drafts: 
-    displayName: dfwDrafts
-    description: Import and export firewall configurations 
+          description: Name of the Section to read
     post:
-      displayName: dfwDraftsCreate
-      description: Save a firewall configuration 
+      displayName: dfwL3SectionCreate
+      description: Creates a new L3 Firewall Section with a number of rules
       body:
-        application/xml: #TODO pg 306
-    get:
-      displayName: dfwSaveConfigRead
-      description: Displays the draft IDs of all saved configurations 
-    /{draftID}:
-      displayName: dfwDraft 
-      description: Specified saved firewall configuration 
+       application/xml:
+        schema: dfwsection
+    /{sectionId}:
+      displayName: dfwL3SectionId
+      description: L3 Firewall Operations on specific section specified by section ID
       uriParameters:
-        draftID:
-          required: true 
-          displayName: draftID
-          description: Specified draft ID (retrieved through dfwDrafts GET call)
+        sectionId:
+          required: true
+          displayName: sectionId
+          description: The ID of the section beeing added, updated or deleted
       get:
-        displayName: dfwDraftRead 
-        description: Get a saved firewall configuration
+        displayName: dfwL3SectionIdRead
+        description: Read a specific section of the DFW config specified by Id
       put:
-        displayName: dfwDraftUpdate
-        description: Update a saved firewall configuration
+        displayName: dfwL3SectionIdUpdate
+        description: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
+                     and then update the section by supplying the Etag value received in the read in the If-Match header
+        headers:
+          If-match:
+            required: true
+            displayName: If-match
+            description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
         body:
-          application/xml: #TODO pg 308
+          application/xml:
       delete:
-        displayName: dfwDraftDelete
-        description: Delete a configuration 
-      /action/export:
+        displayName: dfwL3SectionIdDelete
+        description: Deletes a L3 section and its content by ID
+      /rules:
+        displayName: dfwL3Rules
+        description: Operations to add one or more L3 Rules
+        post:
+          displayName: dfwL3RulesAdd
+          description: Add a L3 Rule
+          headers:
+            If-match:
+              required: true
+              displayName: If-match
+              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+          body:
+            application/xml:
+              schema: dfwrule
+        /{ruleId}:
+          displayName: dfwL3Rule
+          description: Operations on L3 rules in sections identified by section Id and Rule Id
+          uriParameters:
+            ruleId:
+              required: true
+              displayName: ruleId
+              description: The ID of the rule beeing read, updated or deleted
+          get:
+            displayName: dfwL3RuleRead
+            description: Read the configuration of a specific rule identified by rule Id
+          put:
+            displayName: dfwL3RuleUpdate
+            description: Updates a L3 DFW Rule. To do this you need to read it first, make your changes,
+                         and then update the section by supplying the Etag value received in the read in the If-Match header
+            headers:
+              If-match:
+                required: true
+                displayName: If-match
+                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+            body:
+              application/xml:
+          delete:
+            displayName: dfwL3RuleDelete
+            description: Delete a specific rule identified by rule Id
+            headers:
+              If-match:
+                required: true
+                displayName: If-match
+                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+    /{sectionName}:
+      displayName: dfwL3SectionName
+      description: L3 Firewall Update Operations on specific section specified by section Name
+      put:
+        displayName: dfwL3SectionNameUpdate
+        description: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
+                     and then update the section by supplying the Etag value received in the read in the If-Match header
+        headers:
+          If-match:
+            required: true
+            displayName: If-match
+            description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+        body:
+          application/xml: 
+  /layer2sections:
+    displayName: dfwL2Section
+    description: L2 Firewall Operations on specific section specified by name (in a query Parameter)
+    get:
+      displayName: dfwL2SectionRead
+      description: Read a specific section of the DFW config specified by name
+      queryParameters:
+        name:
+          required: false
+          displayName: name
+          description: Name of the Section to read
+    post:
+      displayName: dfwL2SectionCreate
+      description: Creates a new L2 Firewall Section with a number of rules
+      body:
+       application/xml:
+        schema: dfwsection
+    /{sectionId}:
+      displayName: dfwL2SectionId
+      description: L2 Firewall Operations on specific section specified by section ID
+      uriParameters:
+        sectionId:
+          required: true
+          displayName: sectionId
+          description: The ID of the section beeing added, updated or deleted
+      get:
+        displayName: dfwL2SectionIdRead
+        description: Read a specific section of the DFW config specified by Id
+      put:
+        displayName: dfwL2SectionIdUpdate
+        description: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
+                     and then update the section by supplying the Etag value received in the read in the If-Match header
+        headers:
+          If-match:
+            required: true
+            displayName: If-match
+            description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+        body:
+          application/xml:
+      delete:
+        displayName: dfwL2SectionIdDelete
+        description: Deletes a L2 section and its content by ID
+      /rules:
+        displayName: dfwL2Rules
+        description: Operations to add one or more L2 Rules
+        post:
+          displayName: dfwL2RulesAdd
+          description: Add L2 Rule
+          headers:
+            If-match:
+              required: true
+              displayName: If-match
+              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+          body:
+            application/xml:
+              schema: dfwrule
+        /{ruleId}:
+          displayName: dfwL2Rule
+          description: Operations on L2 rules in sections identified by section Id and Rule Id
+          uriParameters:
+            ruleId:
+              required: true
+              displayName: ruleId
+              description: The ID of the rule beeing read, updated or deleted
+          get:
+            displayName: dfwL2RuleRead
+            description: Read the configuration of a specific rule identified by rule Id
+          put:
+            displayName: dfwL2RuleUpdate
+            description: Updates a L2 DFW Rule. To do this you need to read it first, make your changes,
+                        and then update the section by supplying the Etag value received in the read in the If-Match header
+            headers:
+              If-match:
+                required: true
+                displayName: If-match
+                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+            body:
+              application/xml:
+          delete:
+            displayName: dfwL2RuleDelete
+            description: Delete a specific rule identified by rule Id
+            headers:
+              If-match:
+                required: true
+                displayName: If-match
+                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+    /{sectionName}:
+      displayName: dfwL2SectionName
+      description: L3 Firewall Update Operations on specific section specified by section Name
+      put:
+        displayName: dfwL2SectionNameUpdate
+        description: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
+                     and then update the section by supplying the Etag value received in the read in the If-Match header
+        headers:
+          If-match:
+            required: true
+            displayName: If-match
+            description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+        body:
+          application/xml:
+  /layer3redirectsections:
+    displayName: layer3RedirectSections
+    description: Layer3 redirect sections and rules 
+    post:
+      displayName: layer3RedirectSectionsCreate
+      description: Add L3 redirect section 
+      body:
+        application/xml: #TODO pg 295 
+    /{section}:
+      displayName: section 
+      description: Layer3 redirect section
+      uriParameters:
+        section:
+          required: true 
+          displayName: section
+          description: Specify section by ID or name 
+      get:
+        displayName: sectionRead 
+        description: Get L3 redirect section configuration 
+      put:
+        displayName: sectionUpdate
+        description: Modify L3 Redirect section. You will need to get the Etag value out of the GET first. Then pass the modified version of the whole redirect section configuration in the GET body
+        headers:
+          if-match: 
+            required: true 
+            displayName: if-match 
+            description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
+        body:
+          application/xml: #TODO pg 296
+      delete:
+        displayName: sectionDelete 
+        description: Delete specified L3 redirect section 
+      /rules:
+        displayName: rules 
+        description: L3 redirect rules for specified section 
+        post:
+          displayName: rulesCreate 
+          description: Add L3 redirect rule 
+          body:
+            application/xml: #TODO pg 297
+        /{ruleID}:
+          displayName: rule 
+          description: Rule for specified section 
+          uriParameters:
+            ruleID:
+              displayName: ruleID 
+              required: true 
+              description: Specified redirect rule 
+          get:
+            displayName: ruleRead 
+            description: Get L3 redirect rule 
+          put:
+            displayName: ruleUpdate 
+            description: Modify L3 redirect rule. You will need Etag value from the response header of GET call. Then, pass Etag value as the if-match header in PUT call 
+            headers:
+              if-match:
+                required: true 
+                displayName: if-match
+                description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
+            body:
+              application/xml: #TODO pg 298 
+          delete:
+            displayName: ruleDelete 
+            description: Delete specified L3 redirect rule 
+  /layer3redirect/profiles:
+    displayName: serviceInsertionProfiles
+    description: Service Insertion profiles that can be applied to layer3 redirect rules 
+    get:
+      displayName: serviceInsertionProfilesRead
+      description: Retrieve the Service Insertion profiles 
+/4.0/firewall/globalroot-0/state:
+  displayName: dfwUpgrade
+  description: Upgrading distributed firewall 
+  get:
+    displayName: dfwUpgradeRead
+    description: Get current state of firewall functioning after NSX upgrade 
+  put:
+    displayName: dfwUpgradeEnable
+    description: Enable distributed firewall 
+/4.0/firewall/globalroot-0/status:
+  displayName: dfwStatus
+  description: Firewall configuration status 
+  get:
+    displayName: dfwStatusRead
+    description: Get firewall configuration status 
+  /layer3sections/{sectionID}:
+    displayName: L3SectionStatus
+    description: L3 section status 
+    uriParameters:
+      sectionID:
+        required: true 
+        displayName: sectionID 
+        description: Section ID 
+    get:
+      displayName: L3SectionStatusRead
+      description: Get Layer3 status 
+  /layer2sections/{sectionID}:
+    displayName: L2SectionStatus
+    description: L2 section status 
+    uriParameters:
+      sectionID:
+        required: true 
+        displayName: sectionID 
+        description: Section ID 
+    get:
+      displayName: L2SectionStatusRead
+      description: Get Layer2 status 
+/4.0/firewall/globalroot-0/drafts: 
+  displayName: dfwDrafts
+  description: Import and export firewall configurations 
+  post:
+    displayName: dfwDraftsCreate
+    description: Save a firewall configuration 
+    body:
+      application/xml: #TODO pg 306
+  get:
+    displayName: dfwSaveConfigRead
+    description: Displays the draft IDs of all saved configurations 
+  /{draftID}:
+    displayName: dfwDraft 
+    description: Specified saved firewall configuration 
+    uriParameters:
+      draftID:
+        required: true 
+        displayName: draftID
+        description: Specified draft ID (retrieved through dfwDrafts GET call)
+    get:
+      displayName: dfwDraftRead 
+      description: Get a saved firewall configuration
+    put:
+      displayName: dfwDraftUpdate
+      description: Update a saved firewall configuration
+      body:
+        application/xml: #TODO pg 308
+    delete:
+      displayName: dfwDraftDelete
+      description: Delete a configuration 
+    /action/export:
+      displayName: dfwConfigExport 
+      description: Export a configuration 
+      get:
         displayName: dfwConfigExport 
         description: Export a configuration 
-        get:
-          displayName: dfwConfigExport 
-          description: Export a configuration 
-      /action/import:
+    /action/import:
+      displayName: dfwConfigImport
+      description: Import a configuration 
+      post:
         displayName: dfwConfigImport
-        description: Import a configuration 
-        post:
-          displayName: dfwConfigImport
-          description: Import a configuration
-          body:
-            application/xml: #TODO pg 310
-  /stats/eventthresholds: #PDF pg 304
-    displayName: dfwThresholds
-    description: Memory and CPU thresholds for firewall 
-    get:
-      displayName: dfwThresholdsRead
-      description: Retrieve memory, CPU, and CPS thresholds for firewall 
-    put:
-      displayName: dfwThresholdsUpdate
-      description: Configure thresholds
-      body:
-        application/xml: #TODO 304 
-  /config/globalconfiguration: #PDF pg 304 
-    displayName: dfwPerformance
-    description: Tuning firewall performance 
-    get:
-      displayName: dfwPerformanceRead
-      description: Query RuleOptimize and TCPStrict flags 
-    put:
-      displayName: dfwPerformanceUpdate
-      description: Set RuleOptimize and TCPStrict flags in body to improve performance 
-      body:
-        application/xml: #TODO pg 304 
-  /forceSync/{ID}: #PDF pg 305
-    displayName: dfwSync 
-    description: Synchronize hosts and clusters with the last good configuration in NSX Mgr database 
-    uriParameters:
-      ID:
-        required: true 
-        displayName: ID 
-        description: Specified host or cluster to synchronize 
-    post:
-      displayName: dfwSync
-      description: Force sync host/cluster 
-  /{domainID}/enable/{truefalse}:
+        description: Import a configuration
+        body:
+          application/xml: #TODO pg 310
+/4.0/firewall/stats/eventthresholds: #PDF pg 304
+  displayName: dfwThresholds
+  description: Memory and CPU thresholds for firewall 
+  get:
+    displayName: dfwThresholdsRead
+    description: Retrieve memory, CPU, and CPS thresholds for firewall 
+  put:
+    displayName: dfwThresholdsUpdate
+    description: Configure thresholds
+    body:
+      application/xml: #TODO 304 
+/4.0/firewall/config/globalconfiguration: #PDF pg 304 
+  displayName: dfwPerformance
+  description: Tuning firewall performance 
+  get:
+    displayName: dfwPerformanceRead
+    description: Query RuleOptimize and TCPStrict flags 
+  put:
+    displayName: dfwPerformanceUpdate
+    description: Set RuleOptimize and TCPStrict flags in body to improve performance 
+    body:
+      application/xml: #TODO pg 304 
+/4.0/firewall/forceSync/{ID}: #PDF pg 305
+  displayName: dfwSync 
+  description: Synchronize hosts and clusters with the last good configuration in NSX Mgr database 
+  uriParameters:
+    ID:
+      required: true 
+      displayName: ID 
+      description: Specified host or cluster to synchronize 
+  post:
+    displayName: dfwSync
+    description: Force sync host/cluster 
+/4.0/firewall/{domainID}/enable/{truefalse}:
+  displayName: dfwEnableDisableAPI
+  description: Enable or disable firewall components on a cluster 
+  uriParameters:
+    domainID:
+      required: true 
+      displayName: domainID
+      description: Specified cluster 
+    truefalse: 
+      required: true 
+      displayName: truefalse 
+      description: Set parameter to true/false to enable/disable 
+  post:
     displayName: dfwEnableDisableAPI
     description: Enable or disable firewall components on a cluster 
-    uriParameters:
-      domainID:
-        required: true 
-        displayName: domainID
-        description: Specified cluster 
-      truefalse: 
-        required: true 
-        displayName: truefalse 
-        description: Set parameter to true/false to enable/disable 
-    post:
-      displayName: dfwEnableDisableAPI
-      description: Enable or disable firewall components on a cluster 
-  /{contextId}/config/ipfix: #PDF pg 322
-    displayName: dfwIPFix
-    description: Export specific flows directly from firewall to a flow collector 
-    uriParameters:
-      contextId:
-        displayName: contextId
-        description: Specified context 
-    get:
-      displayName: dfwIPFixRead
-      description: Query IPFix configuration
-    put:
-      displayName: dfwIPFixUpdate
-      description: Configure IPFix 
-      body:
-        application/xml: #TODO pg 322
-    delete:
-      displayName: dfwIPFixDelete
-      description: Deleting IPFix configuration resets the config to default values
+/4.0/firewall/{contextId}/config/ipfix: #PDF pg 322
+  displayName: dfwIPFix
+  description: Export specific flows directly from firewall to a flow collector 
+  uriParameters:
+    contextId:
+      displayName: contextId
+      description: Specified context 
+  get:
+    displayName: dfwIPFixRead
+    description: Query IPFix configuration
+  put:
+    displayName: dfwIPFixUpdate
+    description: Configure IPFix 
+    body:
+      application/xml: #TODO pg 322
+  delete:
+    displayName: dfwIPFixDelete
+    description: Deleting IPFix configuration resets the config to default values
 /4.0/services/spoofguard/policies: #PDF pg 311
   displayName: spoofGuardPolicies
   description: SpoofGuard policies 
@@ -2772,54 +2788,70 @@ securitySchemes:
         displayName: pageSize 
         description: (optional) Limit the max number of entries returned. Valid range is 1-1024
         default: 256
-/2.1/internal/flow:
-  displayName: flowData
-  description: Operations on flowdata 
-  /flowsummary:
-    displayName: flowSummary
-    description: Flow summary for given context 
-    get:
-      displayName: flowSummaryRead 
-      description: Retrieve flow summary 
-      queryParameters:
-        contextId:
-          displayName: contextId 
-          description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
-        startTime:
-          displayName: startTime
-          description: Flows with start time greater than specified will be fetched 
-        endTime:
-          displayName: endTime 
-          description: Flows with end time lesser than specified will be fetched
-  /flowtable:
-    displayName: flowTable
+/2.1/internal/flow/flowsummary:
+  displayName: flowSummary
+  description: Flow summary for given context 
+  get:
+    displayName: flowSummaryRead 
+    description: Retrieve flow summary 
+    queryParameters:
+      contextId:
+        displayName: contextId 
+        description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
+      startTime:
+        displayName: startTime
+        description: Flows with start time greater than specified will be fetched 
+      endTime:
+        displayName: endTime 
+        description: Flows with end time lesser than specified will be fetched
+/2.1/internal/flow/flowtable:
+  displayName: flowTable
+  description: Retrieve flow table for given context and table type 
+  get:
+    displayName: flowTableRead
     description: Retrieve flow table for given context and table type 
-    get:
-      displayName: flowTableRead
-      description: Retrieve flow table for given context and table type 
-      queryParameters:
-        contextId:
-          displayName: contextId 
-          description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
-        startTime:
-          displayName: startTime
-          description: Flows with start time greater than specified will be fetched 
-        endTime:
-          displayName: endTime 
-          description: Flows with end time lesser than specified will be fetched
-        tableType:
-          displayName: tableType 
-          description: Type of flow to be fetched (source|application|destination)
-        maxRows:
-          displayName: maxRows
-          description: (optional) Max number of rows to return 
-          default: 5
-  /flowdetails:
-    displayName: flowDetails
+    queryParameters:
+      contextId:
+        displayName: contextId 
+        description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
+      startTime:
+        displayName: startTime
+        description: Flows with start time greater than specified will be fetched 
+      endTime:
+        displayName: endTime 
+        description: Flows with end time lesser than specified will be fetched
+      tableType:
+        displayName: tableType 
+        description: Type of flow to be fetched (source|application|destination)
+      maxRows:
+        displayName: maxRows
+        description: (optional) Max number of rows to return 
+        default: 5
+/2.1/internal/flow/flowdetails:
+  displayName: flowDetails
+  description: Retrieve flow details for given context 
+  get:
+    displayName: flowDetailsRead
     description: Retrieve flow details for given context 
+    queryParameters:
+      contextId:
+        displayName: contextId 
+        description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
+      startTime:
+        displayName: startTime
+        description: Flows with start time greater than specified will be fetched 
+      endTime:
+        displayName: endTime 
+        description: Flows with end time lesser than specified will be fetched
+      flowType:
+        displayName: flowType 
+        description: Type of flow to be fetched (Allowed|Blocked)
+  /application:
+    displayName: flowDetailsApp
+    description: Retrieve flow details for given context by application 
     get:
-      displayName: flowDetailsRead
-      description: Retrieve flow details for given context 
+      displayName: flowDetailsAppRead
+      description: Retrieve flow details for given context by application 
       queryParameters:
         contextId:
           displayName: contextId 
@@ -2833,34 +2865,42 @@ securitySchemes:
         flowType:
           displayName: flowType 
           description: Type of flow to be fetched (Allowed|Blocked)
-    /application:
-      displayName: flowDetailsApp
-      description: Retrieve flow details for given context by application 
-      get:
-        displayName: flowDetailsAppRead
-        description: Retrieve flow details for given context by application 
-        queryParameters:
-          contextId:
-            displayName: contextId 
-            description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
-          startTime:
-            displayName: startTime
-            description: Flows with start time greater than specified will be fetched 
-          endTime:
-            displayName: endTime 
-            description: Flows with end time lesser than specified will be fetched
-          flowType:
-            displayName: flowType 
-            description: Type of flow to be fetched (Allowed|Blocked)
-          serviceId:
-            displayName: serviceId 
-            description: Service identifier of application to be queried 
-  /pagedflowdetails:
-    displayName: flowPagedDetails
+        serviceId:
+          displayName: serviceId 
+          description: Service identifier of application to be queried 
+/2.1/internal/flow/pagedflowdetails:
+  displayName: flowPagedDetails
+  description: Retrieves paged flow details for given context 
+  get:
+    displayName: flowPagedDetailsRead
     description: Retrieves paged flow details for given context 
+    queryParameters:
+      contextId:
+        displayName: contextId 
+        description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
+      startTime:
+        displayName: startTime
+        description: Flows with start time greater than specified will be fetched 
+      endTime:
+        displayName: endTime 
+        description: Flows with end time lesser than specified will be fetched
+      flowType:
+        displayName: flowType 
+        description: Type of flow to be fetched (Allowed|Blocked)     
+      startIndex:
+        displayName: startIndex
+        description: (optional) Start index for returned flows 
+        default: 0 
+      pageSize:
+        displayName: pageSize 
+        description: (optional) Max number of flows to return in a single call 
+        default: 256 
+  /application:
+    displayName: flowPagedDetailsApp
+    description: Retrieve paged flow details by application 
     get:
-      displayName: flowPagedDetailsRead
-      description: Retrieves paged flow details for given context 
+      displayName: flowPagedDetailsAppRead
+      description: Retrieve paged flow details by application 
       queryParameters:
         contextId:
           displayName: contextId 
@@ -2882,47 +2922,20 @@ securitySchemes:
           displayName: pageSize 
           description: (optional) Max number of flows to return in a single call 
           default: 256 
-    /application:
-      displayName: flowPagedDetailsApp
-      description: Retrieve paged flow details by application 
-      get:
-        displayName: flowPagedDetailsAppRead
-        description: Retrieve paged flow details by application 
-        queryParameters:
-          contextId:
-            displayName: contextId 
-            description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved 
-          startTime:
-            displayName: startTime
-            description: Flows with start time greater than specified will be fetched 
-          endTime:
-            displayName: endTime 
-            description: Flows with end time lesser than specified will be fetched
-          flowType:
-            displayName: flowType 
-            description: Type of flow to be fetched (Allowed|Blocked)     
-          startIndex:
-            displayName: startIndex
-            description: (optional) Start index for returned flows 
-            default: 0 
-          pageSize:
-            displayName: pageSize 
-            description: (optional) Max number of flows to return in a single call 
-            default: 256 
-          serviceId:
-            displayName: serviceId 
-            description: Service identifier of application to query 
-  /config: #PDF pg 321
-    displayName: flowsExclude
+        serviceId:
+          displayName: serviceId 
+          description: Service identifier of application to query 
+/2.1/flow/config: #PDF pg 321
+  displayName: flowsExclude
+  description: Exclude specified flows 
+  post:
+    displayName: flowsExcludeCreate
     description: Exclude specified flows 
-    post:
-      displayName: flowsExcludeCreate
-      description: Exclude specified flows 
-      body:
-        application/xml: #TODO pg 321
-    get:
-      displayName: flowsExcludeRead
-      description: Retrieve excluded flow details 
+    body:
+      application/xml: #TODO pg 321
+  get:
+    displayName: flowsExcludeRead
+    description: Retrieve excluded flow details 
 /2.1/app/excludelist:
   displayName: dfwExclusion
   description: Exclude VM's from firewall protection 
@@ -2949,8 +2962,8 @@ securitySchemes:
     displayName: nsxEdgesCreate
     description: Install NSX Edge services gateway or logical router, depending on request body 
     body:
-      application/xml:
-        schema: edgecreate
+      application/xml: #TODO pg 43
+                       #TODO pg 45
   get:
     displayName: nsxEdgesRead
     description: Retrieve a list of NSX Edges in your inventory or use the query parameters to filter results by datacenter or port group
@@ -4215,246 +4228,246 @@ securitySchemes:
         required: true 
         displayName: action 
         description: Set this to 'upgrade'
-/2.0/services/truststore:
-  displayName: truststore
-  description: Operation on truststore (certificates)
-  /certificate:
-    displayName: certificate
-    description: Certificates and certificate chains
+/2.0/services/truststore/certificate:
+  displayName: certificate
+  description: Certificates and certificate chains
+  post:
+    displayName: certificateCSRCreate
+    description: Create certificate for CSR
+    body:
+      application/xml: #TODO pg 160
+  /scope/{scopeId}:
+    displayName: certificateScope
+    description: Certificates for a scope
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: Scope ID
+    get:
+      displayName: certificateScopeRead
+      description: Query all certificates for a scope
+  /{scopeId}: # PDF pg 159
+    displayName: certificateSelfSigned
+    description: Working with vShield Edge self-signed certificates
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: Scope ID
     post:
-      displayName: certificateCSRCreate
-      description: Create certificate for CSR
+      displayName: certificateSelfSignedCreate
+      description: Create a single certificate
       body:
         application/xml: #TODO pg 160
-    /scope/{scopeId}:
-      displayName: certificateScope
-      description: Certificates for a scope
-      uriParameters:
-        scopeId:
-          required: true
-          displayName: scopeId
-          description: Scope ID
-      get:
-        displayName: certificateScopeRead
-        description: Query all certificates for a scope
-    /{scopeId}: # PDF pg 159
-      displayName: certificateSelfSigned
-      description: Working with vShield Edge self-signed certificates
-      uriParameters:
-        scopeId:
-          required: true
-          displayName: scopeId
-          description: Scope ID
-      post:
-        displayName: certificateSelfSignedCreate
-        description: Create a single certificate
-        body:
-          application/xml: #TODO pg 160
-    /{certificateId}:
-      displayName: certificate
-      description: Certificate specified by ID
-      uriParameters:
-        certificateId:
-          required: true
-          displayName: certificateId
-          description: certificate ID
-      get:
-        displayName: certificateRead
-        description: Retrieve the certificate object specified by ID. If the ID specifies a chain, multiple certificate objects are retrieved.
-      delete:
-        displayName: certificateDelete
-        description: Delete the specified certificate
-  /csr/{scopeId}: #PDF pg 160
+  /{certificateId}:
+    displayName: certificate
+    description: Certificate specified by ID
+    uriParameters:
+      certificateId:
+        required: true
+        displayName: certificateId
+        description: certificate ID
+    get:
+      displayName: certificateRead
+      description: Retrieve the certificate object specified by ID. If the ID specifies a chain, multiple certificate objects are retrieved.
+    delete:
+      displayName: certificateDelete
+      description: Delete the specified certificate
+/2.0/services/truststore/csr/{scopeId}: #PDF pg 160
+  displayName: csrCreate
+  description: Create Certificate Signing Requests (CSRs)
+  uriParameters:
+    scopeId:
+      required: true
+      displayName: scopeId
+      description: Specified scope ID
+  post:
     displayName: csrCreate
-    description: Create Certificate Signing Requests (CSRs)
-    uriParameters:
-      scopeId:
+    description: Create a CSR
+    body:
+      application/xml: # TODO pg 161
+/2.0/services/truststore/csr/{csrId}: #PDF pg 161
+  displayName: csrSelfSigned
+  description: Self signed certificate for CSR 
+  uriParameters:
+    csrId:
+      required: true
+      displayName: csrId
+      description: CSR ID 
+  put: 
+    displayName: csrSelfSignedUpdate
+    description: Create a self signed certificate for CSR
+    queryParameters:
+      noOfDays:
+        displayName: noOfDays
         required: true
-        displayName: scopeId
-        description: Specified scope ID
-    post:
-      displayName: csrCreate
-      description: Create a CSR
-      body:
-        application/xml: # TODO pg 161
-  /csr/{csrId}: #PDF pg 161
-    displayName: csrSelfSigned
-    description: Self signed certificate for CSR 
-    uriParameters:
-      csrId:
-        required: true
-        displayName: csrId
-        description: CSR ID 
-    put: 
-      displayName: csrSelfSignedUpdate
-      description: Create a self signed certificate for CSR
-      queryParameters:
-        noOfDays:
-          displayName: noOfDays
-          required: true
-    get:
-      displayName: csrSelfSignedRead
-      description: Retrieve specific CSR
-  /csr/scope/{scopeId}: #PDF pg 161
-    displayName: csrScope
-    description: CSRs for specific scope 
-    uriParameters:
-      scopeId:
-        displayName: scopeId
-        description: Specified scope
-        required: true
-    get:
-      displayName: csrScopeRead
-      description: Query CSRs for specific scope
-  /crl/{scopeId}: #PDF pg 162
+  get:
+    displayName: csrSelfSignedRead
+    description: Retrieve specific CSR
+/2.0/services/truststore/csr/scope/{scopeId}: #PDF pg 161
+  displayName: csrScope
+  description: CSRs for specific scope 
+  uriParameters:
+    scopeId:
+      displayName: scopeId
+      description: Specified scope
+      required: true
+  get:
+    displayName: csrScopeRead
+    description: Query CSRs for specific scope
+/2.0/services/truststore/crl/{scopeId}: #PDF pg 162
+  displayName: crlScopeCreate
+  description: Create Certificate Revocation Lists (CRLs) on a specified scope
+  uriParameters:
+    scopeId:
+      required: true
+      displayName: scopeId
+      description: Specified scope
+  post:
     displayName: crlScopeCreate
-    description: Create Certificate Revocation Lists (CRLs) on a specified scope
-    uriParameters:
-      scopeId:
-        required: true
-        displayName: scopeId
-        description: Specified scope
-    post:
-      displayName: crlScopeCreate
-      description: Create CRL on the specified scope
-      body:
-        application/xml: #TODO pg 162
-  /crl/scope/{scopeId}: #PDF pg 162
+    description: Create CRL on the specified scope
+    body:
+      application/xml: #TODO pg 162
+/2.0/services/truststore/crl/scope/{scopeId}: #PDF pg 162
+  displayName: crlScopeRead
+  description: Retrieve all certificates for the specified scope
+  uriParameters:
+    scopeId:
+      displayName: scopeId
+      description: Specified scope
+      required: true
+  get:
     displayName: crlScopeRead
     description: Retrieve all certificates for the specified scope
-    uriParameters:
-      scopeId:
-        displayName: scopeId
-        description: Specified scope
-        required: true
-    get:
-      displayName: crlScopeRead
-      description: Retrieve all certificates for the specified scope
-  /crl/{crlId}: #PDF pg 162
-    displayName: crlID
-    description: CRL certificates for specified certificate 
-    uriParameters:
-      crlId:
-        required: true
-        displayName: crlId
-        description: CRL ID 
-    get:
-      displayName: crlIDRead 
-      description: Retrieve certificate object for specified crlID 
-    delete:
-      displayName: crlIDDelete
-      description: Delete the specified CRL
-/2.0/services/policy:
-  displayName: policy
-  description: Operations on policy objects
-  /securitypolicy: #PDF pg 326
-    displayName: securityPolicy 
-    description: Working with security policies (Endpoint, firewall, network introspection services applied to security group)
-    post:
-      displayName: securityPolicyCreate
-      description: Create a security policy 
-      body:
-        application/xml: #TODO pg 326
-    /{ID}:
-      displayName: securityPolicyID
-      description: Specific security policy 
-      uriParameters:
-        ID:
-          required: true 
-          displayName: ID 
-          description: ID of desired security policy (or 'all' to include all security policies)
-      get:
-        displayName: securityPolicyIDRead
-        description: Retrieve security policy information
-      put:
-        displayName: securityPolicyIDUpdate
-        description: Edit a security policy 
-        body:
-          application/xml: #TODO pg 332
-      delete:
-        displayName: securityPolicyIDDelete
-        description: Delete a security policy 
-        queryParameters:
-          force:
-            type: boolean
-            displayName: force 
-            description: If set to true, security policy is deleted even if it is being used somewhere
-      /securityactions:
-        displayName: securityActions
-        description: Security actions for a security policy
-        get:
-          displayName: securityActionsRead
-          description: Retrieve security actions for a security policy 
-    /hierarchy: #PDF pg 333
-      displayName: hierarchy
-      description: Security policy configuration import/export 
-      post:
-        displayName: hierarchyCreate
-        description: Import a security policy configuration 
-        queryParameters:
-          suffix:
-            displayName: suffix
-            description: (optional) Added after names 
-        body:
-          application/xml: #TODO pg 333
-      get:
-        displayName: hierarchyRead
-        description: Export a Service Composer configuration and save to your desktop for use as a backup
-        queryParameters:
-          policyIds:
-            displayName: policyIds 
-            description: Comma separated security policy id's 
-          prefix:
-            displayName: prefix 
-            description: (optional) Some prefix to add before the names of the objects in the exported XML 
-  /securityaction/category/virtualmachines: #PDF pg 334
-    displayName: securityActionVM 
-    description: Virtual machines for a security action 
-    get:
-      displayName: securityActionVMRead 
-      description: Fetch all vm objects on which security action of a given category and attribute has been applied
-      queryParameters:
-        attributeKey:
-          displayName: attributeKey
-          description: Attribute name 
-        attributeValue:
-          displayName: attributeValue
-          description: Attribute value 
-  /securitygroup/{ID}/securityactions: #PDF p 335
-    displayName: securityActionSecGroup
-    description: Security actions on a security group 
+/2.0/services/truststore/crl/{crlId}: #PDF pg 162
+  displayName: crlID
+  description: CRL certificates for specified certificate 
+  uriParameters:
+    crlId:
+      required: true
+      displayName: crlId
+      description: CRL ID 
+  get:
+    displayName: crlIDRead 
+    description: Retrieve certificate object for specified crlID 
+  delete:
+    displayName: crlIDDelete
+    description: Delete the specified CRL
+/2.0/services/policy/securitypolicy: #PDF pg 326
+  displayName: securityPolicy 
+  description: Working with security policies (Endpoint, firewall, network introspection services applied to security group)
+  post:
+    displayName: securityPolicyCreate
+    description: Create a security policy 
+    body:
+      application/xml: #TODO pg 326
+  /{ID}:
+    displayName: securityPolicyID
+    description: Specific security policy 
     uriParameters:
       ID:
+        required: true 
         displayName: ID 
-        description: Specified security group 
+        description: ID of desired security policy (or 'all' to include all security policies)
     get:
-      displayName: securityActionRead 
-      description: Query all security actions applicable on a security group 
-  /virtualmachine/{ID}/securityactions: #PDF p 339
+      displayName: securityPolicyIDRead
+      description: Retrieve security policy information
+    put:
+      displayName: securityPolicyIDUpdate
+      description: Edit a security policy 
+      body:
+        application/xml: #TODO pg 332
+    delete:
+      displayName: securityPolicyIDDelete
+      description: Delete a security policy 
+      queryParameters:
+        force:
+          type: boolean
+          displayName: force 
+          description: If set to true, security policy is deleted even if it is being used somewhere
+    /securityactions:
+      displayName: securityActions
+      description: Security actions for a security policy
+      get:
+        displayName: securityActionsRead
+        description: Retrieve security actions for a security policy 
+  /hierarchy: #PDF pg 333
+    displayName: hierarchy
+    description: Security policy configuration import/export 
+    post:
+      displayName: hierarchyCreate
+      description: Import a security policy configuration 
+      queryParameters:
+        suffix:
+          displayName: suffix
+          description: (optional) Added after names 
+      body:
+        application/xml: #TODO pg 333
+    get:
+      displayName: hierarchyRead
+      description: Export a Service Composer configuration and save to your desktop for use as a backup
+      queryParameters:
+        policyIds:
+          displayName: policyIds 
+          description: Comma separated security policy id's 
+        prefix:
+          displayName: prefix 
+          description: (optional) Some prefix to add before the names of the objects in the exported XML 
+/2.0/services/policy/securityaction/category/virtualmachines: #PDF pg 334
+  displayName: securityActionVM 
+  description: Virtual machines for a security action 
+  get:
+    displayName: securityActionVMRead 
+    description: Fetch all vm objects on which security action of a given category and attribute has been applied
+    queryParameters:
+      attributeKey:
+        displayName: attributeKey
+        description: Attribute name 
+      attributeValue:
+        displayName: attributeValue
+        description: Attribute value 
+/2.0/services/policy/securitygroup/{ID}/securityactions: #PDF p 335
+  displayName: securityActionSecGroup
+  description: Security actions on a security group 
+  uriParameters:
+    ID:
+      displayName: ID 
+      description: Specified security group 
+  get:
+    displayName: securityActionRead 
+    description: Query all security actions applicable on a security group 
+/2.0/services/policy/virtualmachine/{ID}/securityactions: #PDF p 339
+  displayName: vmApplicableSecurityAction
+  description: Fetch the security actions applicable on a virtual machine 
+  uriParameters:  
+    ID:
+      displayName: ID
+      description: VM ID 
+  get:
     displayName: vmApplicableSecurityAction
     description: Fetch the security actions applicable on a virtual machine 
-    uriParameters:  
-      ID:
-        displayName: ID
-        description: VM ID 
-    get:
-      displayName: vmApplicableSecurityAction
-      description: Fetch the security actions applicable on a virtual machine 
-  /policy/serviceprovider/firewall: #PDF pg 339
-    displayName: serviceComposerDFWSync
-    description: Synchronizing Service Composer rules with distributed firewall 
-    get:
-      displayName: serviceComposerDFWSyncRead
-      description: Query the time since when Service Composer firewall is out of sync with dfw, or synchronize Service Composer firewall with dfw 
-      body:
-        application/xml: #TODO pg 339-40
-  /policy/securitygroup/{ID}/securitypolicies: #PDF pg 340
-    displayName: secGroupPolicies
+/2.0/services/policy/serviceprovider/firewall: #PDF pg 339
+  displayName: serviceComposerDFWSync
+  description: Synchronizing Service Composer rules with distributed firewall 
+  get:
+    displayName: serviceComposerDFWSyncRead
+    description: Query the time since when Service Composer firewall is out of sync with dfw, or synchronize Service Composer firewall with dfw 
+    body:
+      application/xml: #TODO pg 339-40
+/2.0/services/policy/securitygroup/{ID}/securitypolicies: #PDF pg 340
+  displayName: secGroupPolicies
+  description: Retrieve security policies mapped to a security group 
+  uriParameters:
+    ID:
+      displayName: ID 
+      description: Specified security group ID 
+  get:
+    displayName: secGroupPoliciesRead
     description: Retrieve security policies mapped to a security group 
-    uriParameters:
-      ID:
-        displayName: ID 
-        description: Specified security group ID 
-    get:
-      displayName: secGroupPoliciesRead
-      description: Retrieve security policies mapped to a security group 
+
+
+
+
+
+
