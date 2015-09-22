@@ -8,7 +8,10 @@ baseUriParameters:
 version: 6.1.4
 securedBy: [basic]
 schemas:
-  - dfwsection: !include schemas/dfwsection.xml
+  - controller: !include schemas/controller.xml
+    controllersyslog: !include schemas/controllersyslog.xml
+    clusterUpdate: !include schemas/clusterUpdate.xml
+    dfwsection: !include schemas/dfwsection.xml
     dfwrule: !include schemas/dfwrule.xml
     edgecreate: !include schemas/edgecreate.xml
     ipaddressrequest: !include schemas/ipaddressrequest.xml
@@ -302,85 +305,90 @@ securitySchemes:
     body:
       application/xml: #TODO pg 121 (two different bodies: one for enable, one for disable)
 /2.0/vdn/controller: #PDF pg 30
-  displayName: nsxController 
+  displayName: nsxControllers 
   description: Working with NSX controllers 
   post:
     displayName: nsxControllerCreate
     description: Add a new controller on a specified cluster. Request without body to upgrade controller cluster 
     body:
-      application/xml: #TODO pg 30
+      application/xml:
+        schema: controller
   get:
-    displayName: nsxControllerRead
-    description: Retrieve details and runtime status for controller 
+    displayName: nsxControllersRead
+    description: Retrieve details and runtime status for all controllers 
   /upgrade-available:
-    displayName: upgradeAvailability
+    displayName: nsxControllerUpgradeAvailability
     description: Query controller upgrade availability 
     get:
+      displayName: nsxControllerUpgradeAvailability
       description: Query controller upgrade availability 
-  /progress/{jobID}:
-    displayName: controllerJob
+  /progress/{jobId}:
+    displayName: nsxControllerJob
     description: Status of controller creation or removal
     uriParameters: 
-      jobID:
+      jobId:
         required: true
-        displayName: jobID
-        description: Specified job ID 
+        displayName: jobId
+        description: Specified job Id
     get:
-      displayName: controllerJobRead
+      displayName: nsxControllerJobRead
       description: Retrieve status of controller creation or removal. Returns percentage indication of job progress 
-  /{controllerID}:
-    displayName: controller 
+  /{controllerId}:
+    displayName: nsxController 
     description: Working with specified controller 
     uriParameters:
-      controllerID:
+      controllerId:
         required: true 
-        displayName: controllerID
+        displayName: controllerId
         description: Specified controller 
     delete:
-      displayName: controllerDelete
+      displayName: nsxControllerDelete
       description: Delete NSX controller. When deleting last controller from cluster, forceRemoval must be set to true 
       queryParameters:
         forceRemoval:
-          type: boolean 
+          type: boolean
+          required: true
           displayName: forceRemoval
           description: Force removal of controller (true/false)
     /techsupportlogs:
-      displayName: controllerLogs
+      displayName: nsxControllerLogs
       description: Controller logs 
       get:
-        displayName: controllerLogsRead
+        displayName: nsxControllerLogsRead
         description: Retrieve controller logs 
     /syslog:
-      displayName: controllerSyslog
+      displayName: nsxControllerSyslog
       description: Syslog exporter on controller node 
       post:
-        displayName: controllerSyslogCreate 
+        displayName: nsxControllerSyslogCreate 
         description: Add controller syslog exporter on the controller 
         body:
-          application/xml: #TODO pg 32
+          application/xml:
+            schema: controllersyslog
       get:
-        displayName: controllerSyslogRead
+        displayName: nsxControllerSyslogRead
         description: Retrieve details about the syslog exporter on the controller 
       delete:
-        displayName: controllerSyslogDelete
+        displayName: nsxControllerSyslogDelete
         description: Delete the syslog exporter 
     /snapshot:
-      displayName: controllerSnapshot
+      displayName: nsxControllerSnapshot
       description: Take a snapshot of the control cluster from the specified controller node 
       get:
-        displayName: controllerSnapshot
+        displayName: nsxControllerSnapshot
         description: Take a snapshot of the control cluster from the specified controller node 
   /cluster:
-    displayName: cluster 
+    displayName: nsxControllerCluster 
     description: Cluster configuration 
     get:
-      displayName: clusterRead
+      displayName: nsxControllerClusterRead
       description: Retrieve cluster-wise configuration information for controller 
     put:
-      displayName: clusterUpdate
+      displayName: nsxControllerClusterUpdate
       description: Modify cluster configuration information for controller 
       body:
-        application/xml: #TODO pg 31
+        application/xml:
+          schema: clusterUpdate
   /credential:
     displayName: nsxControllerPassword
     description: Change the NSX controller password
