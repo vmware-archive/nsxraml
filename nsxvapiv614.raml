@@ -10,6 +10,7 @@ securedBy: [basic]
 schemas:
   - controller: !include schemas/controller.xml
     controllersyslog: !include schemas/controllersyslog.xml
+    nsxcontrollerpasswordupdate: !include schemas/nsxcontrollerpasswordupdate.xml
     clusterUpdate: !include schemas/clusterUpdate.xml
     dfwsection: !include schemas/dfwsection.xml
     dfwrule: !include schemas/dfwrule.xml
@@ -18,7 +19,8 @@ schemas:
     ipset: !include schemas/ipset.xml
     logicalswitchCreate: !include schemas/logicalswitchCreate.xml
     logicalSwitchVmAttach: !include schemas/logicalswitchVmAttach.xml
-    macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml 
+    macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml
+    nwfabricconfig: !include schemas/nwfabricconfig.xml
     ssoConfig: !include schemas/ssoconfig.xml
     vcConfig: !include schemas/vcconfig.xml
     vdsContext: !include schemas/vdscontext.xml
@@ -396,7 +398,8 @@ securitySchemes:
       displayName: nsxControllerPasswordUpdate
       description: Change the NSX controller password
       body:
-        application/xml: # TODO
+        application/xml:
+          schema: nsxcontrollerpasswordupdate
 /2.0/services/application/{scopeId}: # PDF page 95
   displayName: servicesScope
   description: Working with services on a scope
@@ -1182,10 +1185,49 @@ securitySchemes:
     description: Install components 
     post:
       displayName: nwfabricConfigCreate
-      description: Install network virtualization
+      description: |
+         Install network virtualization components
       body:
-        application/xml: #TODO pg 28 
-                         #TODO pg 34 (for VXLAN install)
+        application/xml:
+          schema: nwfabricconfig
+          example: |
+            Prepare a cluster (install VIBs) =>
+            <nwFabricFeatureConfig>
+              <resourceConfig>
+                <resourceId>domain-c26</resourceId>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
+
+            VXLAN Context Configuration =>
+            <nwFabricFeatureConfig>
+              <featureId>com.vmware.vshield.vsm.vxlan</featureId>
+              <resourceConfig>
+                <resourceId>dvs-34</resourceId>
+                <configSpec class="vdsContext">
+                  <switch>
+                    <objectId>dvs-34</objectId>
+                  </switch>
+                  <teaming>FAILOVER_ORDER</teaming>
+                  <mtu>1600</mtu>
+                </configSpec>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
+
+            VXLAN Cluster Prep =>
+            <nwFabricFeatureConfig>
+              <featureId>com.vmware.vshield.vsm.vxlan</featureId>
+              <resourceConfig>
+                <resourceId>domain-c26</resourceId>
+                <configSpec class="clusterMappingSpec">
+                  <switch>
+                    <objectId>dvs-34</objectId>
+                  </switch>
+                  <ipPoolId>ipaddresspool-3</ipPoolId>
+                  <vlanId>100</vlanId>
+                  <vmknicCount>1</vmknicCount>
+                </configSpec>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
       queryParameters:
         action:
           displayName: action
@@ -1194,12 +1236,14 @@ securitySchemes:
       displayName: nwfabricConfigUpdate
       description: Upgrade network virtualization components 
       body:
-        application/xml: #TODO pg 74
+        application/xml:
+          schema: nwfabricconfig
     delete:
       displayName: nwfabricConfigDelete
       description: Delete network virtualization components
       body:
-        application/xml: #TODO pg 28
+        application/xml:
+          schema: nwfabricconfig
   /features:
     displayName: nwfabricFeatures
     get:
@@ -2113,14 +2157,14 @@ securitySchemes:
         description: Sort in ascending order of start time (true/false)
         required: false
         type: boolean
-  /{jobID}: 
+  /{jobId}: 
     displayName: taskFrameworkJobs
     description: Job instances on the task framework
     uriParameters:
-      jobID:
+      jobId:
         required: true
-        displayName: jobID
-        description: Specified job ID
+        displayName: jobId
+        description: Specified job Id
     get:
       displayName: taskFrameworkJobsRead
       description: Retrieve all job instances for the specified job ID
