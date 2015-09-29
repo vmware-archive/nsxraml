@@ -8,13 +8,17 @@ baseUriParameters:
 version: 6.1.4
 securedBy: [basic]
 schemas:
-  - arpMAC: !include schemas/arpMAC.xml
+  - applianceMgrBackupSettingsUpdate: !include schemas/applianceMgrBackupSettingsUpdate.xml 
+    arpMAC: !include schemas/arpMAC.xml
     controller: !include schemas/controller.xml
     controllersyslog: !include schemas/controllersyslog.xml
     nsxcontrollerpasswordupdate: !include schemas/nsxcontrollerpasswordupdate.xml
     clusterUpdate: !include schemas/clusterUpdate.xml
     dfwsection: !include schemas/dfwsection.xml
     dfwrule: !include schemas/dfwrule.xml
+    dlpEnableRegulation: !include schemas/dlpEnableRegulation.xml
+    dlpRegexClassificationValue: !include schemas/dlpRegexClassificationValue.xml
+    dnsUpdate: !include schemas/dnsUpdate.xml
     ipaddressrequest: !include schemas/ipaddressrequest.xml
     ippool: !include schemas/ippool.xml
     ipPoolUpdate: !include schemas/ipPoolUpdate.xml
@@ -25,12 +29,19 @@ schemas:
     logicalSwitchPing: !include schemas/logicalSwitchPing.xml
     macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml
     nwfabricconfig: !include schemas/nwfabricconfig.xml
+    secGroupGlobalCreate: !include schemas/secGroupGlobalCreate.xml
+    secGroupBulkObjectUpdate: !include schemas/secGroupBulkObjectUpdate.xml
+    securityFabricCreate: !include schemas/securityFabricCreate.xml
     securityTagCreate: !include schemas/securityTagCreate.xml
     serviceGroupsCreate: !include schemas/serviceGroupsCreate.xml
     serviceGroupUpdate: !include schemas/serviceGroupUpdate.xml
     servicesScopeCreate: !include schemas/servicesScopeCreate.xml
     serviceUpdate: !include schemas/serviceUpdate.xml
+    serviceUpgrade: !include schemas/serviceUpgrade.xml
     ssoConfig: !include schemas/ssoconfig.xml
+    systemLocaleUpdate: !include schemas/systemLocaleUpdate.xml
+    systemSyslogServerUpdate: !include schemas/systemSyslogServerUpdate.xml
+    systemTimeUpdate: !include schemas/systemTimeUpdate.xml
     userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xml
     userRoleMgmtUpdate: !include schemas/userRoleMgmtUpdate.xml
     vcConfig: !include schemas/vcconfig.xml
@@ -753,7 +764,8 @@ securitySchemes:
     displayName: secGroupGlobalCreate
     description: Create a new security group on a global scope
     body:
-      application/xml: # TODO
+      application/xml:
+        schema: secGroupGlobalCreate
 /2.0/services/securitygroup/bulk/{objectId}:
   displayName: secGroupBulkObject
   description: Update a specific security group
@@ -766,7 +778,8 @@ securitySchemes:
     displayName: secGroupBulkObjectUpdate
     description: Update a specific security group
     body:
-      application/xml: # TODO
+      application/xml:
+        schema: secGroupBulkObjectUpdate
 /2.0/services/securitygroup/scope/{scopeId}:
   displayName: secGroupScope
   description: Operations to list information about security groups on a given scope
@@ -975,7 +988,8 @@ securitySchemes:
         displayName: dnsUpdate 
         description: Configure DNS 
         body:
-          application/xml: #TODO pg 61
+          application/xml:
+            schema: dnsUpdate
       delete:
         displayName: dnsDelete
         description: Delete DNS servers 
@@ -989,7 +1003,8 @@ securitySchemes:
       displayName: systemTimeUpdate 
       description: Configure time or specify the NTP server to use for time synchronization 
       body:
-        application/xml: #TODO pg 62
+        application/xml:
+            schema: systemTimeUpdate
     /ntp:
       displayName: ntp
       description: Delete NTP server 
@@ -1006,7 +1021,8 @@ securitySchemes:
       displayName: systemLocaleUpdate
       description: Configure locale 
       body:
-        application/xml: #TODO pg 63 
+        application/xml:
+            schema: systemLocaleUpdate
   /system/syslogserver:
     displayName: systemSyslogServer
     description: Working with syslog servers 
@@ -1017,7 +1033,8 @@ securitySchemes:
       displayName: systemSyslogServerUpdate
       description: Configure syslog servers 
       body:
-        application/xml: #TODO pg 63
+        application/xml:
+            schema: systemSyslogServerUpdate
     delete:
       displayName: systemSyslogServerDelete
       description: Delete syslog servers 
@@ -1066,7 +1083,8 @@ securitySchemes:
       displayName: applianceMgrBackupSettingsUpdate
       description: Configure backup on the Appliance Manager 
       body:
-        application/xml: #TODO pg 66
+        application/xml:
+            schema: applianceMgrBackupSettingsUpdate
     delete:
       displayName: applianceMgrBackupSettingsDelete
       description: Delete Appliance Manager backup configuration 
@@ -1314,7 +1332,8 @@ securitySchemes:
         displayName: startTime 
         description: Time to start deployment task. If not specified, deploy immediately
     body:
-      application/xml: #TODO pg 47
+      application/xml:
+        schema: securityFabricCreate
   put:
     displayName: serviceUpgrade
     description: Upgrade service to recent version
@@ -1323,7 +1342,8 @@ securitySchemes:
         displayName: startTime
         description: optional; specify time to start upgrade 
     body:
-      application/xml: #TODO pg 75
+      application/xml:
+        schema: serviceUpgrade
   /service/{serviceID}:
     displayName: service 
     description: Working with a specified service 
@@ -1398,7 +1418,8 @@ securitySchemes:
       displayName: dlpEnableRegulation
       description: Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
       body:
-        application/xml: #TODO pg 345
+        application/xml:
+            schema: dlpEnableRegulation
   /classificationvalue: #PDF pg 345
     displayName: dlpClassificationValue
     description: Classification values associated with regulations
@@ -1412,7 +1433,8 @@ securitySchemes:
       displayName: dlpRegexClassificationValue
       description: Configure a customized regex as a classification value 
       body:
-        application/xml: #TODO pg 345
+        application/xml:
+            schema: dlpRegexClassificationValue
   /excludableareas: #PDF pg 346
     displayName: dlpExcludableAreas
     description: Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection 
