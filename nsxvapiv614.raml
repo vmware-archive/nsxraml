@@ -8,7 +8,8 @@ baseUriParameters:
 version: 6.1.4
 securedBy: [basic]
 schemas:
-  - controller: !include schemas/controller.xml
+  - arpMAC: !include schemas/arpMAC.xml
+    controller: !include schemas/controller.xml
     controllersyslog: !include schemas/controllersyslog.xml
     nsxcontrollerpasswordupdate: !include schemas/nsxcontrollerpasswordupdate.xml
     clusterUpdate: !include schemas/clusterUpdate.xml
@@ -20,8 +21,10 @@ schemas:
     logicalswitchCreate: !include schemas/logicalswitchCreate.xml
     logicalSwitchVmAttach: !include schemas/logicalswitchVmAttach.xml
     logicalSwitchConnCheck: !include schemas/logicalSwitchConnCheck.xml
+    logicalSwitchPing: !include schemas/logicalSwitchPing.xml
     macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml
     nwfabricconfig: !include schemas/nwfabricconfig.xml
+    servicesScopeCreate: !include schemas/servicesScopeCreate.xml
     ssoConfig: !include schemas/ssoconfig.xml
     vcConfig: !include schemas/vcconfig.xml
     vdsContext: !include schemas/vdscontext.xml
@@ -290,7 +293,7 @@ securitySchemes:
         displayName: logicalSwitchPing
         description: Perform point to point connectivity test between two hosts across which a logical switch spans
         body:
-          application/xml: #TODO pg 123
+          application/xml:logicalSwitchPing 
 /2.0/xvs/networks/{ID}/features: #PDF pg 121
   displayName: arpMAC 
   description: Working with ARP suppression and MAC learning for logical switches 
@@ -306,7 +309,7 @@ securitySchemes:
     displayName: arpMAC
     description: Enable or disable ARP suppression and MAC learning 
     body:
-      application/xml: #TODO pg 121 (two different bodies: one for enable, one for disable)
+      application/xml: arpMAC 
 /2.0/vdn/controller: #PDF pg 30
   displayName: nsxControllers 
   description: Working with NSX controllers 
@@ -416,7 +419,7 @@ securitySchemes:
     displayName: servicesScopeCreate
     description: Create a new service on the specified scope
     body:
-      application/xml: # TODO (page 96)
+      application/xml: servicesScopeCreate
 /2.0/services/application/{applicationId}: # PDF page 96
   displayName: service
   description: Working with a specified service
