@@ -29,6 +29,7 @@ schemas:
     vdnMulticast: !include schemas/vdnmulticast.xml
     vdnMulticastUpdate: !include schemas/vdnmulticastUpdate.xml
     vdnScopeCreate: !include schemas/vdnScopeCreate.xml
+    vdnScopeEdit: !include schemas/vdnScopeEdit.xml
     vdnScopeUpdate: !include schemas/vdnScopeUpdate.xml
 securitySchemes:
   - basic:
@@ -193,18 +194,17 @@ securitySchemes:
     get:
       displayName: vdnScopeProperties
       description: Retrieve the properties of an existing network scope
-    put:
+    post:
       displayName: vdnScopeChange
       description: Updates a transport zone, you can add a cluster to or delete a cluster from a transport zone
       queryParameters:
         action:
           displayName: action
-          description: Mandatory queryParameter, alway set to 'patch'
-          default: patch
+          description: Mandatory queryParameter, usually 'patch'
           required: true
       body:
         application/xml:
-          schema: vdnScopeUpdate
+          schema: vdnScopeEdit
     delete:
       displayName: vdnScopeDelete
       description: delete a transport zone
