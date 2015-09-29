@@ -17,6 +17,7 @@ schemas:
     dfwrule: !include schemas/dfwrule.xml
     ipaddressrequest: !include schemas/ipaddressrequest.xml
     ippool: !include schemas/ippool.xml
+    ipPoolUpdate: !include schemas/ipPoolUpdate.xml
     ipset: !include schemas/ipset.xml
     logicalswitchCreate: !include schemas/logicalswitchCreate.xml
     logicalSwitchVmAttach: !include schemas/logicalswitchVmAttach.xml
@@ -24,9 +25,14 @@ schemas:
     logicalSwitchPing: !include schemas/logicalSwitchPing.xml
     macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml
     nwfabricconfig: !include schemas/nwfabricconfig.xml
+    securityTagCreate: !include schemas/securityTagCreate.xml
     serviceGroupsCreate: !include schemas/serviceGroupsCreate.xml
+    serviceGroupUpdate: !include schemas/serviceGroupUpdate.xml
     servicesScopeCreate: !include schemas/servicesScopeCreate.xml
+    serviceUpdate: !include schemas/serviceUpdate.xml
     ssoConfig: !include schemas/ssoconfig.xml
+    userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xml
+    userRoleMgmtUpdate: !include schemas/userRoleMgmtUpdate.xml
     vcConfig: !include schemas/vcconfig.xml
     vdsContext: !include schemas/vdscontext.xml
     vdnSegment: !include schemas/vdnsegment.xml
@@ -440,7 +446,8 @@ securitySchemes:
     displayName: serviceUpdate
     description: Modify the name, description, applicationProtocol, or port value of a service
     body:
-      application/xml: # TODO (page 97)
+      application/xml:
+        schema: serviceUpdate
   delete:
     displayName: serviceDelete
     description: Delete the specified service
@@ -485,7 +492,8 @@ securitySchemes:
       displayName: serviceGroupUpdate
       description: Modify the name, description, applicationProtocol, or port value of a service group
       body:
-        application/xml: # TODO (page 99)
+        application/xml:
+            schema: serviceGroupUpdate
     delete:
       displayName: serviceGroupDelete
       description: Delete a service group from a scope
@@ -552,7 +560,8 @@ securitySchemes:
     displayName: ipPoolUpdate
     description: Modify an IP pool
     body:
-      application/xml: # TODO (page 103) 
+      application/xml:
+        schema: ipPoolUpdate
   delete:
     displayName: ipPoolDelete
     description: Delete an IP pool
@@ -599,7 +608,8 @@ securitySchemes:
     displayName: securityTagCreate
     description: Create a new security tag
     body:
-      application/xml: # TODO (page 106)
+      application/xml:
+        schema: securityTagCreate
   get:
     displayName: securityTagRead
     description: Retrieve security tags
@@ -702,12 +712,14 @@ securitySchemes:
         required: true
         type: boolean
     body:
-      application/xml: # TODO
+      application/xml:
+        schema: userRoleMgmtCreate
   put:
     displayName: userRoleMgmtUpdate
     description: Change a user's role
     body:
-      application/xml: # TODO
+      application/xml:
+        schema: userRoleMgmtUpdate
   delete:
     displayName: userRoleMgmtDelete
     description: Delete the role assignment for specified vCenter user. Once this role is deleted, the user is removed from NSX Manager. You cannot delete the role for a local user.
