@@ -13,6 +13,7 @@ schemas:
     controller: !include schemas/controller.xml
     controllersyslog: !include schemas/controllersyslog.xml
     nsxcontrollerpasswordupdate: !include schemas/nsxcontrollerpasswordupdate.xml
+    cliSettingsUpdate: !include schemas/cliSettingsUpdate.xml
     clusterUpdate: !include schemas/clusterUpdate.xml
     dataCollectionKillSwitch: !include schemas/dataCollectionKillSwitch.xml
     dataCollectionVMCreate: !include schemas/dataCollectionVMCreate.xml
@@ -48,6 +49,9 @@ schemas:
     logicalSwitchPing: !include schemas/logicalSwitchPing.xml
     macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml
     nsxEdgesCreate: !include schemas/nsxEdgesCreate.xml
+    nsxEdgeDnsUpdate: !include schemas/nsxEdgeDnsUpdate.xml
+    nsxEdgeUpdate: !include schemas/nsxEdgeUpdate.xml
+    nsxEdgeFirewallConfigUpdate: !include schemas/nsxEdgeFirewallConfigUpdate.xml
     nwfabricconfig: !include schemas/nwfabricconfig.xml
     rulesCreate: !include schemas/rulesCreate.xml
     ruleUpdate: !include schemas/ruleUpdate.xml
@@ -3145,7 +3149,8 @@ securitySchemes:
       displayName: nsxEdgeUpdate
       description: Update the NSX Edge configuration
       body:
-        application/xml: # TODO (pg 154)
+        application/xml:
+            schema: nsxEdgeUpdate
     delete:
       displayName: nsxEdgeDelete
       description: Delete specified Edge from database. Associated appliances are also deleted
@@ -3153,10 +3158,11 @@ securitySchemes:
       displayName: dns 
       description: DNS settings (primary/secondary and search domain) of an Edge 
       put:
-        displayName: dnsUpdate 
-        description: Update DNS settings 
+        displayName: nsxEdgeDnsUpdate 
+        description: Update Edge DNS settings 
         body:
-          application/xml: #TODO pg 256 #PDF pg 256
+          application/xml:
+            schema: edgeDnsUpdate
     /aesni: #PDF pg 256
       displayName: aesni 
       description: AESNI Setting 
@@ -3232,7 +3238,8 @@ securitySchemes:
         displayName: cliSettingsUpdate
         description: Modify CLI credentials and enable/disable SSH for Edge 
         body:
-          application/xml: #TODO pg262
+          application/xml:
+            schema: cliSettingsUpdate
     /cliremoteaccess:
       displayName: cliRemote 
       description: Enable or disable SSH on the Edge 
@@ -3254,8 +3261,8 @@ securitySchemes:
         displayName: nsxEdgeFirewallConfigUpdate
         description: Configure firewall for an Edge
         body:
-          application/xml: #TODO pg 163
-                           #TODO pg 171 for disabling firewall
+          application/xml:
+            schema: nsxEdgeFirewallConfigUpdate
       delete:
         displayName: nsxEdgeFirewallConfigDelete
         description: Delete firewall configuration

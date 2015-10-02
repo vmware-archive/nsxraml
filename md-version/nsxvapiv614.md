@@ -1457,7 +1457,7 @@ NSX Edge operations
 ### /4.0/edges/{edgeId}/dnsclient
 DNS settings (primary/secondary and search domain) of an Edge
 
-* **put** *(secured)*: Update DNS settings
+* **put** *(secured)*: Update Edge DNS settings
 
 ### /4.0/edges/{edgeId}/aesni
 AESNI Setting
