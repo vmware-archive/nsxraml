@@ -8,29 +8,75 @@ baseUriParameters:
 version: 6.1.4
 securedBy: [basic]
 schemas:
-  - arpMAC: !include schemas/arpMAC.xml
+  - applianceMgrBackupSettingsUpdate: !include schemas/applianceMgrBackupSettingsUpdate.xml 
+    arpMAC: !include schemas/arpMAC.xml
     controller: !include schemas/controller.xml
     controllersyslog: !include schemas/controllersyslog.xml
     nsxcontrollerpasswordupdate: !include schemas/nsxcontrollerpasswordupdate.xml
+    cliSettingsUpdate: !include schemas/cliSettingsUpdate.xml
     clusterUpdate: !include schemas/clusterUpdate.xml
+    dataCollectionKillSwitch: !include schemas/dataCollectionKillSwitch.xml
+    dataCollectionVMCreate: !include schemas/dataCollectionVMCreate.xml
+    defaultFirewallPolicyUpdate: !include schemas/defaultFirewallPolicyUpdate.xml
+    dfwConfigImport: !include schemas/dfwConfigImport.xml
+    dfwDraftsCreate: !include schemas/dfwDraftsCreate.xml
+    dfwDraftUpdate: !include schemas/dfwDraftUpdate.xml
+    dfwIPFixUpdate: !include schemas/dfwIPFixUpdate.xml
+    dfwPerformanceUpdate: !include schemas/dfwPerformanceUpdate.xml
     dfwsection: !include schemas/dfwsection.xml
+    dfwThresholdsUpdate: !include schemas/dfwThresholdsUpdate.xml
     dfwrule: !include schemas/dfwrule.xml
+    dlpIncludeSecGroupUpdate: !include schemas/dlpIncludeSecGroupUpdate.xml
+    dlpEnableRegulation: !include schemas/dlpEnableRegulation.xml
+    dlpExcludeArea: !include schemas/dlpExcludeArea.xml
+    dlpExcludeSecGroupUpdate: !include schemas/dlpExcludeSecGroupUpdate.xml
+    dlpFileFiltersUpdate: !include schemas/dlpFileFiltersUpdate.xml
+    dlpRegexClassificationValue: !include schemas/dlpRegexClassificationValue.xml
+    dlpScanning: include schemas/dlpScanning.xml
+    dnsUpdate: !include schemas/dnsUpdate.xml
+    domainCreate: !include schemas/domainCreate.xml
+    edgeNatConfig: !include schemas/edgeNatConfig.xml
+    edgeNatRulesCreate: !include schemas/edgeNatRulesCreate.xml
+    eLogServerCreate: !include schemas/eLogServerCreate.xml
+    firewallRuleUpdate: !include schemas/firewallRuleUpdate.xml
+    flowsExcludeCreate: !include schemas/flowsExcludeCreate.xml
+    globalFirewallConfigUpdate: !include schemas/globalFirewallConfigUpdate.xml
     ipaddressrequest: !include schemas/ipaddressrequest.xml
     ippool: !include schemas/ippool.xml
     ipPoolUpdate: !include schemas/ipPoolUpdate.xml
     ipset: !include schemas/ipset.xml
+    layer3RedirectSectionsCreate: !include schemas/layer3RedirectSectionsCreate.xml
+    layer3RedirectSectionUpdate: !include schemas/layer3RedirectSectionUpdate.xml
+    ldapServerCreate: !include schemas/ldapServerCreate.xml
     logicalswitchCreate: !include schemas/logicalswitchCreate.xml
     logicalSwitchVmAttach: !include schemas/logicalswitchVmAttach.xml
     logicalSwitchConnCheck: !include schemas/logicalSwitchConnCheck.xml
     logicalSwitchPing: !include schemas/logicalSwitchPing.xml
     macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml
+    nsxEdgesCreate: !include schemas/nsxEdgesCreate.xml
+    nsxEdgeDnsUpdate: !include schemas/nsxEdgeDnsUpdate.xml
+    nsxEdgeUpdate: !include schemas/nsxEdgeUpdate.xml
+    nsxEdgeFirewallConfigUpdate: !include schemas/nsxEdgeFirewallConfigUpdate.xml
     nwfabricconfig: !include schemas/nwfabricconfig.xml
+    rulesCreate: !include schemas/rulesCreate.xml
+    ruleUpdate: !include schemas/ruleUpdate.xml
+    secGroupGlobalCreate: !include schemas/secGroupGlobalCreate.xml
+    secGroupBulkObjectUpdate: !include schemas/secGroupBulkObjectUpdate.xml
+    securityFabricCreate: !include schemas/securityFabricCreate.xml
     securityTagCreate: !include schemas/securityTagCreate.xml
     serviceGroupsCreate: !include schemas/serviceGroupsCreate.xml
     serviceGroupUpdate: !include schemas/serviceGroupUpdate.xml
     servicesScopeCreate: !include schemas/servicesScopeCreate.xml
     serviceUpdate: !include schemas/serviceUpdate.xml
+    serviceUpgrade: !include schemas/serviceUpgrade.xml
+    solutionIPPortSet: !include schemas/solutionIPPortSet.xml
+    spoofGuardPoliciesCreate: !include schemas/spoofGuardPoliciesCreate.xml
+    spoofGuardPolicyApprove: !include schemas/spoofGuardPolicyApprove.xml
+    spoofGuardPolicyUpdate: !include schemas/spoofGuardPolicyUpdate.xml
     ssoConfig: !include schemas/ssoconfig.xml
+    systemLocaleUpdate: !include schemas/systemLocaleUpdate.xml
+    systemSyslogServerUpdate: !include schemas/systemSyslogServerUpdate.xml
+    systemTimeUpdate: !include schemas/systemTimeUpdate.xml
     userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xml
     userRoleMgmtUpdate: !include schemas/userRoleMgmtUpdate.xml
     vcConfig: !include schemas/vcconfig.xml
@@ -42,6 +88,9 @@ schemas:
     vdnScopeCreate: !include schemas/vdnScopeCreate.xml
     vdnScopeEdit: !include schemas/vdnScopeEdit.xml
     vdnScopeUpdate: !include schemas/vdnScopeUpdate.xml
+    vShieldVendorCreate: !include schemas/vShieldVendorCreate.xml
+    vShieldSolutionCreate: !include schemas/vShieldSolutionCreate.xml
+    vShieldSolutionActivate: !include schemas/vShieldSolutionActivate.xml
 securitySchemes:
   - basic:
       type: Basic Authentication
@@ -753,7 +802,8 @@ securitySchemes:
     displayName: secGroupGlobalCreate
     description: Create a new security group on a global scope
     body:
-      application/xml: # TODO
+      application/xml:
+        schema: secGroupGlobalCreate
 /2.0/services/securitygroup/bulk/{objectId}:
   displayName: secGroupBulkObject
   description: Update a specific security group
@@ -766,7 +816,8 @@ securitySchemes:
     displayName: secGroupBulkObjectUpdate
     description: Update a specific security group
     body:
-      application/xml: # TODO
+      application/xml:
+        schema: secGroupBulkObjectUpdate
 /2.0/services/securitygroup/scope/{scopeId}:
   displayName: secGroupScope
   description: Operations to list information about security groups on a given scope
@@ -975,7 +1026,8 @@ securitySchemes:
         displayName: dnsUpdate 
         description: Configure DNS 
         body:
-          application/xml: #TODO pg 61
+          application/xml:
+            schema: dnsUpdate
       delete:
         displayName: dnsDelete
         description: Delete DNS servers 
@@ -989,7 +1041,8 @@ securitySchemes:
       displayName: systemTimeUpdate 
       description: Configure time or specify the NTP server to use for time synchronization 
       body:
-        application/xml: #TODO pg 62
+        application/xml:
+            schema: systemTimeUpdate
     /ntp:
       displayName: ntp
       description: Delete NTP server 
@@ -1006,7 +1059,8 @@ securitySchemes:
       displayName: systemLocaleUpdate
       description: Configure locale 
       body:
-        application/xml: #TODO pg 63 
+        application/xml:
+            schema: systemLocaleUpdate
   /system/syslogserver:
     displayName: systemSyslogServer
     description: Working with syslog servers 
@@ -1017,7 +1071,8 @@ securitySchemes:
       displayName: systemSyslogServerUpdate
       description: Configure syslog servers 
       body:
-        application/xml: #TODO pg 63
+        application/xml:
+            schema: systemSyslogServerUpdate
     delete:
       displayName: systemSyslogServerDelete
       description: Delete syslog servers 
@@ -1066,7 +1121,8 @@ securitySchemes:
       displayName: applianceMgrBackupSettingsUpdate
       description: Configure backup on the Appliance Manager 
       body:
-        application/xml: #TODO pg 66
+        application/xml:
+            schema: applianceMgrBackupSettingsUpdate
     delete:
       displayName: applianceMgrBackupSettingsDelete
       description: Delete Appliance Manager backup configuration 
@@ -1314,7 +1370,8 @@ securitySchemes:
         displayName: startTime 
         description: Time to start deployment task. If not specified, deploy immediately
     body:
-      application/xml: #TODO pg 47
+      application/xml:
+        schema: securityFabricCreate
   put:
     displayName: serviceUpgrade
     description: Upgrade service to recent version
@@ -1323,7 +1380,8 @@ securitySchemes:
         displayName: startTime
         description: optional; specify time to start upgrade 
     body:
-      application/xml: #TODO pg 75
+      application/xml:
+        schema: serviceUpgrade
   /service/{serviceID}:
     displayName: service 
     description: Working with a specified service 
@@ -1398,7 +1456,8 @@ securitySchemes:
       displayName: dlpEnableRegulation
       description: Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
       body:
-        application/xml: #TODO pg 345
+        application/xml:
+            schema: dlpEnableRegulation
   /classificationvalue: #PDF pg 345
     displayName: dlpClassificationValue
     description: Classification values associated with regulations
@@ -1412,7 +1471,8 @@ securitySchemes:
       displayName: dlpRegexClassificationValue
       description: Configure a customized regex as a classification value 
       body:
-        application/xml: #TODO pg 345
+        application/xml:
+            schema: dlpRegexClassificationValue
   /excludableareas: #PDF pg 346
     displayName: dlpExcludableAreas
     description: Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection 
@@ -1426,7 +1486,8 @@ securitySchemes:
       displayName: dlpExcludeArea
       description: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead) Exclude areas from policy inspection 
       body:
-        application/xml: #TODO pg 346
+        application/xml:
+            schema: dlpExcludeArea
   /policy/includedsecuritygroups:
     displayName: dlpIncludeSecGroup
     description: Include security groups in data security scan 
@@ -1437,7 +1498,8 @@ securitySchemes:
       displayName: dlpIncludeSecGroupUpdate
       description: Include security groups in data security scan 
       body:
-        application/xml: #TODO pg 347
+        application/xml:
+            schema: dlpIncludeSecGroupUpdate
   /policy/excludedsecuritygroups:
     displayName: dlpExcludeSecGroup
     description: Exclude security groups in data security scan 
@@ -1448,7 +1510,8 @@ securitySchemes:
       displayName: dlpExcludeSecGroupUpdate
       description: Exclude security groups in data security scan 
       body:
-        application/xml: # TODO pg 347
+        application/xml:
+            schema: dlpExcludeSecGroupUpdate
   /policy/FileFilters: #PDF pg 348
     displayName: dlpFileFilters
     description: Configure file filters for scanning 
@@ -1456,7 +1519,8 @@ securitySchemes:
       displayName: dlpFileFiltersUpdate
       description: Configure file filters for scanning 
       body:
-        application/xml: #TODO pg 348
+        application/xml:
+            schema: dlpFileFiltersUpdate
   /policy/saved: #PDF pg 349
     displayName: dlpPolicySave
     description: Retrieve last saved policy 
@@ -1482,7 +1546,8 @@ securitySchemes:
       displayName: dlpScanning
       description: Start, pause, resume, or stop a data security scan 
       body:
-        application/xml: #TODO pg 351
+        application/xml:
+            schema: dlpScanning
   /scanstatus: #PDF pg 351
     displayName: dlpScanStatus
     description: Retrieve the status of a scan operation 
@@ -1615,7 +1680,8 @@ securitySchemes:
     displayName: dataCollectionVMCreate
     description: Enable or disable data collection on a virtual machine 
     body:
-      application/xml: #TODO pg 360
+      application/xml:
+        schema: dataCollectionVMCreate
 /1.0/eventcontrol/eventcontrol-root/request: #PDF pg 360 
   displayName: dataCollectionKillSwitch
   description: Data collection kill switch on/off 
@@ -1623,7 +1689,8 @@ securitySchemes:
     displayName: dataCollectionKillSwitch
     description: Turn on/off data collection at global level 
     body:
-      application/xml: #TODO pg 360
+      application/xml:
+        schema: dataCollectionKillSwitch.xml
 /1.0/eventcontrol/eventcontrol/config/vm/{vmID}: #PDF pg 361 
   displayName: dataCollectionVMInfo
   description: Retrieve per vm configuration for data collection 
@@ -1843,7 +1910,8 @@ securitySchemes:
     displayName: domainCreate 
     description: Register or update a domain with NSX Manager 
     body:
-      application/xml: #TODO pg 370 
+      application/xml:
+        schema: domainCreate
 /1.0/directory/listDomains: 
   displayName: domainList
   description: Retrieve all agent discovered (or configured) LDAP domains 
@@ -1871,7 +1939,8 @@ securitySchemes:
       displayName: ldapServerCreate
       description: Create LDAP server 
       body:
-        application/xml: #TODO pg 372 
+        application/xml:
+            schema: ldapServerCreate
   /listLdapServersForDomain/{domainID}:
     displayName: ldapServerDomain 
     description: Query LDAP servers for a domain 
@@ -1923,7 +1992,8 @@ securitySchemes:
       displayName: eLogServerCreate
       description: Create EventLog server 
       body:
-        application/xml: #TODO pg 372
+        application/xml:
+            schema: eLogServerCreate
   /listEventLogServersForDomain/{domainID}:
     displayName: eLogServerDomainRead 
     description: Query EventLog servers for a domain 
@@ -2197,7 +2267,8 @@ securitySchemes:
     displayName: vShieldVendorCreate
     description: Register a vendor
     body:
-      application/xml: # TODO (pg 380)
+      application/xml:
+        schema: vShieldVendorCreate
   /vendors:
     displayName: vShieldVendorsInfo
     description: Registration status of vShield vendors
@@ -2216,7 +2287,8 @@ securitySchemes:
       displayName: vShieldSolutionCreate
       description: Register an antivirus solution
       body:
-        application/xml: # TODO (pg 380)
+        application/xml:
+            schema: vShieldSolutionCreate
     get:
       displayName: vShieldVendorInfoRead
       description: Get vendor registration information
@@ -2249,7 +2321,8 @@ securitySchemes:
           displayName: solutionIPPortSet
           description: Set a solution's IP address and port on the vNIC host 
           body:
-            application/xml: # TODO (pg 381)
+            application/xml:
+                schema: solutionIPPortSet
         delete: 
           displayName: solutionIPPortDelete
           description: Unset a solution's IP address and port
@@ -2305,7 +2378,8 @@ securitySchemes:
       displayName: vShieldSolutionActivate
       description: Activate a solution that has been registered and located
       body:
-        application/xml: # TODO (pg 381)
+        application/xml:
+            schema: vShieldSolutionActivate
     /{moid}: # PDF pg 384
       displayName: vShieldSolutionDeactivate
       description: Deactivate a solution on a host
@@ -2576,7 +2650,8 @@ securitySchemes:
       displayName: layer3RedirectSectionsCreate
       description: Add L3 redirect section 
       body:
-        application/xml: #TODO pg 295 
+        application/xml:
+            schema: layer3RedirectSectionsCreate
     /{section}:
       displayName: section 
       description: Layer3 redirect section
@@ -2589,7 +2664,7 @@ securitySchemes:
         displayName: sectionRead 
         description: Get L3 redirect section configuration 
       put:
-        displayName: sectionUpdate
+        displayName: layer3RedirectSectionUpdate
         description: Modify L3 Redirect section. You will need to get the Etag value out of the GET first. Then pass the modified version of the whole redirect section configuration in the GET body
         headers:
           if-match: 
@@ -2597,7 +2672,8 @@ securitySchemes:
             displayName: if-match 
             description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
         body:
-          application/xml: #TODO pg 296
+          application/xml:
+            schema: layer3RedirectSectionUpdate
       delete:
         displayName: sectionDelete 
         description: Delete specified L3 redirect section 
@@ -2608,7 +2684,8 @@ securitySchemes:
           displayName: rulesCreate 
           description: Add L3 redirect rule 
           body:
-            application/xml: #TODO pg 297
+            application/xml:
+                schema: rulesCreate
         /{ruleID}:
           displayName: rule 
           description: Rule for specified section 
@@ -2629,7 +2706,8 @@ securitySchemes:
                 displayName: if-match
                 description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
             body:
-              application/xml: #TODO pg 298 
+              application/xml:
+                schema: ruleUpdate
           delete:
             displayName: ruleDelete 
             description: Delete specified L3 redirect rule 
@@ -2683,7 +2761,8 @@ securitySchemes:
     displayName: dfwDraftsCreate
     description: Save a firewall configuration 
     body:
-      application/xml: #TODO pg 306
+      application/xml:
+        schema: dfwDraftsCreate
   get:
     displayName: dfwSaveConfigRead
     description: Displays the draft IDs of all saved configurations 
@@ -2702,7 +2781,8 @@ securitySchemes:
       displayName: dfwDraftUpdate
       description: Update a saved firewall configuration
       body:
-        application/xml: #TODO pg 308
+        application/xml:
+            schema: dfwDraftUpdate
     delete:
       displayName: dfwDraftDelete
       description: Delete a configuration 
@@ -2719,7 +2799,8 @@ securitySchemes:
         displayName: dfwConfigImport
         description: Import a configuration
         body:
-          application/xml: #TODO pg 310
+          application/xml:
+            schema: dfwConfigImport
 /4.0/firewall/stats/eventthresholds: #PDF pg 304
   displayName: dfwThresholds
   description: Memory and CPU thresholds for firewall 
@@ -2730,7 +2811,8 @@ securitySchemes:
     displayName: dfwThresholdsUpdate
     description: Configure thresholds
     body:
-      application/xml: #TODO 304 
+      application/xml:
+        schema: dfwThresholdsUpdate
 /4.0/firewall/config/globalconfiguration: #PDF pg 304 
   displayName: dfwPerformance
   description: Tuning firewall performance 
@@ -2741,7 +2823,8 @@ securitySchemes:
     displayName: dfwPerformanceUpdate
     description: Set RuleOptimize and TCPStrict flags in body to improve performance 
     body:
-      application/xml: #TODO pg 304 
+      application/xml:
+        schema: dfwPerformanceUpdate
 /4.0/firewall/forceSync/{ID}: #PDF pg 305
   displayName: dfwSync 
   description: Synchronize hosts and clusters with the last good configuration in NSX Mgr database 
@@ -2782,7 +2865,8 @@ securitySchemes:
     displayName: dfwIPFixUpdate
     description: Configure IPFix 
     body:
-      application/xml: #TODO pg 322
+      application/xml:
+        schema: dfwIPFixUpdate
   delete:
     displayName: dfwIPFixDelete
     description: Deleting IPFix configuration resets the config to default values
@@ -2793,7 +2877,8 @@ securitySchemes:
     displayName: spoofGuardPoliciesCreate
     description: Create a SpoofGuard policy to specify the operation mode for networks. 
     body:
-      application/xml: #TODO 311 
+      application/xml:
+        schema: spoofGuardPoliciesCreate
   get:
     displayName: spoofGuardPoliciesRead 
     description: Retrieve all SpoofGuard policies 
@@ -2809,7 +2894,8 @@ securitySchemes:
           displayName: action
           description: set to "approve" along with specified IP addresses in body to approve them, or set to "publish" to publish the approved IP addresses
       body:
-        application/xml: #TODO pg 314
+        application/xml:
+            schema: spoofGuardPolicyApprove
     get:
       displayName: spoofGuardPolicyRead
       description: Retrieve policy information, or use the query parameters to perform operations 
@@ -2821,7 +2907,8 @@ securitySchemes:
       displayName: spoofGuardPolicyUpdate
       description: Modify SpoofGuard policy 
       body:
-        application/xml: #TODO pg 311 
+        application/xml:
+            schema: spoofGuardPolicyUpdate
     delete:
       displayName: spoofGuardPolicyDelete
       description: Delete a policy 
@@ -2998,7 +3085,8 @@ securitySchemes:
     displayName: flowsExcludeCreate
     description: Exclude specified flows 
     body:
-      application/xml: #TODO pg 321
+      application/xml:
+        schema: flowsExcludeCreate
   get:
     displayName: flowsExcludeRead
     description: Retrieve excluded flow details 
@@ -3028,8 +3116,8 @@ securitySchemes:
     displayName: nsxEdgesCreate
     description: Install NSX Edge services gateway or logical router, depending on request body 
     body:
-      application/xml: #TODO pg 43
-                       #TODO pg 45
+      application/xml:
+        schema: nsxEdgesCreate
   get:
     displayName: nsxEdgesRead
     description: Retrieve a list of NSX Edges in your inventory or use the query parameters to filter results by datacenter or port group
@@ -3066,7 +3154,8 @@ securitySchemes:
       displayName: nsxEdgeUpdate
       description: Update the NSX Edge configuration
       body:
-        application/xml: # TODO (pg 154)
+        application/xml:
+            schema: nsxEdgeUpdate
     delete:
       displayName: nsxEdgeDelete
       description: Delete specified Edge from database. Associated appliances are also deleted
@@ -3074,10 +3163,11 @@ securitySchemes:
       displayName: dns 
       description: DNS settings (primary/secondary and search domain) of an Edge 
       put:
-        displayName: dnsUpdate 
-        description: Update DNS settings 
+        displayName: nsxEdgeDnsUpdate 
+        description: Update Edge DNS settings 
         body:
-          application/xml: #TODO pg 256 #PDF pg 256
+          application/xml:
+            schema: edgeDnsUpdate
     /aesni: #PDF pg 256
       displayName: aesni 
       description: AESNI Setting 
@@ -3153,7 +3243,8 @@ securitySchemes:
         displayName: cliSettingsUpdate
         description: Modify CLI credentials and enable/disable SSH for Edge 
         body:
-          application/xml: #TODO pg262
+          application/xml:
+            schema: cliSettingsUpdate
     /cliremoteaccess:
       displayName: cliRemote 
       description: Enable or disable SSH on the Edge 
@@ -3175,8 +3266,8 @@ securitySchemes:
         displayName: nsxEdgeFirewallConfigUpdate
         description: Configure firewall for an Edge
         body:
-          application/xml: #TODO pg 163
-                           #TODO pg 171 for disabling firewall
+          application/xml:
+            schema: nsxEdgeFirewallConfigUpdate
       delete:
         displayName: nsxEdgeFirewallConfigDelete
         description: Delete firewall configuration
@@ -3207,7 +3298,8 @@ securitySchemes:
             displayName: firewallRuleUpdate
             description: Modify a specific firewall rule
             body:
-              application/xml: #TODO pg 168
+              application/xml:
+                schema: firewallRuleUpdate
           delete:
             displayName: firewallRuleDelete
             description: Delete firewall rule
@@ -3221,7 +3313,8 @@ securitySchemes:
           displayName: globalFirewallConfigUpdate
           description: Configure firewall global config for an Edge 
           body:
-            application/xml: # TODO pg 169
+            application/xml:
+                schema: globalFirewallConfigUpdate
       /defaultpolicy:
         displayName: defaultFirewallPolicy
         description: Default firewall policy for an Edge
@@ -3232,7 +3325,8 @@ securitySchemes:
           displayName: defaultFirewallPolicyUpdate
           description: Configure default firewall policy
           body:
-            application/xml: #TODO pg 170
+            application/xml:
+                schema: defaultFirewallPolicyUpdate
     /firewall/statistics/firewall:
       displayName: firewallStatistics
       description: Edge firewall statistics
@@ -3261,7 +3355,8 @@ securitySchemes:
         displayName: edgeNatConfig
         description: Configure SNAT and DNAT rules for an Edge 
         body:
-          application/xml: #TODO pg 171
+          application/xml:
+            schema: edgeNatConfig
       get:
         displayName: edgeNatRead
         description: Query SNAT and DNAT rules for an Edge 
@@ -3272,15 +3367,15 @@ securitySchemes:
         displayName: edgeNatRules
         description: NAT rules 
         post:
-          displayName: edgeNatRulesCreateAbove
+          displayName: edgeNatRulesCreate
           description: Add a NAT rule above a specific rule in the NAT rules table (using aboveRuleId) or append NAT rules to the bottom
           queryParameters:
             aboveRuleId: 
               displayName: aboveRuleId
               description: Specified rule ID. If the ID does not exist, Edge Manager displays an error
           body:
-            application/xml: #TODO pg 173 (above)
-                             #TODO pg 173 (below)
+            application/xml:
+                schema: edgeNatRulesCreate
         /{ruleID}:
           displayName: edgeNatRule
           description: Specified NAT rule
