@@ -78,7 +78,7 @@ Read all scopes (transport zones), or create a new scope (Transport Zone)
 Read, update and delete an existing scope (transport Zone)
 
 * **get** *(secured)*: Retrieve the properties of an existing network scope
-* **put** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster from a transport zone
+* **post** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster from a transport zone
 * **delete** *(secured)*: delete a transport zone
 
 ### /2.0/vdn/scopes/{scopeId}/attributes
@@ -259,13 +259,6 @@ Release an IP Address allocation in the Pool
 
 * **delete** *(secured)*: Release an IP Address allocation in the Pool
 
-## ipPoolsScope
-IP pools on the specified scope
-
-### /2.0/services/ipam/pools/{scopeId}/ipaddresses
-
-* **get** *(secured)*: Retrieve all IP pools on the specified scope
-
 ## securityTag
 Working with security tags
 
@@ -305,135 +298,124 @@ Query the SSO configuration status of NSX Manager
 * **get** *(secured)*: Query the SSO configuration status of NSX Manager
 
 ## userMgmt
-Manage users
+User Management Operations
 
 ### /2.0/services/usermgmt/user/{userId}
+Manage users
 
 * **get** *(secured)*: Get information about a user
 * **delete** *(secured)*: Remove the NSX role for a vCenter user
 
-### /2.0/services/usermgmt/user/{userId}/enablestate/{value}
-Change the state of a user account (enabled/disabled)
-
-* **put** *(secured)*: Enable or disable a user account
-
-## userRoleMgmt
-Manage roles for users
-
 ### /2.0/services/usermgmt/role/{userId}
+Manage roles for users
 
 * **get** *(secured)*: Retrieve a user's role (possible roles are super_user, vshield_admin, enterprise_admin, security_admin, and audit)
 * **post** *(secured)*: Add role and resources for a user
 * **put** *(secured)*: Change a user's role
 * **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role is deleted, the user is removed from NSX Manager. You cannot delete the role for a local user.
 
-## userNSXManagerInfo
-Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
+### /2.0/services/usermgmt/enablestate/{value}
+Change the state of a user account (enabled/disabled)
+
+* **put** *(secured)*: Enable or disable a user account
 
 ### /2.0/services/usermgmt/users/vsm
+Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
 
 * **get** *(secured)*: Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
 
-## userMgmtRoles
-NSX Manager user management operations on roles
-
 ### /2.0/services/usermgmt/roles
+NSX Manager user management operations on roles
 
 * **get** *(secured)*: Read all possible roles in NSX Manager
 
-## userScopingObjects
-Retrieve a list of objects that can be used to define a user's access scope
-
 ### /2.0/services/usermgmt/scopingobjects
+Retrieve a list of objects that can be used to define a user's access scope
 
 * **get** *(secured)*: Retrieve a list of objects that can be used to define a user's access scope
 
-## secGroupGlobal
-Create a new security group on a global scope
+## secGroup
+Operations on securitygroups
 
-### /2.0/services/securitygroup/bulk/{scopeId}
+### /2.0/services/securitygroup//bulk/{scopeId}
+Create a new security group on a global scope
 
 * **post** *(secured)*: Create a new security group on a global scope
 
-## secGroupBulkObject
+### /2.0/services/securitygroup//bulk/{objectId}
 Update a specific security group
-
-### /2.0/services/securitygroup/bulk/{objectId}
 
 * **put** *(secured)*: Update a specific security group
 
-## secGroupScope
+### /2.0/services/securitygroup//scope/{scopeId}
 Operations to list information about security groups on a given scope
-
-### /2.0/services/securitygroup/scope/{scopeId}
 
 * **get** *(secured)*: List all the security groups created on a specific scope
 
-### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
+### /2.0/services/securitygroup//scope/{scopeId}/memberTypes
 Information on valid elements that can be added to a security group
 
 * **get** *(secured)*: Retrieve a list of valid elements that can be added to a security group.
 
-### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
+### /2.0/services/securitygroup//scope/{scopeId}/members/{memberType}
 Retrieve members of a specific type under a scope
 
 * **get** *(secured)*: Retrieve members of a specific type under a scope
 
-## secGroup
+### /2.0/services/securitygroup//{objectId}
 Operations for an individual security group
-
-### /2.0/services/securitygroup/{objectId}
 
 * **get** *(secured)*: Retrieve all members of the specified security group
 * **delete** *(secured)*: Delete an existing security group
 
-### /2.0/services/securitygroup/{objectId}/members/{memberMoref}
+### /2.0/services/securitygroup//{objectId}/members/{memberMoref}
 Operations on members of an individual security group
 
 * **put** *(secured)*: Add a new member to specified security group
 * **delete** *(secured)*: Delete member from specified security group
 
-### /2.0/services/securitygroup/{objectId}/translation/virtualmachines
+### /2.0/services/securitygroup//{objectId}/translation/virtualmachines
 
 * **get** *(secured)*: Retrieve list of VmNode entities that belong to a specific security group.
 
-### /2.0/services/securitygroup/{objectId}/translation/ipaddresses
+### /2.0/services/securitygroup//{objectId}/translation/ipaddresses
 
 * **get** *(secured)*: Retrieve list of IpNode entities that belong to a specific security group.
 
-### /2.0/services/securitygroup/{objectId}/translation/macaddresses
+### /2.0/services/securitygroup//{objectId}/translation/macaddresses
 
 * **get** *(secured)*: Retrieve list of MacNode entities that belong to a specific security group.
 
-### /2.0/services/securitygroup/{objectId}/translation/vnics
+### /2.0/services/securitygroup//{objectId}/translation/vnics
 
 * **get** *(secured)*: Retrieve list of VnicNode entities that belong to a specific security group.
 
-## secGroupLookupVM
+### /2.0/services/securitygroup//lookup/virtualmachine/{virtualMachineId}
 Retrieve list of security groups that the specified virtual machine belongs to.
-
-### /2.0/services/securitygroup/lookup/virtualmachine/{virtualMachineId}
 
 * **get** *(secured)*: Retrieve list of security groups that the specified virtual machine belongs to.
 
-## secGroupInternal
+### /2.0/services/securitygroup//internal/scope/{scopeId}
 Information on internal security groups
-
-### /2.0/services/securitygroup/internal/scope/{scopeId}
 
 * **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used internally by the system and should not be created or modified by end users.
 
-## ipsetList
+## ipset
+Operations on IP Sets
 
 ### /2.0/services/ipset/scope/{scopeMoref}
 
 * **get** *(secured)*: Retrieve all configured IPSets
 
-## ipsetCreate
-
 ### /2.0/services/ipset/{scopeMoref}
 
 * **post** *(secured)*: creates a new IPset
+
+### /2.0/services/ipset/{ipsetId}
+
+* **get** *(secured)*: Retrieve an individual IPset
+* **put** *(secured)*: Modify an existing IPset
+* **delete** *(secured)*: delete an IPset
 
 ## vCenterConfig
 Configuring NSX Manager with vCenter Server
@@ -808,24 +790,21 @@ Get violated regulations and violating files for the resource in CSV format
 
 * **get** *(secured)*: Get violated regulations and violating files for the resource in CSV format
 
-## dataCollectionVM
-Enable or disable data collection on a virtual machine
+## eventControl
+eventControl Operations
 
 ### /1.0/eventcontrol/vm/{vmID}/request
+Enable or disable data collection on a virtual machine
 
 * **post** *(secured)*: Enable or disable data collection on a virtual machine
 
-## dataCollectionKillSwitch
-Data collection kill switch on/off
-
 ### /1.0/eventcontrol/eventcontrol-root/request
+Data collection kill switch on/off
 
 * **post** *(secured)*: Turn on/off data collection at global level
 
-## dataCollectionVMInfo
+### /1.0/eventcontrol/config/vm/{vmID}
 Retrieve per vm configuration for data collection
-
-### /1.0/eventcontrol/eventcontrol/config/vm/{vmID}
 
 * **get** *(secured)*: Retrieve per vm configuration for data collection
 
@@ -919,59 +898,63 @@ Working with domains
 
 * **post** *(secured)*: Register or update a domain with NSX Manager
 
-## domainList
-Retrieve all agent discovered (or configured) LDAP domains
+## domain
+LDAP / Domain Operations
+
+### /1.0/directory/updateDomain
+Working with domains
+
+* **post** *(secured)*: Register or update a domain with NSX Manager
 
 ### /1.0/directory/listDomains
+Retrieve all agent discovered (or configured) LDAP domains
 
 * **get** *(secured)*: Retrieve all agent discovered (or configured) LDAP domains
 
-## domainDelete
-Delete domain
-
 ### /1.0/directory/deleteDomain/{ID}
+Delete domain
 
 * **delete** *(secured)*: Delete domain
 
-## ldapEventLogServer
+### /1.0/directory/directory
 Working with LDAP servers and EventLog servers
 
-### /1.0/directory/updateLdapServer
+### /1.0/directory/directory/updateLdapServer
 Create LDAP server
 
 * **post** *(secured)*: Create LDAP server
 
-### /1.0/directory/listLdapServersForDomain/{domainID}
+### /1.0/directory/directory/listLdapServersForDomain/{domainID}
 Query LDAP servers for a domain
 
 * **get** *(secured)*: Query LDAP servers for a domain
 
-### /1.0/directory/fullSync/{domainID}
+### /1.0/directory/directory/fullSync/{domainID}
 Start LDAP full sync
 
 * **put** *(secured)*: Start LDAP full sync
 
-### /1.0/directory/deltaSync/{domainID}
+### /1.0/directory/directory/deltaSync/{domainID}
 Start LDAP delta sync
 
 * **put** *(secured)*: Start LDAP delta sync
 
-### /1.0/directory/deleteLdapServer/{serverID}
+### /1.0/directory/directory/deleteLdapServer/{serverID}
 Delete LDAP server
 
 * **delete** *(secured)*: Delete LDAP server
 
-### /1.0/directory/updateEventLogServer
+### /1.0/directory/directory/updateEventLogServer
 Create EventLog server
 
 * **post** *(secured)*: Create EventLog server
 
-### /1.0/directory/listEventLogServersForDomain/{domainID}
+### /1.0/directory/directory/listEventLogServersForDomain/{domainID}
 Query EventLog servers for a domain
 
 * **get** *(secured)*: Query EventLog servers for a domain
 
-### /1.0/directory/deleteEventLogServer/{serverID}
+### /1.0/directory/directory/deleteEventLogServer/{serverID}
 Delete EventLog server
 
 * **delete** *(secured)*: Delete EventLog server
@@ -1034,55 +1017,36 @@ Disable syslog support
 
 * **post** *(secured)*: Disable syslog support
 
-## hostAgents
-Agents on a specified host
+## solutionIntegration
+Operations for solution Integrations
 
 ### /2.0/si/host/{hostID}/agents
+Agents on a specified host
 
 * **get** *(secured)*: Retrieve all agents on the host
 
-## agentInformation
-Agent details (host components and appliances)
-
 ### /2.0/si/agent/{agentID}
+Agent details (host components and appliances)
 
 * **get** *(secured)*: Retrieve agent details
 
-## deploymentAgents
-Agents for a specified deployment
-
 ### /2.0/si/deployment/{deploymentunitID}/agents
+Agents for a specified deployment
 
 * **get** *(secured)*: Retrieve all agents for the specified deployment
 
-## agentConflicts
-Working with conflicting agencies
-
 ### /2.0/si/fabric/sync/conflicts
+Working with conflicting agencies
 
 * **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the allowed operations on them
 * **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
 
-## ipset
-
-### /2.0/services/ipset/{ipsetId}
-
-* **get** *(secured)*: Retrieve an individual IPset
-* **put** *(secured)*: Modify an existing IPset
-* **delete** *(secured)*: delete an IPset
-
-## macsetScopeCreate
-Create MACset on a specified scope
+## macsetScopes
+Create or list MACsets on a specified scope
 
 ### /2.0/services/macset/{scopeId}
 
 * **post** *(secured)*: Create a MACset on a specified scope
-
-## macsetScopeRead
-List MACsets on a specified scope
-
-### /2.0/services/macset/scope/{scopeId}
-
 * **get** *(secured)*: List MACsets created on a specified scope
 
 ## macset
@@ -1169,10 +1133,11 @@ Deactivate a solution on a host
 
 * **delete** *(secured)*: Deactivate a solution on a host
 
-## dfwConfig
-Global Distributed Firewall Rules configuration
+## dfw
+Distributed Firewall Operations
 
 ### /4.0/firewall/globalroot-0/config
+Global Distributed Firewall Rules configuration
 
 * **get** *(secured)*: Global Distributed Firewall Rules configuration, use query Parameters to filter
 * **put** *(secured)*: This will update the complete firewall configuration in all sections. You will need to get the Etag value out of the GET (dfwConfigShow) first. Then pass the modified version of the whole firewall configuration in the GET body
@@ -1267,18 +1232,14 @@ Service Insertion profiles that can be applied to layer3 redirect rules
 
 * **get** *(secured)*: Retrieve the Service Insertion profiles
 
-## dfwUpgrade
-Upgrading distributed firewall
-
 ### /4.0/firewall/globalroot-0/state
+Upgrading distributed firewall
 
 * **get** *(secured)*: Get current state of firewall functioning after NSX upgrade
 * **put** *(secured)*: Enable distributed firewall
 
-## dfwStatus
-Firewall configuration status
-
 ### /4.0/firewall/globalroot-0/status
+Firewall configuration status
 
 * **get** *(secured)*: Get firewall configuration status
 
@@ -1292,10 +1253,8 @@ L2 section status
 
 * **get** *(secured)*: Get Layer2 status
 
-## dfwDrafts
-Import and export firewall configurations
-
 ### /4.0/firewall/globalroot-0/drafts
+Import and export firewall configurations
 
 * **post** *(secured)*: Save a firewall configuration
 * **get** *(secured)*: Displays the draft IDs of all saved configurations
@@ -1317,40 +1276,30 @@ Import a configuration
 
 * **post** *(secured)*: Import a configuration
 
-## dfwThresholds
-Memory and CPU thresholds for firewall
-
 ### /4.0/firewall/stats/eventthresholds
+Memory and CPU thresholds for firewall
 
 * **get** *(secured)*: Retrieve memory, CPU, and CPS thresholds for firewall
 * **put** *(secured)*: Configure thresholds
 
-## dfwPerformance
-Tuning firewall performance
-
 ### /4.0/firewall/config/globalconfiguration
+Tuning firewall performance
 
 * **get** *(secured)*: Query RuleOptimize and TCPStrict flags
 * **put** *(secured)*: Set RuleOptimize and TCPStrict flags in body to improve performance
 
-## dfwSync
-Synchronize hosts and clusters with the last good configuration in NSX Mgr database
-
 ### /4.0/firewall/forceSync/{ID}
+Synchronize hosts and clusters with the last good configuration in NSX Mgr database
 
 * **post** *(secured)*: Force sync host/cluster
 
-## dfwEnableDisableAPI
-Enable or disable firewall components on a cluster
-
 ### /4.0/firewall/{domainID}/enable/{truefalse}
+Enable or disable firewall components on a cluster
 
 * **post** *(secured)*: Enable or disable firewall components on a cluster
 
-## dfwIPFix
-Export specific flows directly from firewall to a flow collector
-
 ### /4.0/firewall/{contextId}/config/ipfix
+Export specific flows directly from firewall to a flow collector
 
 * **get** *(secured)*: Query IPFix configuration
 * **put** *(secured)*: Configure IPFix
@@ -1379,24 +1328,21 @@ Retrieve flow statistics for a datacenter, port group, VM, or vNIC
 
 * **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
 
-## flowSummary
-Flow summary for given context
+## flowData
+Operations on flowdata
 
 ### /2.1/internal/flow/flowsummary
+Flow summary for given context
 
 * **get** *(secured)*: Retrieve flow summary
 
-## flowTable
-Retrieve flow table for given context and table type
-
 ### /2.1/internal/flow/flowtable
+Retrieve flow table for given context and table type
 
 * **get** *(secured)*: Retrieve flow table for given context and table type
 
-## flowDetails
-Retrieve flow details for given context
-
 ### /2.1/internal/flow/flowdetails
+Retrieve flow details for given context
 
 * **get** *(secured)*: Retrieve flow details for given context
 
@@ -1405,10 +1351,8 @@ Retrieve flow details for given context by application
 
 * **get** *(secured)*: Retrieve flow details for given context by application
 
-## flowPagedDetails
-Retrieves paged flow details for given context
-
 ### /2.1/internal/flow/pagedflowdetails
+Retrieves paged flow details for given context
 
 * **get** *(secured)*: Retrieves paged flow details for given context
 
@@ -1417,10 +1361,8 @@ Retrieve paged flow details by application
 
 * **get** *(secured)*: Retrieve paged flow details by application
 
-## flowsExclude
+### /2.1/internal/flow/config
 Exclude specified flows
-
-### /2.1/flow/config
 
 * **post** *(secured)*: Exclude specified flows
 * **get** *(secured)*: Retrieve excluded flow details
@@ -2044,10 +1986,11 @@ Upgrading NSX Edge
 
 * **post** *(secured)*: Upgrade NSX Edge
 
-## certificate
-Certificates and certificate chains
+## truststore
+Operation on truststore (certificates)
 
 ### /2.0/services/truststore/certificate
+Certificates and certificate chains
 
 * **post** *(secured)*: Create certificate for CSR
 
@@ -2067,54 +2010,43 @@ Certificate specified by ID
 * **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies a chain, multiple certificate objects are retrieved.
 * **delete** *(secured)*: Delete the specified certificate
 
-## csrCreate
-Create Certificate Signing Requests (CSRs)
-
 ### /2.0/services/truststore/csr/{scopeId}
+Create Certificate Signing Requests (CSRs)
 
 * **post** *(secured)*: Create a CSR
 
-## csrSelfSigned
-Self signed certificate for CSR
-
 ### /2.0/services/truststore/csr/{csrId}
+Self signed certificate for CSR
 
 * **put** *(secured)*: Create a self signed certificate for CSR
 * **get** *(secured)*: Retrieve specific CSR
 
-## csrScope
-CSRs for specific scope
-
 ### /2.0/services/truststore/csr/scope/{scopeId}
+CSRs for specific scope
 
 * **get** *(secured)*: Query CSRs for specific scope
 
-## crlScopeCreate
-Create Certificate Revocation Lists (CRLs) on a specified scope
-
 ### /2.0/services/truststore/crl/{scopeId}
+Create Certificate Revocation Lists (CRLs) on a specified scope
 
 * **post** *(secured)*: Create CRL on the specified scope
 
-## crlScopeRead
-Retrieve all certificates for the specified scope
-
 ### /2.0/services/truststore/crl/scope/{scopeId}
+Retrieve all certificates for the specified scope
 
 * **get** *(secured)*: Retrieve all certificates for the specified scope
 
-## crlID
-CRL certificates for specified certificate
-
 ### /2.0/services/truststore/crl/{crlId}
+CRL certificates for specified certificate
 
 * **get** *(secured)*: Retrieve certificate object for specified crlID
 * **delete** *(secured)*: Delete the specified CRL
 
-## securityPolicy
-Working with security policies (Endpoint, firewall, network introspection services applied to security group)
+## policy
+Operations on policy objects
 
 ### /2.0/services/policy/securitypolicy
+Working with security policies (Endpoint, firewall, network introspection services applied to security group)
 
 * **post** *(secured)*: Create a security policy
 
@@ -2136,38 +2068,28 @@ Security policy configuration import/export
 * **post** *(secured)*: Import a security policy configuration
 * **get** *(secured)*: Export a Service Composer configuration and save to your desktop for use as a backup
 
-## securityActionVM
-Virtual machines for a security action
-
 ### /2.0/services/policy/securityaction/category/virtualmachines
+Virtual machines for a security action
 
 * **get** *(secured)*: Fetch all vm objects on which security action of a given category and attribute has been applied
 
-## securityActionSecGroup
-Security actions on a security group
-
 ### /2.0/services/policy/securitygroup/{ID}/securityactions
+Security actions on a security group
 
 * **get** *(secured)*: Query all security actions applicable on a security group
 
-## vmApplicableSecurityAction
-Fetch the security actions applicable on a virtual machine
-
 ### /2.0/services/policy/virtualmachine/{ID}/securityactions
+Fetch the security actions applicable on a virtual machine
 
 * **get** *(secured)*: Fetch the security actions applicable on a virtual machine
 
-## serviceComposerDFWSync
+### /2.0/services/policy/policy/serviceprovider/firewall
 Synchronizing Service Composer rules with distributed firewall
-
-### /2.0/services/policy/serviceprovider/firewall
 
 * **get** *(secured)*: Query the time since when Service Composer firewall is out of sync with dfw, or synchronize Service Composer firewall with dfw
 
-## secGroupPolicies
+### /2.0/services/policy/policy/securitygroup/{ID}/securitypolicies
 Retrieve security policies mapped to a security group
-
-### /2.0/services/policy/securitygroup/{ID}/securitypolicies
 
 * **get** *(secured)*: Retrieve security policies mapped to a security group
 
