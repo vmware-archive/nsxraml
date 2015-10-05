@@ -17,6 +17,7 @@ schemas:
     clusterUpdate: !include schemas/clusterUpdate.xml
     dataCollectionKillSwitch: !include schemas/dataCollectionKillSwitch.xml
     dataCollectionVMCreate: !include schemas/dataCollectionVMCreate.xml
+    defaultFirewallPolicyUpdate: !include schemas/defaultFirewallPolicyUpdate.xml
     dfwConfigImport: !include schemas/dfwConfigImport.xml
     dfwDraftsCreate: !include schemas/dfwDraftsCreate.xml
     dfwDraftUpdate: !include schemas/dfwDraftUpdate.xml
@@ -34,8 +35,12 @@ schemas:
     dlpScanning: include schemas/dlpScanning.xml
     dnsUpdate: !include schemas/dnsUpdate.xml
     domainCreate: !include schemas/domainCreate.xml
+    edgeNatConfig: !include schemas/edgeNatConfig.xml
+    edgeNatRulesCreate: !include schemas/edgeNatRulesCreate.xml
     eLogServerCreate: !include schemas/eLogServerCreate.xml
+    firewallRuleUpdate: !include schemas/firewallRuleUpdate.xml
     flowsExcludeCreate: !include schemas/flowsExcludeCreate.xml
+    globalFirewallConfigUpdate: !include schemas/globalFirewallConfigUpdate.xml
     ipaddressrequest: !include schemas/ipaddressrequest.xml
     ippool: !include schemas/ippool.xml
     ipPoolUpdate: !include schemas/ipPoolUpdate.xml
@@ -3293,7 +3298,8 @@ securitySchemes:
             displayName: firewallRuleUpdate
             description: Modify a specific firewall rule
             body:
-              application/xml: #TODO pg 168
+              application/xml:
+                schema: firewallRuleUpdate
           delete:
             displayName: firewallRuleDelete
             description: Delete firewall rule
@@ -3307,7 +3313,8 @@ securitySchemes:
           displayName: globalFirewallConfigUpdate
           description: Configure firewall global config for an Edge 
           body:
-            application/xml: # TODO pg 169
+            application/xml:
+                schema: globalFirewallConfigUpdate
       /defaultpolicy:
         displayName: defaultFirewallPolicy
         description: Default firewall policy for an Edge
@@ -3318,7 +3325,8 @@ securitySchemes:
           displayName: defaultFirewallPolicyUpdate
           description: Configure default firewall policy
           body:
-            application/xml: #TODO pg 170
+            application/xml:
+                schema: defaultFirewallPolicyUpdate
     /firewall/statistics/firewall:
       displayName: firewallStatistics
       description: Edge firewall statistics
@@ -3347,7 +3355,8 @@ securitySchemes:
         displayName: edgeNatConfig
         description: Configure SNAT and DNAT rules for an Edge 
         body:
-          application/xml: #TODO pg 171
+          application/xml:
+            schema: edgeNatConfig
       get:
         displayName: edgeNatRead
         description: Query SNAT and DNAT rules for an Edge 
@@ -3358,15 +3367,15 @@ securitySchemes:
         displayName: edgeNatRules
         description: NAT rules 
         post:
-          displayName: edgeNatRulesCreateAbove
+          displayName: edgeNatRulesCreate
           description: Add a NAT rule above a specific rule in the NAT rules table (using aboveRuleId) or append NAT rules to the bottom
           queryParameters:
             aboveRuleId: 
               displayName: aboveRuleId
               description: Specified rule ID. If the ID does not exist, Edge Manager displays an error
           body:
-            application/xml: #TODO pg 173 (above)
-                             #TODO pg 173 (below)
+            application/xml:
+                schema: edgeNatRulesCreate
         /{ruleID}:
           displayName: edgeNatRule
           description: Specified NAT rule
