@@ -11,8 +11,7 @@ schemas:
   - applianceMgrBackupSettingsUpdate: !include schemas/applianceMgrBackupSettingsUpdate.xml 
     arpMAC: !include schemas/arpMAC.xml
     controller: !include schemas/controller.xml
-    controllersyslog: !include schemas/controllersyslog.xml
-    nsxcontrollerpasswordupdate: !include schemas/nsxcontrollerpasswordupdate.xml
+    controllerSyslog: !include schemas/controllerSyslog.xml
     cliSettingsUpdate: !include schemas/cliSettingsUpdate.xml
     clusterUpdate: !include schemas/clusterUpdate.xml
     dataCollectionKillSwitch: !include schemas/dataCollectionKillSwitch.xml
@@ -23,9 +22,9 @@ schemas:
     dfwDraftUpdate: !include schemas/dfwDraftUpdate.xml
     dfwIPFixUpdate: !include schemas/dfwIPFixUpdate.xml
     dfwPerformanceUpdate: !include schemas/dfwPerformanceUpdate.xml
-    dfwsection: !include schemas/dfwsection.xml
+    dfwSection: !include schemas/dfwSection.xml
     dfwThresholdsUpdate: !include schemas/dfwThresholdsUpdate.xml
-    dfwrule: !include schemas/dfwrule.xml
+    dfwRule: !include schemas/dfwRule.xml
     dlpIncludeSecGroupUpdate: !include schemas/dlpIncludeSecGroupUpdate.xml
     dlpEnableRegulation: !include schemas/dlpEnableRegulation.xml
     dlpExcludeArea: !include schemas/dlpExcludeArea.xml
@@ -43,23 +42,24 @@ schemas:
     firewallRulesCreate: !include schemas/firewallRulesCreate.xml
     flowsExcludeCreate: !include schemas/flowsExcludeCreate.xml
     globalFirewallConfigUpdate: !include schemas/globalFirewallConfigUpdate.xml
-    ipaddressrequest: !include schemas/ipaddressrequest.xml
-    ippool: !include schemas/ippool.xml
+    ipAddressRequest: !include schemas/ipAddressRequest.xml
+    ipPool: !include schemas/ipPool.xml
     ipPoolUpdate: !include schemas/ipPoolUpdate.xml
-    ipset: !include schemas/ipset.xml
+    ipSet: !include schemas/ipSet.xml
     layer3RedirectSectionsCreate: !include schemas/layer3RedirectSectionsCreate.xml
     layer3RedirectSectionUpdate: !include schemas/layer3RedirectSectionUpdate.xml
     ldapServerCreate: !include schemas/ldapServerCreate.xml
-    logicalswitchCreate: !include schemas/logicalswitchCreate.xml
-    logicalSwitchVmAttach: !include schemas/logicalswitchVmAttach.xml
+    logicalSwitchCreate: !include schemas/logicalSwitchCreate.xml
+    logicalSwitchVmAttach: !include schemas/logicalSwitchVmAttach.xml
     logicalSwitchConnCheck: !include schemas/logicalSwitchConnCheck.xml
     logicalSwitchPing: !include schemas/logicalSwitchPing.xml
-    macsetCreateUpdate: !include schemas/macsetCreateUpdate.xml
+    macSetCreateUpdate: !include schemas/macSetCreateUpdate.xml
+    nsxControllerPasswordupdate: !include schemas/nsxControllerPasswordUpdate.xml
     nsxEdgesCreate: !include schemas/nsxEdgesCreate.xml
     nsxEdgeDnsUpdate: !include schemas/nsxEdgeDnsUpdate.xml
     nsxEdgeUpdate: !include schemas/nsxEdgeUpdate.xml
     nsxEdgeFirewallConfigUpdate: !include schemas/nsxEdgeFirewallConfigUpdate.xml
-    nwfabricconfig: !include schemas/nwfabricconfig.xml
+    nwFabricConfig: !include schemas/nwFabricConfig.xml
     routingConfigUpdate: !include schemas/routingConfigUpdate.xml
     rulesCreate: !include schemas/rulesCreate.xml
     ruleUpdate: !include schemas/ruleUpdate.xml
@@ -76,18 +76,18 @@ schemas:
     spoofGuardPoliciesCreate: !include schemas/spoofGuardPoliciesCreate.xml
     spoofGuardPolicyApprove: !include schemas/spoofGuardPolicyApprove.xml
     spoofGuardPolicyUpdate: !include schemas/spoofGuardPolicyUpdate.xml
-    ssoConfig: !include schemas/ssoconfig.xml
+    ssoConfig: !include schemas/ssoConfig.xml
     systemLocaleUpdate: !include schemas/systemLocaleUpdate.xml
     systemSyslogServerUpdate: !include schemas/systemSyslogServerUpdate.xml
     systemTimeUpdate: !include schemas/systemTimeUpdate.xml
     userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xml
     userRoleMgmtUpdate: !include schemas/userRoleMgmtUpdate.xml
-    vcConfig: !include schemas/vcconfig.xml
-    vdsContext: !include schemas/vdscontext.xml
-    vdnSegment: !include schemas/vdnsegment.xml
-    vdnSegmentUpdate: !include schemas/vdnsegmentUpdate.xml
-    vdnMulticast: !include schemas/vdnmulticast.xml
-    vdnMulticastUpdate: !include schemas/vdnmulticastUpdate.xml
+    vcConfig: !include schemas/vcConfig.xml
+    vdsContext: !include schemas/vdsContext.xml
+    vdnSegment: !include schemas/vdnSegment.xml
+    vdnSegmentUpdate: !include schemas/vdnSegmentUpdate.xml
+    vdnMulticast: !include schemas/vdnMulticast.xml
+    vdnMulticastUpdate: !include schemas/vdnMulticastUpdate.xml
     vdnScopeCreate: !include schemas/vdnScopeCreate.xml
     vdnScopeEdit: !include schemas/vdnScopeEdit.xml
     vdnScopeUpdate: !include schemas/vdnScopeUpdate.xml
@@ -304,7 +304,7 @@ securitySchemes:
     description: creates a logicalSwitch
     body:
       application/xml:
-        schema: logicalswitchCreate
+        schema: logicalSwitchCreate
 /2.0/vdn/virtualwires:
   displayName: logicalSwitchesGlobal
   description: List Operations of logicalSwitches in all transport Zones (scope)
@@ -432,7 +432,7 @@ securitySchemes:
         description: Add controller syslog exporter on the controller 
         body:
           application/xml:
-            schema: controllersyslog
+            schema: controllerSyslog
       get:
         displayName: nsxControllerSyslogRead
         description: Retrieve details about the syslog exporter on the controller 
@@ -465,7 +465,7 @@ securitySchemes:
       description: Change the NSX controller password
       body:
         application/xml:
-          schema: nsxcontrollerpasswordupdate
+          schema: nsxControllerPasswordUpdate
 /2.0/services/application/{scopeId}: # PDF page 95
   displayName: servicesScope
   description: Working with services on a scope
@@ -596,7 +596,7 @@ securitySchemes:
     description: Create a pool of IP addresses
     body:
       application/xml:
-        schema: ippool
+        schema: ipPool
 /2.0/services/ipam/pools/{poolId}:
   displayName: ipPool
   description: Working with a specified IP pool
@@ -630,7 +630,7 @@ securitySchemes:
                    pass the IP to reserve in the 'ipAddress' fiels in the body
       body:
         application/xml:
-          schema: ipaddressrequest
+          schema: ipAddressRequest
     /{ipAddress}:
       displayName: ipAddressRelease
       description: Release an IP Address allocation in the Pool
@@ -944,7 +944,7 @@ securitySchemes:
       description: creates a new IPset
       body:
         application/xml:
-          schema: ipset
+          schema: ipSet
   /{ipsetId}:
     displayName: ipset
     uriParameters:
@@ -1284,7 +1284,7 @@ securitySchemes:
          Install network virtualization components
       body:
         application/xml:
-          schema: nwfabricconfig
+          schema: nwFabricConfig
           example: |
             Prepare a cluster (install VIBs) =>
             <nwFabricFeatureConfig>
@@ -1332,13 +1332,13 @@ securitySchemes:
       description: Upgrade network virtualization components 
       body:
         application/xml:
-          schema: nwfabricconfig
+          schema: nwFabricConfig
     delete:
       displayName: nwfabricConfigDelete
       description: Delete network virtualization components
       body:
         application/xml:
-          schema: nwfabricconfig
+          schema: nwFabricConfig
   /features:
     displayName: nwfabricFeatures
     get:
@@ -2204,7 +2204,7 @@ securitySchemes:
     description: Create a MACset on a specified scope
     body:
       application/xml:
-        schema: macsetCreateUpdate
+        schema: macSetCreateUpdate
   get:
     displayName: macsetScopesRead
     description: List MACsets created on a specified scope
@@ -2224,7 +2224,7 @@ securitySchemes:
     description: Modify an existing MACset
     body:
       application/xml:
-        schema: macsetCreateUpdate
+        schema: macSetCreateUpdate
   delete:
     displayName: macsetDelete
     description: Delete a MACset
@@ -2473,7 +2473,7 @@ securitySchemes:
         description: Creates a new L3 Firewall Section with a number of rules
         body:
          application/xml:
-          schema: dfwsection
+          schema: dfwSection
       /{sectionId}:
         displayName: dfwL3SectionId
         description: L3 Firewall Operations on specific section specified by section ID
@@ -2512,7 +2512,7 @@ securitySchemes:
                 description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
             body:
               application/xml:
-                schema: dfwrule
+                schema: dfwRule
           /{ruleId}:
             displayName: dfwL3Rule
             description: Operations on L3 rules in sections identified by section Id and Rule Id
@@ -2573,7 +2573,7 @@ securitySchemes:
         description: Creates a new L2 Firewall Section with a number of rules
         body:
          application/xml:
-          schema: dfwsection
+          schema: dfwSection
       /{sectionId}:
         displayName: dfwL2SectionId
         description: L2 Firewall Operations on specific section specified by section ID
@@ -2612,7 +2612,7 @@ securitySchemes:
                 description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
             body:
               application/xml:
-                schema: dfwrule
+                schema: dfwRule
           /{ruleId}:
             displayName: dfwL2Rule
             description: Operations on L2 rules in sections identified by section Id and Rule Id
