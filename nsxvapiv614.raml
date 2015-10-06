@@ -42,6 +42,9 @@ schemas:
     firewallRulesCreate: !include schemas/firewallRulesCreate.xml
     flowsExcludeCreate: !include schemas/flowsExcludeCreate.xml
     globalFirewallConfigUpdate: !include schemas/globalFirewallConfigUpdate.xml
+    routingConfigStaticUpdate: !include schemas/routingConfigStaticUpdate.xml
+    routingGlobalConfigUpdate: !include schemas/routingGlobalConfigUpdate.xml
+    routingOSPFUpdate: !include schemas/routingOSPFUpdate.xml
     ipAddressRequest: !include schemas/ipAddressRequest.xml
     ipPool: !include schemas/ipPool.xml
     ipPoolUpdate: !include schemas/ipPoolUpdate.xml
@@ -61,6 +64,7 @@ schemas:
     nsxEdgeFirewallConfigUpdate: !include schemas/nsxEdgeFirewallConfigUpdate.xml
     nwFabricConfig: !include schemas/nwFabricConfig.xml
     routingConfigUpdate: !include schemas/routingConfigUpdate.xml
+    routingISISUpdate: !include schemas/routingISISUpdate.xml
     rulesCreate: !include schemas/rulesCreate.xml
     ruleUpdate: !include schemas/ruleUpdate.xml
     secGroupGlobalCreate: !include schemas/secGroupGlobalCreate.xml
@@ -3433,7 +3437,8 @@ securitySchemes:
           displayName: routingGlobalConfigUpdate
           description: Configure global route 
           body:
-            application/xml: #TODO pg 179
+            application/xml:
+                schema: routingGlobalConfigUpdate
         get:
           displayName: routingGlobalConfigRead
           description: Retrieve routing info from NSX Mgr database (default route settings, static route configurations)
@@ -3447,7 +3452,8 @@ securitySchemes:
           displayName: routingConfigStaticUpdate
           description: Configure static and default routes
           body:
-            application/xml: #TODO pg179
+            application/xml:
+                schema: routingConfigStaticUpdate
         delete:
           displayName: routingConfigStaticDelete
           description: Delete both static and default routing config stored in the NSX Mgr database
@@ -3461,7 +3467,8 @@ securitySchemes:
           displayName: routingOSPFUpdate
           description: Configure OSPF 
           body:
-            application/xml: #TODO pg 181
+            application/xml:
+                schema: routingOSPFUpdate
         delete:
           displayName: routingOSPFDelete
           description: Delete OSPF routing 
@@ -3475,7 +3482,8 @@ securitySchemes:
           displayName: routingISISUpdate
           description: Config ISIS 
           body:
-            application/xml: #TODO pg 183 
+            application/xml:
+                schema: routingISISUpdate
         delete:
           displayName: routingISISDelete
           description: Delete ISIS routing 
