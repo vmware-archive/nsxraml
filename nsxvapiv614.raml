@@ -37,8 +37,10 @@ schemas:
     domainCreate: !include schemas/domainCreate.xml
     edgeNatConfig: !include schemas/edgeNatConfig.xml
     edgeNatRulesCreate: !include schemas/edgeNatRulesCreate.xml
+    edgeNatRuleUpdate: !include schemas/edgeNatRuleUpdate.xml
     eLogServerCreate: !include schemas/eLogServerCreate.xml
     firewallRuleUpdate: !include schemas/firewallRuleUpdate.xml
+    firewallRulesCreate: !include schemas/firewallRulesCreate.xml
     flowsExcludeCreate: !include schemas/flowsExcludeCreate.xml
     globalFirewallConfigUpdate: !include schemas/globalFirewallConfigUpdate.xml
     ipaddressrequest: !include schemas/ipaddressrequest.xml
@@ -58,6 +60,7 @@ schemas:
     nsxEdgeUpdate: !include schemas/nsxEdgeUpdate.xml
     nsxEdgeFirewallConfigUpdate: !include schemas/nsxEdgeFirewallConfigUpdate.xml
     nwfabricconfig: !include schemas/nwfabricconfig.xml
+    routingConfigUpdate: !include schemas/routingConfigUpdate.xml
     rulesCreate: !include schemas/rulesCreate.xml
     ruleUpdate: !include schemas/ruleUpdate.xml
     secGroupGlobalCreate: !include schemas/secGroupGlobalCreate.xml
@@ -1939,7 +1942,8 @@ securitySchemes:
       displayName: domainCreate 
       description: Register or update a domain with NSX Manager 
       body:
-        application/xml: #TODO pg 370 
+        application/xml:
+            schema: domainCreate
   /listDomains: 
     displayName: domainList
     description: Retrieve all agent discovered (or configured) LDAP domains 
@@ -3098,7 +3102,8 @@ securitySchemes:
       displayName: flowsExcludeCreate
       description: Exclude specified flows 
       body:
-        application/xml: #TODO pg 321
+        application/xml:
+            schema: flowsExcludeCreate
     get:
       displayName: flowsExcludeRead
       description: Retrieve excluded flow details 
@@ -3294,7 +3299,8 @@ securitySchemes:
               displayName: aboveRuleId
               description: rule Id
           body:
-            application/xml: #TODO pg 166
+            application/xml:
+                schema: firewallRulesCreate
         /{ruleId}:
           displayName: firewallRule
           description: Specific firewall rule
@@ -3400,7 +3406,8 @@ securitySchemes:
             displayName: edgeNatRuleUpdate
             description: Modify a NAT rule 
             body:
-              application/xml: #TODO
+              application/xml:
+                schema: edgeNatRuleUpdate
           delete:
             displayName: edgeNatRuleUpdate
             description: Delete a NAT rule 
@@ -3414,7 +3421,8 @@ securitySchemes:
         displayName: routingConfigUpdate
         description: Configure globalConfig, staticRouting, OSPG, BGP, and IS-IS
         body:
-          application/xml: #TODO pg 175
+          application/xml:
+            schema: routingConfigUpdate
       delete:
         displayName: routingConfigDelete
         description: Delete the routing config stored in the NSX Mgr database and the default routes from the specified NSX Edge appliance 
