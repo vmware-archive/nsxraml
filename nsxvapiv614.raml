@@ -8,18 +8,27 @@ baseUriParameters:
 version: 6.1.4
 securedBy: [basic]
 schemas:
-  - applianceMgrBackupSettingsUpdate: !include schemas/applianceMgrBackupSettingsUpdate.xml 
+  - advancedConfigUpdate: !include schemas/advancedConfigUpdate.xml
+    allUsersUpdate: !include schemas/allUsersUpdate.xml
+    applianceMgrBackupSettingsUpdate: !include schemas/applianceMgrBackupSettingsUpdate.xml 
+    applianceUpdate: !include schemas/applianceUpdate.xml
     applicationProfilesCreate: !include schemas/applicationProfilesCreate.xml
     applicationProfileUpdate: !include schemas/applicationProfileUpdate.xml
     appRulesCreate: !include schemas/appRulesCreate.xml
     appRuleUpdate: !include schemas/appRuleUpdate.xml
     arpMAC: !include schemas/arpMAC.xml
+    authSettingsUpdate: !include schemas/authSettingsUpdate.xml
+    autoConfigUpdate: !include schemas/autoConfigUpdate.xml
     bridingUpdate: !include schemas/bridingUpdate.xml
-    controller: !include schemas/controller.xml
-    controllerSyslog: !include schemas/controllerSyslog.xml
+    certificateCSRCreate: !include schemas/certificateCSRCreate.xml
+    certificateSelfSignedCreate: !include schemas/certificateSelfSignedCreate.xml
     clientConfigUpdate: !include schemas/clientConfigUpdate.xml
     cliSettingsUpdate: !include schemas/cliSettingsUpdate.xml
     clusterUpdate: !include schemas/clusterUpdate.xml
+    controller: !include schemas/controller.xml
+    controllerSyslog: !include schemas/controllerSyslog.xml
+    crlScopeCreate: !include schemas/crlScopeCreate.xml
+    csrCreate: !include schemas/csrCreate.xml
     dataCollectionKillSwitch: !include schemas/dataCollectionKillSwitch.xml
     dataCollectionVMCreate: !include schemas/dataCollectionVMCreate.xml
     defaultFirewallPolicyUpdate: !include schemas/defaultFirewallPolicyUpdate.xml
@@ -51,9 +60,11 @@ schemas:
     firewallRulesCreate: !include schemas/firewallRulesCreate.xml
     flowsExcludeCreate: !include schemas/flowsExcludeCreate.xml
     globalFirewallConfigUpdate: !include schemas/globalFirewallConfigUpdate.xml
+    hierarchyCreate: !include schemas/hierarchyCreate.xml
     highAvailabilityCreate: !include schemas/highAvailabilityCreate.xml
     installPackagesCreate: !include schemas/installPackagesCreate.xml
     installPackageUpdate: !include schemas/installPackageUpdate.xml
+    interfacesCreate: !include schemas/interfacesCreate.xml
     ipAddressRequest: !include schemas/ipAddressRequest.xml
     ipPool: !include schemas/ipPool.xml
     ipPoolUpdate: !include schemas/ipPoolUpdate.xml
@@ -70,6 +81,7 @@ schemas:
     logicalSwitchConnCheck: !include schemas/logicalSwitchConnCheck.xml
     logicalSwitchPing: !include schemas/logicalSwitchPing.xml
     macSetCreateUpdate: !include schemas/macSetCreateUpdate.xml
+    mgmtInterfaceUpdate: !include schemas/mgmtInterfaceUpdate.xml
     netExtipPoolsCreate: !include schemas/netExtipPoolsCreate.xml
     netExtipPoolsUpdate: !include schemas/netExtipPoolsUpdate.xml
     nsxControllerPasswordupdate: !include schemas/nsxControllerPasswordUpdate.xml
@@ -89,9 +101,14 @@ schemas:
     routingOSPFUpdate: !include schemas/routingOSPFUpdate.xml
     rulesCreate: !include schemas/rulesCreate.xml
     ruleUpdate: !include schemas/ruleUpdate.xml
+    scriptCreate: !include schemas/scriptCreate.xml
+    scriptFileIDUpdate: !include schemas/scriptFileIDUpdate.xml
+    scriptUpdate: !include schemas/scriptUpdate.xml
     secGroupGlobalCreate: !include schemas/secGroupGlobalCreate.xml
     secGroupBulkObjectUpdate: !include schemas/secGroupBulkObjectUpdate.xml
     securityFabricCreate: !include schemas/securityFabricCreate.xml
+    securityPolicyCreate: !include schemas/securityPolicyCreate.xml
+    securityPolicyIDUpdate: !include schemas/securityPolicyIDUpdate.xml
     securityTagCreate: !include schemas/securityTagCreate.xml
     serverSettingsUpdate: !include schemas/serverSettingsUpdate.xml
     serviceGroupsCreate: !include schemas/serviceGroupsCreate.xml
@@ -4127,7 +4144,8 @@ securitySchemes:
           displayName: authSettingsUpdate
           description: Set authentication process for remote users. Specify username/password authentication, active directory, ldap, radius, client certificate based authentication 
           body:
-            application/xml: #TODO pg 234
+            application/xml:
+                schema: authSettingsUpdate
         /rsaconfigfile:
           displayName: rsaConfig 
           description: RSA authentication server, bound to the SSL gateway
@@ -4144,7 +4162,8 @@ securitySchemes:
           displayName: advancedConfigUpdate
           description: Apply advanced configuration
           body:
-            application/xml: #TODO pg 236
+            application/xml:
+                schema: advancedConfigUpdate
       /script:
         displayName: script 
         description: Logon and logoff scripts for NSX Edge gateway 
@@ -4152,7 +4171,8 @@ securitySchemes:
           displayName: scriptCreate
           description: Configure parameters associated with the uploaded script file 
           body:
-            application/xml: #TODO pg 238 
+            application/xml:
+                schema: scriptCreate
         get:
           displayName: scriptRead 
           description: Retrieve all script configurations for the Edge 
@@ -4160,7 +4180,8 @@ securitySchemes:
           displayName: scriptUpdate 
           description: Update all script configurations with the given list of configurations. If the config is present, its is updated; otherwise, a new config is created. Existing configs not included in the body are deleted
           body:
-            application/xml: #TODO pg 240
+            application/xml:
+                schema: scriptUpdate
         delete:
           displayName: scriptDelete 
           description: Delete all script configurations 
@@ -4179,7 +4200,8 @@ securitySchemes:
             displayName: scriptFileIDUpdate 
             description: Modify script parameters 
             body:
-              application/xml: #TODO pg 239
+              application/xml:
+                schema: scriptFileIDUpdate
           delete:
             displayName: scriptFileIDDelete
             description: Delete script parameters 
@@ -4196,7 +4218,8 @@ securitySchemes:
         displayName: allUsersUpdate
         description: Update all users with the given list of users. If the user is present, it is updated. Otherwise, and new user is created. Existing users not included in the body are deleted.
         body:
-          application/xml: #TODO p. 225
+          application/xml:
+            schema: allUsersUpdate
     /sslvpn/activesessions: #PDF pg 237
       displayName: sslVPNActiveClients
       description: Working with active clients 
@@ -4318,7 +4341,8 @@ securitySchemes:
         displayName: autoConfigUpdate
         description: Change the auto configuration settings for the NSX Edge 
         body:
-          application/xml: #TODO pg 262 #PDF pg 262
+          application/xml: #PDF pg 262
+            schema: autoConfigUpdate
     /appliances: #PDF pg 263
       displayName: appliances
       description: Working with Edge appliances 
@@ -4351,7 +4375,8 @@ securitySchemes:
           displayName: applianceUpdate 
           description: Modify the configuration of the specified appliance 
           body:
-            application/xml: #TODO pg 265
+            application/xml:
+                schema: applianceUpdate
         delete:
           displayName: applianceDelete
           description: Delete the appliance  
@@ -4400,7 +4425,8 @@ securitySchemes:
         displayName: mgmtInterfaceUpdate
         description: Configure management interfaces for NSX Edge router 
         body:
-          application/xml: #TODO pg 128
+          application/xml:
+            schema: mgmtInterfaceUpdate
     /interfaces: #PDF pg 129
       displayName: interfaces
       description: Working with all NSX Edge router interfaces 
@@ -4413,7 +4439,8 @@ securitySchemes:
             required: true 
             description: Always set to 'patch'
         body:
-          application/xml: #TODO p 129
+          application/xml:
+            schema: interfacesCreate
       get:
         displayName: interfacesRead
         description: Retrieve all interfaces for Edge router 
@@ -4485,7 +4512,8 @@ securitySchemes:
       displayName: certificateCSRCreate
       description: Create certificate for CSR
       body:
-        application/xml: #TODO pg 160
+        application/xml:
+            schema: certificateCSRCreate
     /scope/{scopeId}:
       displayName: certificateScope
       description: Certificates for a scope
@@ -4509,7 +4537,8 @@ securitySchemes:
         displayName: certificateSelfSignedCreate
         description: Create a single certificate
         body:
-          application/xml: #TODO pg 160
+          application/xml:
+            schema: certificateSelfSignedCreate
     /{certificateId}:
       displayName: certificate
       description: Certificate specified by ID
@@ -4536,7 +4565,8 @@ securitySchemes:
       displayName: csrCreate
       description: Create a CSR
       body:
-        application/xml: # TODO pg 161
+        application/xml:
+            schema: csrCreate
   /csr/{csrId}: #PDF pg 161
     displayName: csrSelfSigned
     description: Self signed certificate for CSR 
@@ -4578,7 +4608,8 @@ securitySchemes:
       displayName: crlScopeCreate
       description: Create CRL on the specified scope
       body:
-        application/xml: #TODO pg 162
+        application/xml:
+            schema: crlScopeCreate
   /crl/scope/{scopeId}: #PDF pg 162
     displayName: crlScopeRead
     description: Retrieve all certificates for the specified scope
@@ -4614,7 +4645,8 @@ securitySchemes:
       displayName: securityPolicyCreate
       description: Create a security policy 
       body:
-        application/xml: #TODO pg 326
+        application/xml:
+            schema: securityPolicyCreate
     /{ID}:
       displayName: securityPolicyID
       description: Specific security policy 
@@ -4630,7 +4662,8 @@ securitySchemes:
         displayName: securityPolicyIDUpdate
         description: Edit a security policy 
         body:
-          application/xml: #TODO pg 332
+          application/xml:
+            schema: securityPolicyIDUpdate
       delete:
         displayName: securityPolicyIDDelete
         description: Delete a security policy 
@@ -4656,7 +4689,8 @@ securitySchemes:
             displayName: suffix
             description: (optional) Added after names 
         body:
-          application/xml: #TODO pg 333
+          application/xml:
+            schema: hierarchyCreate
       get:
         displayName: hierarchyRead
         description: Export a Service Composer configuration and save to your desktop for use as a backup
@@ -4706,8 +4740,6 @@ securitySchemes:
     get:
       displayName: serviceComposerDFWSyncRead
       description: Query the time since when Service Composer firewall is out of sync with dfw, or synchronize Service Composer firewall with dfw 
-      body:
-        application/xml: #TODO pg 339-40
   /policy/securitygroup/{ID}/securitypolicies: #PDF pg 340
     displayName: secGroupPolicies
     description: Retrieve security policies mapped to a security group 
