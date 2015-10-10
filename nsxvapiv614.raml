@@ -292,7 +292,7 @@ securitySchemes:
     description: Retrieve a list of all known VDN Scopes
   post:
     displayName: vdnScopeCreate
-    description: Create a new Transport Zone
+    description: Create a new Transport Zone. Note that you can only add one initial cluster when creating the TZ.
     body:
       application/xml:
         schema: vdnScopeCreate
@@ -313,7 +313,7 @@ securitySchemes:
       queryParameters:
         action:
           displayName: action
-          description: Mandatory queryParameter, usually 'patch'
+          description: Mandatory queryParameter, use 'expand' to add a cluster, or 'shrink' to remove a cluster from the TZ
           required: true
       body:
         application/xml:
