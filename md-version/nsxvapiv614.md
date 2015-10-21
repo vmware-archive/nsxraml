@@ -72,7 +72,7 @@ Read all scopes (transport zones), or create a new scope (Transport Zone)
 ### /2.0/vdn/scopes
 
 * **get** *(secured)*: Retrieve a list of all known VDN Scopes
-* **post** *(secured)*: Create a new Transport Zone
+* **post** *(secured)*: Create a new Transport Zone. Note that you can only add one initial cluster when creating the TZ.
 
 ### /2.0/vdn/scopes/{scopeId}
 Read, update and delete an existing scope (transport Zone)
