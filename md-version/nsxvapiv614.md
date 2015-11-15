@@ -337,65 +337,65 @@ Retrieve a list of objects that can be used to define a user's access scope
 ## secGroup
 Operations on securitygroups
 
-### /2.0/services/securitygroup//bulk/{scopeId}
+### /2.0/services/securitygroup/bulk/{scopeId}
 Create a new security group on a global scope
 
 * **post** *(secured)*: Create a new security group on a global scope
 
-### /2.0/services/securitygroup//bulk/{objectId}
+### /2.0/services/securitygroup/bulk/{objectId}
 Update a specific security group
 
 * **put** *(secured)*: Update a specific security group
 
-### /2.0/services/securitygroup//scope/{scopeId}
+### /2.0/services/securitygroup/scope/{scopeId}
 Operations to list information about security groups on a given scope
 
 * **get** *(secured)*: List all the security groups created on a specific scope
 
-### /2.0/services/securitygroup//scope/{scopeId}/memberTypes
+### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
 Information on valid elements that can be added to a security group
 
 * **get** *(secured)*: Retrieve a list of valid elements that can be added to a security group.
 
-### /2.0/services/securitygroup//scope/{scopeId}/members/{memberType}
+### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
 Retrieve members of a specific type under a scope
 
 * **get** *(secured)*: Retrieve members of a specific type under a scope
 
-### /2.0/services/securitygroup//{objectId}
+### /2.0/services/securitygroup/{objectId}
 Operations for an individual security group
 
 * **get** *(secured)*: Retrieve all members of the specified security group
 * **delete** *(secured)*: Delete an existing security group
 
-### /2.0/services/securitygroup//{objectId}/members/{memberMoref}
+### /2.0/services/securitygroup/{objectId}/members/{memberMoref}
 Operations on members of an individual security group
 
 * **put** *(secured)*: Add a new member to specified security group
 * **delete** *(secured)*: Delete member from specified security group
 
-### /2.0/services/securitygroup//{objectId}/translation/virtualmachines
+### /2.0/services/securitygroup/{objectId}/translation/virtualmachines
 
 * **get** *(secured)*: Retrieve list of VmNode entities that belong to a specific security group.
 
-### /2.0/services/securitygroup//{objectId}/translation/ipaddresses
+### /2.0/services/securitygroup/{objectId}/translation/ipaddresses
 
 * **get** *(secured)*: Retrieve list of IpNode entities that belong to a specific security group.
 
-### /2.0/services/securitygroup//{objectId}/translation/macaddresses
+### /2.0/services/securitygroup/{objectId}/translation/macaddresses
 
 * **get** *(secured)*: Retrieve list of MacNode entities that belong to a specific security group.
 
-### /2.0/services/securitygroup//{objectId}/translation/vnics
+### /2.0/services/securitygroup/{objectId}/translation/vnics
 
 * **get** *(secured)*: Retrieve list of VnicNode entities that belong to a specific security group.
 
-### /2.0/services/securitygroup//lookup/virtualmachine/{virtualMachineId}
+### /2.0/services/securitygroup/lookup/virtualmachine/{virtualMachineId}
 Retrieve list of security groups that the specified virtual machine belongs to.
 
 * **get** *(secured)*: Retrieve list of security groups that the specified virtual machine belongs to.
 
-### /2.0/services/securitygroup//internal/scope/{scopeId}
+### /2.0/services/securitygroup/internal/scope/{scopeId}
 Information on internal security groups
 
 * **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used internally by the system and should not be created or modified by end users.
