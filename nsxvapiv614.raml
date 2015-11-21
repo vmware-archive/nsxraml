@@ -849,7 +849,7 @@ securitySchemes:
   displayName: secGroup
   description: Operations on securitygroups
   /bulk/{scopeId}:
-    displayName: secGroupGlobal
+    displayName: secGroupCreate
     description: Create a new security group on a global scope
     uriParameters:
        scopeId:
@@ -857,13 +857,13 @@ securitySchemes:
          displayName: scopeId
          description: In the current version the scopeId will always be globalroot-0
     post:
-      displayName: secGroupGlobalCreate
+      displayName: secGroupCreate
       description: Create a new security group on a global scope
       body:
         application/xml:
           schema: secGroupGlobalCreate
   /bulk/{objectId}:
-    displayName: secGroupBulkObject
+    displayName: secGroupUpdate
     description: Update a specific security group
     uriParameters:
       objectId:
@@ -871,7 +871,7 @@ securitySchemes:
         displayName: objectId
         description: Security group to modify
     put:
-      displayName: secGroupBulkObjectUpdate
+      displayName: secGroupUpdate
       description: Update a specific security group
       body:
         application/xml:
@@ -888,13 +888,13 @@ securitySchemes:
       displayName: secGroupScopeRead
       description: List all the security groups created on a specific scope
     /memberTypes:
-      displayName: secGroupScopeMembers
+      displayName: secGroupMemberTypes
       description: Information on valid elements that can be added to a security group
       get:
         displayName: secGroupScopeMembersRead
         description: Retrieve a list of valid elements that can be added to a security group.
     /members/{memberType}:
-      displayName: secGroupScopeMemberType
+      displayName: secGroupScopeMemberByType
       description: Retrieve members of a specific type under a scope
       uriParameters:
         memberType:
@@ -4665,7 +4665,7 @@ securitySchemes:
         ID:
           required: true 
           displayName: ID 
-          description: ID of desired security policy (or 'all' to include all security policies)
+          description: ID of desired security policy (or 'all' to include all security policies for the securityPolicyID read method)
       get:
         displayName: securityPolicyIDRead
         description: Retrieve security policy information
