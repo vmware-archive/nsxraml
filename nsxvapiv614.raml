@@ -42,6 +42,8 @@ schemas:
     dfwRule: !include schemas/dfwRule.xml
     dhcpRelayUpdate: include schemas/dhcpRelayUpdate.xml
     dhcpUpdate: !include schemas/dhcpUpdate.xml
+    dhcpPoolCreate: !include schemas/dhcpPoolCreate.xml
+    dhcpStaticBindingCreate: !include schemas/dhcpStaticBindingCreate.xml
     dlpIncludeSecGroupUpdate: !include schemas/dlpIncludeSecGroupUpdate.xml
     dlpEnableRegulation: !include schemas/dlpEnableRegulation.xml
     dlpExcludeArea: !include schemas/dlpExcludeArea.xml
@@ -3832,6 +3834,9 @@ securitySchemes:
         post:
           displayName: dhcpPoolCreate
           description: Add an IP pool to the DHCP configuration. returns a pool ID within a Location HTTP header
+          body:
+            application/xml:
+              schema: dhcpPoolCreate
         /{poolID}:
           displayName: dhcpPoolID
           description: Specific DHCP pool 
@@ -3849,6 +3854,9 @@ securitySchemes:
         post:
           displayName: dhcpStaticBindingCreate
           description: Append a static-binding to DHCP config. A static-binding ID is returned within a Location HTTP header 
+          body:
+            application/xml:
+              schema: dhcpStaticBindingCreate
         /{bindingID}:
           displayName: dhcpStaticBindingID
           description: Specific DHCP static binding 
