@@ -24,3 +24,6 @@ raml2html -i $(pwd)/nsxvapiv614.raml -o $(pwd)/html-version/nsxvapiv614.html
 raml2md -i $(pwd)/nsxvapiv614.raml -o $(pwd)/md-version/nsxvapiv614.md
 raml2postman -s $(pwd)/nsxvapiv614.raml -o $(pwd)/postman-collection/nsxvapiv614.json -g
 
+raml2html -i $(pwd)/nsxvapiv616.raml -o $(pwd)/html-version/nsxvapiv616.html
+raml2md -i $(pwd)/nsxvapiv616.raml -o $(pwd)/md-version/nsxvapiv616.md
+raml2postman -s $(pwd)/nsxvapiv616.raml -o $(pwd)/postman-collection/nsxvapiv616.json -g
