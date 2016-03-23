@@ -190,7 +190,7 @@ Change the NSX controller password
 ## servicesScope
 Working with services on a scope
 
-### /2.0/services/application/{scopeId}
+### /2.0/services/application/scope/{scopeId}
 
 * **get** *(secured)*: List services that have been created on the scope
 * **post** *(secured)*: Create a new service on the specified scope

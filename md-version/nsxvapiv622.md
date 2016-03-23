@@ -109,7 +109,7 @@ List Operations of logicalSwitches in all transport Zones (scope)
 ### /2.0/vdn/virtualwires/vm/vnic
 Migrate a Virtual Maschine vnic to a logical switch
 
-* **get** *(secured)*: Migrate a Virtual Maschine vnic to a logical switch
+* **post** *(secured)*: Migrate a Virtual Maschine vnic to a logical switch
 
 ### /2.0/vdn/virtualwires/{virtualWireID}
 Retrieves the configuration of an individual logical switch
