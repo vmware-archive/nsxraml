@@ -556,7 +556,7 @@ securitySchemes:
     scopeId:
       required: true
       displayName: scopeId
-      description: Can be globalroot-0 or datacenterId in upgrade use cases.
+      description: Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases.
   get:
     displayName: servicesScopeRead
     description: List services that have been created on the scope
@@ -602,7 +602,7 @@ securitySchemes:
       scopeId:
         required: true
         displayName: scopeId
-        description: globalroot-0 or datacenterId in upgrade use cases
+        description: The scopeId can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases
     post:
       displayName: serviceGroupsCreate
       description: Create a new service group on the specified scope
@@ -873,7 +873,7 @@ securitySchemes:
   description: Operations on securitygroups
   /bulk/{scopeId}:
     displayName: secGroupCreate
-    description: Create a new security group on a global scope
+    description: Create a new security group on a global scope or universal scope. Use either "globalroot-0" or "universalroot-0"
     uriParameters:
        scopeId:
          required: true
@@ -906,7 +906,7 @@ securitySchemes:
       scopeId:
         required: true
         displayName: scopeId
-        description: scopeId can be globalroot-0 or datacenterID/portgroupID in upgrade use cases
+        description: scopeId can be "globalroot-0", "universalroot-0" or datacenterID/portgroupID in upgrade use cases
     get:
       displayName: secGroupScopeRead
       description: List all the security groups created on a specific scope
@@ -1011,7 +1011,7 @@ securitySchemes:
       scopeMoref:
         required: true
         displayName: ipsetScopeMoref
-        description: In the current version this scope-ref will always be globalroot-0
+        description: For scopeMoref use "globalroot-0" for non-universal IP sets and use "universalroot-0" for universal IP sets.
     get:
       displayName: ipsetList
       description: Retrieve all configured IPSets
@@ -1021,7 +1021,7 @@ securitySchemes:
       scopeMoref:
         required: true
         displayName: ipsetScopeMoref
-        description: In the current version this scope-ref will always be globalroot-0
+        description: For scopeMoref use "globalroot-0" for non-universal IP sets and use "universalroot-0" for universal IP sets.
     post:
       displayName: ipsetCreate
       description: creates a new IPset
@@ -1044,6 +1044,12 @@ securitySchemes:
     delete:
       displayName: ipsetDelete
       description: delete an IPset
+      queryParameters:
+          force:
+            displayName: force
+            description: Set to "true" when forcing the removal of an IP set.
+            type: boolean
+            required: false
 /2.0/services/vcconfig: #PDF pg 55
   displayName: vCenterConfig
   description: Configuring NSX Manager with vCenter Server
@@ -2388,12 +2394,12 @@ securitySchemes:
         application/xml: #PDF pg 53 (three different schemas)
 /2.0/services/macset/{scopeId}:
   displayName: macsetScopes
-  description: Create or list MACsets on a specified scope
+  description: Working with MAC Sets.
   uriParameters:
     scopeId:
       required: true
       displayName: scopeId
-      description: Can be globalroot-0 or datacenterId in upgrade use cases
+      description: Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases
   post:
     displayName: macsetScopesCreate
     description: Create a MACset on a specified scope

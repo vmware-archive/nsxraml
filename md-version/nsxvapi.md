@@ -338,7 +338,7 @@ Retrieve a list of objects that can be used to define a user's access scope
 Operations on securitygroups
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
-Create a new security group on a global scope
+Create a new security group on a global scope or universal scope. Use either "globalroot-0" or "universalroot-0"
 
 * **post** *(secured)*: Create a new security group on a global scope
 
@@ -1101,7 +1101,7 @@ Working with conflicting agencies
 * **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
 
 ## macsetScopes
-Create or list MACsets on a specified scope
+Working with MAC Sets.
 
 ### /2.0/services/macset/{scopeId}
 
