@@ -199,6 +199,12 @@ securitySchemes:
     post:
       displayName: vdnSegmentPoolAdd
       description: Add a segment ID Pool
+      queryParameters:
+          isUniversal:
+            displayName: isUniversal
+            description: Set to "true" when creating a universal VNI pool.
+            type: boolean
+            required: false
       body:
         application/xml:
           schema: vdnSegment
@@ -231,6 +237,12 @@ securitySchemes:
     post:
       displayName: vdnMulticastPoolAdd
       description: Adds a multicast range for logical switches
+      queryParameters:
+          isUniversal:
+            displayName: isUniversal
+            description: Set to "true" when creating a universal multicast range.
+            type: boolean
+            required: false
       body:
         application/xml:
           schema: vdnMulticast
@@ -295,10 +307,16 @@ securitySchemes:
   description: Read all scopes (transport zones), or create a new scope (Transport Zone)
   get:
     displayName: vdnScopesList
-    description: Retrieve a list of all known VDN Scopes
+    description: Retrieve a list of all known VDN Scopes / Transport Zones
   post:
     displayName: vdnScopeCreate
     description: Create a new Transport Zone. Note that you can only add one initial cluster when creating the TZ.
+    queryParameters:
+      isUniversal:
+        displayName: isUniversal
+        description: Set to "true" when creating a universal transport zone.
+        type: boolean
+        required: false
     body:
       application/xml:
         schema: vdnScopeCreate
@@ -3309,6 +3327,12 @@ securitySchemes:
   post:
     displayName: nsxEdgesCreate
     description: Install NSX Edge services gateway or logical router, depending on request body
+    queryParameters:
+        isUniversal:
+          displayName: isUniversal
+          description: Set to "true" when creating a universal logical router. Note the <type> in the request body must be "DISTRIBUTED_ROUTER"
+          type: boolean
+          required: false
     body:
       application/xml:
         schema: nsxEdgesCreate
@@ -3344,6 +3368,12 @@ securitySchemes:
     get:
       displayName: nsxEdgeRead
       description: Retrieve Edge details
+      queryParameters:
+        isUniversal:
+          displayName: isUniversal
+          description: Filter read of Edges to display only universal logical routers
+          type: boolean
+          required: false
     put:
       displayName: nsxEdgeUpdate
       description: Update the NSX Edge configuration
