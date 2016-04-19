@@ -92,6 +92,8 @@ schemas:
     nsxEdgeUpdate: !include schemas/nsxEdgeUpdate.xml
     nsxEdgeFirewallConfigUpdate: !include schemas/nsxEdgeFirewallConfigUpdate.xml
     nwFabricConfig: !include schemas/nwFabricConfig.xml
+    nwfabricClustersUpdate: !include schemas/nwfabricClustersUpdate.xml
+    nwfabricHostsUpdate: !include schemas/nwfabricHostsUpdate.xml
     poolsCreate: !include schemas/poolsCreate.xml
     poolUpdate: !include schemas/poolUpdate.xml
     privateNetworksCreate: !include schemas/privateNetworksCreate.xml
@@ -129,6 +131,7 @@ schemas:
     systemLocaleUpdate: !include schemas/systemLocaleUpdate.xml
     systemSyslogServerUpdate: !include schemas/systemSyslogServerUpdate.xml
     systemTimeUpdate: !include schemas/systemTimeUpdate.xml
+    universalSyncConfigurationManagersThumbprintUpdate: !include schemas/universalSyncConfigurationManagersThumbprintUpdate.xml
     userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xml
     userRoleMgmtUpdate: !include schemas/userRoleMgmtUpdate.xml
     usersCreate: !include schemas/usersCreate.xml
@@ -1041,6 +1044,82 @@ securitySchemes:
     get:
       displayName: vCenterStatusRead
       description: Get default vCenter Server connection status
+/2.0/universalsync:
+  displayName: universalSync
+  description: Configuring Universal Sync for the NSX manager
+  /configuration:
+    /role:
+      displayName: universalSyncConfigurationRole
+      description: Universal Sync Configuration
+      post:
+        displayName: universalSyncConfigurationRoleSet
+        description: Set the Universal Sync Configuration role
+        queryParameters:
+          action:
+            displayName: action
+            description: Set the role of the NSX manager. Possible values are set-as-standalone, set-as-primary,  set-as-secondary
+      get:
+        displayName: universalSyncConfigurationRoleRead
+        description: Get the Universal Sync Configuration role
+    /nsxmanagers:
+      displayName: universalSyncConfigurationNsxManagers
+      description: Universal sync configuration of NSX managers
+      delete:
+        displayName: universalSyncConfigurationNsxManagersDelete
+        description: Delete secondary NSX manager configuration
+      /thumbprint:
+        displayName: universalSyncConfigurationNsxManagersThumbprint
+        description: Universal sync configuration NSX manager thumbprint
+        put:
+          displayName: universalSyncConfigurationNsxManagersThumbprintUpdate
+          description: Update the NSX manager thumprint in the universal sync configuration
+          body:
+            application/xml:
+              schema: universalSyncConfigurationManagersThumbprintUpdate
+        /{nsxManagerID}:
+          displayName: universalSyncConfigurationManagers
+          description: Universal sync configuration of a specific NSX manager
+          get:
+            displayName: universalSyncConfigurationManagersRead
+            description: Query universal sync configuration information on a specific NSX manager by ID
+          delete:
+            displayName: universalSyncConfigurationManagersDelete
+            description: Delete a secondary NSX manager by ID
+            queryParameters:
+              forceRemoval:
+                type: boolean
+                required: false
+                displayName: universalSyncConfigurationManagerDeleteforceRemoval
+                description: Force removal of a secondary NSX manager (true/false)
+  /sync:
+    displayName: universalSyncSync
+    description: Sync all objects on the NSX manager
+    post:
+      displayName: universalSyncSync
+      description: Sync all objects on the NSX manager
+      queryParameters:
+        action:
+          displayName: application
+          description: Use "invoke" to sync all objects on the NSX manager
+  /entitystatus:
+    displayName: universalSyncEntityStatus
+    description: The status of an universal sync entity
+    get:
+      displayName: universalSyncEntityStatusRead
+      description: Read the status of a universal sync entity
+      queryParameters:
+        objectType:
+          displayName: objectType
+          description: Specifiy the object type. For example "VdnScope"
+        objectId:
+          displayName: objectId
+          description: Specify the bojectID. For example "globalvdnscope"
+  /status:
+    displayName: universalSyncStatus
+    description: Universal sync status
+    get:
+      displayName: universalSyncStatusRead
+      description: Read the universal sync status
 /1.0/appliance-management:
   displayName: applianceManager
   description: Working with Appliance Manager
@@ -1306,6 +1385,12 @@ securitySchemes:
     get:
       displayName: upgradeStatus
       description: Query upgrade status
+  /certificatemanager/certificates/nsx:
+    displayName: certificateManager
+    description: NSX Manager certificate manager
+    get:
+      displayName: certificateManagerCertificatesNsxRead
+      description: Query the certificate thumbprint from a NSX manager
 /2.0/systemevent: #PDF pg 69
   displayName: systemEvents
   description: Get NSX Manager system events
@@ -1438,6 +1523,36 @@ securitySchemes:
       get:
         displayName: statusResourceTypeRead
         description: Query status of resources by criterion
+  /clusters/{clusterID}:
+    displayName: nwfabricClusters
+    description: Network virtualization component cluster configuration
+    get:
+      displayName: nwfabricClustersRead
+      description: Read the locale ID on a cluster
+    put:
+      displayName: nwfabricClustersUpdate
+      description: Update the locale ID on a cluster
+      body:
+        application/xml:
+          schema: nwfabricClustersUpdate
+    delete:
+      displayName: nwfabricClustersDelete
+      description: Delete locale ID on a cluster
+  /hosts/{hostID}:
+    displayName: nwfabricHosts
+    description: Network virtualization component host configuration
+    get:
+      displayName: nwfabricHostsRead
+      description: Read the locale ID on a host
+    put:
+      displayName: nwfabricHostsUpdate
+      description: Update the locale ID on a host
+      body:
+        application/xml:
+          schema: nwfabricHostsUpdate
+    delete:
+      displayName: nwfabricHostsDelete
+      description: Delete locale ID on a host
 /2.0/si/deploy: #PDF pg 47
   displayName: securityFabric
   description: Security fabric

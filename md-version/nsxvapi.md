@@ -430,6 +430,46 @@ Connection status for vCenter Server
 
 * **get** *(secured)*: Get default vCenter Server connection status
 
+## universalSync
+Configuring Universal Sync for the NSX manager
+
+### /2.0/universalsync/configuration/role
+Universal Sync Configuration
+
+* **post** *(secured)*: Set the Universal Sync Configuration role
+* **get** *(secured)*: Get the Universal Sync Configuration role
+
+### /2.0/universalsync/configuration/nsxmanagers
+Universal sync configuration of NSX managers
+
+* **delete** *(secured)*: Delete secondary NSX manager configuration
+
+### /2.0/universalsync/configuration/nsxmanagers/thumbprint
+Universal sync configuration NSX manager thumbprint
+
+* **put** *(secured)*: Update the NSX manager thumprint in the universal sync configuration
+
+### /2.0/universalsync/configuration/nsxmanagers/thumbprint/{nsxManagerID}
+Universal sync configuration of a specific NSX manager
+
+* **get** *(secured)*: Query universal sync configuration information on a specific NSX manager by ID
+* **delete** *(secured)*: Delete a secondary NSX manager by ID
+
+### /2.0/universalsync/sync
+Sync all objects on the NSX manager
+
+* **post** *(secured)*: Sync all objects on the NSX manager
+
+### /2.0/universalsync/entitystatus
+The status of an universal sync entity
+
+* **get** *(secured)*: Read the status of a universal sync entity
+
+### /2.0/universalsync/status
+Universal sync status
+
+* **get** *(secured)*: Read the universal sync status
+
 ## applianceManager
 Working with Appliance Manager
 
@@ -592,6 +632,11 @@ Query upgrade status
 
 * **get** *(secured)*: Query upgrade status
 
+### /1.0/appliance-management/certificatemanager/certificates/nsx
+NSX Manager certificate manager
+
+* **get** *(secured)*: Query the certificate thumbprint from a NSX manager
+
 ## systemEvents
 Get NSX Manager system events
 
@@ -634,6 +679,20 @@ Status of child resources
 Status of resources by criterion
 
 * **get** *(secured)*: Query status of resources by criterion
+
+### /2.0/nwfabric/clusters/{clusterID}
+Network virtualization component cluster configuration
+
+* **get** *(secured)*: Read the locale ID on a cluster
+* **put** *(secured)*: Update the locale ID on a cluster
+* **delete** *(secured)*: Delete locale ID on a cluster
+
+### /2.0/nwfabric/hosts/{hostID}
+Network virtualization component host configuration
+
+* **get** *(secured)*: Read the locale ID on a host
+* **put** *(secured)*: Update the locale ID on a host
+* **delete** *(secured)*: Delete locale ID on a host
 
 ## securityFabric
 Security fabric
