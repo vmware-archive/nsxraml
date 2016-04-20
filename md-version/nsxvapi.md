@@ -252,7 +252,9 @@ Working with a specified IP pool
 Work with IP's and their allocation status in IP Pools
 
 * **get** *(secured)*: Retrieve all IP's and their allocation status in an IP Pool
-* **post** *(secured)*: Allocate an IP Address from the pool. Use 'ALLOCATE' in the 'allocationMode' field in the body to allocate the next available ip. To allocate a specific one use 'RESERVE' and pass the IP to reserve in the 'ipAddress' fiels in the body
+* **post** *(secured)*: Allocate an IP Address from the pool. Use 'ALLOCATE' in the 'allocationMode' field in the
+body to allocate the next available ip. To allocate a specific one use 'RESERVE' and
+pass the IP to reserve in the 'ipAddress' fiels in the body
 
 ### /2.0/services/ipam/pools/{poolId}/ipaddresses/{ipAddress}
 Release an IP Address allocation in the Pool
@@ -1212,7 +1214,9 @@ L3 Firewall Operations on specific section specified by name (in a query Paramet
 L3 Firewall Operations on specific section specified by section ID
 
 * **get** *(secured)*: Read a specific section of the DFW config specified by Id
-* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first, make your changes, and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
+and then update the section by supplying the Etag value received in the read in the If-Match header
+
 * **delete** *(secured)*: Deletes a L3 section and its content by ID
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules
@@ -1224,13 +1228,16 @@ Operations to add one or more L3 Rules
 Operations on L3 rules in sections identified by section Id and Rule Id
 
 * **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
-* **put** *(secured)*: Updates a L3 DFW Rule. To do this you need to read it first, make your changes, and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L3 DFW Rule. To do this you need to read it first, make your changes,
+and then update the section by supplying the Etag value received in the read in the If-Match header
+
 * **delete** *(secured)*: Delete a specific rule identified by rule Id
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionName}
 L3 Firewall Update Operations on specific section specified by section Name
 
-* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first, make your changes, and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
+and then update the section by supplying the Etag value received in the read in the If-Match header
 
 ### /4.0/firewall/globalroot-0/config/layer2sections
 L2 Firewall Operations on specific section specified by name (in a query Parameter)
@@ -1242,7 +1249,9 @@ L2 Firewall Operations on specific section specified by name (in a query Paramet
 L2 Firewall Operations on specific section specified by section ID
 
 * **get** *(secured)*: Read a specific section of the DFW config specified by Id
-* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first, make your changes, and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
+and then update the section by supplying the Etag value received in the read in the If-Match header
+
 * **delete** *(secured)*: Deletes a L2 section and its content by ID
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules
@@ -1254,13 +1263,16 @@ Operations to add one or more L2 Rules
 Operations on L2 rules in sections identified by section Id and Rule Id
 
 * **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
-* **put** *(secured)*: Updates a L2 DFW Rule. To do this you need to read it first, make your changes, and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L2 DFW Rule. To do this you need to read it first, make your changes,
+and then update the section by supplying the Etag value received in the read in the If-Match header
+
 * **delete** *(secured)*: Delete a specific rule identified by rule Id
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionName}
 L3 Firewall Update Operations on specific section specified by section Name
 
-* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first, make your changes, and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
+and then update the section by supplying the Etag value received in the read in the If-Match header
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections
 Layer3 redirect sections and rules
