@@ -4,8 +4,8 @@ baseUri: https://{nsxmanager}/api
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
-    description: This is the hostname or IP of NSX Manager
-version: 6.2.2
+    description: This is the hostname or IP address of the NSX Manager
+version: 6.2.3
 securedBy: [basic]
 schemas:
   - advancedConfigUpdate: !include schemas/advancedConfigUpdate.xml
@@ -161,6 +161,20 @@ securitySchemes:
     description: prepares a pre-configured vds with teaming and MTU options, MTU must be 1600 or higher
     body:
       application/xml:
+        example: |
+          <vdsContext>
+            <switch>
+              <objectId></objectId>
+                <type>
+                  <typeName></typeName>
+                </type>
+                <name></name>
+                <revision></revision>
+                <objectTypeName></objectTypeName>
+            </switch>
+            <teaming></teaming>
+            <mtu></mtu>
+          </vdsContext>
         schema: vdsContext
   get:
     displayName: vdsList
@@ -207,6 +221,12 @@ securitySchemes:
             required: false
       body:
         application/xml:
+          example: |
+            <segmentRange>
+              <name></name>
+              <begin></begin>
+              <end></end>
+            </segmentRange>
           schema: vdnSegment
     get:
       displayName: vdnSegmentPoolList
@@ -227,6 +247,11 @@ securitySchemes:
         description: Update an individual segment ID Pool
         body:
           application/xml:
+            example: |
+              <segmentRange>
+                <end></end>
+                <name></name>
+              </segmentRange>
             schema: vdnSegmentUpdate
       delete:
         displayName: vdnSegmentPoolDelete
@@ -245,6 +270,13 @@ securitySchemes:
             required: false
       body:
         application/xml:
+          example: |
+            <multicastRange>
+              <name></name>
+              <desc></desc>
+              <begin></begin>
+              <end></end>
+            </multicastRange>
           schema: vdnMulticast
     get:
       displayName: vdnMulticastPoolList
@@ -265,6 +297,12 @@ securitySchemes:
         description: Update an individual Multicast range Pool
         body:
           application/xml:
+            example: |
+              <multicastRange>
+                <name></name>
+                <desc></desc>
+                <end></end>
+              </multicastRange>
             schema: vdnMulticastUpdate
       delete:
         displayName: vdnSegmentPoolDelete
@@ -319,6 +357,19 @@ securitySchemes:
         required: false
     body:
       application/xml:
+        example: |
+          <vdnScope>
+            <name></name>
+            <clusters>
+              <cluster>
+                <cluster>
+                  <objectId></objectId>
+                </cluster>
+              </cluster>
+            </clusters>
+            <controlPlaneMode></controlPlaneMode>
+            <description></description>
+          </vdnScope>
         schema: vdnScopeCreate
   /{scopeId}:
     displayName: vdnScope
@@ -341,6 +392,17 @@ securitySchemes:
           required: true
       body:
         application/xml:
+          example: |
+            <vdnScope>
+              <objectId></objectId>
+              <clusters>
+                <cluster>
+                  <cluster>
+                    <objectId></objectId>
+                  </cluster>
+                </cluster>
+              </clusters>
+            </vdnScope>
           schema: vdnScopeEdit
     delete:
       displayName: vdnScopeDelete
@@ -353,6 +415,20 @@ securitySchemes:
         description: update the attributes of a transport zone (e.g. Name, description)
         body:
           application/xml:
+            example: |
+              <vdnScope>
+                <clusters>
+                  <cluster>
+                    <cluster>
+                      <objectId></objectId>
+                    </cluster>
+                  </cluster>
+                </clusters>
+                <objectId></objectId>
+                <name></name>
+                <description></description>
+                <controlPlaneMode></controlPlaneMode>
+              </vdnScope>
             schema: vdnScopeUpdate
     /conn-check/multicast:
       displayName: vdnScopeConnCheck
@@ -361,7 +437,7 @@ securitySchemes:
         displayName: vdnScopeConnCheck
         description: Test multicast group connectivity in a transport zone
         body:
-          application/xml: #PDF pg 122
+          application/xml:
 /2.0/vdn/scopes/{scopeId}/virtualwires:
   displayName: logicalSwitches
   description: Create and List operations of logical switches inside a Transport Zone (scope)
@@ -378,6 +454,13 @@ securitySchemes:
     description: creates a logicalSwitch
     body:
       application/xml:
+        example: |
+          <virtualWireCreateSpec>
+            <name></name>
+            <description></description>
+            <tenantId></tenantId>
+            <controlPlaneMode></controlPlaneMode>
+          </virtualWireCreateSpec>
         schema: logicalSwitchCreate
 /2.0/vdn/virtualwires:
   displayName: logicalSwitchesGlobal
@@ -402,6 +485,12 @@ securitySchemes:
       description: Migrate a Virtual Maschine vnic to a logical switch
       body:
         application/xml:
+          example: |
+            <com.vmware.vshield.vsm.inventory.dto.VnicDto>
+              <objectId></objectId>
+              <vnicUuid></vnicUuid>
+              <portgroupId></portgroupId>
+            </com.vmware.vshield.vsm.inventory.dto.VnicDto>
           schema: logicalSwitchVmAttach
   /{virtualWireID}:
     displayName: logicalSwitch
@@ -428,6 +517,22 @@ securitySchemes:
         description: Test multicast group connectivity in logical switch
         body:
           application/xml:
+            example: |
+              <testParameters>
+                <gateway></gateway>
+                <packetSizeMode></packetSizeMode>
+                <packetSize></packetSize>
+                <sourceHost>
+                  <hostId></hostId>
+                  <switchId></switchId>
+                  <vlanId></vlanId>
+                </sourceHost>
+                <destinationHost>
+                  <hostId></hostId>
+                  <switchId></switchId>
+                  <vlanId></vlanId>
+                </destinationHost>
+              </testParameters>
             schema: logicalSwitchConnCheck
     /conn-check/p2p:
       displayName: logicalSwitchPing
@@ -437,8 +542,24 @@ securitySchemes:
         description: Perform point to point connectivity test between two hosts across which a logical switch spans
         body:
           application/xml:
+            example: |
+              <testParameters>
+                <gateway></gateway>
+                <packetSizeMode></packetSizeMode>
+                <packetSize></packetSize>
+                <sourceHost>
+                  <hostId></hostId>
+                  <switchId></switchId>
+                  <vlanId></vlanId>
+                </sourceHost>
+                <destinationHost>
+                  <hostId></hostId>
+                  <switchId></switchId>
+                  <vlanId></vlanId>
+                </destinationHost>
+              </testParameters>
             schema: logicalSwitchPing
-/2.0/xvs/networks/{ID}/features: #PDF pg 121
+/2.0/xvs/networks/{ID}/features:
   displayName: arpMAC
   description: Working with ARP suppression and MAC learning for logical switches
   uriParameters:
@@ -454,8 +575,17 @@ securitySchemes:
     description: Enable or disable ARP suppression and MAC learning
     body:
       application/xml:
+        example: |
+          <networkFeatureConfig>
+            <ipDiscoveryConfig>
+              <enabled></enabled>
+            </ipDiscoveryConfig>
+            <macLearningConfig>
+              <enabled></enabled>
+            </macLearningConfig>
+          </networkFeatureConfig>
         schema: arpMAC
-/2.0/vdn/controller: #PDF pg 30
+/2.0/vdn/controller:
   displayName: nsxControllers
   description: Working with NSX controllers
   post:
@@ -463,6 +593,18 @@ securitySchemes:
     description: Add a new controller on a specified cluster. Request without body to upgrade controller cluster
     body:
       application/xml:
+        example: |
+          <controllerSpec>
+            <name></name>
+            <description></description>
+            <ipPoolId></ipPoolId>
+            <resourcePoolId></resourcePoolId>
+            <hostId></hostId>
+            <datastoreId></datastoreId>
+            <deployType></deployType>
+            <networkId></networkId>
+            <password></password>
+          </controllerSpec>
         schema: controller
   get:
     displayName: nsxControllersRead
@@ -515,6 +657,13 @@ securitySchemes:
         description: Add controller syslog exporter on the controller
         body:
           application/xml:
+            example: |
+              <controllerSyslogServer>
+                <syslogServer></syslogServer>
+                <port></port>
+                <protocol></protocol>
+                <level></level>
+              </controllerSyslogServer>
             schema: controllerSyslog
       get:
         displayName: nsxControllerSyslogRead
@@ -548,8 +697,12 @@ securitySchemes:
       description: Change the NSX controller password
       body:
         application/xml:
+          example: |
+            <controllerCredential>
+              <apiPassword></apiPassword>
+            </controllerCredential>
           schema: nsxControllerPasswordUpdate
-/2.0/services/application/scope/{scopeId}: # PDF page 95
+/2.0/services/application/scope/{scopeId}:
   displayName: servicesScope
   description: Working with services on a scope
   uriParameters:
@@ -565,8 +718,23 @@ securitySchemes:
     description: Create a new service on the specified scope
     body:
       application/xml:
+        example: |
+          <application>
+            <objectId></objectId>
+            <type>
+              <typeName/>
+            </type>
+            <description></description>
+            <name></name>
+            <revision></revision>
+            <objectTypeName></objectTypeName>
+            <element>
+              <applicationProtocol>mandatory</applicationProtocol>
+              <value>mandatory</value>
+            </element>
+          </application>
         schema: servicesScopeCreate
-/2.0/services/application/{applicationId}: # PDF page 96
+/2.0/services/application/{applicationId}:
   displayName: service
   description: Working with a specified service
   uriParameters:
@@ -582,6 +750,21 @@ securitySchemes:
     description: Modify the name, description, applicationProtocol, or port value of a service
     body:
       application/xml:
+        example: |
+          <application>
+            <objectId></objectId>
+            <type>
+              <typeName></typeName>
+            </type>
+            <description></description>
+            <name></name>
+            <revision></revision>
+            <objectTypeName></objectTypeName>
+            <element>
+              <applicationProtocol></applicationProtocol>
+              <value></value>
+            </element>
+          </application>
         schema: serviceUpdate
   delete:
     displayName: serviceDelete
@@ -595,7 +778,7 @@ securitySchemes:
 /2.0/services/applicationgroup:
   displayName: applicationgroup
   description: Operations on Application Groups
-  /{scopeId}: # PDF page 98
+  /{scopeId}:
     displayName: serviceGroups
     description: Working with service groups
     uriParameters:
@@ -608,11 +791,18 @@ securitySchemes:
       description: Create a new service group on the specified scope
       body:
         application/xml:
-            schema: serviceGroupsCreate
+          example: |
+            <applicationGroup>
+              <description></description>
+              <name></name>
+              <revision></revision>
+              <inheritanceAllowed></inheritanceAllowed>
+            </applicationGroup>
+          schema: serviceGroupsCreate
     get:
       displayName: serviceGroupsRead
       description: Retrieve a list of service groups that have been created on the scope
-  /{applicationgroupId}: # PDF page 99
+  /{applicationgroupId}:
     displayName: serviceGroup
     description: Working with an individual service group
     uriParameters:
@@ -628,7 +818,39 @@ securitySchemes:
       description: Modify the name, description, applicationProtocol, or port value of a service group
       body:
         application/xml:
-            schema: serviceGroupUpdate
+          example: |
+            <applicationGroup>
+              <objectId></objectId>
+              <type>
+                <typeName></typeName>
+              </type>
+              <name></name>
+              <description></description>
+              <revision></revision>
+              <objectTypeName></objectTypeName>
+              <scope>
+                <id></id>
+                <objectTypeName></objectTypeName>
+                <name></name>
+              </scope>
+              <extendedAttributes></extendedAttrubues>
+              <inheritanceAllowed></inheritanceAllowed>
+              <member>
+                <objectId></objectId>
+                <type>
+                  <typeName></typeName>
+                </type>
+                <name></name>
+                <revision></revision>
+                <objectTypeName></objectTypeName>
+                <scope>
+                  <id></id>
+                  <objectTypeName></objectTypeName>
+                  <name></name>
+                </scope>
+              </member>
+            </applicationGroup>
+          schema: serviceGroupUpdate
     delete:
       displayName: serviceGroupDelete
       description: Delete a service group from a scope
@@ -652,7 +874,7 @@ securitySchemes:
       delete:
         displayName: serviceGroupMembersDelete
         description: Delete a member from the service group
-  /scope/{scopeId}/members: # PDF page 100
+  /scope/{scopeId}/members:
     displayName: serviceGroupMembersRead
     description: Get the members of a service group
     uriParameters:
@@ -679,6 +901,21 @@ securitySchemes:
     description: Create a pool of IP addresses
     body:
       application/xml:
+        example: |
+          <ipamAddressPool>
+            <name></name>
+            <prefixLength></prefixLength>
+            <gateway></gateway>
+            <dnsSuffix></dnsSuffix>
+            <dnsServer1></dnsServer1>
+            <dnsServer2></dnsServer2>
+            <ipRanges>
+              <ipRangeDto>
+                <startAddress></startAddress>
+                <endAddress></endAddress>
+              </ipRangeDto>
+            </ipRanges>
+          </ipamAddressPool>
         schema: ipPool
 /2.0/services/ipam/pools/{poolId}:
   displayName: ipPool
@@ -696,6 +933,30 @@ securitySchemes:
     description: Modify an IP pool
     body:
       application/xml:
+        example: |
+          <ipamAddressPool>
+            <objectId></objectId>
+            <objectTypeName></objectTypeName>
+            <vsmUuid></vsmUuid>
+            <revision></revision>
+            <type>
+              <typeName></typeName>
+            </type>
+            <name></name>
+            <extendedAttributes></extendedAttributes>
+            <prefixLength></prefixLength>
+            <gateway></gateway>
+            <dnsSuffix></dnsSuffix>
+            <dnsServer1></dnsServer1>
+            <dnsServer2></dnsServer2>
+            <ipRanges>
+              <ipRangeDto>
+                <id></id>
+                <startAddress></startAddress>
+                <endAddress></endAddress>
+              </ipRangeDto>
+            </ipRanges>
+          </ipamAddressPool>
         schema: ipPoolUpdate
   delete:
     displayName: ipPoolDelete
@@ -713,6 +974,11 @@ securitySchemes:
                    pass the IP to reserve in the 'ipAddress' fiels in the body
       body:
         application/xml:
+          example: |
+            <ipAddressRequest>
+              <allocationMode></allocationMode>
+              <ipAddress></ipAddress>
+            </ipAddressRequest>
           schema: ipAddressRequest
     /{ipAddress}:
       displayName: ipAddressRelease
@@ -725,7 +991,7 @@ securitySchemes:
       delete:
         displayName: ipAddressRelease
         description: Release an IP Address allocation in the Pool
-/2.0/services/securitytags/tag: # PDF page 106
+/2.0/services/securitytags/tag:
   displayName: securityTag
   description: Working with security tags
   post:
@@ -768,7 +1034,7 @@ securitySchemes:
         delete:
           displayName: securityTagVMDetach
           description: Detach a security tag from a virtual machine
-/2.0/services/ssoconfig: # PDF page 77
+/2.0/services/ssoconfig:
   displayName: ssoConfig
   description: Operations on NSX Manager SSO registration
   get:
@@ -779,6 +1045,13 @@ securitySchemes:
     description: Register NSX Manager to SSO Services
     body:
       application/xml:
+        example: |
+          <ssoConfig>
+            <ssoLookupServiceUrl></ssoLookupServiceUrl>
+            <ssoAdminUsername></ssoAdminUsername>
+            <ssoAdminUserpassword></ssoAdminUserpassword>
+            <certificateThumbprint></certificateThumbprint>
+          </ssoConfig>
         schema: ssoConfig
   delete:
     displayName: ssoConfigDelete
@@ -792,7 +1065,7 @@ securitySchemes:
 /2.0/services/usermgmt:
   displayName: userMgmt
   description: User Management Operations
-  /user/{userId}: # PDF page 78
+  /user/{userId}:
     displayName: userMgmtUser
     description: Manage users
     uriParameters:
@@ -806,7 +1079,7 @@ securitySchemes:
     delete:
       displayName: userMgmtUserDelete
       description: Remove the NSX role for a vCenter user
-  /role/{userId}: # PDF page 80
+  /role/{userId}:
     displayName: userRoleMgmt
     description: Manage roles for users
     uriParameters:
@@ -828,12 +1101,26 @@ securitySchemes:
           type: boolean
       body:
         application/xml:
+          example: |
+            <accessControlEntry>
+              <role></role>
+              <resource>
+                <resourceId></resourceId>
+              </resource>
+            </accessControlEntry>
           schema: userRoleMgmtCreate
     put:
       displayName: userMgmtRoleUpdate
       description: Change a user's role
       body:
         application/xml:
+          example: |
+            <accessControlEntry>
+              <role></role>
+              <resource>
+                <resourceId></resourceId>
+              </resource>
+            </accessControlEntry>
           schema: userRoleMgmtUpdate
     delete:
       displayName: userMgmtRoleDelete
@@ -1027,6 +1314,19 @@ securitySchemes:
       description: creates a new IPset
       body:
         application/xml:
+          example: |
+            <ipset>
+              <objectId></objectId>
+              <type>
+                <typeName></typeName>
+              </type>
+              <description></description>
+              <name></name>
+              <revision></revision>
+              <objectTypeName></objectTypeName>
+              <value></value>
+              <inheritanceAllowed></inheritanceAllowed>
+            </ipset>
           schema: ipSet
   /{ipsetId}:
     displayName: ipset
@@ -1050,7 +1350,7 @@ securitySchemes:
             description: Set to "true" when forcing the removal of an IP set.
             type: boolean
             required: false
-/2.0/services/vcconfig: #PDF pg 55
+/2.0/services/vcconfig:
   displayName: vCenterConfig
   description: Configuring NSX Manager with vCenter Server
   get:
@@ -1061,6 +1361,16 @@ securitySchemes:
     description: Synchronize NSX Manager with vCenter server
     body:
       application/xml:
+        example: |
+          <vcInfo>
+            <ipAddress></ipAddress>
+            <userName></userName>
+            <password></password>
+            <certificateThumbprint></certificateThumbprint>
+            <assignRoleToUser></assignRoleToUser>
+            <pluginDownloadServer></pluginDownloadServer>
+            <pluginDownloadPort></pluginDownloadPort>
+          </vcInfo>
         schema: vcConfig
   /status:
     displayName: vCenterStatus
@@ -1099,6 +1409,13 @@ securitySchemes:
           description: Update the NSX manager thumprint in the universal sync configuration
           body:
             application/xml:
+              example: |
+                <nsxManagerInfo>
+                  <uuid></uuid>
+                  <nsxManagerIp></nsxManagerIp>
+                  <certificateThumbprint></certificateThumbprint>
+                  <isPrimary></isPrimary>
+                </nsxManagerInfo>
               schema: universalSyncConfigurationManagersThumbprintUpdate
         /{nsxManagerID}:
           displayName: universalSyncConfigurationManagers
@@ -1147,13 +1464,13 @@ securitySchemes:
 /1.0/appliance-management:
   displayName: applianceManager
   description: Working with Appliance Manager
-  /global/info: #PDF pg 58
+  /global/info:
     displayName: globalInfo
     description: Global appliance manager information
     get:
       displayName: globalInfoRead
       description: Retrieve global information containing version information as well as current logged in user
-  /summary/system: #PDF pg 58
+  /summary/system:
     displayName: systemInfo
     description: Summary appliance manager information
     get:
@@ -1209,6 +1526,12 @@ securitySchemes:
         description: Configure DNS
         body:
           application/xml:
+            example: |
+              <dns>
+                <ipv4Address></ipv4Address>
+                <ipv6Address></ipv6Address>
+                <domainList></domainList>
+              </dns>
             schema: dnsUpdate
       delete:
         displayName: dnsDelete
@@ -1224,7 +1547,15 @@ securitySchemes:
       description: Configure time or specify the NTP server to use for time synchronization
       body:
         application/xml:
-            schema: systemTimeUpdate
+          example: |
+            <timeSettings>
+              <ntpServer>
+                <string></string>
+              </ntpServer>
+              <datetime></datetime>
+              <timezone></timezone>
+            </timeSettings>
+          schema: systemTimeUpdate
     /ntp:
       displayName: ntp
       description: Delete NTP server
@@ -1242,7 +1573,12 @@ securitySchemes:
       description: Configure locale
       body:
         application/xml:
-            schema: systemLocaleUpdate
+          example: |
+            <locale>
+              <language></language>
+              <country></country>
+            </locale>
+          schema: systemLocaleUpdate
   /system/syslogserver:
     displayName: systemSyslogServer
     description: Working with syslog servers
@@ -1254,7 +1590,13 @@ securitySchemes:
       description: Configure syslog servers
       body:
         application/xml:
-            schema: systemSyslogServerUpdate
+          example: |
+            <syslogserver>
+              <syslogServer></syslogServer>
+              <port></port>
+              <protocol></protocol>
+            </syslogserver>
+          schema: systemSyslogServerUpdate
     delete:
       displayName: systemSyslogServerDelete
       description: Delete syslog servers
@@ -1293,7 +1635,7 @@ securitySchemes:
         get:
           displayName: componentStatusRead
           description: Retrieve current status for specified component
-  /backuprestore/backupsettings: #PDF pg 66
+  /backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
     description: Appliance Manager backup settings
     get:
@@ -1308,7 +1650,7 @@ securitySchemes:
     delete:
       displayName: applianceMgrBackupSettingsDelete
       description: Delete Appliance Manager backup configuration
-  /backuprestore/backup: #PDF pg 67
+  /backuprestore/backup:
     displayName: applianceMgrBackup
     description: On-demand backup
     post:
@@ -1331,7 +1673,7 @@ securitySchemes:
           required: true
           displayName: restoreFile
           description: file name of restore file
-  /techsupportlogs/{componentID}: #PDF pg 69
+  /techsupportlogs/{componentID}:
     displayName: techLogs
     description: Generate tech support logs
     uriParameters:
@@ -1415,7 +1757,7 @@ securitySchemes:
     get:
       displayName: certificateManagerCertificatesNsxRead
       description: Query the certificate thumbprint from a NSX manager
-/2.0/systemevent: #PDF pg 69
+/2.0/systemevent:
   displayName: systemEvents
   description: Get NSX Manager system events
   get:
@@ -1429,7 +1771,7 @@ securitySchemes:
         displayName: pageSize
         description: optional; limit the max number of entries returned. Valid range is 1-1024
         default: 256
-/2.0/auditlog: #PDF pg 70
+/2.0/auditlog:
   displayName: auditLogs
   description: Get NSX Manager audit logs
   get:
@@ -1577,7 +1919,7 @@ securitySchemes:
     delete:
       displayName: nwfabricHostsDelete
       description: Delete locale ID on a host
-/2.0/si/deploy: #PDF pg 47
+/2.0/si/deploy:
   displayName: securityFabric
   description: Security fabric
   post:
@@ -1599,6 +1941,21 @@ securitySchemes:
         description: optional; specify time to start upgrade
     body:
       application/xml:
+        example: |
+          <clusterDeploymentConfigs>
+            <clusterDeploymentConfig>
+              <clusterId></clusterId>
+              <datastore></datastore>
+              <services>
+                <serviceDeploymentConfig>
+                  <serviceId></serviceId>
+                  <serviceInstanceId></serviceInstanceId>
+                  <dvPortGroup></dvPortGroup>
+                  <ipPool></ipPool>
+                </serviceDeploymentConfig>
+              </services>
+            </clusterDeploymentConfig>
+          </clusterDeploymentConfigs>
         schema: serviceUpgrade
   /service/{serviceID}:
     displayName: service
@@ -1658,16 +2015,16 @@ securitySchemes:
       get:
         displayName: serviceDetailsRead
         description: Retrieve detailed information about the service
-/2.0/dlp: #PDF pg 344
+/2.0/dlp:
   displayName: dataSecurityConfiguration
   description: Configuring Data Security
-  /regulation: #PDF pg 344
+  /regulation:
     displayName: dlpRegulation
     description: Data loss prevention regulation
     get:
       displayName: dlpRegulationRead
       description: Retrieve the list of available regulations for a policy.
-  /policy/regulations: #PDF pg 345
+  /policy/regulations:
     displayName: dlpEnableRegulation
     description: Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
     put:
@@ -1676,13 +2033,13 @@ securitySchemes:
       body:
         application/xml:
             schema: dlpEnableRegulation
-  /classificationvalue: #PDF pg 345
+  /classificationvalue:
     displayName: dlpClassificationValue
     description: Classification values associated with regulations
     get:
       displayName: dlpClassificationValueRead
       description: Get all classification values
-  /policy/classificationvalues: #PDF pg 345
+  /policy/classificationvalues:
     displayName: dlpRegexClassificationValue
     description: Configure a customized regex as a classification value
     put:
@@ -1691,7 +2048,7 @@ securitySchemes:
       body:
         application/xml:
             schema: dlpRegexClassificationValue
-  /excludableareas: #PDF pg 346
+  /excludableareas:
     displayName: dlpExcludableAreas
     description: Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection
     get:
@@ -1730,7 +2087,7 @@ securitySchemes:
       body:
         application/xml:
             schema: dlpExcludeSecGroupUpdate
-  /policy/FileFilters: #PDF pg 348
+  /policy/FileFilters:
     displayName: dlpFileFilters
     description: Configure file filters for scanning
     put:
@@ -1739,25 +2096,25 @@ securitySchemes:
       body:
         application/xml:
             schema: dlpFileFiltersUpdate
-  /policy/saved: #PDF pg 349
+  /policy/saved:
     displayName: dlpPolicySave
     description: Retrieve last saved policy
     get:
       displayName: dlpPolicySave
       description: Get saved policy
-  /policy/published: #PDF pg 350
+  /policy/published:
     displayName: dlpPolicyPublished
     description: Retrieve currently published SDD policy
     get:
       displayName: dlpPolicyPublished
       description: Retrieve currently published policy
-  /policy/publish: #PDF pg 350
+  /policy/publish:
     displayName: dlpPolicyPublish
     description: After updating a policy with added regulations, excluded areas, or customized regex values, publish an updated policy to enforce new parameters
     put:
       displayName: dlpPolicyPublish
       description: Publish the updated policy
-  /scanop: #PDF pg 351
+  /scanop:
     displayName: dlpScanning
     description: Start, pause, resume, or stop a data security scan
     put:
@@ -1766,13 +2123,13 @@ securitySchemes:
       body:
         application/xml:
             schema: dlpScanning
-  /scanstatus: #PDF pg 351
+  /scanstatus:
     displayName: dlpScanStatus
     description: Retrieve the status of a scan operation
     get:
       displayName: dlpScanStatus
       description: Retrieve the status of a scan operation
-  /scan/current/vms/{ID}: #PDF pg 352
+  /scan/current/vms/{ID}:
     displayName: dlpScanVMs
     description: Retrieve information about the vm's being scanned
     uriParameters:
@@ -1793,13 +2150,13 @@ securitySchemes:
         startindex:
           displayName: startindex
           description: Specify starting point for retrieving logs
-  /completedscansummaries: #PDF pg 353
+  /completedscansummaries:
     displayName: dlpScanSummaries
     description: Retrieve start and end time, total number of vm's scanned, and total number of violations for the last five completed data security scans
     get:
       displayName: dlpScanSummariesRead
       description: Retrieve scan summaries
-  /scan/{scanID}/detailsascsv: #PDF pg 353
+  /scan/{scanID}/detailsascsv:
     displayName: dlpPreviousScan
     description: Retrieve report on results of previous scan in CSV format
     uriParameters:
@@ -1810,7 +2167,7 @@ securitySchemes:
     get:
       displayName: dlpPreviousScanRead
       description: Retrieve ID, Name, Scan status, and Violation counts for VM's scanned during specified scan
-  /scan/{scanID}/policyasxml: #PDF pg 353
+  /scan/{scanID}/policyasxml:
     displayName: dlpPolicyAsXML
     description: Retrieve XML representation of the policy used in the previous scan
     uriParameters:
@@ -1821,7 +2178,7 @@ securitySchemes:
     get:
       displayName: dlpPolicyAsXML
       description: Retrieve XML representation of the policy used in the previous scan
-  /violations: #PDF pg 355
+  /violations:
     displayName: dlpViolations
     description: Query the regulations that have been violated in scans
     get:
@@ -1869,7 +2226,7 @@ securitySchemes:
           startindex:
             displayName: startindex
             description: page number from which the results will be displayed
-  /violatingfilesascsv: #PDF pg 357
+  /violatingfilesascsv:
     displayName: dlpViolatingFilesCSV
     description: Display the violating files and the regulations each file violated in CSV format
     get:
@@ -1889,7 +2246,7 @@ securitySchemes:
 /1.0/eventcontrol:
   displayName: eventControl
   description: eventControl Operations
-  /vm/{vmID}/request: #PDF pg 360
+  /vm/{vmID}/request:
     displayName: dataCollectionVM
     description: Enable or disable data collection on a virtual machine
     uriParameters:
@@ -1903,7 +2260,7 @@ securitySchemes:
       body:
         application/xml:
           schema: dataCollectionVMCreate
-  /eventcontrol-root/request: #PDF pg 360
+  /eventcontrol-root/request:
     displayName: dataCollectionKillSwitch
     description: Data collection kill switch on/off
     post:
@@ -1912,7 +2269,7 @@ securitySchemes:
       body:
         application/xml:
           schema: dataCollectionKillSwitch
-  /config/vm/{vmID}: #PDF pg 361
+  /config/vm/{vmID}:
     displayName: dataCollectionVMInfo
     description: Retrieve per vm configuration for data collection
     uriParameters:
@@ -1923,10 +2280,10 @@ securitySchemes:
     get:
       displayName: dataCollectionVMInfoRead
       description: Retrieve per vm configuration for data collection
-/3.0/ai: #PDF pg 362
+/3.0/ai:
   displayName: activityMonitoring
   description: Activity monitoring
-  /records: #PDF pg 362
+  /records:
     displayName: userActivity
     description: Get aggregated user activity (action records) using parameters. Requires vShield Endpoint and NSX Endpoint configured, and Data collection enabled on 1+ vm's
     get:
@@ -1963,7 +2320,7 @@ securitySchemes:
           displayName: startindex
           description: Start record number for pagination
           default: 100
-  /userdetails: #PDF pg 365
+  /userdetails:
     displayName: userDetails
     description: Retrieve user detail records in accordance with given query parameters
     get:
@@ -2000,7 +2357,7 @@ securitySchemes:
           displayName: startindex
           description: Start record number for pagination
           default: 100
-  /user/{userID}: #PDF pg 369
+  /user/{userID}:
     displayName: specificUserDetails
     description: Retrieve details for a specific user
     uriParameters:
@@ -2124,7 +2481,7 @@ securitySchemes:
       get:
         displayName: specificSecgroupDetailsRead
         description: Retrieve details about specific security group
-/3.0/directory/updateDomain: #PDF pg370
+/3.0/directory/updateDomain:
   displayName: domain
   description: Working with domains
   post:
@@ -2132,11 +2489,19 @@ securitySchemes:
     description: Register or update a domain with NSX Manager
     body:
       application/xml:
+        example: |
+          <DirectoryDomain>
+            <name></name>
+            <type></type>
+            <netbiosName></netbiosName>
+            <username></username>
+            <password></password>
+          </DirectoryDomain>
         schema: domainCreate
 /1.0/directory:
   displayName: domain
   description: LDAP / Domain Operations
-  /updateDomain: #PDF pg370
+  /updateDomain:
     displayName: domainUpdate
     description: Working with domains
     post:
@@ -2162,7 +2527,7 @@ securitySchemes:
     delete:
       displayName: domainDelete
       description: Delete domain
-  /directory: #PDF pg 372
+  /directory:
     displayName: ldapEventLogServer
     description: Working with LDAP servers and EventLog servers
     /updateLdapServer:
@@ -2249,7 +2614,7 @@ securitySchemes:
       delete:
         displayName: eLogServerDelete
         description: Delete EventLog server
-/1.0/identity: #PDF pg 373
+/1.0/identity:
   displayName: mappingLists
   description: Working with mapping lists
   /userIpMapping:
@@ -2330,7 +2695,7 @@ securitySchemes:
     delete:
       displayName: staticUserMappingsbyIPDelete
       description: Delete static user IP mapping for specified IP
-/1.0/sam/syslog: #PDF pg 373
+/1.0/sam/syslog:
   displayName: activityMonitoringSyslog
   description: Working with Activity Monitoring syslog support
   /enable:
@@ -2348,7 +2713,7 @@ securitySchemes:
 /2.0/si:
   displayName: solutionIntegration
   description: Operations for solution Integrations
-  /host/{hostID}/agents: #PDF pg 49
+  /host/{hostID}/agents:
     displayName: hostAgents
     description: Agents on a specified host
     uriParameters:
@@ -2359,7 +2724,7 @@ securitySchemes:
     get:
       displayName: hostAgentsRead
       description: Retrieve all agents on the host
-  /agent/{agentID}: #PDF pg 50
+  /agent/{agentID}:
     displayName: agentInformation
     description: Agent details (host components and appliances)
     uriParameters:
@@ -2370,7 +2735,7 @@ securitySchemes:
     get:
       displayName: agentInformationRead
       description: Retrieve agent details
-  /deployment/{deploymentunitID}/agents: #PDF pg 51
+  /deployment/{deploymentunitID}/agents:
     displayName: deploymentAgents
     description: Agents for a specified deployment
     uriParameters:
@@ -2381,7 +2746,7 @@ securitySchemes:
     get:
       displayName: deploymentAgentsRead
       description: Retrieve all agents for the specified deployment
-  /fabric/sync/conflicts: #PDF pg 52
+  /fabric/sync/conflicts:
     displayName: agentConflicts
     description: Working with conflicting agencies
     get:
@@ -2391,7 +2756,7 @@ securitySchemes:
       displayName: agentConflictsUpdate
       description: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
       body:
-        application/xml: #PDF pg 53 (three different schemas)
+        application/xml:
 /2.0/services/macset/{scopeId}:
   displayName: macsetScopes
   description: Working with MAC Sets.
@@ -2435,7 +2800,7 @@ securitySchemes:
         displayName: force
         description: Indicates forced or unforced delete. With forced delete, the object is deleted even if used in other places such as firewall rules, causing invalid referrals. For unforced delete, the object is deleted only if it is no used by other configurations; otherwise the delete fails
         type: boolean
-/2.0/services/taskservice/job: # PDF page 376
+/2.0/services/taskservice/job:
   displayName: taskFramework
   description: Working with filtering criteria and paging information for jobs on the task framework
   get:
@@ -2472,7 +2837,7 @@ securitySchemes:
     get:
       displayName: taskFrameworkJobsRead
       description: Retrieve all job instances for the specified job ID
-/2.0/endpointsecurity/registration: # PDF page 380
+/2.0/endpointsecurity/registration:
   displayName: vShield
   description: Register a vendor/solution, set network address
   post:
@@ -2480,6 +2845,12 @@ securitySchemes:
     description: Register a vendor
     body:
       application/xml:
+        example: |
+          <VendorInfo>
+            <id></id>
+            <title></title>
+            <description></description>
+          </VendorInfo>
         schema: vShieldVendorCreate
   /vendors:
     displayName: vShieldVendorsInfo
@@ -2500,7 +2871,13 @@ securitySchemes:
       description: Register an antivirus solution
       body:
         application/xml:
-            schema: vShieldSolutionCreate
+          example: |
+            <SolutionInfo>
+              <altitude></altitude>
+              <title></title>
+              <description></description>
+            </SolutionInfo>
+          schema: vShieldSolutionCreate
     get:
       displayName: vShieldVendorInfoRead
       description: Get vendor registration information
@@ -2534,7 +2911,12 @@ securitySchemes:
           description: Set a solution's IP address and port on the vNIC host
           body:
             application/xml:
-                schema: solutionIPPortSet
+              example: |
+                <LocationInfo>
+                  <ip></ip>
+                  <port></port>
+                </LocationInfo>
+              schema: solutionIPPortSet
         delete:
           displayName: solutionIPPortDelete
           description: Unset a solution's IP address and port
@@ -2549,7 +2931,7 @@ securitySchemes:
         get:
           displayName: solutionActivationStatusRead
           description: Get the solution activation status
-/2.0/endpointsecurity/activation: #PDF pg 383
+/2.0/endpointsecurity/activation:
   displayName: vShieldSolutionActivation
   description: vShield solution activation
   get:
@@ -2560,7 +2942,7 @@ securitySchemes:
         required: true
         displayName: hostId
         description: Specified host ID
-  /{vendorID}/{solutionID}: # PDF pg 382
+  /{vendorID}/{solutionID}:
     displayName: vShieldSolutionActivatedVMs
     description: Activated security virtual machines
     uriParameters:
@@ -2575,7 +2957,7 @@ securitySchemes:
     get:
       displayName: vShieldSolutionActivatedVMsRead
       description: Get a list of activated security vm's for the specified solution
-  /{vendorID}/{altitude}: # PDF page 381
+  /{vendorID}/{altitude}:
     displayName: vShieldSolutionActivate
     description: Activate a registered vShield solution
     uriParameters:
@@ -2591,8 +2973,12 @@ securitySchemes:
       description: Activate a solution that has been registered and located
       body:
         application/xml:
-            schema: vShieldSolutionActivate
-    /{moid}: # PDF pg 384
+          example: |
+            <ActivationInfo>
+              <moid></moid>
+            </ActivationInfo>
+          schema: vShieldSolutionActivate
+    /{moid}:
       displayName: vShieldSolutionDeactivate
       description: Deactivate a solution on a host
       uriParameters:
@@ -3022,7 +3408,7 @@ securitySchemes:
           body:
             application/xml:
               schema: dfwConfigImport
-  /stats/eventthresholds: #PDF pg 304
+  /stats/eventthresholds:
     displayName: dfwThresholds
     description: Memory and CPU thresholds for firewall
     get:
@@ -3034,7 +3420,7 @@ securitySchemes:
       body:
         application/xml:
           schema: dfwThresholdsUpdate
-  /config/globalconfiguration: #PDF pg 304
+  /config/globalconfiguration:
     displayName: dfwPerformance
     description: Tuning firewall performance
     get:
@@ -3046,7 +3432,7 @@ securitySchemes:
       body:
         application/xml:
           schema: dfwPerformanceUpdate
-  /forceSync/{ID}: #PDF pg 305
+  /forceSync/{ID}:
     displayName: dfwSync
     description: Synchronize hosts and clusters with the last good configuration in NSX Mgr database
     uriParameters:
@@ -3072,7 +3458,7 @@ securitySchemes:
     post:
       displayName: dfwEnableDisableAPI
       description: Enable or disable firewall components on a cluster
-  /{contextId}/config/ipfix: #PDF pg 322
+  /{contextId}/config/ipfix:
     displayName: dfwIPFix
     description: Export specific flows directly from firewall to a flow collector
     uriParameters:
@@ -3091,7 +3477,7 @@ securitySchemes:
     delete:
       displayName: dfwIPFixDelete
       description: Deleting IPFix configuration resets the config to default values
-/4.0/services/spoofguard/policies: #PDF pg 311
+/4.0/services/spoofguard/policies:
   displayName: spoofGuardPolicies
   description: SpoofGuard policies
   post:
@@ -3099,6 +3485,18 @@ securitySchemes:
     description: Create a SpoofGuard policy to specify the operation mode for networks.
     body:
       application/xml:
+        example: |
+          <spoofguardPolicy>
+            <name></name>
+            <description></description>
+            <operationMode></operationMode>
+            <enforcementPoint>
+              <id></id>
+              <name></name>
+              <type></type>
+            </enforcementPoint>
+            <allowLocalIPs></allowLocalIPs>
+          </spoofguardPolicy>
         schema: spoofGuardPoliciesCreate
   get:
     displayName: spoofGuardPoliciesRead
@@ -3116,7 +3514,26 @@ securitySchemes:
           description: set to "approve" along with specified IP addresses in body to approve them, or set to "publish" to publish the approved IP addresses
       body:
         application/xml:
-            schema: spoofGuardPolicyApprove
+          example: |
+            <spoofguardList>
+              <spoofguard>
+                <id></id>
+                <vnicUuid></vnicUuid>
+                <approvedIpAddress>
+                  <ipAddress></ipAddress>
+                </approvedIpAddress>
+                <approvedMacAddress></approvedMacAddress>
+                <approvedBy></approvedBy>
+                <approvedOn></approvedOn>
+                <publishedIpAddress>
+                  <ipAddress></ipAddress>
+                </publishedIpAddress>
+                <publishedMacAddress></publishedMacAddress>
+                <publishedBy></publishedBy>
+                <publishedOn></publishedOn>
+              </spoofguard>
+            </spoofguardList>
+          schema: spoofGuardPolicyApprove
     get:
       displayName: spoofGuardPolicyRead
       description: Retrieve policy information, or use the query parameters to perform operations
@@ -3129,7 +3546,20 @@ securitySchemes:
       description: Modify SpoofGuard policy
       body:
         application/xml:
-            schema: spoofGuardPolicyUpdate
+          example: |
+            <spoofguardPolicy>
+              <policyId></policyId>
+              <name></name>
+              <description></description>
+              <operationMode></operationMode>
+              <enforcementPoint>
+                <id></id>
+                <name></name>
+                <type></type>
+              </enforcementPoint>
+              <allowLocalIPs></allowLocalIPs>
+            </spoofguardPolicy>
+          schema: spoofGuardPolicyUpdate
     delete:
       displayName: spoofGuardPolicyDelete
       description: Delete a policy
@@ -3302,7 +3732,7 @@ securitySchemes:
           serviceId:
             displayName: serviceId
             description: Service identifier of application to query
-  /config: #PDF pg 321
+  /config:
     displayName: flowsExclude
     description: Exclude specified flows
     post:
@@ -3320,7 +3750,7 @@ securitySchemes:
   get:
     displayName: dfwExclusionRead
     description: Retrieve the set of vm's in the exclusion list
-  /{memberID}: #PDF pg 323
+  /{memberID}:
     displayName: dfwExcludeMember
     description: Exclude VM's from firewall protection
     uriParameters:
@@ -3333,7 +3763,7 @@ securitySchemes:
     delete:
       displayName: dfwExclusionDelete
       description: Delete a vm from exclusion list
-/4.0/edges: # PDF page 150
+/4.0/edges:
   displayName: nsxEdges
   description: Installed NSX Edges in your inventory
   post:
@@ -3404,7 +3834,7 @@ securitySchemes:
         body:
           application/xml:
             schema: edgeDnsUpdate
-    /aesni: #PDF pg 256
+    /aesni:
       displayName: aesni
       description: AESNI Setting
       post:
@@ -3415,7 +3845,7 @@ securitySchemes:
             type: boolean
             required: true
             displayName: enable
-    /coredump: #PDF pg 256
+    /coredump:
       displayName: coreDump
       description: Enabling core-dump feature results in deployment of inbuilt extra disk to save core-dump files. 1GB for compact edge and 8GB for other types. Disabling detaches the disk
       post:
@@ -3431,7 +3861,7 @@ securitySchemes:
           enable:
             type: boolean
             required: true
-            displayName: enable  #PDF pg 257
+            displayName: enable
     /logging:
       displayName: logging
       description: Log setting
@@ -3440,14 +3870,14 @@ securitySchemes:
         description: Modify log setting
         queryParameters:
           level:
-            displayName: level  #PDF pg 257
-    /summary: #PDF pg 257
+            displayName: level
+    /summary:
       displayName: summary
       description: Edge summary
       get:
         displayName: summaryRead
         description: Retrieve details about the specified Edge
-    /status: #PDF pg 259
+    /status:
       displayName: status
       description: Edge status
       get:
@@ -3466,7 +3896,7 @@ securitySchemes:
             type: boolean
             displayName: preRulesStatus
             description: true = fetch detailed output for pre rules in addition to the regular output
-    /techsupportlogs: #PDF pg 261
+    /techsupportlogs:
       displayName: techSupportLogs
       description: Tech support logs for specified Edge
       get:
@@ -3717,7 +4147,7 @@ securitySchemes:
         delete:
           displayName: routingBGPDelete
           description: Delete BGP Routing
-    /bridging/config: #PDF pg 147
+    /bridging/config:
       displayName: bridging
       description: Working with L2 bridging
       get:
@@ -3743,6 +4173,69 @@ securitySchemes:
         description: Configure load balancer
         body:
           application/xml:
+            example: |
+              <loadBalancer>
+                <enabled></enabled>
+                <enableServiceInsertion></enableServiceInsertion>
+                <accelerationEnabled></accelerationEnabled>
+                <logging>
+                  <enable></enable>
+                  <logLevel></logLevel>
+                </logging>
+                <virtualServer>
+                  <virtualServerId></virtualServerId>
+                  <name></name>
+                  <description></description>
+                  <enabled></enabled>
+                  <ipAddress></ipAddress>
+                  <protocol></protocol>
+                  <port></port>
+                  <connectionLimit></connectionLimit>
+                  <connectionRateLimit></connectionRateLimit>
+                  <applicationProfileId></applicationProfileId>
+                  <defaultPoolId></defaultPoolId>
+                  <enableServiceInsertion></enableServiceInsertion>
+                  <accelerationEnabled></accelerationEnabled>
+                </virtualServer>
+                <applicationProfile>
+                  <applicationProfileId></applicationProfileId>
+                  <name></name>
+                  <insertXForwardedFor></insertXForwardedFor>
+                  <sslPassthrough></sslPassthrough>
+                  <persistence>
+                    <method></method>
+                    <cookieName></cookieName>
+                    <cookieMode></cookieMode>
+                  </persistence>
+                </applicationProfile>
+                <pool>
+                  <poolId></poolId>
+                  <name></name>
+                  <description></description>
+                  <transparent></transparent>
+                  <algorithm></algorithm>
+                  <monitorId></monitorId>
+                  <member>
+                    <memberId></memberId>
+                    <ipAddress></ipAddress>
+                    <weight></weight>
+                    <port></port>
+                    <minConn></minConn>
+                    <maxConn></maxConn>
+                    <name></name>
+                  </member>
+                </pool>
+                <monitor>
+                  <monitorId></monitorId>
+                  <type></type>
+                  <interval></interval>
+                  <timeout></timeout>
+                  <maxRetries></maxRetries>
+                  <method></method>
+                  <url></url>
+                  <name></name>
+                </monitor>
+              </loadBalancer>
             schema: loadBalancerConfig
       delete:
         displayName: loadBalancerDelete
@@ -3848,6 +4341,16 @@ securitySchemes:
             description: Modify a load balancer monitor
             body:
               application/xml:
+                example: |
+                  <monitor>
+                    <type></type>
+                    <interval></interval>
+                    <timeout></timeout>
+                    <maxRetries></maxRetries>
+                    <method></method>
+                    <url></url>
+                    <name></name>
+                  </monitor>
                 schema: lbMonitorUpdate
           delete:
             displayName: lbMonitorDelete
@@ -3860,7 +4363,22 @@ securitySchemes:
           description: Add a virtual server
           body:
             application/xml:
-                schema: virtualServersCreate
+              example: |
+                <virtualServer>
+                  <name></name>
+                  <description></description>
+                  <enabled></enabled>
+                  <ipAddress></ipAddress>
+                  <protocol></protocol>
+                  <port></port>
+                  <connectionLimit></connectionLimit>
+                  <connectionRateLimit></connectionRateLimit>
+                  <applicationProfileId></applicationProfileId>
+                  <defaultPoolId></defaultPoolId>
+                  <enableServiceInsertion></enableServiceInsertion>
+                  <accelerationEnabled></accelerationEnabled>
+                </virtualServer>
+              schema: virtualServersCreate
         get:
           displayName: virtualServersRead
           description: Retrieve all virtual servers
@@ -3889,7 +4407,24 @@ securitySchemes:
           description: Add a load balancer server pool to the Edge
           body:
             application/xml:
-                schema: poolsCreate
+              example: |
+                <pool>
+                  <name></name>
+                  <description></description>
+                  <transparent></transparent>
+                  <algorithm></algorithm>
+                  <monitorId></monitorId>
+                  <member>
+                    <ipAddress></ipAddress>
+                    <weight></weight>
+                    <port></port>
+                    <minConn></minConn>
+                    <maxConn></maxConn>
+                    <name></name>
+                    <monitorPort></monitorPort>
+                  </member>
+                </pool>
+              schema: poolsCreate
         get:
           displayName: poolsRead
           description: Get all backend pools for the specified NSX Edge
@@ -3912,7 +4447,24 @@ securitySchemes:
             description: Modify the specified pool
             body:
               application/xml:
-                  schema: poolUpdate
+                example: |
+                  <pool>
+                    <name></name>
+                    <description></description>
+                    <transparent></transparent>
+                    <algorithm></algorithm>
+                    <monitorId></monitorId>
+                    <member>
+                      <ipAddress></ipAddress>
+                      <weight></weight>
+                      <port></port>
+                      <minConn></minConn>
+                      <maxConn></maxConn>
+                      <name></name>
+                      <monitorPort></monitorPort>
+                    </member>
+                  </pool>
+                schema: poolUpdate
           delete:
             displayName: poolDelete
             description: Delete backend pool
@@ -4072,6 +4624,13 @@ securitySchemes:
         description: Configure syslog servers
         body:
           application/xml:
+            example: |
+              <syslog>
+                <protocol></protocol>
+                <serverAddresses>
+                  <ipAddress></ipAddress>
+                </serverAddresses>
+              </syslog>
             schema: syslogUpdate
       delete:
         displayName: syslogDelete
@@ -4096,6 +4655,16 @@ securitySchemes:
         description: Reconfigure the entire SSL VPN
         body:
           application/xml:
+            example: |
+              <logonLogoffScript>
+                <logonLogoffScript>
+                  <objectId></objectId>
+                  <scriptFileId></scriptFileId>
+                  <type></type>
+                  <enabled></enabled>
+                  <description></description>
+                </logonLogoffScript>
+              </logonLogoffScript>
             schema: sslVPNUpdate
       delete:
         displayName: sslVPNDelete
@@ -4251,7 +4820,7 @@ securitySchemes:
             body:
               application/xml:
                 schema: layoutUpdate
-      /webresources: #PDF pg 222
+      /webresources:
         displayName: webResources
         description: Web access server that a remote user can connect to via a web browser
         post:
@@ -4259,7 +4828,17 @@ securitySchemes:
           description: Add portal web resource
           body:
             application/xml:
-                schema: webResourcesCreate
+              example: |
+                <webResource>
+                  <name></name>
+                  <url></url>
+                  <method name="">
+                    <data></data>
+                  </method>
+                  <description></description>
+                  <enabled></enabled>
+                </webResource>
+              schema: webResourcesCreate
         get:
           displayName: webResourcesRead
           description: Get all web resources on the SSL VPN instance
@@ -4283,7 +4862,7 @@ securitySchemes:
           delete:
             displayName: webResourceDelete
             description: Delete the specified web access server
-      /auth/localserver/users: #PDF pg 224
+      /auth/localserver/users:
         displayName: sslVPNUsers
         description: Portal users
         post:
@@ -4291,13 +4870,39 @@ securitySchemes:
           description: Add a new portal user
           body:
             application/xml:
-                schema: usersCreate
+              example: |
+                <user>
+                  <userId></userId>
+                  <password></password>
+                  <firstName></firstName>
+                  <lastName></lastName>
+                  <description></description>
+                  <disableUserAccount></disableUserAccount>
+                  <passwordNeverExpires></passwordNeverExpires>
+                  <allowChangePassword>
+                    <changePasswordOnNextLogin></changePasswordOnNextLogin>
+                  </allowChangePassword>
+                </user>
+              schema: usersCreate
         put:
           displayName: usersUpdate
           description: Modify the specified portal user
           body:
             application/xml:
-                schema: usersUpdate
+              example: |
+                <user>
+                  <userId></userId>
+                  <password></password>
+                  <firstName></firstName>
+                  <lastName></lastName>
+                  <description></description>
+                  <disableUserAccount></disableUserAccount>
+                  <passwordNeverExpires></passwordNeverExpires>
+                  <allowChangePassword>
+                    <changePasswordOnNextLogin></changePasswordOnNextLogin>
+                  </allowChangePassword>
+                </user>
+              schema: usersUpdate
         delete:
           displayName: usersDelete
           description: Delete all users on the specifed SSL VPN instance
@@ -4328,7 +4933,7 @@ securitySchemes:
           post:
             displayName: rsaConfigCreate
             description: Upload RSA config file (See "Generate the Authentication Manager Configuration File" section of the RSA Authentication Manager Administrator's guide for instructions on how to configure and download the RSA config file from RSA Authentication Manager)
-      /advancedconfig: # PDF pg 236
+      /advancedconfig:
         displayName: advancedConfig
         description: SSL VPN advanced configuration
         get:
@@ -4339,7 +4944,21 @@ securitySchemes:
           description: Apply advanced configuration
           body:
             application/xml:
-                schema: advancedConfigUpdate
+              example: |
+                <advancedConfig>
+                  <enableCompression></enableCompression>
+                  <forceVirtualKeyboard></forceVirtualKeyboard>
+                  <preventMultipleLogon></preventMultipleLogon>
+                  <randomizeVirtualkeys></randomizeVirtualkeys>
+                  <timeout>
+                    <forcedTimeout></forcedTimeout>
+                    <sessionIdleTimeout></sessionIdleTimeout>
+                  </timeout>
+                  <clientNotification></clientNotification>
+                  <enablePublicUrlAccess></enablePublicUrlAccess>
+                  <enableLogging></enableLogging>
+                </advancedConfig>
+              schema: advancedConfigUpdate
       /script:
         displayName: script
         description: Logon and logoff scripts for NSX Edge gateway
@@ -4348,7 +4967,14 @@ securitySchemes:
           description: Configure parameters associated with the uploaded script file
           body:
             application/xml:
-                schema: scriptCreate
+              example: |
+                <logonLogoffScript>
+                  <scriptFileId></scriptFileId>
+                  <type></type>
+                  <description></description>
+                  <enabled></enabled>
+                </logonLogoffScript>
+              schema: scriptCreate
         get:
           displayName: scriptRead
           description: Retrieve all script configurations for the Edge
@@ -4395,8 +5021,23 @@ securitySchemes:
         description: Update all users with the given list of users. If the user is present, it is updated. Otherwise, and new user is created. Existing users not included in the body are deleted.
         body:
           application/xml:
+            example: |
+              <users>
+                <user>
+                  <userId></userId>
+                  <password></password>
+                  <firstName></firstName>
+                  <lastName></lastName>
+                  <description></description>
+                  <disableUserAccount></disableUserAccount>
+                  <passwordNeverExpires></passwordNeverExpires>
+                  <allowChangePassword>
+                    <changePasswordOnNextLogin></changePasswordOnNextLogin>
+                  </allowChangePassword>
+                </user>
+              </users>
             schema: allUsersUpdate
-    /sslvpn/activesessions: #PDF pg 237
+    /sslvpn/activesessions:
       displayName: sslVPNActiveClients
       description: Working with active clients
       get:
@@ -4413,7 +5054,7 @@ securitySchemes:
         delete:
           displayName: sessionDelete
           description: Disconnect an active client
-    /statistics/dashboard/sslvpn: #PDF pg 246
+    /statistics/dashboard/sslvpn:
       displayName: sslVPNStats
       description: SSL VPN statistics on the specified NSX Edge
       get:
@@ -4423,13 +5064,13 @@ securitySchemes:
           interval:
             displayName: interval
             description: Specify a range; can be 1 - 60 minutes, or oneDay|oneWeek|oneMonth|oneYear. Default is 60 minutes
-    /statistics/dashboard/ipsec: #PDF pg 255
+    /statistics/dashboard/ipsec:
       displayName: ipsecTrafficStats
       description: Tunnel traffic statistics
       get:
         displayName: ipsecTrafficStatsRead
         description: Retrieve tunnel traffic statistics for specified time interval. Default is 1 hour. Other possible values are 1-60 minutes|oneDay|oneWeek|oneMonth|oneYear
-    /statistics/dashboard/interface: #PDF pg 276
+    /statistics/dashboard/interface:
       displayName: vnicDashStats
       description: Dashboard statistics
       get:
@@ -4440,13 +5081,13 @@ securitySchemes:
             required: true
             displayName: interval
             description: Specify a start and end time range in seconds
-    /statistics/interfaces: #PDF pg 275
+    /statistics/interfaces:
       displayName: vnicStats
       description: Interface statistics
       get:
         displayName: vnicStatsRead
         description: Get interface statistics
-      /uplink: #PDF pg 275
+      /uplink:
         displayName: uplinkVNICStats
         description: Uplink interface statistics
         get:
@@ -4458,7 +5099,7 @@ securitySchemes:
         get:
           displayName: internalVNICStatsRead
           description: Get internal interface statistics
-    /l2vpn/config: #PDF pg 248
+    /l2vpn/config:
       displayName: l2VPN
       description: L2 VPN allows you to configure a tunnel between two sites. VM's remain on the same subnet in spite of being moved between these sites, enabling you to extend your datacenter. An NSX Edge at one site can provide all services to VM's on the other site.
       post:
@@ -4477,7 +5118,7 @@ securitySchemes:
         displayName: l2VPNUpdate
         description: Configure L2VPN for server or client
         body:
-          application/xml: #PDF pg 248-9 (for both server and client)
+          application/xml:
       delete:
         displayName: l2VPNDelete
         description: Delete L2 VPN
@@ -4487,7 +5128,7 @@ securitySchemes:
         get:
           displayName: statisticsRead
           description: Retrieve L2 VPN stats, which has information such as tunnel status, sent bytes, received bytes etc. for the given Edge
-    /ipsec/config: #PDF pg 252
+    /ipsec/config:
       displayName: ipsecConfig
       description: Working with IPSEC VPN
       get:
@@ -4497,7 +5138,7 @@ securitySchemes:
         displayName: ipsecConfigUpdate
         description: Configure IPSEC VPN
         body:
-          application/xml: #PDF 252
+          application/xml:
       delete:
         displayName: ipsecConfigDelete
         description: Delete the IPSec configuration
@@ -4517,9 +5158,9 @@ securitySchemes:
         displayName: autoConfigUpdate
         description: Change the auto configuration settings for the NSX Edge
         body:
-          application/xml: #PDF pg 262
+          application/xml:
             schema: autoConfigUpdate
-    /appliances: #PDF pg 263
+    /appliances:
       displayName: appliances
       description: Working with Edge appliances
       post:
@@ -4556,7 +5197,7 @@ securitySchemes:
         delete:
           displayName: applianceDelete
           description: Delete the appliance
-    /vnics: #PDF pg266
+    /vnics:
       displayName: vnics
       description: Working with interfaces. Add up to ten internal/uplink interfaces to each Edge. Each Edge must have at least one internal interface
       post:
@@ -4568,7 +5209,7 @@ securitySchemes:
             displayName: action
             description: always set to "patch"
         body:
-          application/xml: #PDF pg 266
+          application/xml:
       get:
         displayName: vnicsRead
         description: Retrieve all interfaces for Edge
@@ -4587,11 +5228,11 @@ securitySchemes:
           displayName: vnicUpdate
           description: Modify the specified interface
           body:
-            application/xml: #PDF pg 271
+            application/xml:
         delete:
           displayName: vnicDelete
           description: Delete interface
-    /mgmtinterface: #PDF pg 128
+    /mgmtinterface:
       displayName: mgmtInterface
       description: Working with management interfaces for an NSX Edge router
       get:
@@ -4603,7 +5244,7 @@ securitySchemes:
         body:
           application/xml:
             schema: mgmtInterfaceUpdate
-    /interfaces: #PDF pg 129
+    /interfaces:
       displayName: interfaces
       description: Working with all NSX Edge router interfaces
       post:
@@ -4662,7 +5303,7 @@ securitySchemes:
       get:
         displayName: nsxEdgeJobRead
         description: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of the resource, and ID of the resource as shown in response body
-/3.0/edges/{edgeID}: #PDF pg 75
+/3.0/edges/{edgeID}:
   displayName: nsxEdgeUpgrade
   description: Upgrading NSX Edge
   uriParameters:
@@ -4729,7 +5370,7 @@ securitySchemes:
       delete:
         displayName: certificateDelete
         description: Delete the specified certificate
-  /csr/{scopeId}: #PDF pg 160
+  /csr/{scopeId}:
     displayName: csrCreate
     description: Create Certificate Signing Requests (CSRs)
     uriParameters:
@@ -4742,8 +5383,19 @@ securitySchemes:
       description: Create a CSR
       body:
         application/xml:
-            schema: csrCreate
-  /csr/{csrId}: #PDF pg 161
+          example: |
+            <csr>
+              <subject>
+                <attribute>
+                  <key></key>
+                  <value></value>
+                </attribute>
+              </subject>
+              <algorithm></algorithm>
+              <keySize></keySize>
+            </csr>
+          schema: csrCreate
+  /csr/{csrId}:
     displayName: csrSelfSigned
     description: Self signed certificate for CSR
     uriParameters:
@@ -4761,7 +5413,7 @@ securitySchemes:
     get:
       displayName: csrSelfSignedRead
       description: Retrieve specific CSR
-  /csr/scope/{scopeId}: #PDF pg 161
+  /csr/scope/{scopeId}:
     displayName: csrScope
     description: CSRs for specific scope
     uriParameters:
@@ -4772,7 +5424,7 @@ securitySchemes:
     get:
       displayName: csrScopeRead
       description: Query CSRs for specific scope
-  /crl/{scopeId}: #PDF pg 162
+  /crl/{scopeId}:
     displayName: crlScopeCreate
     description: Create Certificate Revocation Lists (CRLs) on a specified scope
     uriParameters:
@@ -4786,7 +5438,7 @@ securitySchemes:
       body:
         application/xml:
             schema: crlScopeCreate
-  /crl/scope/{scopeId}: #PDF pg 162
+  /crl/scope/{scopeId}:
     displayName: crlScopeRead
     description: Retrieve all certificates for the specified scope
     uriParameters:
@@ -4797,7 +5449,7 @@ securitySchemes:
     get:
       displayName: crlScopeRead
       description: Retrieve all certificates for the specified scope
-  /crl/{crlId}: #PDF pg 162
+  /crl/{crlId}:
     displayName: crlID
     description: CRL certificates for specified certificate
     uriParameters:
@@ -4814,7 +5466,7 @@ securitySchemes:
 /2.0/services/policy:
   displayName: policy
   description: Operations on policy objects
-  /securitypolicy: #PDF pg 326
+  /securitypolicy:
     displayName: securityPolicy
     description: Working with security policies (Endpoint, firewall, network introspection services applied to security group)
     post:
@@ -4854,7 +5506,7 @@ securitySchemes:
         get:
           displayName: securityActionsRead
           description: Retrieve security actions for a security policy
-    /hierarchy: #PDF pg 333
+    /hierarchy:
       displayName: hierarchy
       description: Security policy configuration import/export
       post:
@@ -4877,7 +5529,7 @@ securitySchemes:
           prefix:
             displayName: prefix
             description: (optional) Some prefix to add before the names of the objects in the exported XML
-  /securityaction/category/virtualmachines: #PDF pg 334
+  /securityaction/category/virtualmachines:
     displayName: securityActionVM
     description: Virtual machines for a security action
     get:
@@ -4890,7 +5542,7 @@ securitySchemes:
         attributeValue:
           displayName: attributeValue
           description: Attribute value
-  /securitygroup/{ID}/securityactions: #PDF p 335
+  /securitygroup/{ID}/securityactions:
     displayName: securityActionSecGroup
     description: Security actions on a security group
     uriParameters:
@@ -4900,7 +5552,7 @@ securitySchemes:
     get:
       displayName: securityActionRead
       description: Query all security actions applicable on a security group
-  /virtualmachine/{ID}/securityactions: #PDF p 339
+  /virtualmachine/{ID}/securityactions:
     displayName: vmApplicableSecurityAction
     description: Fetch the security actions applicable on a virtual machine
     uriParameters:
@@ -4910,13 +5562,13 @@ securitySchemes:
     get:
       displayName: vmApplicableSecurityAction
       description: Fetch the security actions applicable on a virtual machine
-  /policy/serviceprovider/firewall: #PDF pg 339
+  /policy/serviceprovider/firewall:
     displayName: serviceComposerDFWSync
     description: Synchronizing Service Composer rules with distributed firewall
     get:
       displayName: serviceComposerDFWSyncRead
       description: Query the time since when Service Composer firewall is out of sync with dfw, or synchronize Service Composer firewall with dfw
-  /policy/securitygroup/{ID}/securitypolicies: #PDF pg 340
+  /policy/securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
     description: Retrieve security policies mapped to a security group
     uriParameters:
