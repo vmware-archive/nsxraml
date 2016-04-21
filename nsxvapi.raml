@@ -688,6 +688,10 @@ securitySchemes:
       description: Modify cluster configuration information for controller
       body:
         application/xml:
+          example: |
+            <controllerConfig>
+              <sslEnabled></sslEnabled>
+            </controllerConfig>
           schema: clusterUpdate
   /credential:
     displayName: nsxControllerPassword
@@ -833,7 +837,7 @@ securitySchemes:
                 <objectTypeName></objectTypeName>
                 <name></name>
               </scope>
-              <extendedAttributes></extendedAttrubues>
+              <extendedAttributes></extendedAttrubutes>
               <inheritanceAllowed></inheritanceAllowed>
               <member>
                 <objectId></objectId>
@@ -1000,6 +1004,16 @@ securitySchemes:
     description: Create a new security tag
     body:
       application/xml:
+        example: |
+          <securityTag>
+            <objectTypeName></objectTypeName>
+            <type>
+              <typeName></typeName>
+            </type>
+            <name></name>
+            <description></description>
+            <extendedAttributes></extendedAttributes>
+          </securityTag>
         schema: securityTagCreate
   get:
     displayName: securityTagRead
@@ -1172,6 +1186,71 @@ securitySchemes:
       description: Create a new security group on a global scope
       body:
         application/xml:
+          example: |
+            <securitygroup>
+              <objectId></objectId>
+              <objectTypeName></objectTypeName>
+              <vsmUuid></vsmUuid>
+              <revision></revision>
+              <type>
+                <typeName></typeName>
+              </type>
+              <name></name>
+              <scope>
+                <id></id>
+                <objectTypeName></objectTypeName>
+                <vsmUuid></vsmUuid>
+                <name></name>
+                <revision></revision>
+              </scope>
+              <clientHandle></clientHandle>
+              <extendedAttributes></extendedAttributes>
+              <member>
+                <objectId></objectId>
+                <objectTypeName></objectTypeName>
+                <vsmUuid></vsmUuid>
+                <revision></revision>
+                <type>
+                  <typeName></typeName>
+                </type>
+                <name></name>
+                <scope>
+                  <id></id>
+                  <objectTypeName></objectTypeName>
+                  <name></name>
+                </scope>
+                <clientHandle></clientHandle>
+                <extendedAttributes></extendedAttributes>
+              </member>
+              <excludeMember>
+                <objectId></objectId>
+                <objectTypeName></objectTypeName>
+                <vsmUuid></vsmUuid>
+                <revision></revision>
+                <type>
+                  <typeName></typeName>
+                </type>
+                <name></name>
+                <scope>
+                  <id></id>
+                  <objectTypeName></objectTypeName>
+                  <name></name>
+                </scope>
+                <clientHandle></clientHandle>
+                <extendedAttributes></extendedAttributes>
+              </excludeMember>
+              <dynamicMemberDefinition>
+                <dynamicSet>
+                  <operator></operator>
+                  <dynamicCriteria>
+                    <operator></operator>
+                    <key></key>
+                    <criteria></criteria>
+                    <value></value>
+                  </dynamicCriteria>
+                </dynamicSet>
+              </dynamicMemberDefinition>
+            </securitygroup>
           schema: secGroupGlobalCreate
   /bulk/{objectId}:
     displayName: secGroupUpdate
@@ -1186,6 +1265,71 @@ securitySchemes:
       description: Update a specific security group
       body:
         application/xml:
+          example: |
+            <securitygroup>
+              <objectId></objectId>
+              <objectTypeName></objectTypeName>
+              <vsmUuid></vsmUuid>
+              <revision></revision>
+              <type>
+                <typeName></typeName>
+              </type>
+              <name></name>
+              <scope>
+                <id></id>
+                <objectTypeName></objectTypeName>
+                <vsmUuid></vsmUuid>
+                <name></name>
+                <revision></revision>
+              </scope>
+              <clientHandle></clientHandle>
+              <extendedAttributes></extendedAttributes>
+              <member>
+                <objectId></objectId>
+                <objectTypeName></objectTypeName>
+                <vsmUuid></vsmUuid>
+                <revision></revision>
+                <type>
+                  <typeName></typeName>
+                </type>
+                <name></name>
+                <scope>
+                  <id></id>
+                  <objectTypeName></objectTypeName>
+                  <name></name>
+                </scope>
+                <clientHandle></clientHandle>
+                <extendedAttributes/>
+              </member>
+              <excludeMember>
+                <objectId></objectId>
+                <objectTypeName></objectTypeName>
+                <vsmUuid></vsmUuid>
+                <revision></revision>
+                <type>
+                  <typeName></typeName>
+                </type>
+                <name></name>
+                <scope>
+                  <id></id>
+                  <objectTypeName></objectTypeName>
+                  <name></name>
+                </scope>
+                <clientHandle></clientHandle>
+                <extendedAttributes><extendedAttributes/>
+              </excludeMember>
+              <dynamicMemberDefinition>
+                <dynamicSet>
+                  <operator></operator>
+                  <dynamicCriteria>
+                    <operator></operator>
+                    <key></key>
+                    <criteria></criteria>
+                    <value></value>
+                  </dynamicCriteria>
+                </dynamicSet>
+              </dynamicMemberDefinition>
+            </securitygroup>
           schema: secGroupBulkObjectUpdate
   /scope/{scopeId}:
     displayName: secGroupScope
@@ -1901,6 +2045,10 @@ securitySchemes:
       description: Update the locale ID on a cluster
       body:
         application/xml:
+          example: |
+            <nwFabricClusterConfig>
+              <localeId></localeId>
+            </nwFabricClusterConfig>
           schema: nwfabricClustersUpdate
     delete:
       displayName: nwfabricClustersDelete
@@ -1916,6 +2064,10 @@ securitySchemes:
       description: Update the locale ID on a host
       body:
         application/xml:
+          example: |
+            <nwFabricHostConfig>
+              <localeId></localeId>
+            </nwFabricHostConfig>
           schema: nwfabricHostsUpdate
     delete:
       displayName: nwfabricHostsDelete
@@ -1932,6 +2084,20 @@ securitySchemes:
         description: Time to start deployment task. If not specified, deploy immediately
     body:
       application/xml:
+        example: |
+          <clusterDeploymentConfigs>
+            <clusterDeploymentConfig>
+              <clusterId></clusterId>
+              <datastore></datastore>
+              <services>
+                <serviceDeploymentConfig>
+                  <serviceId></serviceId>
+                  <dvPortGroup></dvPortGroup>
+                  <ipPool></ipPool>
+                </serviceDeploymentConfig>
+              </services>
+            </clusterDeploymentConfig>
+          </clusterDeploymentConfigs>
         schema: securityFabricCreate
   put:
     displayName: serviceUpgrade
@@ -2033,7 +2199,11 @@ securitySchemes:
       description: Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
       body:
         application/xml:
-            schema: dlpEnableRegulation
+          example: |
+            <set>
+              <long></long>
+            </set>
+          schema: dlpEnableRegulation
   /classificationvalue:
     displayName: dlpClassificationValue
     description: Classification values associated with regulations
@@ -2063,7 +2233,11 @@ securitySchemes:
       description: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead) Exclude areas from policy inspection
       body:
         application/xml:
-            schema: dlpExcludeArea
+          example: |
+            <set>
+              <string></string>
+            </set>
+          schema: dlpExcludeArea
   /policy/includedsecuritygroups:
     displayName: dlpIncludeSecGroup
     description: Include security groups in data security scan
@@ -2087,7 +2261,12 @@ securitySchemes:
       description: Exclude security groups in data security scan
       body:
         application/xml:
-            schema: dlpExcludeSecGroupUpdate
+          example: |
+            <set>
+              <string></string>
+              <string></string>
+              </set>
+          schema: dlpExcludeSecGroupUpdate
   /policy/FileFilters:
     displayName: dlpFileFilters
     description: Configure file filters for scanning
@@ -2123,7 +2302,9 @@ securitySchemes:
       description: Start, pause, resume, or stop a data security scan
       body:
         application/xml:
-            schema: dlpScanning
+          example: |
+            <ScanOp></ScanOp>
+          schema: dlpScanning
   /scanstatus:
     displayName: dlpScanStatus
     description: Retrieve the status of a scan operation
@@ -3293,6 +3474,20 @@ securitySchemes:
             description: Add L3 redirect rule
             body:
               application/xml:
+                example: |
+                  <section id="" name="" generationNumber="" timestamp="">
+                    <name></name>
+                    <action></action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId></sectionId>
+                  </section>
                 schema: rulesCreate
           /{ruleID}:
             displayName: rule
@@ -3315,6 +3510,19 @@ securitySchemes:
                   description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
               body:
                 application/xml:
+                  example: |
+                    <rule id="" disabled="" logged="">
+                      <name></name>
+                      <action></action>
+                      <appliedToList>
+                        <appliedTo>
+                          <name></name>
+                          <value></value>
+                          <type></type>
+                          <isValid></isValid>
+                        </appliedTo>
+                      </appliedToList>
+                    </rule>
                   schema: ruleUpdate
             delete:
               displayName: ruleDelete
@@ -3840,6 +4048,21 @@ securitySchemes:
         description: Update Edge DNS settings
         body:
           application/xml:
+            example: |
+              <dns>
+                <enabled></enabled>
+                <dnsServers>
+                  <ipAddress></ipAddress>
+                </dnsServers>
+                <cacheSize></cacheSize>
+                <listeners>
+                  <ipAddress></ipAddress>
+                </listeners>
+                <logging>
+                  <logLevel></logLevel>
+                  <enable></enable>
+                </logging>
+              </dns>
             schema: edgeDnsUpdate
     /aesni:
       displayName: aesni
@@ -4000,7 +4223,12 @@ securitySchemes:
           description: Configure default firewall policy
           body:
             application/xml:
-                schema: defaultFirewallPolicyUpdate
+              example: |
+                <firewallDefaultPolicy>
+                  <action></action>
+                  <loggingEnabled></loggingEnabled>
+                </firewallDefaultPolicy>
+              schema: defaultFirewallPolicyUpdate
     /firewall/statistics/firewall:
       displayName: firewallStatistics
       description: Edge firewall statistics
@@ -4090,7 +4318,22 @@ securitySchemes:
           description: Configure global route
           body:
             application/xml:
-                schema: routingGlobalConfigUpdate
+              example: |
+                <routingGlobalConfig>
+                  <routerId></routerId>
+                  <ecmp></ecmp>
+                  <logging>
+                    <enable></enable>
+                    <logLevel></logLevel>
+                  </logging>
+                  <ipPrefixes>
+                    <ipPrefix>
+                      <name></name>
+                      <ipAddress></ipAddress>
+                    </ipPrefix>
+                  </ipPrefixes>
+                </routingGlobalConfig>
+              schema: routingGlobalConfigUpdate
         get:
           displayName: routingGlobalConfigRead
           description: Retrieve routing info from NSX Mgr database (default route settings, static route configurations)
@@ -4120,7 +4363,47 @@ securitySchemes:
           description: Configure OSPF
           body:
             application/xml:
-                schema: routingOSPFUpdate
+              example: |
+                <ospf>
+                  <enabled></enabled>
+                  <ospfAreas>
+                    <ospfArea>
+                      <areaId></areaId>
+                      <type></type>
+                      <authentication>
+                        <type></type>
+                        <value></value>
+                      </authentication>
+                    </ospfArea>
+                  </ospfAreas>
+                  <ospfInterfaces>
+                    <ospfInterface>
+                      <vnic></vnic>
+                      <areaId></areaId>
+                      <helloInterval></helloInterval>
+                      <deadInterval></deadInterval>
+                      <priority></priority>
+                      <cost></cost>
+                    </ospfInterface>
+                  </ospfInterfaces>
+                  <redistribution>
+                    <enabled></enabled>
+                    <rules>
+                      <rule>
+                        <prefixName></prefixName>
+                        <from>
+                          <isis></isis>
+                          <ospf></ospf>
+                          <bgp></bgp>
+                          <static></static>
+                          <connected></connected>
+                        </from>
+                        <action></action>
+                      </rule>
+                    </rules>
+                  </redistribution>
+                </ospf>
+              schema: routingOSPFUpdate
         delete:
           displayName: routingOSPFDelete
           description: Delete OSPF routing
@@ -4135,7 +4418,47 @@ securitySchemes:
           description: Config ISIS
           body:
             application/xml:
-                schema: routingISISUpdate
+              example: |
+                <isis>
+                  <enabled></enabled>
+                  <systemId></systemId>
+                  <areaIds>
+                    <areaId></areaId>
+                  </areaIds>
+                  <isType></isType>
+                  <domainPassword></domainPassword>
+                  <areaPassword></areaPassword>
+                  <isisInterfaces>
+                    <isisInterface>
+                      <vnic></vnic>
+                      <meshGroup></meshGroup>
+                      <helloInterval></helloInterval>
+                      <helloMultiplier></helloMultiplier>
+                      <lspInterval></lspInterval>
+                      <metric></metric>
+                      <priority></priority>
+                      <circuitType></circuitType>
+                      <password></password>
+                    </isisInterface>
+                  </isisInterfaces>
+                  <redistribution>
+                    <enabled></enabled>
+                      <rules>
+                        <rule>
+                          <prefixName></prefixName>
+                            <from>
+                              <isis></isis>
+                              <ospf></ospf>
+                              <bgp></bgp>
+                              <static></static>
+                              <connected></connected>
+                            </from>
+                            <action></action>
+                          </rule>
+                      </rules>
+                  </redistribution>
+                </isis>
+              schema: routingISISUpdate
         delete:
           displayName: routingISISDelete
           description: Delete ISIS routing
@@ -4290,7 +4613,12 @@ securitySchemes:
           description: Add an application rule
           body:
             application/xml:
-                schema: appRulesCreate
+              example: |
+                <applicationRule>
+                  <name></name>
+                  <script></script>
+                </applicationRule>
+              schema: appRulesCreate
         get:
           displayName: appRulesRead
           description: Read all application rules
@@ -4313,6 +4641,11 @@ securitySchemes:
             description: Modify an app rule
             body:
               application/xml:
+                example: |
+                  <applicationRule>
+                    <name></name>
+                    <script></script>
+                  </applicationRule>
                 schema: appRuleUpdate
           delete:
             displayName: appRuleDelete
@@ -4540,6 +4873,42 @@ securitySchemes:
         description: Configure DHCP service
         body:
           application/xml:
+            example: |
+              <dhcp>
+                <enabled></enabled>
+                <staticBindings>
+                  <staticBinding>
+                    <macAddress></macAddress>
+                    <vmId></vmId>
+                    <vnicId></vnicId>
+                    <hostname></hostname>
+                    <ipAddress></ipAddress>
+                    <subnetMask></subnetMask>
+                    <defaultGateway></defaultGateway>
+                    <domainName></domainName>
+                    <primaryNameServer></primaryNameServer>
+                    <secondaryNameServer></secondaryNameServer>
+                    <leaseTime></leaseTime>
+                    <autoConfigDNS></autoConfigDNS>
+                  </staticBinding>
+                </staticBindings>
+                <ipPools>
+                  <ipPool>
+                    <ipRange></ipRange>
+                    <defaultGateway></defaultGateway>
+                    <subnetMask></subnetMask>
+                    <domainName></domainName>
+                    <primaryNameServer></primaryNameServer>
+                    <secondaryNameServer></secondaryNameServer>
+                    <leaseTime></leaseTime>
+                    <autoConfigDNS></autoConfigDNS>
+                  </ipPool>
+                </ipPools>
+                <logging>
+                  <enable></enable>
+                  <logLevel></logLevel>
+                </logging>
+              </dhcp>
             schema: dhcpUpdate
       delete:
         displayName: dhcpDelete
@@ -4687,7 +5056,18 @@ securitySchemes:
           description: Apply server settings
           body:
             application/xml:
-                schema: serverSettingsUpdate
+              example: |
+                <serverSettings>
+                  <serverAddresses>
+                    <ipAddress></ipAddress>
+                  </serverAddresses>
+                  <port></port>
+                  <certificateId></certificateId>
+                  <sslVersionList>
+                    <version></version>
+                  </sslVersionList>
+                </serverSettings>
+              schema: serverSettingsUpdate
       /client/networkextension/privatenetworks:
         displayName: privateNetworks
         description: Configure a private network to expose to remote users over SSL VPN tunnel
@@ -4990,7 +5370,14 @@ securitySchemes:
           description: Update all script configurations with the given list of configurations. If the config is present, its is updated; otherwise, a new config is created. Existing configs not included in the body are deleted
           body:
             application/xml:
-                schema: scriptUpdate
+              example: |
+                <logonLogoffScript>
+                  <scriptFileId></scriptFileId>
+                  <type></type>
+                  <description></description>
+                  <enabled></enabled>
+                </logonLogoffScript>
+              schema: scriptUpdate
         delete:
           displayName: scriptDelete
           description: Delete all script configurations
@@ -5010,6 +5397,13 @@ securitySchemes:
             description: Modify script parameters
             body:
               application/xml:
+                example: |
+                  <logonLogoffScript>
+                    <scriptFileId></scriptFileId>
+                    <type></type>
+                    <description></description>
+                    <enabled></enabled>
+                  </logonLogoffScript>
                 schema: scriptFileIDUpdate
           delete:
             displayName: scriptFileIDDelete
@@ -5166,6 +5560,11 @@ securitySchemes:
         description: Change the auto configuration settings for the NSX Edge
         body:
           application/xml:
+            example: |
+              <autoConfiguration>
+                <enabled></enabled>
+                <rulePriority></rulePriority>
+              </autoConfiguration>
             schema: autoConfigUpdate
     /appliances:
       displayName: appliances
@@ -5337,7 +5736,11 @@ securitySchemes:
       description: Create certificate for CSR
       body:
         application/xml:
-            schema: certificateCSRCreate
+          example: |
+            <trustObject>
+              <pemEncoding></pemEncoding>
+            </trustObject>
+          schema: certificateCSRCreate
     /scope/{scopeId}:
       displayName: certificateScope
       description: Certificates for a scope
@@ -5444,7 +5847,11 @@ securitySchemes:
       description: Create CRL on the specified scope
       body:
         application/xml:
-            schema: crlScopeCreate
+          example: |
+            <trustObject>
+              <pemEncoding></pemEncoding>
+            </trustObject>
+          schema: crlScopeCreate
   /crl/scope/{scopeId}:
     displayName: crlScopeRead
     description: Retrieve all certificates for the specified scope
@@ -5481,7 +5888,50 @@ securitySchemes:
       description: Create a security policy
       body:
         application/xml:
-            schema: securityPolicyCreate
+          example: |
+            <securityPolicy>
+              <name></name>
+              <description></description>
+              <precedence></precedence>
+              <parent>
+                <objectId></objectId>
+              </parent>
+              <securityGroupBinding>
+                <objectId></objectId>
+              </securityGroupBinding>
+              <actionsByCategory>
+                <category></category>
+                <action class="">
+                  <name></name>
+                  <description></description>
+                  <category></category>
+                  <actionType></actionType>
+                  <isActionEnforced></isActionEnforced>
+                  <isActive></isActive>
+                  <isEnabled></isEnabled>
+                  <secondarySecurityGroup>
+                    <objectId></objectId>
+                  </secondarySecurityGroup>
+                  <applications>
+                    <application>
+                      <objectId></objectId>
+                    </application>
+                    <applicationGroup>
+                      <objectId></objectId>
+                    </applicationGroup>
+                  </applications>
+                  <logged></logged>
+                  <scope>
+                    <id></id>
+                    <name></name>
+                    <objectTypeName></objectTypeName>
+                  </scope>
+                </action>
+                <direction></direction>
+                <outsideSecondaryContainer></outsideSecondaryContainer>
+                </actionsByCategory>
+            </securityPolicy>
+          schema: securityPolicyCreate
     /{ID}:
       displayName: securityPolicyID
       description: Specific security policy
@@ -5498,6 +5948,51 @@ securitySchemes:
         description: Edit a security policy
         body:
           application/xml:
+            example: |
+              <securityPolicy>
+                <securityPolicy>
+                  <name></name>
+                  <description></description>
+                  <precedence></precedence>
+                  <parent>
+                    <objectId></objectId>
+                  </parent>
+                  <securityGroupBinding>
+                    <objectId></objectId>
+                  </securityGroupBinding>
+                  <actionsByCategory>
+                    <category></category>
+                    <action class="">
+                      <name></name>
+                      <description></description>
+                      <category></category>
+                      <actionType></actionType>
+                      <isActionEnforced></isActionEnforced>
+                      <isActive></isActive>
+                      <isEnabled></isEnabled>
+                      <secondarySecurityGroup>
+                        <objectId></objectId>
+                      </secondarySecurityGroup>
+                      <applications>
+                        <application>
+                          <objectId></objectId>
+                        </application>
+                        <applicationGroup>
+                          <objectId></objectId>
+                        </applicationGroup>
+                      </applications>
+                      <logged></logged>
+                      <scope>
+                        <id></id>
+                        <name></name>
+                        <objectTypeName></objectTypeName>
+                      </scope>
+                    </action>
+                    <direction></direction>
+                    <outsideSecondaryContainer></outsideSecondaryContainer>
+                  </actionsByCategory>
+                </securityPolicy>
+              </securityPolicy>
             schema: securityPolicyIDUpdate
       delete:
         displayName: securityPolicyIDDelete
