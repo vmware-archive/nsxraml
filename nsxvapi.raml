@@ -1791,7 +1791,31 @@ securitySchemes:
       description: Configure backup on the Appliance Manager
       body:
         application/xml:
-            schema: applianceMgrBackupSettingsUpdate
+          example: |
+            <backupRestoreSettings>
+              <ftpSettings>
+                <transferProtocol></transferProtocol>
+                <hostNameIPAddress></hostNameIPAddress>
+                <port></port>
+                <userName></userName>
+                <password></password>
+                <backupDirectory></backupDirectory>
+                <filenamePrefix></filenamePrefix>
+                <passiveMode></passiveMode>
+                <useEPRT></useEPRT>
+                <useEPSV></useEPSV>
+              </ftpSettings>
+              <backupFrequency>
+                <frequency></frequency>
+                <dayOfWeek></dayOfWeek>
+                <hourOfDay></hourOfDay>
+                <minuteOfHour></minuteOfHour>
+              </backupFrequency>
+              <excludeTables>
+                <excludeTable></excludeTable>
+              </excludeTables>
+            </backupRestoreSettings>
+          schema: applianceMgrBackupSettingsUpdate
     delete:
       displayName: applianceMgrBackupSettingsDelete
       description: Delete Appliance Manager backup configuration
@@ -1942,7 +1966,6 @@ securitySchemes:
          Install network virtualization components
       body:
         application/xml:
-          schema: nwFabricConfig
           example: |
             Prepare a cluster (install VIBs) =>
             <nwFabricFeatureConfig>
@@ -1981,6 +2004,7 @@ securitySchemes:
                 </configSpec>
               </resourceConfig>
             </nwFabricFeatureConfig>
+          schema: nwFabricConfig
       queryParameters:
         action:
           displayName: action
@@ -2218,7 +2242,21 @@ securitySchemes:
       description: Configure a customized regex as a classification value
       body:
         application/xml:
-            schema: dlpRegexClassificationValue
+          example: |
+            <set>
+              <ClassificationValue>
+                <id></id>
+                <classification>
+                  <id></id>
+                  <name></name>
+                  <providerName></providerName>
+                  <description></description>
+                  <customizable></customizable>
+                </classification>
+                <value></value>
+              </ClassificationValue>
+            </set>
+          schema: dlpRegexClassificationValue
   /excludableareas:
     displayName: dlpExcludableAreas
     description: Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection
@@ -2249,7 +2287,12 @@ securitySchemes:
       description: Include security groups in data security scan
       body:
         application/xml:
-            schema: dlpIncludeSecGroupUpdate
+          example: |
+            <set>
+              <string></string>
+              <string></string>
+            </set>
+          schema: dlpIncludeSecGroupUpdate
   /policy/excludedsecuritygroups:
     displayName: dlpExcludeSecGroup
     description: Exclude security groups in data security scan
@@ -2275,7 +2318,14 @@ securitySchemes:
       description: Configure file filters for scanning
       body:
         application/xml:
-            schema: dlpFileFiltersUpdate
+          example: |
+            <FileFilters>
+              <scanAllFiles></scanAllFiles>
+              <lastModifiedAfter></lastModifiedAfter>
+              <extensionsIncluded></extensionsIncluded>
+              <extensions></extensions>
+            </FileFilters>
+          schema: dlpFileFiltersUpdate
   /policy/saved:
     displayName: dlpPolicySave
     description: Retrieve last saved policy
@@ -2441,6 +2491,15 @@ securitySchemes:
       description: Enable or disable data collection on a virtual machine
       body:
         application/xml:
+          example: |
+            <perVmConfig>
+              <actions>
+                <action>
+                  <type></type>
+                  <value></value>
+                </action>
+              </actions>
+            </perVmConfig>
           schema: dataCollectionVMCreate
   /eventcontrol-root/request:
     displayName: dataCollectionKillSwitch
@@ -2450,6 +2509,15 @@ securitySchemes:
       description: Turn on/off data collection at global level
       body:
         application/xml:
+          example: |
+            <request>
+              <actions>
+                <action>
+                  <type></type>
+                  <value></value>
+                </action>
+              </actions>
+            </request>
           schema: dataCollectionKillSwitch
   /config/vm/{vmID}:
     displayName: dataCollectionVMInfo
@@ -2720,6 +2788,12 @@ securitySchemes:
         description: Create LDAP server
         body:
           application/xml:
+            example: |
+              <LDAPServer>
+                <domainId></domainId>
+                <hostName></hostName>
+                <enabled></enabled>
+              </LDAPServer>
             schema: ldapServerCreate
     /listLdapServersForDomain/{domainID}:
       displayName: ldapServerDomain
@@ -2773,6 +2847,13 @@ securitySchemes:
         description: Create EventLog server
         body:
           application/xml:
+            example: |
+              <EventlogServer>
+                <id></id>
+                <domainId></domainId>
+                <hostName></hostName>
+                <enabled></enabled>
+              </EventlogServer>
             schema: eLogServerCreate
     /listEventLogServersForDomain/{domainID}:
       displayName: eLogServerDomainRead
@@ -2952,6 +3033,18 @@ securitySchemes:
     description: Create a MACset on a specified scope
     body:
       application/xml:
+        example: |
+          <macset>
+            <objectId></objectId>
+            <type>
+              <typeName></typeName>
+            </type>
+            <description></description>
+            <name></name>
+            <revision></revision>
+            <objectTypeName></objectTypeName>
+            <value></value>
+          </macset>
         schema: macSetCreateUpdate
   get:
     displayName: macsetScopesRead
@@ -2972,6 +3065,18 @@ securitySchemes:
     description: Modify an existing MACset
     body:
       application/xml:
+        example: |
+          <macset>
+            <objectId></objectId>
+            <type>
+              <typeName></typeName>
+            </type>
+            <description></description>
+            <name></name>
+            <revision></revision>
+            <objectTypeName></objectTypeName>
+            <value></value>
+          </macset>
         schema: macSetCreateUpdate
   delete:
     displayName: macsetDelete
@@ -3242,7 +3347,49 @@ securitySchemes:
         description: Creates a new L3 Firewall Section with a number of rules
         body:
          application/xml:
-          schema: dfwSection
+           example: |
+            <section name="" managedBy="" type="">
+              <rule disabled="" logged="">
+                <name></name>
+                <action></action>
+                <appliedToList>
+                  <appliedTo>
+                    <name></name>
+                    <value></value>
+                    <type></type>
+                    <isValid></isValid>
+                  </appliedTo>
+                </appliedToList>
+                <sources excluded="">
+                  <source>
+                    <name></name>
+                    <value></value>
+                    <type></type>
+                    <isValid></isValid>
+                  </source>
+                </sources>
+                <destinations excluded="">
+                  <destination>
+                    <name></name>
+                    <value></value>
+                    <type></type>
+                    <isValid></isValid>
+                  </destination>
+                </destinations>
+                <services>
+                  <service>
+                    <destinationPort></destinationPort>
+                    <protocol></protocol>
+                    <subProtocol></subProtocol>
+                  </service>
+                </services>
+              </rule>
+              <rule disabled="" logged="">
+                <name></name>>
+                <action></action>
+              </rule>
+            </section>
+           schema: dfwSection
       /{sectionId}:
         displayName: dfwL3SectionId
         description: L3 Firewall Operations on specific section specified by section ID
@@ -3282,6 +3429,39 @@ securitySchemes:
                 description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
             body:
               application/xml:
+                example: |
+                  <rule disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <notes></notes>
+                    <appliedToList>
+                      <appliedTo>
+                        <value></value>
+                        <type></type>
+                      </appliedTo>
+                    </appliedToList>
+                    <sources excluded="">
+                      <source>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </source>
+                    </sources>
+                    <destinations excluded="">
+                      <destination>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </destination>
+                    </destinations>
+                    <services>
+                      <service>
+                        <value></value>
+                      </service>
+                    </services>
+                  </rule>
                 schema: dfwRule
           /{ruleId}:
             displayName: dfwL3Rule
@@ -3440,6 +3620,20 @@ securitySchemes:
         description: Add L3 redirect section
         body:
           application/xml:
+            example: |
+              <section>
+                <name></name>
+                <action></action>
+                <appliedToList>
+                  <appliedTo>
+                    <name></name>
+                    <value></value>
+                    <type></type>
+                    <isValid></isValid>
+                  </appliedTo>
+                </appliedToList>
+                <sectionId></sectionId>
+              </section>
             schema: layer3RedirectSectionsCreate
       /{section}:
         displayName: section
@@ -3462,6 +3656,22 @@ securitySchemes:
               description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
           body:
             application/xml:
+              example: |
+                <section id="" name="" generationNumber="" timestamp="">
+                  <rule id="" disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId></sectionId>
+                  </rule>
+                </section>
               schema: layer3RedirectSectionUpdate
         delete:
           displayName: sectionDelete
@@ -3578,6 +3788,33 @@ securitySchemes:
       description: Save a firewall configuration
       body:
         application/xml:
+          example: |
+            <firewallDraft name="">
+              <description></description>
+              <preserve></preserve>
+              <mode></mode>
+              <config>
+                <contextId></contextId>
+                <layer3Sections>
+                  <section name="" >
+                    <rule id="" disabled="true|false" logged="true|false">
+                      <name></name>
+                      <action></action>
+                      <precedence></precedence>
+                    </rule>
+                  </section>
+                </layer3Sections>
+                <layer2Sections>
+                  <section name="">
+                    <rule id="" disabled="true|false" logged="true|false">
+                      <name></name>
+                      <action></action>
+                      <precedence></precedence>
+                    </rule>
+                  </section>
+                </layer2Sections>
+              </config>
+            </firewallDraft>
           schema: dfwDraftsCreate
     get:
       displayName: dfwSaveConfigRead
@@ -3598,6 +3835,33 @@ securitySchemes:
         description: Update a saved firewall configuration
         body:
           application/xml:
+            example: |
+              <firewallDraft name="">
+                <description></description>
+                <preserve></preserve>
+                <mode></mode>
+                <config>
+                  <contextId></contextId>
+                  <layer3Sections>
+                    <section name="" >
+                      <rule id="" disabled="true|false" logged="true|false">
+                        <name></name>
+                        <action></action>
+                        <precedence></precedence>
+                      </rule>
+                    </section>
+                  </layer3Sections>
+                  <layer2Sections>
+                    <section name="">
+                      <rule id="" disabled="true|false" logged="true|false">
+                        <name></name>
+                        <action></action>
+                        <precedence></precedence>
+                      </rule>
+                    </section>
+                  </layer2Sections>
+                </config>
+              </firewallDraft>
             schema: dfwDraftUpdate
       delete:
         displayName: dfwDraftDelete
@@ -3622,6 +3886,35 @@ securitySchemes:
           description: Import a configuration
           body:
             application/xml:
+              example: |
+                <firewallDraft id="" name="" timestamp="">
+                  <description></description>
+                  <preserve></preserve>
+                  <user></user>
+                  <mode></mode>
+                  <config timestamp="">
+                    <contextId></contextId>
+                    <layer3Sections>
+                      <section name="" timestamp="">
+                        <rule id="" disabled="true|false" logged="true|false">
+                          <name></name>
+                          <action></action>
+                          <precedence></precedence>
+                        </rule>
+                      </section>
+                    </layer3Sections>
+                    <layer2Sections>
+                      <section name="" timestamp="">
+                        <rule id="" disabled="true|false" logged="true|false">
+                          <name></name>
+                          <action></action>
+                          <precedence></precedence>
+                        </rule>
+                      </section>
+                    </layer2Sections>
+                    <generationNumber></generationNumber>
+                  </config>
+                </firewallDraft>
               schema: dfwConfigImport
   /stats/eventthresholds:
     displayName: dfwThresholds
@@ -3634,6 +3927,18 @@ securitySchemes:
       description: Configure thresholds
       body:
         application/xml:
+          example: |
+            <eventThresholds>
+              <cpu>
+                <percentValue></percentValue>
+              </cpu>
+              <memory>
+                <percentValue></percentValue>
+              </memory>
+              <connectionsPerSecond>
+                <value></value>
+              </connectionsPerSecond>
+            </eventThresholds>
           schema: dfwThresholdsUpdate
   /config/globalconfiguration:
     displayName: dfwPerformance
@@ -3646,6 +3951,12 @@ securitySchemes:
       description: Set RuleOptimize and TCPStrict flags in body to improve performance
       body:
         application/xml:
+          example: |
+            <globalConfiguration>
+              <layer3RuleOptimize></layer3RuleOptimize>
+              <layer2RuleOptimize></layer2RuleOptimize>
+              <tcpStrictOption></tcpStrictOption>
+            </globalConfiguration>
           schema: dfwPerformanceUpdate
   /forceSync/{ID}:
     displayName: dfwSync
@@ -3688,6 +3999,17 @@ securitySchemes:
       description: Configure IPFix
       body:
         application/xml:
+          example: |
+            <ipfixConfiguration>
+              <contextId></contextId>
+              <ipfixEnabled></ipfixEnabled>
+              <observationDomainId></observationDomainId>
+              <flowTimeout></flowTimeout>
+              <collector>
+                <ip></ip>
+                <port></port>
+              </collector>
+            </ipfixConfiguration>
           schema: dfwIPFixUpdate
     delete:
       displayName: dfwIPFixDelete
@@ -3955,7 +4277,30 @@ securitySchemes:
       description: Exclude specified flows
       body:
         application/xml:
-            schema: flowsExcludeCreate
+          example: |
+            <FlowConfiguration>
+              <collectFlows></collectFlows>
+              <ignoreBlockedFlows></ignoreBlockedFlows>
+              <ignoreLayer2Flows></ignoreLayer2Flows>
+              <sourceIPs></sourceIPs>
+              <sourceContainer>
+                <name></name>
+                <id></id>
+                <type></type>
+              </sourceContainer>
+              <destinationIPs></destinationIPs>
+              <destinationContainer>
+                <name></name>
+                <id></id>
+                <type></type>
+              </destinationContainer>
+              <destinationPorts></destinationPorts>
+              <service>
+                <name></name>
+                <id></id>
+              </service>
+            </FlowConfiguration>
+          schema: flowsExcludeCreate
     get:
       displayName: flowsExcludeRead
       description: Retrieve excluded flow details
@@ -3992,6 +4337,102 @@ securitySchemes:
           required: false
     body:
       application/xml:
+        example: |
+          <edge>
+            <datacenterMoid></datacenterMoid>
+            <name></name>
+            <description></description>
+            <tenant></tenant>
+            <fqdn></fqdn>
+            <vseLogLevel></vseLogLevel>
+            <enableAesni></enableAesni>
+            <enableFips></enableFips>
+            <appliances>
+              <applianceSize></applianceSize>
+              <enableCoreDump></enableCoreDump>
+              <appliance>
+                <resourcePoolId></resourcePoolId>
+                <datastoreId></datastoreId>
+                <hostId></hostId>
+                <vmFolderId></vmFolderId>
+                <customField>
+                  <key></key>
+                  <value></value>
+                </customField>
+                <cpuReservation>
+                  <limit></limit>
+                  <reservation></reservation>
+                  <shares></shares>
+                </cpuReservation>
+                <memoryReservation>
+                  <limit></limit>
+                  <reservation></reservation>
+                  <shares></shares>
+                </memoryReservation>
+              </appliance>
+            </appliances>
+            <vnics>
+              <vnic>
+                <index></index>
+                <name></name>
+                <type></type>
+                <portgroupId></portgroupId>
+                <addressGroups>
+                  <addressGroup>
+                    <primaryAddress></primaryAddress>
+                    <secondaryAddresses>
+                      <ipAddress></ipAddress>
+                    </secondaryAddresses>
+                    <subnetMask></subnetMask>
+                  </addressGroup>
+                </addressGroups>
+                <macAddress>
+                  <edgeVmHaIndex></edgeVmHaIndex>
+                  <value></value>
+                </macAddress>
+                <fenceParameter>
+                  <key></key>
+                  <value></value>
+                </fenceParameter>
+                <mtu></mtu>
+                <enableProxyArp></enableProxyArp>
+                <enableSendRedirects></enableSendRedirects>
+                <isConnected></isConnected>
+                <inShapingPolicy>
+                  <averageBandwidth></averageBandwidth>
+                  <peakBandwidth></peakBandwidth>
+                  <burstSize></burstSize>
+                  <enabled></enabled>
+                  <inherited></inherited>
+                </inShapingPolicy>
+                <outShapingPolicy>
+                  <averageBandwidth></averageBandwidth>
+                  <peakBandwidth></peakBandwidth>
+                  <burstSize></burstSize>
+                  <enabled></enabled>
+                  <inherited></inherited>
+                </outShapingPolicy>
+              </vnic>
+            </vnics>
+            <cliSettings>
+              <userName></userName>
+              <password></password>
+              <remoteAccess></remoteAccess>
+            </cliSettings>
+            <autoConfiguration>
+              <enabled></enabled>
+              <rulePriority></rulePriority>
+            </autoConfiguration>
+            <dnsClient>
+              <primaryDns></primaryDns>
+              <secondaryDns></secondaryDns>
+              <domainName></domainName>
+            </dnsClient>
+            <queryDaemon>
+              <enabled></enabled>
+              <port></port>
+            </queryDaemon>
+          </edge>
         schema: nsxEdgesCreate
   get:
     displayName: nsxEdgesRead
@@ -4036,7 +4477,209 @@ securitySchemes:
       description: Update the NSX Edge configuration
       body:
         application/xml:
-            schema: nsxEdgeUpdate
+          example: |
+            <edge>
+              <id></id>
+              <description></description>
+              <datacenterMoid></datacenterMoid>
+              <name></name>
+              <fqdn></fqdn>
+              <enableAesni></enableAesni>
+              <enableFips></enableFips>
+              <vseLogLevel></vseLogLevel>
+              <vnics>
+                <vnic>
+                  <index></index>
+                  <name></name>
+                  <type></type>
+                  <portgroupId></portgroupId>
+                  <addressGroups>
+                    <addressGroup>
+                      <primaryAddress></primaryAddress>
+                      <secondaryAddresses>
+                        <ipAddress></ipAddress>
+                      </secondaryAddresses>
+                      <subnetMask></subnetMask>
+                    </addressGroup>
+                  </addressGroups>
+                  <mtu></mtu>
+                  <enableProxyArp></enableProxyArp>
+                  <enableSendRedirects></enableSendRedirects>
+                  <isConnected></isConnected>
+                  <inShapingPolicy>
+                    <averageBandwidth></averageBandwidth>
+                    <peakBandwidth></peakBandwidth>
+                    <burstSize></burstSize>
+                    <enabled></enabled>
+                    <inherited></inherited>
+                  </inShapingPolicy>
+                  <outShapingPolicy>
+                    <averageBandwidth></averageBandwidth>
+                    <peakBandwidth></peakBandwidth>
+                    <burstSize></burstSize>
+                    <enabled></enabled>
+                    <inherited></inherited>
+                  </outShapingPolicy>
+                </vnic>
+              </vnics>
+              <appliances>
+                <applianceSize></applianceSize>
+                <appliance>
+                  <resourcePoolId></resourcePoolId>
+                  <datastoreId></datastoreId>
+                  <vmFolderId></vmFolderId>
+                </appliance>
+              </appliances>
+              <cliSettings>
+                <remoteAccess></remoteAccess>
+                <userName></userName>
+              </cliSettings>
+              <features>
+                <firewall>
+                  <defaultPolicy>
+                    <action></action>
+                    <loggingEnabled></loggingEnabled>
+                  </defaultPolicy>
+                  <rules>
+                    <rule>
+                      <id></id>
+                      <ruleTag></ruleTag>
+                      <name></name>
+                      <ruleType></ruleType>
+                      <source>
+                        <exclude></exclude>
+                        <groupingObjectId></groupingObjectId>
+                      </source>
+                      <destination></destination>
+                      <application>
+                        <applicationId></applicationId>
+                      </application>
+                      <action></action>
+                      <enabled></enabled>
+                      <loggingEnabled></loggingEnabled>
+                      <matchTranslated></matchTranslated>
+                    </rule>
+                  </rules>
+                </firewall>
+                <routing>
+                  <staticRouting>
+                    <defaultRoute>
+                      <vnic></vnic>
+                      <gatewayAddress></gatewayAddress>
+                      <description></description>
+                    </defaultRoute>
+                    <staticRoutes>
+                      <route>
+                        <vnic></vnic>
+                        <network></network>
+                        <nextHop></nextHop>
+                        <type></type>
+                      </route>
+                    </staticRoutes>
+                  </staticRouting>
+                  <ospf>
+                    <enabled></enabled>
+                  </ospf>
+                </routing>
+                <highAvailability>
+                  <enabled></enabled>
+                  <declareDeadTime></declareDeadTime>
+                  <logging>
+                    <enable></enable>
+                    <logLevel></logLevel>
+                  </logging>
+                </highAvailability>
+                <syslog>
+                  <protocol></protocol>
+                  <serverAddresses>
+                    <ipAddress></ipAddress>
+                  </serverAddresses>
+                </syslog>
+                <ipsec>
+                  <enabled></enabled>
+                  <logging>
+                    <enable></enable>
+                    <logLevel></logLevel>
+                  </logging>
+                  <sites>
+                    <site>
+                      <enabled></enabled>
+                      <name></name>
+                      <localId></localId>
+                      <localIp></localIp>
+                      <peerId></peerId>
+                      <encryptionAlgorithm></encryptionAlgorithm>
+                      <mtu></mtu>
+                      <enablePfs></enablePfs>
+                      <dhGroup></dhGroup>
+                      <localSubnets>
+                        <subnet></subnet>
+                      </localSubnets>
+                      <peerSubnets>
+                        <subnet></subnet>
+                      </peerSubnets>
+                      <psk></psk>
+                      <authenticationMode></authenticationMode>
+                    </site>
+                  </sites>
+                  <global>
+                    <caCertificates/>
+                    <crlCertificates/>
+                  </global>
+                </ipsec>
+                <dhcp>
+                  <enabled></enabled>
+                  <staticBindings>
+                    <staticBinding>
+                      <autoConfigureDNS></autoConfigureDNS>
+                      <bindingId></bindingId>
+                      <vmId></vmId>
+                      <vnicId></vnicId>
+                      <hostname></hostname>
+                      <ipAddress></ipAddress>
+                      <defaultGateway></defaultGateway>
+                      <leaseTime></leaseTime>
+                    </staticBinding>
+                  </staticBindings>
+                  <ipPools>
+                    <ipPool>
+                      <autoConfigureDNS></autoConfigureDNS>
+                      <poolId></poolId>
+                      <ipRange></ipRange>
+                      <defaultGateway></defaultGateway>
+                      <leaseTime></leaseTime>
+                    </ipPool>
+                  </ipPools>
+                  <logging>
+                    <enable></enable>
+                    <logLevel></logLevel>
+                  </logging>
+                </dhcp>
+                <nat>
+                  <natRules>
+                    <natRule>
+                      <ruleId></ruleId>
+                      <ruleTag></ruleTag>
+                      <ruleType></ruleType>
+                      <action></action>
+                      <vnic></vnic>
+                      <originalAddress></originalAddress>
+                      <translatedAddress></translatedAddress>
+                      <loggingEnabled></loggingEnabled>
+                      <enabled></enabled>
+                      <protocol></protocol>
+                      <originalPort></originalPort>
+                      <translatedPort></translatedPort>
+                    </natRule>
+                  </natRules>
+                </nat>
+              </features>
+              <autoConfiguration>
+                <enabled></enabled>
+                <rulePriority></rulePriority>
+              </autoConfiguration>
+            </edge>
+          schema: nsxEdgeUpdate
     delete:
       displayName: nsxEdgeDelete
       description: Delete specified Edge from database. Associated appliances are also deleted
@@ -4049,21 +4692,12 @@ securitySchemes:
         body:
           application/xml:
             example: |
-              <dns>
-                <enabled></enabled>
-                <dnsServers>
-                  <ipAddress></ipAddress>
-                </dnsServers>
-                <cacheSize></cacheSize>
-                <listeners>
-                  <ipAddress></ipAddress>
-                </listeners>
-                <logging>
-                  <logLevel></logLevel>
-                  <enable></enable>
-                </logging>
-              </dns>
-            schema: edgeDnsUpdate
+              <dnsClient>
+                <primaryDns></primaryDns>
+                <secondaryDns></secondaryDns>
+                <domainName></domainName>
+              </dnsClient>
+            schema: nsxEdgeDnsUpdate
     /aesni:
       displayName: aesni
       description: AESNI Setting
@@ -4140,6 +4774,14 @@ securitySchemes:
         description: Modify CLI credentials and enable/disable SSH for Edge
         body:
           application/xml:
+            example: |
+              <cliSettings>
+                <userName></userName>
+                <password></password>
+                <remoteAccess></remoteAccess>
+                <passwordExpiry></passwordExpiry>
+                <sshLoginBannerText></sshLoginBannerText>
+              </cliSettings>
             schema: cliSettingsUpdate
     /cliremoteaccess:
       displayName: cliRemote
@@ -4163,6 +4805,58 @@ securitySchemes:
         description: Configure firewall for an Edge
         body:
           application/xml:
+            example: |
+              <firewall>
+                <defaultPolicy>
+                  <action></action>
+                  <loggingEnabled></loggingEnabled>
+                </defaultPolicy>
+                <globalConfig>
+                  <tcpPickOngoingConnections></tcpPickOngoingConnections>
+                  <tcpAllowOutOfWindowPackets></tcpAllowOutOfWindowPackets>
+                  <tcpSendResetForClosedVsePorts></tcpSendResetForClosedVsePorts>
+                  <dropInvalidTraffic></dropInvalidTraffic>
+                  <logInvalidTraffic></logInvalidTraffic>
+                  <tcpTimeoutOpen></tcpTimeoutOpen>
+                  <tcpTimeoutEstablished></tcpTimeoutEstablished>
+                  <tcpTimeoutClose></tcpTimeoutClose>
+                  <udpTimeout></udpTimeout>
+                  <icmpTimeout></icmpTimeout>
+                  <icmp6Timeout></icmp6Timeout>
+                  <ipGenericTimeout></ipGenericTimeout>
+                </globalConfig>
+                <rules>
+                  <rule>
+                    <ruleTag></ruleTag>
+                    <name></name>
+                    <source>
+                      <vnicGroupId></vnicGroupId>
+                      <groupingObjectId></groupingObjectId>
+                      <ipAddress></ipAddress>
+                    </source>
+                    <destination>
+                      <groupingObjectId></groupingObjectId>
+                      <vnicGroupId></vnicGroupId>
+                      <groupingObjectId></groupingObjectId>
+                      <ipAddress></ipAddress>
+                    </destination>
+                    <application>
+                      <applicationId></applicationId>
+                      <service>
+                        <protocol></protocol>
+                        <port></port>
+                        <sourcePort></sourcePort>
+                      </service>
+                    </application>
+                    <matchTranslated></matchTranslated>
+                    <direction></direction>
+                    <action></action>
+                    <enabled></enabled>
+                    <loggingEnabled></loggingEnabled>
+                    <description></description>
+                  </rule>
+                </rules>
+              </firewall>
             schema: nsxEdgeFirewallConfigUpdate
       delete:
         displayName: nsxEdgeFirewallConfigDelete
@@ -4179,7 +4873,59 @@ securitySchemes:
               description: rule Id
           body:
             application/xml:
-                schema: firewallRulesCreate
+              example: |
+                <firewall>
+                  <defaultPolicy>
+                    <action></action>
+                    <loggingEnabled></loggingEnabled>
+                  </defaultPolicy>
+                  <globalConfig>
+                    <tcpPickOngoingConnections></tcpPickOngoingConnections>
+                    <tcpAllowOutOfWindowPackets></tcpAllowOutOfWindowPackets>
+                    <tcpSendResetForClosedVsePorts></tcpSendResetForClosedVsePorts>
+                    <dropInvalidTraffic></dropInvalidTraffic>
+                    <logInvalidTraffic></logInvalidTraffic>
+                    <tcpTimeoutOpen></tcpTimeoutOpen>
+                    <tcpTimeoutEstablished></tcpTimeoutEstablished>
+                    <tcpTimeoutClose></tcpTimeoutClose>
+                    <udpTimeout></udpTimeout>
+                    <icmpTimeout></icmpTimeout>
+                    <icmp6Timeout></icmp6Timeout>
+                    <ipGenericTimeout></ipGenericTimeout>
+                  </globalConfig>
+                  <rules>
+                    <rule>
+                      <ruleTag></ruleTag>
+                      <name></name>
+                      <source>
+                        <vnicGroupId></vnicGroupId>
+                        <groupingObjectId></groupingObjectId>
+                        <ipAddress></ipAddress>
+                      </source>
+                      <destination>
+                        <groupingObjectId></groupingObjectId>
+                        <vnicGroupId></vnicGroupId>
+                        <groupingObjectId></groupingObjectId>
+                        <ipAddress></ipAddress>
+                      </destination>
+                      <application>
+                        <applicationId></applicationId>
+                        <service>
+                          <protocol></protocol>
+                          <port></port>
+                          <sourcePort></sourcePort>
+                        </service>
+                      </application>
+                      <matchTranslated></matchTranslated>
+                      <direction></direction>
+                      <action></action>
+                      <enabled></enabled>
+                      <loggingEnabled></loggingEnabled>
+                      <description></description>
+                    </rule>
+                  </rules>
+                </firewall>
+              schema: firewallRulesCreate
         /{ruleId}:
           displayName: firewallRule
           description: Specific firewall rule
@@ -4196,6 +4942,28 @@ securitySchemes:
             description: Modify a specific firewall rule
             body:
               application/xml:
+                example: |
+                  <rule>
+                    <ruleTag></ruleTag>
+                    <name></name>
+                    <source>
+                      <vnicGroupId></vnicGroupId>
+                      <groupingObjectId></groupingObjectId>
+                    </source>
+                    <destination>
+                      <groupingObjectId></groupingObjectId>
+                      <vnicGroupId></vnicGroupId>
+                    </destination>
+                    <application>
+                      <applicationId></applicationId>
+                    </application>
+                    <matchTranslated></matchTranslated>
+                    <direction></direction>
+                    <action></action>
+                    <enabled></enabled>
+                    <loggingEnabled></loggingEnabled>
+                    <description></description>
+                  </rule>
                 schema: firewallRuleUpdate
           delete:
             displayName: firewallRuleDelete
@@ -4211,7 +4979,22 @@ securitySchemes:
           description: Configure firewall global config for an Edge
           body:
             application/xml:
-                schema: globalFirewallConfigUpdate
+              example:
+                <globalConfig>
+                  <tcpPickOngoingConnections></tcpPickOngoingConnections>
+                  <tcpAllowOutOfWindowPackets></tcpAllowOutOfWindowPackets>
+                  <tcpSendResetForClosedVsePorts></tcpSendResetForClosedVsePorts>
+                  <dropInvalidTraffic></dropInvalidTraffic>
+                  <logInvalidTraffic></logInvalidTraffic>
+                  <tcpTimeoutOpen></tcpTimeoutOpen>
+                  <tcpTimeoutEstablished></tcpTimeoutEstablished>
+                  <tcpTimeoutClose></tcpTimeoutClose>
+                  <udpTimeout></udpTimeout>
+                  <icmpTimeout></icmpTimeout>
+                  <icmp6Timeout></icmp6Timeout>
+                  <ipGenericTimeout></ipGenericTimeout>
+                </globalConfig>
+              schema: globalFirewallConfigUpdate
       /defaultpolicy:
         displayName: defaultFirewallPolicy
         description: Default firewall policy for an Edge
@@ -4258,6 +5041,24 @@ securitySchemes:
         description: Configure SNAT and DNAT rules for an Edge
         body:
           application/xml:
+            example: |
+              <nat>
+                <natRules>
+                  <natRule>
+                    <ruleTag></ruleTag>
+                    <action></action>
+                    <vnic></vnic>
+                    <originalAddress></originalAddress>
+                    <translatedAddress></translatedAddress>
+                    <loggingEnabled></loggingEnabled>
+                    <enabled></enabled>
+                    <description></description>
+                    <protocol></protocol>
+                    <translatedPort></translatedPort>
+                    <originalPort></originalPort>
+                  </natRule>
+                </natRules>
+              </nat>
             schema: edgeNatConfig
       get:
         displayName: edgeNatRead
@@ -4277,7 +5078,22 @@ securitySchemes:
               description: Specified rule ID. If the ID does not exist, Edge Manager displays an error
           body:
             application/xml:
-                schema: edgeNatRulesCreate
+              example: |
+                <natRules>
+                  <natRule>
+                    <action></action>
+                    <vnic></vnic>
+                    <originalAddress></originalAddress>
+                    <translatedAddress></translatedAddress>
+                    <loggingEnabled></loggingEnabled>
+                    <enabled></enabled>
+                    <description></description>
+                    <protocol></protocol>
+                    <translatedPort></translatedPort>
+                    <originalPort></originalPort>
+                  </natRule>
+                </natRules>
+              schema: edgeNatRulesCreate
         /{ruleID}:
           displayName: edgeNatRule
           description: Specified NAT rule
@@ -4291,6 +5107,19 @@ securitySchemes:
             description: Modify a NAT rule
             body:
               application/xml:
+                example: |
+                  <natRule>
+                    <action></action>
+                    <vnic></vnic>
+                    <originalAddress></originalAddress>
+                    <translatedAddress></translatedAddress>
+                    <loggingEnabled></loggingEnabled>
+                    <enabled></enabled>
+                    <description></description>
+                    <protocol></protocol>
+                    <translatedPort></translatedPort>
+                    <originalPort></originalPort>
+                  </natRule>
                 schema: edgeNatRuleUpdate
           delete:
             displayName: edgeNatRuleUpdate
@@ -4306,6 +5135,159 @@ securitySchemes:
         description: Configure globalConfig, staticRouting, OSPG, BGP, and IS-IS
         body:
           application/xml:
+            example: |
+              <routing>
+                <routingGlobalConfig>
+                  <ecmp></ecmp>
+                  <routerId></routerId>
+                  <logging>
+                    <enable></enable>
+                    <logLevel></logLevel>
+                  </logging>
+                  <ipPrefixes>
+                    <ipPrefix>
+                      <name></name>
+                      <ipAddress></ipAddress>
+                    </ipPrefix>
+                  </ipPrefixes>
+                </routingGlobalConfig>
+                <staticRouting>
+                  <staticRoutes>
+                    <route>
+                      <description></description>
+                      <vnic></vnic>
+                      <network></network>
+                      <nextHop></nextHop>
+                      <mtu></mtu>
+                    </route>
+                  </staticRoutes>
+                  <defaultRoute>
+                    <description></description>
+                    <vnic></vnic>
+                    <gatewayAddress></gatewayAddress>
+                    <mtu></mtu>
+                  </defaultRoute>
+                </staticRouting>
+                <ospf>
+                  <enabled></enabled>
+                  <defaultOriginate></defaultOriginate>
+                  <gracefulRestart></gracefulRestart>
+                  <ospfAreas>
+                    <ospfArea>
+                      <areaId></areaId>
+                      <type></type>
+                      <authentication>
+                        <type></type>
+                        <value></value>
+                      </authentication>
+                    </ospfArea>
+                  </ospfAreas>
+                  <ospfInterfaces>
+                    <ospfInterface>
+                      <vnic></vnic>
+                      <areaId></areaId>
+                      <helloInterval></helloInterval>
+                      <deadInterval></deadInterval>
+                      <priority></priority>
+                      <cost></cost>
+                    </ospfInterface>
+                  </ospfInterfaces>
+                  <redistribution>
+                    <enabled></enabled>
+                    <rules>
+                      <rule>
+                        <prefixName></prefixName>
+                        <from>
+                          <isis></isis>
+                          <ospf></ospf>
+                          <bgp></bgp>
+                          <static></static>
+                          <connected></connected>
+                        </from>
+                        <action></action>
+                      </rule>
+                    </rules>
+                  </redistribution>
+                </ospf>
+                <isis>
+                  <enabled></enabled>
+                  <systemId></systemId>
+                  <areaIds>
+                    <areaId></areaId>
+                  </areaIds>
+                  <isType></isType>
+                  <domainPassword></domainPassword>
+                  <areaPassword></areaPassword>
+                  <isisInterfaces>
+                    <isisInterface>
+                      <vnic></vnic>
+                      <meshGroup></meshGroup>
+                      <helloInterval></helloInterval>
+                      <helloMultiplier></helloMultiplier>
+                      <lspInterval></lspInterval>
+                      <metric></metric>
+                      <priority></priority>
+                      <circuitType></circuitType>
+                      <password></password>
+                    </isisInterface>
+                  </isisInterfaces>
+                  <redistribution>
+                    <enabled></enabled>
+                    <rules>
+                      <rule>
+                        <prefixName></prefixName>
+                        <from>
+                          <isis></isis>
+                          <ospf></ospf>
+                          <bgp></bgp>
+                          <static></static>
+                          <connected></connected>
+                        </from>
+                        <action></action>
+                      </rule>
+                    </rules>
+                  </redistribution>
+                </isis>
+                <bgp>
+                  <enabled></enabled>
+                  <localAS></localAS>
+                  <bgpNeighbours>
+                    <bgpNeighbour>
+                      <ipAddress></ipAddress>
+                      <remoteAS></remoteAS>
+                      <weight></weight>
+                      <holdDownTimer></holdDownTimer>
+                      <keepAliveTimer></keepAliveTimer>
+                      <password></password>
+                      <bgpFilters>
+                        <bgpFilter>
+                          <direction></direction>
+                          <action></action>
+                          <network></network>
+                          <ipPrefixGe></ipPrefixGe>
+                          <ipPrefixLe></ipPrefixLe>
+                        </bgpFilter>
+                      </bgpFilters>
+                    </bgpNeighbour>
+                  </bgpNeighbours>
+                  <redistribution>
+                    <enabled></enabled>
+                    <rules>
+                      <rule>
+                        <prefixName></prefixName>
+                        <from>
+                          <isis></isis>
+                          <ospf></ospf>
+                          <bgp></bgp>
+                          <static></static>
+                          <connected></connected>
+                        </from>
+                        <action></action>
+                      </rule>
+                    </rules>
+                  </redistribution>
+                </bgp>
+              </routing>
             schema: routingConfigUpdate
       delete:
         displayName: routingConfigDelete
@@ -4348,7 +5330,25 @@ securitySchemes:
           description: Configure static and default routes
           body:
             application/xml:
-                schema: routingConfigStaticUpdate
+              example: |
+                <staticRouting>
+                  <staticRoutes>
+                    <route>
+                      <description></description>
+                      <vnic></vnic>
+                      <network></network>
+                      <nextHop></nextHop>
+                      <mtu></mtu>
+                    </route>
+                  </staticRoutes>
+                  <defaultRoute>
+                    <description></description>
+                    <vnic></vnic>
+                    <gatewayAddress></gatewayAddress>
+                    <mtu></mtu>
+                  </defaultRoute>
+                </staticRouting>
+              schema: routingConfigStaticUpdate
         delete:
           displayName: routingConfigStaticDelete
           description: Delete both static and default routing config stored in the NSX Mgr database
@@ -4473,7 +5473,47 @@ securitySchemes:
           description: Configure BGP
           body:
             application/xml:
-                schema: routingBGPUpdate
+              example: |
+                <bgp>
+                  <enabled></enabled>
+                  <localAS></localAS>
+                  <bgpNeighbours>
+                    <bgpNeighbour>
+                      <ipAddress></ipAddress>
+                      <remoteAS></remoteAS>
+                      <weight></weight>
+                      <holdDownTimer></holdDownTimer>
+                      <keepAliveTimer></keepAliveTimer>
+                      <password></password>
+                      <bgpFilters>
+                        <bgpFilter>
+                          <direction></direction>
+                          <action></action>
+                          <network></network>
+                          <ipPrefixGe></ipPrefixGe>
+                          <ipPrefixLe></ipPrefixLe>
+                        </bgpFilter>
+                      </bgpFilters>
+                    </bgpNeighbour>
+                  </bgpNeighbours>
+                  <redistribution>
+                    <enabled></enabled>
+                    <rules>
+                      <rule>
+                        <prefixName></prefixName>
+                        <from>
+                          <isis></isis>
+                          <ospf></ospf>
+                          <bgp></bgp>
+                          <static></static>
+                          <connected></connected>
+                        </from>
+                        <action></action>
+                      </rule>
+                    </rules>
+                  </redistribution>
+                </bgp>
+              schema: routingBGPUpdate
         delete:
           displayName: routingBGPDelete
           description: Delete BGP Routing
@@ -4488,6 +5528,16 @@ securitySchemes:
         description: Configure a bridge
         body:
           application/xml:
+            example: |
+              <bridges>
+                <version></version>
+                <enabled></enabled>
+                <bridge>
+                  <name></name>
+                  <virtualWire></virtualWire>
+                  <dvportGroup></dvportGroup>
+                </bridge>
+              </bridges>
             schema: bridingUpdate
       delete:
         displayName: bridgingDelete
@@ -4578,7 +5628,18 @@ securitySchemes:
           description: Add an application profile
           body:
             application/xml:
-                schema: applicationProfilesCreate
+              example: |
+                <applicationProfile>
+                  <name></name>
+                  <insertXForwardedFor></insertXForwardedFor>
+                  <sslPassthrough></sslPassthrough>
+                  <persistence>
+                    <method></method>
+                    <cookieName></cookieName>
+                    <cookieMode></cookieMode>
+                  </persistence>
+                </applicationProfile>
+              schema: applicationProfilesCreate
         get:
           displayName: applicationProfilesRead
           description: Retrieve all application profiles on Edge
@@ -4598,6 +5659,17 @@ securitySchemes:
             description: Modify an application profile
             body:
               application/xml:
+                example: |
+                  <applicationProfile>
+                    <name></name>
+                    <insertXForwardedFor></insertXForwardedFor>
+                    <sslPassthrough></sslPassthrough>
+                    <persistence>
+                      <method></method>
+                      <cookieName></cookieName>
+                      <cookieMode></cookieMode>
+                    </persistence>
+                  </applicationProfile>
                 schema: applicationProfileUpdate
           get:
             displayName: applicationProfileRead
@@ -4658,7 +5730,17 @@ securitySchemes:
           description: Add a load balancer monitor
           body:
             application/xml:
-                schema: lbMonitorsCreate
+              example: |
+                <monitor>
+                  <type></type>
+                  <interval></interval>
+                  <timeout></timeout>
+                  <maxRetries></maxRetries>
+                  <method></method>
+                  <url></url>
+                  <name></name>
+                </monitor>
+              schema: lbMonitorsCreate
         get:
           displayName: lbMonitorsRead
           description: Retrieve all load balancer monitors
@@ -4852,9 +5934,24 @@ securitySchemes:
         description: Configure DNS servers
         body:
           application/xml:
+            example: |
+              <dns>
+                <enabled></enabled>
+                <dnsServers>
+                  <ipAddress></ipAddress>
+                </dnsServers>
+                <cacheSize></cacheSize>
+                <listeners>
+                  <ipAddress></ipAddress>
+                </listeners>
+                <logging>
+                  <logLevel></logLevel>
+                  <enable></enable>
+                </logging>
+              </dns>
             schema: edgeDnsUpdate
       delete:
-        displayName: edgeDdnsDelete
+        displayName: edgeDnsDelete
         description: Delete DNS configuration
     /dns/statistics:
       displayName: edgeDnsStats
@@ -4921,6 +6018,16 @@ securitySchemes:
           description: Add an IP pool to the DHCP configuration. returns a pool ID within a Location HTTP header
           body:
             application/xml:
+              example: |
+                <ipPool>
+                  <ipRange></ipRange>
+                  <defaultGateway></defaultGateway>
+                  <domainName></domainName>
+                  <primaryNameServer></primaryNameServer>
+                  <secondaryNameServer></secondaryNameServer>
+                  <leaseTime></leaseTime>
+                  <autoConfigureDNS></autoConfigureDNS>
+                </ipPool>
               schema: dhcpPoolCreate
         /{poolID}:
           displayName: dhcpPoolID
@@ -4941,6 +6048,19 @@ securitySchemes:
           description: Append a static-binding to DHCP config. A static-binding ID is returned within a Location HTTP header
           body:
             application/xml:
+              example: |
+                <staticBinding>
+                  <vmId></vmId>
+                  <vnicId></vnicId>
+                  <hostname></hostname>
+                  <ipAddress></ipAddress>
+                  <defaultGateway></defaultGateway>
+                  <domainName></domainName>
+                  <primaryNameServer></primaryNameServer>
+                  <secondaryNameServer></secondaryNameServer>
+                  <leaseTime></leaseTime>
+                  <autoConfigureDNS></autoConfigureDNS>
+                </staticBinding>
               schema: dhcpStaticBindingCreate
         /{bindingID}:
           displayName: dhcpStaticBindingID
@@ -4964,7 +6084,22 @@ securitySchemes:
           description: Configure DHCP relay
           body:
             application/xml:
-                schema: dhcpRelayUpdate
+              example: |
+                <relay>
+                  <relayServer>
+                    <groupingObjectId></groupingObjectId>
+                    <groupingObjectId></groupingObjectId>
+                    <ipAddress></ipAddress>
+                    <fqdn></fqdn>
+                  </relayServer>
+                  <relayAgents>
+                    <relayAgent>
+                      <vnicIndex></vnicIndex>
+                      <giAddress></giAddress>
+                    </relayAgent>
+                  </relayAgents>
+                </relay>
+              schema: dhcpRelayUpdate
         delete:
           displayName: dhcpRelayDelete
           description: Delete DHCP relay configuration
@@ -4985,6 +6120,15 @@ securitySchemes:
         description: Configure high availability
         body:
           application/xml:
+            example: |
+              <highAvailability>
+                <vnic></vnic>
+                <ipAddresses>
+                  <ipAddress></ipAddress>
+                </ipAddresses>
+                <declareDeadTime></declareDeadTime>
+                <enabled></enabled>
+              </highAvailability>
             schema: highAvailabilityCreate
       delete:
         displayName: highAvailabilityDelete
@@ -5076,7 +6220,17 @@ securitySchemes:
           description: Add a private network
           body:
             application/xml:
-                schema: privateNetworksCreate
+              example: |
+                <privateNetwork>
+                  <description></description>
+                  <network></network>
+                  <sendOverTunnel>
+                    <ports></ports>
+                    <optimize></optimize>
+                  </sendOverTunnel>
+                  <enabled></enabled>
+                </privateNetwork>
+              schema: privateNetworksCreate
         get:
           displayName: privateNetworksRead
           description: Get all private network profiles in the SSL VPN instance
@@ -5102,6 +6256,16 @@ securitySchemes:
             description: Modify specified private network in the SSL VPN service
             body:
               application/xml:
+                example: |
+                  <privateNetwork>
+                    <description></description>
+                    <network></network>
+                    <sendOverTunnel>
+                      <ports></ports>
+                      <optimize></optimize>
+                    </sendOverTunnel>
+                    <enabled></enabled>
+                  </privateNetwork>
                 schema: privateNetworkUpdate
           delete:
             displayName: privateNetworkDelete
@@ -5114,7 +6278,19 @@ securitySchemes:
           description: Create an IP pool
           body:
             application/xml:
-                schema: netExtipPoolsCreate
+              example: |
+                <ipAddressPool>
+                  <description></description>
+                  <ipRange></ipRange>
+                  <netmask></netmask>
+                  <gateway></gateway>
+                  <primaryDns></primaryDns>
+                  <secondaryDns></secondaryDns>
+                  <dnsSuffix></dnsSuffix>
+                  <winsServer></winsServer>
+                  <enabled></enabled>
+                </ipAddressPool>
+              schema: netExtipPoolsCreate
         get:
           displayName: netExtipPoolsRead
           description: Get all IP pools configured on SSL VPN
@@ -5123,7 +6299,19 @@ securitySchemes:
           description: Update all IP pools with the given list of pools. If the pool is present, it is updated; otherwise, a new pool is created. Existing pools not in the body are deleted
           body:
             application/xml:
-                schema: netExtipPoolsUpdate
+              example: |
+                <ipAddressPool>
+                  <description></description>
+                  <ipRange></ipRange>
+                  <netmask></netmask>
+                  <gateway></gateway>
+                  <primaryDns></primaryDns>
+                  <secondaryDns></secondaryDns>
+                  <dnsSuffix></dnsSuffix>
+                  <winsServer></winsServer>
+                  <enabled></enabled>
+                </ipAddressPool>
+              schema: netExtipPoolsUpdate
         delete:
           displayName: netExtipPoolsDelete
           description: Delete all IP pools configured on SSL VPN
@@ -5152,7 +6340,16 @@ securitySchemes:
           description: Set parameters for full access client configurations
           body:
             application/xml:
-                schema: clientConfigUpdate
+              example: |
+                <clientConfiguration>
+                  <autoReconnect></autoReconnect>
+                  <fullTunnel>
+                    <excludeLocalSubnets></excludeLocalSubnets>
+                    <gatewayIp></gatewayIp>
+                  </fullTunnel>
+                  <upgradeNotification></upgradeNotification>
+                </clientConfiguration>
+              schema: clientConfigUpdate
         get:
           displayName: clientConfigRead
           description: Get client configuration
@@ -5164,7 +6361,29 @@ securitySchemes:
           description: Create installers for full access network clients. These setup binaries are downloaded by remote clients and installed on their systems.
           body:
             application/xml:
-                schema: installPackagesCreate
+              example: |
+                <clientInstallPackage>
+                  <profileName></profileName>
+                  <gatewayList>
+                    <gateway>
+                      <hostName></hostName>
+                      <port></port>
+                    </gateway>
+                  </gatewayList>
+                  <startClientOnLogon></startClientOnLogon>
+                  <hideSystrayIcon></hideSystrayIcon>
+                  <rememberPassword></rememberPassword>
+                  <silentModeOperation></silentModeOperation>
+                  <silentModeInstallation></silentModeInstallation>
+                  <hideNetworkAdaptor></hideNetworkAdaptor>
+                  <createDesktopIcon></createDesktopIcon>
+                  <enforceServerSecurityCertValidation></enforceServerSecurityCertValidation>
+                  <createLinuxClient></createLinuxClient>
+                  <createMacClient></createMacClient>
+                  <description></description>
+                  <enabled></enabled>
+                </clientInstallPackage>
+              schema: installPackagesCreate
         get:
           displayName: installPackagesRead
           description: Get information about all installation packages
@@ -5190,6 +6409,28 @@ securitySchemes:
             description: Modify the specified installation package
             body:
               application/xml:
+                example: |
+                  <clientInstallPackage>
+                    <profileName></profileName>
+                    <gatewayList>
+                      <gateway>
+                        <hostName></hostName>
+                        <port></port>
+                      </gateway>
+                    </gatewayList>
+                    <startClientOnLogon></startClientOnLogon>
+                    <hideSystrayIcon></hideSystrayIcon>
+                    <rememberPassword></rememberPassword>
+                    <silentModeOperation></silentModeOperation>
+                    <silentModeInstallation></silentModeInstallation>
+                    <hideNetworkAdaptor></hideNetworkAdaptor>
+                    <createDesktopIcon></createDesktopIcon>
+                    <enforceServerSecurityCertValidation></enforceServerSecurityCertValidation>
+                    <createLinuxClient></createLinuxClient>
+                    <createMacClient></createMacClient>
+                    <description></description>
+                    <enabled></enabled>
+                  </clientInstallPackage>
                 schema: installPackageUpdate
           delete:
             displayName: installPackageDelete
@@ -5206,6 +6447,18 @@ securitySchemes:
             description: Set the portal layout
             body:
               application/xml:
+                example: |
+                  <layout>
+                    <portalTitle></portalTitle>
+                    <companyName></companyName>
+                    <logoBackgroundColor></logoBackgroundColor>
+                    <titleColor></titleColor>
+                    <topFrameColor></topFrameColor>
+                    <menuBarColor></menuBarColor>
+                    <rowAlternativeColor></rowAlternativeColor>
+                    <bodyColor></bodyColor>
+                    <rowColor></rowColor>
+                  </layout>
                 schema: layoutUpdate
       /webresources:
         displayName: webResources
@@ -5313,7 +6566,72 @@ securitySchemes:
           description: Set authentication process for remote users. Specify username/password authentication, active directory, ldap, radius, client certificate based authentication
           body:
             application/xml:
-                schema: authSettingsUpdate
+              example: |
+                <authenticationConfig>
+                  <passwordAuthentication>
+                  <authenticationTimeout></authenticationTimeout>
+                    <primaryAuthServers>
+                      <com.vmware.vshield.edge.sslvpn.dto.LdapAuthServerDto>
+                        <ip></ip>
+                        <port></port>
+                        <timeOut></timeOut>
+                        <enableSsl></enableSsl>
+                        <searchBase></searchBase>
+                        <bindDomainName></bindDomainName>
+                        <bindPassword></bindPassword>
+                        <loginAttributeName></loginAttributeName>
+                        <searchFilter></searchFilter>
+                        <enabled></enabled>
+                      </com.vmware.vshield.edge.sslvpn.dto.LdapAuthServerDto>
+                      <com.vmware.vshield.edge.sslvpn.dto.RadiusAuthServerDto>
+                        <ip></ip>
+                        <port></port>
+                        <timeOut></timeOut>
+                        <secret></secret>
+                        <nasIp></nasIp>
+                        <retryCount></retryCount>
+                      </com.vmware.vshield.edge.sslvpn.dto.RadiusAuthServerDto>
+                      <com.vmware.vshield.edge.sslvpn.dto.LocalAuthServerDto>
+                        <enabled></enabled>
+                        <passwordPolicy>
+                          <minLength></minLength>
+                          <maxLength></maxLength>
+                          <minAlphabets></minAlphabets>
+                          <minDigits></minDigits>
+                          <minSpecialChar></minSpecialChar>
+                          <allowUserIdWithinPassword></allowUserIdWithinPassword>
+                          <passwordLifeTime></passwordLifeTime>
+                          <expiryNotification></expiryNotification>
+                        </passwordPolicy>
+                        <accountLockoutPolicy>
+                          <retryCount></retryCount>
+                          <retryDuration></retryDuration>
+                          <lockoutDuration></lockoutDuration>
+                        </accountLockoutPolicy>
+                      </com.vmware.vshield.edge.sslvpn.dto.LocalAuthServerDto>
+                      <com.vmware.vshield.edge.sslvpn.dto.RsaAuthServerDto>
+                        <timeOut></timeOut>
+                        <sourceIp></sourceIp>
+                      </com.vmware.vshield.edge.sslvpn.dto.RsaAuthServerDto>
+                    </primaryAuthServers>
+                    <secondaryAuthServer>
+                      <com.vmware.vshield.edge.sslvpn.dto.AdAuthServerDto>
+                        <ip>1.1.1.1</ip>
+                        <port>90</port>
+                        <timeOut>20</timeOut>
+                        <enableSsl>false</enableSsl>
+                        <searchBase>searchbasevalue</searchBase>
+                        <bindDomainName>binddnvalue</bindDomainName>
+                        <bindPassword>password</bindPassword>
+                        <loginAttributeName>cain</loginAttributeName>
+                        <searchFilter>found</searchFilter>
+                        <terminateSessionOnAuthFails>false</terminateSessionOnAuthFails>
+                        <enabled>true</enabled>
+                      </com.vmware.vshield.edge.sslvpn.dto.AdAuthServerDto>
+                    </secondaryAuthServer>
+                  </passwordAuthentication>
+                </authenticationConfig>
+              schema: authSettingsUpdate
         /rsaconfigfile:
           displayName: rsaConfig
           description: RSA authentication server, bound to the SSL gateway
@@ -5599,7 +6917,28 @@ securitySchemes:
           description: Modify the configuration of the specified appliance
           body:
             application/xml:
-                schema: applianceUpdate
+              example: |
+                <appliance>
+                  <resourcePoolId></resourcePoolId>
+                  <datastoreId></datastoreId>
+                  <hostId></hostId>
+                  <vmFolderId></vmFolderId>
+                  <customField>
+                    <key></key>
+                    <value></value>
+                  </customField>
+                  <cpuReservation>
+                    <limit></limit>
+                    <reservation></reservation>
+                    <shares></shares>
+                  </cpuReservation>
+                  <memoryReservation>
+                    <limit></limit>
+                    <reservation></reservation>
+                    <shares></shares>
+                  </memoryReservation>
+                </appliance>
+              schema: applianceUpdate
         delete:
           displayName: applianceDelete
           description: Delete the appliance
@@ -5649,6 +6988,17 @@ securitySchemes:
         description: Configure management interfaces for NSX Edge router
         body:
           application/xml:
+            example: |
+              <mgmtInterface>
+                <addressGroups>
+                  <addressGroup>
+                    <primaryAddress></primaryAddress>
+                    <subnetMask></subnetMask>
+                  </addressGroup>
+                </addressGroups>
+                <mtu></mtu>
+                <connectedToId></connectedToId>
+              </mgmtInterface>
             schema: mgmtInterfaceUpdate
     /interfaces:
       displayName: interfaces
@@ -5663,6 +7013,22 @@ securitySchemes:
             description: Always set to 'patch'
         body:
           application/xml:
+            example: |
+              <interfaces>
+                <interface>
+                  <name></name>
+                  <addressGroups>
+                    <addressGroup>
+                      <primaryAddress></primaryAddress>
+                      <subnetMask></subnetMask>
+                    </addressGroup>
+                  </addressGroups>
+                  <mtu></mtu>
+                  <type></type>
+                  <isConnected></isConnected>
+                  <connectedToId></connectedToId>
+                </interface>
+              </interfaces>
             schema: interfacesCreate
       get:
         displayName: interfacesRead
@@ -5765,6 +7131,12 @@ securitySchemes:
         description: Create a single certificate
         body:
           application/xml:
+            example: |
+              <trustObject>
+                <pemEncoding></pemEncoding>
+                <privateKey></privateKey>
+                <passphrase></passphrase>
+              </trustObject>
             schema: certificateSelfSignedCreate
     /{certificateId}:
       displayName: certificate
@@ -6020,6 +7392,13 @@ securitySchemes:
             description: (optional) Added after names
         body:
           application/xml:
+            example: |
+              <securityPolicyHierarchy>
+                <name></name>
+                <description></description>
+                <securityPolicy></securityPolicy>
+                <securityGroup></securityGroup>
+              </securityPolicyHierarchy>
             schema: hierarchyCreate
       get:
         displayName: hierarchyRead
