@@ -402,7 +402,7 @@ Information on internal security groups
 
 * **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used internally by the system and should not be created or modified by end users.
 
-## ipset
+## ipsets
 Operations on IP Sets
 
 ### /2.0/services/ipset/scope/{scopeMoref}
