@@ -1,0 +1,110 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="authenticationConfig">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="passwordAuthentication">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="authenticationTimeout"/>
+              <xs:element name="primaryAuthServers">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="com.vmware.vshield.edge.sslvpn.dto.LdapAuthServerDto">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="ip"/>
+                          <xs:element type="xs:string" name="port"/>
+                          <xs:element type="xs:string" name="timeOut"/>
+                          <xs:element type="xs:string" name="enableSsl"/>
+                          <xs:element type="xs:string" name="searchBase"/>
+                          <xs:element type="xs:string" name="bindDomainName"/>
+                          <xs:element type="xs:string" name="bindPassword"/>
+                          <xs:element type="xs:string" name="loginAttributeName"/>
+                          <xs:element type="xs:string" name="searchFilter"/>
+                          <xs:element type="xs:string" name="enabled"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="com.vmware.vshield.edge.sslvpn.dto.RadiusAuthServerDto">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="ip"/>
+                          <xs:element type="xs:string" name="port"/>
+                          <xs:element type="xs:string" name="timeOut"/>
+                          <xs:element type="xs:string" name="secret"/>
+                          <xs:element type="xs:string" name="nasIp"/>
+                          <xs:element type="xs:string" name="retryCount"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="com.vmware.vshield.edge.sslvpn.dto.LocalAuthServerDto">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="enabled"/>
+                          <xs:element name="passwordPolicy">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="minLength"/>
+                                <xs:element type="xs:string" name="maxLength"/>
+                                <xs:element type="xs:string" name="minAlphabets"/>
+                                <xs:element type="xs:string" name="minDigits"/>
+                                <xs:element type="xs:string" name="minSpecialChar"/>
+                                <xs:element type="xs:string" name="allowUserIdWithinPassword"/>
+                                <xs:element type="xs:string" name="passwordLifeTime"/>
+                                <xs:element type="xs:string" name="expiryNotification"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="accountLockoutPolicy">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="retryCount"/>
+                                <xs:element type="xs:string" name="retryDuration"/>
+                                <xs:element type="xs:string" name="lockoutDuration"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="com.vmware.vshield.edge.sslvpn.dto.RsaAuthServerDto">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="timeOut"/>
+                          <xs:element type="xs:string" name="sourceIp"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="secondaryAuthServer">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="com.vmware.vshield.edge.sslvpn.dto.AdAuthServerDto">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="ip"/>
+                          <xs:element type="xs:string" name="port"/>
+                          <xs:element type="xs:string" name="timeOut"/>
+                          <xs:element type="xs:string" name="enableSsl"/>
+                          <xs:element type="xs:string" name="searchBase"/>
+                          <xs:element type="xs:string" name="bindDomainName"/>
+                          <xs:element type="xs:string" name="bindPassword"/>
+                          <xs:element type="xs:string" name="loginAttributeName"/>
+                          <xs:element type="xs:string" name="searchFilter"/>
+                          <xs:element type="xs:string" name="terminateSessionOnAuthFails"/>
+                          <xs:element type="xs:string" name="enabled"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

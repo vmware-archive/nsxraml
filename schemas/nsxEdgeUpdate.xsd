@@ -1,0 +1,383 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="edge">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="id"/>
+        <xs:element type="xs:string" name="description"/>
+        <xs:element type="xs:string" name="datacenterMoid"/>
+        <xs:element type="xs:string" name="name"/>
+        <xs:element type="xs:string" name="fqdn"/>
+        <xs:element type="xs:string" name="enableAesni"/>
+        <xs:element type="xs:string" name="enableFips"/>
+        <xs:element type="xs:string" name="vseLogLevel"/>
+        <xs:element name="vnics">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="vnic">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="index"/>
+                    <xs:element type="xs:string" name="name"/>
+                    <xs:element type="xs:string" name="type"/>
+                    <xs:element type="xs:string" name="portgroupId"/>
+                    <xs:element name="addressGroups">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="addressGroup">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="primaryAddress"/>
+                                <xs:element name="secondaryAddresses">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="ipAddress"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:string" name="subnetMask"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="mtu"/>
+                    <xs:element type="xs:string" name="enableProxyArp"/>
+                    <xs:element type="xs:string" name="enableSendRedirects"/>
+                    <xs:element type="xs:string" name="isConnected"/>
+                    <xs:element name="inShapingPolicy">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="averageBandwidth"/>
+                          <xs:element type="xs:string" name="peakBandwidth"/>
+                          <xs:element type="xs:string" name="burstSize"/>
+                          <xs:element type="xs:string" name="enabled"/>
+                          <xs:element type="xs:string" name="inherited"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="outShapingPolicy">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="averageBandwidth"/>
+                          <xs:element type="xs:string" name="peakBandwidth"/>
+                          <xs:element type="xs:string" name="burstSize"/>
+                          <xs:element type="xs:string" name="enabled"/>
+                          <xs:element type="xs:string" name="inherited"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="appliances">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="applianceSize"/>
+              <xs:element name="appliance">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="resourcePoolId"/>
+                    <xs:element type="xs:string" name="datastoreId"/>
+                    <xs:element type="xs:string" name="vmFolderId"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="cliSettings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="remoteAccess"/>
+              <xs:element type="xs:string" name="userName"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="features">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="firewall">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="defaultPolicy">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="action"/>
+                          <xs:element type="xs:string" name="loggingEnabled"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="rules">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="rule">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="id"/>
+                                <xs:element type="xs:string" name="ruleTag"/>
+                                <xs:element type="xs:string" name="name"/>
+                                <xs:element type="xs:string" name="ruleType"/>
+                                <xs:element name="source">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="exclude"/>
+                                      <xs:element type="xs:string" name="groupingObjectId"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:string" name="destination"/>
+                                <xs:element name="application">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="applicationId"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:string" name="action"/>
+                                <xs:element type="xs:string" name="enabled"/>
+                                <xs:element type="xs:string" name="loggingEnabled"/>
+                                <xs:element type="xs:string" name="matchTranslated"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="routing">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="staticRouting">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="defaultRoute">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="vnic"/>
+                                <xs:element type="xs:string" name="gatewayAddress"/>
+                                <xs:element type="xs:string" name="description"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="staticRoutes">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="route">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="vnic"/>
+                                      <xs:element type="xs:string" name="network"/>
+                                      <xs:element type="xs:string" name="nextHop"/>
+                                      <xs:element type="xs:string" name="type"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ospf">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="enabled"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="highAvailability">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="enabled"/>
+                    <xs:element type="xs:string" name="declareDeadTime"/>
+                    <xs:element name="logging">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="enable"/>
+                          <xs:element type="xs:string" name="logLevel"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="syslog">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="protocol"/>
+                    <xs:element name="serverAddresses">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="ipAddress"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ipsec">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="enabled"/>
+                    <xs:element name="logging">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="enable"/>
+                          <xs:element type="xs:string" name="logLevel"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="sites">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="site">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="enabled"/>
+                                <xs:element type="xs:string" name="name"/>
+                                <xs:element type="xs:string" name="localId"/>
+                                <xs:element type="xs:string" name="localIp"/>
+                                <xs:element type="xs:string" name="peerId"/>
+                                <xs:element type="xs:string" name="encryptionAlgorithm"/>
+                                <xs:element type="xs:string" name="mtu"/>
+                                <xs:element type="xs:string" name="enablePfs"/>
+                                <xs:element type="xs:string" name="dhGroup"/>
+                                <xs:element name="localSubnets">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="subnet"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="peerSubnets">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="subnet"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:string" name="psk"/>
+                                <xs:element type="xs:string" name="authenticationMode"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="global">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="caCertificates"/>
+                          <xs:element type="xs:string" name="crlCertificates"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="dhcp">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="enabled"/>
+                    <xs:element name="staticBindings">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="staticBinding">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="autoConfigureDNS"/>
+                                <xs:element type="xs:string" name="bindingId"/>
+                                <xs:element type="xs:string" name="vmId"/>
+                                <xs:element type="xs:string" name="vnicId"/>
+                                <xs:element type="xs:string" name="hostname"/>
+                                <xs:element type="xs:string" name="ipAddress"/>
+                                <xs:element type="xs:string" name="defaultGateway"/>
+                                <xs:element type="xs:string" name="leaseTime"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ipPools">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ipPool">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="autoConfigureDNS"/>
+                                <xs:element type="xs:string" name="poolId"/>
+                                <xs:element type="xs:string" name="ipRange"/>
+                                <xs:element type="xs:string" name="defaultGateway"/>
+                                <xs:element type="xs:string" name="leaseTime"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="logging">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="enable"/>
+                          <xs:element type="xs:string" name="logLevel"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="nat">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="natRules">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="natRule">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="ruleId"/>
+                                <xs:element type="xs:string" name="ruleTag"/>
+                                <xs:element type="xs:string" name="ruleType"/>
+                                <xs:element type="xs:string" name="action"/>
+                                <xs:element type="xs:string" name="vnic"/>
+                                <xs:element type="xs:string" name="originalAddress"/>
+                                <xs:element type="xs:string" name="translatedAddress"/>
+                                <xs:element type="xs:string" name="loggingEnabled"/>
+                                <xs:element type="xs:string" name="enabled"/>
+                                <xs:element type="xs:string" name="protocol"/>
+                                <xs:element type="xs:string" name="originalPort"/>
+                                <xs:element type="xs:string" name="translatedPort"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="autoConfiguration">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="enabled"/>
+              <xs:element type="xs:string" name="rulePriority"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

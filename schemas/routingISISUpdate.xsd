@@ -1,0 +1,73 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="isis">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="enabled"/>
+        <xs:element type="xs:string" name="systemId"/>
+        <xs:element name="areaIds">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="areaId"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element type="xs:string" name="isType"/>
+        <xs:element type="xs:string" name="domainPassword"/>
+        <xs:element type="xs:string" name="areaPassword"/>
+        <xs:element name="isisInterfaces">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="isisInterface">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="vnic"/>
+                    <xs:element type="xs:string" name="meshGroup"/>
+                    <xs:element type="xs:string" name="helloInterval"/>
+                    <xs:element type="xs:string" name="helloMultiplier"/>
+                    <xs:element type="xs:string" name="lspInterval"/>
+                    <xs:element type="xs:string" name="metric"/>
+                    <xs:element type="xs:string" name="priority"/>
+                    <xs:element type="xs:string" name="circuitType"/>
+                    <xs:element type="xs:string" name="password"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="redistribution">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="enabled"/>
+              <xs:element name="rules">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="rule">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="prefixName"/>
+                          <xs:element name="from">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="isis"/>
+                                <xs:element type="xs:string" name="ospf"/>
+                                <xs:element type="xs:string" name="bgp"/>
+                                <xs:element type="xs:string" name="static"/>
+                                <xs:element type="xs:string" name="connected"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:string" name="action"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

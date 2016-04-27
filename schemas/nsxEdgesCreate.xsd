@@ -1,0 +1,173 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="edge">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="datacenterMoid"/>
+        <xs:element type="xs:string" name="name"/>
+        <xs:element type="xs:string" name="description"/>
+        <xs:element type="xs:string" name="tenant"/>
+        <xs:element type="xs:string" name="fqdn"/>
+        <xs:element type="xs:string" name="vseLogLevel"/>
+        <xs:element type="xs:string" name="enableAesni"/>
+        <xs:element type="xs:string" name="enableFips"/>
+        <xs:element name="appliances">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="applianceSize"/>
+              <xs:element type="xs:string" name="enableCoreDump"/>
+              <xs:element name="appliance">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="resourcePoolId"/>
+                    <xs:element type="xs:string" name="datastoreId"/>
+                    <xs:element type="xs:string" name="hostId"/>
+                    <xs:element type="xs:string" name="vmFolderId"/>
+                    <xs:element name="customField">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="key"/>
+                          <xs:element type="xs:string" name="value"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="cpuReservation">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="limit"/>
+                          <xs:element type="xs:string" name="reservation"/>
+                          <xs:element type="xs:string" name="shares"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="memoryReservation">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="limit"/>
+                          <xs:element type="xs:string" name="reservation"/>
+                          <xs:element type="xs:string" name="shares"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="vnics">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="vnic">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="index"/>
+                    <xs:element type="xs:string" name="name"/>
+                    <xs:element type="xs:string" name="type"/>
+                    <xs:element type="xs:string" name="portgroupId"/>
+                    <xs:element name="addressGroups">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="addressGroup">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="primaryAddress"/>
+                                <xs:element name="secondaryAddresses">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="ipAddress"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element type="xs:string" name="subnetMask"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="macAddress">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="edgeVmHaIndex"/>
+                          <xs:element type="xs:string" name="value"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="fenceParameter">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="key"/>
+                          <xs:element type="xs:string" name="value"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="mtu"/>
+                    <xs:element type="xs:string" name="enableProxyArp"/>
+                    <xs:element type="xs:string" name="enableSendRedirects"/>
+                    <xs:element type="xs:string" name="isConnected"/>
+                    <xs:element name="inShapingPolicy">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="averageBandwidth"/>
+                          <xs:element type="xs:string" name="peakBandwidth"/>
+                          <xs:element type="xs:string" name="burstSize"/>
+                          <xs:element type="xs:string" name="enabled"/>
+                          <xs:element type="xs:string" name="inherited"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="outShapingPolicy">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="averageBandwidth"/>
+                          <xs:element type="xs:string" name="peakBandwidth"/>
+                          <xs:element type="xs:string" name="burstSize"/>
+                          <xs:element type="xs:string" name="enabled"/>
+                          <xs:element type="xs:string" name="inherited"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="cliSettings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="userName"/>
+              <xs:element type="xs:string" name="password"/>
+              <xs:element type="xs:string" name="remoteAccess"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="autoConfiguration">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="enabled"/>
+              <xs:element type="xs:string" name="rulePriority"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="dnsClient">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="primaryDns"/>
+              <xs:element type="xs:string" name="secondaryDns"/>
+              <xs:element type="xs:string" name="domainName"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="queryDaemon">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="enabled"/>
+              <xs:element type="xs:string" name="port"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

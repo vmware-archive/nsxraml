@@ -1,0 +1,85 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="securityPolicy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="name"/>
+        <xs:element type="xs:string" name="description"/>
+        <xs:element type="xs:string" name="precedence"/>
+        <xs:element name="parent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="objectId"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="securityGroupBinding">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="objectId"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="actionsByCategory">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="category"/>
+              <xs:element name="action">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="name"/>
+                    <xs:element type="xs:string" name="description"/>
+                    <xs:element type="xs:string" name="category"/>
+                    <xs:element type="xs:string" name="actionType"/>
+                    <xs:element type="xs:string" name="isActionEnforced"/>
+                    <xs:element type="xs:string" name="isActive"/>
+                    <xs:element type="xs:string" name="isEnabled"/>
+                    <xs:element name="secondarySecurityGroup">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="objectId"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="applications">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="application">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="objectId"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="applicationGroup">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="objectId"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="logged"/>
+                    <xs:element name="scope">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="id"/>
+                          <xs:element type="xs:string" name="name"/>
+                          <xs:element type="xs:string" name="objectTypeName"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="class"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="direction"/>
+              <xs:element type="xs:string" name="outsideSecondaryContainer"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

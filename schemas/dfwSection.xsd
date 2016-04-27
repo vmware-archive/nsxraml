@@ -1,0 +1,86 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="section">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="rule" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element type="xs:string" name="name"/>
+              <xs:element type="xs:string" name="action"/>
+              <xs:element name="appliedToList" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="appliedTo">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="name"/>
+                          <xs:element type="xs:string" name="value"/>
+                          <xs:element type="xs:string" name="type"/>
+                          <xs:element type="xs:string" name="isValid"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="sources" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="source">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="name"/>
+                          <xs:element type="xs:string" name="value"/>
+                          <xs:element type="xs:string" name="type"/>
+                          <xs:element type="xs:string" name="isValid"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="excluded"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="destinations" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="destination">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="name"/>
+                          <xs:element type="xs:string" name="value"/>
+                          <xs:element type="xs:string" name="type"/>
+                          <xs:element type="xs:string" name="isValid"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="excluded"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="services" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="service">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="destinationPort"/>
+                          <xs:element type="xs:string" name="protocol"/>
+                          <xs:element type="xs:string" name="subProtocol"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="disabled" use="optional"/>
+            <xs:attribute type="xs:string" name="logged" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="name"/>
+      <xs:attribute type="xs:string" name="managedBy"/>
+      <xs:attribute type="xs:string" name="type"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,88 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="firewall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="defaultPolicy">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="action"/>
+              <xs:element type="xs:string" name="loggingEnabled"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="globalConfig">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="tcpPickOngoingConnections"/>
+              <xs:element type="xs:string" name="tcpAllowOutOfWindowPackets"/>
+              <xs:element type="xs:string" name="tcpSendResetForClosedVsePorts"/>
+              <xs:element type="xs:string" name="dropInvalidTraffic"/>
+              <xs:element type="xs:string" name="logInvalidTraffic"/>
+              <xs:element type="xs:string" name="tcpTimeoutOpen"/>
+              <xs:element type="xs:string" name="tcpTimeoutEstablished"/>
+              <xs:element type="xs:string" name="tcpTimeoutClose"/>
+              <xs:element type="xs:string" name="udpTimeout"/>
+              <xs:element type="xs:string" name="icmpTimeout"/>
+              <xs:element type="xs:string" name="icmp6Timeout"/>
+              <xs:element type="xs:string" name="ipGenericTimeout"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="rules">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="rule">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="ruleTag"/>
+                    <xs:element type="xs:string" name="name"/>
+                    <xs:element name="source">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="vnicGroupId"/>
+                          <xs:element type="xs:string" name="groupingObjectId"/>
+                          <xs:element type="xs:string" name="ipAddress"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="destination">
+                      <xs:complexType>
+                        <xs:choice maxOccurs="unbounded" minOccurs="0">
+                          <xs:element type="xs:string" name="groupingObjectId"/>
+                          <xs:element type="xs:string" name="vnicGroupId"/>
+                          <xs:element type="xs:string" name="ipAddress"/>
+                        </xs:choice>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="application">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="applicationId"/>
+                          <xs:element name="service">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="protocol"/>
+                                <xs:element type="xs:string" name="port"/>
+                                <xs:element type="xs:string" name="sourcePort"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="matchTranslated"/>
+                    <xs:element type="xs:string" name="direction"/>
+                    <xs:element type="xs:string" name="action"/>
+                    <xs:element type="xs:string" name="enabled"/>
+                    <xs:element type="xs:string" name="loggingEnabled"/>
+                    <xs:element type="xs:string" name="description"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
