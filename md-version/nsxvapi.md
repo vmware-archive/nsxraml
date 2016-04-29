@@ -1395,10 +1395,6 @@ Specified policy
 ## flowMonitoring
 Operations on flowdata
 
-### /2.1/app/flow
-
-* **delete** *(secured)*: Delete flow records for context by contextId
-
 ### /2.1/app/flow/flowstats
 Retrieve flow statistics for a datacenter, port group, VM, or vNIC
 
@@ -1417,6 +1413,8 @@ Configure flow Monitoring
 
 ### /2.1/app/flow/{contextId}
 Flow configuration by contextId
+
+* **delete** *(secured)*: Delete flow records for context by contextId
 
 ## dfwExclusion
 Exclude VM's from firewall protection
