@@ -4100,181 +4100,53 @@ securitySchemes:
     delete:
       displayName: spoofGuardPolicyDelete
       description: Delete a policy
-/2.1/flow/flowstats:
-  displayName: flowStats
-  description: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
-  get:
-    displayName: flowStatsRead
-    description: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
-    queryParameters:
-      contextId:
-        displayName: contextId
-        description: vc-moref-id of the datacenter, portgroup, vm, or UUID of the vNIC for which traffic flow is to be retrieved
-      flowType:
-        displayName: flowType
-        description: Type of flow to be retrieved (TCP_UDP|LAYER2|LAYER3)
-      startTime:
-        displayName: startTime
-        description: Flows with start time greater than specified time are retrieved
-      endTime:
-        displayName: endTime
-        description: Flows with start time lower than specified time are retrieved
-      startIndex:
-        type: integer
-        displayName: startIndex
-        description: (optional) Specifies starting point for retrieval. If not specified, start from the beginning by default
-        default: 0
-      pageSize:
-        type: integer
-        displayName: pageSize
-        description: (optional) Limit the max number of entries returned. Valid range is 1-1024
-        default: 256
-/2.1/internal/flow:
-  displayName: flowData
+/2.1/app/flow:
+  displayName: flowMonitoring
   description: Operations on flowdata
-  /flowsummary:
-    displayName: flowSummary
-    description: Flow summary for given context
+  /flowstats:
+    displayName: flowStats
+    description: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
     get:
-      displayName: flowSummaryRead
-      description: Retrieve flow summary
+      displayName: flowStatsRead
+      description: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
       queryParameters:
         contextId:
           displayName: contextId
-          description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved
-        startTime:
-          displayName: startTime
-          description: Flows with start time greater than specified will be fetched
-        endTime:
-          displayName: endTime
-          description: Flows with end time lesser than specified will be fetched
-  /flowtable:
-    displayName: flowTable
-    description: Retrieve flow table for given context and table type
-    get:
-      displayName: flowTableRead
-      description: Retrieve flow table for given context and table type
-      queryParameters:
-        contextId:
-          displayName: contextId
-          description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved
-        startTime:
-          displayName: startTime
-          description: Flows with start time greater than specified will be fetched
-        endTime:
-          displayName: endTime
-          description: Flows with end time lesser than specified will be fetched
-        tableType:
-          displayName: tableType
-          description: Type of flow to be fetched (source|application|destination)
-        maxRows:
-          displayName: maxRows
-          description: (optional) Max number of rows to return
-          default: 5
-  /flowdetails:
-    displayName: flowDetails
-    description: Retrieve flow details for given context
-    get:
-      displayName: flowDetailsRead
-      description: Retrieve flow details for given context
-      queryParameters:
-        contextId:
-          displayName: contextId
-          description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved
-        startTime:
-          displayName: startTime
-          description: Flows with start time greater than specified will be fetched
-        endTime:
-          displayName: endTime
-          description: Flows with end time lesser than specified will be fetched
+          description: vc-moref-id of the datacenter, portgroup, vm, or UUID of the vNIC for which traffic flow is to be retrieved
         flowType:
           displayName: flowType
-          description: Type of flow to be fetched (Allowed|Blocked)
-    /application:
-      displayName: flowDetailsApp
-      description: Retrieve flow details for given context by application
-      get:
-        displayName: flowDetailsAppRead
-        description: Retrieve flow details for given context by application
-        queryParameters:
-          contextId:
-            displayName: contextId
-            description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved
-          startTime:
-            displayName: startTime
-            description: Flows with start time greater than specified will be fetched
-          endTime:
-            displayName: endTime
-            description: Flows with end time lesser than specified will be fetched
-          flowType:
-            displayName: flowType
-            description: Type of flow to be fetched (Allowed|Blocked)
-          serviceId:
-            displayName: serviceId
-            description: Service identifier of application to be queried
-  /pagedflowdetails:
-    displayName: flowPagedDetails
-    description: Retrieves paged flow details for given context
-    get:
-      displayName: flowPagedDetailsRead
-      description: Retrieves paged flow details for given context
-      queryParameters:
-        contextId:
-          displayName: contextId
-          description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved
+          description: Type of flow to be retrieved (TCP_UDP|LAYER2|LAYER3)
         startTime:
           displayName: startTime
-          description: Flows with start time greater than specified will be fetched
+          description: Flows with start time greater than specified time are retrieved
         endTime:
           displayName: endTime
-          description: Flows with end time lesser than specified will be fetched
-        flowType:
-          displayName: flowType
-          description: Type of flow to be fetched (Allowed|Blocked)
+          description: Flows with start time lower than specified time are retrieved
         startIndex:
+          type: integer
           displayName: startIndex
-          description: (optional) Start index for returned flows
+          description: (optional) Specifies starting point for retrieval. If not specified, start from the beginning by default
           default: 0
         pageSize:
+          type: integer
           displayName: pageSize
-          description: (optional) Max number of flows to return in a single call
+          description: (optional) Limit the max number of entries returned. Valid range is 1-1024
           default: 256
-    /application:
-      displayName: flowPagedDetailsApp
-      description: Retrieve paged flow details by application
+    /info:
+      displayName: flowStatsInfo
+      description: Flow statistics info
       get:
-        displayName: flowPagedDetailsAppRead
-        description: Retrieve paged flow details by application
-        queryParameters:
-          contextId:
-            displayName: contextId
-            description: vc-moref-id of datacenter, port group, vm, or uuid of vNIC for which flow is to be retrieved
-          startTime:
-            displayName: startTime
-            description: Flows with start time greater than specified will be fetched
-          endTime:
-            displayName: endTime
-            description: Flows with end time lesser than specified will be fetched
-          flowType:
-            displayName: flowType
-            description: Type of flow to be fetched (Allowed|Blocked)
-          startIndex:
-            displayName: startIndex
-            description: (optional) Start index for returned flows
-            default: 0
-          pageSize:
-            displayName: pageSize
-            description: (optional) Max number of flows to return in a single call
-            default: 256
-          serviceId:
-            displayName: serviceId
-            description: Service identifier of application to query
+        displayName: flowStatsInfoRead
+        description: Retrieve flow statistics info
   /config:
-    displayName: flowsExclude
-    description: Exclude specified flows
-    post:
-      displayName: flowsExcludeCreate
-      description: Exclude specified flows
+    displayName: flowConfig
+    description: Configure flow Monitoring
+    get:
+      displayName: flowConfigRead
+      description: Retrieve flow details
+    put:
+      displayName: flowsConfigCreate
+      description: Update specified flows
       body:
         application/xml:
           example: |
@@ -4301,9 +4173,12 @@ securitySchemes:
               </service>
             </FlowConfiguration>
           schema: flowsExcludeCreate
-    get:
-      displayName: flowsExcludeRead
-      description: Retrieve excluded flow details
+  /{contextId}:
+    displayName: flowContext
+    description: Flow configuration by contextId
+  delete:
+    displayName: flowContextDelete
+    description: Delete flow records for context by contextId
 /2.1/app/excludelist:
   displayName: dfwExclusion
   description: Exclude VM's from firewall protection

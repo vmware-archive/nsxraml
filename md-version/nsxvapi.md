@@ -1392,51 +1392,31 @@ Specified policy
 * **put** *(secured)*: Modify SpoofGuard policy
 * **delete** *(secured)*: Delete a policy
 
-## flowStats
-Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+## flowMonitoring
+Operations on flowdata
 
-### /2.1/flow/flowstats
+### /2.1/app/flow
+
+* **delete** *(secured)*: Delete flow records for context by contextId
+
+### /2.1/app/flow/flowstats
+Retrieve flow statistics for a datacenter, port group, VM, or vNIC
 
 * **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
 
-## flowData
-Operations on flowdata
+### /2.1/app/flow/flowstats/info
+Flow statistics info
 
-### /2.1/internal/flow/flowsummary
-Flow summary for given context
+* **get** *(secured)*: Retrieve flow statistics info
 
-* **get** *(secured)*: Retrieve flow summary
+### /2.1/app/flow/config
+Configure flow Monitoring
 
-### /2.1/internal/flow/flowtable
-Retrieve flow table for given context and table type
+* **get** *(secured)*: Retrieve flow details
+* **put** *(secured)*: Update specified flows
 
-* **get** *(secured)*: Retrieve flow table for given context and table type
-
-### /2.1/internal/flow/flowdetails
-Retrieve flow details for given context
-
-* **get** *(secured)*: Retrieve flow details for given context
-
-### /2.1/internal/flow/flowdetails/application
-Retrieve flow details for given context by application
-
-* **get** *(secured)*: Retrieve flow details for given context by application
-
-### /2.1/internal/flow/pagedflowdetails
-Retrieves paged flow details for given context
-
-* **get** *(secured)*: Retrieves paged flow details for given context
-
-### /2.1/internal/flow/pagedflowdetails/application
-Retrieve paged flow details by application
-
-* **get** *(secured)*: Retrieve paged flow details by application
-
-### /2.1/internal/flow/config
-Exclude specified flows
-
-* **post** *(secured)*: Exclude specified flows
-* **get** *(secured)*: Retrieve excluded flow details
+### /2.1/app/flow/{contextId}
+Flow configuration by contextId
 
 ## dfwExclusion
 Exclude VM's from firewall protection
