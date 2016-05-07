@@ -1,6 +1,6 @@
 # HTML Version of the NSX RAML Specification
 
-This is a automatically generated HTML Version of the NSX-v APi RAMl Spec. You can either view it or download it.
+This is an automatically generated HTML Version of the NSX-v API RAMl Spec. You can either view it or download it.
 
 To view the HTML Version of the NSX-v RAML Spec on-line, follow this Link: 
 
