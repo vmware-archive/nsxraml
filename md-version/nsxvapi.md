@@ -207,7 +207,7 @@ Working with a specified service
 ## applicationgroup
 Operations on Application Groups
 
-### /2.0/services/applicationgroup/{scopeId}
+### /2.0/services/applicationgroup/scope/{scopeId}
 Working with service groups
 
 * **post** *(secured)*: Create a new service group on the specified scope
