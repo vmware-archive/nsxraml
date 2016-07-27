@@ -1442,7 +1442,7 @@ securitySchemes:
     uriParameters:
       scopeMoref:
         required: true
-        displayName: ipsetScopeMoref
+        displayName: scopeMoref
         description: For scopeMoref use "globalroot-0" for non-universal IP sets and use "universalroot-0" for universal IP sets.
     get:
       displayName: ipsetList
@@ -1452,7 +1452,7 @@ securitySchemes:
     uriParameters:
       scopeMoref:
         required: true
-        displayName: ipsetScopeMoref
+        displayName: scopeMoref
         description: For scopeMoref use "globalroot-0" for non-universal IP sets and use "universalroot-0" for universal IP sets.
     post:
       displayName: ipsetCreate
@@ -2989,35 +2989,6 @@ securitySchemes:
       description: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
       body:
         application/xml:
-/2.0/services/macset/{scopeId}:
-  displayName: macsetScopes
-  description: Working with MAC Sets.
-  uriParameters:
-    scopeId:
-      required: true
-      displayName: scopeId
-      description: Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases
-  post:
-    displayName: macsetScopesCreate
-    description: Create a MACset on a specified scope
-    body:
-      application/xml:
-        example: |
-          <macset>
-            <objectId></objectId>
-            <type>
-              <typeName></typeName>
-            </type>
-            <description></description>
-            <name></name>
-            <revision></revision>
-            <objectTypeName></objectTypeName>
-            <value></value>
-          </macset>
-        schema: macSetCreateUpdate
-  get:
-    displayName: macsetScopesRead
-    description: List MACsets created on a specified scope
 /2.0/services/macset/{macsetId}:
   displayName: macset
   description: Operations on an individual MACset
@@ -3056,6 +3027,35 @@ securitySchemes:
         displayName: force
         description: Indicates forced or unforced delete. With forced delete, the object is deleted even if used in other places such as firewall rules, causing invalid referrals. For unforced delete, the object is deleted only if it is no used by other configurations; otherwise the delete fails
         type: boolean
+/2.0/services/macset/scope/{scopeId}:
+  displayName: macsetScopes
+  description: Working with MAC Sets.
+  uriParameters:
+    scopeId:
+      required: true
+      displayName: scopeId
+      description: Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases
+  post:
+    displayName: macsetScopesCreate
+    description: Create a MACset on a specified scope
+    body:
+      application/xml:
+        example: |
+          <macset>
+            <objectId></objectId>
+            <type>
+              <typeName></typeName>
+            </type>
+            <description></description>
+            <name></name>
+            <revision></revision>
+            <objectTypeName></objectTypeName>
+            <value></value>
+          </macset>
+        schema: macSetCreateUpdate
+  get:
+    displayName: macsetScopesRead
+    description: List MACsets created on a specified scope
 /2.0/services/taskservice/job:
   displayName: taskFramework
   description: Working with filtering criteria and paging information for jobs on the task framework
@@ -6928,10 +6928,13 @@ securitySchemes:
             description: Specified router interface
         get:
           displayName: interfaceRead
-          description: Retrieve information on specified Edge router interface
+          description: Retrieve information on specified DLR router interface
         delete:
           displayName: interfaceDelete
           description: Delete interface configuration and reset to factory default
+        put:
+          displayName: interfaceUpdate
+          description: Update interface configuration on specified DLR router interface
   /jobs:
     displayName: nsxEdgeJobs
     description: NSX Edge async jobs
