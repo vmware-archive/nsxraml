@@ -1102,14 +1102,6 @@ Working with conflicting agencies
 * **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the allowed operations on them
 * **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
 
-## macsetScopes
-Working with MAC Sets.
-
-### /2.0/services/macset/{scopeId}
-
-* **post** *(secured)*: Create a MACset on a specified scope
-* **get** *(secured)*: List MACsets created on a specified scope
-
 ## macset
 Operations on an individual MACset
 
@@ -1118,6 +1110,14 @@ Operations on an individual MACset
 * **get** *(secured)*: Retrieve details about a MACset
 * **put** *(secured)*: Modify an existing MACset
 * **delete** *(secured)*: Delete a MACset
+
+## macsetScopes
+Working with MAC Sets.
+
+### /2.0/services/macset/scope/{scopeId}
+
+* **post** *(secured)*: Create a MACset on a specified scope
+* **get** *(secured)*: List MACsets created on a specified scope
 
 ## taskFramework
 Working with filtering criteria and paging information for jobs on the task framework
@@ -2015,8 +2015,9 @@ Working with all NSX Edge router interfaces
 ### /4.0/edges/{edgeId}/interfaces/{index}
 Manage a specific NSX Edge router interface
 
-* **get** *(secured)*: Retrieve information on specified Edge router interface
+* **get** *(secured)*: Retrieve information on specified DLR router interface
 * **delete** *(secured)*: Delete interface configuration and reset to factory default
+* **put** *(secured)*: Update interface configuration on specified DLR router interface
 
 ### /4.0/edges/jobs
 NSX Edge async jobs
