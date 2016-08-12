@@ -8,7 +8,7 @@ This collection of methods are used to configure and prepare the VDS's for the u
 
 ### /2.0/vdn/switches
 
-* **post** *(secured)*: prepares a pre-configured vds with teaming and MTU options, MTU must be 1600 or higher
+* **post** *(secured)*: Prepares a pre-configured vds with teaming and MTU options, MTU must be 1600 or higher
 * **get** *(secured)*: Lists all vds's
 
 ### /2.0/vdn/switches/datacenter/{datacenterID}

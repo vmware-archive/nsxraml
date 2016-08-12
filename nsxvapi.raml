@@ -158,7 +158,7 @@ securitySchemes:
   description: This collection of methods are used to configure and prepare the VDS's for the use with NSX
   post:
     displayName: vdsPrepare
-    description: prepares a pre-configured vds with teaming and MTU options, MTU must be 1600 or higher
+    description: Prepares a pre-configured vds with teaming and MTU options, MTU must be 1600 or higher
     body:
       application/xml:
         example: |
@@ -438,6 +438,22 @@ securitySchemes:
         description: Test multicast group connectivity in a transport zone
         body:
           application/xml:
+            example: |
+              <testParameters>
+                <gateway></gateway>
+                <packetSizeMode></packetSizeMode>
+                <packetSize></packetSize>
+                <sourceHost>
+                  <hostId></hostId>
+                  <switchId></switchId>
+                  <vlanId></vlanId>
+                </sourceHost>
+                <destinationHost>
+                  <hostId></hostId>
+                  <switchId></switchId>
+                  <vlanId></vlanId>
+                </destinationHost>
+              </testParameters>
 /2.0/vdn/scopes/{scopeId}/virtualwires:
   displayName: logicalSwitches
   description: Create and List operations of logical switches inside a Transport Zone (scope)
@@ -1983,12 +1999,26 @@ securitySchemes:
       description: Upgrade network virtualization components
       body:
         application/xml:
+          example: |
+            <nwFabricFeatureConfig>
+              <featureId></featureId>
+              <resourceConfig>
+                <resourceId></resourceId>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
           schema: nwFabricConfig
     delete:
       displayName: nwfabricConfigDelete
       description: Delete network virtualization components
       body:
         application/xml:
+          example: |
+            <nwFabricFeatureConfig>
+              <featureId></featureId>
+              <resourceConfig>
+                <resourceId></resourceId>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
           schema: nwFabricConfig
   /features:
     displayName: nwfabricFeatures
@@ -2728,7 +2758,15 @@ securitySchemes:
       description: Register or update a domain with NSX Manager
       body:
         application/xml:
-            schema: domainCreate
+          example: |
+            <DirectoryDomain>
+              <name></name>
+              <type></type>
+              <netbiosName></netbiosName>
+              <username></username>
+              <password></password>
+            </DirectoryDomain>
+          schema: domainCreate
   /listDomains:
     displayName: domainList
     description: Retrieve all agent discovered (or configured) LDAP domains
@@ -2989,6 +3027,10 @@ securitySchemes:
       description: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
       body:
         application/xml:
+          example: |
+            <conflictResolverInfo>
+              <agencyAction></agencyAction>
+            </conflictResolverInfo>
 /2.0/services/macset/{macsetId}:
   displayName: macset
   description: Operations on an individual MACset
@@ -6737,6 +6779,44 @@ securitySchemes:
         description: Configure IPSEC VPN
         body:
           application/xml:
+            example: |
+              <ipsec>
+                <enabled></enabled>
+                <logLevel></logLevel>
+                <enable></enable>
+                <global>
+                  <psk></psk>
+                  <serviceCertificate></serviceCertificate>
+                  <caCertificates>
+                    <caCertificate></caCertificate>
+                  </caCertificates>
+                  <crlCertificates>
+                    <crlCertificate></crlCertificate>
+                  </crlCertificates>
+                </global>
+                <sites>
+                  <site>
+                    <enabled></enabled>
+                    <name></name>
+                    <description></description>
+                    <localId></localId>
+                    <localIp></localIp>
+                    <peerId></peerId>
+                    <peerIp></peerIp>
+                    <encryptionAlgorithm></encryptionAlgorithm>
+                    <authenticationMode>psk</authenticationMode>
+                    <psk></psk>
+                    <enablePfs></enablePfs>
+                    <dhGroup></dhGroup>
+                    <localSubnets>
+                      <subnet></subnet>
+                    </localSubnets>
+                    <peerSubnets>
+                      <subnet></subnet>
+                    </peerSubnets>
+                  </site>
+                </sites>
+              </ipsec>
       delete:
         displayName: ipsecConfigDelete
         description: Delete the IPSec configuration
@@ -6834,6 +6914,52 @@ securitySchemes:
             description: always set to "patch"
         body:
           application/xml:
+            example: |
+              <vnics>
+                <vnic>
+                  <name></name>
+                  <addressGroups>
+                    <addressGroup>
+                      <primaryAddress></primaryAddress>
+                      <secondaryAddresses>
+                        <ipAddress></ipAddress>
+                      </secondaryAddresses>
+                      <subnetMask></subnetMask>
+                    </addressGroup>
+                  </addressGroups>
+                  <mtu></mtu>
+                  <type></type>
+                  <index></index>
+                  <portgroupId></portgroupId>
+                  <portgroupName></portgroupName>
+                  <macAddress>
+                    <edgeVmHaIndex></edgeVmHaIndex>
+                    <value></value>
+                  </macAddress>
+                  <fenceParameter>
+                    <key></key>
+                    <value></value>
+                  </fenceParameter>
+                  <enableProxyArp></enableProxyArp>
+                  <enableSendRedirects></enableSendRedirects>
+                  <enableBridgeMode></enableBridgeMode>
+                  <isConnected></isConnected>
+                  <inShapingPolicy>
+                    <averageBandwidth></averageBandwidth>
+                    <peakBandwidth></peakBandwidth>
+                    <burstSize></burstSize>
+                    <enabled></enabled>
+                    <inherited></inherited>
+                  </inShapingPolicy>
+                  <outShapingPolicy>
+                    <averageBandwidth></averageBandwidth>
+                    <peakBandwidth></peakBandwidth>
+                    <burstSize></burstSize>
+                    <enabled></enabled>
+                    <inherited></inherited>
+                  </outShapingPolicy>
+                </vnic>
+              </vnics>
       get:
         displayName: vnicsRead
         description: Retrieve all interfaces for Edge
