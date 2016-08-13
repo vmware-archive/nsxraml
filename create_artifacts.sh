@@ -20,8 +20,19 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
 # IN THE SOFTWARE.
 #
-# Generate HTML and MD docs and Postman collections
+# Generate dynamic HTML docs with raml2html
 #
 raml2html -i $(pwd)/nsxvapi.raml -o $(pwd)/html-version/nsxvapi.html
+#
+# Generate staic HTML docs with raml-fleece
+#
+raml-fleece $(pwd)/nsxvapi.raml --template-resource $(pwd)/templates/raml-fleece/resource.handlebars --template-main $(pwd)/templates/raml-fleece/main.handlebars --style $(pwd)/templates/raml-fleece/style.less > $(pwd)/html-version/nsxvapi-static.html
+#
+# Generate MD docs
+#
 raml2md -i $(pwd)/nsxvapi.raml -o $(pwd)/md-version/nsxvapi.md
+#
+# Generate Postman collections
+#
 raml2postman -s $(pwd)/nsxvapi.raml -o $(pwd)/postman-collection/nsxvapi.json -g
+

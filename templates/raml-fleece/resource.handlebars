@@ -1,0 +1,110 @@
+<section class="resource">
+<h1 class="anchor" id="{{pathId}}">
+  <a href="#{{pathId}}">
+    {{#if basePath}}<span class="parent">{{basePath}}</span>{{/if}}{{path}}
+  </a>
+</h1>
+{{#if description}}
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description">{{markdown description}}</div>
+{{/if}}
+{{#if uriParameters}}
+  <div class="params">
+    <h2>URI Parameters</h2>
+    {{#> custom-parameters params=uriParameters}}
+      {{> parameters params=uriParameters}}
+    {{/ custom-parameters}}
+  </div>
+{{/if}}
+{{#each methods}}
+<div class="method {{method}}">
+  <a
+    class="verb {{method}}"
+    id="{{upperCase method}}{{../basePath}}{{../  path}}"
+    href="#{{upperCase method}}{{../basePath}}{{../  path}}"
+  ><h2>{{method}}</h2></a>
+  <div class="content">
+  {{#if description}}
+    <h3>Description</h3>
+    <p>{{markdown description}}</p>
+  {{/if}}
+  {{#if securedBy}}
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    {{#each securedBy}}
+    <li>
+      <a href="#security:{{.}}">
+        <span class="glyphicon glyphicon-lock"></span>
+        {{nameForSecurityScheme .}}
+      </a>
+    </li>
+    {{/each}}
+    </ul>
+  {{/if}}
+  {{#if headers}}
+    <div class="params">
+      <h3>Request Headers</h3>
+      {{#> custom-parameters params=headers}}
+        {{> parameters params=headers}}
+      {{/ custom-parameters}}
+    </div>
+  {{/if}}
+  {{#if queryParameters}}
+    <div class="params">
+      <h3>Query Parameters</h3>
+      {{#> custom-parameters params=queryParameters}}
+        {{> parameters params=queryParameters}}
+      {{/ custom-parameters}}
+    </div>
+  {{/if}}
+  {{#each body}}
+    {{!-- Type = @key --}}
+    {{#if schema}}
+      <h3>Request Schema</h3>
+      {{showCode schema type="json"}}
+    {{/if}}
+  {{/each}}
+  {{#each requestExamples}}
+    {{#if .}}
+      <h3>Request Example{{#if type}} (<tt>{{type}}</tt>){{/if}}</h3>
+      {{showCodeOrForm .}}
+    {{/if}}
+  {{/each}}
+  {{#if responses}}
+    <h3>Responses</h3>
+    {{#each responses}}
+      {{#if code}}
+        <h4>{{responseCode code}}</h4>
+      {{/if}}
+      {{#if description}}
+        {{markdown description}}
+      {{/if}}
+      {{#if headers}}
+        <div class="params">
+          <h4>Response Headers</h4>
+          {{#> custom-parameters params=headers}}
+            {{> parameters params=headers}}
+          {{/ custom-parameters }}
+        </div>
+      {{/if}}
+      {{#if schema}}
+        <h5>Response Schema</h5>
+        {{showCode schema type="json"}}
+      {{/if}}
+      {{#if examples}}
+        {{#each examples}}
+          <h5>
+            Response Example
+            {{#if type}}
+              (<tt>{{type}}</tt>)
+            {{/if}}
+          </h5>
+          {{showCode example type=type}}
+        {{/each}}
+      {{/if}}
+    {{/each}}
+  {{/if}}
+  </div>
+</div>
+{{/each}}
+</section>

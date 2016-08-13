@@ -1,0 +1,45 @@
+{{#> custom-before-main}}{{/ custom-before-main}}
+{{#> custom-after-tableOfContents}}{{/ custom-after-tableOfContents}}
+<div id="fleece-content" class="fleece-content">
+  <h1 class="main-heading">{{title}}{{#if version}} {{version}}{{/if}} Documentation</h1>
+  {{ postmanButton }}
+  {{#if documentation}}
+    {{#each documentation}}
+      {{#> custom-documentation}}
+        {{> documentation}}
+      {{/ custom-documentation}}
+    {{/each}}
+  {{/if}}
+  {{#if securitySchemes}}
+    <section class="security-schemes">
+      <h1 class="anchor" id="security-schemes"><a href="#security-schemes">Security Schemes</a></h1>
+      {{#each securitySchemes}}
+        {{#> custom-securityScheme}}
+          {{> securityScheme}}
+        {{/ custom-securityScheme}}
+      {{/each}}
+    </section>
+  {{/if}}
+  <h2>Endpoints</h2>
+  {{#if baseUri}}
+    <section>
+      <h1 class="anchor" id="base-uri"><a href="#base-uri">{{baseUri}}</a></h1>
+      {{#if baseUriParameters}}
+        <div class="params">
+          <h2>URI Parameters</h2>
+          {{#> custom-parameters type="URI Parameters" params=baseUriParameters}}
+            {{> parameters type="URI Parameters" params=baseUriParameters}}
+          {{/ custom-parameters}}
+        </div>
+      {{/if}}
+    </section>
+  {{/if}}
+  {{#each resources}}
+    {{#if path}}
+      {{#> custom-resource}}
+        {{> resource}}
+      {{/ custom-resource}}
+    {{/if}}
+  {{/each}}
+</div>
+{{#> custom-after-main}}{{/ custom-after-main}}
