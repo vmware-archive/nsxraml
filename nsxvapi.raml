@@ -3339,6 +3339,46 @@ securitySchemes:
           description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
       body:
         application/xml:
+          example: |
+            <firewallConfiguration timestamp="">
+              <contextId></contextId>
+              <layer3Sections>
+                <section id="defaultSectionLayer3" name="" generationNumber="" timestamp="">
+                  <rule disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <sources excluded="false">
+                      <source>
+                        <value></value>
+                        <type></type>
+                      </source>
+                    </sources>
+                    <services>
+                      <service>
+                        <destinationPort></destinationPort>
+                        <protocol></protocol>
+                        <subProtocol></subProtocol>
+                        </service>
+                    </services>
+                    <appliedToList>
+                      <appliedTo>
+                        <value></value>
+                        <type></type>
+                      </appliedTo>
+                    </appliedToList>
+                  </rule>
+                </section>
+              </layer3Sections>
+              <layer2Sections>
+                <section id="1" name="defaultSectionLayer2" generationNumber="" timestamp="">
+                  <rule id="" disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <sectionId></sectionId>
+                  </rule>
+                </section>
+              </layer2Sections>
+            </firewallConfiguration>
     delete:
       displayName: dfwConfigDelete
       description: Restores default configuration, which means one defaultLayer3 section with default allow rule and one defaultLayer2Section with default allow rule
@@ -3424,6 +3464,37 @@ securitySchemes:
               description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
           body:
             application/xml:
+              example: |
+                <section id="" name="" generationNumber="" timestamp="">
+                  <rule id="" disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId></sectionId>
+                    <sources excluded="">
+                      <source>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </source>
+                    </sources>
+                    <services>
+                      <service>
+                        <destinationPort></destinationPort>
+                        <protocol></protocol>
+                        <subProtocol></subProtocol>
+                      </service>
+                    </services>
+                  </rule>
+                </section>
         delete:
           displayName: dfwL3SectionIdDelete
           description: Deletes a L3 section and its content by ID
@@ -3520,6 +3591,37 @@ securitySchemes:
               description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
           body:
             application/xml:
+              example: |
+                <section id="" name="" generationNumber="" timestamp="">
+                  <rule id="" disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId></sectionId>
+                    <sources excluded="">
+                      <source>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </source>
+                    </sources>
+                    <services>
+                      <service>
+                        <destinationPort></destinationPort>
+                        <protocol></protocol>
+                        <subProtocol></subProtocol>
+                      </service>
+                    </services>
+                  </rule>
+                </section>
     /layer2sections:
       displayName: dfwL2Section
       description: L2 Firewall Operations on specific section specified by name (in a query Parameter)
@@ -3536,7 +3638,44 @@ securitySchemes:
         description: Creates a new L2 Firewall Section with a number of rules
         body:
          application/xml:
-          schema: dfwSection
+           example: |
+            <section name="" managedBy="" type="">
+              <rule disabled="" logged="">
+                <name></name>
+                <action></action>
+                <appliedToList>
+                  <appliedTo>
+                    <name></name>
+                    <value></value>
+                    <type></type>
+                    <isValid></isValid>
+                  </appliedTo>
+                </appliedToList>
+                <sources excluded="">
+                  <source>
+                    <name></name>
+                    <value></value>
+                    <type></type>
+                    <isValid></isValid>
+                  </source>
+                </sources>
+                <destinations excluded="">
+                  <destination>
+                    <name></name>
+                    <value></value>
+                    <type></type>
+                    <isValid></isValid>
+                  </destination>
+                </destinations>
+                <services>
+                  <service>
+                    <destinationPort></destinationPort>
+                    <protocol></protocol>
+                    <subProtocol></subProtocol>
+                  </service>
+                </services>
+            </section>
+           schema: dfwSection
       /{sectionId}:
         displayName: dfwL2SectionId
         description: L2 Firewall Operations on specific section specified by section ID
@@ -3560,6 +3699,37 @@ securitySchemes:
               description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
           body:
             application/xml:
+              example: |
+                <section id="" name="" generationNumber="" timestamp="">
+                  <rule id="" disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId></sectionId>
+                    <sources excluded="">
+                      <source>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </source>
+                    </sources>
+                    <services>
+                      <service>
+                        <destinationPort></destinationPort>
+                        <protocol></protocol>
+                        <subProtocol></subProtocol>
+                      </service>
+                    </services>
+                  </rule>
+                </section>
         delete:
           displayName: dfwL2SectionIdDelete
           description: Deletes a L2 section and its content by ID
@@ -3633,6 +3803,43 @@ securitySchemes:
                   description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
               body:
                 application/xml:
+                  example: |
+                    <rule id="" disabled="" logged="">
+                      <name></name>
+                      <action></action>
+                      <notes></notes>
+                      <sources excluded="">
+                        <source>
+                          <value></value>
+                          <type></type>
+                          <isValid></isValid>
+                        </source>
+                      </sources>
+                      <destinations excluded="">
+                        <destination>
+                          <name></name>
+                          <value></value>
+                          <type></type>
+                          <isValid></isValid>
+                        </destination>
+                      </destinations>
+                      <services>
+                        <service>
+                          <name></name>
+                          <value></value>
+                          <type></type>
+                          <isValid></isValid>
+                        </service>
+                      </services>
+                      <appliedToList>
+                        <appliedTo>
+                          <name></name>
+                          <value></value>
+                          <type></type>
+                          <isValid></isValid>
+                        </appliedTo>
+                      </appliedToList>
+                    </rule>
             delete:
               displayName: dfwL2RuleDelete
               description: Delete a specific rule identified by rule Id
@@ -3656,6 +3863,37 @@ securitySchemes:
               description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
           body:
             application/xml:
+              example: |
+                <section id="" name="" generationNumber="" timestamp="">
+                  <rule id="" disabled="" logged="">
+                    <name></name>
+                    <action></action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId></sectionId>
+                    <sources excluded="">
+                      <source>
+                        <name></name>
+                        <value></value>
+                        <type></type>
+                        <isValid></isValid>
+                      </source>
+                    </sources>
+                    <services>
+                      <service>
+                        <destinationPort></destinationPort>
+                        <protocol></protocol>
+                        <subProtocol></subProtocol>
+                      </service>
+                    </services>
+                  </rule>
+                </section>
     /layer3redirectsections:
       displayName: layer3RedirectSections
       description: Layer3 redirect sections and rules
@@ -6759,6 +6997,43 @@ securitySchemes:
         description: Configure L2VPN for server or client
         body:
           application/xml:
+            example: |
+              <l2Vpn>
+                <enabled>true</enabled>
+                <logging>
+                  <enable>false</enable>
+                  <logLevel>info</logLevel>
+                  </logging>
+                  <l2VpnSites>
+                  <l2VpnSite>
+                    <server>
+                      <configuration>
+                        <listenerIp></listenerIp>
+                        <listenerPort></listenerPort>
+                        <encryptionAlgorithm></encryptionAlgorithm>
+                        <serverCertificate></serverCertificate>
+                        <peerSites>
+                          <peerSite>
+                            <name></name>
+                            <description></description>
+                            <l2VpnUser>
+                              <userId></userId>
+                              <password></password>
+                            </l2VpnUser>
+                            <vnics>
+                              <index></index>
+                            </vnics>
+                            <egressOptimization>
+                              <gatewayIpAddress></gatewayIpAddress>
+                            </egressOptimization>
+                            <enabled></enabled>
+                          </peerSite>
+                        </peerSites>
+                      </configuration>
+                    </server>
+                  </l2VpnSite>
+                </l2VpnSites>
+              </l2Vpn>
       delete:
         displayName: l2VPNDelete
         description: Delete L2 VPN
