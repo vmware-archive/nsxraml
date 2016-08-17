@@ -39,12 +39,22 @@
               <xs:element type="xs:string" name="name"/>
               <xs:element type="xs:string" name="insertXForwardedFor"/>
               <xs:element type="xs:string" name="sslPassthrough"/>
+              <xs:element type="xs:string" name="template"/>
               <xs:element name="persistence">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="method"/>
                     <xs:element type="xs:string" name="cookieName"/>
                     <xs:element type="xs:string" name="cookieMode"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="serverSslEnabled"/>
+              <xs:element name="clientSsl"/>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="clientAuth"/>
+                    <xs:element type="xs:string" name="serviceCertificate"/>
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
@@ -67,6 +77,7 @@
                     <xs:element type="xs:string" name="ipAddress"/>
                     <xs:element type="xs:string" name="weight"/>
                     <xs:element type="xs:string" name="port"/>
+                    <xs:element type="xs:string" name="monitorPort"/>
                     <xs:element type="xs:string" name="minConn"/>
                     <xs:element type="xs:string" name="maxConn"/>
                     <xs:element type="xs:string" name="name"/>
@@ -87,6 +98,14 @@
               <xs:element type="xs:string" name="method"/>
               <xs:element type="xs:string" name="url"/>
               <xs:element type="xs:string" name="name"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="applicationRule">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="name"/>
+              <xs:element type="xs:string" name="script"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>

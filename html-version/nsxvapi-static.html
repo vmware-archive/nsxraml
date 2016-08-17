@@ -18410,12 +18410,22 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
               &lt;xs:element type="xs:string" name="name"/&gt;
               &lt;xs:element type="xs:string" name="insertXForwardedFor"/&gt;
               &lt;xs:element type="xs:string" name="sslPassthrough"/&gt;
+              &lt;xs:element type="xs:string" name="template"/&gt;
               &lt;xs:element name="persistence"&gt;
                 &lt;xs:complexType&gt;
                   &lt;xs:sequence&gt;
                     &lt;xs:element type="xs:string" name="method"/&gt;
                     &lt;xs:element type="xs:string" name="cookieName"/&gt;
                     &lt;xs:element type="xs:string" name="cookieMode"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="serverSslEnabled"/&gt;
+              &lt;xs:element name="clientSsl"/&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="clientAuth"/&gt;
+                    &lt;xs:element type="xs:string" name="serviceCertificate"/&gt;
                   &lt;/xs:sequence&gt;
                 &lt;/xs:complexType&gt;
               &lt;/xs:element&gt;
@@ -18438,6 +18448,7 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
                     &lt;xs:element type="xs:string" name="ipAddress"/&gt;
                     &lt;xs:element type="xs:string" name="weight"/&gt;
                     &lt;xs:element type="xs:string" name="port"/&gt;
+                    &lt;xs:element type="xs:string" name="monitorPort"/&gt;
                     &lt;xs:element type="xs:string" name="minConn"/&gt;
                     &lt;xs:element type="xs:string" name="maxConn"/&gt;
                     &lt;xs:element type="xs:string" name="name"/&gt;
@@ -18458,6 +18469,14 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
               &lt;xs:element type="xs:string" name="method"/&gt;
               &lt;xs:element type="xs:string" name="url"/&gt;
               &lt;xs:element type="xs:string" name="name"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="applicationRule"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="name"/&gt;
+              &lt;xs:element type="xs:string" name="script"/&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
@@ -18496,11 +18515,17 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">persistence</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serverSslEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serverSslEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientSsl</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientAuth</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientAuth</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">clientSsl</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
@@ -18514,6 +18539,7 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
@@ -18529,6 +18555,10 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">loadBalancer</span>&gt;</span>
 </code></pre>
   </div>
