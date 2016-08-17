@@ -26,7 +26,7 @@ raml2html -i $(pwd)/nsxvapi.raml -o $(pwd)/html-version/nsxvapi.html
 #
 # Generate staic HTML docs with raml-fleece
 #
-raml-fleece $(pwd)/nsxvapi.raml --template-resource $(pwd)/templates/raml-fleece/resource.handlebars --template-main $(pwd)/templates/raml-fleece/main.handlebars --style $(pwd)/templates/raml-fleece/style.less > $(pwd)/html-version/nsxvapi-static.html
+raml-fleece $(pwd)/nsxvapi.raml --template-index $(pwd)/templates/raml-fleece/index.handlebars --template-resource $(pwd)/templates/raml-fleece/resource.handlebars --template-main $(pwd)/templates/raml-fleece/main.handlebars --style $(pwd)/templates/raml-fleece/style.less > $(pwd)/html-version/nsxvapi-static.html
 #
 # Generate MD docs
 #
