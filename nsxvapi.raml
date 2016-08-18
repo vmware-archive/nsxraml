@@ -73,7 +73,8 @@ schemas:
     ipAddressRequest: !include schemas/ipAddressRequest.xsd
     ipPool: !include schemas/ipPool.xsd
     ipPoolUpdate: !include schemas/ipPoolUpdate.xsd
-    ipSet: !include schemas/ipSet.xsd
+    ipsetCreate: !include schemas/ipsetCreate.xsd
+    ipsetUpdate: !include schemas/ipsetUpdate.xsd
     layer3RedirectSectionsCreate: !include schemas/layer3RedirectSectionsCreate.xsd
     layer3RedirectSectionUpdate: !include schemas/layer3RedirectSectionUpdate.xsd
     layoutUpdate: !include schemas/layoutUpdate.xsd
@@ -115,6 +116,7 @@ schemas:
     scriptUpdate: !include schemas/scriptUpdate.xsd
     secGroupGlobalCreate: !include schemas/secGroupGlobalCreate.xsd
     secGroupBulkObjectUpdate: !include schemas/secGroupBulkObjectUpdate.xsd
+    secGroupObjectUpdate: !include schemas/secGroupObjectUpdate.xsd
     securityFabricCreate: !include schemas/securityFabricCreate.xsd
     securityPolicyCreate: !include schemas/securityPolicyCreate.xsd
     securityPolicyIDUpdate: !include schemas/securityPolicyIDUpdate.xsd
@@ -1227,7 +1229,9 @@ securitySchemes:
        scopeId:
          required: true
          displayName: scopeId
-         description: In the current version the scopeId will always be globalroot-0
+         description: |
+          For the scopeId use globalroot-0 for non-universal security groups and universalroot-0 for universal
+          security groups.
     post:
       displayName: secGroupCreate
       description: Create a new security group on a global scope
@@ -1417,6 +1421,31 @@ securitySchemes:
     get:
       displayName: secGroupObjectRead
       description: Retrieve all members of the specified security group
+    put:
+      displayName: secGroupObjectUpdate
+      description: Update members of the specified security group
+      body:
+        application/xml:
+          example: |
+            <securitygroup>
+              <objectId></objectId>
+              <objectTypeName></objectTypeName>
+              <revision></revision>
+              <type>
+                <typeName></typeName>
+              </type>
+              <name></name>
+              <scope>
+                <id></id>
+                <objectTypeName></objectTypeName>
+                <name></name>
+              </scope>
+              <clientHandle></clientHandle>
+              <extendedAttributes></extendedAttributes>
+              <isUniversal></isUniversal>
+              <inheritanceAllowed></inheritanceAllowed>
+            </securitygroup>
+          schema: secGroupObjectUpdate
     delete:
       displayName: secGroupObjectDelete
       description: Delete an existing security group
@@ -1490,7 +1519,9 @@ securitySchemes:
       scopeMoref:
         required: true
         displayName: scopeMoref
-        description: For scopeMoref use "globalroot-0" for non-universal IP sets and use "universalroot-0" for universal IP sets.
+        description: |
+          For scopeMoref use "globalroot-0" for non-universal IP sets and use
+          "universalroot-0" for universal IP sets.
     get:
       displayName: ipsetList
       description: Retrieve all configured IPSets
@@ -1500,7 +1531,9 @@ securitySchemes:
       scopeMoref:
         required: true
         displayName: scopeMoref
-        description: For scopeMoref use "globalroot-0" for non-universal IP sets and use "universalroot-0" for universal IP sets.
+        description: |
+          For scopeMoref use "globalroot-0" for non-universal IP sets and use
+          "universalroot-0" for universal IP sets.
     post:
       displayName: ipsetCreate
       description: creates a new IPset
@@ -1519,7 +1552,7 @@ securitySchemes:
               <value></value>
               <inheritanceAllowed></inheritanceAllowed>
             </ipset>
-          schema: ipSet
+          schema: ipsetCreate
   /{ipsetId}:
     displayName: ipset
     uriParameters:
@@ -1533,6 +1566,20 @@ securitySchemes:
     put:
       displayName: ipsetUpdate
       description: Modify an existing IPset
+      body:
+          application/xml:
+            example: |
+              <ipset>
+                <objectId></objectId>
+                <type>
+                  <typeName></typeName>
+                </type>
+                <description></description>
+                <name></name>
+                <objectTypeName></objectTypeName>
+                <value></value>
+              </ipset>
+            schema: ipsetUpdate
     delete:
       displayName: ipsetDelete
       description: delete an IPset

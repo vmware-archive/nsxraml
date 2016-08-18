@@ -421,6 +421,7 @@ Retrieve members of a specific type under a scope
 Operations for an individual security group
 
 * **get** *(secured)*: Retrieve all members of the specified security group
+* **put** *(secured)*: Update members of the specified security group
 * **delete** *(secured)*: Delete an existing security group
 
 ### /2.0/services/securitygroup/{objectId}/members/{memberMoref}
