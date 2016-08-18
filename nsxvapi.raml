@@ -134,6 +134,7 @@ schemas:
     systemLocaleUpdate: !include schemas/systemLocaleUpdate.xsd
     systemSyslogServerUpdate: !include schemas/systemSyslogServerUpdate.xsd
     systemTimeUpdate: !include schemas/systemTimeUpdate.xsd
+    universalSyncConfigurationNsxManagersCreate: !include schemas/universalSyncConfigurationNsxManagersCreate.xsd
     universalSyncConfigurationManagersThumbprintUpdate: !include schemas/universalSyncConfigurationManagersThumbprintUpdate.xsd
     userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xsd
     userRoleMgmtUpdate: !include schemas/userRoleMgmtUpdate.xsd
@@ -1562,6 +1563,20 @@ securitySchemes:
     /nsxmanagers:
       displayName: universalSyncConfigurationNsxManagers
       description: Universal sync configuration of NSX managers
+      post:
+        displayName: universalSyncConfigurationNsxManagersCreate
+        description: Create a secondary NSX manager
+        body:
+          application/xml:
+            example: |
+              <nsxManagerInfo>
+                <nsxManagerIp></nsxManagerIp>
+                <nsxManagerUsername></nsxManagerUsername>
+                <nsxManagerPassword></nsxManagerPassword>
+                <certificateThumbprint></certificateThumbprint>
+                <isPrimary></isPrimary>
+              </nsxManagerInfo>
+            schema: universalSyncConfigurationNsxManagersCreate
       delete:
         displayName: universalSyncConfigurationNsxManagersDelete
         description: Delete secondary NSX manager configuration
@@ -1581,21 +1596,21 @@ securitySchemes:
                   <isPrimary></isPrimary>
                 </nsxManagerInfo>
               schema: universalSyncConfigurationManagersThumbprintUpdate
-        /{nsxManagerID}:
-          displayName: universalSyncConfigurationManagers
-          description: Universal sync configuration of a specific NSX manager
-          get:
-            displayName: universalSyncConfigurationManagersRead
-            description: Query universal sync configuration information on a specific NSX manager by ID
-          delete:
-            displayName: universalSyncConfigurationManagersDelete
-            description: Delete a secondary NSX manager by ID
-            queryParameters:
-              forceRemoval:
-                type: boolean
-                required: false
-                displayName: universalSyncConfigurationManagerDeleteforceRemoval
-                description: Force removal of a secondary NSX manager (true/false)
+      /{nsxManagerID}:
+        displayName: universalSyncConfigurationManagers
+        description: Universal sync configuration of a specific NSX manager
+        get:
+          displayName: universalSyncConfigurationManagersRead
+          description: Query universal sync configuration information on a specific NSX manager by ID
+        delete:
+          displayName: universalSyncConfigurationManagersDelete
+          description: Delete a secondary NSX manager by ID.
+          queryParameters:
+            forceRemoval:
+              type: boolean
+              required: false
+              displayName: universalSyncConfigurationManagerDeleteforceRemoval
+              description: Force removal of a secondary NSX manager. Options are true and false.
   /sync:
     displayName: universalSyncSync
     description: Sync all objects on the NSX manager
@@ -4534,6 +4549,7 @@ securitySchemes:
           <edge>
             <datacenterMoid></datacenterMoid>
             <name></name>
+            <type></type>
             <description></description>
             <tenant></tenant>
             <fqdn></fqdn>

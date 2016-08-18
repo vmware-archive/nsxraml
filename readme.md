@@ -3,7 +3,7 @@
 This repository holds a RAML specification of the NSX for vSphere 6.x API.
 For more details on RAML, please visit http://raml.org.
 
-This RAML file has been generated from information that can be found in the "NSX vSphere API Guide" documenation that is  available in PDF format at vmware.com.
+This RAML file has been generated from information that can be found in the "NSX vSphere API Guide" documentation that is  available in PDF format at vmware.com.
 
 The purpose of this package is to be used as the basis in building dynamic API clients for the NSX for vSphere API and for the automatic generation of API documentation.
 
@@ -25,15 +25,22 @@ https://github.com/postmanlabs/raml2postman
 
 If you are interested in building the artifacts you will need a modified version of raml2html and raml2postman. To install these globally use the following commands:
 
-`npm install -g https://github.com/yfauser/raml2html`
+    `npm install -g https://github.com/yfauser/raml2html`
 
-`npm install -g https://github.com/yfauser/raml2postman`
+    `npm install -g https://github.com/yfauser/raml2postman`
 
 *Note that if you want a local install do not supply the -g argument.*
 
-# Credits
-Special credits and thanks go to Conner Mullaney. Dilligently he has created more than 80% of the content in the RAML File out of the NSX-v 6.1.4 API Documentation available as PDF, and with this brought this project forward significantly
+You will also need to install raml-fleece. To install it globally use the following command:
 
+    `npm install -g raml-fleece`
+
+Once the pre-requisites packages are installed you can run the following script:
+
+    `create_artifacts.sh`
+
+# Credits
+Special credits and thanks go to Conner Mullaney. He has created more than 80% of the original content in the RAML File out of the NSX-v 6.1.4 API Documentation available as PDF, and with this effort brought this project forward significantly.
 
 # License
 Copyright © 2015-2016 VMware, Inc. All Rights Reserved.

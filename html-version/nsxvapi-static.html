@@ -10503,6 +10503,51 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   <h2 class="endpoint-description">Description</h2>
   <div class="description"><p>Universal sync configuration of NSX managers</p>
 </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/universalsync/configuration/nsxmanagers"
+    href="#POST/2.0/universalsync/configuration/nsxmanagers"
+  ><h2>post</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Create a secondary NSX manager</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="nsxManagerInfo"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="nsxManagerIp"/&gt;
+        &lt;xs:element type="xs:string" name="nsxManagerUsername"/&gt;
+        &lt;xs:element type="xs:string" name="nsxManagerPassword"/&gt;
+        &lt;xs:element type="xs:string" name="certificateThumbprint"/&gt;
+        &lt;xs:element type="xs:string" name="isPrimary"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nsxManagerInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nsxManagerIp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nsxManagerIp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nsxManagerUsername</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nsxManagerUsername</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nsxManagerPassword</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nsxManagerPassword</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">certificateThumbprint</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">certificateThumbprint</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isPrimary</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isPrimary</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nsxManagerInfo</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
 <div class="method delete">
   <a
     class="verb delete"
@@ -10579,9 +10624,9 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
 </div>
 </section>
 <section class="resource">
-<h1 class="anchor" id="2-0-universalsync-configuration-nsxmanagers-thumbprint-nsxmanagerid">
-  <a href="#2-0-universalsync-configuration-nsxmanagers-thumbprint-nsxmanagerid">
-    <span class="parent">/2.0/universalsync/configuration/nsxmanagers/thumbprint</span>/{nsxManagerID}
+<h1 class="anchor" id="2-0-universalsync-configuration-nsxmanagers-nsxmanagerid">
+  <a href="#2-0-universalsync-configuration-nsxmanagers-nsxmanagerid">
+    <span class="parent">/2.0/universalsync/configuration/nsxmanagers</span>/{nsxManagerID}
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
@@ -10602,8 +10647,8 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/2.0/universalsync/configuration/nsxmanagers/thumbprint/{nsxManagerID}"
-    href="#GET/2.0/universalsync/configuration/nsxmanagers/thumbprint/{nsxManagerID}"
+    id="GET/2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}"
+    href="#GET/2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}"
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
@@ -10623,12 +10668,12 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
 <div class="method delete">
   <a
     class="verb delete"
-    id="DELETE/2.0/universalsync/configuration/nsxmanagers/thumbprint/{nsxManagerID}"
-    href="#DELETE/2.0/universalsync/configuration/nsxmanagers/thumbprint/{nsxManagerID}"
+    id="DELETE/2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}"
+    href="#DELETE/2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}"
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete a secondary NSX manager by ID</p>
+    <p><p>Delete a secondary NSX manager by ID.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -10648,7 +10693,7 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
     
   </dt>
   <dd>
-      <p>Force removal of a secondary NSX manager (true/false)</p>
+      <p>Force removal of a secondary NSX manager. Options are true and false.</p>
 
   </dd>
 </dl>
@@ -14488,6 +14533,7 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">edge</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">datacenterMoid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">datacenterMoid</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">tenant</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tenant</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>

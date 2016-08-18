@@ -486,6 +486,7 @@ Universal Sync Configuration
 ### /2.0/universalsync/configuration/nsxmanagers
 Universal sync configuration of NSX managers
 
+* **post** *(secured)*: Create a secondary NSX manager
 * **delete** *(secured)*: Delete secondary NSX manager configuration
 
 ### /2.0/universalsync/configuration/nsxmanagers/thumbprint
@@ -493,11 +494,11 @@ Universal sync configuration NSX manager thumbprint
 
 * **put** *(secured)*: Update the NSX manager thumprint in the universal sync configuration
 
-### /2.0/universalsync/configuration/nsxmanagers/thumbprint/{nsxManagerID}
+### /2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}
 Universal sync configuration of a specific NSX manager
 
 * **get** *(secured)*: Query universal sync configuration information on a specific NSX manager by ID
-* **delete** *(secured)*: Delete a secondary NSX manager by ID
+* **delete** *(secured)*: Delete a secondary NSX manager by ID.
 
 ### /2.0/universalsync/sync
 Sync all objects on the NSX manager
