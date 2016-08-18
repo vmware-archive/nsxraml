@@ -71,27 +71,34 @@ Configurations of Segment ID's and Multicast Ranges for logical switches
 Operations on Segment ID's (VXLAN Idd)
 
 * **post** *(secured)*: Add a segment ID Pool
-* **get** *(secured)*: Lists all Segment ID Pools
+* **get** *(secured)*: Lists all Segment ID Pools.
 
 ### /2.0/vdn/config/segments/{segmentPoolId}
 Operations on individual segment ID Pool
 
-* **get** *(secured)*: Retrieve details of an individual segment ID Pool
-* **put** *(secured)*: Update an individual segment ID Pool
-* **delete** *(secured)*: Delete an individual segment ID Pool
+* **get** *(secured)*: Retrieve details of an individual segment ID Pool.
+* **put** *(secured)*: Update an individual segment ID Pool. If the segment pool is
+universal the API call must be made to the primary NSX manager.
+
+* **delete** *(secured)*: Delete an individual segment ID Pool. If the segment pool is
+universal the API call must be made to the primary NSX manager.
 
 ### /2.0/vdn/config/multicasts
 Operations on multicast range Pools for logical switches
 
 * **post** *(secured)*: Adds a multicast range for logical switches
-* **get** *(secured)*: List all configured vdn Multicast Pools
+* **get** *(secured)*: List all configured VDN Multicast Pools. Universal pools will have the
+property isUniversal set tot true.
 
 ### /2.0/vdn/config/multicasts/{multicastAddresssRangeId}
 Operations in individual multicast range Pools for logical switches
 
 * **get** *(secured)*: Retrieve details of an individual Multicast range Pool
-* **put** *(secured)*: Update an individual Multicast range Pool
-* **delete** *(secured)*: Delete an individual Multicast range Pool
+* **put** *(secured)*: Update an individual multicast range pool. If the multicast pool is
+universal the API call must be made to the primary NSX manager.
+
+* **delete** *(secured)*: Delete an individual Multicast range pool. If the multicast pool is
+universal the API call must be made to the primary NSX manager.
 
 ### /2.0/vdn/config/vxlan/udp/port
 View configured UDP port for VXLAN
@@ -126,7 +133,7 @@ Read, update and delete an existing scope (transport Zone)
 ### /2.0/vdn/scopes/{scopeId}/attributes
 update the attributes of a transport zone (e.g. Name, description)
 
-* **put** *(secured)*: update the attributes of a transport zone (e.g. Name, description)
+* **put** *(secured)*: Update the attributes of a transport zone (e.g. Name, description)
 
 ### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
 Test multicast group connectivity in a transport zone
@@ -139,7 +146,8 @@ Create and List operations of logical switches inside a Transport Zone (scope)
 ### /2.0/vdn/scopes/{scopeId}/virtualwires
 
 * **get** *(secured)*: Lists all logical Switches in the Transport Zone (Scope)
-* **post** *(secured)*: creates a logicalSwitch
+* **post** *(secured)*: Creates a logicalSwitch. To create a universal logical switch use the
+appropriate universal scope as the scopeId and use the primary NSX manager.
 
 ## logicalSwitchesGlobal
 List Operations of logicalSwitches in all transport Zones (scope)
@@ -156,7 +164,10 @@ Migrate a Virtual Maschine vnic to a logical switch
 ### /2.0/vdn/virtualwires/{virtualWireID}
 Retrieves the configuration of an individual logical switch
 
-* **get** *(secured)*: Retrieves the configuration of an individual logical switch
+* **get** *(secured)*: Retrieves the configuration of an individual logical switch. If the
+switch is a universal logical switch the isUniversal flag will be set in
+the response body.
+
 * **put** *(secured)*: Update a logical switch, possible updates are name changes & Controlplane Mode
 * **delete** *(secured)*: Delete a logical switch
 

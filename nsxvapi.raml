@@ -82,6 +82,7 @@ schemas:
     ldapServerCreate: !include schemas/ldapServerCreate.xsd
     loadBalancerConfig: !include schemas/loadBalancerConfig.xsd
     logicalSwitchCreate: !include schemas/logicalSwitchCreate.xsd
+    logicalSwitchUpdate: !include schemas/logicalSwitchUpdate.xsd
     logicalSwitchVmAttach: !include schemas/logicalSwitchVmAttach.xsd
     logicalSwitchConnCheck: !include schemas/logicalSwitchConnCheck.xsd
     logicalSwitchPing: !include schemas/logicalSwitchPing.xsd
@@ -234,7 +235,7 @@ securitySchemes:
           schema: vdnSegment
     get:
       displayName: vdnSegmentPoolList
-      description: Lists all Segment ID Pools
+      description: Lists all Segment ID Pools.
     /{segmentPoolId}:
       displayName: vdnSegmentPool
       description: Operations on individual segment ID Pool
@@ -245,10 +246,12 @@ securitySchemes:
           description: A valid segment Pool Id
       get:
         displayName: vdnSegmentPoolShow
-        description: Retrieve details of an individual segment ID Pool
+        description: Retrieve details of an individual segment ID Pool.
       put:
         displayName: vdnSegmentPoolChange
-        description: Update an individual segment ID Pool
+        description: |
+          Update an individual segment ID Pool. If the segment pool is
+          universal the API call must be made to the primary NSX manager.
         body:
           application/xml:
             example: |
@@ -259,7 +262,9 @@ securitySchemes:
             schema: vdnSegmentUpdate
       delete:
         displayName: vdnSegmentPoolDelete
-        description: Delete an individual segment ID Pool
+        description: |
+          Delete an individual segment ID Pool. If the segment pool is
+          universal the API call must be made to the primary NSX manager.
   /multicasts:
     displayName: vdnMulticastPools
     description: Operations on multicast range Pools for logical switches
@@ -284,7 +289,9 @@ securitySchemes:
           schema: vdnMulticast
     get:
       displayName: vdnMulticastPoolList
-      description: List all configured vdn Multicast Pools
+      description: |
+        List all configured VDN Multicast Pools. Universal pools will have the
+        property isUniversal set tot true.
     /{multicastAddresssRangeId}:
       displayName: vdnMulticastPool
       description: Operations in individual multicast range Pools for logical switches
@@ -298,7 +305,9 @@ securitySchemes:
         description: Retrieve details of an individual Multicast range Pool
       put:
         displayName: vdnMulticastPoolChange
-        description: Update an individual Multicast range Pool
+        description: |
+          Update an individual multicast range pool. If the multicast pool is
+          universal the API call must be made to the primary NSX manager.
         body:
           application/xml:
             example: |
@@ -310,7 +319,9 @@ securitySchemes:
             schema: vdnMulticastUpdate
       delete:
         displayName: vdnSegmentPoolDelete
-        description: Delete an individual Multicast range Pool
+        description: |
+          Delete an individual Multicast range pool. If the multicast pool is
+          universal the API call must be made to the primary NSX manager.
   /vxlan/udp/port:
     displayName: vdnConfigUDP
     description: View configured UDP port for VXLAN
@@ -416,7 +427,7 @@ securitySchemes:
       description: update the attributes of a transport zone (e.g. Name, description)
       put:
         displayName: vdnScopeAttribUpdate
-        description: update the attributes of a transport zone (e.g. Name, description)
+        description: Update the attributes of a transport zone (e.g. Name, description)
         body:
           application/xml:
             example: |
@@ -471,7 +482,9 @@ securitySchemes:
     description: Lists all logical Switches in the Transport Zone (Scope)
   post:
     displayName: logicalSwitchCreate
-    description: creates a logicalSwitch
+    description: |
+      Creates a logicalSwitch. To create a universal logical switch use the
+      appropriate universal scope as the scopeId and use the primary NSX manager.
     body:
       application/xml:
         example: |
@@ -522,10 +535,24 @@ securitySchemes:
         description: A logical switch id, e.g. virtualwire-1002
     get:
       displayName: logicalSwitchShow
-      description: Retrieves the configuration of an individual logical switch
+      description: |
+        Retrieves the configuration of an individual logical switch. If the
+        switch is a universal logical switch the isUniversal flag will be set in
+        the response body.
     put:
       displayName: logicalSwitchUpdate
       description: Update a logical switch, possible updates are name changes & Controlplane Mode
+      body:
+        application/xml:
+          example: |
+            <virtualWire>
+              <name></name>
+              <description></description>
+              <tenantId></tenantId>
+              <vdnScopeId></vdnScopeId>
+              <controlPlaneMode></controlPlaneMode>
+            </virtualWire>
+          schema: logicalSwitchUpdate
     delete:
       displayName: logicalSwitchDelete
       description: Delete a logical switch

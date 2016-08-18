@@ -10981,7 +10981,8 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>List all configured vdn Multicast Pools</p>
+    <p><p>List all configured VDN Multicast Pools. Universal pools will have the
+property isUniversal set tot true.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11047,7 +11048,8 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update an individual Multicast range Pool</p>
+    <p><p>Update an individual multicast range pool. If the multicast pool is
+universal the API call must be made to the primary NSX manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11088,7 +11090,8 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete an individual Multicast range Pool</p>
+    <p><p>Delete an individual Multicast range pool. If the multicast pool is
+universal the API call must be made to the primary NSX manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11237,7 +11240,7 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Lists all Segment ID Pools</p>
+    <p><p>Lists all Segment ID Pools.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11282,7 +11285,7 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve details of an individual segment ID Pool</p>
+    <p><p>Retrieve details of an individual segment ID Pool.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11303,7 +11306,8 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update an individual segment ID Pool</p>
+    <p><p>Update an individual segment ID Pool. If the segment pool is
+universal the API call must be made to the primary NSX manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11342,7 +11346,8 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete an individual segment ID Pool</p>
+    <p><p>Delete an individual segment ID Pool. If the segment pool is
+universal the API call must be made to the primary NSX manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12195,7 +12200,7 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>update the attributes of a transport zone (e.g. Name, description)</p>
+    <p><p>Update the attributes of a transport zone (e.g. Name, description)</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12357,7 +12362,8 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>creates a logicalSwitch</p>
+    <p><p>Creates a logicalSwitch. To create a universal logical switch use the
+appropriate universal scope as the scopeId and use the primary NSX manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12736,7 +12742,9 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieves the configuration of an individual logical switch</p>
+    <p><p>Retrieves the configuration of an individual logical switch. If the
+switch is a universal logical switch the isUniversal flag will be set in
+the response body.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12768,6 +12776,29 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
       </a>
     </li>
     </ul>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="virtualWire"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element type="xs:string" name="description"/&gt;
+        &lt;xs:element type="xs:string" name="tenantId"/&gt;
+        &lt;xs:element type="xs:string" name="controlPlaneMode"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdnScopeId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vdnScopeId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
