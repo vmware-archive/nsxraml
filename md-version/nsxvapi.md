@@ -393,13 +393,11 @@ Retrieve a list of objects that can be used to define a user's access scope
 Operations on securitygroups
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
-Create a new security group on a global scope or universal scope. Use either "globalroot-0" or "universalroot-0"
+Create a new security group on a global scope or universal scope. Use
+either "globalroot-0" or "universalroot-0". Universal security groups are
+read-only when querying a secondary NSX manager.
 
 * **post** *(secured)*: Create a new security group on a global scope
-
-### /2.0/services/securitygroup/bulk/{objectId}
-Update a specific security group
-
 * **put** *(secured)*: Update a specific security group
 
 ### /2.0/services/securitygroup/scope/{scopeId}

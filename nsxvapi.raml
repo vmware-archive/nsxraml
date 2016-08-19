@@ -114,8 +114,8 @@ schemas:
     scriptCreate: !include schemas/scriptCreate.xsd
     scriptFileIDUpdate: !include schemas/scriptFileIDUpdate.xsd
     scriptUpdate: !include schemas/scriptUpdate.xsd
-    secGroupGlobalCreate: !include schemas/secGroupGlobalCreate.xsd
-    secGroupBulkObjectUpdate: !include schemas/secGroupBulkObjectUpdate.xsd
+    secGroupBulkCreate: !include schemas/secGroupBulkCreate.xsd
+    secGroupBulkUpdate: !include schemas/secGroupBulkUpdate.xsd
     secGroupObjectUpdate: !include schemas/secGroupObjectUpdate.xsd
     securityFabricCreate: !include schemas/securityFabricCreate.xsd
     securityPolicyCreate: !include schemas/securityPolicyCreate.xsd
@@ -1223,17 +1223,20 @@ securitySchemes:
   displayName: secGroup
   description: Operations on securitygroups
   /bulk/{scopeId}:
-    displayName: secGroupCreate
-    description: Create a new security group on a global scope or universal scope. Use either "globalroot-0" or "universalroot-0"
+    displayName: secGroupBulk
+    description: |
+      Create a new security group on a global scope or universal scope. Use
+      either "globalroot-0" or "universalroot-0". Universal security groups are
+      read-only when querying a secondary NSX manager.
     uriParameters:
        scopeId:
          required: true
          displayName: scopeId
          description: |
-          For the scopeId use globalroot-0 for non-universal security groups and universalroot-0 for universal
-          security groups.
+          For the scopeId use globalroot-0 for non-universal security groups and
+          universalroot-0 for universal security groups.
     post:
-      displayName: secGroupCreate
+      displayName: secGroupBulkCreate
       description: Create a new security group on a global scope
       body:
         application/xml:
@@ -1302,15 +1305,7 @@ securitySchemes:
                 </dynamicSet>
               </dynamicMemberDefinition>
             </securitygroup>
-          schema: secGroupGlobalCreate
-  /bulk/{objectId}:
-    displayName: secGroupUpdate
-    description: Update a specific security group
-    uriParameters:
-      objectId:
-        required: true
-        displayName: objectId
-        description: Security group to modify
+          schema: secGroupBulkCreate
     put:
       displayName: secGroupUpdate
       description: Update a specific security group
@@ -1381,7 +1376,7 @@ securitySchemes:
                 </dynamicSet>
               </dynamicMemberDefinition>
             </securitygroup>
-          schema: secGroupBulkObjectUpdate
+          schema: secGroupBulkUpdate
   /scope/{scopeId}:
     displayName: secGroupScope
     description: Operations to list information about security groups on a given scope
@@ -3168,7 +3163,9 @@ securitySchemes:
     scopeId:
       required: true
       displayName: scopeId
-      description: Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases
+      description: |
+        Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade
+        use cases. Universal MAC sets are read-only from secondary managers.
   post:
     displayName: macsetScopesCreate
     description: Create a MACset on a specified scope
