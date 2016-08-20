@@ -46,20 +46,28 @@ http://www.vmware.com/services.
 ---
 
 ## vdsManage
-This collection of methods are used to configure and prepare the VDS's for the use with NSX
+This collection of methods are used to configure and prepare the VDS's for
+the use with NSX. Before creating a logical switch, ensure that you have
+installed the network virtualization components on the appropriate clusters
+and that you have configured VXLAN on the appropriate clusters.
 
 ### /2.0/vdn/switches
 
-* **post** *(secured)*: Prepares a pre-configured vds with teaming and MTU options, MTU must be 1600 or higher
-* **get** *(secured)*: Lists all vds's
+* **post** *(secured)*: The MTU is the maximum amount of data that can be transmitted in one
+packet before it is divided into smaller packets. The frames are slightly
+larger in size because of the traffic encapsulation, so the MTU required
+is higher than the standard MTU. You must set the MTU for each switch to
+1600 or higher.
+
+* **get** *(secured)*: You can retrieve all configured switches.
 
 ### /2.0/vdn/switches/datacenter/{datacenterID}
-Lists all VDS's in a specified vSphere Datacenter Object
+You can retrieve all configured switches on a datacenter.
 
 * **get** *(secured)*: Lists all VDS's in a specified vSphere Datacenter Object
 
 ### /2.0/vdn/switches/{vdsId}
-Retrieve a specific vds by specific switchId (e.g. dvs-26)
+Retrieve a specific switch by specific switch ID (e.g. dvs-26).
 
 * **get** *(secured)*: Retrieve a specific vds by specific switchId (e.g. dvs-26)
 * **delete** *(secured)*: Delete a specific vds by specific switchId (e.g. dvs-26)
@@ -121,13 +129,16 @@ Read all scopes (transport zones), or create a new scope (Transport Zone)
 ### /2.0/vdn/scopes
 
 * **get** *(secured)*: Retrieve a list of all known VDN Scopes / Transport Zones
-* **post** *(secured)*: Create a new Transport Zone. Note that you can only add one initial cluster when creating the TZ.
+* **post** *(secured)*: Create a new Transport Zone. Note that you can only add one initial
+cluster when creating the TZ.
 
 ### /2.0/vdn/scopes/{scopeId}
 Read, update and delete an existing scope (transport Zone)
 
 * **get** *(secured)*: Retrieve the properties of an existing network scope
-* **post** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster from a transport zone
+* **post** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster
+from a transport zone
+
 * **delete** *(secured)*: delete a transport zone
 
 ### /2.0/vdn/scopes/{scopeId}/attributes
@@ -141,13 +152,14 @@ Test multicast group connectivity in a transport zone
 * **post** *(secured)*: Test multicast group connectivity in a transport zone
 
 ## logicalSwitches
-Create and List operations of logical switches inside a Transport Zone (scope)
+Create and List operations of logical switches inside a Transport Zone.
 
 ### /2.0/vdn/scopes/{scopeId}/virtualwires
 
 * **get** *(secured)*: Lists all logical Switches in the Transport Zone (Scope)
 * **post** *(secured)*: Creates a logicalSwitch. To create a universal logical switch use the
-appropriate universal scope as the scopeId and use the primary NSX manager.
+appropriate universal scope as the scopeId and use the primary NSX
+manager.
 
 ## logicalSwitchesGlobal
 List Operations of logicalSwitches in all transport Zones (scope)
@@ -168,7 +180,9 @@ Retrieves the configuration of an individual logical switch
 switch is a universal logical switch the isUniversal flag will be set in
 the response body.
 
-* **put** *(secured)*: Update a logical switch, possible updates are name changes & Controlplane Mode
+* **put** *(secured)*: Update a logical switch, possible updates are name changes &
+Controlplane Mode
+
 * **delete** *(secured)*: Delete a logical switch
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/multicast
@@ -177,9 +191,11 @@ Test multicast group connectivity in logical switch
 * **post** *(secured)*: Test multicast group connectivity in logical switch
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/p2p
-Perform point to point connectivity test between two hosts across which a logical switch spans
+Perform point to point connectivity test between two hosts across which
+a logical switch spans
 
-* **post** *(secured)*: Perform point to point connectivity test between two hosts across which a logical switch spans
+* **post** *(secured)*: Perform point to point connectivity test between two hosts across
+which a logical switch spans
 
 ## arpMAC
 Working with ARP suppression and MAC learning for logical switches
@@ -227,12 +243,14 @@ Query controller upgrade availability
 ### /2.0/vdn/controller/progress/{jobId}
 Status of controller creation or removal
 
-* **get** *(secured)*: Retrieve status of controller creation or removal. Returns percentage indication of job progress
+* **get** *(secured)*: Retrieve status of controller creation or removal. Returns percentage
+indication of job progress
 
 ### /2.0/vdn/controller/{controllerId}
 Working with specified controller
 
-* **delete** *(secured)*: Delete NSX controller. When deleting last controller from cluster, forceRemoval must be set to true
+* **delete** *(secured)*: Delete NSX controller. When deleting last controller from cluster,
+forceRemoval must be set to true
 
 ### /2.0/vdn/controller/{controllerId}/techsupportlogs
 Controller logs
@@ -244,17 +262,21 @@ Syslog exporter on controller node
 
 * **post** *(secured)*: Add controller syslog exporter on the controller
 * **get** *(secured)*: Retrieve details about the syslog exporter on the controller
+
 * **delete** *(secured)*: Delete the syslog exporter
 
 ### /2.0/vdn/controller/{controllerId}/snapshot
-Take a snapshot of the control cluster from the specified controller node
+Take a snapshot of the control cluster from the specified controller
+node
 
-* **get** *(secured)*: Take a snapshot of the control cluster from the specified controller node
+* **get** *(secured)*: Take a snapshot of the control cluster from the specified controller
+node
 
 ### /2.0/vdn/controller/cluster
 Cluster configuration
 
 * **get** *(secured)*: Retrieve cluster-wise configuration information for controller
+
 * **put** *(secured)*: Modify cluster configuration information for controller
 
 ### /2.0/vdn/controller/credential
@@ -276,7 +298,9 @@ Working with a specified service
 ### /2.0/services/application/{applicationId}
 
 * **get** *(secured)*: Retrieve details about the specified service
-* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a service
+* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a
+service
+
 * **delete** *(secured)*: Delete the specified service
 
 ## applicationgroup
@@ -292,7 +316,9 @@ Working with service groups
 Working with an individual service group
 
 * **get** *(secured)*: Retrieve details about a service group
-* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a service group
+* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a
+service group
+
 * **delete** *(secured)*: Delete a service group from a scope
 
 ### /2.0/services/applicationgroup/{applicationgroupId}/members/{moref}
@@ -304,7 +330,8 @@ Add or delete service group members
 ### /2.0/services/applicationgroup/scope/{scopeId}/members
 Get the members of a service group
 
-* **get** *(secured)*: Get a list of member elements that can be added to the service groups created on a particular scope.
+* **get** *(secured)*: Get a list of member elements that can be added to the service groups
+created on a particular scope.
 
 ## ipPools
 Create a pool of IP addresses
@@ -327,9 +354,10 @@ Working with a specified IP pool
 Work with IP's and their allocation status in IP Pools
 
 * **get** *(secured)*: Retrieve all IP's and their allocation status in an IP Pool
-* **post** *(secured)*: Allocate an IP Address from the pool. Use 'ALLOCATE' in the 'allocationMode' field in the
-body to allocate the next available ip. To allocate a specific one use 'RESERVE' and
-pass the IP to reserve in the 'ipAddress' fiels in the body
+* **post** *(secured)*: Allocate an IP Address from the pool. Use 'ALLOCATE' in the
+'allocationMode' field in the body to allocate the next available ip.
+To allocate a specific one use 'RESERVE' and pass the IP to reserve in
+the 'ipAddress' fiels in the body
 
 ### /2.0/services/ipam/pools/{poolId}/ipaddresses/{ipAddress}
 Release an IP Address allocation in the Pool
@@ -395,10 +423,14 @@ Manage users
 ### /2.0/services/usermgmt/role/{userId}
 Manage roles for users
 
-* **get** *(secured)*: Retrieve a user's role (possible roles are super_user, vshield_admin, enterprise_admin, security_admin, and audit)
+* **get** *(secured)*: Retrieve a user's role (possible roles are super_user, vshield_admin,
+enterprise_admin, security_admin, and audit)
+
 * **post** *(secured)*: Add role and resources for a user
 * **put** *(secured)*: Change a user's role
-* **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role is deleted, the user is removed from NSX Manager. You cannot delete the role for a local user.
+* **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role
+is deleted, the user is removed from NSX Manager. You cannot delete the
+role for a local user.
 
 ### /2.0/services/usermgmt/enablestate/{value}
 Change the state of a user account (enabled/disabled)
@@ -406,9 +438,11 @@ Change the state of a user account (enabled/disabled)
 * **put** *(secured)*: Enable or disable a user account
 
 ### /2.0/services/usermgmt/users/vsm
-Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
+Get information about users who have been assigned a NSX Manager role
+(local users as well as vCenter users with NSX Manager role)
 
-* **get** *(secured)*: Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
+* **get** *(secured)*: Get information about users who have been assigned a NSX Manager role
+(local users as well as vCenter users with NSX Manager role)
 
 ### /2.0/services/usermgmt/roles
 NSX Manager user management operations on roles
@@ -416,9 +450,11 @@ NSX Manager user management operations on roles
 * **get** *(secured)*: Read all possible roles in NSX Manager
 
 ### /2.0/services/usermgmt/scopingobjects
-Retrieve a list of objects that can be used to define a user's access scope
+Retrieve a list of objects that can be used to define a user's access
+scope
 
-* **get** *(secured)*: Retrieve a list of objects that can be used to define a user's access scope
+* **get** *(secured)*: Retrieve a list of objects that can be used to define a user's access
+scope
 
 ## secGroup
 Operations on securitygroups
@@ -439,7 +475,8 @@ Operations to list information about security groups on a given scope
 ### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
 Information on valid elements that can be added to a security group
 
-* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security group.
+* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
+group.
 
 ### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
 Retrieve members of a specific type under a scope
@@ -461,29 +498,37 @@ Operations on members of an individual security group
 
 ### /2.0/services/securitygroup/{objectId}/translation/virtualmachines
 
-* **get** *(secured)*: Retrieve list of VmNode entities that belong to a specific security group.
+* **get** *(secured)*: Retrieve list of VmNode entities that belong to a specific security
+group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/ipaddresses
 
-* **get** *(secured)*: Retrieve list of IpNode entities that belong to a specific security group.
+* **get** *(secured)*: Retrieve list of IpNode entities that belong to a specific security
+group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/macaddresses
 
-* **get** *(secured)*: Retrieve list of MacNode entities that belong to a specific security group.
+* **get** *(secured)*: Retrieve list of MacNode entities that belong to a specific security
+group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/vnics
 
-* **get** *(secured)*: Retrieve list of VnicNode entities that belong to a specific security group.
+* **get** *(secured)*: Retrieve list of VnicNode entities that belong to a specific security
+group.
 
 ### /2.0/services/securitygroup/lookup/virtualmachine/{virtualMachineId}
-Retrieve list of security groups that the specified virtual machine belongs to.
+Retrieve list of security groups that the specified virtual machine
+belongs to.
 
-* **get** *(secured)*: Retrieve list of security groups that the specified virtual machine belongs to.
+* **get** *(secured)*: Retrieve list of security groups that the specified virtual machine
+belongs to.
 
 ### /2.0/services/securitygroup/internal/scope/{scopeId}
 Information on internal security groups
 
-* **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used internally by the system and should not be created or modified by end users.
+* **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used
+ internally by the system and should not be created or modified by end
+users.
 
 ## ipsets
 Operations on IP Sets
@@ -538,7 +583,9 @@ Universal sync configuration NSX manager thumbprint
 ### /2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}
 Universal sync configuration of a specific NSX manager
 
-* **get** *(secured)*: Query universal sync configuration information on a specific NSX manager by ID
+* **get** *(secured)*: Query universal sync configuration information on a specific NSX
+manager by ID
+
 * **delete** *(secured)*: Delete a secondary NSX manager by ID.
 
 ### /2.0/universalsync/sync
@@ -562,12 +609,14 @@ Working with Appliance Manager
 ### /1.0/appliance-management/global/info
 Global appliance manager information
 
-* **get** *(secured)*: Retrieve global information containing version information as well as current logged in user
+* **get** *(secured)*: Retrieve global information containing version information as well as
+current logged in user
 
 ### /1.0/appliance-management/summary/system
 Summary appliance manager information
 
-* **get** *(secured)*: Retrieve system summary info such as address, dns name, version, CPU, memory and storage
+* **get** *(secured)*: Retrieve system summary info such as address, dns name, version, CPU,
+memory and storage
 
 ### /1.0/appliance-management/summary/components
 Component information
@@ -815,7 +864,8 @@ Identify service on which the specified service depends on
 Working with installed services on a cluster
 
 * **get** *(secured)*: Retrieve all services deployed along with their status
-* **delete** *(secured)*: Uninstall a service. Fails if you try to remove a service that another service depends on
+* **delete** *(secured)*: Uninstall a service. Fails if you try to remove a service that another
+service depends on
 
 ### /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}
 Information about a service
@@ -831,9 +881,12 @@ Data loss prevention regulation
 * **get** *(secured)*: Retrieve the list of available regulations for a policy.
 
 ### /2.0/dlp/policy/regulations
-Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
+Enable one or more regulations by putting the regulation IDs into the
+policy. You can get the IDs from the output of the dlpRegulation GET call
 
-* **put** *(secured)*: Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
+* **put** *(secured)*: Enable one or more regulations by putting the regulation IDs into the
+policy. You can get the IDs from the output of the dlpRegulation GET
+call
 
 ### /2.0/dlp/classificationvalue
 Classification values associated with regulations
@@ -846,25 +899,32 @@ Configure a customized regex as a classification value
 * **put** *(secured)*: Configure a customized regex as a classification value
 
 ### /2.0/dlp/excludableareas
-Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection
+Retrieve list of datacenters, clusters, and resource pools that are
+excludable from policy inspection
 
-* **get** *(secured)*: Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection
+* **get** *(secured)*: Retrieve list of datacenters, clusters, and resource pools that are
+excludable from policy inspection
 
 ### /2.0/dlp/policy/excludedareas
-(DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead) Exclude areas from policy inspection
+(DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
+Exclude areas from policy inspection
 
-* **put** *(secured)*: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead) Exclude areas from policy inspection
+* **put** *(secured)*: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
+Exclude areas from policy inspection
 
 ### /2.0/dlp/policy/includedsecuritygroups
 Include security groups in data security scan
 
 * **get** *(secured)*: Retrieve security groups that have been included in data security scans
+
 * **put** *(secured)*: Include security groups in data security scan
 
 ### /2.0/dlp/policy/excludedsecuritygroups
 Exclude security groups in data security scan
 
-* **get** *(secured)*: Retrieve security groups that have been excluded from data security scans
+* **get** *(secured)*: Retrieve security groups that have been excluded from data security
+scans
+
 * **put** *(secured)*: Exclude security groups in data security scan
 
 ### /2.0/dlp/policy/FileFilters
@@ -883,7 +943,9 @@ Retrieve currently published SDD policy
 * **get** *(secured)*: Retrieve currently published policy
 
 ### /2.0/dlp/policy/publish
-After updating a policy with added regulations, excluded areas, or customized regex values, publish an updated policy to enforce new parameters
+After updating a policy with added regulations, excluded areas, or
+customized regex values, publish an updated policy to enforce new
+parameters
 
 * **put** *(secured)*: Publish the updated policy
 
@@ -903,14 +965,16 @@ Retrieve information about the vm's being scanned
 * **get** *(secured)*: Retrieve information about the vm's being scanned
 
 ### /2.0/dlp/completedscansummaries
-Retrieve start and end time, total number of vm's scanned, and total number of violations for the last five completed data security scans
+Retrieve start and end time, total number of vm's scanned, and total
+number of violations for the last five completed data security scans
 
 * **get** *(secured)*: Retrieve scan summaries
 
 ### /2.0/dlp/scan/{scanID}/detailsascsv
 Retrieve report on results of previous scan in CSV format
 
-* **get** *(secured)*: Retrieve ID, Name, Scan status, and Violation counts for VM's scanned during specified scan
+* **get** *(secured)*: Retrieve ID, Name, Scan status, and Violation counts for VM's scanned
+during specified scan
 
 ### /2.0/dlp/scan/{scanID}/policyasxml
 Retrieve XML representation of the policy used in the previous scan
@@ -938,14 +1002,18 @@ Get violating files for a resource
 * **get** *(secured)*: Get violating files for a resource
 
 ### /2.0/dlp/violatingfilesascsv
-Display the violating files and the regulations each file violated in CSV format
+Display the violating files and the regulations each file violated in CSV
+format
 
-* **get** *(secured)*: Display the violating files and the regulations each file violated in CSV format
+* **get** *(secured)*: Display the violating files and the regulations each file violated in
+CSV format
 
 ### /2.0/dlp/violatingfilesascsv/{contextID}
-Get violated regulations and violating files for the resource in CSV format
+Get violated regulations and violating files for the resource in CSV
+format
 
-* **get** *(secured)*: Get violated regulations and violating files for the resource in CSV format
+* **get** *(secured)*: Get violated regulations and violating files for the resource in
+CSV format
 
 ## eventControl
 eventControl Operations
@@ -969,7 +1037,9 @@ Retrieve per vm configuration for data collection
 Activity monitoring
 
 ### /3.0/ai/records
-Get aggregated user activity (action records) using parameters. Requires vShield Endpoint and NSX Endpoint configured, and Data collection enabled on 1+ vm's
+Get aggregated user activity (action records) using parameters. Requires
+vShield Endpoint and NSX Endpoint configured, and Data collection enabled
+on 1+ vm's
 
 * **get** *(secured)*: Get aggregated user activity
 
@@ -996,7 +1066,8 @@ Retrieve details for specific app
 ### /3.0/ai/host
 Host details
 
-* **get** *(secured)*: Retrieve list of all discovered hosts (both by agent introspection and LDAP Sync) and their detail
+* **get** *(secured)*: Retrieve list of all discovered hosts (both by agent introspection and
+LDAP Sync) and their detail
 
 ### /3.0/ai/host/{hostID}
 Specific host details
@@ -1135,9 +1206,11 @@ Query set of users associated with a given set of Ip addresses
 * **get** *(secured)*: Query set of users associated with a given set of Ip addresses
 
 ### /1.0/identity/directoryGroupsForUser/{userID}
-Query set of Windows Domain Groups (AD Groups) to which the specified user belongs
+Query set of Windows Domain Groups (AD Groups) to which the specified
+user belongs
 
-* **get** *(secured)*: Query set of Windows Domain Groups (AD Groups) to which the specified user belongs
+* **get** *(secured)*: Query set of Windows Domain Groups (AD Groups) to which the specified
+user belongs
 
 ### /1.0/identity/staticUserMapping/{userID}/{IP}
 Create static user IP mapping
@@ -1195,8 +1268,12 @@ Agents for a specified deployment
 ### /2.0/si/fabric/sync/conflicts
 Working with conflicting agencies
 
-* **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the allowed operations on them
-* **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
+* **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
+allowed operations on them
+
+* **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete
+conflicting EAM agencies, or delete deployment units for conflicting
+EAM agencies
 
 ## macset
 Operations on an individual MACset
@@ -1216,7 +1293,8 @@ Working with MAC Sets.
 * **get** *(secured)*: List MACsets created on a specified scope
 
 ## taskFramework
-Working with filtering criteria and paging information for jobs on the task framework
+Working with filtering criteria and paging information for jobs on the task
+framework
 
 ### /2.0/services/taskservice/job
 
@@ -1249,7 +1327,8 @@ Antivirus solutions
 ### /2.0/endpointsecurity/registration/{vendorID}/solutions
 Registration information for all registered solutions for a vendor
 
-* **get** *(secured)*: Retrieve registration information for all registered solutions for a vendor
+* **get** *(secured)*: Retrieve registration information for all registered solutions for a
+vendor
 
 ### /2.0/endpointsecurity/registration/{vendorID}/{altitude}
 Solution registration information
@@ -1264,7 +1343,8 @@ IP address and port for a solution
 * **delete** *(secured)*: Unset a solution's IP address and port
 
 ### /2.0/endpointsecurity/registration/{vendorID}/{altitude}/{moid}
-Solution activation status, given the managed object reference of its virtual machine
+Solution activation status, given the managed object reference of its
+virtual machine
 
 * **get** *(secured)*: Get the solution activation status
 
@@ -1273,7 +1353,8 @@ vShield solution activation
 
 ### /2.0/endpointsecurity/activation
 
-* **get** *(secured)*: Retrieve activation information for all activated security vm's on the specified host
+* **get** *(secured)*: Retrieve activation information for all activated security vm's on the
+specified host
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{solutionID}
 Activated security virtual machines
@@ -1296,12 +1377,21 @@ Distributed Firewall Operations
 ### /4.0/firewall/globalroot-0/config
 Global Distributed Firewall Rules configuration
 
-* **get** *(secured)*: Global Distributed Firewall Rules configuration, use query Parameters to filter
-* **put** *(secured)*: This will update the complete firewall configuration in all sections. You will need to get the Etag value out of the GET (dfwConfigShow) first. Then pass the modified version of the whole firewall configuration in the GET body
-* **delete** *(secured)*: Restores default configuration, which means one defaultLayer3 section with default allow rule and one defaultLayer2Section with default allow rule
+* **get** *(secured)*: Global Distributed Firewall Rules configuration, use query Parameters
+to filter
+
+* **put** *(secured)*: This will update the complete firewall configuration in all sections.
+You will need to get the Etag value out of the GET (dfwConfigShow)
+first. Then pass the modified version of the whole firewall
+configuration in the GET body
+
+* **delete** *(secured)*: Restores default configuration, which means one defaultLayer3 section
+with default allow rule and one defaultLayer2Section with default
+allow rule
 
 ### /4.0/firewall/globalroot-0/config/layer3sections
-L3 Firewall Operations on specific section specified by name (in a query Parameter)
+L3 Firewall Operations on specific section specified by name (in a
+query Parameter)
 
 * **get** *(secured)*: Read a specific section of the DFW config specified by name
 * **post** *(secured)*: Creates a new L3 Firewall Section with a number of rules
@@ -1321,22 +1411,27 @@ Operations to add one or more L3 Rules
 * **post** *(secured)*: Add a L3 Rule
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules/{ruleId}
-Operations on L3 rules in sections identified by section Id and Rule Id
+Operations on L3 rules in sections identified by section Id and
+Rule Id
 
 * **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
-* **put** *(secured)*: Updates a L3 DFW Rule. To do this you need to read it first, make your changes,
-and then update the section by supplying the Etag value received in the read in the If-Match header
+
+* **put** *(secured)*: Updates a L3 DFW Rule. To do this you need to read it first,
+make your changes, and then update the section by supplying the
+Etag value received in the read in the If-Match header
 
 * **delete** *(secured)*: Delete a specific rule identified by rule Id
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionName}
-L3 Firewall Update Operations on specific section specified by section Name
+L3 Firewall Update Operations on specific section specified by
+section Name
 
 * **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
 and then update the section by supplying the Etag value received in the read in the If-Match header
 
 ### /4.0/firewall/globalroot-0/config/layer2sections
-L2 Firewall Operations on specific section specified by name (in a query Parameter)
+L2 Firewall Operations on specific section specified by name (in a
+query Parameter)
 
 * **get** *(secured)*: Read a specific section of the DFW config specified by name
 * **post** *(secured)*: Creates a new L2 Firewall Section with a number of rules
@@ -1345,8 +1440,9 @@ L2 Firewall Operations on specific section specified by name (in a query Paramet
 L2 Firewall Operations on specific section specified by section ID
 
 * **get** *(secured)*: Read a specific section of the DFW config specified by Id
-* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
-and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first,
+make your changes, and then update the section by supplying the
+Etag value received in the read in the If-Match header
 
 * **delete** *(secured)*: Deletes a L2 section and its content by ID
 
@@ -1356,19 +1452,23 @@ Operations to add one or more L2 Rules
 * **post** *(secured)*: Add L2 Rule
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules/{ruleId}
-Operations on L2 rules in sections identified by section Id and Rule Id
+Operations on L2 rules in sections identified by section Id and
+Rule Id
 
 * **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
-* **put** *(secured)*: Updates a L2 DFW Rule. To do this you need to read it first, make your changes,
-and then update the section by supplying the Etag value received in the read in the If-Match header
+
+* **put** *(secured)*: Updates a L2 DFW Rule. To do this you need to read it first,
+make your changes, and then update the section by supplying the
+Etag value received in the read in the If-Match header
 
 * **delete** *(secured)*: Delete a specific rule identified by rule Id
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionName}
 L3 Firewall Update Operations on specific section specified by section Name
 
-* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first, make your changes,
-and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first,
+make your changes, and then update the section by supplying the
+Etag value received in the read in the If-Match header
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections
 Layer3 redirect sections and rules
@@ -1379,7 +1479,10 @@ Layer3 redirect sections and rules
 Layer3 redirect section
 
 * **get** *(secured)*: Get L3 redirect section configuration
-* **put** *(secured)*: Modify L3 Redirect section. You will need to get the Etag value out of the GET first. Then pass the modified version of the whole redirect section configuration in the GET body
+* **put** *(secured)*: Modify L3 Redirect section. You will need to get the Etag value out
+of the GET first. Then pass the modified version of the whole
+redirect section configuration in the GET body
+
 * **delete** *(secured)*: Delete specified L3 redirect section
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules
@@ -1391,7 +1494,10 @@ L3 redirect rules for specified section
 Rule for specified section
 
 * **get** *(secured)*: Get L3 redirect rule
-* **put** *(secured)*: Modify L3 redirect rule. You will need Etag value from the response header of GET call. Then, pass Etag value as the if-match header in PUT call
+* **put** *(secured)*: Modify L3 redirect rule. You will need Etag value from the
+response header of GET call. Then, pass Etag value as the
+if-match header in PUT call
+
 * **delete** *(secured)*: Delete specified L3 redirect rule
 
 ### /4.0/firewall/globalroot-0/config/layer3redirect/profiles
@@ -1456,7 +1562,8 @@ Tuning firewall performance
 * **put** *(secured)*: Set RuleOptimize and TCPStrict flags in body to improve performance
 
 ### /4.0/firewall/forceSync/{ID}
-Synchronize hosts and clusters with the last good configuration in NSX Mgr database
+Synchronize hosts and clusters with the last good configuration in NSX
+Mgr database
 
 * **post** *(secured)*: Force sync host/cluster
 
@@ -1478,13 +1585,16 @@ SpoofGuard policies
 ### /4.0/services/spoofguard/policies
 
 * **post** *(secured)*: Create a SpoofGuard policy to specify the operation mode for networks.
+
 * **get** *(secured)*: Retrieve all SpoofGuard policies
 
 ### /4.0/services/spoofguard/policies/{policyID}
 Specified policy
 
 * **post** *(secured)*: Use query parameters to perform operations on a policy
-* **get** *(secured)*: Retrieve policy information, or use the query parameters to perform operations
+* **get** *(secured)*: Retrieve policy information, or use the query parameters to perform
+operations
+
 * **put** *(secured)*: Modify SpoofGuard policy
 * **delete** *(secured)*: Delete a policy
 
@@ -1530,8 +1640,11 @@ Installed NSX Edges in your inventory
 
 ### /4.0/edges
 
-* **post** *(secured)*: Install NSX Edge services gateway or logical router, depending on request body
-* **get** *(secured)*: Retrieve a list of NSX Edges in your inventory or use the query parameters to filter results by datacenter or port group
+* **post** *(secured)*: Install NSX Edge services gateway or logical router, depending on request
+body
+
+* **get** *(secured)*: Retrieve a list of NSX Edges in your inventory or use the query
+parameters to filter results by datacenter or port group
 
 ### /4.0/edges/{edgeId}
 NSX Edge operations
@@ -1539,7 +1652,8 @@ NSX Edge operations
 * **post** *(secured)*: Manage NSX Edge
 * **get** *(secured)*: Retrieve Edge details
 * **put** *(secured)*: Update the NSX Edge configuration
-* **delete** *(secured)*: Delete specified Edge from database. Associated appliances are also deleted
+* **delete** *(secured)*: Delete specified Edge from database. Associated appliances are also
+deleted
 
 ### /4.0/edges/{edgeId}/dnsclient
 DNS settings (primary/secondary and search domain) of an Edge
@@ -1552,7 +1666,9 @@ AESNI Setting
 * **post** *(secured)*: Modify AESNI setting
 
 ### /4.0/edges/{edgeId}/coredump
-Enabling core-dump feature results in deployment of inbuilt extra disk to save core-dump files. 1GB for compact edge and 8GB for other types. Disabling detaches the disk
+Enabling core-dump feature results in deployment of inbuilt extra disk 
+to save core-dump files. 1GB for compact edge and 8GB for other types.
+Disabling detaches the disk
 
 * **post** *(secured)*: Modify core dump setting
 
@@ -1601,7 +1717,8 @@ Configure firewall for an Edge
 ### /4.0/edges/{edgeId}/firewall/config/rules
 Firewall rules
 
-* **post** *(secured)*: Add one or more rules. You can add a rule above a specific rule using the query parameter, indicating the desired ruleID.
+* **post** *(secured)*: Add one or more rules. You can add a rule above a specific rule
+using the query parameter, indicating the desired ruleID.
 
 ### /4.0/edges/{edgeId}/firewall/config/rules/{ruleId}
 Specific firewall rule
@@ -1642,7 +1759,8 @@ SNAT and DNAT rules for NSX Edge
 ### /4.0/edges/{edgeId}/nat/config/rules
 NAT rules
 
-* **post** *(secured)*: Add a NAT rule above a specific rule in the NAT rules table (using aboveRuleId) or append NAT rules to the bottom
+* **post** *(secured)*: Add a NAT rule above a specific rule in the NAT rules table
+(using aboveRuleId) or append NAT rules to the bottom
 
 ### /4.0/edges/{edgeId}/nat/config/rules/{ruleID}
 Specified NAT rule
@@ -1661,14 +1779,16 @@ Static and dynamic routing for each NSX Edge
 Global configuration
 
 * **put** *(secured)*: Configure global route
-* **get** *(secured)*: Retrieve routing info from NSX Mgr database (default route settings, static route configurations)
+* **get** *(secured)*: Retrieve routing info from NSX Mgr database (default route
+settings, static route configurations)
 
 ### /4.0/edges/{edgeId}/routing/config/static
 Static and default routes for specified Edge
 
 * **get** *(secured)*: Read static and default routes
 * **put** *(secured)*: Configure static and default routes
-* **delete** *(secured)*: Delete both static and default routing config stored in the NSX Mgr database
+* **delete** *(secured)*: Delete both static and default routing config stored in the NSX
+Mgr database
 
 ### /4.0/edges/{edgeId}/routing/config/ospf
 OSPF Routing for NSX Edge
@@ -1706,7 +1826,8 @@ NSX Edge load balancer
 * **delete** *(secured)*: Delete load balancer configuration
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles
-Application profiles define the behavior of a particular type of network traffic
+Application profiles define the behavior of a particular type of
+network traffic
 
 * **post** *(secured)*: Add an application profile
 * **get** *(secured)*: Retrieve all application profiles on Edge
@@ -1720,7 +1841,8 @@ Modify or retrieve an application profile
 * **delete** *(secured)*: Delete an application profile
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationrules
-Manage application rules that directly manipulate and manage IP app traffic
+Manage application rules that directly manipulate and manage IP app
+traffic
 
 * **post** *(secured)*: Add an application rule
 * **get** *(secured)*: Read all application rules
@@ -1734,7 +1856,8 @@ Application rule
 * **delete** *(secured)*: Delete an application rule
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/monitors
-Load balancer monitors define health check parameters for a particular type of network traffic
+Load balancer monitors define health check parameters for a
+particular type of network traffic
 
 * **post** *(secured)*: Add a load balancer monitor
 * **get** *(secured)*: Retrieve all load balancer monitors
@@ -1748,7 +1871,8 @@ Specific load balancer monitor
 * **delete** *(secured)*: Delete a load balancer monitor
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/virtualservers
-You can add an NSX Edge internal or uplink interface as a virtual server
+You can add an NSX Edge internal or uplink interface as a virtual
+server
 
 * **post** *(secured)*: Add a virtual server
 * **get** *(secured)*: Retrieve all virtual servers
@@ -1761,7 +1885,8 @@ Specified virtual server
 * **delete** *(secured)*: Delete a virtual server
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools
-Server pools manage load balancer distribution methods and has a monitor attached to it for health check parameters
+Server pools manage load balancer distribution methods and has a
+monitor attached to it for health check parameters
 
 * **post** *(secured)*: Add a load balancer server pool to the Edge
 * **get** *(secured)*: Get all backend pools for the specified NSX Edge
@@ -1790,7 +1915,8 @@ Update acceleration mode
 * **post** *(secured)*: 
 
 ### /4.0/edges/{edgeId}/dns/config
-Configure DNS servers to which vShield Edge can relay name resolution requests
+Configure DNS servers to which vShield Edge can relay name resolution
+requests
 
 * **get** *(secured)*: Retrieve DNS configuration
 * **put** *(secured)*: Configure DNS servers
@@ -1811,7 +1937,8 @@ Configure DHCP for NSX Edge
 ### /4.0/edges/{edgeId}/dhcp/config/ippools
 Adding IP pools to DHCP configuration
 
-* **post** *(secured)*: Add an IP pool to the DHCP configuration. returns a pool ID within a Location HTTP header
+* **post** *(secured)*: Add an IP pool to the DHCP configuration. returns a pool ID within
+a Location HTTP header
 
 ### /4.0/edges/{edgeId}/dhcp/config/ippools/{poolID}
 Specific DHCP pool
@@ -1821,7 +1948,8 @@ Specific DHCP pool
 ### /4.0/edges/{edgeId}/dhcp/config/bindings
 Adding static-binding to DHCP configuration.
 
-* **post** *(secured)*: Append a static-binding to DHCP config. A static-binding ID is returned within a Location HTTP header
+* **post** *(secured)*: Append a static-binding to DHCP config. A static-binding ID is
+returned within a Location HTTP header
 
 ### /4.0/edges/{edgeId}/dhcp/config/bindings/{bindingID}
 Specific DHCP static binding
@@ -1841,14 +1969,17 @@ DHCP Lease information
 * **get** *(secured)*: Get DHCP lease information
 
 ### /4.0/edges/{edgeId}/highavailability/config
-Ensures that an Edge appliance is always available on your virtualized network.
+Ensures that an Edge appliance is always available on your virtualized
+network.
 
 * **get** *(secured)*: Get high availability configuration
 * **put** *(secured)*: Configure high availability
 * **delete** *(secured)*: Delete high availability configuration
 
 ### /4.0/edges/{edgeId}/syslog/config
-Configure one or two remote syslog servers. Edge events and logs related to firewall events that flow from Edge appliances are sent to the syslog servers
+Configure one or two remote syslog servers. Edge events and logs
+related to firewall events that flow from Edge appliances are sent to
+the syslog servers
 
 * **get** *(secured)*: Query syslog servers
 * **put** *(secured)*: Configure syslog servers
@@ -1863,23 +1994,31 @@ Manage SSL VPN
 * **delete** *(secured)*: Delete the SSL VPN configurations on the Edge
 
 ### /4.0/edges/{edgeId}/sslvpn/config/server
-Configure SSL VPN server on port 443 using the certificate named server-cert that is already uploaded on the NSX Edge appliance and the specified cipher
+Configure SSL VPN server on port 443 using the certificate named
+server-cert that is already uploaded on the NSX Edge appliance and
+the specified cipher
 
 * **get** *(secured)*: Get server settings
 * **put** *(secured)*: Apply server settings
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks
-Configure a private network to expose to remote users over SSL VPN tunnel
+Configure a private network to expose to remote users over SSL VPN
+tunnel
 
 * **post** *(secured)*: Add a private network
 * **get** *(secured)*: Get all private network profiles in the SSL VPN instance
-* **put** *(secured)*: Update all private network configs of NSX Edge with the given list of private network configs. If the config is present, it is updated; otherwise, a new private network config is created. Existing configs not included in the call body are deleted
+* **put** *(secured)*: Update all private network configs of NSX Edge with the given list
+of private network configs. If the config is present, it is
+updated; otherwise, a new private network config is created.
+Existing configs not included in the call body are deleted
+
 * **delete** *(secured)*: Delete all Private Networks from the SSL VPN instance
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks/{networkID}
 Specific private network
 
 * **get** *(secured)*: Get the specified private network in the SSL VPN service
+
 * **put** *(secured)*: Modify specified private network in the SSL VPN service
 * **delete** *(secured)*: Delete private network
 
@@ -1888,7 +2027,10 @@ IP pools to assign IP addresses to remote users
 
 * **post** *(secured)*: Create an IP pool
 * **get** *(secured)*: Get all IP pools configured on SSL VPN
-* **put** *(secured)*: Update all IP pools with the given list of pools. If the pool is present, it is updated; otherwise, a new pool is created. Existing pools not in the body are deleted
+* **put** *(secured)*: Update all IP pools with the given list of pools. If the pool is
+present, it is updated; otherwise, a new pool is created. Existing
+pools not in the body are deleted
+
 * **delete** *(secured)*: Delete all IP pools configured on SSL VPN
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}
@@ -1899,7 +2041,10 @@ Specified IP pool
 * **delete** *(secured)*: Delete the specified IP pool
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/clientconfig
-Advanced parameters for full access client configurations--such as whether client should auto-reconnect in case of network failures or network unavailability, or whether the client should be uninstalled after logout
+Advanced parameters for full access client configurations--such as
+whether client should auto-reconnect in case of network failures or
+network unavailability, or whether the client should be uninstalled
+after logout
 
 * **put** *(secured)*: Set parameters for full access client configurations
 * **get** *(secured)*: Get client configuration
@@ -1907,15 +2052,23 @@ Advanced parameters for full access client configurations--such as whether clien
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages
 Installation packages for SSL VPN clients
 
-* **post** *(secured)*: Create installers for full access network clients. These setup binaries are downloaded by remote clients and installed on their systems.
+* **post** *(secured)*: Create installers for full access network clients. These setup
+binaries are downloaded by remote clients and installed on their
+systems.
+
 * **get** *(secured)*: Get information about all installation packages
-* **put** *(secured)*: Update all installation packages with the given list. If the package is present, it is updated; otherwise a new installation package is created. Existing packages not included in the body are deleted.
+* **put** *(secured)*: Update all installation packages with the given list. If the
+package is present, it is updated; otherwise a new installation
+package is created. Existing packages not included in the body are
+deleted.
+
 * **delete** *(secured)*: Delete all client installation packages
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}
 Specified installation package
 
 * **get** *(secured)*: Get information about the specified installation package
+
 * **put** *(secured)*: Modify the specified installation package
 * **delete** *(secured)*: Delete the specified installation package
 
@@ -1959,12 +2112,17 @@ Specified user
 Authentication settings
 
 * **get** *(secured)*: Get information about authentication server
-* **put** *(secured)*: Set authentication process for remote users. Specify username/password authentication, active directory, ldap, radius, client certificate based authentication
+* **put** *(secured)*: Set authentication process for remote users. Specify
+username/password authentication, active directory, ldap, radius,
+client certificate based authentication
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/settings/rsaconfigfile
 RSA authentication server, bound to the SSL gateway
 
-* **post** *(secured)*: Upload RSA config file (See "Generate the Authentication Manager Configuration File" section of the RSA Authentication Manager Administrator's guide for instructions on how to configure and download the RSA config file from RSA Authentication Manager)
+* **post** *(secured)*: Upload RSA config file (See "Generate the Authentication Manager
+Configuration File" section of the RSA Authentication Manager
+Administrator's guide for instructions on how to configure and
+download the RSA config file from RSA Authentication Manager)
 
 ### /4.0/edges/{edgeId}/sslvpn/config/advancedconfig
 SSL VPN advanced configuration
@@ -1977,25 +2135,33 @@ Logon and logoff scripts for NSX Edge gateway
 
 * **post** *(secured)*: Configure parameters associated with the uploaded script file
 * **get** *(secured)*: Retrieve all script configurations for the Edge
-* **put** *(secured)*: Update all script configurations with the given list of configurations. If the config is present, its is updated; otherwise, a new config is created. Existing configs not included in the body are deleted
+* **put** *(secured)*: Update all script configurations with the given list of
+configurations. If the config is present, its is updated;
+otherwise, a new config is created. Existing configs not included
+in the body are deleted
+
 * **delete** *(secured)*: Delete all script configurations
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script/{fileID}
 Specified uploaded script file
 
 * **get** *(secured)*: Retrieve parameters associated with the specified script file
+
 * **put** *(secured)*: Modify script parameters
 * **delete** *(secured)*: Delete script parameters
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script/file
 Logon and logoff scripts for NSX Edge gateway
 
-* **post** *(secured)*: Upload a login/logoff script. Returns a script file ID to configure the parameters
+* **post** *(secured)*: Upload a login/logoff script. Returns a script file ID to
+configure the parameters
 
 ### /4.0/edges/{edgeId}/sslvpn/auth/localusers/users
 All users of NSX Edge
 
-* **put** *(secured)*: Update all users with the given list of users. If the user is present, it is updated. Otherwise, and new user is created. Existing users not included in the body are deleted.
+* **put** *(secured)*: Update all users with the given list of users. If the user is
+present, it is updated. Otherwise, and new user is created. Existing
+users not included in the body are deleted.
 
 ### /4.0/edges/{edgeId}/sslvpn/activesessions
 Working with active clients
@@ -2015,12 +2181,15 @@ SSL VPN statistics on the specified NSX Edge
 ### /4.0/edges/{edgeId}/statistics/dashboard/ipsec
 Tunnel traffic statistics
 
-* **get** *(secured)*: Retrieve tunnel traffic statistics for specified time interval. Default is 1 hour. Other possible values are 1-60 minutes|oneDay|oneWeek|oneMonth|oneYear
+* **get** *(secured)*: Retrieve tunnel traffic statistics for specified time interval.
+Default is 1 hour. Other possible values are 1-60 minutes|oneDay|
+oneWeek|oneMonth|oneYear
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/interface
 Dashboard statistics
 
-* **get** *(secured)*: Retrieve dashboard statistics between the specified start and end times.
+* **get** *(secured)*: Retrieve dashboard statistics between the specified start and end
+times.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces
 Interface statistics
@@ -2038,9 +2207,14 @@ Internal interface statistics
 * **get** *(secured)*: Get internal interface statistics
 
 ### /4.0/edges/{edgeId}/l2vpn/config
-L2 VPN allows you to configure a tunnel between two sites. VM's remain on the same subnet in spite of being moved between these sites, enabling you to extend your datacenter. An NSX Edge at one site can provide all services to VM's on the other site.
+L2 VPN allows you to configure a tunnel between two sites. VM's remain
+on the same subnet in spite of being moved between these sites,
+enabling you to extend your datacenter. An NSX Edge at one site can
+provide all services to VM's on the other site.
 
-* **post** *(secured)*: Enable or disable L2 VPN service according to the value of the query parameter "enableService"
+* **post** *(secured)*: Enable or disable L2 VPN service according to the value of the query
+parameter "enableService"
+
 * **get** *(secured)*: Retrieve the current L2VPN configuration for NSX Edge
 * **put** *(secured)*: Configure L2VPN for server or client
 * **delete** *(secured)*: Delete L2 VPN
@@ -2048,7 +2222,8 @@ L2 VPN allows you to configure a tunnel between two sites. VM's remain on the sa
 ### /4.0/edges/{edgeId}/l2vpn/config/statistics
 L2 VPN statistics
 
-* **get** *(secured)*: Retrieve L2 VPN stats, which has information such as tunnel status, sent bytes, received bytes etc. for the given Edge
+* **get** *(secured)*: Retrieve L2 VPN stats, which has information such as tunnel status,
+sent bytes, received bytes etc. for the given Edge
 
 ### /4.0/edges/{edgeId}/ipsec/config
 Working with IPSEC VPN
@@ -2063,7 +2238,8 @@ IPSec statistics
 * **get** *(secured)*: Retrieve IPSec statistics
 
 ### /4.0/edges/{edgeId}/autoconfiguration
-Auto config is enabled by default. If you disable, you must add required NAT, firewall, routing rules
+Auto config is enabled by default. If you disable, you must add
+required NAT, firewall, routing rules
 
 * **get** *(secured)*: Retrieve auto config settings for the Edge
 * **put** *(secured)*: Change the auto configuration settings for the NSX Edge
@@ -2073,7 +2249,8 @@ Working with Edge appliances
 
 * **post** *(secured)*: Change the size of both appliances
 * **get** *(secured)*: Retrieve appliance configuration
-* **put** *(secured)*: Modify appliance configuration (tip -- retrieve the config using GET call, then modify the parameters and send as body)
+* **put** *(secured)*: Modify appliance configuration (tip -- retrieve the config using GET
+call, then modify the parameters and send as body)
 
 ### /4.0/edges/{edgeId}/appliances/{haIndex}
 Manage a specified appliance using its HA index
@@ -2083,7 +2260,8 @@ Manage a specified appliance using its HA index
 * **delete** *(secured)*: Delete the appliance
 
 ### /4.0/edges/{edgeId}/vnics
-Working with interfaces. Add up to ten internal/uplink interfaces to each Edge. Each Edge must have at least one internal interface
+Working with interfaces. Add up to ten internal/uplink interfaces to
+each Edge. Each Edge must have at least one internal interface
 
 * **post** *(secured)*: Add an interface or sub interface
 * **get** *(secured)*: Retrieve all interfaces for Edge
@@ -2105,6 +2283,7 @@ Working with management interfaces for an NSX Edge router
 Working with all NSX Edge router interfaces
 
 * **post** *(secured)*: Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces
+
 * **get** *(secured)*: Retrieve all interfaces for Edge router
 * **delete** *(secured)*: Delete interfaces
 
@@ -2113,17 +2292,23 @@ Manage a specific NSX Edge router interface
 
 * **get** *(secured)*: Retrieve information on specified DLR router interface
 * **delete** *(secured)*: Delete interface configuration and reset to factory default
+
 * **put** *(secured)*: Update interface configuration on specified DLR router interface
 
 ### /4.0/edges/jobs
 NSX Edge async jobs
 
-* **get** *(secured)*: Query jobs. Assumes Edge is configured in async mode, where ?async=true is used at the end of any 4.0 service configuration URI for POST, PUT, and DELETE calls.
+* **get** *(secured)*: Query jobs. Assumes Edge is configured in async mode, where ?async=true
+is used at the end of any 4.0 service configuration URI for POST, PUT,
+and DELETE calls.
 
 ### /4.0/edges/jobs/{jobId}
-Status of Edge async jobs. Assumes Edge is configured in async mode, where ?async=true is used at the end of any 4.0 service configuration URI for POST, PUT, and DELETE calls.
+Status of Edge async jobs. Assumes Edge is configured in async mode,
+where ?async=true is used at the end of any 4.0 service configuration
+URI for POST, PUT, and DELETE calls.
 
-* **get** *(secured)*: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of the resource, and ID of the resource as shown in response body
+* **get** *(secured)*: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
+the resource, and ID of the resource as shown in response body
 
 ## nsxEdgeUpgrade
 Upgrading NSX Edge
@@ -2153,7 +2338,9 @@ Working with vShield Edge self-signed certificates
 ### /2.0/services/truststore/certificate/{certificateId}
 Certificate specified by ID
 
-* **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies a chain, multiple certificate objects are retrieved.
+* **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies
+a chain, multiple certificate objects are retrieved.
+
 * **delete** *(secured)*: Delete the specified certificate
 
 ### /2.0/services/truststore/csr/{scopeId}
@@ -2192,7 +2379,8 @@ CRL certificates for specified certificate
 Operations on policy objects
 
 ### /2.0/services/policy/securitypolicy
-Working with security policies (Endpoint, firewall, network introspection services applied to security group)
+Working with security policies (Endpoint, firewall, network introspection
+services applied to security group)
 
 * **post** *(secured)*: Create a security policy
 
@@ -2212,12 +2400,14 @@ Security actions for a security policy
 Security policy configuration import/export
 
 * **post** *(secured)*: Import a security policy configuration
-* **get** *(secured)*: Export a Service Composer configuration and save to your desktop for use as a backup
+* **get** *(secured)*: Export a Service Composer configuration and save to your desktop for
+use as a backup
 
 ### /2.0/services/policy/securityaction/category/virtualmachines
 Virtual machines for a security action
 
-* **get** *(secured)*: Fetch all vm objects on which security action of a given category and attribute has been applied
+* **get** *(secured)*: Fetch all vm objects on which security action of a given category and
+attribute has been applied
 
 ### /2.0/services/policy/securitygroup/{ID}/securityactions
 Security actions on a security group
@@ -2232,7 +2422,8 @@ Fetch the security actions applicable on a virtual machine
 ### /2.0/services/policy/policy/serviceprovider/firewall
 Synchronizing Service Composer rules with distributed firewall
 
-* **get** *(secured)*: Query the time since when Service Composer firewall is out of sync with dfw, or synchronize Service Composer firewall with dfw
+* **get** *(secured)*: Query the time since when Service Composer firewall is out of sync with
+dfw, or synchronize Service Composer firewall with dfw
 
 ### /2.0/services/policy/policy/securitygroup/{ID}/securitypolicies
 Retrieve security policies mapped to a security group
