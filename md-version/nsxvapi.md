@@ -190,12 +190,34 @@ Working with ARP suppression and MAC learning for logical switches
 * **put** *(secured)*: Enable or disable ARP suppression and MAC learning
 
 ## nsxControllers
-Working with NSX controllers
+Working with NSX controllers - For the unicast or hybrid control plane mode,
+you must add an NSX controller to manage overlay transport and provide
+East-West routing. The controller optimizes virtual machine broadcast (ARP
+only) traffic, and the learning is stored on the host and the controller.
 
 ### /2.0/vdn/controller
 
-* **post** *(secured)*: Add a new controller on a specified cluster. Request without body to upgrade controller cluster
-* **get** *(secured)*: Retrieve details and runtime status for all controllers
+* **post** *(secured)*: Adds a new NSX controller on the specified given cluster. The hostId
+parameter is optional. The resourcePoolId can be either the clusterId or
+resourcePoolId. The IP address of the controller node will be allocated
+from the specified IP pool. deployType determines the controller node
+memory size and can be small, medium, or large. However, different
+controller deployment types are not currently supported because the OVF
+overrides it and different OVF types require changes in the manager build
+scripts. Despite not being supported, an arbitrary deployType size must
+still be specified or an error will be returned. Request without body to
+upgrade controller cluster.
+
+* **get** *(secured)*: Retrieves details and runtime status for all controllers.  Runtime status
+can be one of the following:
+  **Deploying** ‐ controller is being deployed and the procedure has not
+  completed yet.
+  **Removing** ‐ controller is being removed and the procedure has not
+  completed yet.
+  **Running** ‐ controller has been deployed and can respond to API
+  invocation.
+  **Unknown** ‐ controller has been deployed but fails to respond to API
+  invocation.
 
 ### /2.0/vdn/controller/upgrade-available
 Query controller upgrade availability
@@ -313,6 +335,15 @@ pass the IP to reserve in the 'ipAddress' fiels in the body
 Release an IP Address allocation in the Pool
 
 * **delete** *(secured)*: Release an IP Address allocation in the Pool
+
+## capacityUsage
+The licensing capacity usage API command reports usage of CPUs, VMs and
+concurrent users for the distributed firewall and VXLAN.
+
+### /2.0/services/licensing/capacityusage
+
+* **get** *(secured)*: Read capacity usage information on the useage of CPUs, VMs and concurrent
+users for the distributed firewall and VXLAN.
 
 ## securityTag
 Working with security tags
@@ -710,12 +741,24 @@ Get NSX Manager audit logs
 Network virtualization components
 
 ### /2.0/nwfabric/configure
-Install components
+Network virtualization components
 
-* **post** *(secured)*: Install network virtualization components
+* **post** *(secured)*: You install the network infrastructure components in your virtual
+environment on a per‐cluster level for each vCenter server, which
+deploys the required software on all hosts in the cluster. This software
+is also referred to as an NSX vSwitch. When a new host is added to this
+cluster, the required software is automatically installed on the newly
+added host. After the network infrastructure is installed on a cluster,
+Logical Firewall is enabled on that cluster.
 
-* **put** *(secured)*: Upgrade network virtualization components
-* **delete** *(secured)*: Delete network virtualization components
+* **put** *(secured)*: This API call can be used to upgrade network virtualization components.
+After NSX Manager is upgraded, previously prepared clusters must have
+the 6.x network virtualization components installed.
+
+* **delete** *(secured)*: Removes previously installed VIBs, tears down NSX manager to ESX
+messaging, and remove any other network fabric dependent features like
+logical wires etc. If a feature like logical wire is being used in your
+environment, this call fails.
 
 ### /2.0/nwfabric/features
 

@@ -4559,7 +4559,7 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Install components</p>
+  <div class="description"><p>Network virtualization components</p>
 </div>
 <div class="method post">
   <a
@@ -4569,7 +4569,13 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Install network virtualization components</p>
+    <p><p>You install the network infrastructure components in your virtual
+environment on a per‐cluster level for each vCenter server, which
+deploys the required software on all hosts in the cluster. This software
+is also referred to as an NSX vSwitch. When a new host is added to this
+cluster, the required software is automatically installed on the newly
+added host. After the network infrastructure is installed on a cluster,
+Logical Firewall is enabled on that cluster.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4589,7 +4595,10 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
     
   </dt>
   <dd>
-      <p>If used, set to &quot;synchronize&quot; to reset communication between NSX Manager and a host/cluster</p>
+      <p>Resets communication between NSX Manager
+and a host or cluster. The resourceId is the ID of the cluster or
+host that is retrieved from the vCenter managed object browser. Set
+to &quot;synchronize&quot; to reset communication.</p>
 
   </dd>
 </dl>
@@ -4630,7 +4639,9 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Upgrade network virtualization components</p>
+    <p><p>This API call can be used to upgrade network virtualization components.
+After NSX Manager is upgraded, previously prepared clusters must have
+the 6.x network virtualization components installed.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4677,7 +4688,10 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete network virtualization components</p>
+    <p><p>Removes previously installed VIBs, tears down NSX manager to ESX
+messaging, and remove any other network fabric dependent features like
+logical wires etc. If a feature like logical wire is being used in your
+environment, this call fails.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -6288,6 +6302,55 @@ pass the IP to reserve in the &#39;ipAddress&#39; fiels in the body</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ipset</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+<h1 class="anchor" id="2-0-services-licensing-capacityusage">
+  <a href="#2-0-services-licensing-capacityusage">
+    /2.0/services/licensing/capacityusage
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>The licensing capacity usage API command reports usage of CPUs, VMs and
+concurrent users for the distributed firewall and VXLAN.</p>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/licensing/capacityusage"
+    href="#GET/2.0/services/licensing/capacityusage"
+  ><h2>get</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Read capacity usage information on the useage of CPUs, VMs and concurrent
+users for the distributed firewall and VXLAN.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">featureCapacityUsageList</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureCapacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">feature</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">feature</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapacityUsageInfo</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">featureCapacityUsageList</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -11538,7 +11601,10 @@ universal the API call must be made to the primary NSX manager.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Working with NSX controllers</p>
+  <div class="description"><p>Working with NSX controllers - For the unicast or hybrid control plane mode,
+you must add an NSX controller to manage overlay transport and provide
+East-West routing. The controller optimizes virtual machine broadcast (ARP
+only) traffic, and the learning is stored on the host and the controller.</p>
 </div>
 <div class="method post">
   <a
@@ -11548,7 +11614,16 @@ universal the API call must be made to the primary NSX manager.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Add a new controller on a specified cluster. Request without body to upgrade controller cluster</p>
+    <p><p>Adds a new NSX controller on the specified given cluster. The hostId
+parameter is optional. The resourcePoolId can be either the clusterId or
+resourcePoolId. The IP address of the controller node will be allocated
+from the specified IP pool. deployType determines the controller node
+memory size and can be small, medium, or large. However, different
+controller deployment types are not currently supported because the OVF
+overrides it and different OVF types require changes in the manager build
+scripts. Despite not being supported, an arbitrary deployType size must
+still be specified or an error will be returned. Request without body to
+upgrade controller cluster.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11601,7 +11676,16 @@ universal the API call must be made to the primary NSX manager.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve details and runtime status for all controllers</p>
+    <p><p>Retrieves details and runtime status for all controllers.  Runtime status
+can be one of the following:
+  <strong>Deploying</strong> ‐ controller is being deployed and the procedure has not
+  completed yet.
+  <strong>Removing</strong> ‐ controller is being removed and the procedure has not
+  completed yet.
+  <strong>Running</strong> ‐ controller has been deployed and can respond to API
+  invocation.
+  <strong>Unknown</strong> ‐ controller has been deployed but fails to respond to API
+  invocation.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11612,6 +11696,22 @@ universal the API call must be made to the primary NSX manager.</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">controllers</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controller</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">controller</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">controllers</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
