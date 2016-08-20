@@ -162,10 +162,19 @@ securitySchemes:
       type: Basic Authentication
 /2.0/vdn/switches:
   displayName: vdsManage
-  description: This collection of methods are used to configure and prepare the VDS's for the use with NSX
+  description: |
+    This collection of methods are used to configure and prepare the VDS's for
+    the use with NSX. Before creating a logical switch, ensure that you have
+    installed the network virtualization components on the appropriate clusters
+    and that you have configured VXLAN on the appropriate clusters.
   post:
     displayName: vdsPrepare
-    description: Prepares a pre-configured vds with teaming and MTU options, MTU must be 1600 or higher
+    description: |
+      The MTU is the maximum amount of data that can be transmitted in one
+      packet before it is divided into smaller packets. The frames are slightly
+      larger in size because of the traffic encapsulation, so the MTU required
+      is higher than the standard MTU. You must set the MTU for each switch to
+      1600 or higher.
     body:
       application/xml:
         example: |
@@ -185,21 +194,21 @@ securitySchemes:
         schema: vdsContext
   get:
     displayName: vdsList
-    description: Lists all vds's
+    description: You can retrieve all configured switches.
   /datacenter/{datacenterID}:
     displayName: vdsInDc
-    description: Lists all VDS's in a specified vSphere Datacenter Object
+    description: You can retrieve all configured switches on a datacenter.
     uriParameters:
       datacenterID:
           required: true
           displayName: datacenterID
-          description: A valid Datacenter Id (e.g. datacenter-4)
+          description: A valid Datacenter ID (e.g. datacenter-4)
     get:
       displayName: vdsListInDc
       description: Lists all VDS's in a specified vSphere Datacenter Object
   /{vdsId}:
     displayName: vds
-    description: Retrieve a specific vds by specific switchId (e.g. dvs-26)
+    description: Retrieve a specific switch by specific switch ID (e.g. dvs-26).
     uriParameters:
       vdsId:
           required: true
@@ -276,7 +285,8 @@ securitySchemes:
       queryParameters:
           isUniversal:
             displayName: isUniversal
-            description: Set to "true" when creating a universal multicast range.
+            description: |
+              Set to "true" when creating a universal multicast range.
             type: boolean
             required: false
       body:
@@ -296,7 +306,8 @@ securitySchemes:
         property isUniversal set tot true.
     /{multicastAddresssRangeId}:
       displayName: vdnMulticastPool
-      description: Operations in individual multicast range Pools for logical switches
+      description: |
+        Operations in individual multicast range Pools for logical switches
       uriParameters:
         multicastAddresssRangeId:
           required: true
@@ -353,19 +364,26 @@ securitySchemes:
           description: set to "segmentId" or "multicastAddress"
         pagesize:
           displayName: pagesize
-          description: Optional; limits the maximum number of entries returned. Valid range is 1-1024, default is 256
+          description: |
+            Optional; limits the maximum number of entries returned. Valid range
+             is 1-1024, default is 256
         startindex:
           displayName: startindex
-          description: Optional; specifies the starting point for retrieval. If not specified, resources are retrieved from the beginning
+          description: |
+            Optional; specifies the starting point for retrieval. If not
+            specified, resources are retrieved from the beginning
 /2.0/vdn/scopes:
   displayName: vdnScopes
-  description: Read all scopes (transport zones), or create a new scope (Transport Zone)
+  description: |
+    Read all scopes (transport zones), or create a new scope (Transport Zone)
   get:
     displayName: vdnScopesList
     description: Retrieve a list of all known VDN Scopes / Transport Zones
   post:
     displayName: vdnScopeCreate
-    description: Create a new Transport Zone. Note that you can only add one initial cluster when creating the TZ.
+    description: |
+      Create a new Transport Zone. Note that you can only add one initial
+      cluster when creating the TZ.
     queryParameters:
       isUniversal:
         displayName: isUniversal
@@ -401,11 +419,15 @@ securitySchemes:
       description: Retrieve the properties of an existing network scope
     post:
       displayName: vdnScopeChange
-      description: Updates a transport zone, you can add a cluster to or delete a cluster from a transport zone
+      description: |
+        Updates a transport zone, you can add a cluster to or delete a cluster
+        from a transport zone
       queryParameters:
         action:
           displayName: action
-          description: Mandatory queryParameter, use 'expand' to add a cluster, or 'shrink' to remove a cluster from the TZ
+          description: |
+            Mandatory queryParameter, use 'expand' to add a cluster, or
+            'shrink' to remove a cluster from the TZ
           required: true
       body:
         application/xml:
@@ -426,10 +448,12 @@ securitySchemes:
       description: delete a transport zone
     /attributes:
       displayName: vdnScopeAttribUpdate
-      description: update the attributes of a transport zone (e.g. Name, description)
+      description: |
+        update the attributes of a transport zone (e.g. Name, description)
       put:
         displayName: vdnScopeAttribUpdate
-        description: Update the attributes of a transport zone (e.g. Name, description)
+        description: |
+          Update the attributes of a transport zone (e.g. Name, description)
         body:
           application/xml:
             example: |
@@ -473,7 +497,8 @@ securitySchemes:
               </testParameters>
 /2.0/vdn/scopes/{scopeId}/virtualwires:
   displayName: logicalSwitches
-  description: Create and List operations of logical switches inside a Transport Zone (scope)
+  description: |
+    Create and List operations of logical switches inside a Transport Zone.
   uriParameters:
       scopeId:
         required: true
@@ -486,7 +511,8 @@ securitySchemes:
     displayName: logicalSwitchCreate
     description: |
       Creates a logicalSwitch. To create a universal logical switch use the
-      appropriate universal scope as the scopeId and use the primary NSX manager.
+      appropriate universal scope as the scopeId and use the primary NSX
+      manager.
     body:
       application/xml:
         example: |
@@ -506,11 +532,14 @@ securitySchemes:
     queryParameters:
       startIndex:
         displayName: startIndex
-        description: optional; specify starting point for retrieving logical switches
+        description: |
+          Optional; specify starting point for retrieving logical switches
         default: 0
       pageSize:
         displayName: pageSize
-        description: optional; limit the max number of entries returned. Valid range is 1-1024
+        description: |
+          Optional; limit the max number of entries returned. Valid range is
+          1-1024
         default: 20
   /vm/vnic:
     displayName: logicalSwitchVmAttach
@@ -543,7 +572,9 @@ securitySchemes:
         the response body.
     put:
       displayName: logicalSwitchUpdate
-      description: Update a logical switch, possible updates are name changes & Controlplane Mode
+      description: |
+        Update a logical switch, possible updates are name changes &
+        Controlplane Mode
       body:
         application/xml:
           example: |
@@ -585,10 +616,14 @@ securitySchemes:
             schema: logicalSwitchConnCheck
     /conn-check/p2p:
       displayName: logicalSwitchPing
-      description: Perform point to point connectivity test between two hosts across which a logical switch spans
+      description: |
+        Perform point to point connectivity test between two hosts across which
+        a logical switch spans
       post:
         displayName: logicalSwitchPing
-        description: Perform point to point connectivity test between two hosts across which a logical switch spans
+        description: |
+          Perform point to point connectivity test between two hosts across
+          which a logical switch spans
         body:
           application/xml:
             example: |
@@ -610,7 +645,8 @@ securitySchemes:
             schema: logicalSwitchPing
 /2.0/xvs/networks/{ID}/features:
   displayName: arpMAC
-  description: Working with ARP suppression and MAC learning for logical switches
+  description: |
+    Working with ARP suppression and MAC learning for logical switches
   uriParameters:
     ID:
       required: true
@@ -712,7 +748,9 @@ securitySchemes:
         description: Specified job Id
     get:
       displayName: nsxControllerJobRead
-      description: Retrieve status of controller creation or removal. Returns percentage indication of job progress
+      description: |
+        Retrieve status of controller creation or removal. Returns percentage
+        indication of job progress
   /{controllerId}:
     displayName: nsxController
     description: Working with specified controller
@@ -723,7 +761,9 @@ securitySchemes:
         description: Specified controller
     delete:
       displayName: nsxControllerDelete
-      description: Delete NSX controller. When deleting last controller from cluster, forceRemoval must be set to true
+      description: |
+        Delete NSX controller. When deleting last controller from cluster,
+        forceRemoval must be set to true
       queryParameters:
         forceRemoval:
           type: boolean
@@ -754,22 +794,28 @@ securitySchemes:
             schema: controllerSyslog
       get:
         displayName: nsxControllerSyslogRead
-        description: Retrieve details about the syslog exporter on the controller
+        description: |
+          Retrieve details about the syslog exporter on the controller
       delete:
         displayName: nsxControllerSyslogDelete
         description: Delete the syslog exporter
     /snapshot:
       displayName: nsxControllerSnapshot
-      description: Take a snapshot of the control cluster from the specified controller node
+      description: |
+        Take a snapshot of the control cluster from the specified controller
+        node
       get:
         displayName: nsxControllerSnapshot
-        description: Take a snapshot of the control cluster from the specified controller node
+        description: |
+          Take a snapshot of the control cluster from the specified controller
+          node
   /cluster:
     displayName: nsxControllerCluster
     description: Cluster configuration
     get:
       displayName: nsxControllerClusterRead
-      description: Retrieve cluster-wise configuration information for controller
+      description: |
+        Retrieve cluster-wise configuration information for controller
     put:
       displayName: nsxControllerClusterUpdate
       description: Modify cluster configuration information for controller
@@ -800,7 +846,9 @@ securitySchemes:
     scopeId:
       required: true
       displayName: scopeId
-      description: Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases.
+      description: |
+        Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use
+        cases.
   get:
     displayName: servicesScopeRead
     description: List services that have been created on the scope
@@ -838,7 +886,9 @@ securitySchemes:
     description: Retrieve details about the specified service
   put:
     displayName: serviceUpdate
-    description: Modify the name, description, applicationProtocol, or port value of a service
+    description: |
+      Modify the name, description, applicationProtocol, or port value of a
+      service
     body:
       application/xml:
         example: |
@@ -865,7 +915,9 @@ securitySchemes:
         type: boolean
         required: false
         displayName: force
-        description: Indicates if the delete should be forced or unforced. The default is unforced (false)
+        description: |
+          Indicates if the delete should be forced or unforced. The default is
+          unforced (false)
 /2.0/services/applicationgroup:
   displayName: applicationgroup
   description: Operations on Application Groups
@@ -876,7 +928,9 @@ securitySchemes:
       scopeId:
         required: true
         displayName: scopeId
-        description: The scopeId can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases
+        description: |
+          The scopeId can be "globalroot-0", "universalroot-0" or datacenterId
+          in upgrade use cases
     post:
       displayName: serviceGroupsCreate
       description: Create a new service group on the specified scope
@@ -892,7 +946,8 @@ securitySchemes:
           schema: serviceGroupsCreate
     get:
       displayName: serviceGroupsRead
-      description: Retrieve a list of service groups that have been created on the scope
+      description: |
+        Retrieve a list of service groups that have been created on the scope
   /{applicationgroupId}:
     displayName: serviceGroup
     description: Working with an individual service group
@@ -906,7 +961,9 @@ securitySchemes:
       description: Retrieve details about a service group
     put:
       displayName: serviceGroupUpdate
-      description: Modify the name, description, applicationProtocol, or port value of a service group
+      description: |
+        Modify the name, description, applicationProtocol, or port value of a
+        service group
       body:
         application/xml:
           example: |
@@ -950,7 +1007,9 @@ securitySchemes:
           type: boolean
           required: false
           displayName: force
-          description: Indicates if the delete should be forced or unforced. The default is unforced (false)
+          description: |
+            Indicates if the delete should be forced or unforced. The default
+            is unforced (false)
     /members/{moref}:
       displayName: serviceGroupMembers
       description: Add or delete service group members
@@ -975,7 +1034,9 @@ securitySchemes:
         description: globalroot-0 or datacenterId in upgrade use cases
     get:
       displayName: serviceGroupMembersRead
-      description: Get a list of member elements that can be added to the service groups created on a particular scope.
+      description: |
+        Get a list of member elements that can be added to the service groups
+        created on a particular scope.
 /2.0/services/ipam/pools/scope/{scopeId}:
   displayName: ipPools
   description: Create a pool of IP addresses
@@ -1061,9 +1122,10 @@ securitySchemes:
     post:
       displayName: ipPoolAllocateIp
       description: |
-        Allocate an IP Address from the pool. Use 'ALLOCATE' in the 'allocationMode' field in the
-        body to allocate the next available ip. To allocate a specific one use 'RESERVE' and
-        pass the IP to reserve in the 'ipAddress' fiels in the body
+        Allocate an IP Address from the pool. Use 'ALLOCATE' in the
+        'allocationMode' field in the body to allocate the next available ip.
+        To allocate a specific one use 'RESERVE' and pass the IP to reserve in
+        the 'ipAddress' fiels in the body
       body:
         application/xml:
           example: |
@@ -1142,10 +1204,12 @@ securitySchemes:
       description: Delete the specified security tag
     /vm:
       displayName: securityTagVMsList
-      description: Retrieve the list of vm's that have the specified tag attached to them
+      description: |
+        Retrieve the list of vm's that have the specified tag attached to them
       get:
         displayName: securityTagVMsList
-        description: Retrieve the list of vm's that have the specified tag attached to them
+        description: |
+          Retrieve the list of vm's that have the specified tag attached to them
       /{vmMoid}:
         displayName: securityTagVM
         description: Apply or detach a security tag to virtual machine
@@ -1215,14 +1279,18 @@ securitySchemes:
         description: user to retrieve role information from
     get:
       displayName: userMgmtRoleRead
-      description: Retrieve a user's role (possible roles are super_user, vshield_admin, enterprise_admin, security_admin, and audit)
+      description: |
+        Retrieve a user's role (possible roles are super_user, vshield_admin,
+        enterprise_admin, security_admin, and audit)
     post:
       displayName: userMgmtRoleCreate
       description: Add role and resources for a user
       queryParameters:
         isGroup:
           displayName: isGroup
-          description: Set to "true" to apply to a group; set to "false" to apply to an individual user
+          description: |
+            Set to "true" to apply to a group; set to "false" to apply to an
+            individual user
           required: true
           type: boolean
       body:
@@ -1250,7 +1318,10 @@ securitySchemes:
           schema: userRoleMgmtUpdate
     delete:
       displayName: userMgmtRoleDelete
-      description: Delete the role assignment for specified vCenter user. Once this role is deleted, the user is removed from NSX Manager. You cannot delete the role for a local user.
+      description: |
+        Delete the role assignment for specified vCenter user. Once this role
+        is deleted, the user is removed from NSX Manager. You cannot delete the
+        role for a local user.
   /enablestate/{value}:
     displayName: userMgmtState
     description: Change the state of a user account (enabled/disabled)
@@ -1265,10 +1336,14 @@ securitySchemes:
       description: Enable or disable a user account
   /users/vsm:
     displayName: userNSXManagerInfo
-    description: Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
+    description: |
+      Get information about users who have been assigned a NSX Manager role
+      (local users as well as vCenter users with NSX Manager role)
     get:
       displayName: userNSXManagerInfoRead
-      description: Get information about users who have been assigned a NSX Manager role (local users as well as vCenter users with NSX Manager role)
+      description: |
+        Get information about users who have been assigned a NSX Manager role
+        (local users as well as vCenter users with NSX Manager role)
   /roles:
     displayName: userMgmtRoles
     description: NSX Manager user management operations on roles
@@ -1277,10 +1352,14 @@ securitySchemes:
       description: Read all possible roles in NSX Manager
   /scopingobjects:
     displayName: userScopingObjects
-    description: Retrieve a list of objects that can be used to define a user's access scope
+    description: |
+      Retrieve a list of objects that can be used to define a user's access
+      scope
     get:
       displayName: userScopingObjectsRead
-      description: Retrieve a list of objects that can be used to define a user's access scope
+      description: |
+        Retrieve a list of objects that can be used to define a user's access
+        scope
 /2.0/services/securitygroup:
   displayName: secGroup
   description: Operations on securitygroups
@@ -1441,21 +1520,27 @@ securitySchemes:
           schema: secGroupBulkUpdate
   /scope/{scopeId}:
     displayName: secGroupScope
-    description: Operations to list information about security groups on a given scope
+    description: |
+      Operations to list information about security groups on a given scope
     uriParameters:
       scopeId:
         required: true
         displayName: scopeId
-        description: scopeId can be "globalroot-0", "universalroot-0" or datacenterID/portgroupID in upgrade use cases
+        description: |
+          scopeId can be "globalroot-0", "universalroot-0" or datacenterID /
+          portgroupID in upgrade use cases
     get:
       displayName: secGroupScopeRead
       description: List all the security groups created on a specific scope
     /memberTypes:
       displayName: secGroupMemberTypes
-      description: Information on valid elements that can be added to a security group
+      description: |
+        Information on valid elements that can be added to a security group
       get:
         displayName: secGroupScopeMembersRead
-        description: Retrieve a list of valid elements that can be added to a security group.
+        description: |
+          Retrieve a list of valid elements that can be added to a security
+          group.
     /members/{memberType}:
       displayName: secGroupScopeMemberByType
       description: Retrieve members of a specific type under a scope
@@ -1529,25 +1614,35 @@ securitySchemes:
       displayName: secGroupVMNodes
       get:
         displayName: secGroupVMNodesRead
-        description: Retrieve list of VmNode entities that belong to a specific security group.
+        description: |
+          Retrieve list of VmNode entities that belong to a specific security
+          group.
     /translation/ipaddresses:
       displayName: secGroupIPNodes
       get:
         displayName: secGroupIPNodesRead
-        description: Retrieve list of IpNode entities that belong to a specific security group.
+        description: |
+          Retrieve list of IpNode entities that belong to a specific security
+          group.
     /translation/macaddresses:
       displayName: secGroupMacNodes
       get:
         displayName: secGroupMacNodesRead
-        description: Retrieve list of MacNode entities that belong to a specific security group.
+        description: |
+          Retrieve list of MacNode entities that belong to a specific security
+          group.
     /translation/vnics:
       displayName: secGroupVnicNodes
       get:
         displayName: secGroupVnicNodesRead
-        description: Retrieve list of VnicNode entities that belong to a specific security group.
+        description: |
+          Retrieve list of VnicNode entities that belong to a specific security
+          group.
   /lookup/virtualmachine/{virtualMachineId}:
     displayName: secGroupLookupVM
-    description: Retrieve list of security groups that the specified virtual machine belongs to.
+    description: |
+      Retrieve list of security groups that the specified virtual machine
+      belongs to.
     uriParameters:
       virtualMachineId:
         required: true
@@ -1555,7 +1650,9 @@ securitySchemes:
         description: Specified virtual machine
     get:
       displayName: secGroupLookupVMRead
-      description: Retrieve list of security groups that the specified virtual machine belongs to.
+      description: |
+        Retrieve list of security groups that the specified virtual machine
+        belongs to.
   /internal/scope/{scopeId}:
     displayName: secGroupInternal
     description: Information on internal security groups
@@ -1566,7 +1663,10 @@ securitySchemes:
         description: Specified transport zone (scope)
     get:
       displayName: secGroupInternalRead
-      description: Retrieve all internal security groups on the NSX Manager. These are used internally by the system and should not be created or modified by end users.
+      description: |
+        Retrieve all internal security groups on the NSX Manager. These are used
+         internally by the system and should not be created or modified by end
+        users.
 /2.0/services/ipset:
   displayName: ipsets
   description: Operations on IP Sets
@@ -1687,7 +1787,9 @@ securitySchemes:
         queryParameters:
           action:
             displayName: action
-            description: Set the role of the NSX manager. Possible values are set-as-standalone, set-as-primary,  set-as-secondary
+            description: |
+              Set the role of the NSX manager. Possible values are
+              set-as-standalone, set-as-primary, set-as-secondary
       get:
         displayName: universalSyncConfigurationRoleRead
         description: Get the Universal Sync Configuration role
@@ -1716,7 +1818,8 @@ securitySchemes:
         description: Universal sync configuration NSX manager thumbprint
         put:
           displayName: universalSyncConfigurationNsxManagersThumbprintUpdate
-          description: Update the NSX manager thumprint in the universal sync configuration
+          description: |
+            Update the NSX manager thumprint in the universal sync configuration
           body:
             application/xml:
               example: |
@@ -1732,7 +1835,9 @@ securitySchemes:
         description: Universal sync configuration of a specific NSX manager
         get:
           displayName: universalSyncConfigurationManagersRead
-          description: Query universal sync configuration information on a specific NSX manager by ID
+          description: |
+            Query universal sync configuration information on a specific NSX
+            manager by ID
         delete:
           displayName: universalSyncConfigurationManagersDelete
           description: Delete a secondary NSX manager by ID.
@@ -1741,7 +1846,9 @@ securitySchemes:
               type: boolean
               required: false
               displayName: universalSyncConfigurationManagerDeleteforceRemoval
-              description: Force removal of a secondary NSX manager. Options are true and false.
+              description: |
+                Force removal of a secondary NSX manager. Options are true and
+                false.
   /sync:
     displayName: universalSyncSync
     description: Sync all objects on the NSX manager
@@ -1779,19 +1886,24 @@ securitySchemes:
     description: Global appliance manager information
     get:
       displayName: globalInfoRead
-      description: Retrieve global information containing version information as well as current logged in user
+      description: |
+        Retrieve global information containing version information as well as
+        current logged in user
   /summary/system:
     displayName: systemInfo
     description: Summary appliance manager information
     get:
       displayName: summaryInfoRead
-      description: Retrieve system summary info such as address, dns name, version, CPU, memory and storage
+      description: |
+        Retrieve system summary info such as address, dns name, version, CPU,
+        memory and storage
   /summary/components:
     displayName: componentInfo
     description: Component information
     get:
       displayName: componentInfoRead
-      description: Retrieve summary of all available components and their status info
+      description: |
+        Retrieve summary of all available components and their status info
   /system/restart:
     displayName: systemReboot
     description: Reboot the appliance manager
@@ -1827,7 +1939,8 @@ securitySchemes:
     description: Working with network settings
     get:
       displayName: networkSettingsRead
-      description: Retrieve network information i.e. host name, IP address, DNS settings
+      description: |
+        Retrieve network information i.e. host name, IP address, DNS settings
     /dns:
       displayName: dns
       description: Configure DNS
@@ -1854,7 +1967,8 @@ securitySchemes:
       description: Retrieve time settings
     put:
       displayName: systemTimeUpdate
-      description: Configure time or specify the NTP server to use for time synchronization
+      description: |
+        Configure time or specify the NTP server to use for time synchronization
       body:
         application/xml:
           example: |
@@ -1992,10 +2106,12 @@ securitySchemes:
       description: Backup NSX data on-demand
   /backuprestore/backups:
     displayName: applianceMgrBackups
-    description: Retrieve list of all backups available at configured backup location
+    description: |
+      Retrieve list of all backups available at configured backup location
     get:
       displayName: applianceMgrBackupsRead
-      description: Retrieve list of all backups available at configured backup location
+      description: |
+        Retrieve list of all backups available at configured backup location
   /backuprestore/restore:
     displayName: applianceMgrBackupRestore
     description: Restore data from a backup file
@@ -2117,7 +2233,9 @@ securitySchemes:
         description: optional; specify starting point for retrieving the logs
       pageSize:
         displayName: pageSize
-        description: optional; limit the max number of entries returned. Valid range is 1-1024
+        description: |
+          optional; limit the max number of entries returned. Valid range is
+          1-1024
         default: 256
 /2.0/nwfabric:
   displayName: nwfabric
@@ -2200,7 +2318,8 @@ securitySchemes:
       queryParameters:
         resource:
           displayName: resource
-          description: This is a valid vCenter MOID, e.g. domain-c34 for a cluster
+          description: |
+            This is a valid vCenter MOID, e.g. domain-c34 for a cluster
           required: true
     /child/{parentResourceID}:
       displayName: childStatus
@@ -2271,7 +2390,8 @@ securitySchemes:
     queryParameters:
       startTime:
         displayName: startTime
-        description: Time to start deployment task. If not specified, deploy immediately
+        description: |
+          Time to start deployment task. If not specified, deploy immediately
     body:
       application/xml:
         example: |
@@ -2331,10 +2451,14 @@ securitySchemes:
       queryParameters:
         clusters:
           displayName: clusters
-          description: Comma-separated list of cluster id's that service needs to be uninstalled from
+          description: |
+            Comma-separated list of cluster id's that service needs to be
+            uninstalled from
         startTime:
           displayName: startTime
-          description: Time for uninstall to be scheduled. If not specified, uninstall immediately
+          description: |
+            Time for uninstall to be scheduled. If not specified, uninstall
+            immediately
     /dependsOn:
       displayName: serviceDependency
       description: Identify service on which the specified service depends on
@@ -2354,14 +2478,19 @@ securitySchemes:
       description: Retrieve all services deployed along with their status
     delete:
       displayName: serviceDelete
-      description: Uninstall a service. Fails if you try to remove a service that another service depends on
+      description: |
+        Uninstall a service. Fails if you try to remove a service that another
+        service depends on
       queryParameters:
         services:
           displayName: services
-          description: Comma-separated list of service id's to specify which services to uninstall
+          description: |
+            Comma-separated list of service id's to specify which services to
+            uninstall
         startTime:
           displayName: startTime
-          description: time for uninstall to be scheduled. If not specified, do immediately
+          description: |
+            Time for uninstall to be scheduled. If not specified, do immediately
     /service/{serviceID}:
       displayName: serviceDetails
       description: Information about a service
@@ -2383,10 +2512,15 @@ securitySchemes:
       description: Retrieve the list of available regulations for a policy.
   /policy/regulations:
     displayName: dlpEnableRegulation
-    description: Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
+    description: |
+      Enable one or more regulations by putting the regulation IDs into the
+      policy. You can get the IDs from the output of the dlpRegulation GET call
     put:
       displayName: dlpEnableRegulation
-      description: Enable one or more regulations by putting the regulation IDs into the policy. You can get the IDs from the output of the dlpRegulation GET call
+      description: |
+        Enable one or more regulations by putting the regulation IDs into the
+        policy. You can get the IDs from the output of the dlpRegulation GET
+        call
       body:
         application/xml:
           example: |
@@ -2425,16 +2559,24 @@ securitySchemes:
           schema: dlpRegexClassificationValue
   /excludableareas:
     displayName: dlpExcludableAreas
-    description: Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection
+    description: |
+      Retrieve list of datacenters, clusters, and resource pools that are
+      excludable from policy inspection
     get:
       displayName: dlpExcludableAreas
-      description: Retrieve list of datacenters, clusters, and resource pools that are excludable from policy inspection
+      description: |
+        Retrieve list of datacenters, clusters, and resource pools that are
+        excludable from policy inspection
   /policy/excludedareas:
     displayName: dlpExcludeArea
-    description: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead) Exclude areas from policy inspection
+    description: |
+      (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
+      Exclude areas from policy inspection
     put:
       displayName: dlpExcludeArea
-      description: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead) Exclude areas from policy inspection
+      description: |
+        (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
+        Exclude areas from policy inspection
       body:
         application/xml:
           example: |
@@ -2447,7 +2589,8 @@ securitySchemes:
     description: Include security groups in data security scan
     get:
       displayName: dlpIncludeSecGroupRead
-      description: Retrieve security groups that have been included in data security scans
+      description: |
+        Retrieve security groups that have been included in data security scans
     put:
       displayName: dlpIncludeSecGroupUpdate
       description: Include security groups in data security scan
@@ -2464,7 +2607,9 @@ securitySchemes:
     description: Exclude security groups in data security scan
     get:
       displayName: dlpExcludeSecGroupRead
-      description: Retrieve security groups that have been excluded from data security scans
+      description: |
+        Retrieve security groups that have been excluded from data security
+        scans
     put:
       displayName: dlpExcludeSecGroupUpdate
       description: Exclude security groups in data security scan
@@ -2506,7 +2651,10 @@ securitySchemes:
       description: Retrieve currently published policy
   /policy/publish:
     displayName: dlpPolicyPublish
-    description: After updating a policy with added regulations, excluded areas, or customized regex values, publish an updated policy to enforce new parameters
+    description: |
+      After updating a policy with added regulations, excluded areas, or
+      customized regex values, publish an updated policy to enforce new
+      parameters
     put:
       displayName: dlpPolicyPublish
       description: Publish the updated policy
@@ -2533,14 +2681,18 @@ securitySchemes:
     uriParameters:
       ID:
         displayName: ID
-        description: Limit filter results by VC MOID of datacenter, cluster, or resource pool
+        description: |
+          Limit filter results by VC MOID of datacenter, cluster, or resource
+          pool
     get:
       displayName: dlpScanVMsRead
       description: Retrieve information about the vm's being scanned
       queryParameters:
         scanstatus:
           displayName: scanstatus
-          description: Specify scan status of vm's to be retrieved (all|notstarted|started|completed)
+          description: |
+            Specify scan status of vm's to be retrieved
+            (all|notstarted|started|completed)
         pagesize:
           displayName: pagesize
           description: Limit max number of entries returned. Valid range is 1-1024
@@ -2550,7 +2702,9 @@ securitySchemes:
           description: Specify starting point for retrieving logs
   /completedscansummaries:
     displayName: dlpScanSummaries
-    description: Retrieve start and end time, total number of vm's scanned, and total number of violations for the last five completed data security scans
+    description: |
+      Retrieve start and end time, total number of vm's scanned, and total
+      number of violations for the last five completed data security scans
     get:
       displayName: dlpScanSummariesRead
       description: Retrieve scan summaries
@@ -2564,10 +2718,13 @@ securitySchemes:
         description: Specified scan ID
     get:
       displayName: dlpPreviousScanRead
-      description: Retrieve ID, Name, Scan status, and Violation counts for VM's scanned during specified scan
+      description: |
+        Retrieve ID, Name, Scan status, and Violation counts for VM's scanned
+        during specified scan
   /scan/{scanID}/policyasxml:
     displayName: dlpPolicyAsXML
-    description: Retrieve XML representation of the policy used in the previous scan
+    description: |
+      Retrieve XML representation of the policy used in the previous scan
     uriParameters:
       scanID:
         required: true
@@ -2575,7 +2732,8 @@ securitySchemes:
         description: Specified previous scan
     get:
       displayName: dlpPolicyAsXML
-      description: Retrieve XML representation of the policy used in the previous scan
+      description: |
+        Retrieve XML representation of the policy used in the previous scan
   /violations:
     displayName: dlpViolations
     description: Query the regulations that have been violated in scans
@@ -2589,7 +2747,9 @@ securitySchemes:
         contextID:
           required: true
           displayName: contextID
-          description: Specified resource (moid of datacenter, cluster, folder, resource pool, or vm)
+          description: |
+            Specified resource (moid of datacenter, cluster, folder, resource
+            pool, or vm)
       get:
         displayName: dlpViolationRead
         description: Get violation count for specific resource
@@ -2613,7 +2773,9 @@ securitySchemes:
         contextID:
          required: true
          displayName: contextID
-         description: Specified resource (moid of datacenter, cluster, folder, resource pool, or vm)
+         description: |
+          Specified resource (moid of datacenter, cluster, folder, resource
+          pool, or vm)
       get:
         displayName: dlpViolatingFilesContext
         description: Get violating files for a resource
@@ -2626,21 +2788,31 @@ securitySchemes:
             description: page number from which the results will be displayed
   /violatingfilesascsv:
     displayName: dlpViolatingFilesCSV
-    description: Display the violating files and the regulations each file violated in CSV format
+    description: |
+      Display the violating files and the regulations each file violated in CSV
+      format
     get:
       displayName: dlpViolatingFilesCSV
-      description: Display the violating files and the regulations each file violated in CSV format
+      description: |
+        Display the violating files and the regulations each file violated in
+        CSV format
     /{contextID}:
       displayName: dlpViolatingFilesContextCSV
-      description: Get violated regulations and violating files for the resource in CSV format
+      description: |
+        Get violated regulations and violating files for the resource in CSV
+        format
       uriParameters:
         contextID:
          required: true
          displayName: contextID
-         description: Specified resource (moid of datacenter, cluster, folder, resource pool, or vm)
+         description: |
+          Specified resource (moid of datacenter, cluster, folder, resource
+          pool, or vm)
       get:
         displayName: dlpViolatingFilesContextCSV
-        description: Get violated regulations and violating files for the resource in CSV format
+        description: |
+          Get violated regulations and violating files for the resource in
+          CSV format
 /1.0/eventcontrol:
   displayName: eventControl
   description: eventControl Operations
@@ -2701,7 +2873,10 @@ securitySchemes:
   description: Activity monitoring
   /records:
     displayName: userActivity
-    description: Get aggregated user activity (action records) using parameters. Requires vShield Endpoint and NSX Endpoint configured, and Data collection enabled on 1+ vm's
+    description: |
+      Get aggregated user activity (action records) using parameters. Requires
+      vShield Endpoint and NSX Endpoint configured, and Data collection enabled
+      on 1+ vm's
     get:
       displayName: userActivityRead
       description: Get aggregated user activity
@@ -2713,7 +2888,8 @@ securitySchemes:
           required: true
         interval:
           displayName: interval
-          description: Relative time to current time (number followed by either m,h,d,s)
+          description: |
+            Relative time to current time (number followed by either m,h,d,s)
           example: 60m
           required: true
         stime:
@@ -2726,11 +2902,14 @@ securitySchemes:
           default: 2012-02-29T21:00
         param:
           displayName: param
-          description: Parameter to be applied to query (<param-name>:<param-type>:<comma-separated-values>:operator)
+          description: |
+            Parameter to be applied to query (<param-name>:<param-type>:
+              <comma-separated-values>:operator)
           default: src:SECURITY_GROUP:1:INCLUDE
         pagesize:
           displayName: pagesize
-          description: Number of records to retrieve (recommended between 100-2000)
+          description: |
+            Number of records to retrieve (recommended between 100-2000)
           default: 1000
         startindex:
           displayName: startindex
@@ -2738,10 +2917,12 @@ securitySchemes:
           default: 100
   /userdetails:
     displayName: userDetails
-    description: Retrieve user detail records in accordance with given query parameters
+    description: |
+      Retrieve user detail records in accordance with given query parameters
     get:
       displayName: userDetailsRead
-      description: Retrieve user detail records in accordance with given query parameters
+      description: |
+        Retrieve user detail records in accordance with given query parameters
       queryParameters:
         query:
           displayName: query
@@ -2750,7 +2931,8 @@ securitySchemes:
           default: resource
         interval:
           displayName: interval
-          description: Relative time to current time (number followed by either m,h,d,s)
+          description: |
+            Relative time to current time (number followed by either m,h,d,s)
           example: 60m
           required: true
         stime:
@@ -2763,11 +2945,14 @@ securitySchemes:
           default: 2012-02-29T21:00
         param:
           displayName: param
-          description: Parameter to be applied to query (<param-name>:<param-type>:<comma-separated-values>:operator)
+          description: |
+            Parameter to be applied to query (<param-name>:<param-type>:
+              <comma-separated-values>:operator)
           default: src:SECURITY_GROUP:1:INCLUDE
         pagesize:
           displayName: pagesize
-          description: Number of records to retrieve (recommended between 100-2000)
+          description: |
+            Number of records to retrieve (recommended between 100-2000)
           default: 1000
         startindex:
           displayName: startindex
@@ -2806,7 +2991,9 @@ securitySchemes:
     description: Host details
     get:
       displayName: hostDetailsRead
-      description: Retrieve list of all discovered hosts (both by agent introspection and LDAP Sync) and their detail
+      description: |
+        Retrieve list of all discovered hosts (both by agent introspection and
+        LDAP Sync) and their detail
     /{hostID}:
       displayName: specificHostDetails
       description: Specific host details
@@ -2823,7 +3010,8 @@ securitySchemes:
     description: Desktop pool details
     get:
       displayName: desktopPoolRead
-      description: Retrieve list of all discovered desktop pools by agent introspection
+      description: |
+        Retrieve list of all discovered desktop pools by agent introspection
     /{desktoppoolID}:
       displayName: specificDesktopPool
       description: Specific desktop pool details
@@ -2857,7 +3045,8 @@ securitySchemes:
     description: LDAP directory group details
     get:
       displayName: dirGroupRead
-      description: Retrieve list of all discovered (and configured) LDAP directory groups
+      description: |
+        Retrieve list of all discovered (and configured) LDAP directory groups
     /{directorygroupID}:
       displayName: specificDirGroup
       description: Specific directory group details
@@ -3074,7 +3263,9 @@ securitySchemes:
       description: Query set of users associated with a given set of Ip addresses
   /directoryGroupsForUser/{userID}:
     displayName: userDirGroups
-    description: Query set of Windows Domain Groups (AD Groups) to which the specified user belongs
+    description: |
+      Query set of Windows Domain Groups (AD Groups) to which the specified
+      user belongs
     uriParameters:
       userID:
         required: true
@@ -3082,7 +3273,9 @@ securitySchemes:
         description: User ID
     get:
       displayName: userDirGroupsRead
-      description: Query set of Windows Domain Groups (AD Groups) to which the specified user belongs
+      description: |
+        Query set of Windows Domain Groups (AD Groups) to which the specified
+        user belongs
   /staticUserMapping/{userID}/{IP}:
     displayName: staticUserMapping
     description: Create static user IP mapping
@@ -3188,10 +3381,15 @@ securitySchemes:
     description: Working with conflicting agencies
     get:
       displayName: agentConflictsRead
-      description: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the allowed operations on them
+      description: |
+        Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
+        allowed operations on them
     put:
       displayName: agentConflictsUpdate
-      description: Create deployment units for conflicting EAM Agencies, delete conflicting EAM agencies, or delete deployment units for conflicting EAM agencies
+      description: |
+        Create deployment units for conflicting EAM Agencies, delete
+        conflicting EAM agencies, or delete deployment units for conflicting
+        EAM agencies
       body:
         application/xml:
           example: |
@@ -3205,7 +3403,8 @@ securitySchemes:
     macsetId:
       required: true
       displayName: macsetId
-      description: Specified MACset ID (Can be retrieved by listing the MACset on a scope)
+      description: |
+        Specified MACset ID (Can be retrieved by listing the MACset on a scope)
   get:
     displayName: macsetRead
     description: Retrieve details about a MACset
@@ -3234,7 +3433,12 @@ securitySchemes:
       force:
         required: false
         displayName: force
-        description: Indicates forced or unforced delete. With forced delete, the object is deleted even if used in other places such as firewall rules, causing invalid referrals. For unforced delete, the object is deleted only if it is no used by other configurations; otherwise the delete fails
+        description: |
+          Indicates forced or unforced delete. With forced delete, the object
+          is deleted even if used in other places such as firewall rules,
+          causing invalid referrals. For unforced delete, the object is deleted
+          only if it is no used by other configurations; otherwise the delete
+          fails
         type: boolean
 /2.0/services/macset/scope/{scopeId}:
   displayName: macsetScopes
@@ -3269,7 +3473,9 @@ securitySchemes:
     description: List MACsets created on a specified scope
 /2.0/services/taskservice/job:
   displayName: taskFramework
-  description: Working with filtering criteria and paging information for jobs on the task framework
+  description: |
+    Working with filtering criteria and paging information for jobs on the task
+    framework
   get:
     displayName: taskFrameworkCriteria
     description: Query job instances by criterion
@@ -3353,17 +3559,23 @@ securitySchemes:
       description: Unregister a vendor
     /solutions:
       displayName: vShieldSolutionsInfo
-      description: Registration information for all registered solutions for a vendor
+      description: |
+        Registration information for all registered solutions for a vendor
       get:
         displayName: vShieldSolutionsInfoRead
-        description: Retrieve registration information for all registered solutions for a vendor
+        description: |
+          Retrieve registration information for all registered solutions for a
+          vendor
     /{altitude}:
       displayName: vShieldSolutionInfo
       description: Solution registration information
       uriParameters:
         altitude:
           displayName: altitude
-          description: VMware-assigned number to uniquely identify a solution. Describes the type of solution and the order in which the solution receives events relative to other solutions on the same host
+          description: |
+            VMware-assigned number to uniquely identify a solution. Describes
+            the type of solution and the order in which the solution receives
+            events relative to other solutions on the same host
       get:
         displayName: vShieldSolutionInfoRead
         description: Get registration information for a given solution
@@ -3389,7 +3601,9 @@ securitySchemes:
           description: Unset a solution's IP address and port
       /{moid}:
         displayName: solutionActivationStatus
-        description: Solution activation status, given the managed object reference of its virtual machine
+        description: |
+          Solution activation status, given the managed object reference of its
+          virtual machine
         uriParameters:
           moid:
             displayName: moid
@@ -3403,7 +3617,9 @@ securitySchemes:
   description: vShield solution activation
   get:
     displayName: vShieldSolutionActivationRead
-    description: Retrieve activation information for all activated security vm's on the specified host
+    description: |
+      Retrieve activation information for all activated security vm's on the
+      specified host
     queryParameters:
       hostId:
         required: true
@@ -3423,7 +3639,8 @@ securitySchemes:
         required: true
     get:
       displayName: vShieldSolutionActivatedVMsRead
-      description: Get a list of activated security vm's for the specified solution
+      description: |
+        Get a list of activated security vm's for the specified solution
   /{vendorID}/{altitude}:
     displayName: vShieldSolutionActivate
     description: Activate a registered vShield solution
@@ -3434,7 +3651,10 @@ securitySchemes:
         required: true
       altitude:
         displayName: altitude
-        description: VMware-assigned number to uniquely identify a solution. Describes the type of solution and the order in which the solution receives events relative to other solutions on the same host
+        description: |
+          VMware-assigned number to uniquely identify a solution. Describes the
+          type of solution and the order in which the solution receives events
+          relative to other solutions on the same host
     post:
       displayName: vShieldSolutionActivate
       description: Activate a solution that has been registered and located
@@ -3464,12 +3684,16 @@ securitySchemes:
     description: Global Distributed Firewall Rules configuration
     get:
       displayName: dfwConfigShow
-      description: Global Distributed Firewall Rules configuration, use query Parameters to filter
+      description: |
+        Global Distributed Firewall Rules configuration, use query Parameters
+        to filter
       queryParameters:
         ruleType:
           required: false
           displayName: ruleType
-          description: ruleType can be LAYER3, LAYER2, L3REDIRECT. Rule Type is mandatory if other search parameters are sent
+          description: |
+            ruleType can be LAYER3, LAYER2, L3REDIRECT. Rule Type is mandatory
+            if other search parameters are sent
         source:
           required: false
           displayName: source
@@ -3481,31 +3705,45 @@ securitySchemes:
         comment:
           required: false
           displayName: comment
-          description: comment can contain any portion of the comment entered for the rules. Search is case insensitive
+          description: |
+            Comment can contain any portion of the comment entered for the
+            rules. Search is case insensitive
         name:
           required: false
           displayName: name
-          description: name can contain any portion of the rulename entered for the rules. Search is case insensitive
+          description: |
+            Name can contain any portion of the rulename entered for the rules.
+            Search is case insensitive
         siProfile:
           required: false
           displayName: siProfile
-          description: siProfile can contain any portion of the ServiceProfile name associated with L3redirectrule. Search is case insensitive.
+          description: |
+            siProfile can contain any portion of the ServiceProfile name
+            associated with L3redirectrule. Search is case insensitive.
         edgeId:
           required: false
           displayName: edgeId
-          description: edgeId is the EdgeID, that displays rules applicable to the specified Edge
+          description: |
+            edgeId is the EdgeID, that displays rules applicable to the
+            specified Edge
         action:
           required: false
           displayName: action
           description: Filter for specific action (allow, deny)
     put:
       displayName: dfwConfigUpdate
-      description: This will update the complete firewall configuration in all sections. You will need to get the Etag value out of the GET (dfwConfigShow) first. Then pass the modified version of the whole firewall configuration in the GET body
+      description: |
+        This will update the complete firewall configuration in all sections.
+        You will need to get the Etag value out of the GET (dfwConfigShow)
+        first. Then pass the modified version of the whole firewall
+        configuration in the GET body
       headers:
         if-match:
           required: true
           displayName: if-match
-          description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+          description: |
+            Needed value that you will receive  in the reponse of the read
+            (GET) method in the Etag header
       body:
         application/xml:
           example: |
@@ -3550,10 +3788,15 @@ securitySchemes:
             </firewallConfiguration>
     delete:
       displayName: dfwConfigDelete
-      description: Restores default configuration, which means one defaultLayer3 section with default allow rule and one defaultLayer2Section with default allow rule
+      description: |
+        Restores default configuration, which means one defaultLayer3 section
+        with default allow rule and one defaultLayer2Section with default
+        allow rule
     /layer3sections:
       displayName: dfwL3Section
-      description: L3 Firewall Operations on specific section specified by name (in a query Parameter)
+      description: |
+        L3 Firewall Operations on specific section specified by name (in a
+        query Parameter)
       get:
         displayName: dfwL3SectionRead
         description: Read a specific section of the DFW config specified by name
@@ -3612,7 +3855,8 @@ securitySchemes:
            schema: dfwSection
       /{sectionId}:
         displayName: dfwL3SectionId
-        description: L3 Firewall Operations on specific section specified by section ID
+        description: |
+          L3 Firewall Operations on specific section specified by section ID
         uriParameters:
           sectionId:
             required: true
@@ -3630,7 +3874,9 @@ securitySchemes:
             If-match:
               required: true
               displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+              description: |
+                Needed value that you will receive  in the reponse of the read
+                (GET) method in the Etag header
           body:
             application/xml:
               example: |
@@ -3677,7 +3923,9 @@ securitySchemes:
               If-match:
                 required: true
                 displayName: If-match
-                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+                description: |
+                  Needed value that you will receive  in the reponse of the
+                  read (GET) method in the Etag header
             body:
               application/xml:
                 example: |
@@ -3716,7 +3964,9 @@ securitySchemes:
                 schema: dfwRule
           /{ruleId}:
             displayName: dfwL3Rule
-            description: Operations on L3 rules in sections identified by section Id and Rule Id
+            description: |
+              Operations on L3 rules in sections identified by section Id and
+              Rule Id
             uriParameters:
               ruleId:
                 required: true
@@ -3724,17 +3974,21 @@ securitySchemes:
                 description: The ID of the rule beeing read, updated or deleted
             get:
               displayName: dfwL3RuleRead
-              description: Read the configuration of a specific rule identified by rule Id
+              description: |
+                Read the configuration of a specific rule identified by rule Id
             put:
               displayName: dfwL3RuleUpdate
               description: |
-                Updates a L3 DFW Rule. To do this you need to read it first, make your changes,
-                and then update the section by supplying the Etag value received in the read in the If-Match header
+                Updates a L3 DFW Rule. To do this you need to read it first,
+                make your changes, and then update the section by supplying the
+                Etag value received in the read in the If-Match header
               headers:
                 If-match:
                   required: true
                   displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+                  description: |
+                    Needed value that you will receive  in the reponse of the
+                    read (GET) method in the Etag header
               body:
                 application/xml:
                   example: |
@@ -3777,10 +4031,14 @@ securitySchemes:
                 If-match:
                   required: true
                   displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+                  description: |
+                    Needed value that you will receive  in the reponse of the
+                    read (GET) method in the Etag header
       /{sectionName}:
         displayName: dfwL3SectionName
-        description: L3 Firewall Update Operations on specific section specified by section Name
+        description: |
+          L3 Firewall Update Operations on specific section specified by
+          section Name
         put:
           displayName: dfwL3SectionNameUpdate
           description: |
@@ -3790,7 +4048,9 @@ securitySchemes:
             If-match:
               required: true
               displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+              description: |
+                Needed value that you will receive  in the reponse of the read
+                (GET) method in the Etag header
           body:
             application/xml:
               example: |
@@ -3826,7 +4086,9 @@ securitySchemes:
                 </section>
     /layer2sections:
       displayName: dfwL2Section
-      description: L2 Firewall Operations on specific section specified by name (in a query Parameter)
+      description: |
+        L2 Firewall Operations on specific section specified by name (in a
+        query Parameter)
       get:
         displayName: dfwL2SectionRead
         description: Read a specific section of the DFW config specified by name
@@ -3880,25 +4142,30 @@ securitySchemes:
            schema: dfwSection
       /{sectionId}:
         displayName: dfwL2SectionId
-        description: L2 Firewall Operations on specific section specified by section ID
+        description: |
+          L2 Firewall Operations on specific section specified by section ID
         uriParameters:
           sectionId:
             required: true
             displayName: sectionId
-            description: The ID of the section beeing added, updated or deleted
+            description: |
+              The ID of the section beeing added, updated or deleted
         get:
           displayName: dfwL2SectionIdRead
           description: Read a specific section of the DFW config specified by Id
         put:
           displayName: dfwL2SectionIdUpdate
           description: |
-            Updates a L2 DFW Section. To do this you need to read it first, make your changes,
-            and then update the section by supplying the Etag value received in the read in the If-Match header
+            Updates a L2 DFW Section. To do this you need to read it first,
+            make your changes, and then update the section by supplying the
+            Etag value received in the read in the If-Match header
           headers:
             If-match:
               required: true
               displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+              description: |
+                Needed value that you will receive  in the reponse of the read
+                (GET) method in the Etag header
           body:
             application/xml:
               example: |
@@ -3945,7 +4212,9 @@ securitySchemes:
               If-match:
                 required: true
                 displayName: If-match
-                description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+                description: |
+                  Needed value that you will receive  in the reponse of the
+                  read (GET) method in the Etag header
             body:
               application/xml:
                 example: |
@@ -3984,7 +4253,9 @@ securitySchemes:
                 schema: dfwRule
           /{ruleId}:
             displayName: dfwL2Rule
-            description: Operations on L2 rules in sections identified by section Id and Rule Id
+            description: |
+              Operations on L2 rules in sections identified by section Id and
+              Rule Id
             uriParameters:
               ruleId:
                 required: true
@@ -3992,17 +4263,21 @@ securitySchemes:
                 description: The ID of the rule beeing read, updated or deleted
             get:
               displayName: dfwL2RuleRead
-              description: Read the configuration of a specific rule identified by rule Id
+              description: |
+                Read the configuration of a specific rule identified by rule Id
             put:
               displayName: dfwL2RuleUpdate
               description: |
-                Updates a L2 DFW Rule. To do this you need to read it first, make your changes,
-                and then update the section by supplying the Etag value received in the read in the If-Match header
+                Updates a L2 DFW Rule. To do this you need to read it first,
+                make your changes, and then update the section by supplying the
+                Etag value received in the read in the If-Match header
               headers:
                 If-match:
                   required: true
                   displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+                  description: |
+                    Needed value that you will receive  in the reponse of the
+                    read (GET) method in the Etag header
               body:
                 application/xml:
                   example: |
@@ -4049,20 +4324,25 @@ securitySchemes:
                 If-match:
                   required: true
                   displayName: If-match
-                  description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+                  description: |
+                    Needed value that you will receive  in the reponse of the
+                    read (GET) method in the Etag header
       /{sectionName}:
         displayName: dfwL2SectionName
         description: L3 Firewall Update Operations on specific section specified by section Name
         put:
           displayName: dfwL2SectionNameUpdate
           description: |
-            Updates a L2 DFW Section. To do this you need to read it first, make your changes,
-            and then update the section by supplying the Etag value received in the read in the If-Match header
+            Updates a L2 DFW Section. To do this you need to read it first,
+            make your changes, and then update the section by supplying the
+            Etag value received in the read in the If-Match header
           headers:
             If-match:
               required: true
               displayName: If-match
-              description: Needed value that you will receive  in the reponse of the read (GET) method in the Etag header
+              description: |
+                Needed value that you will receive  in the reponse of the read
+                (GET) method in the Etag header
           body:
             application/xml:
               example: |
@@ -4132,12 +4412,17 @@ securitySchemes:
           description: Get L3 redirect section configuration
         put:
           displayName: sectionUpdate
-          description: Modify L3 Redirect section. You will need to get the Etag value out of the GET first. Then pass the modified version of the whole redirect section configuration in the GET body
+          description: |
+            Modify L3 Redirect section. You will need to get the Etag value out
+            of the GET first. Then pass the modified version of the whole
+            redirect section configuration in the GET body
           headers:
             if-match:
               required: true
               displayName: if-match
-              description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
+              description: |
+                Needed value that you will receive in the reponse of the read
+                (GET) method in the Etag header
           body:
             application/xml:
               example: |
@@ -4196,12 +4481,17 @@ securitySchemes:
               description: Get L3 redirect rule
             put:
               displayName: ruleUpdate
-              description: Modify L3 redirect rule. You will need Etag value from the response header of GET call. Then, pass Etag value as the if-match header in PUT call
+              description: |
+                Modify L3 redirect rule. You will need Etag value from the
+                response header of GET call. Then, pass Etag value as the
+                if-match header in PUT call
               headers:
                 if-match:
                   required: true
                   displayName: if-match
-                  description: Needed value that you will receive in the reponse of the read (GET) method in the Etag header
+                  description: |
+                    Needed value that you will receive in the reponse of the
+                    read (GET) method in the Etag header
               body:
                 application/xml:
                   example: |
@@ -4223,7 +4513,8 @@ securitySchemes:
               description: Delete specified L3 redirect rule
     /layer3redirect/profiles:
       displayName: serviceInsertionProfiles
-      description: Service Insertion profiles that can be applied to layer3 redirect rules
+      description: |
+        Service Insertion profiles that can be applied to layer3 redirect rules
       get:
         displayName: serviceInsertionProfilesRead
         description: Retrieve the Service Insertion profiles
@@ -4359,7 +4650,9 @@ securitySchemes:
           queryParameters:
               getLatestForUniversal:
                 displayName: getLatestForUniversal
-                description: Set to "true" to export the lasted universal draft from a secondary NSX manager.
+                description: |
+                  Set to "true" to export the lasted universal draft from a
+                  secondary NSX manager.
                 type: boolean
                 required: false
       /action/import:
@@ -4432,7 +4725,8 @@ securitySchemes:
       description: Query RuleOptimize and TCPStrict flags
     put:
       displayName: dfwPerformanceUpdate
-      description: Set RuleOptimize and TCPStrict flags in body to improve performance
+      description: |
+        Set RuleOptimize and TCPStrict flags in body to improve performance
       body:
         application/xml:
           example: |
@@ -4444,7 +4738,9 @@ securitySchemes:
           schema: dfwPerformanceUpdate
   /forceSync/{ID}:
     displayName: dfwSync
-    description: Synchronize hosts and clusters with the last good configuration in NSX Mgr database
+    description: |
+      Synchronize hosts and clusters with the last good configuration in NSX
+      Mgr database
     uriParameters:
       ID:
         required: true
@@ -4470,7 +4766,8 @@ securitySchemes:
       description: Enable or disable firewall components on a cluster
   /{contextId}/config/ipfix:
     displayName: dfwIPFix
-    description: Export specific flows directly from firewall to a flow collector
+    description: |
+      Export specific flows directly from firewall to a flow collector
     uriParameters:
       contextId:
         displayName: contextId
@@ -4497,13 +4794,15 @@ securitySchemes:
           schema: dfwIPFixUpdate
     delete:
       displayName: dfwIPFixDelete
-      description: Deleting IPFix configuration resets the config to default values
+      description: |
+        Deleting IPFix configuration resets the config to default values
 /4.0/services/spoofguard/policies:
   displayName: spoofGuardPolicies
   description: SpoofGuard policies
   post:
     displayName: spoofGuardPoliciesCreate
-    description: Create a SpoofGuard policy to specify the operation mode for networks.
+    description: |
+      Create a SpoofGuard policy to specify the operation mode for networks.
     body:
       application/xml:
         example: |
@@ -4532,7 +4831,9 @@ securitySchemes:
         action:
           required: true
           displayName: action
-          description: set to "approve" along with specified IP addresses in body to approve them, or set to "publish" to publish the approved IP addresses
+          description: |
+          Set to "approve" along with specified IP addresses in body to approve
+          them, or set to "publish" to publish the approved IP addresses
       body:
         application/xml:
           example: |
@@ -4557,11 +4858,15 @@ securitySchemes:
           schema: spoofGuardPolicyApprove
     get:
       displayName: spoofGuardPolicyRead
-      description: Retrieve policy information, or use the query parameters to perform operations
+      description: |
+        Retrieve policy information, or use the query parameters to perform
+        operations
       queryParameters:
         list:
           displayName: list
-          description: Use to retrieve IP addresses for specified state (ACTIVE|INACTIVE|PUBLISHED|UNPUBLISHED|REVIEW_PENDING|DUPLICATE)
+          description: |
+            Use to retrieve IP addresses for specified state
+            (ACTIVE|INACTIVE|PUBLISHED|UNPUBLISHED|REVIEW_PENDING|DUPLICATE)
     put:
       displayName: spoofGuardPolicyUpdate
       description: Modify SpoofGuard policy
@@ -4589,32 +4894,42 @@ securitySchemes:
   description: Operations on flowdata
   /flowstats:
     displayName: flowStats
-    description: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+    description: |
+      Retrieve flow statistics for a datacenter, port group, VM, or vNIC
     get:
       displayName: flowStatsRead
-      description: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+      description: |
+        Retrieve flow statistics for a datacenter, port group, VM, or vNIC
       queryParameters:
         contextId:
           displayName: contextId
-          description: vc-moref-id of the datacenter, portgroup, vm, or UUID of the vNIC for which traffic flow is to be retrieved
+          description: |
+            vc-moref-id of the datacenter, portgroup, vm, or UUID of the vNIC
+            for which traffic flow is to be retrieved
         flowType:
           displayName: flowType
           description: Type of flow to be retrieved (TCP_UDP|LAYER2|LAYER3)
         startTime:
           displayName: startTime
-          description: Flows with start time greater than specified time are retrieved
+          description: |
+            Flows with start time greater than specified time are retrieved
         endTime:
           displayName: endTime
-          description: Flows with start time lower than specified time are retrieved
+          description: |
+            Flows with start time lower than specified time are retrieved
         startIndex:
           type: integer
           displayName: startIndex
-          description: (optional) Specifies starting point for retrieval. If not specified, start from the beginning by default
+          description: |
+            (optional) Specifies starting point for retrieval. If not
+            specified, start from the beginning by default
           default: 0
         pageSize:
           type: integer
           displayName: pageSize
-          description: (optional) Limit the max number of entries returned. Valid range is 1-1024
+          description: |
+            (optional) Limit the max number of entries returned. Valid range
+            is 1-1024
           default: 256
     /info:
       displayName: flowStatsInfo
@@ -4687,11 +5002,15 @@ securitySchemes:
   description: Installed NSX Edges in your inventory
   post:
     displayName: nsxEdgesCreate
-    description: Install NSX Edge services gateway or logical router, depending on request body
+    description: |
+      Install NSX Edge services gateway or logical router, depending on request
+      body
     queryParameters:
         isUniversal:
           displayName: isUniversal
-          description: Set to "true" when creating a universal logical router. Note the <type> in the request body must be "DISTRIBUTED_ROUTER"
+          description: |
+            Set to "true" when creating a universal logical router. Note the
+            <type> in the request body must be "DISTRIBUTED_ROUTER"
           type: boolean
           required: false
     body:
@@ -4796,7 +5115,9 @@ securitySchemes:
         schema: nsxEdgesCreate
   get:
     displayName: nsxEdgesRead
-    description: Retrieve a list of NSX Edges in your inventory or use the query parameters to filter results by datacenter or port group
+    description: |
+      Retrieve a list of NSX Edges in your inventory or use the query
+      parameters to filter results by datacenter or port group
     queryParameters:
       datacenter:
         displayName: datacenter
@@ -4806,7 +5127,9 @@ securitySchemes:
         description: Retrieve Edges on specified tenant (by tenant ID)
       pg:
         displayName: pg
-        description: Retrieve Edges with one interface on specified port group (by port group MoId)
+        description: |
+          Retrieve Edges with one interface on specified port group (by port
+          group MoId)
   /{edgeId}:
     displayName: nsxEdge
     description: NSX Edge operations
@@ -4822,14 +5145,16 @@ securitySchemes:
         action:
           displayName: action
           required: true
-          description: Options include "forcesync" (resync Edge vm's), "redeploy" ()
+          description: |
+            Options include "forcesync" (resync Edge vm's), "redeploy" ()
     get:
       displayName: nsxEdgeRead
       description: Retrieve Edge details
       queryParameters:
         isUniversal:
           displayName: isUniversal
-          description: Filter read of Edges to display only universal logical routers
+          description: |
+            Filter read of Edges to display only universal logical routers
           type: boolean
           required: false
     put:
@@ -5043,7 +5368,9 @@ securitySchemes:
           schema: nsxEdgeUpdate
     delete:
       displayName: nsxEdgeDelete
-      description: Delete specified Edge from database. Associated appliances are also deleted
+      description: |
+        Delete specified Edge from database. Associated appliances are also
+        deleted
     /dnsclient:
       displayName: dns
       description: DNS settings (primary/secondary and search domain) of an Edge
@@ -5072,7 +5399,10 @@ securitySchemes:
             displayName: enable
     /coredump:
       displayName: coreDump
-      description: Enabling core-dump feature results in deployment of inbuilt extra disk to save core-dump files. 1GB for compact edge and 8GB for other types. Disabling detaches the disk
+      description: |
+      Enabling core-dump feature results in deployment of inbuilt extra disk to
+      save core-dump files. 1GB for compact edge and 8GB for other types.
+      Disabling detaches the disk
       post:
         displayName: coreDumpCreate
         description: Modify core dump setting
@@ -5112,15 +5442,21 @@ securitySchemes:
           getlatest:
             type: boolean
             displayName: getlatest
-            description: true = fetch the status live from NSX Edge, false = fetch the latest available status from database
+            description: |
+              true = fetch the status live from NSX Edge, false = fetch the
+              latest available status from database
           detailed:
             type: boolean
             displayName: detailed
-            description: true = fetch detailed status per feature, false = aggregated summary of status per feature
+            description: |
+              true = fetch detailed status per feature, false = aggregated
+              summary of status per feature
           preRulesStatus:
             type: boolean
             displayName: preRulesStatus
-            description: true = fetch detailed output for pre rules in addition to the regular output
+            description: |
+              true = fetch detailed output for pre rules in addition to the
+              regular output
     /techsupportlogs:
       displayName: techSupportLogs
       description: Tech support logs for specified Edge
@@ -5228,7 +5564,9 @@ securitySchemes:
         description: Firewall rules
         post:
           displayName: firewallRulesCreate
-          description: Add one or more rules. You can add a rule above a specific rule using the query parameter, indicating the desired ruleID.
+          description: |
+            Add one or more rules. You can add a rule above a specific rule
+            using the query parameter, indicating the desired ruleID.
           queryParameters:
             aboveRuleId:
               displayName: aboveRuleId
@@ -5383,7 +5721,9 @@ securitySchemes:
         queryParameters:
           interval:
             displayName: interval
-            description: 60 min by default, can be given as 1 -60 min, oneDay | oneWeek | oneMonth | oneYear
+            description: |
+              60 min by default, can be given as 1 -60 min, oneDay | oneWeek |
+              oneMonth | oneYear
     /firewall/statistics/{ruleId}:
       displayName: firewallRuleStatistics
       description: Statistics for firewall rules
@@ -5433,11 +5773,15 @@ securitySchemes:
         description: NAT rules
         post:
           displayName: edgeNatRulesCreate
-          description: Add a NAT rule above a specific rule in the NAT rules table (using aboveRuleId) or append NAT rules to the bottom
+          description: |
+            Add a NAT rule above a specific rule in the NAT rules table
+            (using aboveRuleId) or append NAT rules to the bottom
           queryParameters:
             aboveRuleId:
               displayName: aboveRuleId
-              description: Specified rule ID. If the ID does not exist, Edge Manager displays an error
+              description: |
+                Specified rule ID. If the ID does not exist, Edge Manager
+                displays an error
           body:
             application/xml:
               example: |
@@ -5682,7 +6026,9 @@ securitySchemes:
               schema: routingGlobalConfigUpdate
         get:
           displayName: routingGlobalConfigRead
-          description: Retrieve routing info from NSX Mgr database (default route settings, static route configurations)
+          description: |
+            Retrieve routing info from NSX Mgr database (default route
+            settings, static route configurations)
       /static:
         displayName: routingConfigStatic
         description: Static and default routes for specified Edge
@@ -5715,7 +6061,9 @@ securitySchemes:
               schema: routingConfigStaticUpdate
         delete:
           displayName: routingConfigStaticDelete
-          description: Delete both static and default routing config stored in the NSX Mgr database
+          description: |
+            Delete both static and default routing config stored in the NSX
+            Mgr database
       /ospf:
         displayName: routingOSPF
         description: OSPF Routing for NSX Edge
@@ -5998,7 +6346,9 @@ securitySchemes:
         description: Delete load balancer configuration
       /applicationprofiles:
         displayName: applicationProfiles
-        description: Application profiles define the behavior of a particular type of network traffic
+        description: |
+          Application profiles define the behavior of a particular type of
+          network traffic
         post:
           displayName: applicationProfilesCreate
           description: Add an application profile
@@ -6055,7 +6405,9 @@ securitySchemes:
             description: Delete an application profile
       /applicationrules:
         displayName: appRules
-        description: Manage application rules that directly manipulate and manage IP app traffic
+        description: |
+          Manage application rules that directly manipulate and manage IP app
+          traffic
         post:
           displayName: appRulesCreate
           description: Add an application rule
@@ -6100,7 +6452,9 @@ securitySchemes:
             description: Delete an application rule
       /monitors:
         displayName: lbMonitors
-        description: Load balancer monitors define health check parameters for a particular type of network traffic
+        description: |
+          Load balancer monitors define health check parameters for a
+          particular type of network traffic
         post:
           displayName: lbMonitorsCreate
           description: Add a load balancer monitor
@@ -6155,7 +6509,9 @@ securitySchemes:
             description: Delete a load balancer monitor
       /virtualservers:
         displayName: virtualServers
-        description: You can add an NSX Edge internal or uplink interface as a virtual server
+        description: |
+          You can add an NSX Edge internal or uplink interface as a virtual
+          server
         post:
           displayName: virtualServersCreate
           description: Add a virtual server
@@ -6200,7 +6556,9 @@ securitySchemes:
             description: Delete a virtual server
       /pools:
         displayName: pools
-        description: Server pools manage load balancer distribution methods and has a monitor attached to it for health check parameters
+        description: |
+          Server pools manage load balancer distribution methods and has a
+          monitor attached to it for health check parameters
         post:
           displayName: poolsCreate
           description: Add a load balancer server pool to the Edge
@@ -6229,7 +6587,8 @@ securitySchemes:
           description: Get all backend pools for the specified NSX Edge
         delete:
           displayName: poolsDelete
-          description: Delete all backend pools configured on the specified NSX Edge
+          description: |
+            Delete all backend pools configured on the specified NSX Edge
         /{poolID}:
           displayName: pool
           description: Specific backend pool
@@ -6302,7 +6661,9 @@ securitySchemes:
             type: boolean
     /dns/config:
       displayName: edgeDns
-      description: Configure DNS servers to which vShield Edge can relay name resolution requests
+      description: |
+        Configure DNS servers to which vShield Edge can relay name resolution
+        requests
       get:
         displayName: edgeDnsRead
         description: Retrieve DNS configuration
@@ -6386,13 +6747,16 @@ securitySchemes:
             schema: dhcpUpdate
       delete:
         displayName: dhcpDelete
-        description: Delete the DHCP configuration, restoring it to factory default
+        description: |
+          Delete the DHCP configuration, restoring it to factory default
       /ippools:
         displayName: dhcpPool
         description: Adding IP pools to DHCP configuration
         post:
           displayName: dhcpPoolCreate
-          description: Add an IP pool to the DHCP configuration. returns a pool ID within a Location HTTP header
+          description: |
+            Add an IP pool to the DHCP configuration. returns a pool ID within
+            a Location HTTP header
           body:
             application/xml:
               example: |
@@ -6422,7 +6786,9 @@ securitySchemes:
         description: Adding static-binding to DHCP configuration.
         post:
           displayName: dhcpStaticBindingCreate
-          description: Append a static-binding to DHCP config. A static-binding ID is returned within a Location HTTP header
+          description: |
+            Append a static-binding to DHCP config. A static-binding ID is
+            returned within a Location HTTP header
           body:
             application/xml:
               example: |
@@ -6488,7 +6854,9 @@ securitySchemes:
         description: Get DHCP lease information
     /highavailability/config:
       displayName: highAvailability
-      description: Ensures that an Edge appliance is always available on your virtualized network.
+      description: |
+        Ensures that an Edge appliance is always available on your virtualized
+        network.
       get:
         displayName: highAvailabilityRead
         description: Get high availability configuration
@@ -6512,7 +6880,10 @@ securitySchemes:
         description: Delete high availability configuration
     /syslog/config:
       displayName: syslog
-      description: Configure one or two remote syslog servers. Edge events and logs related to firewall events that flow from Edge appliances are sent to the syslog servers
+      description: |
+        Configure one or two remote syslog servers. Edge events and logs
+        related to firewall events that flow from Edge appliances are sent to
+        the syslog servers
       get:
         displayName: syslogRead
         description: Query syslog servers
@@ -6568,7 +6939,10 @@ securitySchemes:
         description: Delete the SSL VPN configurations on the Edge
       /server:
         displayName: serverSettings
-        description: Configure SSL VPN server on port 443 using the certificate named server-cert that is already uploaded on the NSX Edge appliance and the specified cipher
+        description: |
+          Configure SSL VPN server on port 443 using the certificate named
+          server-cert that is already uploaded on the NSX Edge appliance and
+          the specified cipher
         get:
           displayName: serverSettingsRead
           description: Get server settings
@@ -6591,7 +6965,9 @@ securitySchemes:
               schema: serverSettingsUpdate
       /client/networkextension/privatenetworks:
         displayName: privateNetworks
-        description: Configure a private network to expose to remote users over SSL VPN tunnel
+        description: |
+          Configure a private network to expose to remote users over SSL VPN
+          tunnel
         post:
           displayName: privateNetworksCreate
           description: Add a private network
@@ -6613,7 +6989,11 @@ securitySchemes:
           description: Get all private network profiles in the SSL VPN instance
         put:
           displayName: privateNetworksUpdate
-          description: Update all private network configs of NSX Edge with the given list of private network configs. If the config is present, it is updated; otherwise, a new private network config is created. Existing configs not included in the call body are deleted
+          description: |
+            Update all private network configs of NSX Edge with the given list
+            of private network configs. If the config is present, it is
+            updated; otherwise, a new private network config is created.
+            Existing configs not included in the call body are deleted
         delete:
           displayName: privateNetworksDelete
           description: Delete all Private Networks from the SSL VPN instance
@@ -6627,7 +7007,8 @@ securitySchemes:
               description: Specified private network
           get:
             displayName: privateNetworkRead
-            description: Get the specified private network in the SSL VPN service
+            description: |
+              Get the specified private network in the SSL VPN service
           put:
             displayName: privateNetworkUpdate
             description: Modify specified private network in the SSL VPN service
@@ -6673,7 +7054,10 @@ securitySchemes:
           description: Get all IP pools configured on SSL VPN
         put:
           displayName: netExtipPoolsUpdate
-          description: Update all IP pools with the given list of pools. If the pool is present, it is updated; otherwise, a new pool is created. Existing pools not in the body are deleted
+          description: |
+            Update all IP pools with the given list of pools. If the pool is
+            present, it is updated; otherwise, a new pool is created. Existing
+            pools not in the body are deleted
           body:
             application/xml:
               example: |
@@ -6711,7 +7095,11 @@ securitySchemes:
             description: Delete the specified IP pool
       /client/networkextension/clientconfig:
         displayName: clientConfig
-        description: Advanced parameters for full access client configurations--such as whether client should auto-reconnect in case of network failures or network unavailability, or whether the client should be uninstalled after logout
+        description: |
+          Advanced parameters for full access client configurations--such as
+          whether client should auto-reconnect in case of network failures or
+          network unavailability, or whether the client should be uninstalled
+          after logout
         put:
           displayName: clientConfigUpdate
           description: Set parameters for full access client configurations
@@ -6735,7 +7123,10 @@ securitySchemes:
         description: Installation packages for SSL VPN clients
         post:
           displayName: installPackagesCreate
-          description: Create installers for full access network clients. These setup binaries are downloaded by remote clients and installed on their systems.
+          description: |
+            Create installers for full access network clients. These setup
+            binaries are downloaded by remote clients and installed on their
+            systems.
           body:
             application/xml:
               example: |
@@ -6766,7 +7157,11 @@ securitySchemes:
           description: Get information about all installation packages
         put:
           displayName: installPackagesUpdate
-          description: Update all installation packages with the given list. If the package is present, it is updated; otherwise a new installation package is created. Existing packages not included in the body are deleted.
+          description: |
+            Update all installation packages with the given list. If the
+            package is present, it is updated; otherwise a new installation
+            package is created. Existing packages not included in the body are
+            deleted.
         delete:
           displayName: installPackagesDelete
           description: Delete all client installation packages
@@ -6780,7 +7175,8 @@ securitySchemes:
               description: Specified installation package ID
           get:
             displayName: installPackageRead
-            description: Get information about the specified installation package
+            description: |
+              Get information about the specified installation package
           put:
             displayName: installPackageUpdate
             description: Modify the specified installation package
@@ -6839,7 +7235,8 @@ securitySchemes:
                 schema: layoutUpdate
       /webresources:
         displayName: webResources
-        description: Web access server that a remote user can connect to via a web browser
+        description: |
+          Web access server that a remote user can connect to via a web browser
         post:
           displayName: webResourcesCreate
           description: Add portal web resource
@@ -6940,7 +7337,10 @@ securitySchemes:
           description: Get information about authentication server
         put:
           displayName: authSettingsUpdate
-          description: Set authentication process for remote users. Specify username/password authentication, active directory, ldap, radius, client certificate based authentication
+          description: |
+            Set authentication process for remote users. Specify
+            username/password authentication, active directory, ldap, radius,
+            client certificate based authentication
           body:
             application/xml:
               example: |
@@ -7014,7 +7414,11 @@ securitySchemes:
           description: RSA authentication server, bound to the SSL gateway
           post:
             displayName: rsaConfigCreate
-            description: Upload RSA config file (See "Generate the Authentication Manager Configuration File" section of the RSA Authentication Manager Administrator's guide for instructions on how to configure and download the RSA config file from RSA Authentication Manager)
+            description: |
+              Upload RSA config file (See "Generate the Authentication Manager
+              Configuration File" section of the RSA Authentication Manager
+              Administrator's guide for instructions on how to configure and
+              download the RSA config file from RSA Authentication Manager)
       /advancedconfig:
         displayName: advancedConfig
         description: SSL VPN advanced configuration
@@ -7062,7 +7466,11 @@ securitySchemes:
           description: Retrieve all script configurations for the Edge
         put:
           displayName: scriptUpdate
-          description: Update all script configurations with the given list of configurations. If the config is present, its is updated; otherwise, a new config is created. Existing configs not included in the body are deleted
+          description: |
+            Update all script configurations with the given list of
+            configurations. If the config is present, its is updated;
+            otherwise, a new config is created. Existing configs not included
+            in the body are deleted
           body:
             application/xml:
               example: |
@@ -7086,7 +7494,8 @@ securitySchemes:
               description: Specified script file
           get:
             displayName: scriptFileIDRead
-            description: Retrieve parameters associated with the specified script file
+            description: |
+              Retrieve parameters associated with the specified script file
           put:
             displayName: scriptFileIDUpdate
             description: Modify script parameters
@@ -7108,13 +7517,18 @@ securitySchemes:
           description: Logon and logoff scripts for NSX Edge gateway
           post:
             displayName: scriptFileCreate
-            description: Upload a login/logoff script. Returns a script file ID to configure the parameters
+            description: |
+              Upload a login/logoff script. Returns a script file ID to
+              configure the parameters
     /sslvpn/auth/localusers/users:
       displayName: allUsers
       description: All users of NSX Edge
       put:
         displayName: allUsersUpdate
-        description: Update all users with the given list of users. If the user is present, it is updated. Otherwise, and new user is created. Existing users not included in the body are deleted.
+        description: |
+          Update all users with the given list of users. If the user is
+          present, it is updated. Otherwise, and new user is created. Existing
+          users not included in the body are deleted.
         body:
           application/xml:
             example: |
@@ -7159,19 +7573,26 @@ securitySchemes:
         queryParameters:
           interval:
             displayName: interval
-            description: Specify a range; can be 1 - 60 minutes, or oneDay|oneWeek|oneMonth|oneYear. Default is 60 minutes
+            description: |
+              Specify a range; can be 1 - 60 minutes, or oneDay|oneWeek|
+              oneMonth|oneYear. Default is 60 minutes
     /statistics/dashboard/ipsec:
       displayName: ipsecTrafficStats
       description: Tunnel traffic statistics
       get:
         displayName: ipsecTrafficStatsRead
-        description: Retrieve tunnel traffic statistics for specified time interval. Default is 1 hour. Other possible values are 1-60 minutes|oneDay|oneWeek|oneMonth|oneYear
+        description: |
+          Retrieve tunnel traffic statistics for specified time interval.
+          Default is 1 hour. Other possible values are 1-60 minutes|oneDay|
+          oneWeek|oneMonth|oneYear
     /statistics/dashboard/interface:
       displayName: vnicDashStats
       description: Dashboard statistics
       get:
         displayName: vnicDashStatsRead
-        description: Retrieve dashboard statistics between the specified start and end times.
+        description: |
+          Retrieve dashboard statistics between the specified start and end
+          times.
         queryParameters:
           interval:
             required: true
@@ -7197,10 +7618,16 @@ securitySchemes:
           description: Get internal interface statistics
     /l2vpn/config:
       displayName: l2VPN
-      description: L2 VPN allows you to configure a tunnel between two sites. VM's remain on the same subnet in spite of being moved between these sites, enabling you to extend your datacenter. An NSX Edge at one site can provide all services to VM's on the other site.
+      description: |
+        L2 VPN allows you to configure a tunnel between two sites. VM's remain
+        on the same subnet in spite of being moved between these sites,
+        enabling you to extend your datacenter. An NSX Edge at one site can
+        provide all services to VM's on the other site.
       post:
         displayName: l2VPNCreate
-        description: Enable or disable L2 VPN service according to the value of the query parameter "enableService"
+        description: |
+          Enable or disable L2 VPN service according to the value of the query
+          parameter "enableService"
         queryParameters:
           enableService:
             required: true
@@ -7260,7 +7687,9 @@ securitySchemes:
         description: L2 VPN statistics
         get:
           displayName: statisticsRead
-          description: Retrieve L2 VPN stats, which has information such as tunnel status, sent bytes, received bytes etc. for the given Edge
+          description: |
+            Retrieve L2 VPN stats, which has information such as tunnel status,
+            sent bytes, received bytes etc. for the given Edge
     /ipsec/config:
       displayName: ipsecConfig
       description: Working with IPSEC VPN
@@ -7321,7 +7750,9 @@ securitySchemes:
         description: Retrieve IPSec statistics
     /autoconfiguration:
       displayName: autoConfig
-      description: Auto config is enabled by default. If you disable, you must add required NAT, firewall, routing rules
+      description: |
+        Auto config is enabled by default. If you disable, you must add
+        required NAT, firewall, routing rules
       get:
         displayName: autoConfigRead
         description: Retrieve auto config settings for the Edge
@@ -7352,7 +7783,9 @@ securitySchemes:
         description: Retrieve appliance configuration
       put:
         displayName: appliancesUpdate
-        description: Modify appliance configuration (tip -- retrieve the config using GET call, then modify the parameters and send as body)
+        description: |
+          Modify appliance configuration (tip -- retrieve the config using GET
+          call, then modify the parameters and send as body)
       /{haIndex}:
         displayName: appliance
         description: Manage a specified appliance using its HA index
@@ -7396,7 +7829,9 @@ securitySchemes:
           description: Delete the appliance
     /vnics:
       displayName: vnics
-      description: Working with interfaces. Add up to ten internal/uplink interfaces to each Edge. Each Edge must have at least one internal interface
+      description: |
+        Working with interfaces. Add up to ten internal/uplink interfaces to
+        each Edge. Each Edge must have at least one internal interface
       post:
         displayName: vnicsCreate
         description: Add an interface or sub interface
@@ -7549,7 +7984,8 @@ securitySchemes:
       description: Working with all NSX Edge router interfaces
       post:
         displayName: interfacesCreate
-        description: Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces
+        description: |
+          Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces
         queryParameters:
           action:
             displayName: action
@@ -7583,7 +8019,10 @@ securitySchemes:
         queryParameters:
           index:
             displayName: index
-            description: Specify index of interface to delete (e.g. ?index=<index1>&index=<index2>). If no indices specified, all interfaces are deleted
+            description: |
+              Specify index of interface to delete
+              (e.g. ?index=<index1>&index=<index2>). If no indices specified,
+              all interfaces are deleted
       /{index}:
         displayName: interface
         description: Manage a specific NSX Edge router interface
@@ -7597,23 +8036,31 @@ securitySchemes:
           description: Retrieve information on specified DLR router interface
         delete:
           displayName: interfaceDelete
-          description: Delete interface configuration and reset to factory default
+          description: |
+            Delete interface configuration and reset to factory default
         put:
           displayName: interfaceUpdate
-          description: Update interface configuration on specified DLR router interface
+          description: |
+            Update interface configuration on specified DLR router interface
   /jobs:
     displayName: nsxEdgeJobs
     description: NSX Edge async jobs
     get:
       displayName: nsxEdgeJobsRead
-      description: Query jobs. Assumes Edge is configured in async mode, where ?async=true is used at the end of any 4.0 service configuration URI for POST, PUT, and DELETE calls.
+      description: |
+        Query jobs. Assumes Edge is configured in async mode, where ?async=true
+        is used at the end of any 4.0 service configuration URI for POST, PUT,
+        and DELETE calls.
       queryParameters:
         status:
           displayName: status
           description: status set to "all" or "active"
     /{jobId}:
       displayName: nsxEdgeJob
-      description: Status of Edge async jobs. Assumes Edge is configured in async mode, where ?async=true is used at the end of any 4.0 service configuration URI for POST, PUT, and DELETE calls.
+      description: |
+        Status of Edge async jobs. Assumes Edge is configured in async mode,
+        where ?async=true is used at the end of any 4.0 service configuration
+        URI for POST, PUT, and DELETE calls.
       uriParameters:
         jobId:
           required: true
@@ -7621,7 +8068,9 @@ securitySchemes:
           description: Job ID
       get:
         displayName: nsxEdgeJobRead
-        description: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of the resource, and ID of the resource as shown in response body
+        description: |
+          Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
+          the resource, and ID of the resource as shown in response body
 /3.0/edges/{edgeID}:
   displayName: nsxEdgeUpgrade
   description: Upgrading NSX Edge
@@ -7695,7 +8144,9 @@ securitySchemes:
           description: certificate ID
       get:
         displayName: certificateRead
-        description: Retrieve the certificate object specified by ID. If the ID specifies a chain, multiple certificate objects are retrieved.
+        description: |
+          Retrieve the certificate object specified by ID. If the ID specifies
+          a chain, multiple certificate objects are retrieved.
       delete:
         displayName: certificateDelete
         description: Delete the specified certificate
@@ -7801,7 +8252,9 @@ securitySchemes:
   description: Operations on policy objects
   /securitypolicy:
     displayName: securityPolicy
-    description: Working with security policies (Endpoint, firewall, network introspection services applied to security group)
+    description: |
+      Working with security policies (Endpoint, firewall, network introspection
+      services applied to security group)
     post:
       displayName: securityPolicyCreate
       description: Create a security policy
@@ -7858,7 +8311,9 @@ securitySchemes:
         ID:
           required: true
           displayName: ID
-          description: ID of desired security policy (or 'all' to include all security policies for the securityPolicyID read method)
+          description: |
+            ID of desired security policy (or 'all' to include all security
+            policies for the securityPolicyID read method)
       get:
         displayName: securityPolicyIDRead
         description: Retrieve security policy information
@@ -7920,7 +8375,9 @@ securitySchemes:
           force:
             type: boolean
             displayName: force
-            description: If set to true, security policy is deleted even if it is being used somewhere
+            description: |
+              If set to true, security policy is deleted even if it is being
+              used somewhere
       /securityactions:
         displayName: securityActions
         description: Security actions for a security policy
@@ -7949,20 +8406,26 @@ securitySchemes:
             schema: hierarchyCreate
       get:
         displayName: hierarchyRead
-        description: Export a Service Composer configuration and save to your desktop for use as a backup
+        description: |
+          Export a Service Composer configuration and save to your desktop for
+          use as a backup
         queryParameters:
           policyIds:
             displayName: policyIds
             description: Comma separated security policy id's
           prefix:
             displayName: prefix
-            description: (optional) Some prefix to add before the names of the objects in the exported XML
+            description: |
+              (optional) Some prefix to add before the names of the objects in
+              the exported XML
   /securityaction/category/virtualmachines:
     displayName: securityActionVM
     description: Virtual machines for a security action
     get:
       displayName: securityActionVMRead
-      description: Fetch all vm objects on which security action of a given category and attribute has been applied
+      description: |
+        Fetch all vm objects on which security action of a given category and
+        attribute has been applied
       queryParameters:
         attributeKey:
           displayName: attributeKey
@@ -7995,7 +8458,9 @@ securitySchemes:
     description: Synchronizing Service Composer rules with distributed firewall
     get:
       displayName: serviceComposerDFWSyncRead
-      description: Query the time since when Service Composer firewall is out of sync with dfw, or synchronize Service Composer firewall with dfw
+      description: |
+        Query the time since when Service Composer firewall is out of sync with
+        dfw, or synchronize Service Composer firewall with dfw
   /policy/securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
     description: Retrieve security policies mapped to a security group
