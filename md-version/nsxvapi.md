@@ -70,15 +70,22 @@ You can retrieve all configured switches on a datacenter.
 Retrieve a specific switch by specific switch ID (e.g. dvs-26).
 
 * **get** *(secured)*: Retrieve a specific vds by specific switchId (e.g. dvs-26)
-* **delete** *(secured)*: Delete a specific vds by specific switchId (e.g. dvs-26)
+* **delete** *(secured)*: Delete a specific VDS by specific switchId (e.g. dvs-22). Use the
+switch ID as the vdsId.
 
 ## vdnConfig
 Configurations of Segment ID's and Multicast Ranges for logical switches
 
 ### /2.0/vdn/config/segments
-Operations on Segment ID's (VXLAN Idd)
+You can specify one or more segment ID pools that is used to provide
+virtual network identifiers to logical switches which helps you isolate
+your network traffic.
 
-* **post** *(secured)*: Add a segment ID Pool
+* **post** *(secured)*: You can add a new segment ID range that provides virtual network
+identifiers to logical switches. More than one segment ID range is
+supported in the system. The segment range is inclusive – the beginning
+and ending IDs are included.
+
 * **get** *(secured)*: Lists all Segment ID Pools.
 
 ### /2.0/vdn/config/segments/{segmentPoolId}
@@ -92,9 +99,14 @@ universal the API call must be made to the primary NSX manager.
 universal the API call must be made to the primary NSX manager.
 
 ### /2.0/vdn/config/multicasts
-Operations on multicast range Pools for logical switches
+Operations on multicast range Pools for logical switches. Specifying a
+multicast address range helps in spreading traffic across your network to
+avoid overloading a single multicast address.A virtualized network‐ready
+host is assigned an IP address from this range.
 
-* **post** *(secured)*: Adds a multicast range for logical switches
+* **post** *(secured)*: Adds a multicast range for logical switches. The address range is
+inclusive – the beginning and ending addresses are included.
+
 * **get** *(secured)*: List all configured VDN Multicast Pools. Universal pools will have the
 property isUniversal set tot true.
 
@@ -109,14 +121,15 @@ universal the API call must be made to the primary NSX manager.
 universal the API call must be made to the primary NSX manager.
 
 ### /2.0/vdn/config/vxlan/udp/port
-View configured UDP port for VXLAN
+Managing the logical switch UDP port.
 
-* **get** *(secured)*: View configured UDP port for VXLAN
+* **get** *(secured)*: View configured UDP port for VXLAN.
 
 ### /2.0/vdn/config/vxlan/udp/port/{portNumber}
-Updates the UDP Port used for VXLAN
+You can view the UDP port for VXLAN
 
-* **put** *(secured)*: Updates the UDP Port used for VXLAN
+* **put** *(secured)*: You can change the UDP port for the logical switch. If not set, the
+port defaults to port 8472.
 
 ### /2.0/vdn/config/resources/allocated
 Query allocated resources
@@ -124,7 +137,7 @@ Query allocated resources
 * **get** *(secured)*: Retrieve a list of resources allocated
 
 ## vdnScopes
-Read all scopes (transport zones), or create a new scope (Transport Zone)
+Read all scopes (transport zones), or create a new scope (Transport Zone).
 
 ### /2.0/vdn/scopes
 
@@ -1666,7 +1679,7 @@ AESNI Setting
 * **post** *(secured)*: Modify AESNI setting
 
 ### /4.0/edges/{edgeId}/coredump
-Enabling core-dump feature results in deployment of inbuilt extra disk 
+Enabling core-dump feature results in deployment of inbuilt extra disk
 to save core-dump files. 1GB for compact edge and 8GB for other types.
 Disabling detaches the disk
 

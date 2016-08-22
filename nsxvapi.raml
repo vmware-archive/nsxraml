@@ -195,6 +195,26 @@ securitySchemes:
   get:
     displayName: vdsList
     description: You can retrieve all configured switches.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <vdsContexts>
+                <vdsContext>
+                  <switch>
+                    <objectId></objectId>
+                    <type>
+                      <typeName></typeName>
+                    </type>
+                    <name></name>
+                    <revision></revision>
+                    <objectTypeName></objectTypeName>
+                  </switch>
+                  <teaming></teaming>
+                  <mtu></mtu>
+                </vdsContext>
+              </vdsContexts>
   /datacenter/{datacenterID}:
     displayName: vdsInDc
     description: You can retrieve all configured switches on a datacenter.
@@ -206,6 +226,26 @@ securitySchemes:
     get:
       displayName: vdsListInDc
       description: Lists all VDS's in a specified vSphere Datacenter Object
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <vdsContexts>
+                  <vdsContext>
+                    <switch>
+                      <objectId></objectId>
+                      <type>
+                        <typeName></typeName>
+                      </type>
+                      <name></name>
+                      <revision></revision>
+                      <objectTypeName></objectTypeName>
+                    </switch>
+                    <teaming></teaming>
+                    <mtu></mtu>
+                  </vdsContext>
+                </vdsContexts>
   /{vdsId}:
     displayName: vds
     description: Retrieve a specific switch by specific switch ID (e.g. dvs-26).
@@ -217,18 +257,45 @@ securitySchemes:
     get:
       displayName: vdsShow
       description: Retrieve a specific vds by specific switchId (e.g. dvs-26)
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <vdsContext>
+                  <switch>
+                    <objectId></objectId>
+                    <type>
+                      <typeName></typeName>
+                    </type>
+                    <name></name>
+                    <revision></revision>
+                    <objectTypeName></objectTypeName>
+                  </switch>
+                  <teaming></teaming>
+                  <mtu></mtu>
+                </vdsContext>
     delete:
       displayName: vdsDelete
-      description: Delete a specific vds by specific switchId (e.g. dvs-26)
+      description: |
+        Delete a specific VDS by specific switchId (e.g. dvs-22). Use the
+        switch ID as the vdsId.
 /2.0/vdn/config:
   displayName: vdnConfig
   description: Configurations of Segment ID's and Multicast Ranges for logical switches
   /segments:
     displayName: vdnSegmentPools
-    description: Operations on Segment ID's (VXLAN Idd)
+    description: |
+      You can specify one or more segment ID pools that is used to provide
+      virtual network identifiers to logical switches which helps you isolate
+      your network traffic.
     post:
       displayName: vdnSegmentPoolAdd
-      description: Add a segment ID Pool
+      description: |
+        You can add a new segment ID range that provides virtual network
+        identifiers to logical switches. More than one segment ID range is
+        supported in the system. The segment range is inclusive – the beginning
+        and ending IDs are included.
       queryParameters:
           isUniversal:
             displayName: isUniversal
@@ -258,6 +325,18 @@ securitySchemes:
       get:
         displayName: vdnSegmentPoolShow
         description: Retrieve details of an individual segment ID Pool.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <segmentRange>
+                    <id></id>
+                    <name></name>
+                    <desc></desc>
+                    <begin></begin>
+                    <end></end>
+                  </segmentRange>
       put:
         displayName: vdnSegmentPoolChange
         description: |
@@ -278,10 +357,16 @@ securitySchemes:
           universal the API call must be made to the primary NSX manager.
   /multicasts:
     displayName: vdnMulticastPools
-    description: Operations on multicast range Pools for logical switches
+    description: |
+      Operations on multicast range Pools for logical switches. Specifying a
+      multicast address range helps in spreading traffic across your network to
+      avoid overloading a single multicast address.A virtualized network‐ready
+      host is assigned an IP address from this range.
     post:
       displayName: vdnMulticastPoolAdd
-      description: Adds a multicast range for logical switches
+      description: |
+        Adds a multicast range for logical switches. The address range is
+        inclusive – the beginning and ending addresses are included.
       queryParameters:
           isUniversal:
             displayName: isUniversal
@@ -304,6 +389,20 @@ securitySchemes:
       description: |
         List all configured VDN Multicast Pools. Universal pools will have the
         property isUniversal set tot true.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <multicastRanges>
+                  <multicastRange>
+                    <id></id>
+                    <name></name>
+                    <desc></desc>
+                    <begin></begin>
+                    <end></end>
+                  </multicastRange>
+                </multicastRanges>
     /{multicastAddresssRangeId}:
       displayName: vdnMulticastPool
       description: |
@@ -316,6 +415,18 @@ securitySchemes:
       get:
         displayName: vdnMulticastPoolShow
         description: Retrieve details of an individual Multicast range Pool
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <multicastRange>
+                    <id></id>
+                    <name></name>
+                    <desc></desc>
+                    <begin></begin>
+                    <end></end>
+                  </multicastRange>
       put:
         displayName: vdnMulticastPoolChange
         description: |
@@ -337,13 +448,22 @@ securitySchemes:
           universal the API call must be made to the primary NSX manager.
   /vxlan/udp/port:
     displayName: vdnConfigUDP
-    description: View configured UDP port for VXLAN
+    description: |
+      Managing the logical switch UDP port.
     get:
       displayName: vdnConfigUDPShow
-      description: View configured UDP port for VXLAN
+      description: |
+        View configured UDP port for VXLAN.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <int>4789</int>
     /{portNumber}:
       displayName: vdnConfigUDPUpdate
-      description: Updates the UDP Port used for VXLAN
+      description: |
+        You can view the UDP port for VXLAN
       uriParameters:
         portNumber:
           required: true
@@ -351,7 +471,9 @@ securitySchemes:
           description: A valid UDP Port for VXLAN
       put:
         displayName: vdnConfigUDPUpdate
-        description: Updates the UDP Port used for VXLAN
+        description: |
+          You can change the UDP port for the logical switch. If not set, the
+          port defaults to port 8472.
   /resources/allocated:
     displayName: allocatedResources
     description: Query allocated resources
@@ -365,17 +487,19 @@ securitySchemes:
         pagesize:
           displayName: pagesize
           description: |
-            Optional; limits the maximum number of entries returned. Valid range
-             is 1-1024, default is 256
+            Page size is an optional parameter that limits the maximum number
+            of entries returned by the API. The default value for this
+            parameter is 256 and the valid range is 1‐1024.
         startindex:
           displayName: startindex
           description: |
-            Optional; specifies the starting point for retrieval. If not
-            specified, resources are retrieved from the beginning
+            Start index is an optional parameter which specifies the starting
+            point for retrieving the resources. If this parameter is not
+            specified, resources are retrieved from the beginning.
 /2.0/vdn/scopes:
   displayName: vdnScopes
   description: |
-    Read all scopes (transport zones), or create a new scope (Transport Zone)
+    Read all scopes (transport zones), or create a new scope (Transport Zone).
   get:
     displayName: vdnScopesList
     description: Retrieve a list of all known VDN Scopes / Transport Zones
@@ -4832,8 +4956,8 @@ securitySchemes:
           required: true
           displayName: action
           description: |
-            Set to "approve" along with specified IP addresses in body to 
-            approve them, or set to "publish" to publish the approved IP 
+            Set to "approve" along with specified IP addresses in body to
+            approve them, or set to "publish" to publish the approved IP
             addresses
       body:
         application/xml:
@@ -5401,7 +5525,7 @@ securitySchemes:
     /coredump:
       displayName: coreDump
       description: |
-        Enabling core-dump feature results in deployment of inbuilt extra disk 
+        Enabling core-dump feature results in deployment of inbuilt extra disk
         to save core-dump files. 1GB for compact edge and 8GB for other types.
         Disabling detaches the disk
       post:

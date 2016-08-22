@@ -11153,7 +11153,10 @@ set-as-standalone, set-as-primary, set-as-secondary</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Operations on multicast range Pools for logical switches</p>
+  <div class="description"><p>Operations on multicast range Pools for logical switches. Specifying a
+multicast address range helps in spreading traffic across your network to
+avoid overloading a single multicast address.A virtualized network‐ready
+host is assigned an IP address from this range.</p>
 </div>
 <div class="method post">
   <a
@@ -11163,7 +11166,8 @@ set-as-standalone, set-as-primary, set-as-secondary</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Adds a multicast range for logical switches</p>
+    <p><p>Adds a multicast range for logical switches. The address range is
+inclusive – the beginning and ending addresses are included.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11232,6 +11236,22 @@ property isUniversal set tot true.</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicastRanges</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">multicastRange</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">multicastRange</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">multicastRanges</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -11277,6 +11297,20 @@ property isUniversal set tot true.</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicastRange</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">multicastRange</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -11390,8 +11424,9 @@ universal the API call must be made to the primary NSX manager.</p>
     
   </dt>
   <dd>
-      <p>Optional; limits the maximum number of entries returned. Valid range
- is 1-1024, default is 256</p>
+      <p>Page size is an optional parameter that limits the maximum number
+of entries returned by the API. The default value for this
+parameter is 256 and the valid range is 1‐1024.</p>
 
   </dd>
   <dt>
@@ -11400,8 +11435,9 @@ universal the API call must be made to the primary NSX manager.</p>
     
   </dt>
   <dd>
-      <p>Optional; specifies the starting point for retrieval. If not
-specified, resources are retrieved from the beginning</p>
+      <p>Start index is an optional parameter which specifies the starting
+point for retrieving the resources. If this parameter is not
+specified, resources are retrieved from the beginning.</p>
 
   </dd>
 </dl>
@@ -11416,7 +11452,9 @@ specified, resources are retrieved from the beginning</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Operations on Segment ID&#39;s (VXLAN Idd)</p>
+  <div class="description"><p>You can specify one or more segment ID pools that is used to provide
+virtual network identifiers to logical switches which helps you isolate
+your network traffic.</p>
 </div>
 <div class="method post">
   <a
@@ -11426,7 +11464,10 @@ specified, resources are retrieved from the beginning</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Add a segment ID Pool</p>
+    <p><p>You can add a new segment ID range that provides virtual network
+identifiers to logical switches. More than one segment ID range is
+supported in the system. The segment range is inclusive – the beginning
+and ending IDs are included.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11537,6 +11578,20 @@ specified, resources are retrieved from the beginning</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">segmentRange</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">segmentRange</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -11609,7 +11664,7 @@ universal the API call must be made to the primary NSX manager.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>View configured UDP port for VXLAN</p>
+  <div class="description"><p>Managing the logical switch UDP port.</p>
 </div>
 <div class="method get">
   <a
@@ -11619,7 +11674,7 @@ universal the API call must be made to the primary NSX manager.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>View configured UDP port for VXLAN</p>
+    <p><p>View configured UDP port for VXLAN.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11630,6 +11685,14 @@ universal the API call must be made to the primary NSX manager.</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">int</span>&gt;</span>4789<span class="hljs-tag">&lt;/<span class="hljs-name">int</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -11640,7 +11703,7 @@ universal the API call must be made to the primary NSX manager.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Updates the UDP Port used for VXLAN</p>
+  <div class="description"><p>You can view the UDP port for VXLAN</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -11664,7 +11727,8 @@ universal the API call must be made to the primary NSX manager.</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Updates the UDP Port used for VXLAN</p>
+    <p><p>You can change the UDP port for the logical switch. If not set, the
+port defaults to port 8472.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12217,7 +12281,7 @@ node</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Read all scopes (transport zones), or create a new scope (Transport Zone)</p>
+  <div class="description"><p>Read all scopes (transport zones), or create a new scope (Transport Zone).</p>
 </div>
 <div class="method get">
   <a
@@ -12785,6 +12849,28 @@ is higher than the standard MTU. You must set the MTU for each switch to
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdsContexts</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -12830,6 +12916,28 @@ is higher than the standard MTU. You must set the MTU for each switch to
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdsContexts</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -12875,6 +12983,26 @@ is higher than the standard MTU. You must set the MTU for each switch to
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -12885,7 +13013,8 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete a specific vds by specific switchId (e.g. dvs-26)</p>
+    <p><p>Delete a specific VDS by specific switchId (e.g. dvs-22). Use the
+switch ID as the vdsId.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -16405,7 +16534,7 @@ required NAT, firewall, routing rules</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Enabling core-dump feature results in deployment of inbuilt extra disk 
+  <div class="description"><p>Enabling core-dump feature results in deployment of inbuilt extra disk
 to save core-dump files. 1GB for compact edge and 8GB for other types.
 Disabling detaches the disk</p>
 </div>
@@ -28473,8 +28602,8 @@ secondary NSX manager.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Set to &quot;approve&quot; along with specified IP addresses in body to 
-approve them, or set to &quot;publish&quot; to publish the approved IP 
+      <p>Set to &quot;approve&quot; along with specified IP addresses in body to
+approve them, or set to &quot;publish&quot; to publish the approved IP
 addresses</p>
 
   </dd>
