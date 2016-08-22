@@ -25,19 +25,19 @@ https://github.com/postmanlabs/raml2postman
 
 If you are interested in building the artifacts you will need a modified version of raml2html and raml2postman. To install these globally use the following commands:
 
-    `npm install -g https://github.com/yfauser/raml2html`
+    npm install -g https://github.com/yfauser/raml2html
 
-    `npm install -g https://github.com/yfauser/raml2postman`
+    npm install -g https://github.com/yfauser/raml2postman
 
 *Note that if you want a local install do not supply the -g argument.*
 
 You will also need to install raml-fleece. To install it globally use the following command:
 
-    `npm install -g raml-fleece`
+    npm install -g raml-fleece
 
 Once the pre-requisites packages are installed you can run the following script:
 
-    `create_artifacts.sh`
+    create_artifacts.sh
 
 # Credits
 Special credits and thanks go to Conner Mullaney. He has created more than 80% of the original content in the RAML File out of the NSX-v 6.1.4 API Documentation available as PDF, and with this effort brought this project forward significantly.
