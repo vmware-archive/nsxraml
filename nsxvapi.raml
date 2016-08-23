@@ -217,12 +217,14 @@ securitySchemes:
               </vdsContexts>
   /datacenter/{datacenterID}:
     displayName: vdsInDc
-    description: You can retrieve all configured switches on a datacenter.
+    description: |
+      You can retrieve all configured switches on a datacenter.
     uriParameters:
       datacenterID:
           required: true
           displayName: datacenterID
-          description: A valid Datacenter ID (e.g. datacenter-4)
+          description: |
+            A valid Datacenter ID (e.g. datacenter-4)
     get:
       displayName: vdsListInDc
       description: Lists all VDS's in a specified vSphere Datacenter Object
@@ -631,6 +633,19 @@ securitySchemes:
   get:
     displayName: logicalSwitchList
     description: Lists all logical Switches in the Transport Zone (Scope)
+    queryParameters:
+      startIndex:
+          displayName: startIndex
+          description: |
+            An optional paramater that sets the starting point for listing
+            logical switches
+          default: 0
+      pageSize:
+          displayName: pageSize
+          description: |
+            An optional paramater that sets the number of entries returned.
+            Range is 1-1024.
+          default: 20
   post:
     displayName: logicalSwitchCreate
     description: |
