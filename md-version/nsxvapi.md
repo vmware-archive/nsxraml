@@ -70,6 +70,7 @@ You can retrieve all configured switches on a datacenter.
 Retrieve a specific switch by specific switch ID (e.g. dvs-26).
 
 * **get** *(secured)*: Retrieve a specific vds by specific switchId (e.g. dvs-26)
+
 * **delete** *(secured)*: Delete a specific VDS by specific switchId (e.g. dvs-22). Use the
 switch ID as the vdsId.
 
@@ -114,6 +115,7 @@ property isUniversal set tot true.
 Operations in individual multicast range Pools for logical switches
 
 * **get** *(secured)*: Retrieve details of an individual Multicast range Pool
+
 * **put** *(secured)*: Update an individual multicast range pool. If the multicast pool is
 universal the API call must be made to the primary NSX manager.
 
@@ -137,20 +139,24 @@ Query allocated resources
 * **get** *(secured)*: Retrieve a list of resources allocated
 
 ## vdnScopes
-Read all scopes (transport zones), or create a new scope (Transport Zone).
+A network scope is the networking infrastructure within provider virtual
+datacenters. Read all scopes (transport zones), or create a new scope
+(Transport Zone).
 
 ### /2.0/vdn/scopes
 
 * **get** *(secured)*: Retrieve a list of all known VDN Scopes / Transport Zones
 * **post** *(secured)*: Create a new Transport Zone. Note that you can only add one initial
-cluster when creating the TZ.
+cluster when creating the TZ. You must specify the clusters that are to
+be part of the network scope. You must have the VLAN ID, UUID of the
+vCenter Server, and vDS ID.
 
 ### /2.0/vdn/scopes/{scopeId}
 Read, update and delete an existing scope (transport Zone)
 
 * **get** *(secured)*: Retrieve the properties of an existing network scope
 * **post** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster
-from a transport zone
+from a transport zone.
 
 * **delete** *(secured)*: delete a transport zone
 

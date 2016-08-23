@@ -194,7 +194,8 @@ securitySchemes:
         schema: vdsContext
   get:
     displayName: vdsList
-    description: You can retrieve all configured switches.
+    description: |
+      You can retrieve all configured switches.
     responses:
       200:
         body:
@@ -227,7 +228,8 @@ securitySchemes:
             A valid Datacenter ID (e.g. datacenter-4)
     get:
       displayName: vdsListInDc
-      description: Lists all VDS's in a specified vSphere Datacenter Object
+      description: |
+        Lists all VDS's in a specified vSphere Datacenter Object
       responses:
         200:
           body:
@@ -250,15 +252,18 @@ securitySchemes:
                 </vdsContexts>
   /{vdsId}:
     displayName: vds
-    description: Retrieve a specific switch by specific switch ID (e.g. dvs-26).
+    description: |
+      Retrieve a specific switch by specific switch ID (e.g. dvs-26).
     uriParameters:
       vdsId:
           required: true
           displayName: switchId
-          description: A valid switch (VDS) Id (e.g. dvs-26)
+          description: |
+            A valid switch (VDS) Id (e.g. dvs-26)
     get:
       displayName: vdsShow
-      description: Retrieve a specific vds by specific switchId (e.g. dvs-26)
+      description: |
+        Retrieve a specific vds by specific switchId (e.g. dvs-26)
       responses:
         200:
           body:
@@ -416,7 +421,8 @@ securitySchemes:
           description: A valid multicast Pool range Id
       get:
         displayName: vdnMulticastPoolShow
-        description: Retrieve details of an individual Multicast range Pool
+        description: |
+          Retrieve details of an individual Multicast range Pool
         responses:
           200:
             body:
@@ -489,27 +495,81 @@ securitySchemes:
         pagesize:
           displayName: pagesize
           description: |
-            Page size is an optional parameter that limits the maximum number
-            of entries returned by the API. The default value for this
-            parameter is 256 and the valid range is 1‐1024.
+            The pagesize parameter is an optional parameter that limits the
+            maximum number of entries returned by the API. The default value
+            for this parameter is 256 and the valid range is 1‐1024.
         startindex:
           displayName: startindex
           description: |
-            Start index is an optional parameter which specifies the starting
-            point for retrieving the resources. If this parameter is not
-            specified, resources are retrieved from the beginning.
+            The startindex parameter is an optional parameter which specifies
+            the starting point for retrieving the resources. If this parameter
+            is not specified, resources are retrieved from the beginning.
 /2.0/vdn/scopes:
   displayName: vdnScopes
   description: |
-    Read all scopes (transport zones), or create a new scope (Transport Zone).
+    A network scope is the networking infrastructure within provider virtual
+    datacenters. Read all scopes (transport zones), or create a new scope
+    (Transport Zone).
   get:
     displayName: vdnScopesList
     description: Retrieve a list of all known VDN Scopes / Transport Zones
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <vdnScopes>
+                <vdnScope>
+                  <objectId>vdnscope-1</objectId>
+                  <objectTypeName>VdnScope</objectTypeName>
+                  <vsmUuid>4226CACF-0558-AFF3-5D92-279B201C40E2</vsmUuid>
+                  <nodeId>72eee9ab-bb75-49ba-a782-d7dffedd180a</nodeId>
+                  <revision>0</revision>
+                  <type>
+                    <typeName>VdnScope</typeName>
+                  </type>
+                  <name>tz-1</name>
+                  <description></description>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes/>
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                  <id>vdnscope-1</id>
+                  <clusters>
+                    <cluster>
+                      <cluster>
+                        <objectId>domain-c21</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <vsmUuid>4226CACF-0558-AFF3-5D92-279B201C40E2</vsmUuid>
+                        <nodeId>72eee9ab-bb75-49ba-a782-d7dffedd180a</nodeId>
+                        <revision>10</revision>
+                        <type>
+                          <typeName>ClusterComputeResource</typeName>
+                        </type>
+                        <name>Cluster-1</name>
+                        <scope>
+                          <id>datacenter-2</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>Datacenter-1</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                      </cluster>
+                    </cluster>
+                  </clusters>
+                  <virtualWireCount>2</virtualWireCount>
+                  <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                </vdnScope>
+              </vdnScopes>
   post:
     displayName: vdnScopeCreate
     description: |
       Create a new Transport Zone. Note that you can only add one initial
-      cluster when creating the TZ.
+      cluster when creating the TZ. You must specify the clusters that are to
+      be part of the network scope. You must have the VLAN ID, UUID of the
+      vCenter Server, and vDS ID.
     queryParameters:
       isUniversal:
         displayName: isUniversal
@@ -547,7 +607,7 @@ securitySchemes:
       displayName: vdnScopeChange
       description: |
         Updates a transport zone, you can add a cluster to or delete a cluster
-        from a transport zone
+        from a transport zone.
       queryParameters:
         action:
           displayName: action
