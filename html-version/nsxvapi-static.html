@@ -5726,7 +5726,7 @@ is unforced (false)</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Create a pool of IP addresses</p>
+  <div class="description"><p>Working with IP pools.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -5737,7 +5737,7 @@ is unforced (false)</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>globalroot-0 or datacenterId in upgrade use cases</p>
+      <p>For <em>scopeID</em> use globalroot-0 or <em>datacenterId</em> in upgrade use cases</p>
 
   </dd>
 </dl>
@@ -5750,7 +5750,9 @@ is unforced (false)</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Read all IP Pools in a scope</p>
+    <p><p>Retrieves all IP pools on the specified scope where the <em>scopeID</em> is the
+reference to the desired scope. An example of the <em>scopeID</em> is
+globalroot-0.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -5761,6 +5763,39 @@ is unforced (false)</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipamAddressPool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>ipaddresspool-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>IpAddressPool<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>4237BA90-C373-A71A-9827-1673BFA29498<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>IpAddressPool<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>rest-ip-pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">prefixLength</span>&gt;</span>23<span class="hljs-tag">&lt;/<span class="hljs-name">prefixLength</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>192.168.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>example.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.11.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.11.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipRanges</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipRangeDto</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>iprange-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">startAddress</span>&gt;</span>192.168.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">startAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">endAddress</span>&gt;</span>192.168.1.3<span class="hljs-tag">&lt;/<span class="hljs-name">endAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ipRangeDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ipRanges</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalAddressCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">totalAddressCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedAddressCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">usedAddressCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ipamAddressPool</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method post">
@@ -5771,7 +5806,8 @@ is unforced (false)</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Create a pool of IP addresses</p>
+    <p><p>You can create a pool of IP addresses. For <em>scopeId</em> use globalroot-0 or
+the <em>datacenterId</em> in upgrade use cases.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -5849,7 +5885,7 @@ is unforced (false)</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified IP pool</p>
+      <p>Specifiy the pool ID as <em>poolId</em> in the URI.</p>
 
   </dd>
 </dl>
@@ -5862,7 +5898,7 @@ is unforced (false)</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve details about the IP pool</p>
+    <p><p>Retrieve details about a specific IP pool.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -5873,6 +5909,39 @@ is unforced (false)</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipamAddressPool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>ipaddresspool-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>IpAddressPool<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>4237BA90-C373-A71A-9827-1673BFA29498<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>IpAddressPool<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>rest-ip-pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">prefixLength</span>&gt;</span>23<span class="hljs-tag">&lt;/<span class="hljs-name">prefixLength</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>192.168.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>example.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.11.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.11.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipRanges</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipRangeDto</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>iprange-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">startAddress</span>&gt;</span>192.168.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">startAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">endAddress</span>&gt;</span>192.168.1.3<span class="hljs-tag">&lt;/<span class="hljs-name">endAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ipRangeDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ipRanges</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalAddressCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">totalAddressCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedAddressCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">usedAddressCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ipamAddressPool</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -5883,7 +5952,8 @@ is unforced (false)</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Modify an IP pool</p>
+    <p><p>To modify an IP pool, query the IP pool first. Then modify the output and
+send it back as the request body.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -6003,7 +6073,7 @@ is unforced (false)</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve all IP&#39;s and their allocation status in an IP Pool</p>
+    <p><p>Retrieves all allocated IP addresses from the specified pool.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -6014,6 +6084,25 @@ is unforced (false)</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">allocatedIpAddresses</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>allocatedipaddress-4<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>192.168.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">prefixLength</span>&gt;</span>23<span class="hljs-tag">&lt;/<span class="hljs-name">prefixLength</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.112.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.112.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>eng.vmware.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">allocationNote</span>&gt;</span>sample note<span class="hljs-tag">&lt;/<span class="hljs-name">allocationNote</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">allocatedIpAddresses</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method post">
@@ -6027,7 +6116,7 @@ is unforced (false)</p>
     <p><p>Allocate an IP Address from the pool. Use &#39;ALLOCATE&#39; in the
 &#39;allocationMode&#39; field in the body to allocate the next available ip.
 To allocate a specific one use &#39;RESERVE&#39; and pass the IP to reserve in
-the &#39;ipAddress&#39; fiels in the body</p>
+the &#39;ipAddress&#39; fields in the body.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -6052,9 +6141,26 @@ the &#39;ipAddress&#39; fiels in the body</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipAddressRequest</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">allocationMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">allocationMode</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocationMode</span>&gt;</span>ALLOCATE<span class="hljs-tag">&lt;/<span class="hljs-name">allocationMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ipAddressRequest</span>&gt;</span>
+</code></pre>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>allocatedipaddress-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>192.168.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">prefixLength</span>&gt;</span>23<span class="hljs-tag">&lt;/<span class="hljs-name">prefixLength</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.112.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.112.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>eng.vmware.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocationNote</span>/&gt;</span>sample note<span class="hljs-tag">&lt;/<span class="hljs-name">allocationNote</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -6077,7 +6183,7 @@ the &#39;ipAddress&#39; fiels in the body</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>The Id of the ip address to release, e.g. &#39;192.168.10.10&#39;</p>
+      <p>The IP address to release, e.g. &#39;192.168.10.10&#39;</p>
 
   </dd>
 </dl>

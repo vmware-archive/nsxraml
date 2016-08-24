@@ -374,30 +374,37 @@ Get the members of a service group
 created on a particular scope.
 
 ## ipPools
-Create a pool of IP addresses
+Working with IP pools.
 
 ### /2.0/services/ipam/pools/scope/{scopeId}
 
-* **get** *(secured)*: Read all IP Pools in a scope
-* **post** *(secured)*: Create a pool of IP addresses
+* **get** *(secured)*: Retrieves all IP pools on the specified scope where the *scopeID* is the
+reference to the desired scope. An example of the *scopeID* is
+globalroot-0.
+
+* **post** *(secured)*: You can create a pool of IP addresses. For *scopeId* use globalroot-0 or
+the *datacenterId* in upgrade use cases.
 
 ## ipPool
 Working with a specified IP pool
 
 ### /2.0/services/ipam/pools/{poolId}
 
-* **get** *(secured)*: Retrieve details about the IP pool
-* **put** *(secured)*: Modify an IP pool
+* **get** *(secured)*: Retrieve details about a specific IP pool.
+* **put** *(secured)*: To modify an IP pool, query the IP pool first. Then modify the output and
+send it back as the request body.
+
 * **delete** *(secured)*: Delete an IP pool
 
 ### /2.0/services/ipam/pools/{poolId}/ipaddresses
 Work with IP's and their allocation status in IP Pools
 
-* **get** *(secured)*: Retrieve all IP's and their allocation status in an IP Pool
+* **get** *(secured)*: Retrieves all allocated IP addresses from the specified pool.
+
 * **post** *(secured)*: Allocate an IP Address from the pool. Use 'ALLOCATE' in the
 'allocationMode' field in the body to allocate the next available ip.
 To allocate a specific one use 'RESERVE' and pass the IP to reserve in
-the 'ipAddress' fiels in the body
+the 'ipAddress' fields in the body.
 
 ### /2.0/services/ipam/pools/{poolId}/ipaddresses/{ipAddress}
 Release an IP Address allocation in the Pool
