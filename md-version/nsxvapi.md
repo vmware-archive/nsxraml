@@ -43,6 +43,10 @@ To find out how VMware support offerings can help meet your business needs, go t
 VMware Education Services courses offer extensive hands‐on labs, case study examples, and course materials designed to be used as on‐the‐job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
 http://www.vmware.com/services.
 
+### Ports Required for the NSX REST API
+
+The NSX Manager requires port 443/TCP for REST API requests.
+
 ---
 
 ## vdsManage
@@ -80,19 +84,28 @@ Configurations of Segment ID's and Multicast Ranges for logical switches
 ### /2.0/vdn/config/segments
 You can specify one or more segment ID pools that is used to provide
 virtual network identifiers to logical switches which helps you isolate
-your network traffic.
+your network traffic. You must specify a segment ID pool for each NSX
+Manager to isolate your network traffic. If an NSX controller is not
+deployed in your environment, you must add a multicast address range to
+help in spreading traffic across your network and avoid overloading a
+single multicast address.
 
 * **post** *(secured)*: You can add a new segment ID range that provides virtual network
 identifiers to logical switches. More than one segment ID range is
 supported in the system. The segment range is inclusive – the beginning
 and ending IDs are included.
+* *name* - Required property.
+* *desc* - Optional property.
+* *begin* - Required property. Minimum value is 5000
+* *end* - Required property. Maximum value is 16777216
 
-* **get** *(secured)*: Lists all Segment ID Pools.
+* **get** *(secured)*: Lists all segment ID pools / ranges.
 
 ### /2.0/vdn/config/segments/{segmentPoolId}
-Operations on individual segment ID Pool
+Operations on individual segment ID pool / range
 
-* **get** *(secured)*: Retrieve details of an individual segment ID Pool.
+* **get** *(secured)*: Retrieve details of an individual segment ID pool / range.
+
 * **put** *(secured)*: Update an individual segment ID Pool. If the segment pool is
 universal the API call must be made to the primary NSX manager.
 
@@ -152,9 +165,11 @@ be part of the network scope. You must have the VLAN ID, UUID of the
 vCenter Server, and vDS ID.
 
 ### /2.0/vdn/scopes/{scopeId}
-Read, update and delete an existing scope (transport Zone)
+You can manage specific VDN scopes with several API calls. Specify the
+ID of the scope in the scopeId URI parameter which is required.
 
 * **get** *(secured)*: Retrieve the properties of an existing network scope
+
 * **post** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster
 from a transport zone.
 
@@ -232,26 +247,28 @@ only) traffic, and the learning is stored on the host and the controller.
 
 ### /2.0/vdn/controller
 
-* **post** *(secured)*: Adds a new NSX controller on the specified given cluster. The hostId
-parameter is optional. The resourcePoolId can be either the clusterId or
-resourcePoolId. The IP address of the controller node will be allocated
-from the specified IP pool. deployType determines the controller node
-memory size and can be small, medium, or large. However, different
-controller deployment types are not currently supported because the OVF
-overrides it and different OVF types require changes in the manager build
-scripts. Despite not being supported, an arbitrary deployType size must
-still be specified or an error will be returned. Request without body to
-upgrade controller cluster.
+* **post** *(secured)*: Adds a new NSX controller on the specified given cluster. The *hostId*
+parameter is optional. The *resourcePoolId* can be either the
+*clusterId* or *resourcePoolId*.
+___
+The IP address of the controller node will be allocated
+from the specified IP pool. The *deployType* property determines the
+controller node memory size and can be small, medium, or large. However,
+different controller deployment types are not currently supported because
+the OVF overrides it and different OVF types require changes in the
+manager build scripts. Despite not being supported, an arbitrary
+*deployType* size must still be specified or an error will be returned.
+Request without body to upgrade controller cluster.
 
 * **get** *(secured)*: Retrieves details and runtime status for all controllers.  Runtime status
 can be one of the following:
-  **Deploying** ‐ controller is being deployed and the procedure has not
+  * **Deploying** ‐ controller is being deployed and the procedure has not
   completed yet.
-  **Removing** ‐ controller is being removed and the procedure has not
+  * **Removing** ‐ controller is being removed and the procedure has not
   completed yet.
-  **Running** ‐ controller has been deployed and can respond to API
+  * **Running** ‐ controller has been deployed and can respond to API
   invocation.
-  **Unknown** ‐ controller has been deployed but fails to respond to API
+  * **Unknown** ‐ controller has been deployed but fails to respond to API
   invocation.
 
 ### /2.0/vdn/controller/upgrade-available
@@ -262,41 +279,45 @@ Query controller upgrade availability
 ### /2.0/vdn/controller/progress/{jobId}
 Status of controller creation or removal
 
-* **get** *(secured)*: Retrieve status of controller creation or removal. Returns percentage
-indication of job progress
+* **get** *(secured)*: Retrieves status of controller creation or removal. The progress gives
+a percentage indication of current deploy / remove procedure.
 
 ### /2.0/vdn/controller/{controllerId}
 Working with specified controller
 
-* **delete** *(secured)*: Delete NSX controller. When deleting last controller from cluster,
-forceRemoval must be set to true
+* **delete** *(secured)*: Deletes NSX controller. When deleting the last controller from a
+cluster, the parameter forceRemovalForLast must be set to true.
 
 ### /2.0/vdn/controller/{controllerId}/techsupportlogs
 Controller logs
 
-* **get** *(secured)*: Retrieve controller logs
+* **get** *(secured)*: Retrieves controller logs. Response content type is
+application/octet-stream and response header is filename. This
+streams a fairly large bundle back (possibly hundreds of MB).
 
 ### /2.0/vdn/controller/{controllerId}/syslog
-Syslog exporter on controller node
+Configures a syslog exporter on the specified controller node.
 
 * **post** *(secured)*: Add controller syslog exporter on the controller
 * **get** *(secured)*: Retrieve details about the syslog exporter on the controller
 
-* **delete** *(secured)*: Delete the syslog exporter
+* **delete** *(secured)*: Deletes syslog exporter on the specified controller node.
 
 ### /2.0/vdn/controller/{controllerId}/snapshot
 Take a snapshot of the control cluster from the specified controller
-node
+node.
 
-* **get** *(secured)*: Take a snapshot of the control cluster from the specified controller
-node
+* **get** *(secured)*: To retrieve the controller IDs, log in to the vSphere Web Client.
+Navigate to Networking & Security > Installation. The NSX Controller
+Nodes table lists the controller IDs (Name column) and IP addresses
+(Node column) of each controller.
 
 ### /2.0/vdn/controller/cluster
 Cluster configuration
 
-* **get** *(secured)*: Retrieve cluster-wise configuration information for controller
+* **get** *(secured)*: Retrieve cluster wide configuration information for controller.
 
-* **put** *(secured)*: Modify cluster configuration information for controller
+* **put** *(secured)*: Modify cluster wide configuration information for controller
 
 ### /2.0/vdn/controller/credential
 Change the NSX controller password
@@ -809,7 +830,28 @@ Get NSX Manager audit logs
 Network virtualization components
 
 ### /2.0/nwfabric/configure
-Network virtualization components
+As the demands on datacenters continue to grow and accelerate,
+requirements related to speed and access to the data itself continue to
+grow as well. In most infrastructures, virtual machine access and
+mobility usually depend on physical networking infrastructure and the
+physical networking environments they reside in. This can force virtual
+workloads into less than ideal environments due to potential layer 2 or
+layer 3 boundaries, such as being tied to specific VLANs.
+___
+Network virtualization allows you to place these virtual workloads on any
+available infrastructure in the datacenter regardless of the underlying
+physical network infrastructure. This not only allows increased
+flexibility and mobility, but increased availability and resilience.
+Feature configuration is managed at a cluster level.
+___
+Cluster preparation can be broken down into the following:
+  * Install VIB and non-VIB related action: Before any per-host config
+  a VIB must be installed on the host. The feature can use this time to
+  perform other bootstrapping tasks which do not depend on
+  VIB-installation. e.g. VXLAN creates the vmknic-pg and sets up some
+  opaque data.
+  * Post-VIB install: Prepare each host for the feature. In the case of
+  VXLAN, create vmknics.
 
 * **post** *(secured)*: You install the network infrastructure components in your virtual
 environment on a per‐cluster level for each vCenter server, which

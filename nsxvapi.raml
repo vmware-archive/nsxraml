@@ -295,7 +295,11 @@ securitySchemes:
     description: |
       You can specify one or more segment ID pools that is used to provide
       virtual network identifiers to logical switches which helps you isolate
-      your network traffic.
+      your network traffic. You must specify a segment ID pool for each NSX
+      Manager to isolate your network traffic. If an NSX controller is not
+      deployed in your environment, you must add a multicast address range to
+      help in spreading traffic across your network and avoid overloading a
+      single multicast address.
     post:
       displayName: vdnSegmentPoolAdd
       description: |
@@ -303,6 +307,10 @@ securitySchemes:
         identifiers to logical switches. More than one segment ID range is
         supported in the system. The segment range is inclusive – the beginning
         and ending IDs are included.
+        * *name* - Required property.
+        * *desc* - Optional property.
+        * *begin* - Required property. Minimum value is 5000
+        * *end* - Required property. Maximum value is 16777216
       queryParameters:
           isUniversal:
             displayName: isUniversal
@@ -320,29 +328,46 @@ securitySchemes:
           schema: vdnSegment
     get:
       displayName: vdnSegmentPoolList
-      description: Lists all Segment ID Pools.
+      description: |
+        Lists all segment ID pools / ranges.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <segmentRanges>
+                  <segmentRange>
+                    <id>1</id>
+                    <name>segmentrange-1</name>
+                    <desc>Segment Range 1</desc>
+                    <begin>5000</begin>
+                    <end>65535</end>
+                  </segmentRange>
+                </segmentRanges>
     /{segmentPoolId}:
       displayName: vdnSegmentPool
-      description: Operations on individual segment ID Pool
+      description: |
+        Operations on individual segment ID pool / range
       uriParameters:
         segmentPoolId:
           required: true
           displayName: segmentPoolId
-          description: A valid segment Pool Id
+          description: A valid *segmentPoolId*
       get:
         displayName: vdnSegmentPoolShow
-        description: Retrieve details of an individual segment ID Pool.
+        description: |
+          Retrieve details of an individual segment ID pool / range.
         responses:
           200:
             body:
               application/xml:
                 example: |
                   <segmentRange>
-                    <id></id>
-                    <name></name>
-                    <desc></desc>
-                    <begin></begin>
-                    <end></end>
+                    <id>1</id>
+                    <name>segmentrange-1</name>
+                    <desc>Segment Range 1</desc>
+                    <begin>5000</begin>
+                    <end>65535</end>
                   </segmentRange>
       put:
         displayName: vdnSegmentPoolChange
@@ -353,8 +378,8 @@ securitySchemes:
           application/xml:
             example: |
               <segmentRange>
-                <end></end>
-                <name></name>
+                <end>10000</end>
+                <name>Segment Range 1 Expanded</name>
               </segmentRange>
             schema: vdnSegmentUpdate
       delete:
@@ -520,47 +545,47 @@ securitySchemes:
             example: |
               <vdnScopes>
                 <vdnScope>
-                  <objectId>vdnscope-1</objectId>
-                  <objectTypeName>VdnScope</objectTypeName>
-                  <vsmUuid>4226CACF-0558-AFF3-5D92-279B201C40E2</vsmUuid>
-                  <nodeId>72eee9ab-bb75-49ba-a782-d7dffedd180a</nodeId>
-                  <revision>0</revision>
+                  <objectId></objectId>
+                  <objectTypeName></objectTypeName>
+                  <vsmUuid></vsmUuid>
+                  <nodeId></nodeId>
+                  <revision></revision>
                   <type>
-                    <typeName>VdnScope</typeName>
+                    <typeName></typeName>
                   </type>
-                  <name>tz-1</name>
+                  <name></name>
                   <description></description>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
-                  <isUniversal>false</isUniversal>
-                  <universalRevision>0</universalRevision>
-                  <id>vdnscope-1</id>
+                  <isUniversal></isUniversal>
+                  <universalRevision></universalRevision>
+                  <id></id>
                   <clusters>
                     <cluster>
                       <cluster>
-                        <objectId>domain-c21</objectId>
-                        <objectTypeName>ClusterComputeResource</objectTypeName>
-                        <vsmUuid>4226CACF-0558-AFF3-5D92-279B201C40E2</vsmUuid>
-                        <nodeId>72eee9ab-bb75-49ba-a782-d7dffedd180a</nodeId>
-                        <revision>10</revision>
+                        <objectId></objectId>
+                        <objectTypeName></objectTypeName>
+                        <vsmUuid></vsmUuid>
+                        <nodeId></nodeId>
+                        <revision></revision>
                         <type>
-                          <typeName>ClusterComputeResource</typeName>
+                          <typeName></typeName>
                         </type>
-                        <name>Cluster-1</name>
+                        <name></name>
                         <scope>
-                          <id>datacenter-2</id>
-                          <objectTypeName>Datacenter</objectTypeName>
-                          <name>Datacenter-1</name>
+                          <id></id>
+                          <objectTypeName></objectTypeName>
+                          <name></name>
                         </scope>
                         <clientHandle></clientHandle>
                         <extendedAttributes/>
-                        <isUniversal>false</isUniversal>
-                        <universalRevision>0</universalRevision>
+                        <isUniversal></isUniversal>
+                        <universalRevision></universalRevision>
                       </cluster>
                     </cluster>
                   </clusters>
-                  <virtualWireCount>2</virtualWireCount>
-                  <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                  <virtualWireCount></virtualWireCount>
+                  <controlPlaneMode></controlPlaneMode>
                 </vdnScope>
               </vdnScopes>
   post:
@@ -573,7 +598,8 @@ securitySchemes:
     queryParameters:
       isUniversal:
         displayName: isUniversal
-        description: Set to "true" when creating a universal transport zone.
+        description: |
+          Set to "true" when creating a universal transport zone.
         type: boolean
         required: false
     body:
@@ -594,7 +620,9 @@ securitySchemes:
         schema: vdnScopeCreate
   /{scopeId}:
     displayName: vdnScope
-    description: Read, update and delete an existing scope (transport Zone)
+    description: |
+      You can manage specific VDN scopes with several API calls. Specify the
+      ID of the scope in the scopeId URI parameter which is required.
     uriParameters:
       scopeId:
         required: true
@@ -602,7 +630,56 @@ securitySchemes:
         description: A valid scope Id
     get:
       displayName: vdnScopeProperties
-      description: Retrieve the properties of an existing network scope
+      description: |
+        Retrieve the properties of an existing network scope
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <vdnScope>
+                  <objectId></objectId>
+                  <objectTypeName></objectTypeName>
+                  <vsmUuid></vsmUuid>
+                  <nodeId></nodeId>
+                  <revision></revision>
+                  <type>
+                    <typeName></typeName>
+                  </type>
+                  <name></name>
+                  <description></description>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes/>
+                  <isUniversal></isUniversal>
+                  <universalRevision></universalRevision>
+                  <id></id>
+                  <clusters>
+                    <cluster>
+                      <cluster>
+                        <objectId></objectId>
+                        <objectTypeName></objectTypeName>
+                        <vsmUuid></vsmUuid>
+                        <nodeId></nodeId>
+                        <revision></revision>
+                        <type>
+                          <typeName></typeName>
+                        </type>
+                        <name></name>
+                        <scope>
+                          <id></id>
+                          <objectTypeName></objectTypeName>
+                          <name></name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal></isUniversal>
+                        <universalRevision></universalRevision>
+                      </cluster>
+                    </cluster>
+                  </clusters>
+                  <virtualWireCount></virtualWireCount>
+                  <controlPlaneMode></controlPlaneMode>
+                </vdnScope>
     post:
       displayName: vdnScopeChange
       description: |
@@ -879,16 +956,18 @@ securitySchemes:
   post:
     displayName: nsxControllerCreate
     description: |
-      Adds a new NSX controller on the specified given cluster. The hostId
-      parameter is optional. The resourcePoolId can be either the clusterId or
-      resourcePoolId. The IP address of the controller node will be allocated
-      from the specified IP pool. deployType determines the controller node
-      memory size and can be small, medium, or large. However, different
-      controller deployment types are not currently supported because the OVF
-      overrides it and different OVF types require changes in the manager build
-      scripts. Despite not being supported, an arbitrary deployType size must
-      still be specified or an error will be returned. Request without body to
-      upgrade controller cluster.
+      Adds a new NSX controller on the specified given cluster. The *hostId*
+      parameter is optional. The *resourcePoolId* can be either the
+      *clusterId* or *resourcePoolId*.
+      ___
+      The IP address of the controller node will be allocated
+      from the specified IP pool. The *deployType* property determines the
+      controller node memory size and can be small, medium, or large. However,
+      different controller deployment types are not currently supported because
+      the OVF overrides it and different OVF types require changes in the
+      manager build scripts. Despite not being supported, an arbitrary
+      *deployType* size must still be specified or an error will be returned.
+      Request without body to upgrade controller cluster.
     body:
       application/xml:
         example: |
@@ -909,13 +988,13 @@ securitySchemes:
     description: |
       Retrieves details and runtime status for all controllers.  Runtime status
       can be one of the following:
-        **Deploying** ‐ controller is being deployed and the procedure has not
+        * **Deploying** ‐ controller is being deployed and the procedure has not
         completed yet.
-        **Removing** ‐ controller is being removed and the procedure has not
+        * **Removing** ‐ controller is being removed and the procedure has not
         completed yet.
-        **Running** ‐ controller has been deployed and can respond to API
+        * **Running** ‐ controller has been deployed and can respond to API
         invocation.
-        **Unknown** ‐ controller has been deployed but fails to respond to API
+        * **Unknown** ‐ controller has been deployed but fails to respond to API
         invocation.
     responses:
       200:
@@ -948,8 +1027,19 @@ securitySchemes:
     get:
       displayName: nsxControllerJobRead
       description: |
-        Retrieve status of controller creation or removal. Returns percentage
-        indication of job progress
+        Retrieves status of controller creation or removal. The progress gives
+        a percentage indication of current deploy / remove procedure.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <controllerDeploymentInfo>
+                  <vmId></vmId>
+                  <progress></progress>
+                  <status></status>
+                  <exceptionMessage></exceptionMessage>
+                </controllerDeploymentInfo>
   /{controllerId}:
     displayName: nsxController
     description: Working with specified controller
@@ -961,8 +1051,8 @@ securitySchemes:
     delete:
       displayName: nsxControllerDelete
       description: |
-        Delete NSX controller. When deleting last controller from cluster,
-        forceRemoval must be set to true
+        Deletes NSX controller. When deleting the last controller from a
+        cluster, the parameter forceRemovalForLast must be set to true.
       queryParameters:
         forceRemoval:
           type: boolean
@@ -974,10 +1064,14 @@ securitySchemes:
       description: Controller logs
       get:
         displayName: nsxControllerLogsRead
-        description: Retrieve controller logs
+        description: |
+          Retrieves controller logs. Response content type is
+          application/octet-stream and response header is filename. This
+          streams a fairly large bundle back (possibly hundreds of MB).
     /syslog:
       displayName: nsxControllerSyslog
-      description: Syslog exporter on controller node
+      description: |
+        Configures a syslog exporter on the specified controller node.
       post:
         displayName: nsxControllerSyslogCreate
         description: Add controller syslog exporter on the controller
@@ -995,29 +1089,52 @@ securitySchemes:
         displayName: nsxControllerSyslogRead
         description: |
           Retrieve details about the syslog exporter on the controller
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <controllerSyslogServer>
+                    <syslogServer></syslogServer>
+                    <port></port>
+                    <protocol></protocol>
+                    <level></level>
+                  </controllerSyslogServer>
       delete:
         displayName: nsxControllerSyslogDelete
-        description: Delete the syslog exporter
+        description: |
+          Deletes syslog exporter on the specified controller node.
     /snapshot:
       displayName: nsxControllerSnapshot
       description: |
         Take a snapshot of the control cluster from the specified controller
-        node
+        node.
       get:
         displayName: nsxControllerSnapshot
         description: |
-          Take a snapshot of the control cluster from the specified controller
-          node
+          To retrieve the controller IDs, log in to the vSphere Web Client.
+          Navigate to Networking & Security > Installation. The NSX Controller
+          Nodes table lists the controller IDs (Name column) and IP addresses
+          (Node column) of each controller.
   /cluster:
     displayName: nsxControllerCluster
     description: Cluster configuration
     get:
       displayName: nsxControllerClusterRead
       description: |
-        Retrieve cluster-wise configuration information for controller
+        Retrieve cluster wide configuration information for controller.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <controllerConfig>
+                  <sslEnabled></sslEnabled>
+                </controllerConfig>
     put:
       displayName: nsxControllerClusterUpdate
-      description: Modify cluster configuration information for controller
+      description: |
+        Modify cluster wide configuration information for controller
       body:
         application/xml:
           example: |
@@ -2442,7 +2559,28 @@ securitySchemes:
   /configure:
     displayName: nwfabricConfig
     description: |
-      Network virtualization components
+      As the demands on datacenters continue to grow and accelerate,
+      requirements related to speed and access to the data itself continue to
+      grow as well. In most infrastructures, virtual machine access and
+      mobility usually depend on physical networking infrastructure and the
+      physical networking environments they reside in. This can force virtual
+      workloads into less than ideal environments due to potential layer 2 or
+      layer 3 boundaries, such as being tied to specific VLANs.
+      ___
+      Network virtualization allows you to place these virtual workloads on any
+      available infrastructure in the datacenter regardless of the underlying
+      physical network infrastructure. This not only allows increased
+      flexibility and mobility, but increased availability and resilience.
+      Feature configuration is managed at a cluster level.
+      ___
+      Cluster preparation can be broken down into the following:
+        * Install VIB and non-VIB related action: Before any per-host config
+        a VIB must be installed on the host. The feature can use this time to
+        perform other bootstrapping tasks which do not depend on
+        VIB-installation. e.g. VXLAN creates the vmknic-pg and sets up some
+        opaque data.
+        * Post-VIB install: Prepare each host for the feature. In the case of
+        VXLAN, create vmknics.
     post:
       displayName: nwfabricConfigCreate
       description: |

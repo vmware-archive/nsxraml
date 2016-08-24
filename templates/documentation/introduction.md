@@ -38,3 +38,7 @@ To find out how VMware support offerings can help meet your business needs, go t
 
 VMware Education Services courses offer extensive hands‐on labs, case study examples, and course materials designed to be used as on‐the‐job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
 http://www.vmware.com/services.
+
+### Ports Required for the NSX REST API
+
+The NSX Manager requires port 443/TCP for REST API requests.
