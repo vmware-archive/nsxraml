@@ -1592,218 +1592,221 @@ securitySchemes:
       description: |
         Get a list of member elements that can be added to the service groups
         created on a particular scope.
-/2.0/services/ipam/pools/scope/{scopeId}:
-  displayName: ipPools
+/2.0/services/ipam/pools:
+  displayName: IpPools
   description: Working with IP pools.
-  uriParameters:
-    scopeId:
-      required: true
-      displayName: scopeId
-      description: |
-        For *scopeID* use globalroot-0 or *datacenterId* in upgrade use cases
-  get:
-    displayName: ipPoolRead
-    description: |
-      Retrieves all IP pools on the specified scope where the *scopeID* is the
-      reference to the desired scope. An example of the *scopeID* is
-      globalroot-0.
-    responses:
-      200:
-        body:
-          application/xml:
-            example: |
-              <ipamAddressPool>
-                <objectId>ipaddresspool-1</objectId>
-                <objectTypeName>IpAddressPool</objectTypeName>
-                <vsmUuid>4237BA90-C373-A71A-9827-1673BFA29498</vsmUuid>
-                <revision>1</revision>
-                <type>
-                  <typeName>IpAddressPool</typeName>
-                </type>
-                <name>rest-ip-pool-1</name>
-                <extendedAttributes></extendedAttributes>
-                <prefixLength>23</prefixLength>
-                <gateway>192.168.1.1</gateway>
-                <dnsSuffix>example.com</dnsSuffix>
-                <dnsServer1>10.11.0.1</dnsServer1>
-                <dnsServer2>10.11.0.2</dnsServer2>
-                <ipRanges>
-                  <ipRangeDto>
-                    <id>iprange-1</id>
-                    <startAddress>192.168.1.2</startAddress>
-                    <endAddress>192.168.1.3</endAddress>
-                  </ipRangeDto>
-                </ipRanges>
-                <totalAddressCount>2</totalAddressCount>
-                <usedAddressCount>0</usedAddressCount>
-                <usedPercentage>0</usedPercentage>
-              </ipamAddressPool>
-  post:
-    displayName: ipPoolCreate
-    description: |
-      You can create a pool of IP addresses. For *scopeId* use globalroot-0 or
-      the *datacenterId* in upgrade use cases.
-    body:
-      application/xml:
-        example: |
-          <ipamAddressPool>
-            <name></name>
-            <prefixLength></prefixLength>
-            <gateway></gateway>
-            <dnsSuffix></dnsSuffix>
-            <dnsServer1></dnsServer1>
-            <dnsServer2></dnsServer2>
-            <ipRanges>
-              <ipRangeDto>
-                <startAddress></startAddress>
-                <endAddress></endAddress>
-              </ipRangeDto>
-            </ipRanges>
-          </ipamAddressPool>
-        schema: ipPool
-/2.0/services/ipam/pools/{poolId}:
-  displayName: ipPool
-  description: Working with a specified IP pool
-  uriParameters:
-    poolId:
-      required: true
-      displayName: poolId
-      description: Specifiy the pool ID as *poolId* in the URI.
-  get:
-    displayName: ipPoolRead
-    description: Retrieve details about a specific IP pool.
-    responses:
-      200:
-        body:
-          application/xml:
-            example: |
-              <ipamAddressPool>
-                <objectId>ipaddresspool-1</objectId>
-                <objectTypeName>IpAddressPool</objectTypeName>
-                <vsmUuid>4237BA90-C373-A71A-9827-1673BFA29498</vsmUuid>
-                <revision>1</revision>
-                <type>
-                  <typeName>IpAddressPool</typeName>
-                </type>
-                <name>rest-ip-pool-1</name>
-                <extendedAttributes></extendedAttributes>
-                <prefixLength>23</prefixLength>
-                <gateway>192.168.1.1</gateway>
-                <dnsSuffix>example.com</dnsSuffix>
-                <dnsServer1>10.11.0.1</dnsServer1>
-                <dnsServer2>10.11.0.2</dnsServer2>
-                <ipRanges>
-                  <ipRangeDto>
-                    <id>iprange-1</id>
-                    <startAddress>192.168.1.2</startAddress>
-                    <endAddress>192.168.1.3</endAddress>
-                  </ipRangeDto>
-                </ipRanges>
-                <totalAddressCount>2</totalAddressCount>
-                <usedAddressCount>0</usedAddressCount>
-                <usedPercentage>0</usedPercentage>
-              </ipamAddressPool>
-  put:
-    displayName: ipPoolUpdate
-    description: |
-      To modify an IP pool, query the IP pool first. Then modify the output and
-      send it back as the request body.
-    body:
-      application/xml:
-        example: |
-          <ipamAddressPool>
-            <objectId></objectId>
-            <objectTypeName></objectTypeName>
-            <vsmUuid></vsmUuid>
-            <revision></revision>
-            <type>
-              <typeName></typeName>
-            </type>
-            <name></name>
-            <extendedAttributes></extendedAttributes>
-            <prefixLength></prefixLength>
-            <gateway></gateway>
-            <dnsSuffix></dnsSuffix>
-            <dnsServer1></dnsServer1>
-            <dnsServer2></dnsServer2>
-            <ipRanges>
-              <ipRangeDto>
-                <id></id>
-                <startAddress></startAddress>
-                <endAddress></endAddress>
-              </ipRangeDto>
-            </ipRanges>
-          </ipamAddressPool>
-        schema: ipPoolUpdate
-  delete:
-    displayName: ipPoolDelete
-    description: Delete an IP pool
-  /ipaddresses:
-    displayName: ipPoolAllocate
-    description: Work with IP's and their allocation status in IP Pools
+  /scope/{scopeId}:
+    displayName: ipPoolScope
+    description: Working with IP pools by scope.
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: |
+          For *scopeID* use globalroot-0 or *datacenterId* in upgrade use cases
     get:
-      displayName: ipPoolIpsRead
+      displayName: ipPoolRead
       description: |
-        Retrieves all allocated IP addresses from the specified pool.
+        Retrieves all IP pools on the specified scope where the *scopeID* is the
+        reference to the desired scope. An example of the *scopeID* is
+        globalroot-0.
       responses:
         200:
           body:
             application/xml:
               example: |
-                <allocatedIpAddresses>
+                <ipamAddressPool>
+                  <objectId>ipaddresspool-1</objectId>
+                  <objectTypeName>IpAddressPool</objectTypeName>
+                  <vsmUuid>4237BA90-C373-A71A-9827-1673BFA29498</vsmUuid>
+                  <revision>1</revision>
+                  <type>
+                    <typeName>IpAddressPool</typeName>
+                  </type>
+                  <name>rest-ip-pool-1</name>
+                  <extendedAttributes></extendedAttributes>
+                  <prefixLength>23</prefixLength>
+                  <gateway>192.168.1.1</gateway>
+                  <dnsSuffix>example.com</dnsSuffix>
+                  <dnsServer1>10.11.0.1</dnsServer1>
+                  <dnsServer2>10.11.0.2</dnsServer2>
+                  <ipRanges>
+                    <ipRangeDto>
+                      <id>iprange-1</id>
+                      <startAddress>192.168.1.2</startAddress>
+                      <endAddress>192.168.1.3</endAddress>
+                    </ipRangeDto>
+                  </ipRanges>
+                  <totalAddressCount>2</totalAddressCount>
+                  <usedAddressCount>0</usedAddressCount>
+                  <usedPercentage>0</usedPercentage>
+                </ipamAddressPool>
+    post:
+      displayName: ipPoolCreate
+      description: |
+        You can create a pool of IP addresses. For *scopeId* use globalroot-0 or
+        the *datacenterId* in upgrade use cases.
+      body:
+        application/xml:
+          example: |
+            <ipamAddressPool>
+              <name></name>
+              <prefixLength></prefixLength>
+              <gateway></gateway>
+              <dnsSuffix></dnsSuffix>
+              <dnsServer1></dnsServer1>
+              <dnsServer2></dnsServer2>
+              <ipRanges>
+                <ipRangeDto>
+                  <startAddress></startAddress>
+                  <endAddress></endAddress>
+                </ipRangeDto>
+              </ipRanges>
+            </ipamAddressPool>
+          schema: ipPool
+  /{poolId}:
+    displayName: ipPool
+    description: Working with a specified IP pool.
+    uriParameters:
+      poolId:
+        required: true
+        displayName: poolId
+        description: Specifiy the pool ID as *poolId* in the URI.
+    get:
+      displayName: ipPoolRead
+      description: Retrieve details about a specific IP pool.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <ipamAddressPool>
+                  <objectId>ipaddresspool-1</objectId>
+                  <objectTypeName>IpAddressPool</objectTypeName>
+                  <vsmUuid>4237BA90-C373-A71A-9827-1673BFA29498</vsmUuid>
+                  <revision>1</revision>
+                  <type>
+                    <typeName>IpAddressPool</typeName>
+                  </type>
+                  <name>rest-ip-pool-1</name>
+                  <extendedAttributes></extendedAttributes>
+                  <prefixLength>23</prefixLength>
+                  <gateway>192.168.1.1</gateway>
+                  <dnsSuffix>example.com</dnsSuffix>
+                  <dnsServer1>10.11.0.1</dnsServer1>
+                  <dnsServer2>10.11.0.2</dnsServer2>
+                  <ipRanges>
+                    <ipRangeDto>
+                      <id>iprange-1</id>
+                      <startAddress>192.168.1.2</startAddress>
+                      <endAddress>192.168.1.3</endAddress>
+                    </ipRangeDto>
+                  </ipRanges>
+                  <totalAddressCount>2</totalAddressCount>
+                  <usedAddressCount>0</usedAddressCount>
+                  <usedPercentage>0</usedPercentage>
+                </ipamAddressPool>
+    put:
+      displayName: ipPoolUpdate
+      description: |
+        To modify an IP pool, query the IP pool first. Then modify the output and
+        send it back as the request body.
+      body:
+        application/xml:
+          example: |
+            <ipamAddressPool>
+              <objectId></objectId>
+              <objectTypeName></objectTypeName>
+              <vsmUuid></vsmUuid>
+              <revision></revision>
+              <type>
+                <typeName></typeName>
+              </type>
+              <name></name>
+              <extendedAttributes></extendedAttributes>
+              <prefixLength></prefixLength>
+              <gateway></gateway>
+              <dnsSuffix></dnsSuffix>
+              <dnsServer1></dnsServer1>
+              <dnsServer2></dnsServer2>
+              <ipRanges>
+                <ipRangeDto>
+                  <id></id>
+                  <startAddress></startAddress>
+                  <endAddress></endAddress>
+                </ipRangeDto>
+              </ipRanges>
+            </ipamAddressPool>
+          schema: ipPoolUpdate
+    delete:
+      displayName: ipPoolDelete
+      description: Delete an IP pool
+    /ipaddresses:
+      displayName: ipPoolAllocate
+      description: Work with IP's and their allocation status in IP Pools
+      get:
+        displayName: ipPoolIpsRead
+        description: |
+          Retrieves all allocated IP addresses from the specified pool.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <allocatedIpAddresses>
+                    <allocatedIpAddress>
+                      <id>allocatedipaddress-4</id>
+                      <ipAddress>192.168.1.2</ipAddress>
+                      <gateway>192.168.1.1</gateway>
+                      <prefixLength>23</prefixLength>
+                      <dnsServer1>10.112.0.1</dnsServer1>
+                      <dnsServer2>10.112.0.2</dnsServer2>
+                      <dnsSuffix>eng.vmware.com</dnsSuffix>
+                      <allocationNote>sample note</allocationNote>
+                    </allocatedIpAddress>
+                  </allocatedIpAddresses>
+      post:
+        displayName: ipPoolAllocateIp
+        description: |
+          Allocate an IP Address from the pool. Use 'ALLOCATE' in the
+          'allocationMode' field in the body to allocate the next available ip.
+          To allocate a specific one use 'RESERVE' and pass the IP to reserve in
+          the 'ipAddress' fields in the body.
+        body:
+          application/xml:
+            example: |
+              <ipAddressRequest>
+                <allocationMode>ALLOCATE</allocationMode>
+                <ipAddress>192.168.1.2</ipAddress>
+              </ipAddressRequest>
+            schema: ipAddressRequest
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
                   <allocatedIpAddress>
-                    <id>allocatedipaddress-4</id>
+                    <id>allocatedipaddress-1</id>
                     <ipAddress>192.168.1.2</ipAddress>
                     <gateway>192.168.1.1</gateway>
                     <prefixLength>23</prefixLength>
                     <dnsServer1>10.112.0.1</dnsServer1>
                     <dnsServer2>10.112.0.2</dnsServer2>
                     <dnsSuffix>eng.vmware.com</dnsSuffix>
-                    <allocationNote>sample note</allocationNote>
+                    <allocationNote/>sample note</allocationNote>
                   </allocatedIpAddress>
-                </allocatedIpAddresses>
-    post:
-      displayName: ipPoolAllocateIp
-      description: |
-        Allocate an IP Address from the pool. Use 'ALLOCATE' in the
-        'allocationMode' field in the body to allocate the next available ip.
-        To allocate a specific one use 'RESERVE' and pass the IP to reserve in
-        the 'ipAddress' fields in the body.
-      body:
-        application/xml:
-          example: |
-            <ipAddressRequest>
-              <allocationMode>ALLOCATE</allocationMode>
-              <ipAddress>192.168.1.2</ipAddress>
-            </ipAddressRequest>
-          schema: ipAddressRequest
-      responses:
-        200:
-          body:
-            application/xml:
-              example: |
-                <allocatedIpAddress>
-                  <id>allocatedipaddress-1</id>
-                  <ipAddress>192.168.1.2</ipAddress>
-                  <gateway>192.168.1.1</gateway>
-                  <prefixLength>23</prefixLength>
-                  <dnsServer1>10.112.0.1</dnsServer1>
-                  <dnsServer2>10.112.0.2</dnsServer2>
-                  <dnsSuffix>eng.vmware.com</dnsSuffix>
-                  <allocationNote/>sample note</allocationNote>
-                </allocatedIpAddress>
-    /{ipAddress}:
-      displayName: ipAddressRelease
-      description: Release an IP Address allocation in the Pool
-      uriParameters:
-        ipAddress:
-          required: true
-          displayName: ipAddress
-          description: |
-            The IP address to release, e.g. '192.168.10.10'
-      delete:
+      /{ipAddress}:
         displayName: ipAddressRelease
         description: Release an IP Address allocation in the Pool
+        uriParameters:
+          ipAddress:
+            required: true
+            displayName: ipAddress
+            description: |
+              The IP address to release, e.g. '192.168.10.10'
+        delete:
+          displayName: ipAddressRelease
+          description: Release an IP Address allocation in the Pool
 /2.0/services/licensing/capacityusage:
   displayName: capacityUsage
   description: |

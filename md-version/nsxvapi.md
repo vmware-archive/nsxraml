@@ -406,10 +406,11 @@ Get the members of a service group
 * **get** *(secured)*: Get a list of member elements that can be added to the service groups
 created on a particular scope.
 
-## ipPools
+## IpPools
 Working with IP pools.
 
 ### /2.0/services/ipam/pools/scope/{scopeId}
+Working with IP pools by scope.
 
 * **get** *(secured)*: Retrieves all IP pools on the specified scope where the *scopeID* is the
 reference to the desired scope. An example of the *scopeID* is
@@ -418,10 +419,8 @@ globalroot-0.
 * **post** *(secured)*: You can create a pool of IP addresses. For *scopeId* use globalroot-0 or
 the *datacenterId* in upgrade use cases.
 
-## ipPool
-Working with a specified IP pool
-
 ### /2.0/services/ipam/pools/{poolId}
+Working with a specified IP pool.
 
 * **get** *(secured)*: Retrieve details about a specific IP pool.
 * **put** *(secured)*: To modify an IP pool, query the IP pool first. Then modify the output and
