@@ -195,6 +195,39 @@ Create and List operations of logical switches inside a Transport Zone.
 appropriate universal scope as the scopeId and use the primary NSX
 manager.
 
+## traceflows
+For Traceflow to work as expected, make sure that the controller cluster is
+connected and in healthy state. The Traceflow operation requires active
+communication between vCenter, NSX Manager, controller cluster, and netcpa
+User World Agents (UWA) on the host. Traceflow observes marked packet as it
+traverses overlay network. Each packet is delivered to host VM and
+monitored as it crosses overlay network until it reaches the destination
+VM. The packet is never delivered to the destination guest VM. This means
+that Traceflow packet delivery is successful even when the guest VM is
+powered down. Unknown L2 Packets are always be sent to the bridge.
+Typically, the bridge forwards these packets to a VLAN and reports the
+Traceflow packet as delivered. The packet which is reported as delivered
+need not necessarily mean that the trace packet was delivered to the
+destination specified. You should conclude only after validating the
+observations.vdl2 serves ARP proxy for ARP packets coming from VMs.
+However, traceflow bypasses this process, hence vdl2 may broadcast the
+traceflow packet out.
+
+### /api/2.0/vdn/traceflow
+
+* **post** *(secured)*: Create Traceflow
+
+### /api/2.0/vdn/traceflow/{traceflowId}
+Per traceflow operations.
+
+* **get** *(secured)*: Query a specific traceflow by *tracflowId* which is the value returned
+after executing the create Traceflow API call.
+
+### /api/2.0/vdn/traceflow/{traceflowId}/observations
+Traceflow Observations
+
+* **get** *(secured)*: List traceflow observations
+
 ## logicalSwitchesGlobal
 List Operations of logicalSwitches in all transport Zones (scope)
 
@@ -2497,4 +2530,19 @@ dfw, or synchronize Service Composer firewall with dfw
 Retrieve security policies mapped to a security group
 
 * **get** *(secured)*: Retrieve security policies mapped to a security group
+
+## nsxCli
+The Central Command Line Interface (Central CLI) commandsare run from the
+NSX Manager, and retrieve information from the NSX Manager and other
+devices. These commands can also be executed in the API. Given here is the
+general structure for making a Central CLI command call in the API, as
+well as a specific sample of one such command. For a complete list of the
+Central CLI commands executable through the API, please see the Central
+CLI chapter of the NSX Command Line Interface Reference available on the
+VMware documentation website.
+
+### /1.0/nsx/cli
+
+* **post** *(secured)*: General central CLI command for use in the API. CLI Command can be any
+central CLI command.
 

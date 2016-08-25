@@ -92,6 +92,7 @@ schemas:
     netExtipPoolsCreate: !include schemas/netExtipPoolsCreate.xsd
     netExtipPoolsUpdate: !include schemas/netExtipPoolsUpdate.xsd
     nsxControllerPasswordUpdate: !include schemas/nsxControllerPasswordUpdate.xsd
+    nsxCliExecute: !include schemas/nsxCliExecute.xsd
     nsxEdgesCreate: !include schemas/nsxEdgesCreate.xsd
     nsxEdgeDnsUpdate: !include schemas/nsxEdgeDnsUpdate.xsd
     nsxEdgeUpdate: !include schemas/nsxEdgeUpdate.xsd
@@ -137,6 +138,7 @@ schemas:
     systemLocaleUpdate: !include schemas/systemLocaleUpdate.xsd
     systemSyslogServerUpdate: !include schemas/systemSyslogServerUpdate.xsd
     systemTimeUpdate: !include schemas/systemTimeUpdate.xsd
+    traceflowCreate: !include schemas/traceflowCreate.xsd
     universalSyncConfigurationNsxManagersCreate: !include schemas/universalSyncConfigurationNsxManagersCreate.xsd
     universalSyncConfigurationManagersThumbprintUpdate: !include schemas/universalSyncConfigurationManagersThumbprintUpdate.xsd
     userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xsd
@@ -799,6 +801,243 @@ securitySchemes:
             <controlPlaneMode></controlPlaneMode>
           </virtualWireCreateSpec>
         schema: logicalSwitchCreate
+/api/2.0/vdn/traceflow:
+  displayName: traceflows
+  description: |
+    For Traceflow to work as expected, make sure that the controller cluster is
+    connected and in healthy state. The Traceflow operation requires active
+    communication between vCenter, NSX Manager, controller cluster, and netcpa
+    User World Agents (UWA) on the host. Traceflow observes marked packet as it
+    traverses overlay network. Each packet is delivered to host VM and
+    monitored as it crosses overlay network until it reaches the destination
+    VM. The packet is never delivered to the destination guest VM. This means
+    that Traceflow packet delivery is successful even when the guest VM is
+    powered down. Unknown L2 Packets are always be sent to the bridge.
+    Typically, the bridge forwards these packets to a VLAN and reports the
+    Traceflow packet as delivered. The packet which is reported as delivered
+    need not necessarily mean that the trace packet was delivered to the
+    destination specified. You should conclude only after validating the
+    observations.vdl2 serves ARP proxy for ARP packets coming from VMs.
+    However, traceflow bypasses this process, hence vdl2 may broadcast the
+    traceflow packet out.
+  post:
+    displayName: traceflowCreate
+    description: Create Traceflow
+    body:
+      application/xml:
+        example: |
+          <traceflowRequest>
+            <vnicId>74eb1145-d40b-4061-8e64-1caddf2dbf81.001</vnicId>
+            <timeout>10000</timeout>
+            <routed>true</routed>
+            <packet class="fieldsPacketData">
+              <resourceType>FieldsPacketData</resourceType>
+              <ethHeader>
+                <srcMac>00:50:56:83:7e:87</srcMac>
+                <dstMac>00:50:56:83:fa:6c</dstMac>
+                <ethType>2048</ethType>
+              </ethHeader>
+              <ipHeader>
+                <ttl>64</ttl>
+                <srcIp>172.32.1.5</srcIp>
+                <dstIp>172.34.1.5</dstIp>
+              </ipHeader>
+            </packet>
+          </traceflowRequest>
+        schema: traceflowCreate
+  /{traceflowId}:
+    displayName: traceflow
+    description: Per traceflow operations.
+    get:
+      displayName: traceflowRead
+      description: |
+        Query a specific traceflow by *tracflowId* which is the value returned
+        after executing the create Traceflow API call.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <traceflowDto>
+                  <operState>COMPLETE</operState>
+                  <vnicId>74eb1145-d40b-4061-8e64-1caddf2dbf81.001</vnicId>
+                  <id>00000000-0000-0000-0000-000056b5dec3</id>
+                  <receivedCount>2</receivedCount>
+                  <forwardedCount>1</forwardedCount>
+                  <deliveredCount>1</deliveredCount>
+                  <logicalReceivedCount>4</logicalReceivedCount>
+                  <logicalDroppedCount>0</logicalDroppedCount>
+                  <logicalForwardedCount>4</logicalForwardedCount>
+                  <timeout>10000</timeout>
+                  <completeAvailable>true</completeAvailable>
+                  <result>SUCCESS</result>
+                  <resultSummary>Traceflow delivered observation(s) reported</resultSummary>
+                  <srcIp>172.32.1.5</srcIp>
+                  <srcMac>00:50:56:83:7e:87</srcMac>
+                  <dstMac>172.34.1.5</dstMac>
+                  <lifMac>00:50:56:83:fa:6c</lifMac>
+                </traceflowDto>
+    /observations:
+      displayName: traceflowObservations
+      description: Traceflow Observations
+      get:
+        displayName: traceflowObservationsList
+        description: List traceflow observations
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <traceflowObservations>
+                    <traceflowObservationsDataPage>
+                      <pagingInfo>
+                        <pageSize>100</pageSize>
+                        <startIndex>0</startIndex>
+                        <totalCount>12</totalCount>
+                        <sortOrderAscending>true</sortOrderAscending>
+                        <sortBy></sortBy>
+                      </pagingInfo>
+                      <traceflowObservationReceived>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>PHYS</component>
+                        <compDisplayName>vNIC</compDisplayName>
+                        <hopCount>0</hopCount>
+                      </traceflowObservationReceived>
+                      <traceflowObservationLogicalReceived>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>FW</component>
+                        <compDisplayName>Firewall</compDisplayName>
+                        <hopCount>1</hopCount>
+                      </traceflowObservationLogicalReceived>
+                      <traceflowObservationLogicalForwarded>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>FW</component>
+                        <compDisplayName>Firewall</compDisplayName>
+                        <hopCount>2</hopCount>
+                        <ruleId>1001</ruleId>
+                      </traceflowObservationLogicalForwarded>
+                      <traceflowObservationLogicalForwarded>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>LS</component>
+                        <compDisplayName>1-switch-3</compDisplayName>
+                        <hopCount>3</hopCount>
+                        <vni>10000</vni>
+                        <logicalCompId>universalwire-1</logicalCompId>
+                        <logicalCompName>1-switch-3</logicalCompName>
+                      </traceflowObservationLogicalForwarded>
+                      <traceflowObservationLogicalReceived>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>LR</component>
+                        <compDisplayName>1-vm-3</compDisplayName>
+                        <hopCount>4</hopCount>
+                        <vni>10000</vni>
+                        <lifName>27100000000a</lifName>
+                        <compId>10000</compId>
+                        <srcNsxManager>4204ad55-71ec-927b-ca1b-aabfa36863ad</srcNsxManager>
+                        <srcGlobal>true</srcGlobal>
+                        <compName>default+edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e</compName>
+                        <logicalCompId>edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e</logicalCompId>
+                        <logicalCompName>1-vm-3</logicalCompName>
+                        <otherLogicalCompId>universalwire-1</otherLogicalCompId>
+                        <otherLogicalCompName>1-switch-3</otherLogicalCompName>
+                      </traceflowObservationLogicalReceived>
+                      <traceflowObservationLogicalForwarded>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>LR</component>
+                        <compDisplayName>1-vm-3</compDisplayName>
+                        <hopCount>5</hopCount>
+                        <vni>10002</vni>
+                        <lifName>27100000000c</lifName>
+                        <compId>10000</compId>
+                        <compName>default+edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e</compName>
+                        <srcNsxManager>4204ad55-71ec-927b-ca1b-aabfa36863ad</srcNsxManager>
+                        <srcGlobal>true</srcGlobal>
+                        <logicalCompId>edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e</logicalCompId>
+                        <logicalCompName>1-vm-3</logicalCompName>
+                        <otherLogicalCompId>universalwire-3</otherLogicalCompId>
+                        <otherLogicalCompName>3-switch-98</otherLogicalCompName>
+                      </traceflowObservationLogicalForwarded>
+                      <traceflowObservationLogicalReceived>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>LS</component>
+                        <compDisplayName>3-switch-98</compDisplayName>
+                        <hopCount>6</hopCount>
+                        <vni>10002</vni>
+                        <logicalCompId>universalwire-3</logicalCompId>
+                        <logicalCompName>3-switch-98</logicalCompName>
+                      </traceflowObservationLogicalReceived>
+                      <traceflowObservationForwarded>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>a02fe610-5358-4a3d-8fef-7be60b7d4ea5</transportNodeId>
+                        <hostName>10.146.104.42</hostName>
+                        <hostId>host-22</hostId>
+                        <component>PHYS</component>
+                        <compDisplayName>10.146.104.42</compDisplayName>
+                        <hopCount>7</hopCount>
+                        <remoteIpAddress>172.19.172.142</remoteIpAddress>
+                        <context>5109430534275084</context>
+                      </traceflowObservationForwarded>
+                      <traceflowObservationReceived>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>d2fd4b26-a664-423f-b0aa-8ba760cd967f</transportNodeId>
+                        <hostName>10.146.103.3</hostName>
+                        <hostId>host-20</hostId>
+                        <component>PHYS</component>
+                        <compDisplayName>10.146.103.3</compDisplayName>
+                        <hopCount>8</hopCount>
+                      </traceflowObservationReceived>
+                      <traceflowObservationLogicalReceived>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>d2fd4b26-a664-423f-b0aa-8ba760cd967f</transportNodeId>
+                        <hostName>10.146.103.3</hostName>
+                        <hostId>host-20</hostId>
+                        <component>FW</component>
+                        <compDisplayName>Firewall</compDisplayName>
+                        <hopCount>9</hopCount>
+                      </traceflowObservationLogicalReceived>
+                      <traceflowObservationLogicalForwarded>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>d2fd4b26-a664-423f-b0aa-8ba760cd967f</transportNodeId>
+                        <hostName>10.146.103.3</hostName>
+                        <hostId>host-20</hostId>
+                        <component>FW</component>
+                        <compDisplayName>Firewall</compDisplayName>
+                        <hopCount>10</hopCount>
+                        <ruleId>1001</ruleId>
+                      </traceflowObservationLogicalForwarded>
+                      <traceflowObservationDelivered>
+                        <roundId>00000000-0000-0000-0000-000056b5dec3</roundId>
+                        <transportNodeId>d2fd4b26-a664-423f-b0aa-8ba760cd967f</transportNodeId>
+                        <hostName>10.146.103.3</hostName>
+                        <hostId>host-20</hostId>
+                        <component>PHYS</component>
+                        <compDisplayName>vNIC</compDisplayName>
+                        <hopCount>11</hopCount>
+                        <vlanId>0</vlanId>
+                      </traceflowObservationDelivered>
+                    </traceflowObservationsDataPage>
+                  </traceflowObservations>
 /2.0/vdn/virtualwires:
   displayName: logicalSwitchesGlobal
   description: List Operations of logicalSwitches in all transport Zones (scope)
@@ -8913,3 +9152,30 @@ securitySchemes:
     get:
       displayName: secGroupPoliciesRead
       description: Retrieve security policies mapped to a security group
+/1.0/nsx/cli:
+  displayName: nsxCli
+  description: |
+    The Central Command Line Interface (Central CLI) commandsare run from the
+    NSX Manager, and retrieve information from the NSX Manager and other
+    devices. These commands can also be executed in the API. Given here is the
+    general structure for making a Central CLI command call in the API, as
+    well as a specific sample of one such command. For a complete list of the
+    Central CLI commands executable through the API, please see the Central
+    CLI chapter of the NSX Command Line Interface Reference available on the
+    VMware documentation website.
+  post:
+    displayName: nsxCliExecute
+    description: |
+      General central CLI command for use in the API. CLI Command can be any
+      central CLI command.
+    queryParameters:
+      suffix:
+        displayName: action
+        description: (required) Use *action=execute* as the query parameter.
+    body:
+      application/xml:
+        example: |
+          <nsxcli>
+            <command>show logical-switch list host host-21 vni</command>
+          </nsxcli>
+        schema: nsxCliExecute

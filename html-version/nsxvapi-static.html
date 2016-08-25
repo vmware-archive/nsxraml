@@ -2609,6 +2609,75 @@ user belongs</p>
 </div>
 </section>
 <section class="resource">
+<h1 class="anchor" id="1-0-nsx-cli">
+  <a href="#1-0-nsx-cli">
+    /1.0/nsx/cli
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>The Central Command Line Interface (Central CLI) commandsare run from the
+NSX Manager, and retrieve information from the NSX Manager and other
+devices. These commands can also be executed in the API. Given here is the
+general structure for making a Central CLI command call in the API, as
+well as a specific sample of one such command. For a complete list of the
+Central CLI commands executable through the API, please see the Central
+CLI chapter of the NSX Command Line Interface Reference available on the
+VMware documentation website.</p>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/nsx/cli"
+    href="#POST/1.0/nsx/cli"
+  ><h2>post</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>General central CLI command for use in the API. CLI Command can be any
+central CLI command.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">suffix</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>(required) Use <em>action=execute</em> as the query parameter.</p>
+
+  </dd>
+</dl>
+    </div>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="nsxcli"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="command"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nsxcli</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">command</span>&gt;</span>show logical-switch list host host-21 vni<span class="hljs-tag">&lt;/<span class="hljs-name">command</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nsxcli</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
 <h1 class="anchor" id="1-0-sam-syslog">
   <a href="#1-0-sam-syslog">
     /1.0/sam/syslog
@@ -29117,6 +29186,363 @@ operations</p>
       </a>
     </li>
     </ul>
+  </div>
+</div>
+</section>
+<section class="resource">
+<h1 class="anchor" id="api-2-0-vdn-traceflow">
+  <a href="#api-2-0-vdn-traceflow">
+    /api/2.0/vdn/traceflow
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>For Traceflow to work as expected, make sure that the controller cluster is
+connected and in healthy state. The Traceflow operation requires active
+communication between vCenter, NSX Manager, controller cluster, and netcpa
+User World Agents (UWA) on the host. Traceflow observes marked packet as it
+traverses overlay network. Each packet is delivered to host VM and
+monitored as it crosses overlay network until it reaches the destination
+VM. The packet is never delivered to the destination guest VM. This means
+that Traceflow packet delivery is successful even when the guest VM is
+powered down. Unknown L2 Packets are always be sent to the bridge.
+Typically, the bridge forwards these packets to a VLAN and reports the
+Traceflow packet as delivered. The packet which is reported as delivered
+need not necessarily mean that the trace packet was delivered to the
+destination specified. You should conclude only after validating the
+observations.vdl2 serves ARP proxy for ARP packets coming from VMs.
+However, traceflow bypasses this process, hence vdl2 may broadcast the
+traceflow packet out.</p>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/api/2.0/vdn/traceflow"
+    href="#POST/api/2.0/vdn/traceflow"
+  ><h2>post</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Create Traceflow</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="traceflowRequest"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="vmnicId"/&gt;
+        &lt;xs:element type="xs:string" name="timeout"/&gt;
+        &lt;xs:element type="xs:string" name="routed"/&gt;
+        &lt;xs:element type="xs:string" name="packet"/&gt;
+        &lt;xs:element type="xs:string" name="resourceType"/&gt;
+        &lt;xs:element name="ethHeader"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="srcMac"/&gt;
+              &lt;xs:element type="xs:string" name="dstMac"/&gt;
+              &lt;xs:element type="xs:string" name="ethType"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="ipHeader"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="ttl"/&gt;
+              &lt;xs:element type="xs:string" name="srcIp"/&gt;
+              &lt;xs:element type="xs:string" name="dstIp"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">traceflowRequest</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnicId</span>&gt;</span>74eb1145-d40b-4061-8e64-1caddf2dbf81.001<span class="hljs-tag">&lt;/<span class="hljs-name">vnicId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">routed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">routed</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">packet</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"fieldsPacketData"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceType</span>&gt;</span>FieldsPacketData<span class="hljs-tag">&lt;/<span class="hljs-name">resourceType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ethHeader</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">srcMac</span>&gt;</span>00:50:56:83:7e:87<span class="hljs-tag">&lt;/<span class="hljs-name">srcMac</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dstMac</span>&gt;</span>00:50:56:83:fa:6c<span class="hljs-tag">&lt;/<span class="hljs-name">dstMac</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ethType</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">ethType</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ethHeader</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipHeader</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ttl</span>&gt;</span>64<span class="hljs-tag">&lt;/<span class="hljs-name">ttl</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">srcIp</span>&gt;</span>172.32.1.5<span class="hljs-tag">&lt;/<span class="hljs-name">srcIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dstIp</span>&gt;</span>172.34.1.5<span class="hljs-tag">&lt;/<span class="hljs-name">dstIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ipHeader</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">packet</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">traceflowRequest</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+<h1 class="anchor" id="api-2-0-vdn-traceflow-traceflowid">
+  <a href="#api-2-0-vdn-traceflow-traceflowid">
+    <span class="parent">/api/2.0/vdn/traceflow</span>/{traceflowId}
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>Per traceflow operations.</p>
+</div>
+  <div class="params">
+    <h2>URI Parameters</h2>
+      <dl>
+  <dt>
+    <span class="param">traceflowId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/api/2.0/vdn/traceflow/{traceflowId}"
+    href="#GET/api/2.0/vdn/traceflow/{traceflowId}"
+  ><h2>get</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Query a specific traceflow by <em>tracflowId</em> which is the value returned
+after executing the create Traceflow API call.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">traceflowDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">operState</span>&gt;</span>COMPLETE<span class="hljs-tag">&lt;/<span class="hljs-name">operState</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnicId</span>&gt;</span>74eb1145-d40b-4061-8e64-1caddf2dbf81.001<span class="hljs-tag">&lt;/<span class="hljs-name">vnicId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">receivedCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">receivedCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">forwardedCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">forwardedCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">deliveredCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">deliveredCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logicalReceivedCount</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">logicalReceivedCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logicalDroppedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">logicalDroppedCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logicalForwardedCount</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">logicalForwardedCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">completeAvailable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">completeAvailable</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span>&gt;</span>SUCCESS<span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resultSummary</span>&gt;</span>Traceflow delivered observation(s) reported<span class="hljs-tag">&lt;/<span class="hljs-name">resultSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">srcIp</span>&gt;</span>172.32.1.5<span class="hljs-tag">&lt;/<span class="hljs-name">srcIp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">srcMac</span>&gt;</span>00:50:56:83:7e:87<span class="hljs-tag">&lt;/<span class="hljs-name">srcMac</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dstMac</span>&gt;</span>172.34.1.5<span class="hljs-tag">&lt;/<span class="hljs-name">dstMac</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">lifMac</span>&gt;</span>00:50:56:83:fa:6c<span class="hljs-tag">&lt;/<span class="hljs-name">lifMac</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">traceflowDto</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+<h1 class="anchor" id="api-2-0-vdn-traceflow-traceflowid-observations">
+  <a href="#api-2-0-vdn-traceflow-traceflowid-observations">
+    <span class="parent">/api/2.0/vdn/traceflow/{traceflowId}</span>/observations
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>Traceflow Observations</p>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/api/2.0/vdn/traceflow/{traceflowId}/observations"
+    href="#GET/api/2.0/vdn/traceflow/{traceflowId}/observations"
+  ><h2>get</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>List traceflow observations</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservations</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationsDataPage</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pagingInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">startIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">startIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>12<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sortOrderAscending</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sortOrderAscending</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sortBy</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sortBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">pagingInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationReceived</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>PHYS<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>vNIC<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationReceived</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>FW<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>Firewall<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>FW<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>Firewall<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleId</span>&gt;</span>1001<span class="hljs-tag">&lt;/<span class="hljs-name">ruleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>LS<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>1-switch-3<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vni</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">vni</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompId</span>&gt;</span>universalwire-1<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompName</span>&gt;</span>1-switch-3<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>LR<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>1-vm-3<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vni</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">vni</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lifName</span>&gt;</span>27100000000a<span class="hljs-tag">&lt;/<span class="hljs-name">lifName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compId</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">compId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">srcNsxManager</span>&gt;</span>4204ad55-71ec-927b-ca1b-aabfa36863ad<span class="hljs-tag">&lt;/<span class="hljs-name">srcNsxManager</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">srcGlobal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">srcGlobal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compName</span>&gt;</span>default+edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e<span class="hljs-tag">&lt;/<span class="hljs-name">compName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompId</span>&gt;</span>edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompName</span>&gt;</span>1-vm-3<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">otherLogicalCompId</span>&gt;</span>universalwire-1<span class="hljs-tag">&lt;/<span class="hljs-name">otherLogicalCompId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">otherLogicalCompName</span>&gt;</span>1-switch-3<span class="hljs-tag">&lt;/<span class="hljs-name">otherLogicalCompName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>LR<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>1-vm-3<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vni</span>&gt;</span>10002<span class="hljs-tag">&lt;/<span class="hljs-name">vni</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lifName</span>&gt;</span>27100000000c<span class="hljs-tag">&lt;/<span class="hljs-name">lifName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compId</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">compId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compName</span>&gt;</span>default+edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e<span class="hljs-tag">&lt;/<span class="hljs-name">compName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">srcNsxManager</span>&gt;</span>4204ad55-71ec-927b-ca1b-aabfa36863ad<span class="hljs-tag">&lt;/<span class="hljs-name">srcNsxManager</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">srcGlobal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">srcGlobal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompId</span>&gt;</span>edge-bbe379a7-e7b9-4ece-b97c-466cf746c93e<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompName</span>&gt;</span>1-vm-3<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">otherLogicalCompId</span>&gt;</span>universalwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">otherLogicalCompId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">otherLogicalCompName</span>&gt;</span>3-switch-98<span class="hljs-tag">&lt;/<span class="hljs-name">otherLogicalCompName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>LS<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>3-switch-98<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vni</span>&gt;</span>10002<span class="hljs-tag">&lt;/<span class="hljs-name">vni</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompId</span>&gt;</span>universalwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logicalCompName</span>&gt;</span>3-switch-98<span class="hljs-tag">&lt;/<span class="hljs-name">logicalCompName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationForwarded</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>a02fe610-5358-4a3d-8fef-7be60b7d4ea5<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>PHYS<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>10.146.104.42<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>7<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteIpAddress</span>&gt;</span>172.19.172.142<span class="hljs-tag">&lt;/<span class="hljs-name">remoteIpAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>5109430534275084<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationForwarded</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationReceived</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>d2fd4b26-a664-423f-b0aa-8ba760cd967f<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.103.3<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-20<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>PHYS<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>10.146.103.3<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationReceived</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>d2fd4b26-a664-423f-b0aa-8ba760cd967f<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.103.3<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-20<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>FW<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>Firewall<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>9<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalReceived</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>d2fd4b26-a664-423f-b0aa-8ba760cd967f<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.103.3<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-20<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>FW<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>Firewall<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleId</span>&gt;</span>1001<span class="hljs-tag">&lt;/<span class="hljs-name">ruleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationLogicalForwarded</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">traceflowObservationDelivered</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">roundId</span>&gt;</span>00000000-0000-0000-0000-000056b5dec3<span class="hljs-tag">&lt;/<span class="hljs-name">roundId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">transportNodeId</span>&gt;</span>d2fd4b26-a664-423f-b0aa-8ba760cd967f<span class="hljs-tag">&lt;/<span class="hljs-name">transportNodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.146.103.3<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-20<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>PHYS<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">compDisplayName</span>&gt;</span>vNIC<span class="hljs-tag">&lt;/<span class="hljs-name">compDisplayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hopCount</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">hopCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vlanId</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vlanId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationDelivered</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservationsDataPage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">traceflowObservations</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
