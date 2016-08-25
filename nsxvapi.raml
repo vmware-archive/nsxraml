@@ -4079,81 +4079,166 @@ securitySchemes:
             <conflictResolverInfo>
               <agencyAction></agencyAction>
             </conflictResolverInfo>
-/2.0/services/macset/{macsetId}:
-  displayName: macset
-  description: Operations on an individual MACset
-  uriParameters:
-    macsetId:
-      required: true
-      displayName: macsetId
-      description: |
-        Specified MACset ID (Can be retrieved by listing the MACset on a scope)
-  get:
-    displayName: macsetRead
-    description: Retrieve details about a MACset
-  put:
-    displayName: macsetUpdate
-    description: Modify an existing MACset
-    body:
-      application/xml:
-        example: |
-          <macset>
-            <objectId></objectId>
-            <type>
-              <typeName></typeName>
-            </type>
-            <description></description>
-            <name></name>
-            <revision></revision>
-            <objectTypeName></objectTypeName>
-            <value></value>
-          </macset>
-        schema: macSetCreateUpdate
-  delete:
-    displayName: macsetDelete
-    description: Delete a MACset
-    queryParameters:
-      force:
-        required: false
-        displayName: force
+/2.0/services/macset:
+  displayName: macsets
+  description: Working with MAC sets.
+  /{macsetId}:
+    displayName: macset
+    description: Operations on an individual MAC set
+    uriParameters:
+      macsetId:
+        required: true
+        displayName: macsetId
         description: |
-          Indicates forced or unforced delete. With forced delete, the object
-          is deleted even if used in other places such as firewall rules,
-          causing invalid referrals. For unforced delete, the object is deleted
-          only if it is no used by other configurations; otherwise the delete
-          fails
-        type: boolean
-/2.0/services/macset/scope/{scopeId}:
-  displayName: macsetScopes
-  description: Working with MAC Sets.
-  uriParameters:
-    scopeId:
-      required: true
-      displayName: scopeId
-      description: |
-        Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade
-        use cases. Universal MAC sets are read-only from secondary managers.
-  post:
-    displayName: macsetScopesCreate
-    description: Create a MACset on a specified scope
-    body:
-      application/xml:
-        example: |
-          <macset>
-            <objectId></objectId>
-            <type>
-              <typeName></typeName>
-            </type>
-            <description></description>
-            <name></name>
-            <revision></revision>
-            <objectTypeName></objectTypeName>
-            <value></value>
-          </macset>
-        schema: macSetCreateUpdate
-  get:
-    displayName: macsetScopesRead
-    description: List MACsets created on a specified scope
+          Specified MACset ID (Can be retrieved by listing the MACset on a scope)
+    get:
+      displayName: macsetRead
+      description: Retrieve details about a MAC set
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <macset>
+                  <objectId>macset-1</objectId>
+                  <objectTypeName>MACSet</objectTypeName>
+                  <vsmUuid>4226CACF-0558-AFF3-5D92-279B201C40E2</vsmUuid>
+                  <nodeId>72eee9ab-bb75-49ba-a782-d7dffedd180a</nodeId>
+                  <revision>4</revision>
+                  <type>
+                  <typeName>MACSet</typeName>
+                  </type>
+                  <name>system-generated-broadcast-macset</name>
+                  <scope>
+                    <id>globalroot-0</id>
+                    <objectTypeName>GlobalRoot</objectTypeName>
+                    <name>Global</name>
+                  </scope>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes>
+                    <extendedAttribute>
+                      <name>isReadOnly</name>
+                      <value>true</value>
+                    </extendedAttribute>
+                    <extendedAttribute>
+                      <name>isHidden</name>
+                      <value>true</value>
+                    </extendedAttribute>
+                    <extendedAttribute>
+                      <name>facadeHidden</name>
+                      <value>true</value>
+                    </extendedAttribute>
+                  </extendedAttributes>
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                  <inheritanceAllowed>false</inheritanceAllowed>
+                  <value>FF:FF:FF:FF:FF:FF</value>
+                </macset>
+    put:
+      displayName: macsetUpdate
+      description: Modify an existing MAC set
+      body:
+        application/xml:
+          example: |
+            <macset>
+              <objectId></objectId>
+              <type>
+                <typeName></typeName>
+              </type>
+              <description></description>
+              <name></name>
+              <revision></revision>
+              <objectTypeName></objectTypeName>
+              <value></value>
+            </macset>
+          schema: macSetCreateUpdate
+    delete:
+      displayName: macsetDelete
+      description: Delete a MAC set
+      queryParameters:
+        force:
+          required: false
+          displayName: force
+          description: |
+            Indicates forced or unforced delete. With forced delete, the object
+            is deleted even if used in other places such as firewall rules,
+            causing invalid referrals. For unforced delete, the object is deleted
+            only if it is no used by other configurations; otherwise the delete
+            fails
+          type: boolean
+  /scope/{scopeId}:
+    displayName: macsetScopes
+    description: Working with MAC Sets.
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: |
+          Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade
+          use cases. Universal MAC sets are read-only from secondary managers.
+    post:
+      displayName: macsetScopesCreate
+      description: Create a MACset on a specified scope
+      body:
+        application/xml:
+          example: |
+            <macset>
+              <objectId></objectId>
+              <type>
+                <typeName></typeName>
+              </type>
+              <description></description>
+              <name></name>
+              <revision></revision>
+              <objectTypeName></objectTypeName>
+              <value></value>
+            </macset>
+          schema: macSetCreateUpdate
+    get:
+      displayName: macsetScopesRead
+      description: List MACsets created on a specified scope
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <list>
+                  <macset>
+                    <objectId>macset-1</objectId>
+                    <objectTypeName>MACSet</objectTypeName>
+                    <vsmUuid>4226CACF-0558-AFF3-5D92-279B201C40E2</vsmUuid>
+                    <nodeId>72eee9ab-bb75-49ba-a782-d7dffedd180a</nodeId>
+                    <revision>4</revision>
+                    <type>
+                      <typeName>MACSet</typeName>
+                    </type>
+                    <name>system-generated-broadcast-macset</name>
+                    <scope>
+                      <id>globalroot-0</id>
+                      <objectTypeName>GlobalRoot</objectTypeName>
+                      <name>Global</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes>
+                      <extendedAttribute>
+                        <name>isReadOnly</name>
+                        <value>true</value>
+                      </extendedAttribute>
+                      <extendedAttribute>
+                        <name>isHidden</name>
+                        <value>true</value>
+                      </extendedAttribute>
+                      <extendedAttribute>
+                        <name>facadeHidden</name>
+                        <value>true</value>
+                      </extendedAttribute>
+                    </extendedAttributes>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                    <inheritanceAllowed>false</inheritanceAllowed>
+                    <value>FF:FF:FF:FF:FF:FF</value>
+                  </macset>
+                </list>
 /2.0/services/taskservice/job:
   displayName: taskFramework
   description: |

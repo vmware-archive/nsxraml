@@ -1375,19 +1375,18 @@ allowed operations on them
 conflicting EAM agencies, or delete deployment units for conflicting
 EAM agencies
 
-## macset
-Operations on an individual MACset
+## macsets
+Working with MAC sets.
 
 ### /2.0/services/macset/{macsetId}
+Operations on an individual MAC set
 
-* **get** *(secured)*: Retrieve details about a MACset
-* **put** *(secured)*: Modify an existing MACset
-* **delete** *(secured)*: Delete a MACset
-
-## macsetScopes
-Working with MAC Sets.
+* **get** *(secured)*: Retrieve details about a MAC set
+* **put** *(secured)*: Modify an existing MAC set
+* **delete** *(secured)*: Delete a MAC set
 
 ### /2.0/services/macset/scope/{scopeId}
+Working with MAC Sets.
 
 * **post** *(secured)*: Create a MACset on a specified scope
 * **get** *(secured)*: List MACsets created on a specified scope
