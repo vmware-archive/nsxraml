@@ -406,7 +406,7 @@ Get the members of a service group
 * **get** *(secured)*: Get a list of member elements that can be added to the service groups
 created on a particular scope.
 
-## IpPools
+## ipPools
 Working with IP pools.
 
 ### /2.0/services/ipam/pools/scope/{scopeId}
