@@ -2409,13 +2409,6 @@ URI for POST, PUT, and DELETE calls.
 * **get** *(secured)*: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
 the resource, and ID of the resource as shown in response body
 
-## nsxEdgeUpgrade
-Upgrading NSX Edge
-
-### /3.0/edges/{edgeID}
-
-* **post** *(secured)*: Upgrade NSX Edge
-
 ## truststore
 Operation on truststore (certificates)
 

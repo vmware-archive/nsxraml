@@ -5906,7 +5906,7 @@ securitySchemes:
       edgeId:
         required: true
         displayName: edgeId
-        description: Specified Edge ID
+        description: Specify the ID of the edge in *edgeId*.
     post:
       displayName: nsxEdgeCreate
       description: Manage NSX Edge
@@ -5915,7 +5915,10 @@ securitySchemes:
           displayName: action
           required: true
           description: |
-            Options include "forcesync" (resync Edge vm's), "redeploy" ()
+            Options include:
+              * *forcesync* - Resync of the edge
+              * *redeploy* - Redeply the edge
+              * *upgrade* - Upgrade the edge to a newer version
     get:
       displayName: nsxEdgeRead
       description: Retrieve Edge details
@@ -8840,22 +8843,6 @@ securitySchemes:
         description: |
           Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
           the resource, and ID of the resource as shown in response body
-/3.0/edges/{edgeID}:
-  displayName: nsxEdgeUpgrade
-  description: Upgrading NSX Edge
-  uriParameters:
-    edgeID:
-      required: true
-      displayName: edgeID
-      description: Specified Edge
-  post:
-    displayName: nsxEdgeUpgrade
-    description: Upgrade NSX Edge
-    queryParameters:
-      action:
-        required: true
-        displayName: action
-        description: Set this to 'upgrade'
 /2.0/services/truststore:
   displayName: truststore
   description: Operation on truststore (certificates)
