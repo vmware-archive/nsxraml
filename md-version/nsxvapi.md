@@ -899,6 +899,20 @@ is also referred to as an NSX vSwitch. When a new host is added to this
 cluster, the required software is automatically installed on the newly
 added host. After the network infrastructure is installed on a cluster,
 Logical Firewall is enabled on that cluster.
+___
+Request body parameters:
+  * *ipPoolId* - The *ipPoolId* parameter is optional and if none is
+  specified will assume DHCP for VTEP address assignment.
+  * *teaming* - The *teaming* paramteter value  can be one of the
+    following:
+      * FAILOVER_ORDER
+      * ETHER_CHANNEL
+      * LACP_ACTIVE
+      * LACP_PASSIVE
+      * LOADBALANCE_LOADBASED
+      * LOADBALANCE_SRCID
+      * LOADBALANCE_SRCMAC
+      * LACP_V2
 
 * **put** *(secured)*: This API call can be used to upgrade network virtualization components.
 After NSX Manager is upgraded, previously prepared clusters must have

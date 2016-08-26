@@ -2937,13 +2937,44 @@ securitySchemes:
         cluster, the required software is automatically installed on the newly
         added host. After the network infrastructure is installed on a cluster,
         Logical Firewall is enabled on that cluster.
+        ___
+        Request body parameters:
+          * *ipPoolId* - The *ipPoolId* parameter is optional and if none is
+          specified will assume DHCP for VTEP address assignment.
+          * *teaming* - The *teaming* paramteter value  can be one of the
+            following:
+              * FAILOVER_ORDER
+              * ETHER_CHANNEL
+              * LACP_ACTIVE
+              * LACP_PASSIVE
+              * LOADBALANCE_LOADBASED
+              * LOADBALANCE_SRCID
+              * LOADBALANCE_SRCMAC
+              * LACP_V2
       body:
         application/xml:
           example: |
             <nwFabricFeatureConfig>
-              <featureId></featureId>
+              <featureId>com.vmware.vshield.vsm.vxlan</featureId>
               <resourceConfig>
-                <resourceId></resourceId>
+                <resourceId>CLUSTER MOID</resourceId>
+                <configSpec class="clusterMappingSpec">
+                  <switch>
+                    <objectId>DVS MOID</objectId></switch>
+                    <vlanId>0</vlanId>
+                    <vmknicCount>1</vmknicCount>
+                    <ipPoolId>IPADDRESSPOOL ID</ipPoolId>
+                </configSpec>
+              </resourceConfig>
+              <resourceConfig>
+                <resourceId>DVS MOID</resourceId>
+                <configSpec class="vdsContext">
+                  <switch>
+                      <objectId>DVS MOID</objectId>
+                  </switch>
+                  <mtu>1600</mtu>
+                  <teaming>ETHER_CHANNEL</teaming>
+                </configSpec>
               </resourceConfig>
             </nwFabricFeatureConfig>
           schema: nwFabricConfig

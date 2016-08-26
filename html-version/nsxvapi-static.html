@@ -4703,6 +4703,24 @@ is also referred to as an NSX vSwitch. When a new host is added to this
 cluster, the required software is automatically installed on the newly
 added host. After the network infrastructure is installed on a cluster,
 Logical Firewall is enabled on that cluster.</p>
+<hr>
+<p>Request body parameters:</p>
+<ul>
+<li><em>ipPoolId</em> - The <em>ipPoolId</em> parameter is optional and if none is
+specified will assume DHCP for VTEP address assignment.</li>
+<li><em>teaming</em> - The <em>teaming</em> paramteter value  can be one of the
+following:<ul>
+<li>FAILOVER_ORDER</li>
+<li>ETHER_CHANNEL</li>
+<li>LACP_ACTIVE</li>
+<li>LACP_PASSIVE</li>
+<li>LOADBALANCE_LOADBASED</li>
+<li>LOADBALANCE_SRCID</li>
+<li>LOADBALANCE_SRCMAC</li>
+<li>LACP_V2</li>
+</ul>
+</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4750,9 +4768,26 @@ to &quot;synchronize&quot; to reset communication.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"clusterMappingSpec"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vlanId</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vlanId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vmknicCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vmknicCount</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ipPoolId</span>&gt;</span>IPADDRESSPOOL ID<span class="hljs-tag">&lt;/<span class="hljs-name">ipPoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"vdsContext"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>ETHER_CHANNEL<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
 </code></pre>
