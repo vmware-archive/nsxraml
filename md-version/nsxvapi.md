@@ -163,6 +163,10 @@ datacenters. Read all scopes (transport zones), or create a new scope
 cluster when creating the TZ. You must specify the clusters that are to
 be part of the network scope. You must have the VLAN ID, UUID of the
 vCenter Server, and vDS ID.
+___
+Request body paramaters:
+  * **name** - An optional paramater that is the name of the scope.
+    Accepts a string.
 
 ### /2.0/vdn/scopes/{scopeId}
 You can manage specific VDN scopes with several API calls. Specify the
@@ -1396,7 +1400,7 @@ Working with MAC sets.
 Operations on an individual MAC set
 
 * **get** *(secured)*: Retrieve details about a MAC set
-* **put** *(secured)*: Modify an existing MAC set
+* **put** *(secured)*: Modify an existing MAC set.
 * **delete** *(secured)*: Delete a MAC set
 
 ### /2.0/services/macset/scope/{scopeId}
@@ -1513,8 +1517,9 @@ query Parameter)
 L3 Firewall Operations on specific section specified by section ID
 
 * **get** *(secured)*: Read a specific section of the DFW config specified by Id
-* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
-and then update the section by supplying the Etag value received in the read in the If-Match header
+* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first,
+make your changes, and then update the section by supplying the
+Etag value received in the read in the If-Match header
 
 * **delete** *(secured)*: Deletes a L3 section and its content by ID
 

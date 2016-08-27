@@ -597,11 +597,16 @@ securitySchemes:
       cluster when creating the TZ. You must specify the clusters that are to
       be part of the network scope. You must have the VLAN ID, UUID of the
       vCenter Server, and vDS ID.
+      ___
+      Request body paramaters:
+        * **name** - An optional paramater that is the name of the scope.
+          Accepts a string.
     queryParameters:
       isUniversal:
         displayName: isUniversal
         description: |
-          Set to "true" when creating a universal transport zone.
+          Set the **isUniversal** property to *true* when creating a universal
+          transport zone.
         type: boolean
         required: false
     body:
@@ -768,7 +773,8 @@ securitySchemes:
       scopeId:
         required: true
         displayName: scopeId
-        description: A valid scope Id
+        description: |
+          For the **scopeId** paramater provide a valid scope ID.
   get:
     displayName: logicalSwitchList
     description: Lists all logical Switches in the Transport Zone (Scope)
@@ -776,13 +782,14 @@ securitySchemes:
       startIndex:
           displayName: startIndex
           description: |
-            An optional paramater that sets the starting point for listing
-            logical switches
+            The **startIndex** paramater is an optional paramater that sets
+            the starting point for listing logical switches.
           default: 0
       pageSize:
           displayName: pageSize
           description: |
-            An optional paramater that sets the number of entries returned.
+            The **pageSize** paramater is an optional paramater that sets the
+            number of entries returned.
             Range is 1-1024.
           default: 20
   post:
@@ -2881,7 +2888,9 @@ securitySchemes:
         description: optional; specify starting point for retrieving the logs
       pageSize:
         displayName: pageSize
-        description: optional; limit the max number of entries returned. Valid range is 1-1024
+        description: |
+          Optional; limit the max number of entries returned. Valid range is
+          1-1024
         default: 256
 /2.0/auditlog:
   displayName: auditLogs
@@ -4167,7 +4176,7 @@ securitySchemes:
                 </macset>
     put:
       displayName: macsetUpdate
-      description: Modify an existing MAC set
+      description: Modify an existing MAC set.
       body:
         application/xml:
           example: |
@@ -4195,7 +4204,7 @@ securitySchemes:
             is deleted even if used in other places such as firewall rules,
             causing invalid referrals. For unforced delete, the object is deleted
             only if it is no used by other configurations; otherwise the delete
-            fails
+            fails.
           type: boolean
   /scope/{scopeId}:
     displayName: macsetScopes
@@ -4667,8 +4676,9 @@ securitySchemes:
         put:
           displayName: dfwL3SectionIdUpdate
           description: |
-            Updates a L3 DFW Section. To do this you need to read it first, make your changes,
-            and then update the section by supplying the Etag value received in the read in the If-Match header
+            Updates a L3 DFW Section. To do this you need to read it first,
+            make your changes, and then update the section by supplying the
+            Etag value received in the read in the If-Match header
           headers:
             If-match:
               required: true
