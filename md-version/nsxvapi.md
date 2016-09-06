@@ -2554,5 +2554,6 @@ VMware documentation website.
 ### /1.0/nsx/cli
 
 * **post** *(secured)*: General central CLI command for use in the API. CLI Command can be any
-central CLI command.
+central CLI command. The Accept header must be set to text/plain for this
+API call to properally function.
 
