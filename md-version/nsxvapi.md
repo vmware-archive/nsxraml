@@ -165,8 +165,14 @@ be part of the network scope. You must have the VLAN ID, UUID of the
 vCenter Server, and vDS ID.
 ___
 Request body paramaters:
-  * **name** - An optional paramater that is the name of the scope.
+  * *name* - An optional paramater that is the name of the scope.
     Accepts a string.
+  * *objectId* - Provide the cluster object ID from vSphere
+  * *controlPlaneMode* - The *controlPlaneMode* determines the control
+    mode of the control plane. It can be one of the following:
+      * **UNICAST_MODE*
+      * **HYBRID_MODE**
+      * **MULTICAST_MODE**
 
 ### /2.0/vdn/scopes/{scopeId}
 You can manage specific VDN scopes with several API calls. Specify the
@@ -907,7 +913,7 @@ ___
 Request body parameters:
   * *ipPoolId* - The *ipPoolId* parameter is optional and if none is
   specified will assume DHCP for VTEP address assignment.
-  * *teaming* - The *teaming* paramteter value  can be one of the
+  * *teaming* - The *teaming* parameter value can be one of the
     following:
       * FAILOVER_ORDER
       * ETHER_CHANNEL
@@ -917,6 +923,8 @@ Request body parameters:
       * LOADBALANCE_SRCID
       * LOADBALANCE_SRCMAC
       * LACP_V2
+  * *uplinkPortName* - The *uplinkPortName* should be as specified in
+    vCenter.
 
 * **put** *(secured)*: This API call can be used to upgrade network virtualization components.
 After NSX Manager is upgraded, previously prepared clusters must have
@@ -926,6 +934,12 @@ the 6.x network virtualization components installed.
 messaging, and remove any other network fabric dependent features like
 logical wires etc. If a feature like logical wire is being used in your
 environment, this call fails.
+___
+Request body parameters:
+  * *featureId* - The *ipPoolId* parameter is
+    com.vmware.vshield.vsm.vxlan
+  * *resourceId* - The *resoruceId* should be the cluster MOID from
+    vSphere.
 
 ### /2.0/nwfabric/features
 

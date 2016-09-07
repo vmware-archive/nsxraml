@@ -599,13 +599,19 @@ securitySchemes:
       vCenter Server, and vDS ID.
       ___
       Request body paramaters:
-        * **name** - An optional paramater that is the name of the scope.
+        * *name* - An optional paramater that is the name of the scope.
           Accepts a string.
+        * *objectId* - Provide the cluster object ID from vSphere
+        * *controlPlaneMode* - The *controlPlaneMode* determines the control
+          mode of the control plane. It can be one of the following:
+            * **UNICAST_MODE*
+            * **HYBRID_MODE**
+            * **MULTICAST_MODE**
     queryParameters:
       isUniversal:
         displayName: isUniversal
         description: |
-          Set the **isUniversal** property to *true* when creating a universal
+          Set the *isUniversal* property to *true* when creating a universal
           transport zone.
         type: boolean
         required: false
@@ -613,16 +619,16 @@ securitySchemes:
       application/xml:
         example: |
           <vdnScope>
-            <name></name>
+            <name>tz-1</name>
             <clusters>
               <cluster>
                 <cluster>
-                  <objectId></objectId>
+                  <objectId>domain-c59</objectId>
                 </cluster>
               </cluster>
             </clusters>
-            <controlPlaneMode></controlPlaneMode>
-            <description></description>
+            <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+            <description>Transport Zone 1</description>
           </vdnScope>
         schema: vdnScopeCreate
   /{scopeId}:
@@ -696,8 +702,8 @@ securitySchemes:
         action:
           displayName: action
           description: |
-            Mandatory queryParameter, use 'expand' to add a cluster, or
-            'shrink' to remove a cluster from the TZ
+            Mandatory queryParameter, use *expand* or *patch* to add a cluster, or
+            *shrink* to remove a cluster from the transport zone.
           required: true
       body:
         application/xml:
@@ -2950,7 +2956,7 @@ securitySchemes:
         Request body parameters:
           * *ipPoolId* - The *ipPoolId* parameter is optional and if none is
           specified will assume DHCP for VTEP address assignment.
-          * *teaming* - The *teaming* paramteter value  can be one of the
+          * *teaming* - The *teaming* parameter value can be one of the
             following:
               * FAILOVER_ORDER
               * ETHER_CHANNEL
@@ -2960,6 +2966,8 @@ securitySchemes:
               * LOADBALANCE_SRCID
               * LOADBALANCE_SRCMAC
               * LACP_V2
+          * *uplinkPortName* - The *uplinkPortName* should be as specified in
+            vCenter.
       body:
         application/xml:
           example: |
@@ -3018,6 +3026,12 @@ securitySchemes:
         messaging, and remove any other network fabric dependent features like
         logical wires etc. If a feature like logical wire is being used in your
         environment, this call fails.
+        ___
+        Request body parameters:
+          * *featureId* - The *ipPoolId* parameter is
+            com.vmware.vshield.vsm.vxlan
+          * *resourceId* - The *resoruceId* should be the cluster MOID from
+            vSphere.
       body:
         application/xml:
           example: |

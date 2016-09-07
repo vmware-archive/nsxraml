@@ -4709,7 +4709,7 @@ Logical Firewall is enabled on that cluster.</p>
 <ul>
 <li><em>ipPoolId</em> - The <em>ipPoolId</em> parameter is optional and if none is
 specified will assume DHCP for VTEP address assignment.</li>
-<li><em>teaming</em> - The <em>teaming</em> paramteter value  can be one of the
+<li><em>teaming</em> - The <em>teaming</em> parameter value can be one of the
 following:<ul>
 <li>FAILOVER_ORDER</li>
 <li>ETHER_CHANNEL</li>
@@ -4721,6 +4721,8 @@ following:<ul>
 <li>LACP_V2</li>
 </ul>
 </li>
+<li><em>uplinkPortName</em> - The <em>uplinkPortName</em> should be as specified in
+vCenter.</li>
 </ul>
 </p>
     <h3>Security</h3>
@@ -4855,6 +4857,14 @@ the 6.x network virtualization components installed.</p>
 messaging, and remove any other network fabric dependent features like
 logical wires etc. If a feature like logical wire is being used in your
 environment, this call fails.</p>
+<hr>
+<p>Request body parameters:</p>
+<ul>
+<li><em>featureId</em> - The <em>ipPoolId</em> parameter is
+com.vmware.vshield.vsm.vxlan</li>
+<li><em>resourceId</em> - The <em>resoruceId</em> should be the cluster MOID from
+vSphere.</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12786,8 +12796,16 @@ vCenter Server, and vDS ID.</p>
 <hr>
 <p>Request body paramaters:</p>
 <ul>
-<li><strong>name</strong> - An optional paramater that is the name of the scope.
+<li><em>name</em> - An optional paramater that is the name of the scope.
 Accepts a string.</li>
+<li><em>objectId</em> - Provide the cluster object ID from vSphere</li>
+<li><em>controlPlaneMode</em> - The <em>controlPlaneMode</em> determines the control
+mode of the control plane. It can be one of the following:<ul>
+<li><em>*UNICAST_MODE</em></li>
+<li><strong>HYBRID_MODE</strong></li>
+<li><strong>MULTICAST_MODE</strong></li>
+</ul>
+</li>
 </ul>
 </p>
     <h3>Security</h3>
@@ -12808,7 +12826,7 @@ Accepts a string.</li>
     
   </dt>
   <dd>
-      <p>Set the <strong>isUniversal</strong> property to <em>true</em> when creating a universal
+      <p>Set the <em>isUniversal</em> property to <em>true</em> when creating a universal
 transport zone.</p>
 
   </dd>
@@ -12848,16 +12866,16 @@ transport zone.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>tz-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">clusters</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c59<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">clusters</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Transport Zone 1<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
 </code></pre>
   </div>
@@ -12987,8 +13005,8 @@ from a transport zone.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Mandatory queryParameter, use &#39;expand&#39; to add a cluster, or
-&#39;shrink&#39; to remove a cluster from the TZ</p>
+      <p>Mandatory queryParameter, use <em>expand</em> or <em>patch</em> to add a cluster, or
+<em>shrink</em> to remove a cluster from the transport zone.</p>
 
   </dd>
 </dl>
