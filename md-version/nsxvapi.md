@@ -158,7 +158,8 @@ datacenters. Read all scopes (transport zones), or create a new scope
 
 ### /2.0/vdn/scopes
 
-* **get** *(secured)*: Retrieve a list of all known VDN Scopes / Transport Zones
+* **get** *(secured)*: Retrieve a list of all known VDN Scopes / Transport Zones.
+
 * **post** *(secured)*: Create a new Transport Zone. Note that you can only add one initial
 cluster when creating the TZ. You must specify the clusters that are to
 be part of the network scope. You must have the VLAN ID, UUID of the
@@ -183,12 +184,12 @@ ID of the scope in the scopeId URI parameter which is required.
 * **post** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster
 from a transport zone.
 
-* **delete** *(secured)*: delete a transport zone
+* **delete** *(secured)*: Delete a VDN scope / transport zone.
 
 ### /2.0/vdn/scopes/{scopeId}/attributes
-update the attributes of a transport zone (e.g. Name, description)
+Manage the attributes of a transport zone (e.g. name, description).
 
-* **put** *(secured)*: Update the attributes of a transport zone (e.g. Name, description)
+* **put** *(secured)*: Update the attributes of a transport zone (e.g. name, description).
 
 ### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
 Test multicast group connectivity in a transport zone
@@ -936,14 +937,15 @@ logical wires etc. If a feature like logical wire is being used in your
 environment, this call fails.
 ___
 Request body parameters:
-  * *featureId* - The *ipPoolId* parameter is
+  * **featureId** - The **featureId** parameter is
     com.vmware.vshield.vsm.vxlan
-  * *resourceId* - The *resoruceId* should be the cluster MOID from
+  * **resourceId** - The **resoruceId** should be the cluster MOID from
     vSphere.
 
 ### /2.0/nwfabric/features
 
-* **get** *(secured)*: Retrieves all features available on the cluster
+* **get** *(secured)*: Retrieves all features available on the cluster. Multiple
+**featureInfos** sections may be returned.
 
 ### /2.0/nwfabric/status
 
@@ -1773,7 +1775,40 @@ Installed NSX Edges in your inventory
 ### /4.0/edges
 
 * **post** *(secured)*: Install NSX Edge services gateway or logical router, depending on request
-body
+body.
+___
+The NSX Edge installation API copies the NSX Edge OVF from the Edge
+Manager to the specified datastore and deploys an NSX Edge on the given
+datacenter. After the NSX Edge is installed, the virtual machine powers
+on and initializes according to the given network configuration. If an
+appliance is added, it is deployed with the specified configuration.
+___
+Installing an NSX Edge instance adds a virtual machine to the vCenter
+Server inventory, you must specify an IP address for the management
+interface, and you may name the NSX Edge instance.
+___
+The configuration you specify when you install an NSX Edge is stored in
+the database. If an appliance is added, the configuration is applied to
+it and it is deployed.
+___
+NOTE: Do not use hidden/system resource pool IDs as they are not
+supported on the UI.
+___
+Request body paramaters:
+  * **name** - Optional. Default is *vShield-<edgeId>*. Used as a vm name
+    on VC appended by "-<haIndex>"
+  * **description** - Optional. A text string that describes the object.
+  * **tenant** - Optional. Will be used in syslog messages.
+  * **fqdn** - Optional. Defaut is *vshield-<edgeId>*. Used to set
+    hostanme on the vm. Appended by *-<haIndex>*
+  * **vseLogLevel** - Optional. Default is *INFO*. Other possible values:
+      * *EMERGENCY*
+      * *ALERT*
+      * *CRITICAL*
+      * *ERROR*
+      * *WARNING*
+      * *NOTICE*
+      * *DEBUG*
 
 * **get** *(secured)*: Retrieve a list of NSX Edges in your inventory or use the query
 parameters to filter results by datacenter or port group

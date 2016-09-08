@@ -4743,10 +4743,11 @@ vCenter.</li>
     
   </dt>
   <dd>
-      <p>Resets communication between NSX Manager
-and a host or cluster. The resourceId is the ID of the cluster or
-host that is retrieved from the vCenter managed object browser. Set
-to &quot;synchronize&quot; to reset communication.</p>
+      <p>Resets communication between NSX Manager and a host or cluster.
+The <em>resourceId</em> is the ID of the cluster or host that is retrieved
+from the vCenter managed object browser. Set to <em>synchronize</em> to
+reset communication. The response will be the job ID of the
+synchronization job.</p>
 
   </dd>
 </dl>
@@ -4860,9 +4861,9 @@ environment, this call fails.</p>
 <hr>
 <p>Request body parameters:</p>
 <ul>
-<li><em>featureId</em> - The <em>ipPoolId</em> parameter is
+<li><strong>featureId</strong> - The <strong>featureId</strong> parameter is
 com.vmware.vshield.vsm.vxlan</li>
-<li><em>resourceId</em> - The <em>resoruceId</em> should be the cluster MOID from
+<li><strong>resourceId</strong> - The <strong>resoruceId</strong> should be the cluster MOID from
 vSphere.</li>
 </ul>
 </p>
@@ -4918,7 +4919,8 @@ vSphere.</li>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieves all features available on the cluster</p>
+    <p><p>Retrieves all features available on the cluster. Multiple
+<strong>featureInfos</strong> sections may be returned.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4929,6 +4931,20 @@ vSphere.</li>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">featureInfos</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>FEATURE NAME<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>FEATURE ID<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>FEATURE VERSION<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">featureInfo</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">featureInfos</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -5067,11 +5083,69 @@ vSphere.</li>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>This is a valid vCenter MOID, e.g. domain-c34 for a cluster</p>
+      <p>Set <strong>resource</strong> to the correct <em>resourceId</em> which is a valid
+vCenter MOID (e.g. domain-c34 for a cluster).</p>
 
   </dd>
 </dl>
     </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">resourceStatuses</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resource</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>resource-id<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>jfldj<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>c-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-2<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dc-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">resource</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.nwfabric.hostPrep<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UNKNOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.messagingInfra<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UNKNOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.firewall<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UNKNOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceStatus</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resourceStatuses</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -5162,6 +5236,63 @@ vSphere.</li>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">resourceStatuses</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resource</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-9<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>jfldj<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>10.135.14.186<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c34<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>c-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">resource</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.nwfabric.hostPrep<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UNKNOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.messagingInfra<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UNKNOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.firewall<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>5.5<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">updateAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">updateAvailable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UNKNOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">installed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">installed</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceStatus</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resourceStatuses</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -12716,7 +12847,7 @@ datacenters. Read all scopes (transport zones), or create a new scope
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve a list of all known VDN Scopes / Transport Zones</p>
+    <p><p>Retrieve a list of all known VDN Scopes / Transport Zones.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12735,37 +12866,37 @@ datacenters. Read all scopes (transport zones), or create a new scope
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdnScopes</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VDN Scope 1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>VDN Scope 1<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clusters</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c124<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vxlan-cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-2<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dc1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
@@ -12931,16 +13062,16 @@ ID of the scope in the scopeId URI parameter which is required.</p>
               (<tt>application/xml</tt>)
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VDN Scope 1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>VDN Scope 1<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
@@ -12949,19 +13080,19 @@ ID of the scope in the scopeId URI parameter which is required.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">clusters</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c124<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vxlan-cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-2<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dc1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
@@ -12970,7 +13101,7 @@ ID of the scope in the scopeId URI parameter which is required.</p>
       <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">clusters</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
 </code></pre>
@@ -13005,8 +13136,14 @@ from a transport zone.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Mandatory queryParameter, use <em>expand</em> or <em>patch</em> to add a cluster, or
-<em>shrink</em> to remove a cluster from the transport zone.</p>
+      <p>Mandatory queryParameter, use <em>expand</em> or <em>patch</em> to add a cluster,
+or <em>shrink</em> to remove a cluster from the transport zone.</p>
+<hr>
+<p>Use <strong>action</strong> = <em>repair</em> on a network scope to recreate missing
+distributed port groups for logicals switches on a given network
+scope where scopeId is the scope. Success returns 200 and the job
+ID for the repair job. The location header also includes the URI of
+the job. The response vwill be the job ID for the repair job.</p>
 
   </dd>
 </dl>
@@ -13063,7 +13200,7 @@ from a transport zone.</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>delete a transport zone</p>
+    <p><p>Delete a VDN scope / transport zone.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13084,7 +13221,7 @@ from a transport zone.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>update the attributes of a transport zone (e.g. Name, description)</p>
+  <div class="description"><p>Manage the attributes of a transport zone (e.g. name, description).</p>
 </div>
 <div class="method put">
   <a
@@ -13094,7 +13231,7 @@ from a transport zone.</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update the attributes of a transport zone (e.g. Name, description)</p>
+    <p><p>Update the attributes of a transport zone (e.g. name, description).</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -15306,7 +15443,44 @@ on 1+ vm&#39;s</p>
   <div class="content">
     <h3>Description</h3>
     <p><p>Install NSX Edge services gateway or logical router, depending on request
-body</p>
+body.</p>
+<hr>
+<p>The NSX Edge installation API copies the NSX Edge OVF from the Edge
+Manager to the specified datastore and deploys an NSX Edge on the given
+datacenter. After the NSX Edge is installed, the virtual machine powers
+on and initializes according to the given network configuration. If an
+appliance is added, it is deployed with the specified configuration.</p>
+<hr>
+<p>Installing an NSX Edge instance adds a virtual machine to the vCenter
+Server inventory, you must specify an IP address for the management
+interface, and you may name the NSX Edge instance.</p>
+<hr>
+<p>The configuration you specify when you install an NSX Edge is stored in
+the database. If an appliance is added, the configuration is applied to
+it and it is deployed.</p>
+<hr>
+<p>NOTE: Do not use hidden/system resource pool IDs as they are not
+supported on the UI.</p>
+<hr>
+<p>Request body paramaters:</p>
+<ul>
+<li><strong>name</strong> - Optional. Default is <em>vShield-<edgeId></em>. Used as a vm name
+on VC appended by &quot;-<haIndex>&quot;</li>
+<li><strong>description</strong> - Optional. A text string that describes the object.</li>
+<li><strong>tenant</strong> - Optional. Will be used in syslog messages.</li>
+<li><strong>fqdn</strong> - Optional. Defaut is <em>vshield-<edgeId></em>. Used to set
+hostanme on the vm. Appended by <em>-<haIndex></em></li>
+<li><strong>vseLogLevel</strong> - Optional. Default is <em>INFO</em>. Other possible values:<ul>
+<li><em>EMERGENCY</em></li>
+<li><em>ALERT</em></li>
+<li><em>CRITICAL</em></li>
+<li><em>ERROR</em></li>
+<li><em>WARNING</em></li>
+<li><em>NOTICE</em></li>
+<li><em>DEBUG</em></li>
+</ul>
+</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -15510,99 +15684,115 @@ body</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">edge</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">datacenterMoid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">datacenterMoid</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">tenant</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tenant</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vseLogLevel</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vseLogLevel</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enableAesni</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableAesni</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enableFips</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableFips</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">appliances</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">applianceSize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applianceSize</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enableCoreDump</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableCoreDump</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datacenterMoid</span>&gt;</span>datacenter-2<span class="hljs-tag">&lt;/<span class="hljs-name">datacenterMoid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>org1-edge<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Description for the edge gateway<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tenant</span>&gt;</span>org1<span class="hljs-tag">&lt;/<span class="hljs-name">tenant</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span>org1edge1<span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vseLogLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">vseLogLevel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enableAesni</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableAesni</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is true --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enableFips</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableFips</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is false --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliances</span>&gt;</span> <span class="hljs-comment">&lt;!-- maximum 2 appliances can be configured. Until one appliance is configured, none of the configured features configured will serve the network --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applianceSize</span>&gt;</span>compact<span class="hljs-tag">&lt;/<span class="hljs-name">applianceSize</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is compact. Other possible values are large|xlarge|quadlarge --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableCoreDump</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableCoreDump</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. default is false. Enabling core-dump will deploy an extra disk for core-dump files, which will consume 1GB for COMPACT, LARGE, and QUADLARGE, and 8G for XLARGE Edge.--&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">appliance</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">customField</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span>resgroup-53<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-28<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderId</span>&gt;</span>group-v38<span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderId</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">customField</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>system.service.vmware.vsla.main01<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>string<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">customField</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">cpuReservation</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">shares</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">shares</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cpuReservation</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span>2399<span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span>500<span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">shares</span>&gt;</span>500<span class="hljs-tag">&lt;/<span class="hljs-name">shares</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">cpuReservation</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">memoryReservation</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">shares</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">shares</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memoryReservation</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span>5000<span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span>500<span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">shares</span>&gt;</span>20480<span class="hljs-tag">&lt;/<span class="hljs-name">shares</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">memoryReservation</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">appliance</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">appliances</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vnics</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnics</span>&gt;</span> <span class="hljs-comment">&lt;!-- mamimum 10 interfaces index 0-9 can be configured. Until one connected vnic is configured, none of the configured features will serve the network --&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">portgroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">portgroupId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">secondaryAddresses</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>internal0<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. System has default Names. format vNic0 ... vNic7 --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>internal<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is internal. Other possible value is "uplink" --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">portgroupId</span>&gt;</span>dvportgroup-114<span class="hljs-tag">&lt;/<span class="hljs-name">portgroupId</span>&gt;</span> <span class="hljs-comment">&lt;!-- Possible values here are portgroupIds or virtualWire-id. portgroupId needs to be defined if isConnected=true --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span> <span class="hljs-comment">&lt;!-- Supports one or more addressGroup except on the Edge used for the distributed router which can only have a primary IP address. --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span> <span class="hljs-comment">&lt;!-- Vnic can be configured to have more than one addressGroup/subnets --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>192.168.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span> <span class="hljs-comment">&lt;!-- This is mandatory for an addressGroup --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">secondaryAddresses</span>&gt;</span> <span class="hljs-comment">&lt;!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.3.3<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span> <span class="hljs-comment">&lt;!-- Optional. This way multiple IP Addresses can be assigned to a vnic/interface --&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">secondaryAddresses</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span> <span class="hljs-comment">&lt;!-- either subnetMask or subnetPrefixLength should be provided. If both then subnetprefixLength is ignored --&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span> <span class="hljs-comment">&lt;!-- Vnic can be configured to have more than one addressGroup/subnets --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>192.168.4.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span> <span class="hljs-comment">&lt;!-- This is mandatory for an addressGroup --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">secondaryAddresses</span>&gt;</span> <span class="hljs-comment">&lt;!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.4.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.4.3<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span> <span class="hljs-comment">&lt;!-- Optional. This way multiple IP Addresses can be assigned to a vnic/interface --&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">secondaryAddresses</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">subnetPrefixLength</span>&gt;</span>24<span class="hljs-tag">&lt;/<span class="hljs-name">subnetPrefixLength</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span> <span class="hljs-comment">&lt;!-- ipv6 addressGroup --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>ffff::1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span> <span class="hljs-comment">&lt;!-- This is mandatory for an addressGroup --&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">secondaryAddresses</span>&gt;</span> <span class="hljs-comment">&lt;!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>ffff::2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">secondaryAddresses</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">subnetPrefixLength</span>&gt;</span>64<span class="hljs-tag">&lt;/<span class="hljs-name">subnetPrefixLength</span>&gt;</span> <span class="hljs-comment">&lt;!-- prefixLength valid values 1-128 --&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroups</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">macAddress</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">edgeVmHaIndex</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">edgeVmHaIndex</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">macAddress</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. When not specified, macAddresses will be managed by VC --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">edgeVmHaIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">edgeVmHaIndex</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>00:50:56:01:03:23<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. User must ensure that macAddresses provided are unique withing the given layer 2 domain. --&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">macAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">fenceParameter</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">fenceParameter</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>ethernet0.filter1.param1<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">fenceParameter</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enableProxyArp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableProxyArp</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enableSendRedirects</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableSendRedirects</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isConnected</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isConnected</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">inShapingPolicy</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">averageBandwidth</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">averageBandwidth</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">peakBandwidth</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">peakBandwidth</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">burstSize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">burstSize</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">inherited</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inherited</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1500<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is 1500 --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enableProxyArp</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableProxyArp</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is false --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enableSendRedirects</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableSendRedirects</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is true--&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isConnected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isConnected</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is false --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">inShapingPolicy</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">averageBandwidth</span>&gt;</span>200000000<span class="hljs-tag">&lt;/<span class="hljs-name">averageBandwidth</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">peakBandwidth</span>&gt;</span>200000000<span class="hljs-tag">&lt;/<span class="hljs-name">peakBandwidth</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">burstSize</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">burstSize</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">inherited</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">inherited</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">inShapingPolicy</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">outShapingPolicy</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">averageBandwidth</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">averageBandwidth</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">peakBandwidth</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">peakBandwidth</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">burstSize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">burstSize</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">inherited</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inherited</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">outShapingPolicy</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">averageBandwidth</span>&gt;</span>400000000<span class="hljs-tag">&lt;/<span class="hljs-name">averageBandwidth</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">peakBandwidth</span>&gt;</span>400000000<span class="hljs-tag">&lt;/<span class="hljs-name">peakBandwidth</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">burstSize</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">burstSize</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">inherited</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">inherited</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">outShapingPolicy</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">vnics</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">cliSettings</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">remoteAccess</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">remoteAccess</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cliSettings</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default user/pass is admin/default, and remoteAccess is false (i.e. disabled) --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span> <span class="hljs-comment">&lt;!-- When you change the userName, you are overwriting the current userName. --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>test123!<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span> <span class="hljs-comment">&lt;!-- The password should be atleast 12 characters long, must be a mix of alphabets, digits and special characters. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">remoteAccess</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">remoteAccess</span>&gt;</span> <span class="hljs-comment">&lt;!-- remote Access specifies whether cli console access over ssh must be enabled. Relevant firewall rules to allow traffic on port 22 must be opened by user/client. Please note that it is advisable to restrict ssh access to Edge cli to only a limited ip addresses - so firewall rules must be opened cautiously. --&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">cliSettings</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">autoConfiguration</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">rulePriority</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">rulePriority</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">autoConfiguration</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span> <span class="hljs-comment">&lt;!-- Optional. Default is true. If set to false, user should add the nat,firewall,routing config to control plane work for LB, VPN, etc --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rulePriority</span>&gt;</span>high<span class="hljs-tag">&lt;/<span class="hljs-name">rulePriority</span>&gt;</span> <span class="hljs-comment">&lt;!-- Optional. Default is high. Other possible value is low --&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">autoConfiguration</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">dnsClient</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">primaryDns</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">primaryDns</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">secondaryDns</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">secondaryDns</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsClient</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. if the primary/secondary are specified and the DNS service not, the primary/secondary will to used as the default of the DNS service. --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">primaryDns</span>&gt;</span>10.117.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryDns</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">secondaryDns</span>&gt;</span>10.117.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">secondaryDns</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span>vmware.com<span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span>foo.com<span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">dnsClient</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">queryDaemon</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">queryDaemon</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. defined for the sake of communication between SLB VM and edge vm for GSLB feature. --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span> <span class="hljs-comment">&lt;!-- default to false--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>5666<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span> <span class="hljs-comment">&lt;!-- default to 5666 --&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">queryDaemon</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">edge</span>&gt;</span>
 </code></pre>

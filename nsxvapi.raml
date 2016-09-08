@@ -539,7 +539,8 @@ securitySchemes:
     (Transport Zone).
   get:
     displayName: vdnScopesList
-    description: Retrieve a list of all known VDN Scopes / Transport Zones
+    description: |
+      Retrieve a list of all known VDN Scopes / Transport Zones.
     responses:
       200:
         body:
@@ -547,37 +548,37 @@ securitySchemes:
             example: |
               <vdnScopes>
                 <vdnScope>
-                  <objectId></objectId>
+                  <objectId>vdnscope-1</objectId>
                   <objectTypeName></objectTypeName>
                   <vsmUuid></vsmUuid>
                   <nodeId></nodeId>
                   <revision></revision>
                   <type>
-                    <typeName></typeName>
+                    <typeName>VdnScope</typeName>
                   </type>
-                  <name></name>
-                  <description></description>
+                  <name>VDN Scope 1</name>
+                  <description>VDN Scope 1</description>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
-                  <isUniversal></isUniversal>
+                  <isUniversal>false</isUniversal>
                   <universalRevision></universalRevision>
-                  <id></id>
+                  <id>vdnscope-1</id>
                   <clusters>
                     <cluster>
                       <cluster>
-                        <objectId></objectId>
-                        <objectTypeName></objectTypeName>
+                        <objectId>domain-c124</objectId>
+                        <objectTypeName>VdnScope</objectTypeName>
                         <vsmUuid></vsmUuid>
                         <nodeId></nodeId>
                         <revision></revision>
                         <type>
-                          <typeName></typeName>
+                          <typeName>ClusterComputeResource</typeName>
                         </type>
-                        <name></name>
+                        <name>vxlan-cluster</name>
                         <scope>
-                          <id></id>
-                          <objectTypeName></objectTypeName>
-                          <name></name>
+                          <id>datacenter-2</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>dc1</name>
                         </scope>
                         <clientHandle></clientHandle>
                         <extendedAttributes/>
@@ -651,16 +652,16 @@ securitySchemes:
             application/xml:
               example: |
                 <vdnScope>
-                  <objectId></objectId>
-                  <objectTypeName></objectTypeName>
+                  <objectId>vdnscope-1</objectId>
+                  <objectTypeName>VdnScope</objectTypeName>
                   <vsmUuid></vsmUuid>
                   <nodeId></nodeId>
-                  <revision></revision>
+                  <revision>0</revision>
                   <type>
                     <typeName></typeName>
                   </type>
-                  <name></name>
-                  <description></description>
+                  <name>VDN Scope 1</name>
+                  <description>VDN Scope 1</description>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
                   <isUniversal></isUniversal>
@@ -669,19 +670,19 @@ securitySchemes:
                   <clusters>
                     <cluster>
                       <cluster>
-                        <objectId></objectId>
+                        <objectId>domain-c124</objectId>
                         <objectTypeName></objectTypeName>
                         <vsmUuid></vsmUuid>
                         <nodeId></nodeId>
                         <revision></revision>
                         <type>
-                          <typeName></typeName>
+                          <typeName>ClusterComputeResource</typeName>
                         </type>
-                        <name></name>
+                        <name>vxlan-cluster</name>
                         <scope>
-                          <id></id>
-                          <objectTypeName></objectTypeName>
-                          <name></name>
+                          <id>datacenter-2</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>dc1</name>
                         </scope>
                         <clientHandle></clientHandle>
                         <extendedAttributes/>
@@ -690,7 +691,7 @@ securitySchemes:
                       </cluster>
                     </cluster>
                   </clusters>
-                  <virtualWireCount></virtualWireCount>
+                  <virtualWireCount>10</virtualWireCount>
                   <controlPlaneMode></controlPlaneMode>
                 </vdnScope>
     post:
@@ -702,8 +703,14 @@ securitySchemes:
         action:
           displayName: action
           description: |
-            Mandatory queryParameter, use *expand* or *patch* to add a cluster, or
-            *shrink* to remove a cluster from the transport zone.
+            Mandatory queryParameter, use *expand* or *patch* to add a cluster,
+            or *shrink* to remove a cluster from the transport zone.
+            ___
+            Use **action** = *repair* on a network scope to recreate missing
+            distributed port groups for logicals switches on a given network
+            scope where scopeId is the scope. Success returns 200 and the job
+            ID for the repair job. The location header also includes the URI of
+            the job. The response vwill be the job ID for the repair job.
           required: true
       body:
         application/xml:
@@ -721,15 +728,16 @@ securitySchemes:
           schema: vdnScopeEdit
     delete:
       displayName: vdnScopeDelete
-      description: delete a transport zone
+      description: |
+        Delete a VDN scope / transport zone.
     /attributes:
       displayName: vdnScopeAttribUpdate
       description: |
-        update the attributes of a transport zone (e.g. Name, description)
+        Manage the attributes of a transport zone (e.g. name, description).
       put:
         displayName: vdnScopeAttribUpdate
         description: |
-          Update the attributes of a transport zone (e.g. Name, description)
+          Update the attributes of a transport zone (e.g. name, description).
         body:
           application/xml:
             example: |
@@ -2999,10 +3007,11 @@ securitySchemes:
         action:
           displayName: action
           description: |
-            Resets communication between NSX Manager
-            and a host or cluster. The resourceId is the ID of the cluster or
-            host that is retrieved from the vCenter managed object browser. Set
-            to "synchronize" to reset communication.
+            Resets communication between NSX Manager and a host or cluster.
+            The *resourceId* is the ID of the cluster or host that is retrieved
+            from the vCenter managed object browser. Set to *synchronize* to
+            reset communication. The response will be the job ID of the
+            synchronization job.
     put:
       displayName: nwfabricConfigUpdate
       description: |
@@ -3028,9 +3037,9 @@ securitySchemes:
         environment, this call fails.
         ___
         Request body parameters:
-          * *featureId* - The *ipPoolId* parameter is
+          * **featureId** - The **featureId** parameter is
             com.vmware.vshield.vsm.vxlan
-          * *resourceId* - The *resoruceId* should be the cluster MOID from
+          * **resourceId** - The **resoruceId** should be the cluster MOID from
             vSphere.
       body:
         application/xml:
@@ -3046,7 +3055,21 @@ securitySchemes:
     displayName: nwfabricFeatures
     get:
       displayName: nwfabricFeatures
-      description: Retrieves all features available on the cluster
+      description: |
+        Retrieves all features available on the cluster. Multiple
+        **featureInfos** sections may be returned.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <featureInfos>
+                  <featureInfo>
+                    <name>FEATURE NAME</name>
+                    <featureId>FEATURE ID</featureId>
+                    <version>FEATURE VERSION</version>
+                  </featureInfo>
+                <featureInfos>
   /status:
     displayName: nwfabricStatus
     get:
@@ -3056,8 +3079,64 @@ securitySchemes:
         resource:
           displayName: resource
           description: |
-            This is a valid vCenter MOID, e.g. domain-c34 for a cluster
+            Set **resource** to the correct *resourceId* which is a valid
+            vCenter MOID (e.g. domain-c34 for a cluster).
           required: true
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <resourceStatuses>
+                  <resourceStatus>
+                    <resource>
+                      <objectId>resource-id</objectId>
+                      <objectTypeName>ClusterComputeResource</objectTypeName>
+                      <nsxmgrUuid>jfldj</nsxmgrUuid>
+                      <revision>2</revision>
+                      <type>
+                        <typeName>ClusterComputeResource</typeName>
+                      </type>
+                      <name>c-1</name>
+                      <scope>
+                        <id>datacenter-2</id>
+                        <objectTypeName>Datacenter</objectTypeName>
+                        <name>dc-1</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes></extendedAttributes>
+                    </resource>
+                    <nwFabricFeatureStatus>
+                      <featureId>com.vmware.vshield.nsxmgr.nwfabric.hostPrep</featureId>
+                      <featureVersion>5.5</featureVersion>
+                      <updateAvailable>false</updateAvailable>
+                      <status>RED</status>
+                      <message></message>
+                      <installed>true</installed>
+                    </nwFabricFeatureStatus>
+                    <nwFabricFeatureStatus>
+                      <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
+                      <featureVersion>5.5</featureVersion>
+                      <updateAvailable>false</updateAvailable>
+                      <status>UNKNOWN</status>
+                      <installed>false</installed>
+                    </nwFabricFeatureStatus>
+                    <nwFabricFeatureStatus>
+                      <featureId>com.vmware.vshield.nsxmgr.messagingInfra</featureId>
+                      <featureVersion>5.5</featureVersion>
+                      <updateAvailable>false</updateAvailable>
+                      <status>UNKNOWN</status>
+                      <installed>false</installed>
+                    </nwFabricFeatureStatus>
+                    <nwFabricFeatureStatus>
+                      <featureId>com.vmware.vshield.firewall</featureId>
+                      <featureVersion>5.5</featureVersion>
+                      <updateAvailable>false</updateAvailable>
+                      <status>UNKNOWN</status>
+                      <installed>false</installed>
+                    </nwFabricFeatureStatus>
+                  </resourceStatus>
+                </resourceStatuses>
     /child/{parentResourceID}:
       displayName: childStatus
       description: Status of child resources
@@ -3069,6 +3148,61 @@ securitySchemes:
       get:
         displayName: childStatusRead
         description: Retrieve status
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <resourceStatuses>
+                    <resourceStatus>
+                      <resource>
+                        <objectId>host-9</objectId>
+                        <objectTypeName>HostSystem</objectTypeName>
+                        <nsxmgrUuid>jfldj</nsxmgrUuid>
+                        <revision>4</revision>
+                        <type>
+                          <typeName>HostSystem</typeName>
+                        </type>
+                        <name>10.135.14.186</name>
+                        <scope>
+                          <id>domain-c34</id>
+                          <objectTypeName>ClusterComputeResource</objectTypeName>
+                          <name>c-1</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes></extendedAttributes>
+                      </resource>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.nwfabric.hostPrep</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>RED</status>
+                        <message></message>
+                        <installed>true</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.messagingInfra</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.firewall</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                    </resourceStatus>
+                  </resourceStatuses>
     /alleligible/{resourceType}:
       displayName: statusResourceType
       description: Status of resources by criterion
@@ -5828,7 +5962,41 @@ securitySchemes:
     displayName: nsxEdgesCreate
     description: |
       Install NSX Edge services gateway or logical router, depending on request
-      body
+      body.
+      ___
+      The NSX Edge installation API copies the NSX Edge OVF from the Edge
+      Manager to the specified datastore and deploys an NSX Edge on the given
+      datacenter. After the NSX Edge is installed, the virtual machine powers
+      on and initializes according to the given network configuration. If an
+      appliance is added, it is deployed with the specified configuration.
+      ___
+      Installing an NSX Edge instance adds a virtual machine to the vCenter
+      Server inventory, you must specify an IP address for the management
+      interface, and you may name the NSX Edge instance.
+      ___
+      The configuration you specify when you install an NSX Edge is stored in
+      the database. If an appliance is added, the configuration is applied to
+      it and it is deployed.
+      ___
+      NOTE: Do not use hidden/system resource pool IDs as they are not
+      supported on the UI.
+      ___
+      Request body paramaters:
+        * **name** - Optional. Default is *vShield-<edgeId>*. Used as a vm name
+          on VC appended by "-<haIndex>"
+        * **description** - Optional. A text string that describes the object.
+        * **tenant** - Optional. Will be used in syslog messages.
+        * **fqdn** - Optional. Defaut is *vshield-<edgeId>*. Used to set
+          hostanme on the vm. Appended by *-<haIndex>*
+        * **vseLogLevel** - Optional. Default is *INFO*. Other possible values:
+            * *EMERGENCY*
+            * *ALERT*
+            * *CRITICAL*
+            * *ERROR*
+            * *WARNING*
+            * *NOTICE*
+            * *DEBUG*
+
     queryParameters:
         isUniversal:
           displayName: isUniversal
@@ -5841,99 +6009,115 @@ securitySchemes:
       application/xml:
         example: |
           <edge>
-            <datacenterMoid></datacenterMoid>
-            <name></name>
-            <type></type>
-            <description></description>
-            <tenant></tenant>
-            <fqdn></fqdn>
-            <vseLogLevel></vseLogLevel>
-            <enableAesni></enableAesni>
-            <enableFips></enableFips>
-            <appliances>
-              <applianceSize></applianceSize>
-              <enableCoreDump></enableCoreDump>
+            <datacenterMoid>datacenter-2</datacenterMoid>
+            <name>org1-edge</name>
+            <description>Description for the edge gateway</description>
+            <tenant>org1</tenant>
+            <fqdn>org1edge1</fqdn>
+            <vseLogLevel>info</vseLogLevel>
+            <enableAesni>false</enableAesni> <!-- optional. Default is true -->
+            <enableFips>true</enableFips> <!-- optional. Default is false -->
+            <appliances> <!-- maximum 2 appliances can be configured. Until one appliance is configured, none of the configured features configured will serve the network -->
+              <applianceSize>compact</applianceSize> <!-- optional. Default is compact. Other possible values are large|xlarge|quadlarge -->
+              <enableCoreDump>true</enableCoreDump> <!-- optional. default is false. Enabling core-dump will deploy an extra disk for core-dump files, which will consume 1GB for COMPACT, LARGE, and QUADLARGE, and 8G for XLARGE Edge.-->
               <appliance>
-                <resourcePoolId></resourcePoolId>
-                <datastoreId></datastoreId>
-                <hostId></hostId>
-                <vmFolderId></vmFolderId>
-                <customField>
-                  <key></key>
-                  <value></value>
+                <resourcePoolId>resgroup-53</resourcePoolId>
+                <datastoreId>datastore-29</datastoreId>
+                <hostId>host-28</hostId> <!-- optional -->
+                <vmFolderId>group-v38</vmFolderId> <!-- optional -->
+                <customField> <!-- optional -->
+                  <key>system.service.vmware.vsla.main01</key>
+                  <value>string</value>
                 </customField>
-                <cpuReservation>
-                  <limit></limit>
-                  <reservation></reservation>
-                  <shares></shares>
+                <cpuReservation> <!-- optional -->
+                  <limit>2399</limit>
+                  <reservation>500</reservation>
+                  <shares>500</shares>
                 </cpuReservation>
-                <memoryReservation>
-                  <limit></limit>
-                  <reservation></reservation>
-                  <shares></shares>
+                <memoryReservation> <!-- optional -->
+                  <limit>5000</limit>
+                  <reservation>500</reservation>
+                  <shares>20480</shares>
                 </memoryReservation>
               </appliance>
             </appliances>
-            <vnics>
+            <vnics> <!-- mamimum 10 interfaces index 0-9 can be configured. Until one connected vnic is configured, none of the configured features will serve the network -->
               <vnic>
-                <index></index>
-                <name></name>
-                <type></type>
-                <portgroupId></portgroupId>
-                <addressGroups>
-                  <addressGroup>
-                    <primaryAddress></primaryAddress>
-                    <secondaryAddresses>
-                      <ipAddress></ipAddress>
+                <index>0</index>
+                <name>internal0</name> <!-- optional. System has default Names. format vNic0 ... vNic7 -->
+                <type>internal</type> <!-- optional. Default is internal. Other possible value is "uplink" -->
+                <portgroupId>dvportgroup-114</portgroupId> <!-- Possible values here are portgroupIds or virtualWire-id. portgroupId needs to be defined if isConnected=true -->
+                <addressGroups> <!-- Supports one or more addressGroup except on the Edge used for the distributed router which can only have a primary IP address. -->
+                  <addressGroup> <!-- Vnic can be configured to have more than one addressGroup/subnets -->
+                    <primaryAddress>192.168.3.1</primaryAddress> <!-- This is mandatory for an addressGroup -->
+                    <secondaryAddresses> <!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc -->
+                      <ipAddress>192.168.3.2</ipAddress>
+                      <ipAddress>192.168.3.3</ipAddress> <!-- Optional. This way multiple IP Addresses can be assigned to a vnic/interface -->
                     </secondaryAddresses>
-                    <subnetMask></subnetMask>
+                    <subnetMask>255.255.255.0</subnetMask> <!-- either subnetMask or subnetPrefixLength should be provided. If both then subnetprefixLength is ignored -->
+                  </addressGroup>
+                  <addressGroup> <!-- Vnic can be configured to have more than one addressGroup/subnets -->
+                    <primaryAddress>192.168.4.1</primaryAddress> <!-- This is mandatory for an addressGroup -->
+                    <secondaryAddresses> <!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc -->
+                      <ipAddress>192.168.4.2</ipAddress>
+                      <ipAddress>192.168.4.3</ipAddress> <!-- Optional. This way multiple IP Addresses can be assigned to a vnic/interface -->
+                    </secondaryAddresses>
+                    <subnetPrefixLength>24</subnetPrefixLength>
+                  </addressGroup>
+                  <addressGroup> <!-- ipv6 addressGroup -->
+                    <primaryAddress>ffff::1</primaryAddress> <!-- This is mandatory for an addressGroup -->
+                    <secondaryAddresses> <!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc -->
+                      <ipAddress>ffff::2</ipAddress>
+                    </secondaryAddresses>
+                    <subnetPrefixLength>64</subnetPrefixLength> <!-- prefixLength valid values 1-128 -->
                   </addressGroup>
                 </addressGroups>
-                <macAddress>
-                  <edgeVmHaIndex></edgeVmHaIndex>
-                  <value></value>
+                <macAddress> <!-- optional. When not specified, macAddresses will be managed by VC -->
+                  <edgeVmHaIndex>0</edgeVmHaIndex>
+                  <value>00:50:56:01:03:23</value> <!-- optional. User must ensure that macAddresses provided are unique withing the given layer 2 domain. -->
                 </macAddress>
-                <fenceParameter>
-                  <key></key>
-                  <value></value>
+                <fenceParameter> <!-- optional -->
+                  <key>ethernet0.filter1.param1</key>
+                  <value>1</value>
                 </fenceParameter>
-                <mtu></mtu>
-                <enableProxyArp></enableProxyArp>
-                <enableSendRedirects></enableSendRedirects>
-                <isConnected></isConnected>
-                <inShapingPolicy>
-                  <averageBandwidth></averageBandwidth>
-                  <peakBandwidth></peakBandwidth>
-                  <burstSize></burstSize>
-                  <enabled></enabled>
-                  <inherited></inherited>
+                <mtu>1500</mtu> <!-- optional. Default is 1500 -->
+                <enableProxyArp>false</enableProxyArp> <!-- optional. Default is false -->
+                <enableSendRedirects>true</enableSendRedirects> <!-- optional. Default is true-->
+                <isConnected>true</isConnected> <!-- optional. Default is false -->
+                <inShapingPolicy> <!-- optional -->
+                  <averageBandwidth>200000000</averageBandwidth>
+                  <peakBandwidth>200000000</peakBandwidth>
+                  <burstSize>0</burstSize>
+                  <enabled>true</enabled>
+                  <inherited>false</inherited>
                 </inShapingPolicy>
-                <outShapingPolicy>
-                  <averageBandwidth></averageBandwidth>
-                  <peakBandwidth></peakBandwidth>
-                  <burstSize></burstSize>
-                  <enabled></enabled>
-                  <inherited></inherited>
+                <outShapingPolicy> <!-- optional -->
+                  <averageBandwidth>400000000</averageBandwidth>
+                  <peakBandwidth>400000000</peakBandwidth>
+                  <burstSize>0</burstSize>
+                  <enabled>true</enabled>
+                  <inherited>false</inherited>
                 </outShapingPolicy>
               </vnic>
             </vnics>
-            <cliSettings>
-              <userName></userName>
-              <password></password>
-              <remoteAccess></remoteAccess>
+            <cliSettings> <!-- optional. Default user/pass is admin/default, and remoteAccess is false (i.e. disabled) -->
+              <userName>test</userName> <!-- When you change the userName, you are overwriting the current userName. -->
+              <password>test123!</password> <!-- The password should be atleast 12 characters long, must be a mix of alphabets, digits and special characters. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.-->
+              <remoteAccess>false</remoteAccess> <!-- remote Access specifies whether cli console access over ssh must be enabled. Relevant firewall rules to allow traffic on port 22 must be opened by user/client. Please note that it is advisable to restrict ssh access to Edge cli to only a limited ip addresses - so firewall rules must be opened cautiously. -->
             </cliSettings>
-            <autoConfiguration>
-              <enabled></enabled>
-              <rulePriority></rulePriority>
+            <autoConfiguration> <!-- optional -->
+              <enabled>true</enabled> <!-- Optional. Default is true. If set to false, user should add the nat,firewall,routing config to control plane work for LB, VPN, etc -->
+              <rulePriority>high</rulePriority> <!-- Optional. Default is high. Other possible value is low -->
             </autoConfiguration>
-            <dnsClient>
-              <primaryDns></primaryDns>
-              <secondaryDns></secondaryDns>
-              <domainName></domainName>
+            <dnsClient> <!-- optional. if the primary/secondary are specified and the DNS service not, the primary/secondary will to used as the default of the DNS service. -->
+              <primaryDns>10.117.0.1</primaryDns>
+              <secondaryDns>10.117.0.2</secondaryDns>
+              <domainName>vmware.com</domainName>
+              <domainName>foo.com</domainName>
             </dnsClient>
-            <queryDaemon>
-              <enabled></enabled>
-              <port></port>
+            <queryDaemon> <!-- optional. defined for the sake of communication between SLB VM and edge vm for GSLB feature. -->
+              <enabled>true</enabled> <!-- default to false-->
+              <port>5666</port> <!-- default to 5666 -->
             </queryDaemon>
           </edge>
         schema: nsxEdgesCreate
