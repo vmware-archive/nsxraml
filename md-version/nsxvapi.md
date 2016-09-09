@@ -166,14 +166,14 @@ be part of the network scope. You must have the VLAN ID, UUID of the
 vCenter Server, and vDS ID.
 ___
 Request body paramaters:
-  * *name* - An optional paramater that is the name of the scope.
+  * **name** - An optional paramater that is the name of the scope.
     Accepts a string.
-  * *objectId* - Provide the cluster object ID from vSphere
-  * *controlPlaneMode* - The *controlPlaneMode* determines the control
+  * **objectId** - Provide the cluster object ID from vSphere
+  * **controlPlaneMode** - The **controlPlaneMode** determines the control
     mode of the control plane. It can be one of the following:
-      * **UNICAST_MODE*
-      * **HYBRID_MODE**
-      * **MULTICAST_MODE**
+      * *UNICAST_MODE*
+      * *HYBRID_MODE*
+      * *MULTICAST_MODE*
 
 ### /2.0/vdn/scopes/{scopeId}
 You can manage specific VDN scopes with several API calls. Specify the
