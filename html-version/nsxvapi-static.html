@@ -15480,6 +15480,128 @@ hostanme on the vm. Appended by <em>-<haIndex></em></li>
 <li><em>DEBUG</em></li>
 </ul>
 </li>
+<li><strong>enableAesni</strong> - Optional. Default is true.</li>
+<li><strong>enableFips</strong> - Optional. Default is false.</li>
+<li><strong>appliances</strong> - A maximum 2 appliances can be configured. Until one
+appliance is configured, none of the configured features configured
+will serve the network.</li>
+<li><strong>applianceSize</strong> - Optional. Default is <em>compact</em>. Possible values:<ul>
+<li><em>compact</em></li>
+<li><em>large</em></li>
+<li><em>xlarge</em></li>
+<li><em>quadlarge</em></li>
+</ul>
+</li>
+<li><strong>enableCoreDump</strong> - Optional. Default is false. Enabling core-dump
+will deploy an extra disk for core-dump files, which will consume
+1GB for COMPACT, LARGE, and QUADLARGE, and 8G for XLARGE Edge.</li>
+<li><strong>vnics</strong> - Mamimum 10 interfaces index 0-9 can be configured. Until
+one connected vnic is configured, none of the configured features
+will serve the network.<ul>
+<li><strong>name</strong> - Optional. System has default Names. Format vNic0 ...
+vNic7.</li>
+<li><strong>type</strong> - Optional. Default is internal. Other possible value is
+&quot;uplink&quot;.</li>
+<li><strong>portgroupId* - Possible values here are portgroupIds or
+virtualWire-id. </strong>portgroupId<strong> needs to be defined if
+</strong>isConnected<em>*=</em>true*.</li>
+<li><strong>addressGroups</strong> - Supports one or more addressGroup except on the
+Edge used for the distributed router which can only have a primary
+IP address.<ul>
+<li><strong>addressGroup</strong> - Vnic can be configured to have more than one
+addressGroup/subnets.<ul>
+<li><strong>primaryAddress</strong> - This is mandatory for an <strong>addressGroup</strong>.
+May be either IPv4 of IPv6.</li>
+<li><strong>secondaryAddresses</strong> - Optional. Should be used to add/define
+other IPs used for NAT, LB, VPN, etc..<ul>
+<li><strong>ipAddress</strong> - Optional. One or more can be provided.
+This way multiple IP Addresses can be assigned to a
+vnic/interface. May be eitehr IPv4 or IPv6.</li>
+</ul>
+</li>
+<li><strong>subnetMask</strong> - Either <strong>subnetMask</strong> or <strong>subnetPrefixLength</strong>
+should be provided. If both then <strong>subnetprefixLength</strong> is
+ignored.</li>
+<li><strong>subnetPrefixLength</strong> - CIDR format style number of bits.
+Possible values are 1 - 32 for IPv4 or 1 - 128 for IPv6.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>macAddress</strong> - Optional. When not specified, <strong>macAddresses</strong>
+will be managed by vCenter.<ul>
+<li><strong>edgeVmHaIndex</strong><ul>
+<li><strong>value</strong> - Optional. User must ensure that <strong>macAddresses</strong>
+provided are unique withing the given layer 2 domain.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>fenceParameter</strong> - Optional<ul>
+<li><strong>key</strong> - Example <em>ethernet0.filter1.param1</em></li>
+<li><strong>value</strong> - Example 1</li>
+</ul>
+</li>
+<li><strong>mtu</strong> - Optional. Default is 1500.</li>
+<li><strong>enableProxyArp</strong> - Optional. Default is false.</li>
+<li><strong>enableSendRedirects</strong> - Optional. Default is true.</li>
+<li><strong>isConnected</strong> - Optional. Default is false.</li>
+<li><strong>inShapingPolicy</strong> - Optional<ul>
+<li><strong>averageBandwidth</strong> - Example 200000000</li>
+<li><strong>peakBandwidth</strong> - Example 200000000</li>
+<li><strong>burstSize&gt;</strong> - Example 0</li>
+<li><strong>enabled</strong> - Value can be <em>true</em> or <em>false</em>.</li>
+<li><strong>inherite</strong> - Value can be <em>true</em> or <em>false</em>.</li>
+</ul>
+</li>
+<li>**outShapingPolicy -Optional<ul>
+<li><strong>averageBandwidth</strong> - Example 400000000</li>
+<li><strong>peakBandwidth</strong> - Example 400000000</li>
+<li><strong>burstSize</strong> - Example 0</li>
+<li><strong>enabled</strong> - Value can be <em>true</em> or <em>false</em>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>cliSettings</strong> - Optional. Default user/pass is admin/default, and
+  remoteAccess is false (i.e. disabled).<ul>
+<li><strong>userName</strong> - When you change the <strong>userName</strong> you are overwriting
+the current <strong>userName</strong>.</li>
+<li><strong>password</strong> - The password should be at least 12 characters long,
+must be a mix of alphabets, digits and special characters. Must
+contain at-least 1 uppercase, 1 lowercase, 1 special character and
+1 digit. In addition, a character cannot be repeated 3 or more
+times consectively.</li>
+<li><strong>remoteAccess</strong> - The <strong>RemoteAccess</strong> property specifies whether
+the CLI console access via SSH isenabled. Relevant firewall rules
+to allow traffic on port 22 must be opened by user/client. Please
+note that it is advisable to restrict SSH access to Edge CLI to
+only a limited IP addresses - firewall rules must be opened
+cautiously.</li>
+</ul>
+</li>
+<li><strong>autoConfiguration</strong> - Optional.<ul>
+<li><strong>enabled</strong> - Optional. Default is <em>true</em>. If set to <em>false</em>, user
+should add the nat, firewall, routing config to control plane work
+for LB, VPN, etc..</li>
+<li><strong>rulePriority</strong> - Optional. Default is <em>high</em>. Other possible
+value is <em>low</em>.</li>
+</ul>
+</li>
+<li><strong>dnsClient</strong> - Optional. If the primary/secondary are specified and
+the DNS service not, the primary/secondary will to used as the
+default of the DNS service.<ul>
+<li><strong>primaryDns</strong> - The IPv4 address of the primary DNS server.</li>
+<li><strong>secondaryDns</strong> - The IPv4 address of the secondary DNS server.</li>
+<li><strong>domainName</strong> - The domain name used for the DNS resolver.</li>
+</ul>
+</li>
+<li><strong>queryDaemon</strong> - Optional. Defined for the sake of communication
+between SLB VM and edge vm for GSLB feature.<ul>
+<li><strong>enabled</strong> - Default to <em>false</em>.</li>
+<li><strong>port</strong> - Default to 5666.</li>
+</ul>
+</li>
 </ul>
 </p>
     <h3>Security</h3>
@@ -15690,11 +15812,11 @@ hostanme on the vm. Appended by <em>-<haIndex></em></li>
   <span class="hljs-tag">&lt;<span class="hljs-name">tenant</span>&gt;</span>org1<span class="hljs-tag">&lt;/<span class="hljs-name">tenant</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span>org1edge1<span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vseLogLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">vseLogLevel</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enableAesni</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableAesni</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is true --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enableFips</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableFips</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is false --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">appliances</span>&gt;</span> <span class="hljs-comment">&lt;!-- maximum 2 appliances can be configured. Until one appliance is configured, none of the configured features configured will serve the network --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">applianceSize</span>&gt;</span>compact<span class="hljs-tag">&lt;/<span class="hljs-name">applianceSize</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is compact. Other possible values are large|xlarge|quadlarge --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enableCoreDump</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableCoreDump</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. default is false. Enabling core-dump will deploy an extra disk for core-dump files, which will consume 1GB for COMPACT, LARGE, and QUADLARGE, and 8G for XLARGE Edge.--&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enableAesni</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableAesni</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enableFips</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableFips</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliances</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applianceSize</span>&gt;</span>compact<span class="hljs-tag">&lt;/<span class="hljs-name">applianceSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableCoreDump</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableCoreDump</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">appliance</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span>resgroup-53<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
@@ -15716,12 +15838,12 @@ hostanme on the vm. Appended by <em>-<haIndex></em></li>
       <span class="hljs-tag">&lt;/<span class="hljs-name">memoryReservation</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">appliance</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">appliances</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vnics</span>&gt;</span> <span class="hljs-comment">&lt;!-- mamimum 10 interfaces index 0-9 can be configured. Until one connected vnic is configured, none of the configured features will serve the network --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnics</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>internal0<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. System has default Names. format vNic0 ... vNic7 --&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>internal<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span> <span class="hljs-comment">&lt;!-- optional. Default is internal. Other possible value is "uplink" --&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">portgroupId</span>&gt;</span>dvportgroup-114<span class="hljs-tag">&lt;/<span class="hljs-name">portgroupId</span>&gt;</span> <span class="hljs-comment">&lt;!-- Possible values here are portgroupIds or virtualWire-id. portgroupId needs to be defined if isConnected=true --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>internal0<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>internal<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">portgroupId</span>&gt;</span>dvportgroup-114<span class="hljs-tag">&lt;/<span class="hljs-name">portgroupId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span> <span class="hljs-comment">&lt;!-- Supports one or more addressGroup except on the Edge used for the distributed router which can only have a primary IP address. --&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span> <span class="hljs-comment">&lt;!-- Vnic can be configured to have more than one addressGroup/subnets --&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>192.168.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span> <span class="hljs-comment">&lt;!-- This is mandatory for an addressGroup --&gt;</span>

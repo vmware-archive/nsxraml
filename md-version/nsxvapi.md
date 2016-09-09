@@ -1809,6 +1809,100 @@ Request body paramaters:
       * *WARNING*
       * *NOTICE*
       * *DEBUG*
+  * **enableAesni** - Optional. Default is true.
+  * **enableFips** - Optional. Default is false.
+  * **appliances** - A maximum 2 appliances can be configured. Until one
+    appliance is configured, none of the configured features configured
+    will serve the network.
+  * **applianceSize** - Optional. Default is *compact*. Possible values:
+    * *compact*
+    * *large*
+    * *xlarge*
+    * *quadlarge*
+  * **enableCoreDump** - Optional. Default is false. Enabling core-dump
+    will deploy an extra disk for core-dump files, which will consume
+    1GB for COMPACT, LARGE, and QUADLARGE, and 8G for XLARGE Edge.
+  * **vnics** - Mamimum 10 interfaces index 0-9 can be configured. Until
+    one connected vnic is configured, none of the configured features
+    will serve the network.
+    * **name** - Optional. System has default Names. Format vNic0 ...
+      vNic7.
+    * **type** - Optional. Default is internal. Other possible value is
+      "uplink".
+    * **portgroupId* - Possible values here are portgroupIds or
+      virtualWire-id. **portgroupId** needs to be defined if
+      **isConnected**=*true*.
+    * **addressGroups** - Supports one or more addressGroup except on the
+      Edge used for the distributed router which can only have a primary
+      IP address.
+      * **addressGroup** - Vnic can be configured to have more than one
+        addressGroup/subnets.
+        * **primaryAddress** - This is mandatory for an **addressGroup**.
+          May be either IPv4 of IPv6.
+        * **secondaryAddresses** - Optional. Should be used to add/define
+          other IPs used for NAT, LB, VPN, etc..
+          * **ipAddress** - Optional. One or more can be provided.
+            This way multiple IP Addresses can be assigned to a
+            vnic/interface. May be eitehr IPv4 or IPv6.
+        * **subnetMask** - Either **subnetMask** or **subnetPrefixLength**
+          should be provided. If both then **subnetprefixLength** is
+          ignored.
+        * **subnetPrefixLength** - CIDR format style number of bits.
+          Possible values are 1 - 32 for IPv4 or 1 - 128 for IPv6.
+    * **macAddress** - Optional. When not specified, **macAddresses**
+      will be managed by vCenter.
+      * **edgeVmHaIndex**
+        * **value** - Optional. User must ensure that **macAddresses**
+        provided are unique withing the given layer 2 domain.
+    * **fenceParameter** - Optional
+        * **key** - Example *ethernet0.filter1.param1*
+        * **value** - Example 1
+    * **mtu** - Optional. Default is 1500.
+    * **enableProxyArp** - Optional. Default is false.
+    * **enableSendRedirects** - Optional. Default is true.
+    * **isConnected** - Optional. Default is false.
+    * **inShapingPolicy** - Optional
+      * **averageBandwidth** - Example 200000000
+      * **peakBandwidth** - Example 200000000
+      * **burstSize>** - Example 0
+      * **enabled** - Value can be *true* or *false*.
+      * **inherite** - Value can be *true* or *false*.
+    * **outShapingPolicy -Optional
+      * **averageBandwidth** - Example 400000000
+      * **peakBandwidth** - Example 400000000
+      * **burstSize** - Example 0
+      * **enabled** - Value can be *true* or *false*.
+  * **cliSettings** - Optional. Default user/pass is admin/default, and
+      remoteAccess is false (i.e. disabled).
+    * **userName** - When you change the **userName** you are overwriting
+      the current **userName**.
+    * **password** - The password should be at least 12 characters long,
+      must be a mix of alphabets, digits and special characters. Must
+      contain at-least 1 uppercase, 1 lowercase, 1 special character and
+      1 digit. In addition, a character cannot be repeated 3 or more
+      times consectively.
+    * **remoteAccess** - The **RemoteAccess** property specifies whether
+      the CLI console access via SSH isenabled. Relevant firewall rules
+      to allow traffic on port 22 must be opened by user/client. Please
+      note that it is advisable to restrict SSH access to Edge CLI to
+      only a limited IP addresses - firewall rules must be opened
+      cautiously.
+  * **autoConfiguration** - Optional.
+    * **enabled** - Optional. Default is *true*. If set to *false*, user
+      should add the nat, firewall, routing config to control plane work
+      for LB, VPN, etc..
+    * **rulePriority** - Optional. Default is *high*. Other possible
+      value is *low*.
+  * **dnsClient** - Optional. If the primary/secondary are specified and
+    the DNS service not, the primary/secondary will to used as the
+    default of the DNS service.
+    * **primaryDns** - The IPv4 address of the primary DNS server.
+    * **secondaryDns** - The IPv4 address of the secondary DNS server.
+    * **domainName** - The domain name used for the DNS resolver.
+  * **queryDaemon** - Optional. Defined for the sake of communication
+    between SLB VM and edge vm for GSLB feature.
+    * **enabled** - Default to *false*.
+    * **port** - Default to 5666.
 
 * **get** *(secured)*: Retrieve a list of NSX Edges in your inventory or use the query
 parameters to filter results by datacenter or port group
