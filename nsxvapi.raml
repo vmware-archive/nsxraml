@@ -3214,6 +3214,107 @@ securitySchemes:
       get:
         displayName: statusResourceTypeRead
         description: Query status of resources by criterion
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <resourceStatuses>
+                    <resourceStatus>
+                      <resource>
+                        <objectId>domain-c34</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <nsxmgrUuid>jfldj</nsxmgrUuid>
+                        <revision>2</revision>
+                        <type>
+                          <typeName>ClusterComputeResource</typeName>
+                        </type>
+                        <name>c-1</name>
+                        <scope>
+                          <id>datacenter-2</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>dc-1</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes></extendedAttributes>
+                      </resource>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.nwfabric.hostPrep</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>RED</status>
+                        <message></message>
+                        <installed>true</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.messagingInfra</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.firewall</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                    </resourceStatus>
+                    <resourceStatus>
+                      <resource>
+                        <objectId>domain-c32</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <nsxmgrUuid>jfldj</nsxmgrUuid>
+                        <revision>1</revision>
+                        <type>
+                          <typeName>ClusterComputeResource</typeName>
+                        </type>
+                        <name>c-2</name>
+                        <scope>
+                          <id>datacenter-12</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>dc-2</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes></extendedAttributes>
+                      </resource>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.nwfabric.hostPrep</featureId>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.nsxmgr.messagingInfra</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                      <nwFabricFeatureStatus>
+                        <featureId>com.vmware.vshield.firewall</featureId>
+                        <featureVersion>5.5</featureVersion>
+                        <updateAvailable>false</updateAvailable>
+                        <status>UNKNOWN</status>
+                        <installed>false</installed>
+                      </nwFabricFeatureStatus>
+                    </resourceStatus>
+                  </resourceStatuses>
   /clusters/{clusterID}:
     displayName: nwfabricClusters
     description: Network virtualization component cluster configuration
@@ -6140,51 +6241,51 @@ securitySchemes:
                 <name>internal0</name>
                 <type>internal</type>
                 <portgroupId>dvportgroup-114</portgroupId>
-                <addressGroups> <!-- Supports one or more addressGroup except on the Edge used for the distributed router which can only have a primary IP address. -->
-                  <addressGroup> <!-- Vnic can be configured to have more than one addressGroup/subnets -->
-                    <primaryAddress>192.168.3.1</primaryAddress> <!-- This is mandatory for an addressGroup -->
-                    <secondaryAddresses> <!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc -->
+                <addressGroups>
+                  <addressGroup>
+                    <primaryAddress>192.168.3.1</primaryAddress>
+                    <secondaryAddresses>
                       <ipAddress>192.168.3.2</ipAddress>
-                      <ipAddress>192.168.3.3</ipAddress> <!-- Optional. This way multiple IP Addresses can be assigned to a vnic/interface -->
+                      <ipAddress>192.168.3.3</ipAddress>
                     </secondaryAddresses>
-                    <subnetMask>255.255.255.0</subnetMask> <!-- either subnetMask or subnetPrefixLength should be provided. If both then subnetprefixLength is ignored -->
+                    <subnetMask>255.255.255.0</subnetMask>
                   </addressGroup>
-                  <addressGroup> <!-- Vnic can be configured to have more than one addressGroup/subnets -->
-                    <primaryAddress>192.168.4.1</primaryAddress> <!-- This is mandatory for an addressGroup -->
-                    <secondaryAddresses> <!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc -->
+                  <addressGroup>
+                    <primaryAddress>192.168.4.1</primaryAddress>
+                    <secondaryAddresses>
                       <ipAddress>192.168.4.2</ipAddress>
-                      <ipAddress>192.168.4.3</ipAddress> <!-- Optional. This way multiple IP Addresses can be assigned to a vnic/interface -->
+                      <ipAddress>192.168.4.3</ipAddress>
                     </secondaryAddresses>
                     <subnetPrefixLength>24</subnetPrefixLength>
                   </addressGroup>
-                  <addressGroup> <!-- ipv6 addressGroup -->
-                    <primaryAddress>ffff::1</primaryAddress> <!-- This is mandatory for an addressGroup -->
-                    <secondaryAddresses> <!-- Optional. Should be used to add/defined other IPs used for NAT, LB, VPN, etc -->
+                  <addressGroup>
+                    <primaryAddress>ffff::1</primaryAddress>
+                    <secondaryAddresses>
                       <ipAddress>ffff::2</ipAddress>
                     </secondaryAddresses>
-                    <subnetPrefixLength>64</subnetPrefixLength> <!-- prefixLength valid values 1-128 -->
+                    <subnetPrefixLength>64</subnetPrefixLength>
                   </addressGroup>
                 </addressGroups>
-                <macAddress> <!-- optional. When not specified, macAddresses will be managed by VC -->
+                <macAddress>
                   <edgeVmHaIndex>0</edgeVmHaIndex>
-                  <value>00:50:56:01:03:23</value> <!-- optional. User must ensure that macAddresses provided are unique withing the given layer 2 domain. -->
+                  <value>00:50:56:01:03:23</value>
                 </macAddress>
-                <fenceParameter> <!-- optional -->
+                <fenceParameter>
                   <key>ethernet0.filter1.param1</key>
                   <value>1</value>
                 </fenceParameter>
-                <mtu>1500</mtu> <!-- optional. Default is 1500 -->
-                <enableProxyArp>false</enableProxyArp> <!-- optional. Default is false -->
-                <enableSendRedirects>true</enableSendRedirects> <!-- optional. Default is true-->
-                <isConnected>true</isConnected> <!-- optional. Default is false -->
-                <inShapingPolicy> <!-- optional -->
+                <mtu>1500</mtu>
+                <enableProxyArp>false</enableProxyArp>
+                <enableSendRedirects>true</enableSendRedirects>
+                <isConnected>true</isConnected>
+                <inShapingPolicy>
                   <averageBandwidth>200000000</averageBandwidth>
                   <peakBandwidth>200000000</peakBandwidth>
                   <burstSize>0</burstSize>
                   <enabled>true</enabled>
                   <inherited>false</inherited>
                 </inShapingPolicy>
-                <outShapingPolicy> <!-- optional -->
+                <outShapingPolicy>
                   <averageBandwidth>400000000</averageBandwidth>
                   <peakBandwidth>400000000</peakBandwidth>
                   <burstSize>0</burstSize>
@@ -6193,24 +6294,24 @@ securitySchemes:
                 </outShapingPolicy>
               </vnic>
             </vnics>
-            <cliSettings> <!-- optional. Default user/pass is admin/default, and remoteAccess is false (i.e. disabled) -->
-              <userName>test</userName> <!-- When you change the userName, you are overwriting the current userName. -->
-              <password>test123!</password> <!-- The password should be atleast 12 characters long, must be a mix of alphabets, digits and special characters. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.-->
-              <remoteAccess>false</remoteAccess> <!-- remote Access specifies whether cli console access over ssh must be enabled. Relevant firewall rules to allow traffic on port 22 must be opened by user/client. Please note that it is advisable to restrict ssh access to Edge cli to only a limited ip addresses - so firewall rules must be opened cautiously. -->
+            <cliSettings>
+              <userName>test</userName>
+              <password>test123!</password>
+              <remoteAccess>false</remoteAccess>
             </cliSettings>
-            <autoConfiguration> <!-- optional -->
-              <enabled>true</enabled> <!-- Optional. Default is true. If set to false, user should add the nat,firewall,routing config to control plane work for LB, VPN, etc -->
-              <rulePriority>high</rulePriority> <!-- Optional. Default is high. Other possible value is low -->
+            <autoConfiguration>
+              <enabled>true</enabled>
+              <rulePriority>high</rulePriority>
             </autoConfiguration>
-            <dnsClient> <!-- optional. if the primary/secondary are specified and the DNS service not, the primary/secondary will to used as the default of the DNS service. -->
+            <dnsClient>
               <primaryDns>10.117.0.1</primaryDns>
               <secondaryDns>10.117.0.2</secondaryDns>
               <domainName>vmware.com</domainName>
               <domainName>foo.com</domainName>
             </dnsClient>
-            <queryDaemon> <!-- optional. defined for the sake of communication between SLB VM and edge vm for GSLB feature. -->
-              <enabled>true</enabled> <!-- default to false-->
-              <port>5666</port> <!-- default to 5666 -->
+            <queryDaemon>
+              <enabled>true</enabled>
+              <port>5666</port>
             </queryDaemon>
           </edge>
         schema: nsxEdgesCreate
