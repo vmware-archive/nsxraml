@@ -50,33 +50,31 @@ The NSX Manager requires port 443/TCP for REST API requests.
 ---
 
 ## vdsManage
-This collection of methods are used to configure and prepare the VDS's for
-the use with NSX. Before creating a logical switch, ensure that you have
-installed the network virtualization components on the appropriate clusters
-and that you have configured VXLAN on the appropriate clusters.
+Working with vSphere Distributed Switches
 
 ### /2.0/vdn/switches
 
-* **post** *(secured)*: The MTU is the maximum amount of data that can be transmitted in one
-packet before it is divided into smaller packets. The frames are slightly
+* **post** *(secured)*: Prepare a vSphere Distributed Switch
+___
+The MTU is the maximum amount of data that can be transmitted in one
+packet before it is divided into smaller packets. VXLAN frames are slightly
 larger in size because of the traffic encapsulation, so the MTU required
 is higher than the standard MTU. You must set the MTU for each switch to
 1600 or higher.
 
-* **get** *(secured)*: You can retrieve all configured switches.
+* **get** *(secured)*: Retrieve information about all vSphere Distributed Switches.
 
 ### /2.0/vdn/switches/datacenter/{datacenterID}
-You can retrieve all configured switches on a datacenter.
+Working with vSphere Distributed Switches in a Datacenter
 
-* **get** *(secured)*: Lists all VDS's in a specified vSphere Datacenter Object
+* **get** *(secured)*: Retrieve information about all vSphere Distributed Switches in the specified datacenter.
 
 ### /2.0/vdn/switches/{vdsId}
-Retrieve a specific switch by specific switch ID (e.g. dvs-26).
+Working With a Specific vSphere Distributed Switch
 
-* **get** *(secured)*: Retrieve a specific vds by specific switchId (e.g. dvs-26)
+* **get** *(secured)*: Retrieve information about the specified vSphere Distributed Switch.
 
-* **delete** *(secured)*: Delete a specific VDS by specific switchId (e.g. dvs-22). Use the
-switch ID as the vdsId.
+* **delete** *(secured)*: Delete the specified vSphere Distributed Switch.
 
 ## vdnConfig
 Configurations of Segment ID's and Multicast Ranges for logical switches

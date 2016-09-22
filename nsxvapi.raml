@@ -165,15 +165,14 @@ securitySchemes:
 /2.0/vdn/switches:
   displayName: vdsManage
   description: |
-    This collection of methods are used to configure and prepare the VDS's for
-    the use with NSX. Before creating a logical switch, ensure that you have
-    installed the network virtualization components on the appropriate clusters
-    and that you have configured VXLAN on the appropriate clusters.
+    Working with vSphere Distributed Switches
   post:
     displayName: vdsPrepare
     description: |
+      Prepare a vSphere Distributed Switch
+      ___
       The MTU is the maximum amount of data that can be transmitted in one
-      packet before it is divided into smaller packets. The frames are slightly
+      packet before it is divided into smaller packets. VXLAN frames are slightly
       larger in size because of the traffic encapsulation, so the MTU required
       is higher than the standard MTU. You must set the MTU for each switch to
       1600 or higher.
@@ -182,22 +181,22 @@ securitySchemes:
         example: |
           <vdsContext>
             <switch>
-              <objectId></objectId>
-                <type>
-                  <typeName></typeName>
-                </type>
-                <name></name>
-                <revision></revision>
-                <objectTypeName></objectTypeName>
+              <objectId>dvs-26</objectId>
+              <type>
+                <typeName>DistributedVirtualSwitch</typeName>
+              </type>
+              <name></name>
+              <revision>0</revision>
+              <objectTypeName>DistributedVirtualSwitch</objectTypeName>
             </switch>
-            <teaming></teaming>
-            <mtu></mtu>
+            <teaming>ETHER_CHANNEL</teaming>
+            <mtu>mtu-value</mtu>
           </vdsContext>
         schema: vdsContext
   get:
     displayName: vdsList
     description: |
-      You can retrieve all configured switches.
+      Retrieve information about all vSphere Distributed Switches.
     responses:
       200:
         body:
@@ -206,32 +205,51 @@ securitySchemes:
               <vdsContexts>
                 <vdsContext>
                   <switch>
-                    <objectId></objectId>
+                    <objectId>dvs-35</objectId>
+                    <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                    <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                    <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                    <revision>10</revision>
                     <type>
-                      <typeName></typeName>
+                      <typeName>VmwareDistributedVirtualSwitch</typeName>
                     </type>
-                    <name></name>
-                    <revision></revision>
-                    <objectTypeName></objectTypeName>
+                    <name>vds-site-a</name>
+                    <scope>
+                      <id>datacenter-21</id>
+                      <objectTypeName>Datacenter</objectTypeName>
+                      <name>Datacenter Site A</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes/>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
                   </switch>
-                  <teaming></teaming>
-                  <mtu></mtu>
-                </vdsContext>
-              </vdsContexts>
+                  <mtu>1600</mtu>
+                  <teaming>FAILOVER_ORDER</teaming>
+                  <uplinkPortName>Uplink 4</uplinkPortName>
+                  <promiscuousMode>false</promiscuousMode>
+                  </vdsContext>
+                  <vdsContext>
+                    <switch>
+                      <objectId>dvs-47</objectId>
+                      <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                      ...
+                  </vdsContext>
+                </vdsContexts>
   /datacenter/{datacenterID}:
     displayName: vdsInDc
     description: |
-      You can retrieve all configured switches on a datacenter.
+      Working with vSphere Distributed Switches in a Datacenter
     uriParameters:
       datacenterID:
           required: true
           displayName: datacenterID
           description: |
-            A valid Datacenter ID (e.g. datacenter-4)
+            A valid datacenter ID (e.g. datacenter-21)
     get:
       displayName: vdsListInDc
       description: |
-        Lists all VDS's in a specified vSphere Datacenter Object
+        Retrieve information about all vSphere Distributed Switches in the specified datacenter.
       responses:
         200:
           body:
@@ -240,32 +258,51 @@ securitySchemes:
                 <vdsContexts>
                   <vdsContext>
                     <switch>
-                      <objectId></objectId>
+                      <objectId>dvs-35</objectId>
+                      <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>10</revision>
                       <type>
-                        <typeName></typeName>
+                        <typeName>VmwareDistributedVirtualSwitch</typeName>
                       </type>
-                      <name></name>
-                      <revision></revision>
-                      <objectTypeName></objectTypeName>
+                      <name>vds-site-a</name>
+                      <scope>
+                        <id>datacenter-21</id>
+                        <objectTypeName>Datacenter</objectTypeName>
+                        <name>Datacenter Site A</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
                     </switch>
-                    <teaming></teaming>
-                    <mtu></mtu>
+                    <mtu>1600</mtu>
+                    <teaming>FAILOVER_ORDER</teaming>
+                    <uplinkPortName>Uplink 4</uplinkPortName>
+                    <promiscuousMode>false</promiscuousMode>
+                  </vdsContext>
+                  <vdsContext>
+                      <switch>
+                        <objectId>dvs-47</objectId>
+                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                        ...
                   </vdsContext>
                 </vdsContexts>
   /{vdsId}:
     displayName: vds
     description: |
-      Retrieve a specific switch by specific switch ID (e.g. dvs-26).
+      Working With a Specific vSphere Distributed Switch
     uriParameters:
       vdsId:
           required: true
           displayName: switchId
           description: |
-            A valid switch (VDS) Id (e.g. dvs-26)
+            A valid vSphere Distributed Switch ID (e.g. dvs-35).
     get:
       displayName: vdsShow
       description: |
-        Retrieve a specific vds by specific switchId (e.g. dvs-26)
+        Retrieve information about the specified vSphere Distributed Switch.
       responses:
         200:
           body:
@@ -273,22 +310,34 @@ securitySchemes:
               example: |
                 <vdsContext>
                   <switch>
-                    <objectId></objectId>
+                    <objectId>dvs-35</objectId>
+                    <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                    <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                    <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                    <revision>10</revision>
                     <type>
-                      <typeName></typeName>
+                      <typeName>VmwareDistributedVirtualSwitch</typeName>
                     </type>
-                    <name></name>
-                    <revision></revision>
-                    <objectTypeName></objectTypeName>
+                    <name>vds-site-a</name>
+                    <scope>
+                      <id>datacenter-21</id>
+                      <objectTypeName>Datacenter</objectTypeName>
+                      <name>Datacenter Site A</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes/>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
                   </switch>
-                  <teaming></teaming>
-                  <mtu></mtu>
+                  <mtu>1600</mtu>
+                  <teaming>FAILOVER_ORDER</teaming>
+                  <uplinkPortName>Uplink 4</uplinkPortName>
+                  <promiscuousMode>false</promiscuousMode>
                 </vdsContext>
     delete:
       displayName: vdsDelete
       description: |
-        Delete a specific VDS by specific switchId (e.g. dvs-22). Use the
-        switch ID as the vdsId.
+        Delete the specified vSphere Distributed Switch.
 /2.0/vdn/config:
   displayName: vdnConfig
   description: Configurations of Segment ID's and Multicast Ranges for logical switches

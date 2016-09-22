@@ -13567,10 +13567,7 @@ manager.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>This collection of methods are used to configure and prepare the VDS&#39;s for
-the use with NSX. Before creating a logical switch, ensure that you have
-installed the network virtualization components on the appropriate clusters
-and that you have configured VXLAN on the appropriate clusters.</p>
+  <div class="description"><p>Working with vSphere Distributed Switches</p>
 </div>
 <div class="method post">
   <a
@@ -13580,8 +13577,10 @@ and that you have configured VXLAN on the appropriate clusters.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>The MTU is the maximum amount of data that can be transmitted in one
-packet before it is divided into smaller packets. The frames are slightly
+    <p><p>Prepare a vSphere Distributed Switch</p>
+<hr>
+<p>The MTU is the maximum amount of data that can be transmitted in one
+packet before it is divided into smaller packets. VXLAN frames are slightly
 larger in size because of the traffic encapsulation, so the MTU required
 is higher than the standard MTU. You must set the MTU for each switch to
 1600 or higher.</p>
@@ -13627,16 +13626,16 @@ is higher than the standard MTU. You must set the MTU for each switch to
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-26<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>DistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>DistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>ETHER_CHANNEL<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>mtu-value<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
 </code></pre>
   </div>
@@ -13649,7 +13648,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>You can retrieve all configured switches.</p>
+    <p><p>Retrieve information about all vSphere Distributed Switches.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13669,18 +13668,37 @@ is higher than the standard MTU. You must set the MTU for each switch to
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdsContexts</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-35<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vds-site-a<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>FAILOVER_ORDER<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uplinkPortName</span>&gt;</span>Uplink 4<span class="hljs-tag">&lt;/<span class="hljs-name">uplinkPortName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -13692,7 +13710,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>You can retrieve all configured switches on a datacenter.</p>
+  <div class="description"><p>Working with vSphere Distributed Switches in a Datacenter</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -13703,7 +13721,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>A valid Datacenter ID (e.g. datacenter-4)</p>
+      <p>A valid datacenter ID (e.g. datacenter-21)</p>
 
   </dd>
 </dl>
@@ -13716,7 +13734,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Lists all VDS&#39;s in a specified vSphere Datacenter Object</p>
+    <p><p>Retrieve information about all vSphere Distributed Switches in the specified datacenter.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13736,16 +13754,35 @@ is higher than the standard MTU. You must set the MTU for each switch to
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdsContexts</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-35<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vds-site-a<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>FAILOVER_ORDER<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uplinkPortName</span>&gt;</span>Uplink 4<span class="hljs-tag">&lt;/<span class="hljs-name">uplinkPortName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        ...
   <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
 </code></pre>
@@ -13759,7 +13796,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Retrieve a specific switch by specific switch ID (e.g. dvs-26).</p>
+  <div class="description"><p>Working With a Specific vSphere Distributed Switch</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -13770,7 +13807,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>A valid switch (VDS) Id (e.g. dvs-26)</p>
+      <p>A valid vSphere Distributed Switch ID (e.g. dvs-35).</p>
 
   </dd>
 </dl>
@@ -13783,7 +13820,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve a specific vds by specific switchId (e.g. dvs-26)</p>
+    <p><p>Retrieve information about the specified vSphere Distributed Switch.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13802,16 +13839,29 @@ is higher than the standard MTU. You must set the MTU for each switch to
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-35<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vds-site-a<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>FAILOVER_ORDER<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">uplinkPortName</span>&gt;</span>Uplink 4<span class="hljs-tag">&lt;/<span class="hljs-name">uplinkPortName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
 </code></pre>
   </div>
@@ -13824,8 +13874,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete a specific VDS by specific switchId (e.g. dvs-22). Use the
-switch ID as the vdsId.</p>
+    <p><p>Delete the specified vSphere Distributed Switch.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
