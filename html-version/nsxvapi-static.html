@@ -11730,7 +11730,7 @@ set-as-standalone, set-as-primary, set-as-secondary</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Configurations of Segment ID&#39;s and Multicast Ranges for logical switches</p>
+  <div class="description"><p>Working with Segement ID Pools and Multicast Ranges</p>
 </div>
 </section>
 <section class="resource">
@@ -11740,10 +11740,13 @@ set-as-standalone, set-as-primary, set-as-secondary</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Operations on multicast range Pools for logical switches. Specifying a
-multicast address range helps in spreading traffic across your network to
-avoid overloading a single multicast address.A virtualized network‐ready
-host is assigned an IP address from this range.</p>
+  <div class="description"><p>Working with multicast address ranges.</p>
+<hr>
+<p>If any of your transport zones will use multicast or hybrid replication
+mode, you must add a multicast address range (also called a multicast
+address pool). Specifying a multicast address range helps in spreading
+traffic across your network to avoid overloading a single multicast
+address.</p>
 </div>
 <div class="method post">
   <a
@@ -11753,8 +11756,8 @@ host is assigned an IP address from this range.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Adds a multicast range for logical switches. The address range is
-inclusive – the beginning and ending addresses are included.</p>
+    <p><p>Add a multicast address range for logical switches. The address range
+includes the beginning and ending addresses.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11774,7 +11777,7 @@ inclusive – the beginning and ending addresses are included.</p>
     
   </dt>
   <dd>
-      <p>Set to &quot;true&quot; when creating a universal multicast range.</p>
+      <p>Set to <em>true</em> when creating a universal multicast address range.</p>
 
   </dd>
 </dl>
@@ -11795,10 +11798,9 @@ inclusive – the beginning and ending addresses are included.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicastRange</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Range 2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>237.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>237.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">multicastRange</span>&gt;</span>
 </code></pre>
   </div>
@@ -11811,8 +11813,10 @@ inclusive – the beginning and ending addresses are included.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>List all configured VDN Multicast Pools. Universal pools will have the
-property isUniversal set tot true.</p>
+    <p><p>Retrieve information about all configured multicast address ranges.</p>
+<hr>
+<p>Universal multicast address ranges have the property isUniversal
+set to <em>true</em>.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11831,11 +11835,20 @@ property isUniversal set tot true.</p>
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicastRanges</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">multicastRange</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>239.0.0.0-239.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>239.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>239.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">multicastRange</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">multicastRange</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Range 2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>237.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>237.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">multicastRange</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">multicastRanges</span>&gt;</span>
 </code></pre>
@@ -11849,7 +11862,7 @@ property isUniversal set tot true.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Operations in individual multicast range Pools for logical switches</p>
+  <div class="description"><p>Working With a Specific Multicast Address Range</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -11860,7 +11873,7 @@ property isUniversal set tot true.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>A valid multicast Pool range Id</p>
+      <p>A valid multicast address range ID</p>
 
   </dd>
 </dl>
@@ -11873,7 +11886,7 @@ property isUniversal set tot true.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve details of an individual Multicast range Pool</p>
+    <p><p>Retrieve information about the specified multicast address range.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11891,11 +11904,12 @@ property isUniversal set tot true.</p>
               (<tt>application/xml</tt>)
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicastRange</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>239.0.0.0-239.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>239.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>239.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">multicastRange</span>&gt;</span>
 </code></pre>
   </div>
@@ -11908,8 +11922,10 @@ property isUniversal set tot true.</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update an individual multicast range pool. If the multicast pool is
-universal the API call must be made to the primary NSX manager.</p>
+    <p><p>Update the specified multicast address range.</p>
+<hr>
+<p>If the multicast address range is universal you must send the API
+request to the primary NSX Manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -11935,9 +11951,9 @@ universal the API call must be made to the primary NSX manager.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicastRange</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Extended range 2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Extended range 2<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>238.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">multicastRange</span>&gt;</span>
 </code></pre>
   </div>
@@ -11950,8 +11966,10 @@ universal the API call must be made to the primary NSX manager.</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete an individual Multicast range pool. If the multicast pool is
-universal the API call must be made to the primary NSX manager.</p>
+    <p><p>Delete the specified multicast address range.</p>
+<hr>
+<p>If the multicast address range is universal you must send the API
+request to the primary NSX Manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12039,13 +12057,20 @@ is not specified, resources are retrieved from the beginning.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>You can specify one or more segment ID pools that is used to provide
-virtual network identifiers to logical switches which helps you isolate
-your network traffic. You must specify a segment ID pool for each NSX
-Manager to isolate your network traffic. If an NSX controller is not
-deployed in your environment, you must add a multicast address range to
-help in spreading traffic across your network and avoid overloading a
-single multicast address.</p>
+  <div class="description"><p>Working with segment ID pools.</p>
+<hr>
+<p>Segment ID pools (also called segment ID ranges) provide virtual network
+identifiers (VNIs) to logical switches.</p>
+<hr>
+<p>You must configure a segment ID pool for each NSX Manager. You can have
+more than one segment ID pool. The segment ID pool includes the beginning
+and ending IDs.</p>
+<hr>
+<p>You should not configure more than 10,000 VNIs in a single vCenter
+server because vCenter limits the number of dvPortgroups to 10,000.</p>
+<hr>
+<p>If any of your transport zones will use multicast or hybrid replication
+mode, you must also configure a multicast address range.</p>
 </div>
 <div class="method post">
   <a
@@ -12055,15 +12080,13 @@ single multicast address.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>You can add a new segment ID range that provides virtual network
-identifiers to logical switches. More than one segment ID range is
-supported in the system. The segment range is inclusive – the beginning
-and ending IDs are included.</p>
+    <p><p>Add a segment ID pool.</p>
+<hr>
 <ul>
-<li><em>name</em> - Required property.</li>
-<li><em>desc</em> - Optional property.</li>
-<li><em>begin</em> - Required property. Minimum value is 5000</li>
-<li><em>end</em> - Required property. Maximum value is 16777216</li>
+<li><strong>name</strong> - Required property.</li>
+<li><strong>desc</strong> - Optional property.</li>
+<li><strong>begin</strong> - Required property. Minimum value is <em>5000</em></li>
+<li><strong>end</strong> - Required property. Maximum value is <em>16777216</em></li>
 </ul>
 </p>
     <h3>Security</h3>
@@ -12084,7 +12107,7 @@ and ending IDs are included.</p>
     
   </dt>
   <dd>
-      <p>Set to &quot;true&quot; when creating a universal VNI pool.</p>
+      <p>Set to <em>true</em> when creating a universal segment ID pool.</p>
 
   </dd>
 </dl>
@@ -12104,9 +12127,10 @@ and ending IDs are included.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">segmentRange</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Segment 1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Segment Range 1<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>5000<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>12999<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">segmentRange</span>&gt;</span>
 </code></pre>
   </div>
@@ -12119,7 +12143,7 @@ and ending IDs are included.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Lists all segment ID pools / ranges.</p>
+    <p><p>Retrieve information about all segment ID pools.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12139,10 +12163,21 @@ and ending IDs are included.</p>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">segmentRanges</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">segmentRange</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>segmentrange-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Segment Range 1<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Local Segments<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Local Segment ID pool<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>5000<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>65535<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>5999<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">segmentRange</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">segmentRange</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Universal-Segments<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Universal segment ID pool<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>200000<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>201000<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">segmentRange</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">segmentRanges</span>&gt;</span>
 </code></pre>
@@ -12156,7 +12191,7 @@ and ending IDs are included.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Operations on individual segment ID pool / range</p>
+  <div class="description"><p>Working With a Specific Segment ID Pool</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -12180,7 +12215,7 @@ and ending IDs are included.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve details of an individual segment ID pool / range.</p>
+    <p><p>Retrieve information about the specified segment ID pool.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12199,10 +12234,12 @@ and ending IDs are included.</p>
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">segmentRange</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>segmentrange-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Segment Range 1<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Local Segments<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Local Segment ID pool<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">begin</span>&gt;</span>5000<span class="hljs-tag">&lt;/<span class="hljs-name">begin</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>65535<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>5999<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">segmentRange</span>&gt;</span>
 </code></pre>
   </div>
@@ -12215,8 +12252,10 @@ and ending IDs are included.</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update an individual segment ID Pool. If the segment pool is
-universal the API call must be made to the primary NSX manager.</p>
+    <p><p>Update the specified segment ID pool.</p>
+<hr>
+<p>If the segment ID pool is universal you must send the API request to
+the primary NSX Manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12241,8 +12280,8 @@ universal the API call must be made to the primary NSX manager.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">segmentRange</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Segment Range 1 Expanded<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">desc</span>&gt;</span>Local Segment ID pool expanded<span class="hljs-tag">&lt;/<span class="hljs-name">desc</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">end</span>&gt;</span>6999<span class="hljs-tag">&lt;/<span class="hljs-name">end</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">segmentRange</span>&gt;</span>
 </code></pre>
   </div>
@@ -12255,8 +12294,10 @@ universal the API call must be made to the primary NSX manager.</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete an individual segment ID Pool. If the segment pool is
-universal the API call must be made to the primary NSX manager.</p>
+    <p><p>Delete the specified segment ID pool.</p>
+<hr>
+<p>If the segment ID pool is universal you must send the API request to
+the primary NSX Manager.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13577,7 +13618,7 @@ manager.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Prepare a vSphere Distributed Switch</p>
+    <p><p>Prepare a vSphere Distributed Switch.</p>
 <hr>
 <p>The MTU is the maximum amount of data that can be transmitted in one
 packet before it is divided into smaller packets. VXLAN frames are slightly
@@ -13691,14 +13732,14 @@ is higher than the standard MTU. You must set the MTU for each switch to
     <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>FAILOVER_ORDER<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">uplinkPortName</span>&gt;</span>Uplink 4<span class="hljs-tag">&lt;/<span class="hljs-name">uplinkPortName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-        ...
-    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      ...
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -13779,10 +13820,10 @@ is higher than the standard MTU. You must set the MTU for each switch to
     <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vdsContext</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-        ...
+    <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      ...
   <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
 </code></pre>
@@ -13807,7 +13848,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>A valid vSphere Distributed Switch ID (e.g. dvs-35).</p>
+      <p>A valid vSphere Distributed Switch ID (e.g. dvs-35)</p>
 
   </dd>
 </dl>

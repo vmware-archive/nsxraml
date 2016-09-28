@@ -54,7 +54,7 @@ Working with vSphere Distributed Switches
 
 ### /2.0/vdn/switches
 
-* **post** *(secured)*: Prepare a vSphere Distributed Switch
+* **post** *(secured)*: Prepare a vSphere Distributed Switch.
 ___
 The MTU is the maximum amount of data that can be transmitted in one
 packet before it is divided into smaller packets. VXLAN frames are slightly
@@ -77,61 +77,79 @@ Working With a Specific vSphere Distributed Switch
 * **delete** *(secured)*: Delete the specified vSphere Distributed Switch.
 
 ## vdnConfig
-Configurations of Segment ID's and Multicast Ranges for logical switches
+Working with Segement ID Pools and Multicast Ranges
 
 ### /2.0/vdn/config/segments
-You can specify one or more segment ID pools that is used to provide
-virtual network identifiers to logical switches which helps you isolate
-your network traffic. You must specify a segment ID pool for each NSX
-Manager to isolate your network traffic. If an NSX controller is not
-deployed in your environment, you must add a multicast address range to
-help in spreading traffic across your network and avoid overloading a
-single multicast address.
+Working with segment ID pools.
+___
+Segment ID pools (also called segment ID ranges) provide virtual network
+identifiers (VNIs) to logical switches.
+___
+You must configure a segment ID pool for each NSX Manager. You can have
+more than one segment ID pool. The segment ID pool includes the beginning
+and ending IDs.
+___
+You should not configure more than 10,000 VNIs in a single vCenter
+server because vCenter limits the number of dvPortgroups to 10,000.
+___
+If any of your transport zones will use multicast or hybrid replication
+mode, you must also configure a multicast address range.
 
-* **post** *(secured)*: You can add a new segment ID range that provides virtual network
-identifiers to logical switches. More than one segment ID range is
-supported in the system. The segment range is inclusive – the beginning
-and ending IDs are included.
-* *name* - Required property.
-* *desc* - Optional property.
-* *begin* - Required property. Minimum value is 5000
-* *end* - Required property. Maximum value is 16777216
+* **post** *(secured)*: Add a segment ID pool.
+___
+* **name** - Required property.
+* **desc** - Optional property.
+* **begin** - Required property. Minimum value is *5000*
+* **end** - Required property. Maximum value is *16777216*
 
-* **get** *(secured)*: Lists all segment ID pools / ranges.
+* **get** *(secured)*: Retrieve information about all segment ID pools.
 
 ### /2.0/vdn/config/segments/{segmentPoolId}
-Operations on individual segment ID pool / range
+Working With a Specific Segment ID Pool
 
-* **get** *(secured)*: Retrieve details of an individual segment ID pool / range.
+* **get** *(secured)*: Retrieve information about the specified segment ID pool.
 
-* **put** *(secured)*: Update an individual segment ID Pool. If the segment pool is
-universal the API call must be made to the primary NSX manager.
+* **put** *(secured)*: Update the specified segment ID pool.
+___
+If the segment ID pool is universal you must send the API request to
+the primary NSX Manager.
 
-* **delete** *(secured)*: Delete an individual segment ID Pool. If the segment pool is
-universal the API call must be made to the primary NSX manager.
+* **delete** *(secured)*: Delete the specified segment ID pool.
+___
+If the segment ID pool is universal you must send the API request to
+the primary NSX Manager.
 
 ### /2.0/vdn/config/multicasts
-Operations on multicast range Pools for logical switches. Specifying a
-multicast address range helps in spreading traffic across your network to
-avoid overloading a single multicast address.A virtualized network‐ready
-host is assigned an IP address from this range.
+Working with multicast address ranges.
+___
+If any of your transport zones will use multicast or hybrid replication
+mode, you must add a multicast address range (also called a multicast
+address pool). Specifying a multicast address range helps in spreading
+traffic across your network to avoid overloading a single multicast
+address.
 
-* **post** *(secured)*: Adds a multicast range for logical switches. The address range is
-inclusive – the beginning and ending addresses are included.
+* **post** *(secured)*: Add a multicast address range for logical switches. The address range
+includes the beginning and ending addresses.
 
-* **get** *(secured)*: List all configured VDN Multicast Pools. Universal pools will have the
-property isUniversal set tot true.
+* **get** *(secured)*: Retrieve information about all configured multicast address ranges.
+___
+Universal multicast address ranges have the property isUniversal
+set to *true*.
 
 ### /2.0/vdn/config/multicasts/{multicastAddresssRangeId}
-Operations in individual multicast range Pools for logical switches
+Working With a Specific Multicast Address Range
 
-* **get** *(secured)*: Retrieve details of an individual Multicast range Pool
+* **get** *(secured)*: Retrieve information about the specified multicast address range.
 
-* **put** *(secured)*: Update an individual multicast range pool. If the multicast pool is
-universal the API call must be made to the primary NSX manager.
+* **put** *(secured)*: Update the specified multicast address range.
+___
+If the multicast address range is universal you must send the API
+request to the primary NSX Manager.
 
-* **delete** *(secured)*: Delete an individual Multicast range pool. If the multicast pool is
-universal the API call must be made to the primary NSX manager.
+* **delete** *(secured)*: Delete the specified multicast address range.
+___
+If the multicast address range is universal you must send the API
+request to the primary NSX Manager.
 
 ### /2.0/vdn/config/vxlan/udp/port
 Managing the logical switch UDP port.

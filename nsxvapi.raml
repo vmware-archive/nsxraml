@@ -169,7 +169,7 @@ securitySchemes:
   post:
     displayName: vdsPrepare
     description: |
-      Prepare a vSphere Distributed Switch
+      Prepare a vSphere Distributed Switch.
       ___
       The MTU is the maximum amount of data that can be transmitted in one
       packet before it is divided into smaller packets. VXLAN frames are slightly
@@ -228,14 +228,14 @@ securitySchemes:
                   <teaming>FAILOVER_ORDER</teaming>
                   <uplinkPortName>Uplink 4</uplinkPortName>
                   <promiscuousMode>false</promiscuousMode>
-                  </vdsContext>
-                  <vdsContext>
-                    <switch>
-                      <objectId>dvs-47</objectId>
-                      <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
-                      ...
-                  </vdsContext>
-                </vdsContexts>
+                </vdsContext>
+                <vdsContext>
+                  <switch>
+                    <objectId>dvs-47</objectId>
+                    <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                    ...
+                </vdsContext>
+              </vdsContexts>
   /datacenter/{datacenterID}:
     displayName: vdsInDc
     description: |
@@ -283,10 +283,10 @@ securitySchemes:
                     <promiscuousMode>false</promiscuousMode>
                   </vdsContext>
                   <vdsContext>
-                      <switch>
-                        <objectId>dvs-47</objectId>
-                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
-                        ...
+                    <switch>
+                      <objectId>dvs-47</objectId>
+                      <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                      ...
                   </vdsContext>
                 </vdsContexts>
   /{vdsId}:
@@ -298,7 +298,7 @@ securitySchemes:
           required: true
           displayName: switchId
           description: |
-            A valid vSphere Distributed Switch ID (e.g. dvs-35).
+            A valid vSphere Distributed Switch ID (e.g. dvs-35)
     get:
       displayName: vdsShow
       description: |
@@ -340,47 +340,54 @@ securitySchemes:
         Delete the specified vSphere Distributed Switch.
 /2.0/vdn/config:
   displayName: vdnConfig
-  description: Configurations of Segment ID's and Multicast Ranges for logical switches
+  description: Working with Segement ID Pools and Multicast Ranges
   /segments:
     displayName: vdnSegmentPools
     description: |
-      You can specify one or more segment ID pools that is used to provide
-      virtual network identifiers to logical switches which helps you isolate
-      your network traffic. You must specify a segment ID pool for each NSX
-      Manager to isolate your network traffic. If an NSX controller is not
-      deployed in your environment, you must add a multicast address range to
-      help in spreading traffic across your network and avoid overloading a
-      single multicast address.
+      Working with segment ID pools.
+      ___
+      Segment ID pools (also called segment ID ranges) provide virtual network
+      identifiers (VNIs) to logical switches.
+      ___
+      You must configure a segment ID pool for each NSX Manager. You can have
+      more than one segment ID pool. The segment ID pool includes the beginning
+      and ending IDs.
+      ___
+      You should not configure more than 10,000 VNIs in a single vCenter
+      server because vCenter limits the number of dvPortgroups to 10,000.
+      ___
+      If any of your transport zones will use multicast or hybrid replication
+      mode, you must also configure a multicast address range.
     post:
       displayName: vdnSegmentPoolAdd
       description: |
-        You can add a new segment ID range that provides virtual network
-        identifiers to logical switches. More than one segment ID range is
-        supported in the system. The segment range is inclusive – the beginning
-        and ending IDs are included.
-        * *name* - Required property.
-        * *desc* - Optional property.
-        * *begin* - Required property. Minimum value is 5000
-        * *end* - Required property. Maximum value is 16777216
+        Add a segment ID pool.
+        ___
+        * **name** - Required property.
+        * **desc** - Optional property.
+        * **begin** - Required property. Minimum value is *5000*
+        * **end** - Required property. Maximum value is *16777216*
       queryParameters:
           isUniversal:
             displayName: isUniversal
-            description: Set to "true" when creating a universal VNI pool.
+            description: |
+              Set to *true* when creating a universal segment ID pool.
             type: boolean
             required: false
       body:
         application/xml:
           example: |
             <segmentRange>
-              <name></name>
-              <begin></begin>
-              <end></end>
+              <name>Segment 1</name>
+              <desc>Segment Range 1</desc>
+              <begin>5000</begin>
+              <end>12999</end>
             </segmentRange>
           schema: vdnSegment
     get:
       displayName: vdnSegmentPoolList
       description: |
-        Lists all segment ID pools / ranges.
+        Retrieve information about all segment ID pools.
       responses:
         200:
           body:
@@ -389,16 +396,27 @@ securitySchemes:
                 <segmentRanges>
                   <segmentRange>
                     <id>1</id>
-                    <name>segmentrange-1</name>
-                    <desc>Segment Range 1</desc>
+                    <name>Local Segments</name>
+                    <desc>Local Segment ID pool</desc>
                     <begin>5000</begin>
-                    <end>65535</end>
+                    <end>5999</end>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                  </segmentRange>
+                  <segmentRange>
+                    <id>3</id>
+                    <name>Universal-Segments</name>
+                    <desc>Universal segment ID pool</desc>
+                    <begin>200000</begin>
+                    <end>201000</end>
+                    <isUniversal>true</isUniversal>
+                    <universalRevision>2</universalRevision>
                   </segmentRange>
                 </segmentRanges>
     /{segmentPoolId}:
       displayName: vdnSegmentPool
       description: |
-        Operations on individual segment ID pool / range
+        Working With a Specific Segment ID Pool
       uriParameters:
         segmentPoolId:
           required: true
@@ -407,7 +425,7 @@ securitySchemes:
       get:
         displayName: vdnSegmentPoolShow
         description: |
-          Retrieve details of an individual segment ID pool / range.
+          Retrieve information about the specified segment ID pool.
         responses:
           200:
             body:
@@ -415,63 +433,73 @@ securitySchemes:
                 example: |
                   <segmentRange>
                     <id>1</id>
-                    <name>segmentrange-1</name>
-                    <desc>Segment Range 1</desc>
+                    <name>Local Segments</name>
+                    <desc>Local Segment ID pool</desc>
                     <begin>5000</begin>
-                    <end>65535</end>
+                    <end>5999</end>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
                   </segmentRange>
       put:
         displayName: vdnSegmentPoolChange
         description: |
-          Update an individual segment ID Pool. If the segment pool is
-          universal the API call must be made to the primary NSX manager.
+          Update the specified segment ID pool.
+          ___
+          If the segment ID pool is universal you must send the API request to
+          the primary NSX Manager.
         body:
           application/xml:
             example: |
               <segmentRange>
-                <end>10000</end>
-                <name>Segment Range 1 Expanded</name>
+                <desc>Local Segment ID pool expanded</desc>
+                <end>6999</end>
               </segmentRange>
             schema: vdnSegmentUpdate
       delete:
         displayName: vdnSegmentPoolDelete
         description: |
-          Delete an individual segment ID Pool. If the segment pool is
-          universal the API call must be made to the primary NSX manager.
+          Delete the specified segment ID pool.
+          ___
+          If the segment ID pool is universal you must send the API request to
+          the primary NSX Manager.
   /multicasts:
     displayName: vdnMulticastPools
     description: |
-      Operations on multicast range Pools for logical switches. Specifying a
-      multicast address range helps in spreading traffic across your network to
-      avoid overloading a single multicast address.A virtualized network‐ready
-      host is assigned an IP address from this range.
+      Working with multicast address ranges.
+      ___
+      If any of your transport zones will use multicast or hybrid replication
+      mode, you must add a multicast address range (also called a multicast
+      address pool). Specifying a multicast address range helps in spreading
+      traffic across your network to avoid overloading a single multicast
+      address.
     post:
       displayName: vdnMulticastPoolAdd
       description: |
-        Adds a multicast range for logical switches. The address range is
-        inclusive – the beginning and ending addresses are included.
+        Add a multicast address range for logical switches. The address range
+        includes the beginning and ending addresses.
       queryParameters:
           isUniversal:
             displayName: isUniversal
             description: |
-              Set to "true" when creating a universal multicast range.
+              Set to *true* when creating a universal multicast address range.
             type: boolean
             required: false
       body:
         application/xml:
           example: |
             <multicastRange>
-              <name></name>
-              <desc></desc>
-              <begin></begin>
-              <end></end>
+              <name>Range 2</name>
+              <begin>237.0.0.0</begin>
+              <end>237.255.255.255</end>
             </multicastRange>
           schema: vdnMulticast
     get:
       displayName: vdnMulticastPoolList
       description: |
-        List all configured VDN Multicast Pools. Universal pools will have the
-        property isUniversal set tot true.
+        Retrieve information about all configured multicast address ranges.
+        ___
+        Universal multicast address ranges have the property isUniversal
+        set to *true*.
       responses:
         200:
           body:
@@ -479,57 +507,71 @@ securitySchemes:
               example: |
                 <multicastRanges>
                   <multicastRange>
-                    <id></id>
-                    <name></name>
-                    <desc></desc>
-                    <begin></begin>
-                    <end></end>
+                    <id>5</id>
+                    <name>239.0.0.0-239.255.255.255</name>
+                    <begin>239.0.0.0</begin>
+                    <end>239.255.255.255</end>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                  </multicastRange>
+                  <multicastRange>
+                    <id>10</id>
+                    <name>Range 2</name>
+                    <begin>237.0.0.0</begin>
+                    <end>237.255.255.255</end>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
                   </multicastRange>
                 </multicastRanges>
     /{multicastAddresssRangeId}:
       displayName: vdnMulticastPool
       description: |
-        Operations in individual multicast range Pools for logical switches
+        Working With a Specific Multicast Address Range
       uriParameters:
         multicastAddresssRangeId:
           required: true
           displayName: multicastAddresssRangeId
-          description: A valid multicast Pool range Id
+          description: A valid multicast address range ID
       get:
         displayName: vdnMulticastPoolShow
         description: |
-          Retrieve details of an individual Multicast range Pool
+          Retrieve information about the specified multicast address range.
         responses:
           200:
             body:
               application/xml:
                 example: |
                   <multicastRange>
-                    <id></id>
-                    <name></name>
-                    <desc></desc>
-                    <begin></begin>
-                    <end></end>
+                    <id>5</id>
+                    <name>239.0.0.0-239.255.255.255</name>
+                    <begin>239.0.0.0</begin>
+                    <end>239.255.255.255</end>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
                   </multicastRange>
       put:
         displayName: vdnMulticastPoolChange
         description: |
-          Update an individual multicast range pool. If the multicast pool is
-          universal the API call must be made to the primary NSX manager.
+          Update the specified multicast address range.
+          ___
+          If the multicast address range is universal you must send the API
+          request to the primary NSX Manager.
         body:
           application/xml:
             example: |
               <multicastRange>
-                <name></name>
-                <desc></desc>
-                <end></end>
+                <name>Extended range 2</name>
+                <desc>Extended range 2</desc>
+                <end>238.255.255.255</end>
               </multicastRange>
             schema: vdnMulticastUpdate
       delete:
         displayName: vdnSegmentPoolDelete
         description: |
-          Delete an individual Multicast range pool. If the multicast pool is
-          universal the API call must be made to the primary NSX manager.
+          Delete the specified multicast address range.
+          ___
+          If the multicast address range is universal you must send the API
+          request to the primary NSX Manager.
   /vxlan/udp/port:
     displayName: vdnConfigUDP
     description: |
