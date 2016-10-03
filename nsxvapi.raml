@@ -625,13 +625,12 @@ securitySchemes:
 /2.0/vdn/scopes:
   displayName: vdnScopes
   description: |
-    A network scope is the networking infrastructure within provider virtual
-    datacenters. Read all scopes (transport zones), or create a new scope
-    (Transport Zone).
+    Working with Transport Zones
   get:
     displayName: vdnScopesList
     description: |
-      Retrieve a list of all known VDN Scopes / Transport Zones.
+      Retrieve information about all transport zones (also known as network
+      scopes).
     responses:
       200:
         body:
@@ -640,62 +639,106 @@ securitySchemes:
               <vdnScopes>
                 <vdnScope>
                   <objectId>vdnscope-1</objectId>
-                  <objectTypeName></objectTypeName>
-                  <vsmUuid></vsmUuid>
-                  <nodeId></nodeId>
-                  <revision></revision>
+                  <objectTypeName>VdnScope</objectTypeName>
+                  <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                  <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                  <revision>0</revision>
                   <type>
                     <typeName>VdnScope</typeName>
                   </type>
-                  <name>VDN Scope 1</name>
-                  <description>VDN Scope 1</description>
+                  <name>Local-Transport-Zone-A</name>
+                  <description></description>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
                   <isUniversal>false</isUniversal>
-                  <universalRevision></universalRevision>
+                  <universalRevision>0</universalRevision>
                   <id>vdnscope-1</id>
                   <clusters>
                     <cluster>
                       <cluster>
-                        <objectId>domain-c124</objectId>
-                        <objectTypeName>VdnScope</objectTypeName>
-                        <vsmUuid></vsmUuid>
-                        <nodeId></nodeId>
-                        <revision></revision>
+                        <objectId>domain-c33</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>11</revision>
                         <type>
                           <typeName>ClusterComputeResource</typeName>
                         </type>
-                        <name>vxlan-cluster</name>
+                        <name>Compute Cluster A</name>
                         <scope>
-                          <id>datacenter-2</id>
+                          <id>datacenter-21</id>
                           <objectTypeName>Datacenter</objectTypeName>
-                          <name>dc1</name>
+                          <name>Datacenter Site A</name>
                         </scope>
                         <clientHandle></clientHandle>
                         <extendedAttributes/>
-                        <isUniversal></isUniversal>
-                        <universalRevision></universalRevision>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                      </cluster>
+                    </cluster>
+                    <cluster>
+                      <cluster>
+                        <objectId>domain-c41</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        ...
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
                       </cluster>
                     </cluster>
                   </clusters>
-                  <virtualWireCount></virtualWireCount>
-                  <controlPlaneMode></controlPlaneMode>
+                  <virtualWireCount>4</virtualWireCount>
+                  <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                </vdnScope>
+                <vdnScope>
+                  <objectId>universalvdnscope</objectId>
+                  <objectTypeName>VdnScope</objectTypeName>
+                  <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                  <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                  <revision>1</revision>
+                  <type>
+                    <typeName>VdnScope</typeName>
+                  </type>
+                  <name>Universal-Transport-Zone</name>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes/>
+                  <isUniversal>true</isUniversal>
+                  <universalRevision>0</universalRevision>
+                  <id>universalvdnscope</id>
+                  <clusters>
+                    <cluster>
+                      <cluster>
+                        <objectId>domain-c33</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        ...
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                      </cluster>
+                    </cluster>
+                    <cluster>
+                      <cluster>
+                        <objectId>domain-c41</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        ...
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                      </cluster>
+                    </cluster>
+                  </clusters>
+                  <virtualWireCount>4</virtualWireCount>
+                  <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
                 </vdnScope>
               </vdnScopes>
   post:
     displayName: vdnScopeCreate
     description: |
-      Create a new Transport Zone. Note that you can only add one initial
-      cluster when creating the TZ. You must specify the clusters that are to
-      be part of the network scope. You must have the VLAN ID, UUID of the
-      vCenter Server, and vDS ID.
-      ___
+      Create a transport zone.
       Request body paramaters:
-        * **name** - An optional paramater that is the name of the scope.
-          Accepts a string.
-        * **objectId** - Provide the cluster object ID from vSphere
-        * **controlPlaneMode** - The **controlPlaneMode** determines the control
-          mode of the control plane. It can be one of the following:
+        * **name** - Required. The name of the transport zone.
+        * **description** - Optional. Description of the transport zone.
+        * **objectId** - Required. The cluster object ID from vSphere. One or more are
+          required.
+        * **controlPlaneMode** - Optional. The control plane mode. It can be
+          one of the following:
             * *UNICAST_MODE*
             * *HYBRID_MODE*
             * *MULTICAST_MODE*
@@ -703,7 +746,7 @@ securitySchemes:
       isUniversal:
         displayName: isUniversal
         description: |
-          Set the *isUniversal* property to *true* when creating a universal
+          Set the **isUniversal** property to *true* when creating a universal
           transport zone.
         type: boolean
         required: false
@@ -711,32 +754,30 @@ securitySchemes:
       application/xml:
         example: |
           <vdnScope>
-            <name>tz-1</name>
+            <name>Local-Transport-Zone-B</name>
             <clusters>
               <cluster>
                 <cluster>
-                  <objectId>domain-c59</objectId>
+                  <objectId>domain-c7</objectId>
                 </cluster>
               </cluster>
             </clusters>
             <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
-            <description>Transport Zone 1</description>
           </vdnScope>
         schema: vdnScopeCreate
   /{scopeId}:
     displayName: vdnScope
     description: |
-      You can manage specific VDN scopes with several API calls. Specify the
-      ID of the scope in the scopeId URI parameter which is required.
+      Working with a specific transport zone.
     uriParameters:
       scopeId:
         required: true
         displayName: scopeId
-        description: A valid scope Id
+        description: A valid transport zone ID (vdnScope objectId)
     get:
       displayName: vdnScopeProperties
       description: |
-        Retrieve the properties of an existing network scope
+        Retrieve information about the specified transport zone.
       responses:
         200:
           body:
@@ -745,129 +786,148 @@ securitySchemes:
                 <vdnScope>
                   <objectId>vdnscope-1</objectId>
                   <objectTypeName>VdnScope</objectTypeName>
-                  <vsmUuid></vsmUuid>
-                  <nodeId></nodeId>
+                  <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                  <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
                   <revision>0</revision>
                   <type>
-                    <typeName></typeName>
+                    <typeName>VdnScope</typeName>
                   </type>
-                  <name>VDN Scope 1</name>
-                  <description>VDN Scope 1</description>
+                  <name>Local-Transport-Zone-A</name>
+                  <description></description>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
-                  <isUniversal></isUniversal>
-                  <universalRevision></universalRevision>
-                  <id></id>
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                  <id>vdnscope-1</id>
                   <clusters>
                     <cluster>
                       <cluster>
-                        <objectId>domain-c124</objectId>
-                        <objectTypeName></objectTypeName>
-                        <vsmUuid></vsmUuid>
-                        <nodeId></nodeId>
-                        <revision></revision>
+                        <objectId>domain-c33</objectId>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>11</revision>
                         <type>
                           <typeName>ClusterComputeResource</typeName>
                         </type>
-                        <name>vxlan-cluster</name>
+                        <name>Compute Cluster A</name>
                         <scope>
-                          <id>datacenter-2</id>
+                          <id>datacenter-21</id>
                           <objectTypeName>Datacenter</objectTypeName>
-                          <name>dc1</name>
+                          <name>Datacenter Site A</name>
                         </scope>
                         <clientHandle></clientHandle>
                         <extendedAttributes/>
-                        <isUniversal></isUniversal>
-                        <universalRevision></universalRevision>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                      </cluster>
+                    </cluster>
+                    <cluster>
+                      <cluster>
+                        <objectId>domain-c41</objectId>
+                        ...
                       </cluster>
                     </cluster>
                   </clusters>
-                  <virtualWireCount>10</virtualWireCount>
-                  <controlPlaneMode></controlPlaneMode>
+                  <virtualWireCount>4</virtualWireCount>
+                  <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
                 </vdnScope>
     post:
       displayName: vdnScopeChange
       description: |
-        Updates a transport zone, you can add a cluster to or delete a cluster
-        from a transport zone.
+        Update the specified transport zone.
+        ___
+        You can add a cluster to or delete a cluster from a transport zone.
+        ___
+        You can also repair missing portgroups. For every logical switch
+        created, NSX creates a corresponding portgroup in vCenter. If the
+        portgroup is lost for any reason, the logical switch will stop
+        functioning. The repair action recreates any missing portgroups.
       queryParameters:
         action:
           displayName: action
           description: |
-            Mandatory queryParameter, use *expand* or *patch* to add a cluster,
-            or *shrink* to remove a cluster from the transport zone.
+            The **action** parameter values are:
+              * *expand* - add a cluster to a transport zone.
+              * *shrink* - remove a cluster from a transport zone.
+              * *repair* - recreate missing distributed port groups.
             ___
-            Use **action** = *repair* on a network scope to recreate missing
-            distributed port groups for logicals switches on a given network
-            scope where scopeId is the scope. Success returns 200 and the job
-            ID for the repair job. The location header also includes the URI of
-            the job. The response vwill be the job ID for the repair job.
           required: true
       body:
         application/xml:
           example: |
             <vdnScope>
-              <objectId></objectId>
+             <objectId>universalvdnscope</objectId>
               <clusters>
+               <cluster>
                 <cluster>
-                  <cluster>
-                    <objectId></objectId>
-                  </cluster>
-                </cluster>
+                 <objectId>domain-c7</objectId>
+                 </cluster>
+               </cluster>
               </clusters>
             </vdnScope>
           schema: vdnScopeEdit
     delete:
       displayName: vdnScopeDelete
       description: |
-        Delete a VDN scope / transport zone.
+        Delete the specified transport zone.
     /attributes:
       displayName: vdnScopeAttribUpdate
       description: |
-        Manage the attributes of a transport zone (e.g. name, description).
+        Working with transport zone attributes.
       put:
         displayName: vdnScopeAttribUpdate
         description: |
-          Update the attributes of a transport zone (e.g. name, description).
+          Update the attributes of a transport zone.
+          ___
+          For example, you can update the name, description, or control plane
+          mode. You must include the cluster object IDs for the transport zone
+          in the request body.
         body:
           application/xml:
             example: |
               <vdnScope>
+                <objectId>vdnscope-1</objectId>
+                <name>Local-Transport-Zone Site-B</name>
                 <clusters>
                   <cluster>
                     <cluster>
-                      <objectId></objectId>
+                      <objectId>domain-c7</objectId>
                     </cluster>
                   </cluster>
                 </clusters>
-                <objectId></objectId>
-                <name></name>
-                <description></description>
-                <controlPlaneMode></controlPlaneMode>
               </vdnScope>
             schema: vdnScopeUpdate
     /conn-check/multicast:
       displayName: vdnScopeConnCheck
-      description: Test multicast group connectivity in a transport zone
+      description: Testing multicast group connectivity.
       post:
         displayName: vdnScopeConnCheck
-        description: Test multicast group connectivity in a transport zone
+        description: |
+          Test multicast group connectivity in a transport zone.
+          ___
+          Parameter **packetSizeMode** has one of the following values:
+          * *0* - VXLAN standard packet size
+          * *1* - minimum packet size
+          * *2* - customized packet size.
+          If you set **packetSizeMode** to *2*, you must specify the size using
+          the **packetSize** parameter.
         body:
           application/xml:
             example: |
               <testParameters>
-                <gateway></gateway>
-                <packetSizeMode></packetSizeMode>
-                <packetSize></packetSize>
+                <gateway>172.23.233.1</gateway>
+                <packetSizeMode>0</packetSizeMode>
+                <packetSize>1600</packetSize>
                 <sourceHost>
-                  <hostId></hostId>
-                  <switchId></switchId>
-                  <vlanId></vlanId>
+                  <hostId>host-9</hostId>
+                  <switchId>dvs-22</switchId>
+                  <vlanId>54</vlanId>
                 </sourceHost>
                 <destinationHost>
-                  <hostId></hostId>
-                  <switchId></switchId>
-                  <vlanId></vlanId>
+                  <hostId>host-92</hostId>
+                  <switchId>dvs-22</switchId>
+                  <vlanId>54</vlanId>
                 </destinationHost>
               </testParameters>
 /2.0/vdn/scopes/{scopeId}/virtualwires:

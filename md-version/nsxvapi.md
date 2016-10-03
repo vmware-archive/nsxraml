@@ -168,49 +168,61 @@ Query allocated resources
 * **get** *(secured)*: Retrieve a list of resources allocated
 
 ## vdnScopes
-A network scope is the networking infrastructure within provider virtual
-datacenters. Read all scopes (transport zones), or create a new scope
-(Transport Zone).
+Working with Transport Zones
 
 ### /2.0/vdn/scopes
 
-* **get** *(secured)*: Retrieve a list of all known VDN Scopes / Transport Zones.
+* **get** *(secured)*: Retrieve information about all transport zones (also known as network
+scopes).
 
-* **post** *(secured)*: Create a new Transport Zone. Note that you can only add one initial
-cluster when creating the TZ. You must specify the clusters that are to
-be part of the network scope. You must have the VLAN ID, UUID of the
-vCenter Server, and vDS ID.
-___
+* **post** *(secured)*: Create a transport zone.
 Request body paramaters:
-  * **name** - An optional paramater that is the name of the scope.
-    Accepts a string.
-  * **objectId** - Provide the cluster object ID from vSphere
-  * **controlPlaneMode** - The **controlPlaneMode** determines the control
-    mode of the control plane. It can be one of the following:
+  * **name** - Required. The name of the transport zone.
+  * **description** - Optional. Description of the transport zone.
+  * **objectId** - Required. The cluster object ID from vSphere. One or more are
+    required.
+  * **controlPlaneMode** - Optional. The control plane mode. It can be
+    one of the following:
       * *UNICAST_MODE*
       * *HYBRID_MODE*
       * *MULTICAST_MODE*
 
 ### /2.0/vdn/scopes/{scopeId}
-You can manage specific VDN scopes with several API calls. Specify the
-ID of the scope in the scopeId URI parameter which is required.
+Working with a specific transport zone.
 
-* **get** *(secured)*: Retrieve the properties of an existing network scope
+* **get** *(secured)*: Retrieve information about the specified transport zone.
 
-* **post** *(secured)*: Updates a transport zone, you can add a cluster to or delete a cluster
-from a transport zone.
+* **post** *(secured)*: Update the specified transport zone.
+___
+You can add a cluster to or delete a cluster from a transport zone.
+___
+You can also repair missing portgroups. For every logical switch
+created, NSX creates a corresponding portgroup in vCenter. If the
+portgroup is lost for any reason, the logical switch will stop
+functioning. The repair action recreates any missing portgroups.
 
-* **delete** *(secured)*: Delete a VDN scope / transport zone.
+* **delete** *(secured)*: Delete the specified transport zone.
 
 ### /2.0/vdn/scopes/{scopeId}/attributes
-Manage the attributes of a transport zone (e.g. name, description).
+Working with transport zone attributes.
 
-* **put** *(secured)*: Update the attributes of a transport zone (e.g. name, description).
+* **put** *(secured)*: Update the attributes of a transport zone.
+___
+For example, you can update the name, description, or control plane
+mode. You must include the cluster object IDs for the transport zone
+in the request body.
 
 ### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
-Test multicast group connectivity in a transport zone
+Testing multicast group connectivity.
 
-* **post** *(secured)*: Test multicast group connectivity in a transport zone
+* **post** *(secured)*: Test multicast group connectivity in a transport zone.
+___
+Parameter **packetSizeMode** has one of the following values:
+* *0* - VXLAN standard packet size
+* *1* - minimum packet size
+* *2* - customized packet size.
+If you set **packetSizeMode** to *2*, you must specify the size using
+the **packetSize** parameter.
 
 ## logicalSwitches
 Create and List operations of logical switches inside a Transport Zone.
