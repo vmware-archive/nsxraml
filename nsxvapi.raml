@@ -475,8 +475,9 @@ securitySchemes:
     post:
       displayName: vdnMulticastPoolAdd
       description: |
-        Add a multicast address range for logical switches. The address range
-        includes the beginning and ending addresses.
+        Add a multicast address range for logical switches.
+        ___
+        The address range includes the beginning and ending addresses.
       queryParameters:
           isUniversal:
             displayName: isUniversal
@@ -732,7 +733,7 @@ securitySchemes:
     displayName: vdnScopeCreate
     description: |
       Create a transport zone.
-      Request body paramaters:
+      Request body parameters:
         * **name** - Required. The name of the transport zone.
         * **description** - Optional. Description of the transport zone.
         * **objectId** - Required. The cluster object ID from vSphere. One or more are
@@ -904,7 +905,10 @@ securitySchemes:
       post:
         displayName: vdnScopeConnCheck
         description: |
-          Test multicast group connectivity in a transport zone.
+          Test multicast group connectivity.
+          ___
+          Test multicast group connectivity between two hosts connected to the
+          specified transport zone.
           ___
           Parameter **packetSizeMode** has one of the following values:
           * *0* - VXLAN standard packet size
@@ -933,44 +937,56 @@ securitySchemes:
 /2.0/vdn/scopes/{scopeId}/virtualwires:
   displayName: logicalSwitches
   description: |
-    Create and List operations of logical switches inside a Transport Zone.
+    Working with Logical Switches in a Specific Transport Zone
   uriParameters:
       scopeId:
         required: true
         displayName: scopeId
         description: |
-          For the **scopeId** paramater provide a valid scope ID.
+          A valid tranzport zone ID (vdnScope objectId).
   get:
     displayName: logicalSwitchList
-    description: Lists all logical Switches in the Transport Zone (Scope)
+    description: |
+      Retrieve information about all logical switches in the specified
+      transport zone (network scope).
     queryParameters:
       startIndex:
           displayName: startIndex
           description: |
-            The **startIndex** paramater is an optional paramater that sets
-            the starting point for listing logical switches.
+            Sets the starting point for listing logical switches.
           default: 0
       pageSize:
           displayName: pageSize
           description: |
-            The **pageSize** paramater is an optional paramater that sets the
-            number of entries returned.
-            Range is 1-1024.
+            Sets the number of logical switches returned. Range is 1-1024.
           default: 20
   post:
     displayName: logicalSwitchCreate
     description: |
-      Creates a logicalSwitch. To create a universal logical switch use the
-      appropriate universal scope as the scopeId and use the primary NSX
-      manager.
+      Create a logical switch.
+      ___
+      To create a universal logical switch use *universalvdnscope* as the
+      scopeId in the URI and send the request to the primary NSX Manager.
+      Request body parameters:
+        * **name** - Optional. The name of the logical switch.
+        * **description** - Optional. Description of the logical switch.
+        * **tenantId** - Required.
+        * **controlPlaneMode** - Optional. The control plane mode. If not
+          specified, the **controlPlaneMode** of the transport zone is used. It
+          can be one of the following:
+            * *UNICAST_MODE*
+            * *HYBRID_MODE*
+            * *MULTICAST_MODE*
+        * **guestVlanAllowed** - Optional. Default is *false*.
     body:
       application/xml:
         example: |
           <virtualWireCreateSpec>
-            <name></name>
-            <description></description>
-            <tenantId></tenantId>
-            <controlPlaneMode></controlPlaneMode>
+            <name>Web-Tier-01</name>
+            <description>Web tier network</description>
+            <tenantId>virtual wire tenant</tenantId>
+            <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+            <guestVlanAllowed>false</guestVlanAllowed>
           </virtualWireCreateSpec>
         schema: logicalSwitchCreate
 /api/2.0/vdn/traceflow:
@@ -1212,40 +1228,154 @@ securitySchemes:
                   </traceflowObservations>
 /2.0/vdn/virtualwires:
   displayName: logicalSwitchesGlobal
-  description: List Operations of logicalSwitches in all transport Zones (scope)
+  description: Working with Logical Switches in All Transport Zones
   get:
     displayName: logicalSwitchesRead
-    description: List all logicalSwitches
+    description: |
+      Retrieve information about all logical switches in all transport zones.
     queryParameters:
       startIndex:
         displayName: startIndex
         description: |
-          Optional; specify starting point for retrieving logical switches
+          Sets the starting point for listing logical switches.
         default: 0
       pageSize:
         displayName: pageSize
         description: |
-          Optional; limit the max number of entries returned. Valid range is
-          1-1024
+          Sets the maximum number of logical switches returned. Range is
+          1-1024.
         default: 20
+    body:
+      application/xml:
+        example: |
+          <virtualWires>
+            <dataPage>
+              <pagingInfo>
+                <pageSize>20</pageSize>
+                <startIndex>0</startIndex>
+                <totalCount>13</totalCount>
+                <sortOrderAscending>true</sortOrderAscending>
+              </pagingInfo>
+              <virtualWire>
+                <objectId>virtualwire-1</objectId>
+                <objectTypeName>VirtualWire</objectTypeName>
+                <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                <revision>3</revision>
+                <type>
+                  <typeName>VirtualWire</typeName>
+                </type>
+                <name>Transit-Network-01</name>
+                <description></description>
+                <clientHandle></clientHandle>
+                <extendedAttributes/>
+                <isUniversal>false</isUniversal>
+                <universalRevision>0</universalRevision>
+                <tenantId>virtual wire tenant</tenantId>
+                <vdnScopeId>vdnscope-1</vdnScopeId>
+                <vdsContextWithBacking>
+                  <switch>
+                    <objectId>dvs-47</objectId>
+                    <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                    <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                    <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                    <revision>29</revision>
+                    <type>
+                      <typeName>VmwareDistributedVirtualSwitch</typeName>
+                    </type>
+                    <name>vds-mgt-edge</name>
+                    <scope>
+                      <id>datacenter-21</id>
+                      <objectTypeName>Datacenter</objectTypeName>
+                      <name>Datacenter Site A</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes/>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                  </switch>
+                  <mtu>1600</mtu>
+                  <promiscuousMode>false</promiscuousMode>
+                  <backingType>portgroup</backingType>
+                  <backingValue>dvportgroup-355</backingValue>
+                  <missingOnVc>false</missingOnVc>
+                </vdsContextWithBacking>
+                <vdsContextWithBacking>
+                  <switch>
+                    <objectId>dvs-35</objectId>
+                    <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                    ...
+                  </switch>
+                  <mtu>1600</mtu>
+                  <promiscuousMode>false</promiscuousMode>
+                  <backingType>portgroup</backingType>
+                  <backingValue>dvportgroup-354</backingValue>
+                  <missingOnVc>false</missingOnVc>
+                </vdsContextWithBacking>
+                <vdnId>5000</vdnId>
+                <guestVlanAllowed>false</guestVlanAllowed>
+                <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                <ctrlLsUuid>7ad8bc71-5857-475c-af2a-a9e5337b0944</ctrlLsUuid>
+                <macLearningEnabled>false</macLearningEnabled>
+              </virtualWire>
+              <virtualWire>
+                <objectId>virtualwire-2</objectId>
+                ...
+              </virtualWire>
+              <virtualWire>
+                <objectId>virtualwire-3</objectId>
+                ...
+              </virtualWire>
+              <virtualWire>
+                <objectId>virtualwire-4</objectId>
+                ...
+              </virtualWire>
+              <virtualWire>
+                <objectId>universalwire-1</objectId>
+                ...
+              </virtualWire>
+              ...
+              <virtualWire>
+                <objectId>virtualwire-9</objectId>
+                ...
+              </virtualWire>
+            </dataPage>
+          </virtualWires>
   /vm/vnic:
     displayName: logicalSwitchVmAttach
-    description: Migrate a Virtual Maschine vnic to a logical switch
+    description: Working Virtual Machine Connections to Logical Switches
     post:
       displayName: logicalSwitchVmAttach
-      description: Migrate a Virtual Maschine vnic to a logical switch
+      description: |
+        Attach a VM vNIC to, or detach a VM vNIC from a logical switch.
+        ___
+        Specify the logical switch ID in the **portgroupId** parameter. To
+        detach a VM vNIC from a logical switch, leave the **portgroupId** parameter
+        empty.
+        ___
+        To find the ID of a VM vNIC, do the following:
+        1. In the vSphere MOB, navigate to the VM you want to connect or disconnect.
+        2. Click **config** and take note of the **instanceUuid**.
+        3. Click **hardware** and take note of the last three digits of the
+        appropriate network interface device.
+        ___
+        Use these two values to form the VM vNIC ID.  For example, if the
+        **instanceUuid** is *502e71fa-1a00-759b-e40f-ce778e915f16* and the
+        appropriate **device** value is *device[4000]*, the **objectId** and
+        **vnicUuid** are both *502e71fa-1a00-759b-e40f-ce778e915f16.000*.
       body:
         application/xml:
           example: |
             <com.vmware.vshield.vsm.inventory.dto.VnicDto>
-              <objectId></objectId>
-              <vnicUuid></vnicUuid>
-              <portgroupId></portgroupId>
+              <objectId>502e71fa-1a00-759b-e40f-ce778e915f16.000</objectId>
+              <vnicUuid>502e71fa-1a00-759b-e40f-ce778e915f16.000</vnicUuid>
+              <portgroupId>virtualwire-2</portgroupId>
             </com.vmware.vshield.vsm.inventory.dto.VnicDto>
           schema: logicalSwitchVmAttach
   /{virtualWireID}:
     displayName: logicalSwitch
-    description: Retrieves the configuration of an individual logical switch
+    description: |
+      Working with a specific logical switch.
     uriParameters:
       virtualWireID:
         required: true
@@ -1254,34 +1384,102 @@ securitySchemes:
     get:
       displayName: logicalSwitchShow
       description: |
-        Retrieves the configuration of an individual logical switch. If the
-        switch is a universal logical switch the isUniversal flag will be set in
-        the response body.
-    put:
-      displayName: logicalSwitchUpdate
-      description: |
-        Update a logical switch, possible updates are name changes &
-        Controlplane Mode
+        Retrieve information about the specified logical switch.
+        ___
+        If the switch is a universal logical switch the **isUniversal**
+        parameter is set to true in the response body.
       body:
         application/xml:
           example: |
             <virtualWire>
-              <name></name>
-              <description></description>
-              <tenantId></tenantId>
-              <vdnScopeId></vdnScopeId>
-              <controlPlaneMode></controlPlaneMode>
+              <objectId>universalwire-2</objectId>
+              <objectTypeName>VirtualWire</objectTypeName>
+              <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+              <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+              <revision>3</revision>
+              <type>
+                <typeName>VirtualWire</typeName>
+              </type>
+              <name>ULS-Web-Tier-02</name>
+              <clientHandle></clientHandle>
+              <extendedAttributes/>
+              <isUniversal>true</isUniversal>
+              <universalRevision>2</universalRevision>
+              <tenantId>ULS-Tenant</tenantId>
+              <vdnScopeId>universalvdnscope</vdnScopeId>
+              <vdsContextWithBacking>
+                <switch>
+                  <objectId>dvs-35</objectId>
+                  <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                  <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                  <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                  <revision>29</revision>
+                  <type>
+                    <typeName>VmwareDistributedVirtualSwitch</typeName>
+                  </type>
+                  <name>vds-site-a</name>
+                  <scope>
+                    <id>datacenter-21</id>
+                    <objectTypeName>Datacenter</objectTypeName>
+                    <name>Datacenter Site A</name>
+                  </scope>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes/>
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                </switch>
+                <mtu>1600</mtu>
+                <promiscuousMode>false</promiscuousMode>
+                <backingType>portgroup</backingType>
+                <backingValue>dvportgroup-397</backingValue>
+                <missingOnVc>false</missingOnVc>
+              </vdsContextWithBacking>
+              <vdsContextWithBacking>
+                ...
+              </vdsContextWithBacking>
+              <vdnId>200001</vdnId>
+              <guestVlanAllowed>false</guestVlanAllowed>
+              <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+              <ctrlLsUuid>f360d6e5-c709-4aca-b8d1-37de500a867a</ctrlLsUuid>
+              <macLearningEnabled>false</macLearningEnabled>
+            </virtualWire>
+    put:
+      displayName: logicalSwitchUpdate
+      description: |
+        Update the specified logical switch.
+        ___
+        For example, you can update the name, description, or control plane
+        mode.
+      body:
+        application/xml:
+          example: |
+            <virtualWire>
+              <name>ULS-Web-Tier-02 </name>
+              <description>Universal Web Logical Switch</description>
+              <tenantId>virtual wire tenant</tenantId>
+              <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
             </virtualWire>
           schema: logicalSwitchUpdate
     delete:
       displayName: logicalSwitchDelete
-      description: Delete a logical switch
+      description: Delete the specified logical switch.
     /conn-check/multicast:
       displayName: logicalSwitchConnCheck
-      description: Test multicast group connectivity in logical switch
+      description: Testing host connectivity.
       post:
         displayName: logicalSwitchConnCheck
-        description: Test multicast group connectivity in logical switch
+        description: |
+          Test multicast group connectivity.
+          ___
+          Test multicast group connectivity between two hosts connected to the
+          specified logical switch.
+          ___
+          Parameter **packetSizeMode** has one of the following values:
+          * *0* - VXLAN standard packet size
+          * *1* - minimum packet size
+          * *2* - customized packet size.
+          If you set **packetSizeMode** to *2*, you must specify the size using
+          the **packetSize** parameter.
         body:
           application/xml:
             example: |
@@ -1304,13 +1502,21 @@ securitySchemes:
     /conn-check/p2p:
       displayName: logicalSwitchPing
       description: |
-        Perform point to point connectivity test between two hosts across which
-        a logical switch spans
+        Test point-to-point connectivity.
       post:
         displayName: logicalSwitchPing
         description: |
-          Perform point to point connectivity test between two hosts across
-          which a logical switch spans
+          Test point-to-point connectivity.
+          ___
+          Test point-to-point connectivity between two hosts connected to the
+          specified logical switch.
+          ___
+          Parameter **packetSizeMode** has one of the following values:
+          * *0* - VXLAN standard packet size
+          * *1* - minimum packet size
+          * *2* - customized packet size.
+          If you set **packetSizeMode** to *2*, you must specify the size using
+          the **packetSize** parameter.
         body:
           application/xml:
             example: |

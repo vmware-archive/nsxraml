@@ -11756,8 +11756,9 @@ address.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Add a multicast address range for logical switches. The address range
-includes the beginning and ending addresses.</p>
+    <p><p>Add a multicast address range for logical switches.</p>
+<hr>
+<p>The address range includes the beginning and ending addresses.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13111,7 +13112,7 @@ scopes).</p>
   <div class="content">
     <h3>Description</h3>
     <p><p>Create a transport zone.
-Request body paramaters:</p>
+Request body parameters:</p>
 <ul>
 <li><strong>name</strong> - Required. The name of the transport zone.</li>
 <li><strong>description</strong> - Optional. Description of the transport zone.</li>
@@ -13508,7 +13509,10 @@ in the request body.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Test multicast group connectivity in a transport zone.</p>
+    <p><p>Test multicast group connectivity.</p>
+<hr>
+<p>Test multicast group connectivity between two hosts connected to the
+specified transport zone.</p>
 <hr>
 <p>Parameter <strong>packetSizeMode</strong> has one of the following values:</p>
 <ul>
@@ -13555,7 +13559,7 @@ the <strong>packetSize</strong> parameter.</li>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Create and List operations of logical switches inside a Transport Zone.</p>
+  <div class="description"><p>Working with Logical Switches in a Specific Transport Zone</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -13566,7 +13570,7 @@ the <strong>packetSize</strong> parameter.</li>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>For the <strong>scopeId</strong> paramater provide a valid scope ID.</p>
+      <p>A valid tranzport zone ID (vdnScope objectId).</p>
 
   </dd>
 </dl>
@@ -13579,7 +13583,8 @@ the <strong>packetSize</strong> parameter.</li>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Lists all logical Switches in the Transport Zone (Scope)</p>
+    <p><p>Retrieve information about all logical switches in the specified
+transport zone (network scope).</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13599,8 +13604,7 @@ the <strong>packetSize</strong> parameter.</li>
     
   </dt>
   <dd>
-      <p>The <strong>startIndex</strong> paramater is an optional paramater that sets
-the starting point for listing logical switches.</p>
+      <p>Sets the starting point for listing logical switches.</p>
 
   </dd>
   <dt>
@@ -13609,9 +13613,7 @@ the starting point for listing logical switches.</p>
     
   </dt>
   <dd>
-      <p>The <strong>pageSize</strong> paramater is an optional paramater that sets the
-number of entries returned.
-Range is 1-1024.</p>
+      <p>Sets the number of logical switches returned. Range is 1-1024.</p>
 
   </dd>
 </dl>
@@ -13626,9 +13628,25 @@ Range is 1-1024.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Creates a logicalSwitch. To create a universal logical switch use the
-appropriate universal scope as the scopeId and use the primary NSX
-manager.</p>
+    <p><p>Create a logical switch.</p>
+<hr>
+<p>To create a universal logical switch use <em>universalvdnscope</em> as the
+scopeId in the URI and send the request to the primary NSX Manager.
+Request body parameters:</p>
+<ul>
+<li><strong>name</strong> - Optional. The name of the logical switch.</li>
+<li><strong>description</strong> - Optional. Description of the logical switch.</li>
+<li><strong>tenantId</strong> - Required.</li>
+<li><strong>controlPlaneMode</strong> - Optional. The control plane mode. If not
+specified, the <strong>controlPlaneMode</strong> of the transport zone is used. It
+can be one of the following:<ul>
+<li><em>UNICAST_MODE</em></li>
+<li><em>HYBRID_MODE</em></li>
+<li><em>MULTICAST_MODE</em></li>
+</ul>
+</li>
+<li><strong>guestVlanAllowed</strong> - Optional. Default is <em>false</em>.</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -13655,10 +13673,11 @@ manager.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCreateSpec</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Web-Tier-01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Web tier network<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>virtual wire tenant<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">guestVlanAllowed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">guestVlanAllowed</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCreateSpec</span>&gt;</span>
 </code></pre>
   </div>
@@ -13999,7 +14018,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>List Operations of logicalSwitches in all transport Zones (scope)</p>
+  <div class="description"><p>Working with Logical Switches in All Transport Zones</p>
 </div>
 <div class="method get">
   <a
@@ -14009,7 +14028,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>List all logicalSwitches</p>
+    <p><p>Retrieve information about all logical switches in all transport zones.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14029,7 +14048,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
     
   </dt>
   <dd>
-      <p>Optional; specify starting point for retrieving logical switches</p>
+      <p>Sets the starting point for listing logical switches.</p>
 
   </dd>
   <dt>
@@ -14038,12 +14057,107 @@ is higher than the standard MTU. You must set the MTU for each switch to
     
   </dt>
   <dd>
-      <p>Optional; limit the max number of entries returned. Valid range is
-1-1024</p>
+      <p>Sets the maximum number of logical switches returned. Range is
+1-1024.</p>
 
   </dd>
 </dl>
     </div>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWires</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dataPage</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pagingInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>20<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">startIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">startIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>13<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sortOrderAscending</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sortOrderAscending</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">pagingInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>virtualwire-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Transit-Network-01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>virtual wire tenant<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vdnScopeId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">vdnScopeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>29<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vds-mgt-edge<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">backingType</span>&gt;</span>portgroup<span class="hljs-tag">&lt;/<span class="hljs-name">backingType</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">backingValue</span>&gt;</span>dvportgroup-355<span class="hljs-tag">&lt;/<span class="hljs-name">backingValue</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">missingOnVc</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">missingOnVc</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-35<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          ...
+        <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">backingType</span>&gt;</span>portgroup<span class="hljs-tag">&lt;/<span class="hljs-name">backingType</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">backingValue</span>&gt;</span>dvportgroup-354<span class="hljs-tag">&lt;/<span class="hljs-name">backingValue</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">missingOnVc</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">missingOnVc</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vdnId</span>&gt;</span>5000<span class="hljs-tag">&lt;/<span class="hljs-name">vdnId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">guestVlanAllowed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">guestVlanAllowed</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ctrlLsUuid</span>&gt;</span>7ad8bc71-5857-475c-af2a-a9e5337b0944<span class="hljs-tag">&lt;/<span class="hljs-name">ctrlLsUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">macLearningEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">macLearningEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>virtualwire-2<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>virtualwire-4<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>universalwire-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    ...
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>virtualwire-9<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dataPage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWires</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -14054,7 +14168,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Migrate a Virtual Maschine vnic to a logical switch</p>
+  <div class="description"><p>Working Virtual Machine Connections to Logical Switches</p>
 </div>
 <div class="method post">
   <a
@@ -14064,7 +14178,24 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Migrate a Virtual Maschine vnic to a logical switch</p>
+    <p><p>Attach a VM vNIC to, or detach a VM vNIC from a logical switch.</p>
+<hr>
+<p>Specify the logical switch ID in the <strong>portgroupId</strong> parameter. To
+detach a VM vNIC from a logical switch, leave the <strong>portgroupId</strong> parameter
+empty.</p>
+<hr>
+<p>To find the ID of a VM vNIC, do the following:</p>
+<ol>
+<li>In the vSphere MOB, navigate to the VM you want to connect or disconnect.</li>
+<li>Click <strong>config</strong> and take note of the <strong>instanceUuid</strong>.</li>
+<li>Click <strong>hardware</strong> and take note of the last three digits of the
+appropriate network interface device.</li>
+</ol>
+<hr>
+<p>Use these two values to form the VM vNIC ID.  For example, if the
+<strong>instanceUuid</strong> is <em>502e71fa-1a00-759b-e40f-ce778e915f16</em> and the
+appropriate <strong>device</strong> value is <em>device[4000]</em>, the <strong>objectId</strong> and
+<strong>vnicUuid</strong> are both <em>502e71fa-1a00-759b-e40f-ce778e915f16.000</em>.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14090,9 +14221,9 @@ is higher than the standard MTU. You must set the MTU for each switch to
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.inventory.dto.VnicDto</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vnicUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicUuid</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">portgroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">portgroupId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>502e71fa-1a00-759b-e40f-ce778e915f16.000<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnicUuid</span>&gt;</span>502e71fa-1a00-759b-e40f-ce778e915f16.000<span class="hljs-tag">&lt;/<span class="hljs-name">vnicUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">portgroupId</span>&gt;</span>virtualwire-2<span class="hljs-tag">&lt;/<span class="hljs-name">portgroupId</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.inventory.dto.VnicDto</span>&gt;</span>
 </code></pre>
   </div>
@@ -14105,7 +14236,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Retrieves the configuration of an individual logical switch</p>
+  <div class="description"><p>Working with a specific logical switch.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -14129,9 +14260,10 @@ is higher than the standard MTU. You must set the MTU for each switch to
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieves the configuration of an individual logical switch. If the
-switch is a universal logical switch the isUniversal flag will be set in
-the response body.</p>
+    <p><p>Retrieve information about the specified logical switch.</p>
+<hr>
+<p>If the switch is a universal logical switch the <strong>isUniversal</strong>
+parameter is set to true in the response body.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14142,6 +14274,60 @@ the response body.</p>
       </a>
     </li>
     </ul>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>universalwire-2<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ULS-Web-Tier-02<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>ULS-Tenant<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdnScopeId</span>&gt;</span>universalvdnscope<span class="hljs-tag">&lt;/<span class="hljs-name">vdnScopeId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-35<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>29<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vds-site-a<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">backingType</span>&gt;</span>portgroup<span class="hljs-tag">&lt;/<span class="hljs-name">backingType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">backingValue</span>&gt;</span>dvportgroup-397<span class="hljs-tag">&lt;/<span class="hljs-name">backingValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">missingOnVc</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">missingOnVc</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+    ...
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vdnId</span>&gt;</span>200001<span class="hljs-tag">&lt;/<span class="hljs-name">vdnId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">guestVlanAllowed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">guestVlanAllowed</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ctrlLsUuid</span>&gt;</span>f360d6e5-c709-4aca-b8d1-37de500a867a<span class="hljs-tag">&lt;/<span class="hljs-name">ctrlLsUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">macLearningEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">macLearningEnabled</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -14152,8 +14338,10 @@ the response body.</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update a logical switch, possible updates are name changes &amp;
-Controlplane Mode</p>
+    <p><p>Update the specified logical switch.</p>
+<hr>
+<p>For example, you can update the name, description, or control plane
+mode.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14180,11 +14368,10 @@ Controlplane Mode</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vdnScopeId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vdnScopeId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ULS-Web-Tier-02 <span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Universal Web Logical Switch<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>virtual wire tenant<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
 </code></pre>
   </div>
@@ -14197,7 +14384,7 @@ Controlplane Mode</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete a logical switch</p>
+    <p><p>Delete the specified logical switch.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14218,7 +14405,7 @@ Controlplane Mode</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Test multicast group connectivity in logical switch</p>
+  <div class="description"><p>Testing host connectivity.</p>
 </div>
 <div class="method post">
   <a
@@ -14228,7 +14415,19 @@ Controlplane Mode</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Test multicast group connectivity in logical switch</p>
+    <p><p>Test multicast group connectivity.</p>
+<hr>
+<p>Test multicast group connectivity between two hosts connected to the
+specified logical switch.</p>
+<hr>
+<p>Parameter <strong>packetSizeMode</strong> has one of the following values:</p>
+<ul>
+<li><em>0</em> - VXLAN standard packet size</li>
+<li><em>1</em> - minimum packet size</li>
+<li><em>2</em> - customized packet size.
+If you set <strong>packetSizeMode</strong> to <em>2</em>, you must specify the size using
+the <strong>packetSize</strong> parameter.</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14297,8 +14496,7 @@ Controlplane Mode</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Perform point to point connectivity test between two hosts across which
-a logical switch spans</p>
+  <div class="description"><p>Test point-to-point connectivity.</p>
 </div>
 <div class="method post">
   <a
@@ -14308,8 +14506,19 @@ a logical switch spans</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Perform point to point connectivity test between two hosts across
-which a logical switch spans</p>
+    <p><p>Test point-to-point connectivity.</p>
+<hr>
+<p>Test point-to-point connectivity between two hosts connected to the
+specified logical switch.</p>
+<hr>
+<p>Parameter <strong>packetSizeMode</strong> has one of the following values:</p>
+<ul>
+<li><em>0</em> - VXLAN standard packet size</li>
+<li><em>1</em> - minimum packet size</li>
+<li><em>2</em> - customized packet size.
+If you set <strong>packetSizeMode</strong> to <em>2</em>, you must specify the size using
+the <strong>packetSize</strong> parameter.</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">

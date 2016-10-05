@@ -128,8 +128,9 @@ address pool). Specifying a multicast address range helps in spreading
 traffic across your network to avoid overloading a single multicast
 address.
 
-* **post** *(secured)*: Add a multicast address range for logical switches. The address range
-includes the beginning and ending addresses.
+* **post** *(secured)*: Add a multicast address range for logical switches.
+___
+The address range includes the beginning and ending addresses.
 
 * **get** *(secured)*: Retrieve information about all configured multicast address ranges.
 ___
@@ -176,7 +177,7 @@ Working with Transport Zones
 scopes).
 
 * **post** *(secured)*: Create a transport zone.
-Request body paramaters:
+Request body parameters:
   * **name** - Required. The name of the transport zone.
   * **description** - Optional. Description of the transport zone.
   * **objectId** - Required. The cluster object ID from vSphere. One or more are
@@ -215,7 +216,10 @@ in the request body.
 ### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
 Testing multicast group connectivity.
 
-* **post** *(secured)*: Test multicast group connectivity in a transport zone.
+* **post** *(secured)*: Test multicast group connectivity.
+___
+Test multicast group connectivity between two hosts connected to the
+specified transport zone.
 ___
 Parameter **packetSizeMode** has one of the following values:
 * *0* - VXLAN standard packet size
@@ -225,14 +229,28 @@ If you set **packetSizeMode** to *2*, you must specify the size using
 the **packetSize** parameter.
 
 ## logicalSwitches
-Create and List operations of logical switches inside a Transport Zone.
+Working with Logical Switches in a Specific Transport Zone
 
 ### /2.0/vdn/scopes/{scopeId}/virtualwires
 
-* **get** *(secured)*: Lists all logical Switches in the Transport Zone (Scope)
-* **post** *(secured)*: Creates a logicalSwitch. To create a universal logical switch use the
-appropriate universal scope as the scopeId and use the primary NSX
-manager.
+* **get** *(secured)*: Retrieve information about all logical switches in the specified
+transport zone (network scope).
+
+* **post** *(secured)*: Create a logical switch.
+___
+To create a universal logical switch use *universalvdnscope* as the
+scopeId in the URI and send the request to the primary NSX Manager.
+Request body parameters:
+  * **name** - Optional. The name of the logical switch.
+  * **description** - Optional. Description of the logical switch.
+  * **tenantId** - Required.
+  * **controlPlaneMode** - Optional. The control plane mode. If not
+    specified, the **controlPlaneMode** of the transport zone is used. It
+    can be one of the following:
+      * *UNICAST_MODE*
+      * *HYBRID_MODE*
+      * *MULTICAST_MODE*
+  * **guestVlanAllowed** - Optional. Default is *false*.
 
 ## traceflows
 For Traceflow to work as expected, make sure that the controller cluster is
@@ -268,40 +286,76 @@ Traceflow Observations
 * **get** *(secured)*: List traceflow observations
 
 ## logicalSwitchesGlobal
-List Operations of logicalSwitches in all transport Zones (scope)
+Working with Logical Switches in All Transport Zones
 
 ### /2.0/vdn/virtualwires
 
-* **get** *(secured)*: List all logicalSwitches
+* **get** *(secured)*: Retrieve information about all logical switches in all transport zones.
 
 ### /2.0/vdn/virtualwires/vm/vnic
-Migrate a Virtual Maschine vnic to a logical switch
+Working Virtual Machine Connections to Logical Switches
 
-* **post** *(secured)*: Migrate a Virtual Maschine vnic to a logical switch
+* **post** *(secured)*: Attach a VM vNIC to, or detach a VM vNIC from a logical switch.
+___
+Specify the logical switch ID in the **portgroupId** parameter. To
+detach a VM vNIC from a logical switch, leave the **portgroupId** parameter
+empty.
+___
+To find the ID of a VM vNIC, do the following:
+1. In the vSphere MOB, navigate to the VM you want to connect or disconnect.
+2. Click **config** and take note of the **instanceUuid**.
+3. Click **hardware** and take note of the last three digits of the
+appropriate network interface device.
+___
+Use these two values to form the VM vNIC ID.  For example, if the
+**instanceUuid** is *502e71fa-1a00-759b-e40f-ce778e915f16* and the
+appropriate **device** value is *device[4000]*, the **objectId** and
+**vnicUuid** are both *502e71fa-1a00-759b-e40f-ce778e915f16.000*.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}
-Retrieves the configuration of an individual logical switch
+Working with a specific logical switch.
 
-* **get** *(secured)*: Retrieves the configuration of an individual logical switch. If the
-switch is a universal logical switch the isUniversal flag will be set in
-the response body.
+* **get** *(secured)*: Retrieve information about the specified logical switch.
+___
+If the switch is a universal logical switch the **isUniversal**
+parameter is set to true in the response body.
 
-* **put** *(secured)*: Update a logical switch, possible updates are name changes &
-Controlplane Mode
+* **put** *(secured)*: Update the specified logical switch.
+___
+For example, you can update the name, description, or control plane
+mode.
 
-* **delete** *(secured)*: Delete a logical switch
+* **delete** *(secured)*: Delete the specified logical switch.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/multicast
-Test multicast group connectivity in logical switch
+Testing host connectivity.
 
-* **post** *(secured)*: Test multicast group connectivity in logical switch
+* **post** *(secured)*: Test multicast group connectivity.
+___
+Test multicast group connectivity between two hosts connected to the
+specified logical switch.
+___
+Parameter **packetSizeMode** has one of the following values:
+* *0* - VXLAN standard packet size
+* *1* - minimum packet size
+* *2* - customized packet size.
+If you set **packetSizeMode** to *2*, you must specify the size using
+the **packetSize** parameter.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/p2p
-Perform point to point connectivity test between two hosts across which
-a logical switch spans
+Test point-to-point connectivity.
 
-* **post** *(secured)*: Perform point to point connectivity test between two hosts across
-which a logical switch spans
+* **post** *(secured)*: Test point-to-point connectivity.
+___
+Test point-to-point connectivity between two hosts connected to the
+specified logical switch.
+___
+Parameter **packetSizeMode** has one of the following values:
+* *0* - VXLAN standard packet size
+* *1* - minimum packet size
+* *2* - customized packet size.
+If you set **packetSizeMode** to *2*, you must specify the size using
+the **packetSize** parameter.
 
 ## arpMAC
 Working with ARP suppression and MAC learning for logical switches
