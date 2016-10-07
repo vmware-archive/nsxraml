@@ -1231,14 +1231,11 @@ securitySchemes:
     queryParameters:
       startIndex:
         displayName: startIndex
-        description: |
-          Sets the starting point for listing logical switches.
+        description: !include templates/documentation/reuse/startindex
         default: 0
       pageSize:
         displayName: pageSize
-        description: |
-          Sets the maximum number of logical switches returned. Range is
-          1-1024.
+        description: !include templates/documentation/reuse/pagesize-1024
         default: 20
     body:
       application/xml:
@@ -3251,13 +3248,13 @@ securitySchemes:
     queryParameters:
       startIndex:
         displayName: startIndex
-        description: optional; specify starting point for retrieving the logs
+        description: !include templates/documentation/reuse/startindex
+        required: false
       pageSize:
         displayName: pageSize
-        description: |
-          Optional; limit the max number of entries returned. Valid range is
-          1-1024
+        description: !include templates/documentation/reuse/pagesize-1024
         default: 256
+        required: false
 /2.0/auditlog:
   displayName: auditLogs
   description: Get NSX Manager audit logs
@@ -3267,12 +3264,12 @@ securitySchemes:
     queryParameters:
       startIndex:
         displayName: startIndex
-        description: optional; specify starting point for retrieving the logs
+        description: !include templates/documentation/reuse/startindex
+        required: false
       pageSize:
         displayName: pageSize
-        description: |
-          optional; limit the max number of entries returned. Valid range is
-          1-1024
+        description: !include templates/documentation/reuse/pagesize-1024
+        required: false
         default: 256
 /2.0/nwfabric:
   displayName: nwfabric
@@ -4019,11 +4016,11 @@ securitySchemes:
             (all|notstarted|started|completed)
         pagesize:
           displayName: pagesize
-          description: Limit max number of entries returned. Valid range is 1-1024
+          description: !include templates/documentation/reuse/pagesize-1024
           default: 256
         startindex:
           displayName: startindex
-          description: Specify starting point for retrieving logs
+          description: !include templates/documentation/reuse/startindex
   /completedscansummaries:
     displayName: dlpScanSummaries
     description: |
@@ -4086,10 +4083,12 @@ securitySchemes:
       queryParameters:
         pagesize:
           displayName: pagesize
-          description: number of results to view
+          description: !include templates/documentation/reuse/pagesize
+          required: true
         startindex:
           displayName: startindex
-          description: page number from which the results will be displayed
+          description: Page number from which the results will be returned.
+          required: true
     /{contextID}:
       displayName: dlpViolatingFilesContext
       description: Get violating files for a resource
@@ -4106,10 +4105,10 @@ securitySchemes:
         queryParameters:
           pagesize:
             displayName: pagesize
-            description: number of results to view
+            description: !include templates/documentation/reuse/pagesize
           startindex:
             displayName: startindex
-            description: page number from which the results will be displayed
+            description: Page number from which the results will be returned.
   /violatingfilesascsv:
     displayName: dlpViolatingFilesCSV
     description: |
@@ -4232,12 +4231,11 @@ securitySchemes:
           default: src:SECURITY_GROUP:1:INCLUDE
         pagesize:
           displayName: pagesize
-          description: |
-            Number of records to retrieve (recommended between 100-2000)
+          description: !include templates/documentation/reuse/pagesize-rec-100-2000
           default: 1000
         startindex:
           displayName: startindex
-          description: Start record number for pagination
+          description: !include templates/documentation/reuse/startindex
           default: 100
   /userdetails:
     displayName: userDetails
@@ -4275,12 +4273,11 @@ securitySchemes:
           default: src:SECURITY_GROUP:1:INCLUDE
         pagesize:
           displayName: pagesize
-          description: |
-            Number of records to retrieve (recommended between 100-2000)
+          description: !include templates/documentation/reuse/pagesize-rec-100-2000
           default: 1000
         startindex:
           displayName: startindex
-          description: Start record number for pagination
+          description: !include templates/documentation/reuse/startindex
           default: 100
   /user/{userID}:
     displayName: specificUserDetails
@@ -4891,12 +4888,14 @@ securitySchemes:
     queryParameters:
       startIndex:
         displayName: startIndex
-        description: Start index (0 by default)
+        description: !include templates/documentation/reuse/startindex
+        default: 0
         required: false
         type: integer
       pageSize:
         displayName: pageSize
-        description: Page size (10 by default)
+        description: !include templates/documentation/reuse/pagesize
+        default: 10
         required: false
         type: integer
       sortBy:
@@ -6331,16 +6330,14 @@ securitySchemes:
         startIndex:
           type: integer
           displayName: startIndex
-          description: |
-            (optional) Specifies starting point for retrieval. If not
-            specified, start from the beginning by default
+          description: !include templates/documentation/reuse/startindex
+          required: false
           default: 0
         pageSize:
           type: integer
           displayName: pageSize
-          description: |
-            (optional) Limit the max number of entries returned. Valid range
-            is 1-1024
+          description: !include templates/documentation/reuse/pagesize-1024
+          required: false
           default: 256
     /info:
       displayName: flowStatsInfo
