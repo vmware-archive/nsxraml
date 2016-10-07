@@ -153,20 +153,20 @@ If the multicast address range is universal you must send the API
 request to the primary NSX Manager.
 
 ### /2.0/vdn/config/vxlan/udp/port
-Managing the logical switch UDP port.
+Working with the VXLAN port configuration.
 
-* **get** *(secured)*: View configured UDP port for VXLAN.
+* **get** *(secured)*: Retrieve the UDP port configured for VXLAN traffic.
 
 ### /2.0/vdn/config/vxlan/udp/port/{portNumber}
-You can view the UDP port for VXLAN
+Update the VXLAN port configuration.
 
-* **put** *(secured)*: You can change the UDP port for the logical switch. If not set, the
-port defaults to port 8472.
+* **put** *(secured)*: Update the VXLAN port configuration to use port *portNumber*.
 
 ### /2.0/vdn/config/resources/allocated
-Query allocated resources
+Working with allocated resources.
 
-* **get** *(secured)*: Retrieve a list of resources allocated
+* **get** *(secured)*: Retrieve information about allocated segment IDs or multicast
+addresses.
 
 ## vdnScopes
 Working with Transport Zones

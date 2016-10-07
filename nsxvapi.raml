@@ -576,11 +576,11 @@ securitySchemes:
   /vxlan/udp/port:
     displayName: vdnConfigUDP
     description: |
-      Managing the logical switch UDP port.
+      Working with the VXLAN port configuration.
     get:
       displayName: vdnConfigUDPShow
       description: |
-        View configured UDP port for VXLAN.
+        Retrieve the UDP port configured for VXLAN traffic.
       responses:
         200:
           body:
@@ -590,39 +590,36 @@ securitySchemes:
     /{portNumber}:
       displayName: vdnConfigUDPUpdate
       description: |
-        You can view the UDP port for VXLAN
+        Update the VXLAN port configuration.
       uriParameters:
         portNumber:
           required: true
           displayName: portNumber
-          description: A valid UDP Port for VXLAN
+          description: A valid UDP port for VXLAN
       put:
         displayName: vdnConfigUDPUpdate
         description: |
-          You can change the UDP port for the logical switch. If not set, the
-          port defaults to port 8472.
+          Update the VXLAN port configuration to use port *portNumber*.
   /resources/allocated:
     displayName: allocatedResources
-    description: Query allocated resources
+    description: Working with allocated resources.
     get:
       displayName: allocatedResourcesRead
-      description: Retrieve a list of resources allocated
+      description: |
+        Retrieve information about allocated segment IDs or multicast
+        addresses.
       queryParameters:
         type:
           displayName: type
-          description: set to "segmentId" or "multicastAddress"
+          description: set to **segmentId** or **multicastAddress**
         pagesize:
           displayName: pagesize
-          description: |
-            The pagesize parameter is an optional parameter that limits the
-            maximum number of entries returned by the API. The default value
-            for this parameter is 256 and the valid range is 1‐1024.
+          description: !include templates/documentation/reuse/pagesize-1024
+          default: 256
         startindex:
           displayName: startindex
-          description: |
-            The startindex parameter is an optional parameter which specifies
-            the starting point for retrieving the resources. If this parameter
-            is not specified, resources are retrieved from the beginning.
+          description: !include templates/documentation/reuse/startindex
+          default: 0
 /2.0/vdn/scopes:
   displayName: vdnScopes
   description: |
@@ -952,13 +949,11 @@ securitySchemes:
     queryParameters:
       startIndex:
           displayName: startIndex
-          description: |
-            Sets the starting point for listing logical switches.
+          description: !include templates/documentation/reuse/startindex
           default: 0
       pageSize:
           displayName: pageSize
-          description: |
-            Sets the number of logical switches returned. Range is 1-1024.
+          description: !include templates/documentation/reuse/pagesize-1024
           default: 20
   post:
     displayName: logicalSwitchCreate
