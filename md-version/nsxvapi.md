@@ -1821,6 +1821,22 @@ Working with Flow Monitoring
 Retrieve flow monitoring statistics information.
 
 * **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+___
+Response values for flow statistics:
+* **blocked** - indicates whether traffic is blocked:
+  * 0 - flow allowed
+  * 1 - flow blocked
+  * 2 - flow blocked by Spoofguard
+* **protocol** - protocol in flow:
+  * 0 - TCP
+  * 1 - UDP
+  * 2 - ICMP
+* **direction** - direction of flow:
+  * 0 - to virtual machine
+  * 1 - from virtual machine
+* **controlDirection** - control direction for dynamic TCP traffic:
+  * 0 - source ‐> destination
+  * 1 - destination ‐> source
 
 ### /2.1/app/flow/flowstats/info
 Working with flow monitoring meta-data.
