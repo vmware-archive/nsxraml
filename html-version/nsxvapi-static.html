@@ -14777,7 +14777,7 @@ the <strong>packetSize</strong> parameter.</li>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Operations on flowdata</p>
+  <div class="description"><p>Working with Flow Monitoring</p>
 </div>
 </section>
 <section class="resource">
@@ -14787,7 +14787,32 @@ the <strong>packetSize</strong> parameter.</li>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Configure flow Monitoring</p>
+  <div class="description"><p>Working with flow monitoring configuration.</p>
+<hr>
+<p>Flow records generated on all hosts are sent to NSX Manager, which
+consumes the records and displays aggregated information.  Hosts can
+generate large numbers of flow records.  You can configure flow
+monitoring to exclude certain records from collection.  The flow
+configuration applies to all hosts.</p>
+<hr>
+<ul>
+<li><strong>collectFlows</strong> - if true, flow collection is enabled.</li>
+<li><strong>ignoreBlockedFlows</strong> - if true, ignore blocked flows.</li>
+<li><strong>ignoreLayer2Flows</strong> - if true, ignore layer 2 flows.</li>
+<li><strong>sourceIPs</strong> - source IPs to exclude. For example: 10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24.</li>
+<li><strong>sourceContainer</strong> - source containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.</li>
+<li><strong>destinationIPs</strong> - destination IPs to exclude.</li>
+<li><strong>destinationContainer</strong> - destination containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.</li>
+<li><strong>destinationPorts</strong> - destination ports to exclude.</li>
+<li><strong>serviceContainers</strong> - service containers to exclude. Container can contain application or application group.</li>
+</ul>
+<hr>
+<p>Flow exclusion happens at the host. The following flows are discarded by default:</p>
+<ul>
+<li>Broadcast IP (255.255.255.255)</li>
+<li>Local multicast group (224.0.0.0/24)</li>
+<li>Broadcast MAC address (FF:FF:FF:FF:FF:FF)</li>
+</ul>
 </div>
 <div class="method get">
   <a
@@ -14797,7 +14822,7 @@ the <strong>packetSize</strong> parameter.</li>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve flow details</p>
+    <p><p>Retrieve flow monitoring configuration</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14808,6 +14833,40 @@ the <strong>packetSize</strong> parameter.</li>
       </a>
     </li>
     </ul>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FlowConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">collectFlows</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">collectFlows</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ignoreBlockedFlows</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ignoreBlockedFlows</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ignoreLayer2Flows</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ignoreLayer2Flows</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceIPs</span>&gt;</span>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24<span class="hljs-tag">&lt;/<span class="hljs-name">sourceIPs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceContainer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vm1 - Network adapter 1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>5013bcd8-c666-1e28-c7a9-600da945954f.000<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Vnic<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">sourceContainer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceContainer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Large XP-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vm-126<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">sourceContainer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationIPs</span>&gt;</span>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24<span class="hljs-tag">&lt;/<span class="hljs-name">destinationIPs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationContainer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vm2 - Network adapter 2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>5013bcd8-c666-1e28-c7a9-600da945954f.000<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Vnic<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">destinationContainer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationContainer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Small XP-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vm-226<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">destinationContainer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationPorts</span>&gt;</span>22, 40-50, 60<span class="hljs-tag">&lt;/<span class="hljs-name">destinationPorts</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VMware-VDM2.x-Ephemeral<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>application-161<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">FlowConfiguration</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -14818,7 +14877,7 @@ the <strong>packetSize</strong> parameter.</li>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update specified flows</p>
+    <p><p>Update flow monitoring configuration</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -14873,25 +14932,35 @@ the <strong>packetSize</strong> parameter.</li>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FlowConfiguration</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">collectFlows</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">collectFlows</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ignoreBlockedFlows</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ignoreBlockedFlows</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ignoreLayer2Flows</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ignoreLayer2Flows</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sourceIPs</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sourceIPs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">collectFlows</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">collectFlows</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ignoreBlockedFlows</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ignoreBlockedFlows</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ignoreLayer2Flows</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ignoreLayer2Flows</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceIPs</span>&gt;</span>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24<span class="hljs-tag">&lt;/<span class="hljs-name">sourceIPs</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">sourceContainer</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vm1 - Network adapter 1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>5013bcd8-c666-1e28-c7a9-600da945954f.000<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Vnic<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">sourceContainer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">destinationIPs</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">destinationIPs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceContainer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Large XP-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vm-126<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">sourceContainer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationIPs</span>&gt;</span>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24<span class="hljs-tag">&lt;/<span class="hljs-name">destinationIPs</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">destinationContainer</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vm2 - Network adapter 2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>5013bcd8-c666-1e28-c7a9-600da945954f.000<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Vnic<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">destinationContainer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">destinationPorts</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">destinationPorts</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationContainer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Small XP-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vm-226<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">destinationContainer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationPorts</span>&gt;</span>22, 40-50, 60<span class="hljs-tag">&lt;/<span class="hljs-name">destinationPorts</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VMware-VDM2.x-Ephemeral<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>application-161<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">FlowConfiguration</span>&gt;</span>
 </code></pre>
@@ -14905,7 +14974,7 @@ the <strong>packetSize</strong> parameter.</li>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Retrieve flow statistics for a datacenter, port group, VM, or vNIC</p>
+  <div class="description"><p>Retrieve flow monitoring statistics information.</p>
 </div>
 <div class="method get">
   <a
@@ -14935,8 +15004,8 @@ the <strong>packetSize</strong> parameter.</li>
     
   </dt>
   <dd>
-      <p>vc-moref-id of the datacenter, portgroup, vm, or UUID of the vNIC
-for which traffic flow is to be retrieved</p>
+      <p>vCenter MOB ID of the datacenter, portgroup, vm, or UUID of the
+vNIC for which traffic flow is to be retrieved</p>
 
   </dd>
   <dt>
@@ -14945,7 +15014,12 @@ for which traffic flow is to be retrieved</p>
     
   </dt>
   <dd>
-      <p>Type of flow to be retrieved (TCP_UDP|LAYER2|LAYER3)</p>
+      <p>Type of flow to be retrieved. Possible values are:</p>
+<ul>
+<li><em>TCP_UDP</em></li>
+<li><em>LAYER2</em></li>
+<li><em>LAYER3</em></li>
+</ul>
 
   </dd>
   <dt>
@@ -14954,7 +15028,7 @@ for which traffic flow is to be retrieved</p>
     
   </dt>
   <dd>
-      <p>Flows with start time greater than specified time are retrieved</p>
+      <p>Flows with start time greater than specified time are retrieved.</p>
 
   </dd>
   <dt>
@@ -14963,7 +15037,7 @@ for which traffic flow is to be retrieved</p>
     
   </dt>
   <dd>
-      <p>Flows with start time lower than specified time are retrieved</p>
+      <p>Flows with start time less than specified time are retrieved.</p>
 
   </dd>
   <dt>
@@ -14986,6 +15060,63 @@ for which traffic flow is to be retrieved</p>
   </dd>
 </dl>
     </div>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FlowStatsPage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pagingInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">contextId</span>&gt;</span>datacenter-2538<span class="hljs-tag">&lt;/<span class="hljs-name">contextId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">flowType</span>&gt;</span>TCP_UDP<span class="hljs-tag">&lt;/<span class="hljs-name">flowType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1327405883000<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1327482600000<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>817<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">startIndex</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pagingInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">flowStatsTcpUdp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1327405883000<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1327446000000<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ruleId</span>&gt;</span>1001<span class="hljs-tag">&lt;/<span class="hljs-name">ruleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">blocked</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">blocked</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sessions</span>&gt;</span>1449<span class="hljs-tag">&lt;/<span class="hljs-name">sessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourcePackets</span>&gt;</span>1449<span class="hljs-tag">&lt;/<span class="hljs-name">sourcePackets</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationPackets</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">destinationPackets</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourceBytes</span>&gt;</span>227493<span class="hljs-tag">&lt;/<span class="hljs-name">sourceBytes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationBytes</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">destinationBytes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">networkId</span>&gt;</span>network-2553<span class="hljs-tag">&lt;/<span class="hljs-name">networkId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourceIp</span>&gt;</span>10.112.199.174<span class="hljs-tag">&lt;/<span class="hljs-name">sourceIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationIp</span>&gt;</span>255.255.255.255<span class="hljs-tag">&lt;/<span class="hljs-name">destinationIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationPort</span>&gt;</span>17500<span class="hljs-tag">&lt;/<span class="hljs-name">destinationPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlProtocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">controlProtocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlSourceIp</span>&gt;</span>0.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">controlSourceIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlDestinationIp</span>&gt;</span>0.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDestinationIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlDestinationPort</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDestinationPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlDirection</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDirection</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">flowStatsTcpUdp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">flowStatsTcpUdp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1327405883000<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1327446000000<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ruleId</span>&gt;</span>1001<span class="hljs-tag">&lt;/<span class="hljs-name">ruleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">blocked</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">blocked</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sessions</span>&gt;</span>69<span class="hljs-tag">&lt;/<span class="hljs-name">sessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourcePackets</span>&gt;</span>69<span class="hljs-tag">&lt;/<span class="hljs-name">sourcePackets</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationPackets</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">destinationPackets</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourceBytes</span>&gt;</span>17832<span class="hljs-tag">&lt;/<span class="hljs-name">sourceBytes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationBytes</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">destinationBytes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">networkId</span>&gt;</span>network-2553<span class="hljs-tag">&lt;/<span class="hljs-name">networkId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourceIp</span>&gt;</span>10.112.199.13<span class="hljs-tag">&lt;/<span class="hljs-name">sourceIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationIp</span>&gt;</span>10.112.199.255<span class="hljs-tag">&lt;/<span class="hljs-name">destinationIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationPort</span>&gt;</span>138<span class="hljs-tag">&lt;/<span class="hljs-name">destinationPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlProtocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">controlProtocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlSourceIp</span>&gt;</span>0.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">controlSourceIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlDestinationIp</span>&gt;</span>0.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDestinationIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlDestinationPort</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDestinationPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlDirection</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDirection</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">flowStatsTcpUdp</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">FlowStatsPage</span>
+</span></code></pre>
   </div>
 </div>
 </section>
@@ -14996,7 +15127,7 @@ for which traffic flow is to be retrieved</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Flow statistics info</p>
+  <div class="description"><p>Working with flow monitoring meta-data.</p>
 </div>
 <div class="method get">
   <a
@@ -15006,7 +15137,14 @@ for which traffic flow is to be retrieved</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve flow statistics info</p>
+    <p><p>Retrieve flow statistics meta-data.</p>
+<hr>
+<p>This method retrieves the following information for each flow type:</p>
+<ul>
+<li>minimum start time</li>
+<li>maximum end time</li>
+<li>total flow count</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -15017,6 +15155,25 @@ for which traffic flow is to be retrieved</p>
       </a>
     </li>
     </ul>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FlowStatsInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">flowStatsInfoTcpUdp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minimumStartTime</span>&gt;</span>1327405883000<span class="hljs-tag">&lt;/<span class="hljs-name">minimumStartTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maximumEndTime</span>&gt;</span>1327482600000<span class="hljs-tag">&lt;/<span class="hljs-name">maximumEndTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>817<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">flowStatsInfoTcpUdp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">flowStatsInfoLayer3</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minimumStartTime</span>&gt;</span>1327405883000<span class="hljs-tag">&lt;/<span class="hljs-name">minimumStartTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maximumEndTime</span>&gt;</span>1327482600000<span class="hljs-tag">&lt;/<span class="hljs-name">maximumEndTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>21<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">flowStatsInfoLayer3</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">flowStatsInfoLayer2</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">minimumStartTime</span>&gt;</span>1327405883000<span class="hljs-tag">&lt;/<span class="hljs-name">minimumStartTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">maximumEndTime</span>&gt;</span>1327482600000<span class="hljs-tag">&lt;/<span class="hljs-name">maximumEndTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>531<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">flowStatsInfoLayer2</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">FlowStatsInfo</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -15049,7 +15206,7 @@ for which traffic flow is to be retrieved</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete flow records for context by contextId</p>
+    <p><p>Delete flow records for the specified context.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">

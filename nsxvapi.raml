@@ -6301,11 +6301,11 @@ securitySchemes:
       description: Delete a policy
 /2.1/app/flow:
   displayName: flowMonitoring
-  description: Operations on flowdata
+  description: Working with Flow Monitoring
   /flowstats:
     displayName: flowStats
     description: |
-      Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+      Retrieve flow monitoring statistics information.
     get:
       displayName: flowStatsRead
       description: |
@@ -6314,19 +6314,23 @@ securitySchemes:
         contextId:
           displayName: contextId
           description: |
-            vc-moref-id of the datacenter, portgroup, vm, or UUID of the vNIC
-            for which traffic flow is to be retrieved
+            vCenter MOB ID of the datacenter, portgroup, vm, or UUID of the
+            vNIC for which traffic flow is to be retrieved
         flowType:
           displayName: flowType
-          description: Type of flow to be retrieved (TCP_UDP|LAYER2|LAYER3)
+          description: |
+            Type of flow to be retrieved. Possible values are:
+            * *TCP_UDP*
+            * *LAYER2*
+            * *LAYER3*
         startTime:
           displayName: startTime
           description: |
-            Flows with start time greater than specified time are retrieved
+            Flows with start time greater than specified time are retrieved.
         endTime:
           displayName: endTime
           description: |
-            Flows with start time lower than specified time are retrieved
+            Flows with start time less than specified time are retrieved.
         startIndex:
           type: integer
           displayName: startIndex
@@ -6339,44 +6343,195 @@ securitySchemes:
           description: !include templates/documentation/reuse/pagesize-1024
           required: false
           default: 256
+      body:
+        application/xml:
+          example: |
+            <FlowStatsPage>
+              <pagingInfo>
+                <contextId>datacenter-2538</contextId>
+                <flowType>TCP_UDP</flowType>
+                <startTime>1327405883000</startTime>
+                <endTime>1327482600000</endTime>
+                <totalCount>817</totalCount>
+                <startIndex>0</startIndex>
+                <pageSize>2</pageSize>
+              </pagingInfo>
+              <flowStatsTcpUdp>
+                <startTime>1327405883000</startTime>
+                <endTime>1327446000000</endTime>
+                <ruleId>1001</ruleId>
+                <blocked>0</blocked>
+                <protocol>5</protocol>
+                <direction>1</direction>
+                <sessions>1449</sessions>
+                <sourcePackets>1449</sourcePackets>
+                <destinationPackets>0</destinationPackets>
+                <sourceBytes>227493</sourceBytes>
+                <destinationBytes>0</destinationBytes>
+                <networkId>network-2553</networkId>
+                <sourceIp>10.112.199.174</sourceIp>
+                <destinationIp>255.255.255.255</destinationIp>
+                <destinationPort>17500</destinationPort>
+                <controlProtocol></controlProtocol>
+                <controlSourceIp>0.0.0.0</controlSourceIp>
+                <controlDestinationIp>0.0.0.0</controlDestinationIp>
+                <controlDestinationPort>0</controlDestinationPort>
+                <controlDirection>0</controlDirection>
+              </flowStatsTcpUdp>
+              <flowStatsTcpUdp>
+                <startTime>1327405883000</startTime>
+                <endTime>1327446000000</endTime>
+                <ruleId>1001</ruleId>
+                <blocked>0</blocked>
+                <protocol>5</protocol>
+                <direction>1</direction>
+                <sessions>69</sessions>
+                <sourcePackets>69</sourcePackets>
+                <destinationPackets>0</destinationPackets>
+                <sourceBytes>17832</sourceBytes>
+                <destinationBytes>0</destinationBytes>
+                <networkId>network-2553</networkId>
+                <sourceIp>10.112.199.13</sourceIp>
+                <destinationIp>10.112.199.255</destinationIp>
+                <destinationPort>138</destinationPort>
+                <controlProtocol></controlProtocol>
+                <controlSourceIp>0.0.0.0</controlSourceIp>
+                <controlDestinationIp>0.0.0.0</controlDestinationIp>
+                <controlDestinationPort>0</controlDestinationPort>
+                <controlDirection>0</controlDirection>
+              </flowStatsTcpUdp>
+            </FlowStatsPage
     /info:
       displayName: flowStatsInfo
-      description: Flow statistics info
+      description: Working with flow monitoring meta-data.
       get:
         displayName: flowStatsInfoRead
-        description: Retrieve flow statistics info
+        description: |
+          Retrieve flow statistics meta-data.
+          ___
+          This method retrieves the following information for each flow type:
+          * minimum start time
+          * maximum end time
+          * total flow count
+        body:
+         application/xml:
+           example: |
+              <FlowStatsInfo>
+                <flowStatsInfoTcpUdp>
+                  <minimumStartTime>1327405883000</minimumStartTime>
+                  <maximumEndTime>1327482600000</maximumEndTime>
+                  <totalCount>817</totalCount>
+                </flowStatsInfoTcpUdp>
+                <flowStatsInfoLayer3>
+                  <minimumStartTime>1327405883000</minimumStartTime>
+                  <maximumEndTime>1327482600000</maximumEndTime>
+                  <totalCount>21</totalCount>
+                </flowStatsInfoLayer3>
+                <flowStatsInfoLayer2>
+                <minimumStartTime>1327405883000</minimumStartTime>
+                <maximumEndTime>1327482600000</maximumEndTime>
+                <totalCount>531</totalCount>
+                </flowStatsInfoLayer2>
+              </FlowStatsInfo>
   /config:
     displayName: flowConfig
-    description: Configure flow Monitoring
+    description: |
+      Working with flow monitoring configuration.
+      ___
+      Flow records generated on all hosts are sent to NSX Manager, which
+      consumes the records and displays aggregated information.  Hosts can
+      generate large numbers of flow records.  You can configure flow
+      monitoring to exclude certain records from collection.  The flow
+      configuration applies to all hosts.
+      ___
+      * **collectFlows** - if true, flow collection is enabled.
+      * **ignoreBlockedFlows** - if true, ignore blocked flows.
+      * **ignoreLayer2Flows** - if true, ignore layer 2 flows.
+      * **sourceIPs** - source IPs to exclude. For example: 10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24.
+      * **sourceContainer** - source containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
+      * **destinationIPs** - destination IPs to exclude.
+      * **destinationContainer** - destination containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
+      * **destinationPorts** - destination ports to exclude.
+      * **serviceContainers** - service containers to exclude. Container can contain application or application group.
+      ___
+      Flow exclusion happens at the host. The following flows are discarded by default:
+      * Broadcast IP (255.255.255.255)
+      * Local multicast group (224.0.0.0/24)
+      * Broadcast MAC address (FF:FF:FF:FF:FF:FF)
     get:
       displayName: flowConfigRead
-      description: Retrieve flow details
-    put:
-      displayName: flowsConfigCreate
-      description: Update specified flows
+      description: Retrieve flow monitoring configuration
       body:
         application/xml:
           example: |
             <FlowConfiguration>
-              <collectFlows></collectFlows>
-              <ignoreBlockedFlows></ignoreBlockedFlows>
-              <ignoreLayer2Flows></ignoreLayer2Flows>
-              <sourceIPs></sourceIPs>
+              <collectFlows>true</collectFlows>
+              <ignoreBlockedFlows>false</ignoreBlockedFlows>
+              <ignoreLayer2Flows>false</ignoreLayer2Flows>
+              <sourceIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</sourceIPs>
               <sourceContainer>
-                <name></name>
-                <id></id>
-                <type></type>
+                <name>vm1 - Network adapter 1</name>
+                <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
+                <type>Vnic</type>
               </sourceContainer>
-              <destinationIPs></destinationIPs>
+              <sourceContainer>
+                <name>Large XP-1</name>
+                <id>vm-126</id>
+                <type>VirtualMachine</type>
+              </sourceContainer>
+              <destinationIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</destinationIPs>
               <destinationContainer>
-                <name></name>
-                <id></id>
-                <type></type>
+                <name>vm2 - Network adapter 2</name>
+                <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
+                <type>Vnic</type>
               </destinationContainer>
-              <destinationPorts></destinationPorts>
+              <destinationContainer>
+                <name>Small XP-2</name>
+                <id>vm-226</id>
+                <type>VirtualMachine</type>
+              </destinationContainer>
+              <destinationPorts>22, 40-50, 60</destinationPorts>
               <service>
-                <name></name>
-                <id></id>
+                <name>VMware-VDM2.x-Ephemeral</name>
+                <id>application-161</id>
+              </service>
+            </FlowConfiguration>
+    put:
+      displayName: flowsConfigCreate
+      description: Update flow monitoring configuration
+      body:
+        application/xml:
+          example: |
+            <FlowConfiguration>
+              <collectFlows>true</collectFlows>
+              <ignoreBlockedFlows>false</ignoreBlockedFlows>
+              <ignoreLayer2Flows>false</ignoreLayer2Flows>
+              <sourceIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</sourceIPs>
+              <sourceContainer>
+                <name>vm1 - Network adapter 1</name>
+                <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
+                <type>Vnic</type>
+              </sourceContainer>
+              <sourceContainer>
+                <name>Large XP-1</name>
+                <id>vm-126</id>
+                <type>VirtualMachine</type>
+              </sourceContainer>
+              <destinationIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</destinationIPs>
+              <destinationContainer>
+                <name>vm2 - Network adapter 2</name>
+                <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
+                <type>Vnic</type>
+              </destinationContainer>
+              <destinationContainer>
+                <name>Small XP-2</name>
+                <id>vm-226</id>
+                <type>VirtualMachine</type>
+              </destinationContainer>
+              <destinationPorts>22, 40-50, 60</destinationPorts>
+              <service>
+                <name>VMware-VDM2.x-Ephemeral</name>
+                <id>application-161</id>
               </service>
             </FlowConfiguration>
           schema: flowsExcludeCreate
@@ -6385,7 +6540,7 @@ securitySchemes:
     description: Flow configuration by contextId
     delete:
       displayName: flowContextDelete
-      description: Delete flow records for context by contextId
+      description: Delete flow records for the specified context.
 /2.1/app/excludelist:
   displayName: dfwExclusion
   description: Exclude VM's from firewall protection

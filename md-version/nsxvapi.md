@@ -1815,28 +1815,54 @@ operations
 * **delete** *(secured)*: Delete a policy
 
 ## flowMonitoring
-Operations on flowdata
+Working with Flow Monitoring
 
 ### /2.1/app/flow/flowstats
-Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+Retrieve flow monitoring statistics information.
 
 * **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
 
 ### /2.1/app/flow/flowstats/info
-Flow statistics info
+Working with flow monitoring meta-data.
 
-* **get** *(secured)*: Retrieve flow statistics info
+* **get** *(secured)*: Retrieve flow statistics meta-data.
+___
+This method retrieves the following information for each flow type:
+* minimum start time
+* maximum end time
+* total flow count
 
 ### /2.1/app/flow/config
-Configure flow Monitoring
+Working with flow monitoring configuration.
+___
+Flow records generated on all hosts are sent to NSX Manager, which
+consumes the records and displays aggregated information.  Hosts can
+generate large numbers of flow records.  You can configure flow
+monitoring to exclude certain records from collection.  The flow
+configuration applies to all hosts.
+___
+* **collectFlows** - if true, flow collection is enabled.
+* **ignoreBlockedFlows** - if true, ignore blocked flows.
+* **ignoreLayer2Flows** - if true, ignore layer 2 flows.
+* **sourceIPs** - source IPs to exclude. For example: 10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24.
+* **sourceContainer** - source containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
+* **destinationIPs** - destination IPs to exclude.
+* **destinationContainer** - destination containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
+* **destinationPorts** - destination ports to exclude.
+* **serviceContainers** - service containers to exclude. Container can contain application or application group.
+___
+Flow exclusion happens at the host. The following flows are discarded by default:
+* Broadcast IP (255.255.255.255)
+* Local multicast group (224.0.0.0/24)
+* Broadcast MAC address (FF:FF:FF:FF:FF:FF)
 
-* **get** *(secured)*: Retrieve flow details
-* **put** *(secured)*: Update specified flows
+* **get** *(secured)*: Retrieve flow monitoring configuration
+* **put** *(secured)*: Update flow monitoring configuration
 
 ### /2.1/app/flow/{contextId}
 Flow configuration by contextId
 
-* **delete** *(secured)*: Delete flow records for context by contextId
+* **delete** *(secured)*: Delete flow records for the specified context.
 
 ## dfwExclusion
 Exclude VM's from firewall protection
