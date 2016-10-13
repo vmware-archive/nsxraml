@@ -2256,10 +2256,41 @@ Specific load balancer monitor
 * **delete** *(secured)*: Delete a load balancer monitor
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/virtualservers
-You can add an NSX Edge internal or uplink interface as a virtual
-server
+Working with virtual servers.
 
-* **post** *(secured)*: Add a virtual server
+* **post** *(secured)*: Add a virtual server.
+___
+You can add an NSX Edge internal or uplink interface as a virtual
+server.
+___
+* **name** - required.
+* **description** - optional.
+* **enabled** - optional, default is true.
+* **ipAddress** - required.
+* **protocol** - required. Select one of the following:
+  * *HTTP*
+  * *HTTPS*
+  * *TCP*
+  * *UDP*
+* **port** - required. You can enter a single port, a comma
+  separate list, a range, or a combination. For example,
+  *443,6000-7000*.
+* **connectionLimit** - optional. Maximum concurrent connections.
+* **connectionRateLimit** - optional. Maximum incoming new connection
+  requests per second.
+* **defaultPoolId** - optional. The default backend server pool
+  identifier
+* **applicationProfileId** - optional. The application profile
+  identifier.
+* **accelerationEnabled** - optional. Use the faster L4 load balancer
+  engine rather than L7 load balancer engine.
+  **Note:**  If a virtual server configuration such as application
+  rules, HTTP type, or cookie persistence, is using the L7 load
+  balancer engine, then the L7 load balancer engine is used even
+  if you enabled acceleration or not.
+* **applicationRuleId** - optional. The application rule
+  identifier list.
+
 * **get** *(secured)*: Retrieve all virtual servers
 * **delete** *(secured)*: Delete all
 

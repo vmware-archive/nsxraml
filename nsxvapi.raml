@@ -8235,30 +8235,71 @@ securitySchemes:
       /virtualservers:
         displayName: virtualServers
         description: |
-          You can add an NSX Edge internal or uplink interface as a virtual
-          server
+          Working with virtual servers.
         post:
           displayName: virtualServersCreate
-          description: Add a virtual server
-          body:
-            application/xml:
-              example: |
-                <virtualServer>
-                  <name></name>
-                  <description></description>
-                  <enabled></enabled>
-                  <ipAddress></ipAddress>
-                  <protocol></protocol>
-                  <port></port>
-                  <connectionLimit></connectionLimit>
-                  <connectionRateLimit></connectionRateLimit>
-                  <applicationProfileId></applicationProfileId>
-                  <defaultPoolId></defaultPoolId>
-                  <enableServiceInsertion></enableServiceInsertion>
-                  <accelerationEnabled></accelerationEnabled>
-                  <applicationRuleId></applicationRuleId>
-                </virtualServer>
-              schema: virtualServersCreate
+          description: |
+            Add a virtual server.
+            ___
+            You can add an NSX Edge internal or uplink interface as a virtual
+            server.
+            ___
+            * **name** - required.
+            * **description** - optional.
+            * **enabled** - optional, default is true.
+            * **ipAddress** - required.
+            * **protocol** - required. Select one of the following:
+              * *HTTP*
+              * *HTTPS*
+              * *TCP*
+              * *UDP*
+            * **port** - required. You can enter a single port, a comma
+              separate list, a range, or a combination. For example,
+              *443,6000-7000*.
+            * **connectionLimit** - optional. Maximum concurrent connections.
+            * **connectionRateLimit** - optional. Maximum incoming new connection
+              requests per second.
+            * **defaultPoolId** - optional. The default backend server pool
+              identifier
+            * **applicationProfileId** - optional. The application profile
+              identifier.
+            * **accelerationEnabled** - optional. Use the faster L4 load balancer
+              engine rather than L7 load balancer engine.
+              **Note:**  If a virtual server configuration such as application
+              rules, HTTP type, or cookie persistence, is using the L7 load
+              balancer engine, then the L7 load balancer engine is used even
+              if you enabled acceleration or not.
+            * **applicationRuleId** - optional. The application rule
+              identifier list.
+          responses:
+            200:
+              description: !include templates/documentation/reuse/status-codes/200
+              body:
+                application/xml:
+                  example: |
+                    <virtualServer>
+                      <name>http_vip_2</name>
+                      <description>http virtualServer 2</description>
+                      <enabled>true</enabled>
+                      <ipAddress>10.117.35.172</ipAddress>
+                      <protocol>http</protocol>
+                      <port>443,6000-7000</port>
+                      <connectionLimit>123</connectionLimit>
+                      <connectionRateLimit>123</connectionRateLimit>
+                      <applicationProfileId>applicationProfile-1</applicationProfileId>
+                      <defaultPoolId>pool-1</defaultPoolId>
+                      <enableServiceInsertion>false</enableServiceInsertion>
+                      <accelerationEnabled>true</accelerationEnabled>
+                    </virtualServer>
+                  schema: virtualServersCreate
+            400:
+              description: !include templates/documentation/reuse/status-codes/400
+            403:
+              description: !include templates/documentation/reuse/status-codes/403
+            404:
+              description: !include templates/documentation/reuse/status-codes/404
+            505:
+              description: !include templates/documentation/reuse/status-codes/505
         get:
           displayName: virtualServersRead
           description: Retrieve all virtual servers
