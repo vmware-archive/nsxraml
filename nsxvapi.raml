@@ -3273,23 +3273,11 @@ securitySchemes:
         default: 256
 /2.0/nwfabric:
   displayName: nwfabric
-  description: Network virtualization components
+  description: Working with Network Fabric Configuration
   /configure:
     displayName: nwfabricConfig
     description: |
-      As the demands on datacenters continue to grow and accelerate,
-      requirements related to speed and access to the data itself continue to
-      grow as well. In most infrastructures, virtual machine access and
-      mobility usually depend on physical networking infrastructure and the
-      physical networking environments they reside in. This can force virtual
-      workloads into less than ideal environments due to potential layer 2 or
-      layer 3 boundaries, such as being tied to specific VLANs.
-      ___
-      Network virtualization allows you to place these virtual workloads on any
-      available infrastructure in the datacenter regardless of the underlying
-      physical network infrastructure. This not only allows increased
-      flexibility and mobility, but increased availability and resilience.
-      Feature configuration is managed at a cluster level.
+      Working with Network Virtualization Components and VXLAN.
       ___
       Cluster preparation can be broken down into the following:
         * Install VIB and non-VIB related action: Before any per-host config
@@ -3302,6 +3290,8 @@ securitySchemes:
     post:
       displayName: nwfabricConfigCreate
       description: |
+        Install network fabric or VXLAN.
+        ___
         You install the network infrastructure components in your virtual
         environment on a per‐cluster level for each vCenter server, which
         deploys the required software on all hosts in the cluster. This software
@@ -3310,24 +3300,36 @@ securitySchemes:
         added host. After the network infrastructure is installed on a cluster,
         Logical Firewall is enabled on that cluster.
         ___
-        Request body parameters:
-          * *ipPoolId* - The *ipPoolId* parameter is optional and if none is
-          specified will assume DHCP for VTEP address assignment.
-          * *teaming* - The *teaming* parameter value can be one of the
-            following:
-              * FAILOVER_ORDER
-              * ETHER_CHANNEL
-              * LACP_ACTIVE
-              * LACP_PASSIVE
-              * LOADBALANCE_LOADBASED
-              * LOADBALANCE_SRCID
-              * LOADBALANCE_SRCMAC
-              * LACP_V2
-          * *uplinkPortName* - The *uplinkPortName* should be as specified in
-            vCenter.
+        See examples for the following tasks:
+        * Install Network Virtualization Components
+        * Configure VXLAN
+        * Configure VXLAN with LACPv2
+        * Reset Communication
+        ___
+        | Name | Comments |
+        |------|----------|
+        |**resourceId** | vCenter MOB ID of cluster. For example, domain-7. A host can be specified when resetting communication. For example, host-24. |
+        |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations, *com.vmware.vshield.vsm.messagingInfra* for message bus operations.|
+        |**ipPoolId** | Used for VXLAN installation. If not specified, DHCP is used for VTEP address assignment.|
+        |**teaming** | Used for VXLAN installation. Options are *FAILOVER_ORDER*, *ETHER_CHANNEL*, *LACP_ACTIVE*, *LACP_PASSIVE*, *LOADBALANCE_LOADBASED*, *LOADBALANCE_SRCID*, *LOADBALANCE_SRCMAC*, *LACP_V2*|
+        |**uplinkPortName** | The *uplinkPortName* as specified in vCenter.|
       body:
         application/xml:
           example: |
+            * Install Network Virtualization Components
+
+            POST /api/2.0/nwfabric/configure
+
+            <nwFabricFeatureConfig>
+              <resourceConfig>
+                <resourceId>CLUSTER MOID</resourceId>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
+
+            * Configure VXLAN
+
+            POST /api/2.0/nwfabric/configure
+
             <nwFabricFeatureConfig>
               <featureId>com.vmware.vshield.vsm.vxlan</featureId>
               <resourceConfig>
@@ -3351,19 +3353,58 @@ securitySchemes:
                 </configSpec>
               </resourceConfig>
             </nwFabricFeatureConfig>
+
+            * Configure VXLAN with LACPv2
+
+            POST /api/2.0/nwfabric/configure
+
+            <nwFabricFeatureConfig>
+              <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
+              <resourceConfig>
+                <resourceId>CLUSTER MOID</resourceId>
+                <configSpec class="clusterMappingSpec">
+                  <switch>
+                    <objectId>DVS MOID</objectId>
+                  </switch>
+                  <vlanId>0</vlanId>
+                  <vmknicCount>1</vmknicCount>
+                </configSpec>
+              </resourceConfig>
+              <resourceConfig>
+                <resourceId>DVS MOID</resourceId>
+                <configSpec class="vdsContext">
+                  <switch>
+                    <objectId>DVS MOID</objectId>
+                  </switch>
+                  <mtu>1600</mtu>
+                  <teaming>LACP_V2</teaming>
+                  <uplinkPortName>LAG NAME</uplinkPortName>
+                </configSpec>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
+
+            * Reset Communication
+
+            POST /api/2.0/nwfabric/configure?action=synchronize
+
+            <nwFabricFeatureConfig>
+              <featureId>com.vmware.vshield.vsm.messagingInfra</featureId>
+              <resourceConfig>
+                <resourceId>resourceId</resourceId>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
           schema: nwFabricConfig
       queryParameters:
         action:
           displayName: action
           description: |
-            Resets communication between NSX Manager and a host or cluster.
-            The *resourceId* is the ID of the cluster or host that is retrieved
-            from the vCenter managed object browser. Set to *synchronize* to
-            reset communication. The response will be the job ID of the
-            synchronization job.
+            Specify *synchronize* to reset communication between NSX Manager
+            and a host or cluster.
     put:
       displayName: nwfabricConfigUpdate
       description: |
+        Upgrade Network virtualization components.
+        ____
         This API call can be used to upgrade network virtualization components.
         After NSX Manager is upgraded, previously prepared clusters must have
         the 6.x network virtualization components installed.
@@ -3371,32 +3412,61 @@ securitySchemes:
         application/xml:
           example: |
             <nwFabricFeatureConfig>
-              <featureId></featureId>
               <resourceConfig>
-                <resourceId></resourceId>
+                <resourceId>CLUSTER MOID</resourceId>
               </resourceConfig>
             </nwFabricFeatureConfig>
           schema: nwFabricConfig
     delete:
       displayName: nwfabricConfigDelete
       description: |
-        Removes previously installed VIBs, tears down NSX manager to ESX
-        messaging, and remove any other network fabric dependent features like
-        logical wires etc. If a feature like logical wire is being used in your
+        Remove VXLAN or network virtualization components.
+        ___
+        Removing network virtualization components removes previously
+        installed VIBs, tears down NSX Manager to ESXi messaging, and removes
+        any other network fabric dependent features such as logical switches.
+        If a feature such as logical switches is being used in your
         environment, this call fails.
         ___
-        Request body parameters:
-          * **featureId** - The **featureId** parameter is
-            com.vmware.vshield.vsm.vxlan
-          * **resourceId** - The **resoruceId** should be the cluster MOID from
-            vSphere.
+        Removing VXLAN does not remove the network virtualization components
+        from the cluster.
+        ___
+        | Name | Comments |
+        |------|----------|
+        |**resourceId** | vCenter MOB ID of cluster. For example, domain-7.|
+        |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations.|
       body:
         application/xml:
           example: |
+            * Remove Network Virtualization Components
+
             <nwFabricFeatureConfig>
-              <featureId></featureId>
               <resourceConfig>
-                <resourceId></resourceId>
+                <resourceId>CLUSTER MOID</resourceId>
+              </resourceConfig>
+            </nwFabricFeatureConfig>
+
+            * Remove VXLAN
+
+            <nwFabricFeatureConfig>
+              <featureId>com.vmware.vshield.vsm.vxlan</featureId>
+              <resourceConfig>
+                <resourceId>CLUSTER MOID</resourceId>
+               </resourceConfig>
+            </nwFabricFeatureConfig>
+
+            * Remove VXLAN with vDS context
+
+            <nwFabricFeatureConfig>
+              <featureId>com.vmware.vshield.vsm.vxlan</featureId>
+              <resourceConfig>
+                <resourceId>CLUSTER MOID</resourceId>
+                <configSpec class="map">
+                  <entry>
+                    <keyclass="java.lang.String">vxlan</key>
+                    <valueclass="java.lang.String">cascadeDeleteVdsContext</value>
+                  </entry>
+                </configSpec>
               </resourceConfig>
             </nwFabricFeatureConfig>
           schema: nwFabricConfig
@@ -3405,8 +3475,8 @@ securitySchemes:
     get:
       displayName: nwfabricFeatures
       description: |
-        Retrieves all features available on the cluster. Multiple
-        **featureInfos** sections may be returned.
+        Retrieves all network fabric features available on the cluster. Multiple
+        **featureInfo** sections may be returned.
       responses:
         200:
           body:
@@ -3421,9 +3491,11 @@ securitySchemes:
                 <featureInfos>
   /status:
     displayName: nwfabricStatus
+    description: Working with network fabric status.
     get:
       displayName: nwfabricStatus
-      description: Retrieves the Status of Resources
+      description: |
+        Retrieve the network fabric status of the specified resource.
       queryParameters:
         resource:
           displayName: resource
@@ -3488,7 +3560,8 @@ securitySchemes:
                 </resourceStatuses>
     /child/{parentResourceID}:
       displayName: childStatus
-      description: Status of child resources
+      description: |
+        Working with network fabric status of child resources.
       uriParameters:
         parentResourceID:
           required: true
@@ -3496,7 +3569,8 @@ securitySchemes:
           description: Parent resource ID
       get:
         displayName: childStatusRead
-        description: Retrieve status
+        description: |
+          Retrieve the network fabric status of child resources of the specified resource.
         responses:
           200:
             body:
@@ -3554,7 +3628,8 @@ securitySchemes:
                   </resourceStatuses>
     /alleligible/{resourceType}:
       displayName: statusResourceType
-      description: Status of resources by criterion
+      description: |
+        Working with status of resources by criterion.
       uriParameters:
         resourceType:
           required: true
@@ -3562,7 +3637,8 @@ securitySchemes:
           description: Valid resource type
       get:
         displayName: statusResourceTypeRead
-        description: Query status of resources by criterion
+        description: |
+          Retrieve status of resources by criterion.
         responses:
           200:
             body:
@@ -3666,13 +3742,13 @@ securitySchemes:
                   </resourceStatuses>
   /clusters/{clusterID}:
     displayName: nwfabricClusters
-    description: Network virtualization component cluster configuration
+    description: Working with locale ID configuration for clusters.
     get:
       displayName: nwfabricClustersRead
-      description: Read the locale ID on a cluster
+      description: Retrieve the locale ID for the specified cluster.
     put:
       displayName: nwfabricClustersUpdate
-      description: Update the locale ID on a cluster
+      description: Update the locale ID for the specified cluster.
       body:
         application/xml:
           example: |
@@ -3682,16 +3758,16 @@ securitySchemes:
           schema: nwfabricClustersUpdate
     delete:
       displayName: nwfabricClustersDelete
-      description: Delete locale ID on a cluster
+      description: Delete locale ID for the specified cluster.
   /hosts/{hostID}:
     displayName: nwfabricHosts
-    description: Network virtualization component host configuration
+    description: Working with locale ID configuration for hosts.
     get:
       displayName: nwfabricHostsRead
-      description: Read the locale ID on a host
+      description: Retrieve the locale ID for the specified host.
     put:
       displayName: nwfabricHostsUpdate
-      description: Update the locale ID on a host
+      description: Update the locale ID for the specified host.
       body:
         application/xml:
           example: |
@@ -3701,7 +3777,7 @@ securitySchemes:
           schema: nwfabricHostsUpdate
     delete:
       displayName: nwfabricHostsDelete
-      description: Delete locale ID on a host
+      description: Delete the locale ID for the specified host.
 /2.0/si/deploy:
   displayName: securityFabric
   description: Security fabric

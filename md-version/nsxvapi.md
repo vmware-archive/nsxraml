@@ -959,22 +959,10 @@ Get NSX Manager audit logs
 * **get** *(secured)*: Get NSX Manager audit logs
 
 ## nwfabric
-Network virtualization components
+Working with Network Fabric Configuration
 
 ### /2.0/nwfabric/configure
-As the demands on datacenters continue to grow and accelerate,
-requirements related to speed and access to the data itself continue to
-grow as well. In most infrastructures, virtual machine access and
-mobility usually depend on physical networking infrastructure and the
-physical networking environments they reside in. This can force virtual
-workloads into less than ideal environments due to potential layer 2 or
-layer 3 boundaries, such as being tied to specific VLANs.
-___
-Network virtualization allows you to place these virtual workloads on any
-available infrastructure in the datacenter regardless of the underlying
-physical network infrastructure. This not only allows increased
-flexibility and mobility, but increased availability and resilience.
-Feature configuration is managed at a cluster level.
+Working with Network Virtualization Components and VXLAN.
 ___
 Cluster preparation can be broken down into the following:
   * Install VIB and non-VIB related action: Before any per-host config
@@ -985,7 +973,9 @@ Cluster preparation can be broken down into the following:
   * Post-VIB install: Prepare each host for the feature. In the case of
   VXLAN, create vmknics.
 
-* **post** *(secured)*: You install the network infrastructure components in your virtual
+* **post** *(secured)*: Install network fabric or VXLAN.
+___
+You install the network infrastructure components in your virtual
 environment on a per‐cluster level for each vCenter server, which
 deploys the required software on all hosts in the cluster. This software
 is also referred to as an NSX vSwitch. When a new host is added to this
@@ -993,69 +983,75 @@ cluster, the required software is automatically installed on the newly
 added host. After the network infrastructure is installed on a cluster,
 Logical Firewall is enabled on that cluster.
 ___
-Request body parameters:
-  * *ipPoolId* - The *ipPoolId* parameter is optional and if none is
-  specified will assume DHCP for VTEP address assignment.
-  * *teaming* - The *teaming* parameter value can be one of the
-    following:
-      * FAILOVER_ORDER
-      * ETHER_CHANNEL
-      * LACP_ACTIVE
-      * LACP_PASSIVE
-      * LOADBALANCE_LOADBASED
-      * LOADBALANCE_SRCID
-      * LOADBALANCE_SRCMAC
-      * LACP_V2
-  * *uplinkPortName* - The *uplinkPortName* should be as specified in
-    vCenter.
+See examples for the following tasks:
+* Install Network Virtualization Components
+* Configure VXLAN
+* Configure VXLAN with LACPv2
+* Reset Communication
+___
+| Name | Comments |
+|------|----------|
+|**resourceId** | vCenter MOB ID of cluster. For example, domain-7. A host can be specified when resetting communication. For example, host-24. |
+|**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations, *com.vmware.vshield.vsm.messagingInfra* for message bus operations.|
+|**ipPoolId** | Used for VXLAN installation. If not specified, DHCP is used for VTEP address assignment.|
+|**teaming** | Used for VXLAN installation. Options are *FAILOVER_ORDER*, *ETHER_CHANNEL*, *LACP_ACTIVE*, *LACP_PASSIVE*, *LOADBALANCE_LOADBASED*, *LOADBALANCE_SRCID*, *LOADBALANCE_SRCMAC*, *LACP_V2*|
+|**uplinkPortName** | The *uplinkPortName* as specified in vCenter.|
 
-* **put** *(secured)*: This API call can be used to upgrade network virtualization components.
+* **put** *(secured)*: Upgrade Network virtualization components.
+____
+This API call can be used to upgrade network virtualization components.
 After NSX Manager is upgraded, previously prepared clusters must have
 the 6.x network virtualization components installed.
 
-* **delete** *(secured)*: Removes previously installed VIBs, tears down NSX manager to ESX
-messaging, and remove any other network fabric dependent features like
-logical wires etc. If a feature like logical wire is being used in your
+* **delete** *(secured)*: Remove VXLAN or network virtualization components.
+___
+Removing network virtualization components removes previously
+installed VIBs, tears down NSX Manager to ESXi messaging, and removes
+any other network fabric dependent features such as logical switches.
+If a feature such as logical switches is being used in your
 environment, this call fails.
 ___
-Request body parameters:
-  * **featureId** - The **featureId** parameter is
-    com.vmware.vshield.vsm.vxlan
-  * **resourceId** - The **resoruceId** should be the cluster MOID from
-    vSphere.
+Removing VXLAN does not remove the network virtualization components
+from the cluster.
+___
+| Name | Comments |
+|------|----------|
+|**resourceId** | vCenter MOB ID of cluster. For example, domain-7.|
+|**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations.|
 
 ### /2.0/nwfabric/features
 
-* **get** *(secured)*: Retrieves all features available on the cluster. Multiple
-**featureInfos** sections may be returned.
+* **get** *(secured)*: Retrieves all network fabric features available on the cluster. Multiple
+**featureInfo** sections may be returned.
 
 ### /2.0/nwfabric/status
+Working with network fabric status.
 
-* **get** *(secured)*: Retrieves the Status of Resources
+* **get** *(secured)*: Retrieve the network fabric status of the specified resource.
 
 ### /2.0/nwfabric/status/child/{parentResourceID}
-Status of child resources
+Working with network fabric status of child resources.
 
-* **get** *(secured)*: Retrieve status
+* **get** *(secured)*: Retrieve the network fabric status of child resources of the specified resource.
 
 ### /2.0/nwfabric/status/alleligible/{resourceType}
-Status of resources by criterion
+Working with status of resources by criterion.
 
-* **get** *(secured)*: Query status of resources by criterion
+* **get** *(secured)*: Retrieve status of resources by criterion.
 
 ### /2.0/nwfabric/clusters/{clusterID}
-Network virtualization component cluster configuration
+Working with locale ID configuration for clusters.
 
-* **get** *(secured)*: Read the locale ID on a cluster
-* **put** *(secured)*: Update the locale ID on a cluster
-* **delete** *(secured)*: Delete locale ID on a cluster
+* **get** *(secured)*: Retrieve the locale ID for the specified cluster.
+* **put** *(secured)*: Update the locale ID for the specified cluster.
+* **delete** *(secured)*: Delete locale ID for the specified cluster.
 
 ### /2.0/nwfabric/hosts/{hostID}
-Network virtualization component host configuration
+Working with locale ID configuration for hosts.
 
-* **get** *(secured)*: Read the locale ID on a host
-* **put** *(secured)*: Update the locale ID on a host
-* **delete** *(secured)*: Delete locale ID on a host
+* **get** *(secured)*: Retrieve the locale ID for the specified host.
+* **put** *(secured)*: Update the locale ID for the specified host.
+* **delete** *(secured)*: Delete the locale ID for the specified host.
 
 ## securityFabric
 Security fabric

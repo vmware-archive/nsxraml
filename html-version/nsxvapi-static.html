@@ -4552,7 +4552,7 @@ virtual machine</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Network virtualization components</p>
+  <div class="description"><p>Working with Network Fabric Configuration</p>
 </div>
 </section>
 <section class="resource">
@@ -4562,7 +4562,7 @@ virtual machine</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Network virtualization component cluster configuration</p>
+  <div class="description"><p>Working with locale ID configuration for clusters.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -4584,7 +4584,7 @@ virtual machine</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Read the locale ID on a cluster</p>
+    <p><p>Retrieve the locale ID for the specified cluster.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4605,7 +4605,7 @@ virtual machine</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update the locale ID on a cluster</p>
+    <p><p>Update the locale ID for the specified cluster.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4642,7 +4642,7 @@ virtual machine</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete locale ID on a cluster</p>
+    <p><p>Delete locale ID for the specified cluster.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4663,19 +4663,7 @@ virtual machine</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>As the demands on datacenters continue to grow and accelerate,
-requirements related to speed and access to the data itself continue to
-grow as well. In most infrastructures, virtual machine access and
-mobility usually depend on physical networking infrastructure and the
-physical networking environments they reside in. This can force virtual
-workloads into less than ideal environments due to potential layer 2 or
-layer 3 boundaries, such as being tied to specific VLANs.</p>
-<hr>
-<p>Network virtualization allows you to place these virtual workloads on any
-available infrastructure in the datacenter regardless of the underlying
-physical network infrastructure. This not only allows increased
-flexibility and mobility, but increased availability and resilience.
-Feature configuration is managed at a cluster level.</p>
+  <div class="description"><p>Working with Network Virtualization Components and VXLAN.</p>
 <hr>
 <p>Cluster preparation can be broken down into the following:</p>
 <ul>
@@ -4696,7 +4684,9 @@ VXLAN, create vmknics.</li>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>You install the network infrastructure components in your virtual
+    <p><p>Install network fabric or VXLAN.</p>
+<hr>
+<p>You install the network infrastructure components in your virtual
 environment on a per‐cluster level for each vCenter server, which
 deploys the required software on all hosts in the cluster. This software
 is also referred to as an NSX vSwitch. When a new host is added to this
@@ -4704,26 +4694,39 @@ cluster, the required software is automatically installed on the newly
 added host. After the network infrastructure is installed on a cluster,
 Logical Firewall is enabled on that cluster.</p>
 <hr>
-<p>Request body parameters:</p>
+<p>See examples for the following tasks:</p>
 <ul>
-<li><em>ipPoolId</em> - The <em>ipPoolId</em> parameter is optional and if none is
-specified will assume DHCP for VTEP address assignment.</li>
-<li><em>teaming</em> - The <em>teaming</em> parameter value can be one of the
-following:<ul>
-<li>FAILOVER_ORDER</li>
-<li>ETHER_CHANNEL</li>
-<li>LACP_ACTIVE</li>
-<li>LACP_PASSIVE</li>
-<li>LOADBALANCE_LOADBASED</li>
-<li>LOADBALANCE_SRCID</li>
-<li>LOADBALANCE_SRCMAC</li>
-<li>LACP_V2</li>
+<li>Install Network Virtualization Components</li>
+<li>Configure VXLAN</li>
+<li>Configure VXLAN with LACPv2</li>
+<li>Reset Communication</li>
 </ul>
-</li>
-<li><em>uplinkPortName</em> - The <em>uplinkPortName</em> should be as specified in
-vCenter.</li>
-</ul>
-</p>
+<hr>
+<table class="table"><thead><tr>
+<th>Name</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>resourceId</strong></td>
+<td>vCenter MOB ID of cluster. For example, domain-7. A host can be specified when resetting communication. For example, host-24.</td>
+</tr>
+<tr>
+<td><strong>featureId</strong></td>
+<td>Feature to act upon. Omit for network virtualization components operations. Use <em>com.vmware.vshield.vsm.vxlan</em> for VXLAN operations, <em>com.vmware.vshield.vsm.messagingInfra</em> for message bus operations.</td>
+</tr>
+<tr>
+<td><strong>ipPoolId</strong></td>
+<td>Used for VXLAN installation. If not specified, DHCP is used for VTEP address assignment.</td>
+</tr>
+<tr>
+<td><strong>teaming</strong></td>
+<td>Used for VXLAN installation. Options are <em>FAILOVER_ORDER</em>, <em>ETHER_CHANNEL</em>, <em>LACP_ACTIVE</em>, <em>LACP_PASSIVE</em>, <em>LOADBALANCE_LOADBASED</em>, <em>LOADBALANCE_SRCID</em>, <em>LOADBALANCE_SRCMAC</em>, <em>LACP_V2</em></td>
+</tr>
+<tr>
+<td><strong>uplinkPortName</strong></td>
+<td>The <em>uplinkPortName</em> as specified in vCenter.</td>
+</tr>
+</tbody></table></p>
     <h3>Security</h3>
     <ul class="security-schemes">
     <li>
@@ -4742,11 +4745,8 @@ vCenter.</li>
     
   </dt>
   <dd>
-      <p>Resets communication between NSX Manager and a host or cluster.
-The <em>resourceId</em> is the ID of the cluster or host that is retrieved
-from the vCenter managed object browser. Set to <em>synchronize</em> to
-reset communication. The response will be the job ID of the
-synchronization job.</p>
+      <p>Specify <em>synchronize</em> to reset communication between NSX Manager
+and a host or cluster.</p>
 
   </dd>
 </dl>
@@ -4770,7 +4770,21 @@ synchronization job.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml">* Install Network Virtualization Components
+
+POST /api/2.0/nwfabric/configure
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+
+* Configure VXLAN
+
+POST /api/2.0/nwfabric/configure
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
@@ -4793,6 +4807,46 @@ synchronization job.</p>
     <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+
+* Configure VXLAN with LACPv2
+
+POST /api/2.0/nwfabric/configure
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"clusterMappingSpec"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vlanId</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vlanId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vmknicCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vmknicCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"vdsContext"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>LACP_V2<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">uplinkPortName</span>&gt;</span>LAG NAME<span class="hljs-tag">&lt;/<span class="hljs-name">uplinkPortName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+
+* Synchronize Network Fabric
+
+POST /api/2.0/nwfabric/configure?action=synchronize
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.messagingInfra<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>resourceId<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -4804,7 +4858,9 @@ synchronization job.</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>This API call can be used to upgrade network virtualization components.
+    <p><p>Upgrade Network virtualization components.</p>
+<hr>
+<p>This API call can be used to upgrade network virtualization components.
 After NSX Manager is upgraded, previously prepared clusters must have
 the 6.x network virtualization components installed.</p>
 </p>
@@ -4837,9 +4893,8 @@ the 6.x network virtualization components installed.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
 </code></pre>
@@ -4853,19 +4908,30 @@ the 6.x network virtualization components installed.</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Removes previously installed VIBs, tears down NSX manager to ESX
-messaging, and remove any other network fabric dependent features like
-logical wires etc. If a feature like logical wire is being used in your
+    <p><p>Remove VXLAN or network virtualization components.</p>
+<hr>
+<p>Removing network virtualization components removes previously
+installed VIBs, tears down NSX Manager to ESXi messaging, and removes
+any other network fabric dependent features such as logical switches.
+If a feature such as logical switches is being used in your
 environment, this call fails.</p>
 <hr>
-<p>Request body parameters:</p>
-<ul>
-<li><strong>featureId</strong> - The <strong>featureId</strong> parameter is
-com.vmware.vshield.vsm.vxlan</li>
-<li><strong>resourceId</strong> - The <strong>resoruceId</strong> should be the cluster MOID from
-vSphere.</li>
-</ul>
-</p>
+<p>Removing VXLAN does not remove the network virtualization components
+from the cluster.</p>
+<hr>
+<table class="table"><thead><tr>
+<th>Name</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>resourceId</strong></td>
+<td>vCenter MOB ID of cluster. For example, domain-7.</td>
+</tr>
+<tr>
+<td><strong>featureId</strong></td>
+<td>Feature to act upon. Omit for network virtualization components operations. Use <em>com.vmware.vshield.vsm.vxlan</em> for VXLAN operations.</td>
+</tr>
+</tbody></table></p>
     <h3>Security</h3>
     <ul class="security-schemes">
     <li>
@@ -4894,10 +4960,35 @@ vSphere.</li>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml">* Remove Network Virtualization Components
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+
+* Remove VXLAN
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+
+* Remove VXLAN with vDS context
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"map"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">entry</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">keyclass="java.lang.String"</span>&gt;</span>vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">valueclass="java.lang.String"</span>&gt;</span>cascadeDeleteVdsContext<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">entry</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
 </code></pre>
@@ -4918,8 +5009,8 @@ vSphere.</li>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieves all features available on the cluster. Multiple
-<strong>featureInfos</strong> sections may be returned.</p>
+    <p><p>Retrieves all network fabric features available on the cluster. Multiple
+<strong>featureInfo</strong> sections may be returned.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4954,7 +5045,7 @@ vSphere.</li>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Network virtualization component host configuration</p>
+  <div class="description"><p>Working with locale ID configuration for hosts.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -4976,7 +5067,7 @@ vSphere.</li>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Read the locale ID on a host</p>
+    <p><p>Retrieve the locale ID for the specified host.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4997,7 +5088,7 @@ vSphere.</li>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update the locale ID on a host</p>
+    <p><p>Update the locale ID for the specified host.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -5034,7 +5125,7 @@ vSphere.</li>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete locale ID on a host</p>
+    <p><p>Delete the locale ID for the specified host.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -5054,6 +5145,9 @@ vSphere.</li>
     <span class="parent">/2.0/nwfabric</span>/status
   </a>
 </h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>Working with network fabric status.</p>
+</div>
 <div class="method get">
   <a
     class="verb get"
@@ -5062,7 +5156,7 @@ vSphere.</li>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieves the Status of Resources</p>
+    <p><p>Retrieve the network fabric status of the specified resource.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -5155,7 +5249,7 @@ vCenter MOID (e.g. domain-c34 for a cluster).</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Status of resources by criterion</p>
+  <div class="description"><p>Working with status of resources by criterion.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -5179,7 +5273,7 @@ vCenter MOID (e.g. domain-c34 for a cluster).</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Query status of resources by criterion</p>
+    <p><p>Retrieve status of resources by criterion.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -5303,7 +5397,7 @@ vCenter MOID (e.g. domain-c34 for a cluster).</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Status of child resources</p>
+  <div class="description"><p>Working with network fabric status of child resources.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -5327,7 +5421,7 @@ vCenter MOID (e.g. domain-c34 for a cluster).</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve status</p>
+    <p><p>Retrieve the network fabric status of child resources of the specified resource.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
