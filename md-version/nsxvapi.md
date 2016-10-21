@@ -2824,18 +2824,18 @@ Retrieve security policies mapped to a security group
 * **get** *(secured)*: Retrieve security policies mapped to a security group
 
 ## nsxCli
-The Central Command Line Interface (Central CLI) commandsare run from the
-NSX Manager, and retrieve information from the NSX Manager and other
-devices. These commands can also be executed in the API. Given here is the
-general structure for making a Central CLI command call in the API, as
-well as a specific sample of one such command. For a complete list of the
-Central CLI commands executable through the API, please see the Central
-CLI chapter of the NSX Command Line Interface Reference available on the
-VMware documentation website.
+Working with the Central CLI
 
 ### /1.0/nsx/cli
 
-* **post** *(secured)*: General central CLI command for use in the API. CLI Command can be any
-central CLI command. The Accept header must be set to text/plain for this
-API call to properally function.
+* **post** *(secured)*: The central command-line interface (central CLI) commands are run from the
+NSX Manager command line, and retrieve information from the NSX Manager and other
+devices. These commands can also be executed in the API.
+___
+You can insert any valid Central CLI command as the **command**
+parameter. For a complete list of the Central CLI commands executable
+through the API, please see the Central CLI chapter of the *NSX Command
+Line Interface Reference*.
+___
+The Accept header must be set to text/plain.
 
