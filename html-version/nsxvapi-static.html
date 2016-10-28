@@ -16159,6 +16159,156 @@ on 1+ vm&#39;s</p>
 </div>
 </section>
 <section class="resource">
+<h1 class="anchor" id="4-0-edgepublish">
+  <a href="#4-0-edgepublish">
+    /4.0/edgePublish
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>Working with NSX Edge Configuration Publishing</p>
+</div>
+</section>
+<section class="resource">
+<h1 class="anchor" id="4-0-edgepublish-tuningconfiguration">
+  <a href="#4-0-edgepublish-tuningconfiguration">
+    <span class="parent">/4.0/edgePublish</span>/tuningConfiguration
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>Working with NSX Edge tuning configuration.</p>
+<hr>
+<p>Starting in 6.2.3 you can configure default values for NSX Edge
+configuration parameters, including publishing and health check
+timeouts, and CPU and memory reservation, which are applicable to all
+NSX Edges.  The values for the tuning configuration parameters have been
+set to sensible defaults and may not require any changes. However, based
+on datacenter capacity and requirements, you can change the default CPU
+and memory resource reservation percentages using this API.  This
+percentage is applied across all Edge VM Sizes {COMPACT, LARGE,
+QUADLARGE, XLARGE}.
+The default values are:</p>
+<ul>
+<li>100% for CPU reservation</li>
+<li>100% for Memory reservation</li>
+<li>1000 MHz per CPU</li>
+</ul>
+<hr>
+<table class="table"><thead><tr>
+<th>Name</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>lockUpdatesOnEdge</td>
+<td>Default value is false. Serialize specific Edge operations related to DHCP and vnic configuration to avoid concurrency errors when too many configuration change requests arrive at the same time.</td>
+</tr>
+<tr>
+<td>aggregatePublishing</td>
+<td>Default value is true (enabled). Speed up configuration change publishing to the NSX Edge by aggregating over the configuration versions.</td>
+</tr>
+<tr>
+<td>edgeVMHealthCheckIntervalInMin</td>
+<td>Default value for time interval between NSX Edge VMʹs health check is 0, where NSX Manager manages the interval based on the number of NSX Edge VMʹs. A positive integer value overrides the default behavior.</td>
+</tr>
+<tr>
+<td>healthCheckCommandTimeoutInMs</td>
+<td>Default timeout value for health check command is 120000.</td>
+</tr>
+<tr>
+<td>maxParallelVixCallsForHealthCheck</td>
+<td>The maximum concurrent health check calls that can be made for NSX Edge VMʹs based on VIX communication channel is 25.</td>
+</tr>
+<tr>
+<td>publishingTimeoutInMs</td>
+<td>The timeout value to publish a configuration change on NSX Edge appliance.  Default is 1200000 (20 minutes).</td>
+</tr>
+<tr>
+<td>edgeVCpuReservationPercentage</td>
+<td>Integer value [0-100], specifying the CPU reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0.</td>
+</tr>
+<tr>
+<td>edgeMemoryReservationPercentage</td>
+<td>integer value [0‐100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0.</td>
+</tr>
+<tr>
+<td>megaHertzPerVCpu</td>
+<td>integer value specifying the megahertz per each vCPU (1000, 1500, 2000)</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/edgePublish/tuningConfiguration"
+    href="#GET/4.0/edgePublish/tuningConfiguration"
+  ><h2>get</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Retrieve the NSX Edge tuning configuration.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tuningConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">lockUpdatesOnEdge</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">lockUpdatesOnEdge</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">aggregatePublishing</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">aggregatePublishing</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeVMHealthCheckIntervalInMin</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">edgeVMHealthCheckIntervalInMin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">healthCheckCommandTimeoutInMs</span>&gt;</span>120000<span class="hljs-tag">&lt;/<span class="hljs-name">healthCheckCommandTimeoutInMs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">maxParallelVixCallsForHealthCheck</span>&gt;</span>25<span class="hljs-tag">&lt;/<span class="hljs-name">maxParallelVixCallsForHealthCheck</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">publishingTimeoutInMs</span>&gt;</span>1200000<span class="hljs-tag">&lt;/<span class="hljs-name">publishingTimeoutInMs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tuningConfiguration</span>
+</span></code></pre>
+  </div>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/edgePublish/tuningConfiguration"
+    href="#POST/4.0/edgePublish/tuningConfiguration"
+  ><h2>post</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Update the NSX Edge tuning configuration.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tuningConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">lockUpdatesOnEdge</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">lockUpdatesOnEdge</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">aggregatePublishing</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">aggregatePublishing</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeVMHealthCheckIntervalInMin</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">edgeVMHealthCheckIntervalInMin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">healthCheckCommandTimeoutInMs</span>&gt;</span>120000<span class="hljs-tag">&lt;/<span class="hljs-name">healthCheckCommandTimeoutInMs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">maxParallelVixCallsForHealthCheck</span>&gt;</span>25<span class="hljs-tag">&lt;/<span class="hljs-name">maxParallelVixCallsForHealthCheck</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">publishingTimeoutInMs</span>&gt;</span>1200000<span class="hljs-tag">&lt;/<span class="hljs-name">publishingTimeoutInMs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tuningConfiguration</span>
+</span></code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
 <h1 class="anchor" id="4-0-edges">
   <a href="#4-0-edges">
     /4.0/edges

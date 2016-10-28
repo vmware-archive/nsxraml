@@ -2710,6 +2710,41 @@ URI for POST, PUT, and DELETE calls.
 * **get** *(secured)*: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
 the resource, and ID of the resource as shown in response body
 
+## nsxEdgePublish
+Working with NSX Edge Configuration Publishing
+
+### /4.0/edgePublish/tuningConfiguration
+Working with NSX Edge tuning configuration.
+___
+Starting in 6.2.3 you can configure default values for NSX Edge
+configuration parameters, including publishing and health check
+timeouts, and CPU and memory reservation, which are applicable to all
+NSX Edges.  The values for the tuning configuration parameters have been
+set to sensible defaults and may not require any changes. However, based
+on datacenter capacity and requirements, you can change the default CPU
+and memory resource reservation percentages using this API.  This
+percentage is applied across all Edge VM Sizes {COMPACT, LARGE,
+QUADLARGE, XLARGE}.
+The default values are:
+* 100% for CPU reservation
+* 100% for Memory reservation
+* 1000 MHz per CPU
+___
+| Name | Comments |
+|------|----------|
+| lockUpdatesOnEdge | Default value is false. Serialize specific Edge operations related to DHCP and vnic configuration to avoid concurrency errors when too many configuration change requests arrive at the same time.|
+| aggregatePublishing | Default value is true (enabled). Speed up configuration change publishing to the NSX Edge by aggregating over the configuration versions.|
+| edgeVMHealthCheckIntervalInMin | Default value for time interval between NSX Edge VMʹs health check is 0, where NSX Manager manages the interval based on the number of NSX Edge VMʹs. A positive integer value overrides the default behavior.|
+| healthCheckCommandTimeoutInMs | Default timeout value for health check command is 120000.|
+| maxParallelVixCallsForHealthCheck | The maximum concurrent health check calls that can be made for NSX Edge VMʹs based on VIX communication channel is 25.|
+| publishingTimeoutInMs | The timeout value to publish a configuration change on NSX Edge appliance.  Default is 1200000 (20 minutes).|
+| edgeVCpuReservationPercentage | Integer value [0-100], specifying the CPU reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
+| edgeMemoryReservationPercentage | integer value [0‐100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
+| megaHertzPerVCpu | integer value specifying the megahertz per each vCPU (1000, 1500, 2000) |
+
+* **get** *(secured)*: Retrieve the NSX Edge tuning configuration.
+* **post** *(secured)*: Update the NSX Edge tuning configuration.
+
 ## truststore
 Operation on truststore (certificates)
 
