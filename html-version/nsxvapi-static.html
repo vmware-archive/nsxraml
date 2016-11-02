@@ -12441,6 +12441,50 @@ the primary NSX Manager.</p>
 </div>
 </section>
 <section class="resource">
+<h1 class="anchor" id="2-0-vdn-config-vxlan-udp-port-taskstatus">
+  <a href="#2-0-vdn-config-vxlan-udp-port-taskstatus">
+    <span class="parent">/2.0/vdn/config/vxlan/udp/port</span>/taskStatus
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>VXLAN port configuration update status.</p>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/config/vxlan/udp/port/taskStatus"
+    href="#GET/2.0/vdn/config/vxlan/udp/port/taskStatus"
+  ><h2>get</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Retrieve the status of the VXLAN port configuration update.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vxlanPortUpdatingStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">prevPort</span>&gt;</span>8472<span class="hljs-tag">&lt;/<span class="hljs-name">prevPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">targetPort</span>&gt;</span>4789<span class="hljs-tag">&lt;/<span class="hljs-name">targetPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">taskPhase</span>&gt;</span>PHASE_TWO<span class="hljs-tag">&lt;/<span class="hljs-name">taskPhase</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">taskStatus</span>&gt;</span>PAUSED<span class="hljs-tag">&lt;/<span class="hljs-name">taskStatus</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vxlanPortUpdatingStatus</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
 <h1 class="anchor" id="2-0-vdn-config-vxlan-udp-port-portnumber">
   <a href="#2-0-vdn-config-vxlan-udp-port-portnumber">
     <span class="parent">/2.0/vdn/config/vxlan/udp/port</span>/{portNumber}
@@ -12472,6 +12516,12 @@ the primary NSX Manager.</p>
   <div class="content">
     <h3>Description</h3>
     <p><p>Update the VXLAN port configuration to use port <em>portNumber</em>.</p>
+<hr>
+<p>This method changes the VXLAN port in a three phrase process, avoiding
+disruption of VXLAN traffic. In a cross-vCenter NSX environment,
+change the VXLAN port on the primary NSX Manager to propagate this
+change on all NSX Managers and hosts in the cross-vCenter NSX
+environment.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -12482,6 +12532,25 @@ the primary NSX Manager.</p>
       </a>
     </li>
     </ul>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">force</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>Set to <em>true</em> to force the change in VXLAN port.</p>
+<hr>
+<p>This updates the port configuration on the hosts directly, and
+might cause a disruption in VXLAN traffic. In a cross-vCenter
+NSX environment, this does not change the port on all NSX
+Managers.</p>
+
+  </dd>
+</dl>
+    </div>
   </div>
 </div>
 </section>

@@ -161,6 +161,17 @@ Working with the VXLAN port configuration.
 Update the VXLAN port configuration.
 
 * **put** *(secured)*: Update the VXLAN port configuration to use port *portNumber*.
+___
+This method changes the VXLAN port in a three phrase process, avoiding
+disruption of VXLAN traffic. In a cross-vCenter NSX environment,
+change the VXLAN port on the primary NSX Manager to propagate this
+change on all NSX Managers and hosts in the cross-vCenter NSX
+environment.
+
+### /2.0/vdn/config/vxlan/udp/port/taskStatus
+VXLAN port configuration update status.
+
+* **get** *(secured)*: Retrieve the status of the VXLAN port configuration update.
 
 ### /2.0/vdn/config/resources/allocated
 Working with allocated resources.

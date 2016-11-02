@@ -597,9 +597,49 @@ securitySchemes:
           displayName: portNumber
           description: A valid UDP port for VXLAN
       put:
+      # updated 6.2.3: Port change is no longer disruptive. New force query
+      # parameter allows port change using the previous disruptive mechanism.
         displayName: vdnConfigUDPUpdate
         description: |
           Update the VXLAN port configuration to use port *portNumber*.
+          ___
+          This method changes the VXLAN port in a three phrase process, avoiding
+          disruption of VXLAN traffic. In a cross-vCenter NSX environment,
+          change the VXLAN port on the primary NSX Manager to propagate this
+          change on all NSX Managers and hosts in the cross-vCenter NSX
+          environment.
+        queryParameters:
+          force:
+            displayName: force
+            type: boolean
+            required: false
+            description: |
+              Set to *true* to force the change in VXLAN port.
+              ___
+              This updates the port configuration on the hosts directly, and
+              might cause a disruption in VXLAN traffic. In a cross-vCenter
+              NSX environment, this does not change the port on all NSX
+              Managers.
+    /taskStatus:
+      displayName: vdnConfigUDPUpdateStatus
+      description: |
+        VXLAN port configuration update status.
+      get:
+      # new in 6.2.3
+        displayName: vdnConfigUDPUpdateStatusRead
+        description: |
+          Retrieve the status of the VXLAN port configuration update.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <vxlanPortUpdatingStatus>
+                    <prevPort>8472</prevPort>
+                    <targetPort>4789</targetPort>
+                    <taskPhase>PHASE_TWO</taskPhase>
+                    <taskStatus>PAUSED</taskStatus>
+                  </vxlanPortUpdatingStatus>
   /resources/allocated:
     displayName: allocatedResources
     description: Working with allocated resources.
