@@ -19,20 +19,20 @@ schemas:
     applicationProfileUpdate: !include schemas/applicationProfileUpdate.xsd
     appRulesCreate: !include schemas/appRulesCreate.xsd
     appRuleUpdate: !include schemas/appRuleUpdate.xsd
-    arpMAC: !include schemas/arpMAC.xsd
+    arpMACUpdate: !include schemas/arpMACUpdate.xsd
     authSettingsUpdate: !include schemas/authSettingsUpdate.xsd
     autoConfigUpdate: !include schemas/autoConfigUpdate.xsd
     bridingUpdate: !include schemas/bridingUpdate.xsd
-    certificateCSRCreate: !include schemas/certificateCSRCreate.xsd
+    certificateCreate: !include schemas/certificateCreate.xsd
     certificateSelfSignedCreate: !include schemas/certificateSelfSignedCreate.xsd
     clientConfigUpdate: !include schemas/clientConfigUpdate.xsd
     cliSettingsUpdate: !include schemas/cliSettingsUpdate.xsd
     clusterUpdate: !include schemas/clusterUpdate.xsd
     controller: !include schemas/controller.xsd
     controllerSyslog: !include schemas/controllerSyslog.xsd
-    crlScopeCreate: !include schemas/crlScopeCreate.xsd
+    crlCreate: !include schemas/crlCreate.xsd
     csrCreate: !include schemas/csrCreate.xsd
-    dataCollectionKillSwitch: !include schemas/dataCollectionKillSwitch.xsd
+    dataCollectionKillSwitchToggle: !include schemas/dataCollectionKillSwitchToggle.xsd
     dataCollectionVMCreate: !include schemas/dataCollectionVMCreate.xsd
     defaultFirewallPolicyUpdate: !include schemas/defaultFirewallPolicyUpdate.xsd
     dfwConfigImport: !include schemas/dfwConfigImport.xsd
@@ -48,13 +48,13 @@ schemas:
     dhcpPoolCreate: !include schemas/dhcpPoolCreate.xsd
     dhcpStaticBindingCreate: !include schemas/dhcpStaticBindingCreate.xsd
     dlpIncludeSecGroupUpdate: !include schemas/dlpIncludeSecGroupUpdate.xsd
-    dlpEnableRegulation: !include schemas/dlpEnableRegulation.xsd
-    dlpExcludeArea: !include schemas/dlpExcludeArea.xsd
+    dlpPolicyRegulationsUpdate: !include schemas/dlpPolicyRegulationsUpdate.xsd
+    dlpExcludeAreaUpdate: !include schemas/dlpExcludeAreaUpdate.xsd
     dlpExcludeSecGroupUpdate: !include schemas/dlpExcludeSecGroupUpdate.xsd
     dlpFileFiltersUpdate: !include schemas/dlpFileFiltersUpdate.xsd
-    dlpRegexClassificationValue: !include schemas/dlpRegexClassificationValue.xsd
-    dlpScanning: !include schemas/dlpScanning.xsd
-    dnsUpdate: !include schemas/dnsUpdate.xsd
+    dlpRegexClassificationValueUpdate: !include schemas/dlpRegexClassificationValueUpdate.xsd
+    dlpScanningUpdate: !include schemas/dlpScanningUpdate.xsd
+    applianceDnsClientUpdate: !include schemas/applianceDnsClientUpdate.xsd
     domainCreate: !include schemas/domainCreate.xsd
     edgeDnsUpdate: !include schemas/edgeDnsUpdate.xsd
     edgeNatConfig: !include schemas/edgeNatConfig.xsd
@@ -94,7 +94,7 @@ schemas:
     nsxControllerPasswordUpdate: !include schemas/nsxControllerPasswordUpdate.xsd
     nsxCliExecute: !include schemas/nsxCliExecute.xsd
     nsxEdgesCreate: !include schemas/nsxEdgesCreate.xsd
-    nsxEdgeDnsUpdate: !include schemas/nsxEdgeDnsUpdate.xsd
+    edgeDnsClientUpdate: !include schemas/edgeDnsClientUpdate.xsd
     nsxEdgeUpdate: !include schemas/nsxEdgeUpdate.xsd
     nsxEdgeFirewallConfigUpdate: !include schemas/nsxEdgeFirewallConfigUpdate.xsd
     nwFabricConfig: !include schemas/nwFabricConfig.xsd
@@ -1581,7 +1581,7 @@ securitySchemes:
     displayName: arpMACRead
     description: Query ARP suppression and MAC learning information
   put:
-    displayName: arpMAC
+    displayName: arpMACUpdate
     description: Enable or disable ARP suppression and MAC learning
     body:
       application/xml:
@@ -1594,7 +1594,7 @@ securitySchemes:
               <enabled></enabled>
             </macLearningConfig>
           </networkFeatureConfig>
-        schema: arpMAC
+        schema: arpMACUpdate
 /2.0/vdn/controller:
   displayName: nsxControllers
   description: |
@@ -3014,10 +3014,10 @@ securitySchemes:
       description: |
         Retrieve network information i.e. host name, IP address, DNS settings
     /dns:
-      displayName: dns
+      displayName: applianceDnsClient
       description: Configure DNS
       put:
-        displayName: dnsUpdate
+        displayName: applianceDnsClientUpdate
         description: Configure DNS
         body:
           application/xml:
@@ -3027,9 +3027,9 @@ securitySchemes:
                 <ipv6Address></ipv6Address>
                 <domainList></domainList>
               </dns>
-            schema: dnsUpdate
+            schema: applianceDnsClientUpdate
       delete:
-        displayName: dnsDelete
+        displayName: applianceDnsClientDelete
         description: Delete DNS servers
   /system/timesettings:
     displayName: systemTime
@@ -3174,7 +3174,7 @@ securitySchemes:
     displayName: applianceMgrBackup
     description: On-demand backup
     post:
-      displayName: applianceMgrBackup
+      displayName: applianceMgrBackupCreate
       description: Backup NSX data on-demand
   /backuprestore/backups:
     displayName: applianceMgrBackups
@@ -3188,7 +3188,7 @@ securitySchemes:
     displayName: applianceMgrBackupRestore
     description: Restore data from a backup file
     post:
-      displayName: applianceMgrBackupRestore
+      displayName: applianceMgrBackupRestoreExecute
       description: Restore data from a backup file
       queryParameters:
         restoreFile:
@@ -3948,12 +3948,12 @@ securitySchemes:
       displayName: dlpRegulationRead
       description: Retrieve the list of available regulations for a policy.
   /policy/regulations:
-    displayName: dlpEnableRegulation
+    displayName: dlpPolicyRegulations
     description: |
       Enable one or more regulations by putting the regulation IDs into the
       policy. You can get the IDs from the output of the dlpRegulation GET call
     put:
-      displayName: dlpEnableRegulation
+      displayName: dlpPolicyRegulationsUpdate
       description: |
         Enable one or more regulations by putting the regulation IDs into the
         policy. You can get the IDs from the output of the dlpRegulation GET
@@ -3964,7 +3964,7 @@ securitySchemes:
             <set>
               <long></long>
             </set>
-          schema: dlpEnableRegulation
+          schema: dlpPolicyRegulationsUpdate
   /classificationvalue:
     displayName: dlpClassificationValue
     description: Classification values associated with regulations
@@ -3975,7 +3975,7 @@ securitySchemes:
     displayName: dlpRegexClassificationValue
     description: Configure a customized regex as a classification value
     put:
-      displayName: dlpRegexClassificationValue
+      displayName: dlpRegexClassificationValueUpdate
       description: Configure a customized regex as a classification value
       body:
         application/xml:
@@ -3993,14 +3993,14 @@ securitySchemes:
                 <value></value>
               </ClassificationValue>
             </set>
-          schema: dlpRegexClassificationValue
+          schema: dlpRegexClassificationValueUpdate
   /excludableareas:
     displayName: dlpExcludableAreas
     description: |
       Retrieve list of datacenters, clusters, and resource pools that are
       excludable from policy inspection
     get:
-      displayName: dlpExcludableAreas
+      displayName: dlpExcludableAreasList
       description: |
         Retrieve list of datacenters, clusters, and resource pools that are
         excludable from policy inspection
@@ -4010,7 +4010,7 @@ securitySchemes:
       (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
       Exclude areas from policy inspection
     put:
-      displayName: dlpExcludeArea
+      displayName: dlpExcludeAreaUpdate
       description: |
         (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
         Exclude areas from policy inspection
@@ -4020,7 +4020,7 @@ securitySchemes:
             <set>
               <string></string>
             </set>
-          schema: dlpExcludeArea
+          schema: dlpExcludeAreaUpdate
   /policy/includedsecuritygroups:
     displayName: dlpIncludeSecGroup
     description: Include security groups in data security scan
@@ -4075,16 +4075,16 @@ securitySchemes:
             </FileFilters>
           schema: dlpFileFiltersUpdate
   /policy/saved:
-    displayName: dlpPolicySave
+    displayName: dlpPolicySaved
     description: Retrieve last saved policy
     get:
-      displayName: dlpPolicySave
+      displayName: dlpPolicySavedList
       description: Get saved policy
   /policy/published:
     displayName: dlpPolicyPublished
     description: Retrieve currently published SDD policy
     get:
-      displayName: dlpPolicyPublished
+      displayName: dlpPolicyPublishedList
       description: Retrieve currently published policy
   /policy/publish:
     displayName: dlpPolicyPublish
@@ -4093,24 +4093,24 @@ securitySchemes:
       customized regex values, publish an updated policy to enforce new
       parameters
     put:
-      displayName: dlpPolicyPublish
+      displayName: dlpPolicyPublishExecute
       description: Publish the updated policy
   /scanop:
     displayName: dlpScanning
     description: Start, pause, resume, or stop a data security scan
     put:
-      displayName: dlpScanning
+      displayName: dlpScanningUpdate
       description: Start, pause, resume, or stop a data security scan
       body:
         application/xml:
           example: |
             <ScanOp></ScanOp>
-          schema: dlpScanning
+          schema: dlpScanningUpdate
   /scanstatus:
     displayName: dlpScanStatus
     description: Retrieve the status of a scan operation
     get:
-      displayName: dlpScanStatus
+      displayName: dlpScanStatusList
       description: Retrieve the status of a scan operation
   /scan/current/vms/{ID}:
     displayName: dlpScanVMs
@@ -4168,7 +4168,7 @@ securitySchemes:
         displayName: scanID
         description: Specified previous scan
     get:
-      displayName: dlpPolicyAsXML
+      displayName: dlpPolicyAsXMLList
       description: |
         Retrieve XML representation of the policy used in the previous scan
   /violations:
@@ -4231,7 +4231,7 @@ securitySchemes:
       Display the violating files and the regulations each file violated in CSV
       format
     get:
-      displayName: dlpViolatingFilesCSV
+      displayName: dlpViolatingFilesCSVList
       description: |
         Display the violating files and the regulations each file violated in
         CSV format
@@ -4248,7 +4248,7 @@ securitySchemes:
           Specified resource (moid of datacenter, cluster, folder, resource
           pool, or vm)
       get:
-        displayName: dlpViolatingFilesContextCSV
+        displayName: dlpViolatingFilesContextCSVList
         description: |
           Get violated regulations and violating files for the resource in
           CSV format
@@ -4282,7 +4282,7 @@ securitySchemes:
     displayName: dataCollectionKillSwitch
     description: Data collection kill switch on/off
     post:
-      displayName: dataCollectionKillSwitch
+      displayName: dataCollectionKillSwitchToggle
       description: Turn on/off data collection at global level
       body:
         application/xml:
@@ -4295,7 +4295,7 @@ securitySchemes:
                 </action>
               </actions>
             </request>
-          schema: dataCollectionKillSwitch
+          schema: dataCollectionKillSwitchToggle
   /config/vm/{vmID}:
     displayName: dataCollectionVMInfo
     description: Retrieve per vm configuration for data collection
@@ -4640,8 +4640,8 @@ securitySchemes:
         displayName: ldapServerDelete
         description: Delete LDAP server
     /updateEventLogServer:
-      displayName: eLogServerCreate
-      description: Create EventLog server
+      displayName: eLogServer
+      description: EventLog server
       post:
         displayName: eLogServerCreate
         description: Create EventLog server
@@ -6170,7 +6170,7 @@ securitySchemes:
         displayName: dfwConfigExport
         description: Export a configuration
         get:
-          displayName: dfwConfigExport
+          displayName: dfwConfigExportExecute
           description: Export a configuration
           queryParameters:
               getLatestForUniversal:
@@ -6184,7 +6184,7 @@ securitySchemes:
         displayName: dfwConfigImport
         description: Import a configuration
         post:
-          displayName: dfwConfigImport
+          displayName: dfwConfigImportExecute
           description: Import a configuration
           body:
             application/xml:
@@ -6272,10 +6272,10 @@ securitySchemes:
         displayName: ID
         description: Specified host or cluster to synchronize
     post:
-      displayName: dfwSync
+      displayName: dfwSyncExecute
       description: Force sync host/cluster
   /{domainID}/enable/{truefalse}:
-    displayName: dfwEnableDisableAPI
+    displayName: dfwEnableDisable
     description: Enable or disable firewall components on a cluster
     uriParameters:
       domainID:
@@ -6287,7 +6287,7 @@ securitySchemes:
         displayName: truefalse
         description: Set parameter to true/false to enable/disable
     post:
-      displayName: dfwEnableDisableAPI
+      displayName: dfwEnableDisableToggle
       description: Enable or disable firewall components on a cluster
   /{contextId}/config/ipfix:
     displayName: dfwIPFix
@@ -7213,10 +7213,10 @@ securitySchemes:
         Delete specified Edge from database. Associated appliances are also
         deleted
     /dnsclient:
-      displayName: dns
+      displayName: edgeDnsClient
       description: DNS settings (primary/secondary and search domain) of an Edge
       put:
-        displayName: nsxEdgeDnsUpdate
+        displayName: edgeDnsClientUpdate
         description: Update Edge DNS settings
         body:
           application/xml:
@@ -7226,7 +7226,7 @@ securitySchemes:
                 <secondaryDns></secondaryDns>
                 <domainName></domainName>
               </dnsClient>
-            schema: nsxEdgeDnsUpdate
+            schema: edgeDnsClientUpdate
     /aesni:
       displayName: aesni
       description: AESNI Setting
@@ -8532,7 +8532,7 @@ securitySchemes:
     /dns/config:
       displayName: edgeDns
       description: |
-        Configure DNS servers to which vShield Edge can relay name resolution
+        Configure DNS servers to which the Edge can relay name resolution
         requests
       get:
         displayName: edgeDnsRead
@@ -10018,7 +10018,7 @@ securitySchemes:
     displayName: certificate
     description: Certificates and certificate chains
     post:
-      displayName: certificateCSRCreate
+      displayName: certificateCreate
       description: Create certificate for CSR
       body:
         application/xml:
@@ -10026,7 +10026,7 @@ securitySchemes:
             <trustObject>
               <pemEncoding></pemEncoding>
             </trustObject>
-          schema: certificateCSRCreate
+          schema: certificateCreate
     /scope/{scopeId}:
       displayName: certificateScope
       description: Certificates for a scope
@@ -10038,7 +10038,7 @@ securitySchemes:
       get:
         displayName: certificateScopeRead
         description: Query all certificates for a scope
-    /{scopeId}: # PDF pg 159
+    /{scopeId}:
       displayName: certificateSelfSigned
       description: Working with vShield Edge self-signed certificates
       uriParameters:
@@ -10059,23 +10059,23 @@ securitySchemes:
               </trustObject>
             schema: certificateSelfSignedCreate
     /{certificateId}:
-      displayName: certificate
+      displayName: certificateId
       description: Certificate specified by ID
       uriParameters:
         certificateId:
           required: true
           displayName: certificateId
-          description: certificate ID
+          description: Certificate ID
       get:
-        displayName: certificateRead
+        displayName: certificateIdRead
         description: |
           Retrieve the certificate object specified by ID. If the ID specifies
           a chain, multiple certificate objects are retrieved.
       delete:
-        displayName: certificateDelete
+        displayName: certificateIdDelete
         description: Delete the specified certificate
   /csr/{scopeId}:
-    displayName: csrCreate
+    displayName: csr
     description: Create Certificate Signing Requests (CSRs)
     uriParameters:
       scopeId:
@@ -10129,7 +10129,7 @@ securitySchemes:
       displayName: csrScopeRead
       description: Query CSRs for specific scope
   /crl/{scopeId}:
-    displayName: crlScopeCreate
+    displayName: crl
     description: Create Certificate Revocation Lists (CRLs) on a specified scope
     uriParameters:
       scopeId:
@@ -10137,7 +10137,7 @@ securitySchemes:
         displayName: scopeId
         description: Specified scope
     post:
-      displayName: crlScopeCreate
+      displayName: crlCreate
       description: Create CRL on the specified scope
       body:
         application/xml:
@@ -10145,9 +10145,9 @@ securitySchemes:
             <trustObject>
               <pemEncoding></pemEncoding>
             </trustObject>
-          schema: crlScopeCreate
+          schema: crlCreate
   /crl/scope/{scopeId}:
-    displayName: crlScopeRead
+    displayName: crlScope
     description: Retrieve all certificates for the specified scope
     uriParameters:
       scopeId:

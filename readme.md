@@ -30,6 +30,7 @@ For display names please use the following verbs:
 - Update - Update an object. HTTP PUT
 - Delete - Delete an object. HTTP DELETE
 - Execute - Execute an action. Example: start a traceroute
+- Toggle - Switch the state of a value that is true/false or on/off
 
 # Building
 

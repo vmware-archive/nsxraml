@@ -1396,7 +1396,7 @@ Delete LDAP server
 * **delete** *(secured)*: Delete LDAP server
 
 ### /1.0/directory/directory/updateEventLogServer
-Create EventLog server
+EventLog server
 
 * **post** *(secured)*: Create EventLog server
 
@@ -2326,7 +2326,7 @@ Update acceleration mode
 * **post** *(secured)*: 
 
 ### /4.0/edges/{edgeId}/dns/config
-Configure DNS servers to which vShield Edge can relay name resolution
+Configure DNS servers to which the Edge can relay name resolution
 requests
 
 * **get** *(secured)*: Retrieve DNS configuration
