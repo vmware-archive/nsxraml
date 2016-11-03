@@ -21,6 +21,16 @@ https://github.com/kevinrenskers
 Details on raml2postman can be found on postmanlabs github
 https://github.com/postmanlabs/raml2postman
 
+# Style
+
+For display names please use the following verbs:
+- List - Read a collection of objects. HTTP GET
+- Read - Read a single object. HTTP GET
+- Create - Create an object. HTTP POST
+- Update - Update an object. HTTP PUT
+- Delete - Delete an object. HTTP DELETE
+- Execute - Execute an action. Example: start a traceroute
+
 # Building
 
 If you are interested in building the artifacts you will need a modified version of raml2html and raml2postman. To install these globally use the following commands:
