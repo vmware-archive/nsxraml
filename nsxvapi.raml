@@ -770,7 +770,7 @@ securitySchemes:
     displayName: vdnScopeCreate
     description: |
       Create a transport zone.
-      Request body parameters:
+      Request body parameters&#58;
         * **name** - Required. The name of the transport zone.
         * **description** - Optional. Description of the transport zone.
         * **objectId** - Required. The cluster object ID from vSphere. One or more are
@@ -5202,110 +5202,220 @@ securitySchemes:
         description: Deactivate a solution on a host
 /4.0/firewall:
   displayName: dfw
-  description: Distributed Firewall Operations
+  description: Working with Distributed Firewall
   /globalroot-0/config:
     displayName: dfwConfig
-    description: Global Distributed Firewall Rules configuration
+    description: |
+      Distributed firewall rules configuration
+      ___
+      The following table lists the elements that can be used in firewall
+      rules.
+      ___
+      | Element | Keyword for API | Used in |
+      |---|---|---|
+      | All Edges | ALL_EDGES | appliedTo |
+      | application | Application | service |
+      | application group | ApplicationGroup | service |
+      | cluster | compute resource | ClusterComputeResource<br>appliedTo |
+      | datacenter | Datacenter | source/destination<br>appliedTo |
+      | distributed firewall | DISTRIBUTED_FIREWALL | appliedTo |
+      | distributed virtual port group | DistributedVirtualPortgroup | source/destination<br>appliedTo |
+      | Edge ID | Edge | appliedTo |
+      | global root | GlobalRoot | source/destination |
+      | host | HostSystem | appliedTo |
+      | IP set | IPSet | source/destination |
+      | IPv4 addresses | Ipv4Address | source/destination |
+      | IPv6 addresses | Ipv6Address | source/destination |
+      | logical switch | VirtualWire | source/destination<br>appliedTo |
+      | MAC set | MACSet | source/destination |
+      | network | Network | for legacy portgroups, network can be used in source or destination instead of appliedTo |
+      | profile | ALL_PROFILE_BINDINGS | |
+      | resource pool | ResourcePool | source/destination |
+      | security group | SecurityGroup | source/destination |
+      | virtual app | VirtualApp | source/destination |
+      | virtual machine | VirtualMachine | source/destination<br>appliedTo |
+      | vNIC | Vnic | source/destination<br>appliedTo |
     get:
       displayName: dfwConfigShow
       description: |
-        Global Distributed Firewall Rules configuration, use query Parameters
-        to filter
+        Retrieve distributed firewall rule configuration.
+        ___
+        If no query parameters are used, all rule configuration is retrieved.
+        Use the query parameters to filter the rule configuration information.
+      body:
+        application/xml:
+          example: |
+            <firewallConfiguration timestamp="1360144793284">
+              <contextId>globalroot-0</contextId>
+              <layer3Sections>
+                <section id="2" name="defaultSectionLayer3" generationNumber="1360144793284" timestamp="1360144793284">
+                  <rule id="2" disabled="false" logged="false">
+                    <name>Default Rule</name>
+                    <action>DENY</action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name>DISTRIBUTED_FIREWALL</name>
+                        <value>DISTRIBUTED_FIREWALL</value>
+                        <type>DISTRIBUTED_FIREWALL</type>
+                        <isValid>true</isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId>2</sectionId>
+                  </rule>
+                </section>
+              </layer3Sections>
+              <layer2Sections>
+                <section id="1" name="defaultSectionLayer2" generationNumber="1360144793284" timestamp="1360144793284">
+                  <rule id="1" disabled="false" logged="false">
+                    <name>Default Rule</name>
+                    <action>ALLOW</action>
+                    <appliedToList>
+                      <appliedTo>
+                        <name>DISTRIBUTED_FIREWALL</name>
+                        <value>DISTRIBUTED_FIREWALL</value>
+                        <type>DISTRIBUTED_FIREWALL</type>
+                        <isValid>true</isValid>
+                      </appliedTo>
+                    </appliedToList>
+                    <sectionId>1</sectionId>
+                  </rule>
+                </section>
+              </layer2Sections>
+            </firewallConfiguration>
       queryParameters:
         ruleType:
           required: false
           displayName: ruleType
           description: |
-            ruleType can be LAYER3, LAYER2, L3REDIRECT. Rule Type is mandatory
-            if other search parameters are sent
+            **ruleType** can be *LAYER3*, *LAYER2*, *L3REDIRECT*. **ruleType**
+            is mandatory if other query parameters are sent.
+            **Note:** Filtering is not supported for layer 2 rules, so
+            specifying *LAYER2* will return all rule types.
         source:
           required: false
           displayName: source
-          description: source/destination can contain IPv4/v6 address or vm‐id
+          description: |
+            **source** can contain IPv4/v6 address or vm‐id
+        destination:
+          required: false
+          displayName: destination
+          description: |
+            **destination** can contain IPv4/v6 address or vm‐id
         ruleId:
           required: false
           displayName: ruleId
-          description: filter by ruleId
+          description: |
+            filter by **ruleId**
         comment:
           required: false
           displayName: comment
           description: |
-            Comment can contain any portion of the comment entered for the
-            rules. Search is case insensitive
+            **comment** can contain any portion of the comment entered for the
+            rules. Search is case insensitive.
         name:
           required: false
           displayName: name
           description: |
-            Name can contain any portion of the rulename entered for the rules.
-            Search is case insensitive
+            **name** can contain any portion of the rule name entered for the rules.
+            Search is case insensitive.
         siProfile:
           required: false
           displayName: siProfile
           description: |
-            siProfile can contain any portion of the ServiceProfile name
-            associated with L3redirectrule. Search is case insensitive.
+            **siProfile** can contain any portion of the service profile name
+            associated with L3 redirect rule. Search is case insensitive.
         edgeId:
           required: false
           displayName: edgeId
           description: |
-            edgeId is the EdgeID, that displays rules applicable to the
-            specified Edge
+            Filter for rules applicable to the Edge specified by **edgeId**.
         action:
           required: false
           displayName: action
-          description: Filter for specific action (allow, deny)
+          description: |
+            Filter for specific **action** (*allow*, *deny*)
     put:
       displayName: dfwConfigUpdate
-      description: |
-        This will update the complete firewall configuration in all sections.
-        You will need to get the Etag value out of the GET (dfwConfigShow)
-        first. Then pass the modified version of the whole firewall
-        configuration in the GET body
+      description: !include templates/documentation/reuse/firewall/dfwConfigUpdate
       headers:
-        if-match:
+        If-Match:
           required: true
-          displayName: if-match
-          description: |
-            Needed value that you will receive  in the reponse of the read
-            (GET) method in the Etag header
+          displayName: If-Match
+          description: !include templates/documentation/reuse/firewall/if-match
       body:
         application/xml:
           example: |
-            <firewallConfiguration timestamp="">
-              <contextId></contextId>
+            <firewallConfiguration timestamp="1359979620727">
+              <contextId>globalroot-0</contextId>
               <layer3Sections>
-                <section id="defaultSectionLayer3" name="" generationNumber="" timestamp="">
-                  <rule disabled="" logged="">
-                    <name></name>
-                    <action></action>
+                <section id="2" name="defaultSectionLayer3" generationNumber="1359979620727" timestamp="1359979620727">
+                  <rule disabled="false" logged="true">
+                    <name>okn-1</name>
+                    <action>ALLOW</action>
                     <sources excluded="false">
                       <source>
-                        <value></value>
-                        <type></type>
+                        <value>datacenter-57</value>
+                        <type>Datacenter</type>
+                      </source>
+                      <source>
+                        <value>domain-c62</value>
+                        <type>ClusterComputeResource</type>
+                      </source>
+                      <source>
+                        <value>10.112.1.1</value>
+                        <type>Ipv4Address</type>
                       </source>
                     </sources>
                     <services>
                       <service>
-                        <destinationPort></destinationPort>
-                        <protocol></protocol>
-                        <subProtocol></subProtocol>
-                        </service>
+                        <destinationPort>80</destinationPort>
+                        <protocol>6</protocol>
+                        <subProtocol>6</subProtocol>
+                      </service>
+                      <service>
+                        <value>application-161</value>
+                        <type>Application</type>
+                      </service>
                     </services>
                     <appliedToList>
                       <appliedTo>
-                        <value></value>
-                        <type></type>
+                        <value>5013bcd8-c666-1e28-c7a9-600da945954f.000</value>
+                        <type>Vnic</type>
+                      </appliedTo>
+                      <appliedTo>
+                        <value>vm-126</value>
+                        <type>VirtualMachine</type>
                       </appliedTo>
                     </appliedToList>
+                  </rule>
+                  <rule disabled="true" logged="true">
+                    <name>Matru-1</name>
+                    <action>ALLOW</action>
+                    <sectionId>2</sectionId>
+                  </rule>
+                  <rule disabled="true" logged="true">
+                    <name>Matru-2</name>
+                    <action>ALLOW</action>
+                    <sectionId>2</sectionId>
+                  </rule>
+                  <rule disabled="true" logged="true">
+                    <name>Matru-3</name>
+                    <action>ALLOW</action>
+                    <sectionId>2</sectionId>
+                  </rule>
+                  <rule id="2" disabled="true" logged="false">
+                    <name>Default Rule</name>
+                    <action>DENY</action>
+                    <sectionId>2</sectionId>
                   </rule>
                 </section>
               </layer3Sections>
               <layer2Sections>
-                <section id="1" name="defaultSectionLayer2" generationNumber="" timestamp="">
-                  <rule id="" disabled="" logged="">
-                    <name></name>
-                    <action></action>
-                    <sectionId></sectionId>
+                <section id="1" name="defaultSectionLayer2" generationNumber="1359979620727" timestamp="1359979620727">
+                  <rule id="1" disabled="false" logged="false">
+                    <name>Default Rule</name>
+                    <action>ALLOW</action>
+                    <sectionId>1</sectionId>
                   </rule>
                 </section>
               </layer2Sections>
@@ -5313,144 +5423,449 @@ securitySchemes:
     delete:
       displayName: dfwConfigDelete
       description: |
-        Restores default configuration, which means one defaultLayer3 section
-        with default allow rule and one defaultLayer2Section with default
-        allow rule
+        Restore default configuration.
+        ___
+        Restores a configuration with one defaultLayer3 section with default
+        allow rule and one defaultLayer2Section with default allow rule.
     /layer3sections:
       displayName: dfwL3Section
       description: |
-        L3 Firewall Operations on specific section specified by name (in a
-        query Parameter)
+        Working with layer 3 sections in distributed firewall.
       get:
         displayName: dfwL3SectionRead
-        description: Read a specific section of the DFW config specified by name
+        description: |
+          Retrieve rules from the layer 3 section specified by section
+          **name**.
         queryParameters:
           name:
-            required: false
+            required: true
             displayName: name
-            description: Name of the Section to read
+            description: Name of the section to retrieve.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <section id="4" name="TestSection" generationNumber="1360149234572" timestamp="1360149234572">
+                    <rule id="16" disabled="false" logged="true">
+                      <name>okn-2</name>
+                      <action>ALLOW</action>
+                      <appliedToList>
+                        <appliedTo>
+                          <name>vm1 - Network adapter 1</name>
+                          <value>5013bcd8-c666-1e28-c7a9-600da945954f.000</value>
+                          <type>Vnic</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                        <appliedTo>
+                          <name>Small XP-2</name>
+                          <value>vm-126</value>
+                          <type>VirtualMachine</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                      </appliedToList>
+                      <sectionId>4</sectionId>
+                      <sources excluded="false">
+                        <source>
+                          <name>5.1 ESX</name>
+                          <value>datacenter-57</value>
+                          <type>Datacenter</type>
+                          <isValid>true</isValid>
+                        </source>
+                        <source>
+                          <name>5.1</name>
+                          <value>domain-c62</value>
+                          <type>ClusterComputeResource</type>
+                          <isValid>true</isValid>
+                        </source>
+                        <source>
+                          <value>10.112.1.1</value>
+                          <type>Ipv4Address</type>
+                          <isValid>true</isValid>
+                        </source>
+                      </sources>
+                      <services>
+                        <service>
+                          <destinationPort>80</destinationPort>
+                          <protocol>6</protocol>
+                          <subProtocol>6</subProtocol>
+                        </service>
+                        <service>
+                          <name>VMware-VDM2.x-Ephemeral</name>
+                          <value>application-161</value>
+                          <isValid>true</isValid>
+                        </service>
+                      </services>
+                      <appliedToList>
+                        <appliedTo>
+                          <name>DISTRIBUTED_FIREWALL</name>
+                          <value>DISTRIBUTED_FIREWALL</value>
+                          <type>DISTRIBUTED_FIREWALL</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                      </appliedToList>
+                    </rule>
+                    <rule id="15" disabled="true" logged="true">
+                      <name>Matru-3</name>
+                      <action>ALLOW</action>
+                      <appliedToList>
+                        <appliedTo>
+                          <name>DISTRIBUTED_FIREWALL</name>
+                          <value>DISTRIBUTED_FIREWALL</value>
+                          <type>DISTRIBUTED_FIREWALL</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                      </appliedToList>
+                      <sectionId>4</sectionId>
+                    </rule>
+                    <rule id="14" disabled="true" logged="true">
+                      <name>test-3</name>
+                      <action>ALLOW</action>
+                      <appliedToList>
+                        <appliedTo>
+                          <name>DISTRIBUTED_FIREWALL</name>
+                          <value>DISTRIBUTED_FIREWALL</value>
+                          <type>DISTRIBUTED_FIREWALL</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                      </appliedToList>
+                      <sectionId>4</sectionId>
+                    </rule>
+                    <rule id="13" disabled="true" logged="true">
+                      <name>test-2</name>
+                      <action>ALLOW</action>
+                      <appliedToList>
+                        <appliedTo>
+                          <name>DISTRIBUTED_FIREWALL</name>
+                          <value>DISTRIBUTED_FIREWALL</value>
+                          <type>DISTRIBUTED_FIREWALL</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                      </appliedToList>
+                      <sectionId>4</sectionId>
+                    </rule>
+                    <rule id="12" disabled="true" logged="false">
+                      <name>test-1</name>
+                      <action>DENY</action>
+                      <appliedToList>
+                        <appliedTo>
+                          <name>DISTRIBUTED_FIREWALL</name>
+                          <value>DISTRIBUTED_FIREWALL</value>
+                          <type>DISTRIBUTED_FIREWALL</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                      </appliedToList>
+                      <sectionId>4</sectionId>
+                    </rule>
+                  </section>
       post:
+        # updated in 6.2.2 to allow positional insertion of section
+        # with operation and anchorId query parameters
         displayName: dfwL3SectionCreate
-        description: Creates a new L3 Firewall Section with a number of rules
+        description: |
+          Create a layer 3 distributed firewall section.
+          ___
+          By default, the section is created at the top of the firewall table.
+          You can specify a location for the section with the **operation**
+          and **anchorId** query parameters.
+        queryParameters: !include templates/documentation/reuse/firewall/dfwSectionQueryParameters.raml
         body:
-         application/xml:
-           example: |
-            <section name="" managedBy="" type="">
-              <rule disabled="" logged="">
-                <name></name>
-                <action></action>
-                <appliedToList>
-                  <appliedTo>
-                    <name></name>
-                    <value></value>
-                    <type></type>
-                    <isValid></isValid>
-                  </appliedTo>
-                </appliedToList>
-                <sources excluded="">
-                  <source>
-                    <name></name>
-                    <value></value>
-                    <type></type>
-                    <isValid></isValid>
-                  </source>
-                </sources>
-                <destinations excluded="">
-                  <destination>
-                    <name></name>
-                    <value></value>
-                    <type></type>
-                    <isValid></isValid>
-                  </destination>
-                </destinations>
-                <services>
-                  <service>
-                    <destinationPort></destinationPort>
-                    <protocol></protocol>
-                    <subProtocol></subProtocol>
-                  </service>
-                </services>
-              </rule>
-              <rule disabled="" logged="">
-                <name></name>
-                <action></action>
-              </rule>
-            </section>
-           schema: dfwSection
+          application/xml:
+            example: |
+              <section name="TestSection">
+                <rule disabled="false" logged="true">
+                  <name>okn-2</name>
+                  <action>ALLOW</action>
+                  <appliedToList>
+                    <appliedTo>
+                      <name>vm1 - Network adapter 1</name>
+                      <value>5013bcd8-c666-1e28-c7a9-600da945954f.000</value>
+                      <type>Vnic</type>
+                      <isValid>true</isValid>
+                    </appliedTo>
+                    <appliedTo>
+                      <name>Small XP-2</name>
+                      <value>vm-126</value>
+                      <type>VirtualMachine</type>
+                      <isValid>true</isValid>
+                    </appliedTo>
+                  </appliedToList>
+                  <sources excluded="false">
+                    <source>
+                      <name>5.1 ESX</name>
+                      <value>datacenter-57</value>
+                      <type>Datacenter</type>
+                      <isValid>true</isValid>
+                    </source>
+                    <source>
+                      <name>5.1</name>
+                      <value>domain-c62</value>
+                      <type>ClusterComputeResource</type>
+                      <isValid>true</isValid>
+                    </source>
+                    <source>
+                      <value>10.112.1.1</value>
+                      <type>Ipv4Address</type>
+                      <isValid>true</isValid>
+                    </source>
+                  </sources>
+                  <services>
+                    <service>
+                      <destinationPort>80</destinationPort>
+                      <protocol>6</protocol>
+                      <subProtocol>6</subProtocol>
+                    </service>
+                    <service>
+                      <name>VMware-VDM2.x-Ephemeral</name>
+                      <value>application-161</value>
+                      <isValid>true</isValid>
+                    </service>
+                  </services>
+                </rule>
+                <rule disabled="true" logged="true">
+                  <name>Matru-3</name>
+                  <action>ALLOW</action>
+                </rule>
+                <rule disabled="true" logged="true">
+                  <name>test-3</name>
+                  <action>ALLOW</action>
+                </rule>
+                <rule disabled="true" logged="true">
+                  <name>test-2</name>
+                  <action>ALLOW</action>
+                </rule>
+                <rule disabled="true" logged="false">
+                  <name>test-1</name>
+                  <action>DENY</action>
+                </rule>
+              </section>
+            schema: dfwSection
       /{sectionId}:
         displayName: dfwL3SectionId
         description: |
-          L3 Firewall Operations on specific section specified by section ID
+          Working with a specific layer 3 distributed firewall section.
         uriParameters:
           sectionId:
             required: true
             displayName: sectionId
-            description: The ID of the section beeing added, updated or deleted
+            description: The ID of the section to modify.
         get:
           displayName: dfwL3SectionIdRead
-          description: Read a specific section of the DFW config specified by Id
+          description: Retrieve information about the specified layer 3 section.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <section id="4" name="TestSection" generationNumber="1360149234572" timestamp="1360149234572">
+                      <rule id="16" disabled="false" logged="true">
+                        <name>okn-2</name>
+                        <action>ALLOW</action>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>vm1 - Network adapter 1</name>
+                            <value>5013bcd8-c666-1e28-c7a9-600da945954f.000</value>
+                            <type>Vnic</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                          <appliedTo>
+                            <name>Small XP-2</name>
+                            <value>vm-126</value>
+                            <type>VirtualMachine</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                        <sectionId>4</sectionId>
+                        <sources excluded="false">
+                          <source>
+                            <name>5.1 ESX</name>
+                            <value>datacenter-57</value>
+                            <type>Datacenter</type>
+                            <isValid>true</isValid>
+                          </source>
+                          <source>
+                            <name>5.1</name>
+                            <value>domain-c62</value>
+                            <type>ClusterComputeResource</type>
+                            <isValid>true</isValid>
+                          </source>
+                          <source>
+                            <value>10.112.1.1</value>
+                            <type>Ipv4Address</type>
+                            <isValid>true</isValid>
+                          </source>
+                        </sources>
+                        <services>
+                          <service>
+                            <destinationPort>80</destinationPort>
+                            <protocol>6</protocol>
+                            <subProtocol>6</subProtocol>
+                          </service>
+                          <service>
+                            <name>VMware-VDM2.x-Ephemeral</name>
+                            <value>application-161</value>
+                            <isValid>true</isValid>
+                          </service>
+                        </services>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>DISTRIBUTED_FIREWALL</name>
+                            <value>DISTRIBUTED_FIREWALL</value>
+                            <type>DISTRIBUTED_FIREWALL</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                      </rule>
+                      <rule id="15" disabled="true" logged="true">
+                        <name>Matru-3</name>
+                        <action>ALLOW</action>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>DISTRIBUTED_FIREWALL</name>
+                            <value>DISTRIBUTED_FIREWALL</value>
+                            <type>DISTRIBUTED_FIREWALL</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                        <sectionId>4</sectionId>
+                      </rule>
+                      <rule id="14" disabled="true" logged="true">
+                        <name>test-3</name>
+                        <action>ALLOW</action>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>DISTRIBUTED_FIREWALL</name>
+                            <value>DISTRIBUTED_FIREWALL</value>
+                            <type>DISTRIBUTED_FIREWALL</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                        <sectionId>4</sectionId>
+                      </rule>
+                      <rule id="13" disabled="true" logged="true">
+                        <name>test-2</name>
+                        <action>ALLOW</action>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>DISTRIBUTED_FIREWALL</name>
+                            <value>DISTRIBUTED_FIREWALL</value>
+                            <type>DISTRIBUTED_FIREWALL</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                        <sectionId>4</sectionId>
+                      </rule>
+                      <rule id="12" disabled="true" logged="false">
+                        <name>test-1</name>
+                        <action>DENY</action>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>DISTRIBUTED_FIREWALL</name>
+                            <value>DISTRIBUTED_FIREWALL</value>
+                            <type>DISTRIBUTED_FIREWALL</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                        <sectionId>4</sectionId>
+                      </rule>
+                    </section>
         put:
           displayName: dfwL3SectionIdUpdate
-          description: |
-            Updates a L3 DFW Section. To do this you need to read it first,
-            make your changes, and then update the section by supplying the
-            Etag value received in the read in the If-Match header
+          description: !include templates/documentation/reuse/firewall/dfwL3SectionIdUpdate
           headers:
-            If-match:
+            If-Match:
               required: true
-              displayName: If-match
-              description: |
-                Needed value that you will receive  in the reponse of the read
-                (GET) method in the Etag header
+              displayName: If-Match
+              description: !include templates/documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
-                <section id="" name="" generationNumber="" timestamp="">
-                  <rule id="" disabled="" logged="">
-                    <name></name>
-                    <action></action>
+                <section id="4" name="TestSectionRenamed" generationNumber="1336034461743" timestamp="1360149234572">
+                  <rule id="16" disabled="false" logged="false">
+                    <name>okn-2</name>
+                    <action>ALLOW</action>
                     <appliedToList>
                       <appliedTo>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
+                        <name>vm1 - Network adapter 1</name>
+                        <value>5013bcd8-c666-1e28-c7a9-600da945954f.000</value>
+                        <type>Vnic</type>
+                        <isValid>true</isValid>
+                      </appliedTo>
+                      <appliedTo>
+                        <name>Small XP-2</name>
+                        <value>vm-126</value>
+                        <type>VirtualMachine</type>
+                        <isValid>true</isValid>
                       </appliedTo>
                     </appliedToList>
-                    <sectionId></sectionId>
-                    <sources excluded="">
+                    <sectionId>4</sectionId>
+                    <sources excluded="false">
                       <source>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
+                        <name>5.1 ESX</name>
+                        <value>datacenter-57</value>
+                        <type>Datacenter</type>
+                        <isValid>true</isValid>
+                      </source>
+                      <source>
+                        <name>5.1</name>
+                        <value>domain-c62</value>
+                        <type>ClusterComputeResource</type>
+                        <isValid>true</isValid>
+                      </source>
+                      <source>
+                        <value>10.112.1.1</value>
+                        <type>Ipv4Address</type>
+                        <isValid>true</isValid>
                       </source>
                     </sources>
                     <services>
                       <service>
-                        <destinationPort></destinationPort>
-                        <protocol></protocol>
-                        <subProtocol></subProtocol>
+                        <destinationPort>80</destinationPort>
+                        <protocol>6</protocol>
+                        <subProtocol>6</subProtocol>
+                      </service>
+                      <service>
+                        <name>VMware-VDM2.x-Ephemeral</name>
+                        <value>application-161</value>
+                        <isValid>true</isValid>
                       </service>
                     </services>
+                  </rule>
+                  <rule id="15" disabled="true" logged="true">
+                    <name>Matru-3</name>
+                    <action>DENY</action>
+                    <sectionId>4</sectionId>
+                  </rule>
+                  <rule id="14" disabled="true" logged="true">
+                    <name>test-3</name>
+                    <action>ALLOW</action>
+                    <sectionId>4</sectionId>
+                  </rule>
+                  <rule id="13" disabled="true" logged="true">
+                    <name>test-2</name>
+                    <action>ALLOW</action>
+                    <sectionId>4</sectionId>
+                  </rule>
+                  <rule id="12" disabled="true" logged="false">
+                    <name>test-1</name>
+                    <action>DENY</action>
+                    <sectionId>4</sectionId>
                   </rule>
                 </section>
         delete:
           displayName: dfwL3SectionIdDelete
-          description: Deletes a L3 section and its content by ID
+          description: Delete the specified layer 3 distributed firewall section.
         /rules:
           displayName: dfwL3Rules
-          description: Operations to add one or more L3 Rules
+          description: TESTING Working with a specific layer 3 distributed firewall rule.
           post:
             displayName: dfwL3RulesAdd
-            description: Add a L3 Rule
+            description: Add a layer 3 distributed firewall rule.
             headers:
-              If-match:
+              If-Match:
                 required: true
-                displayName: If-match
-                description: |
-                  Needed value that you will receive  in the reponse of the
-                  read (GET) method in the Etag header
+                displayName: If-Match
+                description: !include templates/documentation/reuse/firewall/if-match
             body:
               application/xml:
                 example: |
@@ -5500,23 +5915,56 @@ securitySchemes:
             get:
               displayName: dfwL3RuleRead
               description: |
-                Read the configuration of a specific rule identified by rule Id
+                Retrieve information about the specified distributed firewall rule.
             put:
               displayName: dfwL3RuleUpdate
               description: |
-                Updates a L3 DFW Rule. To do this you need to read it first,
-                make your changes, and then update the section by supplying the
-                Etag value received in the read in the If-Match header
+                Update a layer 3 distributed firewall rule in a layer 3
+                section.
               headers:
-                If-match:
+                If-Match:
                   required: true
-                  displayName: If-match
-                  description: |
-                    Needed value that you will receive  in the reponse of the
-                    read (GET) method in the Etag header
+                  displayName: If-Match
+                  description: !include templates/documentation/reuse/firewall/if-match
               body:
                 application/xml:
                   example: |
+                    <rule id="1061" disabled="false" logged="false">
+                      <name>new rule-web to db VM 3</name>
+                      <action>reject</action>
+                      <notes></notes>
+                      <appliedToList>
+                        <appliedTo>
+                          <name>web-vm-01</name>
+                          <value>vm-72</value>
+                          <type>VirtualMachine</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                        <appliedTo>
+                          <name>db-vm-01</name>
+                          <value>vm-84</value>
+                          <type>VirtualMachine</type>
+                          <isValid>true</isValid>
+                        </appliedTo>
+                      </appliedToList>
+                      <sectionId>1028</sectionId>
+                      <sources excluded="false">
+                        <source>
+                          <name>web-vm-01</name>
+                          <value>vm-72</value>
+                          <type>VirtualMachine</type>
+                          <isValid>true</isValid>
+                        </source>
+                      </sources>
+                      <destinations excluded="false">
+                        <destination>
+                          <name>db-vm-01</name>
+                          <value>vm-84</value>
+                          <type>VirtualMachine</type>
+                          <isValid>true</isValid>
+                        </destination>
+                      </destinations>
+                    </rule>
                     <rule disabled="" logged="">
                       <name></name>
                       <action></action>
@@ -5551,14 +5999,13 @@ securitySchemes:
                     </rule>
             delete:
               displayName: dfwL3RuleDelete
-              description: Delete a specific rule identified by rule Id
+              description: Delete the specified distributed firewall rule.
               headers:
-                If-match:
+                If-Match:
                   required: true
-                  displayName: If-match
-                  description: |
-                    Needed value that you will receive  in the reponse of the
-                    read (GET) method in the Etag header
+                  displayName: If-Match
+                  description: !include templates/documentation/reuse/firewall/if-match
+      # remove? waiting for confirmation.
       /{sectionName}:
         displayName: dfwL3SectionName
         description: |
@@ -5570,12 +6017,10 @@ securitySchemes:
             Updates a L3 DFW Section. To do this you need to read it first, make your changes,
             and then update the section by supplying the Etag value received in the read in the If-Match header
           headers:
-            If-match:
+            If-Match:
               required: true
-              displayName: If-match
-              description: |
-                Needed value that you will receive  in the reponse of the read
-                (GET) method in the Etag header
+              displayName: If-Match
+              description: !include templates/documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
@@ -5612,19 +6057,28 @@ securitySchemes:
     /layer2sections:
       displayName: dfwL2Section
       description: |
-        L2 Firewall Operations on specific section specified by name (in a
-        query Parameter)
+        Working with layer 2 sections in distributed firewall.
       get:
         displayName: dfwL2SectionRead
-        description: Read a specific section of the DFW config specified by name
+        description: |
+          Retrieve rules from the layer 2 section specified by section
+          **name**.
         queryParameters:
           name:
             required: false
             displayName: name
             description: Name of the Section to read
       post:
+        # updated in 6.2.2 to allow positional insertion of section
+        # with operation and anchorId query parameters
         displayName: dfwL2SectionCreate
-        description: Creates a new L2 Firewall Section with a number of rules
+        description: |
+          Create a layer 2 distributed firewall section.
+          ___
+          By default, the section is created at the top of the firewall table.
+          You can specify a location for the section with the **operation**
+          and **anchorId** query parameters.
+        queryParameters: !include templates/documentation/reuse/firewall/dfwSectionQueryParameters.raml
         body:
          application/xml:
            example: |
@@ -5668,29 +6122,23 @@ securitySchemes:
       /{sectionId}:
         displayName: dfwL2SectionId
         description: |
-          L2 Firewall Operations on specific section specified by section ID
+          Working with a specific layer 3 distributed firewall section.
         uriParameters:
           sectionId:
             required: true
             displayName: sectionId
-            description: |
-              The ID of the section beeing added, updated or deleted
+            description: The ID of the section to modify.
         get:
           displayName: dfwL2SectionIdRead
-          description: Read a specific section of the DFW config specified by Id
+          description: Retrieve information about the specified layer 3 section.
         put:
           displayName: dfwL2SectionIdUpdate
-          description: |
-            Updates a L2 DFW Section. To do this you need to read it first,
-            make your changes, and then update the section by supplying the
-            Etag value received in the read in the If-Match header
+          description: !include templates/documentation/reuse/firewall/dfwL2SectionIdUpdate
           headers:
-            If-match:
+            If-Match:
               required: true
-              displayName: If-match
-              description: |
-                Needed value that you will receive  in the reponse of the read
-                (GET) method in the Etag header
+              displayName: If-Match
+              description: !include templates/documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
@@ -5734,12 +6182,10 @@ securitySchemes:
             displayName: dfwL2RulesAdd
             description: Add L2 Rule
             headers:
-              If-match:
+              If-Match:
                 required: true
-                displayName: If-match
-                description: |
-                  Needed value that you will receive  in the reponse of the
-                  read (GET) method in the Etag header
+                displayName: If-Match
+                description: !include templates/documentation/reuse/firewall/if-match
             body:
               application/xml:
                 example: |
@@ -5797,12 +6243,10 @@ securitySchemes:
                 make your changes, and then update the section by supplying the
                 Etag value received in the read in the If-Match header
               headers:
-                If-match:
+                If-Match:
                   required: true
-                  displayName: If-match
-                  description: |
-                    Needed value that you will receive  in the reponse of the
-                    read (GET) method in the Etag header
+                  displayName: If-Match
+                  description: !include templates/documentation/reuse/firewall/if-match
               body:
                 application/xml:
                   example: |
@@ -5846,12 +6290,11 @@ securitySchemes:
               displayName: dfwL2RuleDelete
               description: Delete a specific rule identified by rule Id
               headers:
-                If-match:
+                If-Match:
                   required: true
-                  displayName: If-match
-                  description: |
-                    Needed value that you will receive  in the reponse of the
-                    read (GET) method in the Etag header
+                  displayName: If-Match
+                  description: !include templates/documentation/reuse/firewall/if-match
+      # remove? waiting for confirmation.
       /{sectionName}:
         displayName: dfwL2SectionName
         description: L3 Firewall Update Operations on specific section specified by section Name
@@ -5862,12 +6305,10 @@ securitySchemes:
             make your changes, and then update the section by supplying the
             Etag value received in the read in the If-Match header
           headers:
-            If-match:
+            If-Match:
               required: true
-              displayName: If-match
-              description: |
-                Needed value that you will receive  in the reponse of the read
-                (GET) method in the Etag header
+              displayName: If-Match
+              description: !include templates/documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
@@ -5942,12 +6383,10 @@ securitySchemes:
             of the GET first. Then pass the modified version of the whole
             redirect section configuration in the GET body
           headers:
-            if-match:
+            If-Match:
               required: true
-              displayName: if-match
-              description: |
-                Needed value that you will receive in the reponse of the read
-                (GET) method in the Etag header
+              displayName: If-Match
+              description: !include templates/documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
@@ -6011,12 +6450,10 @@ securitySchemes:
                 response header of GET call. Then, pass Etag value as the
                 if-match header in PUT call
               headers:
-                if-match:
+                If-Match:
                   required: true
-                  displayName: if-match
-                  description: |
-                    Needed value that you will receive in the reponse of the
-                    read (GET) method in the Etag header
+                  displayName: If-Match
+                  description: !include templates/documentation/reuse/firewall/if-match
               body:
                 application/xml:
                   example: |
@@ -6045,13 +6482,27 @@ securitySchemes:
         description: Retrieve the Service Insertion profiles
   /globalroot-0/state:
     displayName: dfwUpgrade
-    description: Upgrading distributed firewall
+    description: |
+      Enable distributed firewall after upgrade.
+      ___
+      After upgrading NSX Manager, controllers, and network virtualization
+      components, check the status of distributed firewall. If it is ready to
+      enable, you can enable distributed firewall.
+      ___
+      | State | Description |
+      |-------|-------------|
+      | backwardCompatible | This is the default state after an upgrade from vCloud Networking and Security to NSX, which means that vShield App is being used for protection instead of distributed firewall.|
+      | backwardCompatibleReadyForSwitch | Once the clusters are prepared with NSX binaries, this state is enabled. You can enable distributed firewall only after firewall is in this state. |
+      | switchingToForward | This is an intermediate state when you change firewall to distributed firewall. |
+      | forward | This is the default state for green field deployments or after you have switched from vShield App to distributed firewall. |
+      | switchFailed | This state is unlikely, but may be present if NSX Manager failed to switch to distributed firewall. |
     get:
       displayName: dfwUpgradeRead
-      description: Get current state of firewall functioning after NSX upgrade
+      description: |
+        Retrieve current state of firewall functioning after NSX upgrade.
     put:
       displayName: dfwUpgradeEnable
-      description: Enable distributed firewall
+      description: Enable distributed firewall.
   /globalroot-0/status:
     displayName: dfwStatus
     description: Firewall configuration status
