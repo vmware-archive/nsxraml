@@ -6005,55 +6005,6 @@ securitySchemes:
                   required: true
                   displayName: If-Match
                   description: !include templates/documentation/reuse/firewall/if-match
-      # remove? waiting for confirmation.
-      /{sectionName}:
-        displayName: dfwL3SectionName
-        description: |
-          L3 Firewall Update Operations on specific section specified by
-          section Name
-        put:
-          displayName: dfwL3SectionNameUpdate
-          description: |
-            Updates a L3 DFW Section. To do this you need to read it first, make your changes,
-            and then update the section by supplying the Etag value received in the read in the If-Match header
-          headers:
-            If-Match:
-              required: true
-              displayName: If-Match
-              description: !include templates/documentation/reuse/firewall/if-match
-          body:
-            application/xml:
-              example: |
-                <section id="" name="" generationNumber="" timestamp="">
-                  <rule id="" disabled="" logged="">
-                    <name></name>
-                    <action></action>
-                    <appliedToList>
-                      <appliedTo>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
-                      </appliedTo>
-                    </appliedToList>
-                    <sectionId></sectionId>
-                    <sources excluded="">
-                      <source>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
-                      </source>
-                    </sources>
-                    <services>
-                      <service>
-                        <destinationPort></destinationPort>
-                        <protocol></protocol>
-                        <subProtocol></subProtocol>
-                      </service>
-                    </services>
-                  </rule>
-                </section>
     /layer2sections:
       displayName: dfwL2Section
       description: |
@@ -6122,7 +6073,7 @@ securitySchemes:
       /{sectionId}:
         displayName: dfwL2SectionId
         description: |
-          Working with a specific layer 3 distributed firewall section.
+          Working with a specific layer 2 distributed firewall section.
         uriParameters:
           sectionId:
             required: true
@@ -6130,7 +6081,7 @@ securitySchemes:
             description: The ID of the section to modify.
         get:
           displayName: dfwL2SectionIdRead
-          description: Retrieve information about the specified layer 3 section.
+          description: Retrieve information about the specified layer 2 section.
         put:
           displayName: dfwL2SectionIdUpdate
           description: !include templates/documentation/reuse/firewall/dfwL2SectionIdUpdate
@@ -6294,54 +6245,6 @@ securitySchemes:
                   required: true
                   displayName: If-Match
                   description: !include templates/documentation/reuse/firewall/if-match
-      # remove? waiting for confirmation.
-      /{sectionName}:
-        displayName: dfwL2SectionName
-        description: L3 Firewall Update Operations on specific section specified by section Name
-        put:
-          displayName: dfwL2SectionNameUpdate
-          description: |
-            Updates a L2 DFW Section. To do this you need to read it first,
-            make your changes, and then update the section by supplying the
-            Etag value received in the read in the If-Match header
-          headers:
-            If-Match:
-              required: true
-              displayName: If-Match
-              description: !include templates/documentation/reuse/firewall/if-match
-          body:
-            application/xml:
-              example: |
-                <section id="" name="" generationNumber="" timestamp="">
-                  <rule id="" disabled="" logged="">
-                    <name></name>
-                    <action></action>
-                    <appliedToList>
-                      <appliedTo>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
-                      </appliedTo>
-                    </appliedToList>
-                    <sectionId></sectionId>
-                    <sources excluded="">
-                      <source>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
-                      </source>
-                    </sources>
-                    <services>
-                      <service>
-                        <destinationPort></destinationPort>
-                        <protocol></protocol>
-                        <subProtocol></subProtocol>
-                      </service>
-                    </services>
-                  </rule>
-                </section>
     /layer3redirectsections:
       displayName: layer3RedirectSections
       description: Layer3 redirect sections and rules

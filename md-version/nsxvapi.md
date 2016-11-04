@@ -1730,13 +1730,6 @@ section.
 
 * **delete** *(secured)*: Delete the specified distributed firewall rule.
 
-### /4.0/firewall/globalroot-0/config/layer3sections/{sectionName}
-L3 Firewall Update Operations on specific section specified by
-section Name
-
-* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first, make your changes,
-and then update the section by supplying the Etag value received in the read in the If-Match header
-
 ### /4.0/firewall/globalroot-0/config/layer2sections
 Working with layer 2 sections in distributed firewall.
 
@@ -1750,9 +1743,9 @@ You can specify a location for the section with the **operation**
 and **anchorId** query parameters.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}
-Working with a specific layer 3 distributed firewall section.
+Working with a specific layer 2 distributed firewall section.
 
-* **get** *(secured)*: Retrieve information about the specified layer 3 section.
+* **get** *(secured)*: Retrieve information about the specified layer 2 section.
 * **put** *(secured)*: Update the specified layer 2 section in distributed firewall.
 
 * Retrieve the configuration for the specified section.
@@ -1804,13 +1797,6 @@ make your changes, and then update the section by supplying the
 Etag value received in the read in the If-Match header
 
 * **delete** *(secured)*: Delete a specific rule identified by rule Id
-
-### /4.0/firewall/globalroot-0/config/layer2sections/{sectionName}
-L3 Firewall Update Operations on specific section specified by section Name
-
-* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first,
-make your changes, and then update the section by supplying the
-Etag value received in the read in the If-Match header
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections
 Layer3 redirect sections and rules
