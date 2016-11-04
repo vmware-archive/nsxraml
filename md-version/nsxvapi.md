@@ -188,7 +188,7 @@ Working with Transport Zones
 scopes).
 
 * **post** *(secured)*: Create a transport zone.
-Request body parameters:
+Request body parameters&#58;
   * **name** - Required. The name of the transport zone.
   * **description** - Optional. Description of the transport zone.
   * **objectId** - Required. The cluster object ID from vSphere. One or more are
@@ -1594,56 +1594,141 @@ Deactivate a solution on a host
 * **delete** *(secured)*: Deactivate a solution on a host
 
 ## dfw
-Distributed Firewall Operations
+Working with Distributed Firewall
 
 ### /4.0/firewall/globalroot-0/config
-Global Distributed Firewall Rules configuration
+Distributed firewall rules configuration
+___
+The following table lists the elements that can be used in firewall
+rules.
+___
+| Element | Keyword for API | Used in |
+|---|---|---|
+| All Edges | ALL_EDGES | appliedTo |
+| application | Application | service |
+| application group | ApplicationGroup | service |
+| cluster | compute resource | ClusterComputeResource<br>appliedTo |
+| datacenter | Datacenter | source/destination<br>appliedTo |
+| distributed firewall | DISTRIBUTED_FIREWALL | appliedTo |
+| distributed virtual port group | DistributedVirtualPortgroup | source/destination<br>appliedTo |
+| Edge ID | Edge | appliedTo |
+| global root | GlobalRoot | source/destination |
+| host | HostSystem | appliedTo |
+| IP set | IPSet | source/destination |
+| IPv4 addresses | Ipv4Address | source/destination |
+| IPv6 addresses | Ipv6Address | source/destination |
+| logical switch | VirtualWire | source/destination<br>appliedTo |
+| MAC set | MACSet | source/destination |
+| network | Network | for legacy portgroups, network can be used in source or destination instead of appliedTo |
+| profile | ALL_PROFILE_BINDINGS | |
+| resource pool | ResourcePool | source/destination |
+| security group | SecurityGroup | source/destination |
+| virtual app | VirtualApp | source/destination |
+| virtual machine | VirtualMachine | source/destination<br>appliedTo |
+| vNIC | Vnic | source/destination<br>appliedTo |
 
-* **get** *(secured)*: Global Distributed Firewall Rules configuration, use query Parameters
-to filter
+* **get** *(secured)*: Retrieve distributed firewall rule configuration.
+___
+If no query parameters are used, all rule configuration is retrieved.
+Use the query parameters to filter the rule configuration information.
 
-* **put** *(secured)*: This will update the complete firewall configuration in all sections.
-You will need to get the Etag value out of the GET (dfwConfigShow)
-first. Then pass the modified version of the whole firewall
-configuration in the GET body
+* **put** *(secured)*: Update the complete firewall configuration in all sections.
 
-* **delete** *(secured)*: Restores default configuration, which means one defaultLayer3 section
-with default allow rule and one defaultLayer2Section with default
-allow rule
+* Retrieve the configuration with `GET /api/4.0/firewall/globalroot-0/config`.
+* Retrieve the Etag value from the response headers.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+* IDs for new objects (rule/section) should be removed or set to zero.
+* If new entities (sections/rules) have been sent in the request, the response
+  will contain the system-generated ids, which are assigned to these new
+  entities. These ID identifies the resource and can be used in the urls if
+  you want to operate on these entities using those URLs.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+* **delete** *(secured)*: Restore default configuration.
+___
+Restores a configuration with one defaultLayer3 section with default
+allow rule and one defaultLayer2Section with default allow rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections
-L3 Firewall Operations on specific section specified by name (in a
-query Parameter)
+Working with layer 3 sections in distributed firewall.
 
-* **get** *(secured)*: Read a specific section of the DFW config specified by name
-* **post** *(secured)*: Creates a new L3 Firewall Section with a number of rules
+* **get** *(secured)*: Retrieve rules from the layer 3 section specified by section
+**name**.
+
+* **post** *(secured)*: Create a layer 3 distributed firewall section.
+___
+By default, the section is created at the top of the firewall table.
+You can specify a location for the section with the **operation**
+and **anchorId** query parameters.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}
-L3 Firewall Operations on specific section specified by section ID
+Working with a specific layer 3 distributed firewall section.
 
-* **get** *(secured)*: Read a specific section of the DFW config specified by Id
-* **put** *(secured)*: Updates a L3 DFW Section. To do this you need to read it first,
-make your changes, and then update the section by supplying the
-Etag value received in the read in the If-Match header
+* **get** *(secured)*: Retrieve information about the specified layer 3 section.
+* **put** *(secured)*: Update the specified layer 3 section in distributed firewall.
 
-* **delete** *(secured)*: Deletes a L3 section and its content by ID
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+* IDs for new objects (rule/section) should be removed or set to zero.
+* If new entities (sections/rules) have been sent in the request, the response
+  will contain the system-generated ids, which are assigned to these new
+  entities. These ID identifies the resource and can be used in the urls if
+  you want to operate on these entities using those URLs.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+When Distributed Firewall is used with Service Composer, firewall
+sections created by Service Composer contain an additional attribute
+in the XML called managedBy. You should not modify Service Composer
+firewall sections using Distributed Firewall REST APIs. If you do, you
+must synchronize firewall rules from Service Composer using the `GET
+/api/2.0/services/policy/serviceprovider/firewall` API.
+
+* **delete** *(secured)*: Delete the specified layer 3 distributed firewall section.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules
-Operations to add one or more L3 Rules
+TESTING Working with a specific layer 3 distributed firewall rule.
 
-* **post** *(secured)*: Add a L3 Rule
+* **post** *(secured)*: Add a layer 3 distributed firewall rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules/{ruleId}
 Operations on L3 rules in sections identified by section Id and
 Rule Id
 
-* **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
+* **get** *(secured)*: Retrieve information about the specified distributed firewall rule.
 
-* **put** *(secured)*: Updates a L3 DFW Rule. To do this you need to read it first,
-make your changes, and then update the section by supplying the
-Etag value received in the read in the If-Match header
+* **put** *(secured)*: Update a layer 3 distributed firewall rule in a layer 3
+section.
 
-* **delete** *(secured)*: Delete a specific rule identified by rule Id
+* **delete** *(secured)*: Delete the specified distributed firewall rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionName}
 L3 Firewall Update Operations on specific section specified by
@@ -1653,19 +1738,53 @@ section Name
 and then update the section by supplying the Etag value received in the read in the If-Match header
 
 ### /4.0/firewall/globalroot-0/config/layer2sections
-L2 Firewall Operations on specific section specified by name (in a
-query Parameter)
+Working with layer 2 sections in distributed firewall.
 
-* **get** *(secured)*: Read a specific section of the DFW config specified by name
-* **post** *(secured)*: Creates a new L2 Firewall Section with a number of rules
+* **get** *(secured)*: Retrieve rules from the layer 2 section specified by section
+**name**.
+
+* **post** *(secured)*: Create a layer 2 distributed firewall section.
+___
+By default, the section is created at the top of the firewall table.
+You can specify a location for the section with the **operation**
+and **anchorId** query parameters.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}
-L2 Firewall Operations on specific section specified by section ID
+Working with a specific layer 3 distributed firewall section.
 
-* **get** *(secured)*: Read a specific section of the DFW config specified by Id
-* **put** *(secured)*: Updates a L2 DFW Section. To do this you need to read it first,
-make your changes, and then update the section by supplying the
-Etag value received in the read in the If-Match header
+* **get** *(secured)*: Retrieve information about the specified layer 3 section.
+* **put** *(secured)*: Update the specified layer 2 section in distributed firewall.
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+* IDs for new objects (rule/section) should be removed or set to zero.
+* If new entities (sections/rules) have been sent in the request, the response
+  will contain the system-generated ids, which are assigned to these new
+  entities. These ID identifies the resource and can be used in the urls if
+  you want to operate on these entities using those URLs.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+When Distributed Firewall is used with Service Composer, firewall
+sections created by Service Composer contain an additional attribute
+in the XML called managedBy. You should not modify Service Composer
+firewall sections using Distributed Firewall REST APIs. If you do, you
+must synchronize firewall rules from Service Composer using the `GET
+/api/2.0/services/policy/serviceprovider/firewall` API.
 
 * **delete** *(secured)*: Deletes a L2 section and its content by ID
 
@@ -1729,10 +1848,23 @@ Service Insertion profiles that can be applied to layer3 redirect rules
 * **get** *(secured)*: Retrieve the Service Insertion profiles
 
 ### /4.0/firewall/globalroot-0/state
-Upgrading distributed firewall
+Enable distributed firewall after upgrade.
+___
+After upgrading NSX Manager, controllers, and network virtualization
+components, check the status of distributed firewall. If it is ready to
+enable, you can enable distributed firewall.
+___
+| State | Description |
+|-------|-------------|
+| backwardCompatible | This is the default state after an upgrade from vCloud Networking and Security to NSX, which means that vShield App is being used for protection instead of distributed firewall.|
+| backwardCompatibleReadyForSwitch | Once the clusters are prepared with NSX binaries, this state is enabled. You can enable distributed firewall only after firewall is in this state. |
+| switchingToForward | This is an intermediate state when you change firewall to distributed firewall. |
+| forward | This is the default state for green field deployments or after you have switched from vShield App to distributed firewall. |
+| switchFailed | This state is unlikely, but may be present if NSX Manager failed to switch to distributed firewall. |
 
-* **get** *(secured)*: Get current state of firewall functioning after NSX upgrade
-* **put** *(secured)*: Enable distributed firewall
+* **get** *(secured)*: Retrieve current state of firewall functioning after NSX upgrade.
+
+* **put** *(secured)*: Enable distributed firewall.
 
 ### /4.0/firewall/globalroot-0/status
 Firewall configuration status
