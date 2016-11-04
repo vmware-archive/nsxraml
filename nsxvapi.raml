@@ -6408,19 +6408,116 @@ securitySchemes:
       description: Enable distributed firewall.
   /globalroot-0/status:
     displayName: dfwStatus
-    description: Firewall configuration status
+    description: |
+      Retrieve status of last publish action for each cluster in the NSX
+      environment.
+      ___
+      The status output displays a generation number (generationNumber) for
+      each rule set, which can be used to verify whether a change in rule sets
+      has propagated to a host. In 6.2.4, a generation number for objects
+      (generationNumberObjects) has been added to the status API. This allows
+      you to verify whether a change in objects consumed in firewall rules has
+      propagated to a host. Note that the object generation number may change
+      frequently and will always be equal to or greater than the ruleset
+      generation number.
+      ___
+      Starting in NSX 6.2.4, clusters (and hosts inside the cluster) are no
+      longer included in the firewall status output if distributed firewall is
+      disabled at the cluster level, or if the cluster is not prepared (NSX
+      VIBs are not installed). In earlier versions of NSX these clusters and
+      hosts are included in the output. However, because they are not
+      configured for firewall, after a firewall rule publish their status is
+      *inprogress*.
     get:
+    # updated in 6.2.4: generationNumberObjects added, non-participating
+    # clusters/hosts removed from output
       displayName: dfwStatusRead
       description: Get firewall configuration status
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <firewallStatus>
+                  <startTime>1478235234617</startTime>
+                  <status>published</status>
+                  <generationNumber>1478235234617</generationNumber>
+                  <generationNumberObjects>1478235234617</generationNumberObjects>
+                  <clusterList>
+                    <clusterStatus>
+                      <clusterId>domain-c33</clusterId>
+                      <status>published</status>
+                      <generationNumber>1478235234617</generationNumber>
+                      <generationNumberObjects>1478235234617</generationNumberObjects>
+                      <hostStatusList>
+                        <hostStatus>
+                          <hostId>host-32</hostId>
+                          <hostName>esx-02a.corp.local</hostName>
+                          <status>published</status>
+                          <errorCode>0</errorCode>
+                          <startTime>1478235235421</startTime>
+                          <endTime>1478235235429</endTime>
+                          <generationNumber>1478235234617</generationNumber>
+                          <clusterId>domain-c33</clusterId>
+                          <generationNumberObjects>1478235234617</generationNumberObjects>
+                        </hostStatus>
+                        <hostStatus>
+                          <hostId>host-28</hostId>
+                          <hostName>esx-01a.corp.local</hostName>
+                          <status>published</status>
+                          <errorCode>0</errorCode>
+                          <startTime>1478235235421</startTime>
+                          <endTime>1478235235431</endTime>
+                          <generationNumber>1478235234617</generationNumber>
+                          <clusterId>domain-c33</clusterId>
+                          <generationNumberObjects>1478235234617</generationNumberObjects>
+                        </hostStatus>
+                      </hostStatusList>
+                    </clusterStatus>
+                    <clusterStatus>
+                      <clusterId>domain-c41</clusterId>
+                      <status>published</status>
+                      <generationNumber>1478235234617</generationNumber>
+                      <generationNumberObjects>1478235234617</generationNumberObjects>
+                      <hostStatusList>
+                        <hostStatus>
+                          <hostId>host-202</hostId>
+                          <hostName>esxmgt-01a.corp.local</hostName>
+                          <status>published</status>
+                          <errorCode>0</errorCode>
+                          <startTime>1478235235436</startTime>
+                          <endTime>1478235235442</endTime>
+                          <generationNumber>1478235234617</generationNumber>
+                          <clusterId>domain-c41</clusterId>
+                          <generationNumberObjects>1478235234617</generationNumberObjects>
+                        </hostStatus>
+                        <hostStatus>
+                          <hostId>host-203</hostId>
+                          <hostName>esxmgt-02a.corp.local</hostName>
+                          <status>published</status>
+                          <errorCode>0</errorCode>
+                          <startTime>1478235235436</startTime>
+                          <endTime>1478235235444</endTime>
+                          <generationNumber>1478235234617</generationNumber>
+                          <clusterId>domain-c41</clusterId>
+                          <generationNumberObjects>1478235234617</generationNumberObjects>
+                        </hostStatus>
+                      </hostStatusList>
+                    </clusterStatus>
+                  </clusterList>
+                </firewallStatus>
     /layer3sections/{sectionID}:
       displayName: L3SectionStatus
-      description: L3 section status
+      description: |
+        Retrieve status of the last publish action for the specified layer 3 section.
       uriParameters:
         sectionID:
           required: true
           displayName: sectionID
           description: Section ID
       get:
+      # updated in 6.2.4: generationNumberObjects added, non-participating
+      # clusters/hosts removed from output
         displayName: L3SectionStatusRead
         description: Get Layer3 status
     /layer2sections/{sectionID}:
@@ -6432,8 +6529,11 @@ securitySchemes:
           displayName: sectionID
           description: Section ID
       get:
+      # updated in 6.2.4: generationNumberObjects added, non-participating
+      # clusters/hosts removed from output
         displayName: L2SectionStatusRead
-        description: Get Layer2 status
+        description: |
+          Retrieve status of the last publish action for the specified layer 2 section.
   /globalroot-0/drafts:
     displayName: dfwDrafts
     description: Import and export firewall configurations
@@ -6574,45 +6674,82 @@ securitySchemes:
               schema: dfwConfigImport
   /stats/eventthresholds:
     displayName: dfwThresholds
-    description: Memory and CPU thresholds for firewall
+    description: |
+      Configure memory, CPU, and connections per second (CPS) thresholds for
+      distributed firewall.
+      ___
+      The firewall module generates system events when the memory and CPU
+      usage crosses these thresholds.
     get:
       displayName: dfwThresholdsRead
-      description: Retrieve memory, CPU, and CPS thresholds for firewall
+      description: |
+        Retrieve threshold configuration for distributed firewall.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <eventThresholds>
+                  <cpu>
+                    <percentValue>80</percentValue>
+                  </cpu>
+                  <memory>
+                    <percentValue>90</percentValue>
+                  </memory>
+                  <connectionsPerSecond>
+                    <value>250000</value>
+                  </connectionsPerSecond>
+                </eventThresholds>
     put:
       displayName: dfwThresholdsUpdate
-      description: Configure thresholds
+      description: |
+        Update threshold configuration for distributed firewall.
       body:
         application/xml:
           example: |
             <eventThresholds>
               <cpu>
-                <percentValue></percentValue>
+                <percentValue>80</percentValue>
               </cpu>
               <memory>
-                <percentValue></percentValue>
+                <percentValue>90</percentValue>
               </memory>
               <connectionsPerSecond>
-                <value></value>
+                <value>250000</value>
               </connectionsPerSecond>
             </eventThresholds>
           schema: dfwThresholdsUpdate
   /config/globalconfiguration:
     displayName: dfwPerformance
-    description: Tuning firewall performance
+    description: |
+      You can use the following flags to improve firewall performance:
+      * **layer3RuleOptimize** and **layer2RuleOptimize** to turn
+      on/off rule optimization
+      * **tcpStrictOption** helps in tighter access and forwarding control
     get:
       displayName: dfwPerformanceRead
-      description: Query RuleOptimize and TCPStrict flags
+      description: Retrieve performance configuration for distributed firewall.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <globalConfiguration>
+                  <layer3RuleOptimize>false</layer3RuleOptimize>
+                  <layer2RuleOptimize>true</layer2RuleOptimize>
+                  <tcpStrictOption>false</tcpStrictOption>
+                </globalConfiguration>
     put:
       displayName: dfwPerformanceUpdate
       description: |
-        Set RuleOptimize and TCPStrict flags in body to improve performance
+        Update the distributed firewall performance configuration.
       body:
         application/xml:
           example: |
             <globalConfiguration>
-              <layer3RuleOptimize></layer3RuleOptimize>
-              <layer2RuleOptimize></layer2RuleOptimize>
-              <tcpStrictOption></tcpStrictOption>
+              <layer3RuleOptimize>false</layer3RuleOptimize>
+              <layer2RuleOptimize>true</layer2RuleOptimize>
+              <tcpStrictOption>false</tcpStrictOption>
             </globalConfiguration>
           schema: dfwPerformanceUpdate
   /forceSync/{ID}:

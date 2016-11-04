@@ -1853,19 +1853,37 @@ ___
 * **put** *(secured)*: Enable distributed firewall.
 
 ### /4.0/firewall/globalroot-0/status
-Firewall configuration status
+Retrieve status of last publish action for each cluster in the NSX
+environment.
+___
+The status output displays a generation number (generationNumber) for
+each rule set, which can be used to verify whether a change in rule sets
+has propagated to a host. In 6.2.4, a generation number for objects
+(generationNumberObjects) has been added to the status API. This allows
+you to verify whether a change in objects consumed in firewall rules has
+propagated to a host. Note that the object generation number may change
+frequently and will always be equal to or greater than the ruleset
+generation number.
+___
+Starting in NSX 6.2.4, clusters (and hosts inside the cluster) are no
+longer included in the firewall status output if distributed firewall is
+disabled at the cluster level, or if the cluster is not prepared (NSX
+VIBs are not installed). In earlier versions of NSX these clusters and
+hosts are included in the output. However, because they are not
+configured for firewall, after a firewall rule publish their status is
+*inprogress*.
 
 * **get** *(secured)*: Get firewall configuration status
 
 ### /4.0/firewall/globalroot-0/status/layer3sections/{sectionID}
-L3 section status
+Retrieve status of the last publish action for the specified layer 3 section.
 
 * **get** *(secured)*: Get Layer3 status
 
 ### /4.0/firewall/globalroot-0/status/layer2sections/{sectionID}
 L2 section status
 
-* **get** *(secured)*: Get Layer2 status
+* **get** *(secured)*: Retrieve status of the last publish action for the specified layer 2 section.
 
 ### /4.0/firewall/globalroot-0/drafts
 Import and export firewall configurations
@@ -1891,16 +1909,24 @@ Import a configuration
 * **post** *(secured)*: Import a configuration
 
 ### /4.0/firewall/stats/eventthresholds
-Memory and CPU thresholds for firewall
+Configure memory, CPU, and connections per second (CPS) thresholds for
+distributed firewall.
+___
+The firewall module generates system events when the memory and CPU
+usage crosses these thresholds.
 
-* **get** *(secured)*: Retrieve memory, CPU, and CPS thresholds for firewall
-* **put** *(secured)*: Configure thresholds
+* **get** *(secured)*: Retrieve threshold configuration for distributed firewall.
+
+* **put** *(secured)*: Update threshold configuration for distributed firewall.
 
 ### /4.0/firewall/config/globalconfiguration
-Tuning firewall performance
+You can use the following flags to improve firewall performance:
+* **layer3RuleOptimize** and **layer2RuleOptimize** to turn
+on/off rule optimization
+* **tcpStrictOption** helps in tighter access and forwarding control
 
-* **get** *(secured)*: Query RuleOptimize and TCPStrict flags
-* **put** *(secured)*: Set RuleOptimize and TCPStrict flags in body to improve performance
+* **get** *(secured)*: Retrieve performance configuration for distributed firewall.
+* **put** *(secured)*: Update the distributed firewall performance configuration.
 
 ### /4.0/firewall/forceSync/{ID}
 Synchronize hosts and clusters with the last good configuration in NSX

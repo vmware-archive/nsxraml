@@ -27049,7 +27049,12 @@ each Edge. Each Edge must have at least one internal interface</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Tuning firewall performance</p>
+  <div class="description"><p>You can use the following flags to improve firewall performance:</p>
+<ul>
+<li><strong>layer3RuleOptimize</strong> and <strong>layer2RuleOptimize</strong> to turn
+on/off rule optimization</li>
+<li><strong>tcpStrictOption</strong> helps in tighter access and forwarding control</li>
+</ul>
 </div>
 <div class="method get">
   <a
@@ -27059,7 +27064,7 @@ each Edge. Each Edge must have at least one internal interface</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Query RuleOptimize and TCPStrict flags</p>
+    <p><p>Retrieve performance configuration for distributed firewall.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -27070,6 +27075,18 @@ each Edge. Each Edge must have at least one internal interface</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">globalConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">layer3RuleOptimize</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">layer3RuleOptimize</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">layer2RuleOptimize</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">layer2RuleOptimize</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tcpStrictOption</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">tcpStrictOption</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">globalConfiguration</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -27080,7 +27097,7 @@ each Edge. Each Edge must have at least one internal interface</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Set RuleOptimize and TCPStrict flags in body to improve performance</p>
+    <p><p>Update the distributed firewall performance configuration.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -27106,9 +27123,9 @@ each Edge. Each Edge must have at least one internal interface</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">globalConfiguration</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">layer3RuleOptimize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">layer3RuleOptimize</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">layer2RuleOptimize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">layer2RuleOptimize</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">tcpStrictOption</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tcpStrictOption</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">layer3RuleOptimize</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">layer3RuleOptimize</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">layer2RuleOptimize</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">layer2RuleOptimize</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tcpStrictOption</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">tcpStrictOption</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfiguration</span>&gt;</span>
 </code></pre>
   </div>
@@ -30457,7 +30474,25 @@ enable, you can enable distributed firewall.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Firewall configuration status</p>
+  <div class="description"><p>Retrieve status of last publish action for each cluster in the NSX
+environment.</p>
+<hr>
+<p>The status output displays a generation number (generationNumber) for
+each rule set, which can be used to verify whether a change in rule sets
+has propagated to a host. In 6.2.4, a generation number for objects
+(generationNumberObjects) has been added to the status API. This allows
+you to verify whether a change in objects consumed in firewall rules has
+propagated to a host. Note that the object generation number may change
+frequently and will always be equal to or greater than the ruleset
+generation number.</p>
+<hr>
+<p>Starting in NSX 6.2.4, clusters (and hosts inside the cluster) are no
+longer included in the firewall status output if distributed firewall is
+disabled at the cluster level, or if the cluster is not prepared (NSX
+VIBs are not installed). In earlier versions of NSX these clusters and
+hosts are included in the output. However, because they are not
+configured for firewall, after a firewall rule publish their status is
+<em>inprogress</em>.</p>
 </div>
 <div class="method get">
   <a
@@ -30478,6 +30513,81 @@ enable, you can enable distributed firewall.</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>published<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">generationNumberObjects</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumberObjects</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">clusterList</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clusterStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clusterId</span>&gt;</span>domain-c33<span class="hljs-tag">&lt;/<span class="hljs-name">clusterId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>published<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">generationNumberObjects</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumberObjects</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostStatusList</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hostStatus</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-32<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>esx-02a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>published<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1478235235421<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1478235235429<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clusterId</span>&gt;</span>domain-c33<span class="hljs-tag">&lt;/<span class="hljs-name">clusterId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumberObjects</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumberObjects</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatus</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hostStatus</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-28<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>esx-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>published<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1478235235421<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1478235235431<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clusterId</span>&gt;</span>domain-c33<span class="hljs-tag">&lt;/<span class="hljs-name">clusterId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumberObjects</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumberObjects</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatusList</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">clusterStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clusterStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clusterId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">clusterId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>published<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">generationNumberObjects</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumberObjects</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostStatusList</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hostStatus</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-202<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>esxmgt-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>published<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1478235235436<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1478235235442<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clusterId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">clusterId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumberObjects</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumberObjects</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatus</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hostStatus</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-203<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>esxmgt-02a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>published<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1478235235436<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1478235235444<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clusterId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">clusterId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">generationNumberObjects</span>&gt;</span>1478235234617<span class="hljs-tag">&lt;/<span class="hljs-name">generationNumberObjects</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatusList</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">clusterStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">clusterList</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">firewallStatus</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -30512,7 +30622,7 @@ enable, you can enable distributed firewall.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Get Layer2 status</p>
+    <p><p>Retrieve status of the last publish action for the specified layer 2 section.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -30533,7 +30643,7 @@ enable, you can enable distributed firewall.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>L3 section status</p>
+  <div class="description"><p>Retrieve status of the last publish action for the specified layer 3 section.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -30578,7 +30688,11 @@ enable, you can enable distributed firewall.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Memory and CPU thresholds for firewall</p>
+  <div class="description"><p>Configure memory, CPU, and connections per second (CPS) thresholds for
+distributed firewall.</p>
+<hr>
+<p>The firewall module generates system events when the memory and CPU
+usage crosses these thresholds.</p>
 </div>
 <div class="method get">
   <a
@@ -30588,7 +30702,7 @@ enable, you can enable distributed firewall.</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve memory, CPU, and CPS thresholds for firewall</p>
+    <p><p>Retrieve threshold configuration for distributed firewall.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -30599,6 +30713,24 @@ enable, you can enable distributed firewall.</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">eventThresholds</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">percentValue</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">percentValue</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cpu</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">memory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">percentValue</span>&gt;</span>90<span class="hljs-tag">&lt;/<span class="hljs-name">percentValue</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">memory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">connectionsPerSecond</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>250000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">connectionsPerSecond</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">eventThresholds</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -30609,7 +30741,7 @@ enable, you can enable distributed firewall.</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Configure thresholds</p>
+    <p><p>Update threshold configuration for distributed firewall.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -30654,13 +30786,13 @@ enable, you can enable distributed firewall.</p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">eventThresholds</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">cpu</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">percentValue</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">percentValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">percentValue</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">percentValue</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">cpu</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">memory</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">percentValue</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">percentValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">percentValue</span>&gt;</span>90<span class="hljs-tag">&lt;/<span class="hljs-name">percentValue</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">memory</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">connectionsPerSecond</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>250000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">connectionsPerSecond</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">eventThresholds</span>&gt;</span>
 </code></pre>
