@@ -1568,6 +1568,90 @@ securitySchemes:
                 </destinationHost>
               </testParameters>
             schema: logicalSwitchPing
+    /hardwaregateways:
+      displayName: logicalSwitchHardwareGatewayBindings
+      description: |
+        Working with hardware gateway bindings for a specific logical switch.
+      get:
+        displayName: logicalSwitchHardwareGatewayBindingsList
+        description: |
+          Retrieve hardware gateway bindings for the specified logical switch.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <list>
+                    <hardwareGatewayBinding>
+                      <id>torbinding-2</id>
+                      <hardwareGatewayId>torgateway-1</hardwareGatewayId>
+                      <switchName>1-switch-579</switchName>
+                      <portname>p1</portname>
+                      <vlan>0</vlan>
+                      <virtualWire>virtualwire-1</virtualWire>
+                      <vni>5342</vni>
+                    </hardwareGatewayBinding>
+                    <hardwareGatewayBinding>
+                      <id>torbinding-1</id>
+                      <hardwareGatewayId>torgateway-2</hardwareGatewayId>
+                      <switchName>1-switch-104</switchName>
+                      <portname>p1</portname>
+                      <vlan>0</vlan>
+                      <virtualWire>virtualwire-1</virtualWire>
+                      <vni>5342</vni>
+                    </hardwareGatewayBinding>
+                  </list>
+      /{hardwareGatewayBindingId}:
+        displayName: logicalSwitchHardwareGatewayBindingId
+        description: |
+          Working with connections between hardware gateways and logical
+          switches.
+        post:
+          displayName: logicalSwitchHardwareGatewayBindingCreate
+          description: |
+            Manage the connection between a hardware gateway and a logical switch.
+          queryParameters:
+            action:
+              displayName: action
+              description: |
+                Specify *attach* to attach a hardware gateway to a logical
+                switch.
+                ___
+                Specify *detach* to detach a hardware gateway from a logical
+                switch.
+              required: false
+          body:
+            application/xml:
+              example: |
+                * Attach a hardware gateway to a logical switch and create a
+                  new binding with the information provided
+
+                POST /api/2.0/vdn/virtualwires/<virtualwire id>/hardwaregateways
+
+                <hardwareGatewayBinding>
+                  <hardwareGatewayId>hardwarewgateway1</hardwareGatewayId>
+                  <vlan>v1</vlan>
+                  <switchName>s1</switchName>
+                  <portName>s1</portName>
+                </hardwareGatewayBinding>
+
+                * Attach a hardware gateway to a logical switch, specifying an
+                  existing binding by ID
+
+                POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/<bindingId>?action=attach
+
+                <virtualWire>
+                  ...
+                  <hardwareGatewayBindings>
+                    <hardwareGatewayBinding>
+                      <id>binding id</id>
+                    </hardwareGatewayBinding>
+                  </hardwareGatewayBindings>
+                </virtualWire>
+
+                * Detach a hardware gateway from a logical switch
+
+                POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/<bindingId>?action=detach
 /2.0/xvs/networks/{ID}/features:
   displayName: arpMAC
   description: |
@@ -10915,3 +10999,538 @@ securitySchemes:
             <command>show logical-switch list host host-21 vni</command>
           </nsxcli>
         schema: nsxCliExecute
+/2.0/vdn/hardwaregateways:
+  displayName: hardwareGateways
+  description: Working with Hardware Gateways
+  post:
+    displayName: hardwareGatewayCreate
+    description: |
+      Install a hardware gateway.
+      ___
+      **bfdEnabled** is true by default.
+    body:
+      application/xml:
+        example: |
+          <hardwareGatewaySpec>
+            <name></name>
+            <description></description>
+            <certificate></certificate>
+            <bfdEnabled></bfdEnabled>
+          </hardwareGatewaySpec>
+  get:
+    displayName: hardwareGatewaysList
+    description: Retrieve information about all hardware gateways.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <list>
+                  <hardwareGateway>
+                    <objectId>torgateway-1</objectId>
+                    <revision>0</revision>
+                    <name>torgateway1</name>
+                    <description>this is tor instance 1</description>
+                    <clientHandle />
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                    <uuid>6536bcf5-2f55-47f6-8b26-9fa632061d8c</uuid>
+                    <status>UP</status>
+                    <thumbprint>B9:0E:E9:6C:AA:7B:AD:11:64:4C:33:92:4E:0C:D8:16:10:95:02:A7</thumbprint>
+                    <bfdEnabled>true</bfdEnabled>
+                    <managementIp>10.116.255.160</managementIp>
+                    <bindingCount>2</bindingCount>
+                  </hardwareGateway>
+                  <hardwareGateway>
+                    <objectId>torgateway-2</objectId>
+                    <revision>0</revision>
+                    <name>torgateway2</name>
+                    <description>this is tor instance 2</description>
+                    <clientHandle />
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                    <uuid>f1e9b733-c0c3-4905-b00d-4bd6d8649f48</uuid>
+                    <status>UP</status>
+                    <thumbprint>3C:9D:C0:9B:F7:57:AF:EA:6A:9F:49:27:7B:23:25:D3:5E:0D:53:ED</thumbprint>
+                    <bfdEnabled>true</bfdEnabled>
+                    <managementIp>10.116.251.149</managementIp>
+                    <bindingCount>2</bindingCount>
+                  </hardwareGateway>
+              </list>
+  /{hardwareGatewayId}:
+    displayName: hardwareGatewayId
+    description: Working with a specific hardware gateway.
+    uriParameters:
+      hardwareGatewayId:
+        displayName: hardwareGatewayId
+        description: Object ID of the hardware gateway.
+        required: true
+    get:
+      displayName: hardwareGatewayRead
+      description: Retrieve information about the specified hardware gateway.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <hardwareGateway>
+                  <objectId>torgateway-1</objectId>
+                  <revision>0</revision>
+                  <name>torgateway1</name>
+                  <description>this is tor instance 1</description>
+                  <clientHandle />
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                  <uuid>6536bcf5-2f55-47f6-8b26-9fa632061d8c</uuid>
+                  <status>UP</status>
+                  <thumbprint>B9:0E:E9:6C:AA:7B:AD:11:64:4C:33:92:4E:0C:D8:16:10:95:02:A7</thumbprint>
+                  <bfdEnabled>true</bfdEnabled>
+                  <managementIp>10.116.255.160</managementIp>
+                  <bindingCount>2</bindingCount>
+                </hardwareGateway>
+    put:
+      displayName: hardwareGatewayUpdate
+      description: Update the specified hardware gateway.
+      body:
+        application/xml:
+          example: |
+            <hardwareGatewaySpec>
+              <name></name>
+              <description></description>
+              <certificate></certificate>
+              <bfdEnabled></bfdEnabled>
+            </hardwareGatewaySpec>
+    delete:
+      displayName: hardwareGatewayDelete
+      description: Delete the specified hardware gateway.
+    /switches:
+      displayName: hardwareGatewaySwitches
+      description: Working with switches on a specific hardware gateway.
+      get:
+        displayName: hardwareGatewaySwitchesList
+        description: |
+          Retrieve information about switches on the specified hardware
+          gateway.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <hardwareGatewaySwitches>
+                    <hardwareGatewaySwitch>
+                      <switchname>1-switch-579</switchname>
+                      <description />
+                      <faults />
+                    </hardwareGatewaySwitch>
+                    <hardwareGatewayId>torgateway-1</hardwareGatewayId>
+                  </hardwareGatewaySwitches>
+      /{switchName}:
+        displayName: hardwareGatewaySwitch
+        description: |
+          Working with a specific switch on a specific hardware gateway.
+        /switchports:
+          displayName: hardwareGatewaySwitchPorts
+          description: |
+            Working with ports on a specific switch on a specific hardware
+            gateway.
+          get:
+            displayName: hardwareGatewaySwitchPortsList
+            description: |
+              Retrive information about the hardware gateway switch ports for
+              the specified switch and hardware gateway.
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                      <hardwareGatewaySwitchPorts>
+                          <hardwareGatewaySwitchPort>
+                            <portname>p4</portname>
+                            <description />
+                            <faults />
+                          </hardwareGatewaySwitchPort>
+                          <hardwareGatewaySwitchPort>
+                            <portname>p3</portname>
+                            <description />
+                            <faults />
+                          </hardwareGatewaySwitchPort>
+                          <hardwareGatewaySwitchPort>
+                            <portname>p2</portname>
+                            <description />
+                            <faults />
+                          </hardwareGatewaySwitchPort>
+                          <hardwareGatewaySwitchPort>
+                            <portname>p1</portname>
+                            <description />
+                            <faults />
+                          </hardwareGatewaySwitchPort>
+                          <hardwareGatewaySwitch>
+                            <switchname>1-switch-579</switchname>
+                          </hardwareGatewaySwitch>
+                          <hardwareGatewayId>torgateway-1</hardwareGatewayId>
+                      </hardwareGatewaySwitchPorts>
+  /replicationcluster:
+    displayName: hardwareGatewayReplicationCluster
+    description: Working with hardware gateway replication clusters.
+    put:
+      displayName: hardwareGatewayReplicationClusterUpdate
+      description: |
+        Update the hardware gateway replication cluster.
+        ___
+        Add or remove hosts on a replication cluster.
+      body:
+        appplication/xml:
+          example: |
+            <replicationCluster>
+              <hosts>
+                <basicinfo>
+                  <objectId>host-20</objectId>
+                </basicinfo>
+                <basicinfo>
+                  <objectId>host-21</objectId>
+                </basicinfo>
+                <basicinfo>
+                  <objectId>host-26</objectId>
+                </basicinfo>
+              </hosts>
+            </replicationCluster>
+    get:
+      displayName: hardwareGatewayReplicationClusterList
+      description: |
+        Retrieve information about the specified hardware gateway replication
+        cluster.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <replicationCluster>
+                  <hosts>
+                    <basicinfo>
+                      <objectId>host-26</objectId>
+                      <objectTypeName>HostSystem</objectTypeName>
+                      <vsmUuid>422874E3-6873-972C-DE9E-67D5B846042E</vsmUuid>
+                      <nodeId>e5a97efd-89e1-44b1-bfe8-9d07a8d92f08</nodeId>
+                      <revision>32</revision>
+                      <type>
+                        <typeName>HostSystem</typeName>
+                      </type>
+                      <name>10.116.254.9</name>
+                      <scope>
+                        <id>domain-c24</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>ComputeCluster2-$$</name>
+                      </scope>
+                      <clientHandle />
+                      <extendedAttributes />
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </basicinfo>
+                    <basicinfo>
+                      <objectId>host-21</objectId>
+                      <objectTypeName>HostSystem</objectTypeName>
+                      <vsmUuid>422874E3-6873-972C-DE9E-67D5B846042E</vsmUuid>
+                      <nodeId>e5a97efd-89e1-44b1-bfe8-9d07a8d92f08</nodeId>
+                      <revision>31</revision>
+                      <type>
+                        <typeName>HostSystem</typeName>
+                      </type>
+                      <name>10.116.247.220</name>
+                      <scope>
+                        <id>domain-c18</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>ComputeCluster1-$$</name>
+                      </scope>
+                      <clientHandle />
+                      <extendedAttributes />
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </basicinfo>
+                    <basicinfo>
+                      <objectId>host-20</objectId>
+                      <objectTypeName>HostSystem</objectTypeName>
+                      <vsmUuid>422874E3-6873-972C-DE9E-67D5B846042E</vsmUuid>
+                      <nodeId>e5a97efd-89e1-44b1-bfe8-9d07a8d92f08</nodeId>
+                      <revision>33</revision>
+                      <type>
+                        <typeName>HostSystem</typeName>
+                      </type>
+                      <name>10.116.254.157</name>
+                      <scope>
+                        <id>domain-c18</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>ComputeCluster1-$$</name>
+                      </scope>
+                      <clientHandle />
+                      <extendedAttributes />
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </basicinfo>
+                  </hosts>
+                </replicationCluster>
+  /bindings:
+    displayName: hardwareGatewayBindings
+    description: Retrieve information about hardware gateway bindings.
+    post:
+      displayName: hardwareGatewayBindingCreate
+      description: Create a hardware gateway binding.
+      body:
+        application/xml:
+          example: |
+            <hardwareGatewayBinding>
+              <hardwareGatewayId></hardwareGatewayId>
+              <vlan></vlan>
+              <switchName></switchName>
+              <portName></portName>
+            </hardwareGatewayBinding>
+    get:
+      displayName: hardwareGatewayBindingsList
+      description: Retrieve information about hardware gateway bindings.
+      queryParameters:
+        hardwareGatewayId:
+          displayName: hardwareGatewayId
+          description: ID of the hardware gateway.
+          required: false
+          type: string
+        vni:
+          displayName: vni
+          description: VNI of the logical switch.
+          required: false
+          type: integer
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <hardwareGatewayBinding>
+                  <id>hardware gateway binding id</id>
+                  <hardwareGatewayId>hwgateway1</hardwareGatewayId>
+                  <vlan>201</vlan>
+                  <switchName>s1</switchName>
+                  <portname>s1</portname>
+                  <virtualWire>virtualwire-1</virtualWire>
+                  <vni>5000</vni>
+                </hardwareGatewayBinding>
+    /{bindingId}:
+      displayName: hardwareGatewayBindingId
+      description: Working with a specific hardware gateway binding.
+      uriParameters:
+        bindingId:
+          displayName: bindingId
+          description: hardware gateway binding ID.
+      get:
+        displayName: hardwareGatewayBindingIdRead
+        description: |
+          Retrieve information about the specified hardware gateway binding.
+      put:
+        displayName: hardwareGatewayBindingIdUpdate
+        description: |
+          Update the specified hardware gateway binding.
+          ___
+          You can update the binding parameters. This API will fail if:
+          * the specified *hardwareGatewayId* does not exist.
+          * the specified logical switch (*virtualWire*) is not present or there is a software
+            gateway on the binding.
+          * the new binding value is a duplicate of an existing binding.
+        body:
+          application/xml:
+            example: |
+              <hardwareGatewayBinding>
+                <hardwareGatewayId>hardwaregateway1</hardwareGatewayId>
+                <vlan>201</vlan>
+                <switchName>s1</switchName>
+                <portname>s1</portname>
+                <virtualWire>virtualwire-1</virtualWire>
+              </hardwareGatewayBinding>
+      delete:
+        displayName: hardwareGatewayBindingIdDelete
+        description: Delete the specified hardware gateway binding.
+      /statistic:
+        displayName: hardwareGatewayBindingIdStatistic
+        description: Working with hardware gateway binding statistics.
+        get:
+          displayName: hardwareGatewayBindingIdStatisticList
+          description: |
+            Retrieve statistics for the specified hardware gateway binding.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <hardwareGatewayStats>
+                      <bindingId>hwgwbinding-5</bindingId>
+                      <timestamp>long type timestamp for this query response</timestamp>
+                      <packetsFromLocal>23431</packetsFromLocal>
+                      <bytesFromLocal>734754</bytesFromLocal>
+                      <packetsToLocal>2343</packetsToLocal>
+                      <bytesToLocal>74364</bytesToLocal>
+                    </hardwareGatewayStats>
+    /manage:
+      displayName: hardwareGatewayBindingsManage
+      description: |
+        Working with hardware gateway binding objects.
+      post:
+        displayName: hardwareGatewayBindingsManageUpdate
+        description: |
+          Manage hardware gateway binding objects.
+          ___
+          Use this API to attach, detach, and update multiple bindings in a
+          single API call.  This API accepts three lists for add, update, and
+          delete. Each list accepts a hardwareGatewayManageBindingsItem with a
+          full description of the new binding with its objectID. This API
+          handles a maximum of 100 HardwareGatewayManageBindingsItem objects
+          for each of the Add/Update/Delete lists.
+        body:
+          application/xml:
+            example: |
+              <hardwareGatewayManageBindings>
+                <addItems>
+                  <hardwareGatewayManageBindingItem>
+                    <hardwareGatewayId></hardwareGatewayId>
+                    <virtualWireId></virtualWireId>
+                    <switchName></switchName>
+                    <portname></portname>
+                    <vlan></vlan>
+                    <virtualWire></virtualWire>
+                  </ hardwareGatewayManageBindingItem>
+                </addItems>
+                <updateItems>
+                  <hardwareGatewayManageBindingItem>
+                    <objectId></objectId>
+                    <hardwareGatewayId></hardwareGatewayId>
+                    <virtualWireId></virtualWireId>
+                    <switchName></switchName>
+                    <portname></portname>
+                    <vlan></vlan>
+                    <virtualWire></virtualWire>
+                  </hardwareGatewayManageBindingItem>
+                </updateItems>
+                <deleteItems>
+                  <hardwareGatewayManageBindingItem>
+                    <objectId></objectId>
+                  </ hardwareGatewayManageBindingItem>
+                </deleteItems>
+              <hardwareGatewayManageBindings>
+  /bfd:
+    displayName: hardwareGatewayBfd
+    description: Working with hardware gateway BFD (bidirectional forwarding).
+    /config:
+      displayName: hardwareGatewayBfdConfig
+      description: Working with hardware gateway BFD configuration.
+      put:
+        displayName: hardwareGatewayBfdConfigUpdate
+        description: Update global hardware gateway BDF configuration.
+        body:
+          application/xml:
+            example: |
+              <hardwareGatewayBfdParams>
+                <bfdEnabled>true</bfdEnabled>
+                <probeInterval>100</probeInterval>
+              </hardwareGatewayBfdParams>
+      get:
+        # read or list?
+        displayName: hardwareGatewayBfdConfigRead
+        description: Retrieve global hardware gateway BDF configuration.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <hardwareGatewayBfdParams>
+                    <bfdEnabled>true</bfdEnabled>
+                    <probeInterval>100</probeInterval>
+                  </hardwareGatewayBfdParams>
+    /status:
+      displayName: hardwareGatewayBfdStatus
+      description: Working with hardware gateway BFD tunnel status.
+      get:
+        # read or list?
+        displayName: hardwareGatewayBfdStatusRead
+        description: |
+          Retrieve hardware gateway BDF tunnel status for all tunnel
+          endpoints, including hosts and hardware gateways.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <hardwareGatewayBfdStatusList>
+                    <statuses>
+                      <hardwareGatewayBfdStatus>
+                        <probeSourceId>torgateway-2</probeSourceId>
+                        <bfdTunnelList>
+                          <bfdTunnelStatus>
+                            <diagnostic>Neighbor Signaled Session Down</diagnostic>
+                            <enabled>true</enabled>
+                            <forwarding>true</forwarding>
+                            <info></info>
+                            <localVtepIp>172.21.145.84</localVtepIp>
+                            <remoteDiagnostic>Control Detection Time Expired</remoteDiagnostic>
+                            <remoteState>UP</remoteState>
+                            <remoteVtepIp>172.19.152.226</remoteVtepIp>
+                            <state>UP</state>
+                          </bfdTunnelStatus>
+                          <bfdTunnelStatus>
+                            <diagnostic>Neighbor Signaled Session Down</diagnostic>
+                            <enabled>true</enabled>
+                            <forwarding>true</forwarding>
+                            <info></info>
+                            <localVtepIp>172.21.145.84</localVtepIp>
+                            <remoteDiagnostic>Control Detection Time Expired</remoteDiagnostic>
+                            <remoteState>UP</remoteState>
+                            <remoteVtepIp>172.18.171.169</remoteVtepIp>
+                            <state>UP</state>
+                          </bfdTunnelStatus>
+                          <bfdTunnelStatus>
+                            <diagnostic>Neighbor Signaled Session Down</diagnostic>
+                            <enabled>true</enabled>
+                            <forwarding>true</forwarding>
+                            <info></info>
+                            <localVtepIp>172.21.145.84</localVtepIp>
+                            <remoteDiagnostic>Control Detection Time Expired</remoteDiagnostic>
+                            <remoteState>UP</remoteState>
+                            <remoteVtepIp>172.18.171.168</remoteVtepIp>
+                            <state>UP</state>
+                          </bfdTunnelStatus>
+                        </bfdTunnelList>
+                      </hardwareGatewayBfdStatus>
+                      <hardwareGatewayBfdStatus>
+                        <probeSourceId>torgateway-1</probeSourceId>
+                        <bfdTunnelList>
+                          <bfdTunnelStatus>
+                            <diagnostic>Control Detection Time Expired</diagnostic>
+                            <enabled>true</enabled>
+                            <forwarding>true</forwarding>
+                            <info></info>
+                            <localVtepIp>172.21.145.85</localVtepIp>
+                            <remoteDiagnostic>Control Detection Time Expired</remoteDiagnostic>
+                            <remoteState>UP</remoteState>
+                            <remoteVtepIp>172.19.152.226</remoteVtepIp>
+                            <state>UP</state>
+                          </bfdTunnelStatus>
+                          <bfdTunnelStatus>
+                            <diagnostic>Neighbor Signaled Session Down</diagnostic>
+                            <enabled>true</enabled>
+                            <forwarding>true</forwarding>
+                            <info></info>
+                            <localVtepIp>172.21.145.85</localVtepIp>
+                            <remoteDiagnostic>Control Detection Time Expired</remoteDiagnostic>
+                            <remoteState>UP</remoteState>
+                            <remoteVtepIp>172.18.171.168</remoteVtepIp>
+                            <state>UP</state>
+                          </bfdTunnelStatus>
+                          <bfdTunnelStatus>
+                            <diagnostic>Neighbor Signaled Session Down</diagnostic>
+                            <enabled>true</enabled>
+                            <forwarding>true</forwarding>
+                            <info></info>
+                            <localVtepIp>172.21.145.85</localVtepIp>
+                            <remoteDiagnostic>Control Detection Time Expired</remoteDiagnostic>
+                            <remoteState>UP</remoteState>
+                            <remoteVtepIp>172.18.171.169</remoteVtepIp>
+                            <state>UP</state>
+                          </bfdTunnelStatus>
+                        </bfdTunnelList>
+                      </hardwareGatewayBfdStatus>
+                    </statuses>
+                  </hardwareGatewayBfdStatusList>

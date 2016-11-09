@@ -368,6 +368,17 @@ Parameter **packetSizeMode** has one of the following values:
 If you set **packetSizeMode** to *2*, you must specify the size using
 the **packetSize** parameter.
 
+### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways
+Working with hardware gateway bindings for a specific logical switch.
+
+* **get** *(secured)*: Retrieve hardware gateway bindings for the specified logical switch.
+
+### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways/{hardwareGatewayBindingId}
+Working with connections between hardware gateways and logical
+switches.
+
+* **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
+
 ## arpMAC
 Working with ARP suppression and MAC learning for logical switches
 
@@ -3028,4 +3039,101 @@ through the API, please see the Central CLI chapter of the *NSX Command
 Line Interface Reference*.
 ___
 The Accept header must be set to text/plain.
+
+## hardwareGateways
+Working with Hardware Gateways
+
+### /2.0/vdn/hardwaregateways
+
+* **post** *(secured)*: Install a hardware gateway.
+___
+**bfdEnabled** is true by default.
+
+* **get** *(secured)*: Retrieve information about all hardware gateways.
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}
+Working with a specific hardware gateway.
+
+* **get** *(secured)*: Retrieve information about the specified hardware gateway.
+* **put** *(secured)*: Update the specified hardware gateway.
+* **delete** *(secured)*: Delete the specified hardware gateway.
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches
+Working with switches on a specific hardware gateway.
+
+* **get** *(secured)*: Retrieve information about switches on the specified hardware
+gateway.
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches/{switchName}
+Working with a specific switch on a specific hardware gateway.
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches/{switchName}/switchports
+Working with ports on a specific switch on a specific hardware
+gateway.
+
+* **get** *(secured)*: Retrive information about the hardware gateway switch ports for
+the specified switch and hardware gateway.
+
+### /2.0/vdn/hardwaregateways/replicationcluster
+Working with hardware gateway replication clusters.
+
+* **put** *(secured)*: Update the hardware gateway replication cluster.
+___
+Add or remove hosts on a replication cluster.
+
+* **get** *(secured)*: Retrieve information about the specified hardware gateway replication
+cluster.
+
+### /2.0/vdn/hardwaregateways/bindings
+Retrieve information about hardware gateway bindings.
+
+* **post** *(secured)*: Create a hardware gateway binding.
+* **get** *(secured)*: Retrieve information about hardware gateway bindings.
+
+### /2.0/vdn/hardwaregateways/bindings/{bindingId}
+Working with a specific hardware gateway binding.
+
+* **get** *(secured)*: Retrieve information about the specified hardware gateway binding.
+
+* **put** *(secured)*: Update the specified hardware gateway binding.
+___
+You can update the binding parameters. This API will fail if:
+* the specified *hardwareGatewayId* does not exist.
+* the specified logical switch (*virtualWire*) is not present or there is a software
+  gateway on the binding.
+* the new binding value is a duplicate of an existing binding.
+
+* **delete** *(secured)*: Delete the specified hardware gateway binding.
+
+### /2.0/vdn/hardwaregateways/bindings/{bindingId}/statistic
+Working with hardware gateway binding statistics.
+
+* **get** *(secured)*: Retrieve statistics for the specified hardware gateway binding.
+
+### /2.0/vdn/hardwaregateways/bindings/manage
+Working with hardware gateway binding objects.
+
+* **post** *(secured)*: Manage hardware gateway binding objects.
+___
+Use this API to attach, detach, and update multiple bindings in a
+single API call.  This API accepts three lists for add, update, and
+delete. Each list accepts a hardwareGatewayManageBindingsItem with a
+full description of the new binding with its objectID. This API
+handles a maximum of 100 HardwareGatewayManageBindingsItem objects
+for each of the Add/Update/Delete lists.
+
+### /2.0/vdn/hardwaregateways/bfd
+Working with hardware gateway BFD (bidirectional forwarding).
+
+### /2.0/vdn/hardwaregateways/bfd/config
+Working with hardware gateway BFD configuration.
+
+* **put** *(secured)*: Update global hardware gateway BDF configuration.
+* **get** *(secured)*: Retrieve global hardware gateway BDF configuration.
+
+### /2.0/vdn/hardwaregateways/bfd/status
+Working with hardware gateway BFD tunnel status.
+
+* **get** *(secured)*: Retrieve hardware gateway BDF tunnel status for all tunnel
+endpoints, including hosts and hardware gateways.
 
