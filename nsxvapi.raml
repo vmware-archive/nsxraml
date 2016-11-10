@@ -1602,7 +1602,7 @@ securitySchemes:
                     </hardwareGatewayBinding>
                   </list>
       /{hardwareGatewayBindingId}:
-        displayName: logicalSwitchHardwareGatewayBindingId
+        displayName: logicalSwitchHardwareGatewayBinding
         description: |
           Working with connections between hardware gateways and logical
           switches.
@@ -10985,12 +10985,15 @@ securitySchemes:
       parameter. For a complete list of the Central CLI commands executable
       through the API, please see the Central CLI chapter of the *NSX Command
       Line Interface Reference*.
-      ___
-      The Accept header must be set to text/plain.
     queryParameters:
       suffix:
         displayName: action
-        description: Use *action=execute* as the query parameter.
+        description: Use *action=execute*.
+        required: true
+    headers:
+      Accept:
+        displayName: Accept
+        description: Specify *text/plain*.
         required: true
     body:
       application/xml:
@@ -11171,7 +11174,7 @@ securitySchemes:
                       </hardwareGatewaySwitchPorts>
   /replicationcluster:
     displayName: hardwareGatewayReplicationCluster
-    description: Working with hardware gateway replication clusters.
+    description: Working with the hardware gateway replication cluster.
     put:
       displayName: hardwareGatewayReplicationClusterUpdate
       description: |
@@ -11195,10 +11198,9 @@ securitySchemes:
               </hosts>
             </replicationCluster>
     get:
-      displayName: hardwareGatewayReplicationClusterList
+      displayName: hardwareGatewayReplicationClusterRead
       description: |
-        Retrieve information about the specified hardware gateway replication
-        cluster.
+        Retrieve information about the hardware gateway replication cluster.
       responses:
         200:
           body:
@@ -11312,18 +11314,18 @@ securitySchemes:
                   <vni>5000</vni>
                 </hardwareGatewayBinding>
     /{bindingId}:
-      displayName: hardwareGatewayBindingId
+      displayName: hardwareGatewayBinding
       description: Working with a specific hardware gateway binding.
       uriParameters:
         bindingId:
           displayName: bindingId
           description: hardware gateway binding ID.
       get:
-        displayName: hardwareGatewayBindingIdRead
+        displayName: hardwareGatewayBindingRead
         description: |
           Retrieve information about the specified hardware gateway binding.
       put:
-        displayName: hardwareGatewayBindingIdUpdate
+        displayName: hardwareGatewayBindingUpdate
         description: |
           Update the specified hardware gateway binding.
           ___
@@ -11343,13 +11345,13 @@ securitySchemes:
                 <virtualWire>virtualwire-1</virtualWire>
               </hardwareGatewayBinding>
       delete:
-        displayName: hardwareGatewayBindingIdDelete
+        displayName: hardwareGatewayBindingDelete
         description: Delete the specified hardware gateway binding.
       /statistic:
-        displayName: hardwareGatewayBindingIdStatistic
+        displayName: hardwareGatewayBindingStatistic
         description: Working with hardware gateway binding statistics.
         get:
-          displayName: hardwareGatewayBindingIdStatisticList
+          displayName: hardwareGatewayBindingStatisticList
           description: |
             Retrieve statistics for the specified hardware gateway binding.
           responses:
@@ -11419,7 +11421,7 @@ securitySchemes:
       description: Working with hardware gateway BFD configuration.
       put:
         displayName: hardwareGatewayBfdConfigUpdate
-        description: Update global hardware gateway BDF configuration.
+        description: Update global hardware gateway BFD configuration.
         body:
           application/xml:
             example: |
@@ -11428,9 +11430,8 @@ securitySchemes:
                 <probeInterval>100</probeInterval>
               </hardwareGatewayBfdParams>
       get:
-        # read or list?
         displayName: hardwareGatewayBfdConfigRead
-        description: Retrieve global hardware gateway BDF configuration.
+        description: Retrieve global hardware gateway BFD configuration.
         responses:
           200:
             body:
@@ -11444,10 +11445,9 @@ securitySchemes:
       displayName: hardwareGatewayBfdStatus
       description: Working with hardware gateway BFD tunnel status.
       get:
-        # read or list?
         displayName: hardwareGatewayBfdStatusRead
         description: |
-          Retrieve hardware gateway BDF tunnel status for all tunnel
+          Retrieve hardware gateway BFD tunnel status for all tunnel
           endpoints, including hosts and hardware gateways.
         responses:
           200:

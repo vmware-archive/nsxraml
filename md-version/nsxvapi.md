@@ -3037,8 +3037,6 @@ You can insert any valid Central CLI command as the **command**
 parameter. For a complete list of the Central CLI commands executable
 through the API, please see the Central CLI chapter of the *NSX Command
 Line Interface Reference*.
-___
-The Accept header must be set to text/plain.
 
 ## hardwareGateways
 Working with Hardware Gateways
@@ -3075,14 +3073,13 @@ gateway.
 the specified switch and hardware gateway.
 
 ### /2.0/vdn/hardwaregateways/replicationcluster
-Working with hardware gateway replication clusters.
+Working with the hardware gateway replication cluster.
 
 * **put** *(secured)*: Update the hardware gateway replication cluster.
 ___
 Add or remove hosts on a replication cluster.
 
-* **get** *(secured)*: Retrieve information about the specified hardware gateway replication
-cluster.
+* **get** *(secured)*: Retrieve information about the hardware gateway replication cluster.
 
 ### /2.0/vdn/hardwaregateways/bindings
 Retrieve information about hardware gateway bindings.
@@ -3128,12 +3125,12 @@ Working with hardware gateway BFD (bidirectional forwarding).
 ### /2.0/vdn/hardwaregateways/bfd/config
 Working with hardware gateway BFD configuration.
 
-* **put** *(secured)*: Update global hardware gateway BDF configuration.
-* **get** *(secured)*: Retrieve global hardware gateway BDF configuration.
+* **put** *(secured)*: Update global hardware gateway BFD configuration.
+* **get** *(secured)*: Retrieve global hardware gateway BFD configuration.
 
 ### /2.0/vdn/hardwaregateways/bfd/status
 Working with hardware gateway BFD tunnel status.
 
-* **get** *(secured)*: Retrieve hardware gateway BDF tunnel status for all tunnel
+* **get** *(secured)*: Retrieve hardware gateway BFD tunnel status for all tunnel
 endpoints, including hosts and hardware gateways.
 
