@@ -5118,172 +5118,267 @@ securitySchemes:
     get:
       displayName: taskFrameworkJobsRead
       description: Retrieve all job instances for the specified job ID
-/2.0/endpointsecurity/registration:
-  displayName: vShield
-  description: Register a vendor/solution, set network address
-  post:
-    displayName: vShieldVendorCreate
-    description: Register a vendor
-    body:
-      application/xml:
-        example: |
-          <VendorInfo>
-            <id></id>
-            <title></title>
-            <description></description>
-          </VendorInfo>
-        schema: vShieldVendorCreate
-  /vendors:
-    displayName: vShieldVendorsInfo
-    description: Registration status of vShield vendors
-    get:
-      displayName: vShieldVendorsInfoRead
-      description: Retrieve the list of all registered vendors
-  /{vendorID}:
-    displayName: vShieldSolution
-    description: Antivirus solutions
-    uriParameters:
-      vendorID:
-        displayName: vendorID
-        description: VMware-assigned ID for the vendor
-        required: true
+/2.0/endpointsecurity:
+  displayName: guestIntrospection
+  description: |
+    Work with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+    
+    #### About Guest Introspection and Endpoint Protection Solutions
+    VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution 
+    that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.
+    
+    #### Version Compatibility
+    
+    **Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions 
+    that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier). 
+    These partner solutions are also supported on NSX 6.0 and need the APIs listed below. 
+    These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as 
+    these newer solutions automate the registration and deployment process by using the new features introduced in NSX. 
+    Using these with newer NSX 6.0 based solutions could result in loss of features.
+    
+    #### Register a Solution
+    
+    To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:
+    1. Register the vendor.
+    2. Register one or more solutions.
+    3. Set the solution IP address and port (for all hosts).
+    4. Activate registered solutions per host.
+    
+    **Note:** Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.
+    
+    #### Unregister a Solution
+    
+    To unregister a solution, clients perform these steps in reverse:
+    1. Deactivate solutions per host.
+    2. Unset a solution’s IP address and port.
+    3. Unregister solutions.
+    4. Unregister the vendor.
+    
+    #### Updating Registration Information
+    
+    To update registration information for a vendor or solution, clients must:
+    1. Unregister the vendor or solution.
+    2. Reregister the vendor or solution.
+  
+  /registration:
+    displayName: guestIntrospectionRegistration
+    description: Register a Vendor and Solution with Guest Introspection
+    
     post:
-      displayName: vShieldSolutionCreate
-      description: Register an antivirus solution
+      displayName: guestIntrospectionVendorCreate
+      description: |
+        Register the vendor of an endpoint protection solution. Specify the following parameters in the request.
+         
+        | Name            | Comments |
+        |-----------------|------------|
+        |**vendorId**     | VMware-assigned ID for the vendor. |
+        |**vendorTitle**  | Vendor-specified title. |
+        |**vendorDescription** | Vendor-specified description. |
       body:
         application/xml:
           example: |
-            <SolutionInfo>
-              <altitude></altitude>
-              <title></title>
-              <description></description>
-            </SolutionInfo>
-          schema: vShieldSolutionCreate
-    get:
-      displayName: vShieldVendorInfoRead
-      description: Get vendor registration information
-    delete:
-      displayName: vShieldVendorDelete
-      description: Unregister a vendor
-    /solutions:
-      displayName: vShieldSolutionsInfo
-      description: |
-        Registration information for all registered solutions for a vendor
+            <VendorInfo>
+              <id>vendorId</id>
+              <title>vendorTitle</title>
+              <description>vendorDescription</description>
+            </VendorInfo>
+          schema: vShieldVendorCreate
+    /vendors:
+      displayName: guestIntrospectionVendorsInfo
+      description: Registered Guest Introspection vendors
       get:
-        displayName: vShieldSolutionsInfoRead
-        description: |
-          Retrieve registration information for all registered solutions for a
-          vendor
-    /{altitude}:
-      displayName: vShieldSolutionInfo
-      description: Solution registration information
+        displayName: vShieldVendorsInfoRead
+        description: Retrieve the list of all registered Guest Introspection vendors.
+    /{vendorID}:
+      displayName: guestIntrospectionSolution
+      description: Guest Introspection vendors and endpoint protection solutions
       uriParameters:
-        altitude:
-          displayName: altitude
-          description: |
-            VMware-assigned number to uniquely identify a solution. Describes
-            the type of solution and the order in which the solution receives
-            events relative to other solutions on the same host
+        vendorID:
+          displayName: vendorID
+          description: VMware-assigned ID for the vendor.
+          required: true
+      post:
+        displayName: guestIntrospectionSolutionCreate
+        description: |
+          Register an endpoint protection solution. Specify the following parameters in the request.
+          
+          | Name            | Comments |
+          |-----------------|------------|
+          |**solutionAltitude**     | VMware-assigned altitude for the solution. *Altitude* is a number that VMware assigns to uniquely identify the solution. The altitude describes the type of solution and the order in which the solution receives events relative to other solutions on the same host. |
+          |**solutionTitle**  | Vendor-specified title for the solution. |
+          |**solutionDescription** | Vendor-specified description of the solution. |
+        body:
+          application/xml:
+            example: |
+              <SolutionInfo>
+                <altitude>solutionAltitude</altitude>
+                <title>solutionTitle</title>
+                <description>solutionDescription</description>
+              </SolutionInfo>
+            schema: vShieldSolutionCreate
       get:
-        displayName: vShieldSolutionInfoRead
-        description: Get registration information for a given solution
+        displayName: guestIntrospectionVendorInfoRead
+        description: Retrieve registration information for a Guest Introspection vendor.
       delete:
-        displayName: vShieldSolutionDelete
-        description: Unregister a solution
-      /location:
-        displayName: solutionIPPort
-        description: IP address and port for a solution
-        post:
-          displayName: solutionIPPortSet
-          description: Set a solution's IP address and port on the vNIC host
+        displayName: guestIntrospectionVendorDelete
+        description: Unregister a Guest Introspection vendor.
+      /solutions:
+        displayName: guestIntrospectionSolutionsInfo
+        description: |
+          Information about registered endpoint protection solutions
+        get:
+          displayName: guestIntrospectionSolutionsInfoRead
+          description: |
+            Get registration information for all endpoint protection solutions for a Guest Introspection vendor.
+      /{altitude}:
+        displayName: guestIntrospectionSolutionInfo
+        description: Endpoint protection solution registration information
+        uriParameters:
+          altitude:
+            displayName: altitude
+            description: |
+              VMware-assigned number that uniquely identifies a solution. Describes
+              the type of solution and the order in which the solution receives
+              events relative to other solutions on the same host.
+        get:
+          displayName: guestIntrospectionSolutionInfoRead
+          description: Get registration information for an endpoint protection solution.
+        delete:
+          displayName: guestIntrospectionSolutionDelete
+          description: Unregister an endpoint protection solution.
+        /location:
+          displayName: guestIntrospectionSolutionIPPort
+          description: |
+                       IP address and port for an endpoint protection solution.
+                       
+                       To change the location of an endpoint protection solution:
+                       1. Deactivate all security virtual machines.
+                       2. Change the location.
+                       3. Reactivate all security virtual machines.	 
+          post:
+            displayName: guestIntrospectionSolutionIPPortSet
+            description: Set the IP address and port on the vNIC host for an endpoint protection solution.
+            body:
+              application/xml:
+                example: |
+                  <LocationInfo>
+                    <ip>solutionIpAddress</ip>
+                    <port>solutionIPPort</port>
+                  </LocationInfo>
+                schema: solutionIPPortSet
+          get:
+            displayName: guestIntrospectionSolutionIPPortGet
+            description: Get the IP address and port on the vNIC host for an endpoint protection solution.
+          delete:
+            displayName: guestIntrospectionSolutionIPPortDelete
+            description: Unset the IP address and port for an endpoint protection solution.
+  /activation:
+    displayName: guestIntrospectionSolutionActivation
+    description: Activate an Endpoint Protection Solution.
+    get:
+      displayName: guestIntrospectionSolutionActivationRead
+      description: |
+        Retrieve activation information for all activated security VMs on the specified host.
+      queryParameters:
+        hostId:
+          required: true
+          displayName: hostId
+          description: Host ID associated with activated security VMs.
+      responses:
+        200:
           body:
             application/xml:
               example: |
-                <LocationInfo>
-                  <ip></ip>
-                  <port></port>
-                </LocationInfo>
-              schema: solutionIPPortSet
-        delete:
-          displayName: solutionIPPortDelete
-          description: Unset a solution's IP address and port
-      /{moid}:
-        displayName: solutionActivationStatus
+                <ActivatedSVMs>
+                  <ActivationInfo>
+                    <moid>vm-819</moid>
+                    <hostMoid>host-9</hostMoid>
+                    <vmName>VMWARE-Data Security-10.24.130.174</vmName>
+                    <hostName>10.24.130.174</hostName>
+                    <clusterName>Dev</clusterName>
+                    <dcName>dev</dcName>
+                    <vendorId>VMWARE</vendorId>
+                    <solutionId>6341068275337723904</solutionId> 
+                  </ActivationInfo>
+                  ... 
+                </ActivatedSVMs>
+    /{vendorID}/{solutionID}:
+      displayName: guestIntrospectionSolutionActivatedVMs
+      description: Activated security virtual machines
+      uriParameters:
+        vendorID:
+          displayName: vendorID
+          description: VMware-assigned ID for the vendor.
+          required: true
+        solutionID:
+          displayName: solutionID
+          description: solution ID for the endpoint protection solution.
+          required: true
+      get:
+        displayName: guestIntrospectionSolutionActivatedVMsRead
         description: |
-          Solution activation status, given the managed object reference of its
-          virtual machine
+          Retrieve a list of activated security VMs for an endpoint protection solution.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <ActivatedSVMs>
+                    <ActivationInfo>
+                      <moid>vm-819</moid>
+                      <hostMoid>host-9</hostMoid>
+                      <vmName>VMWARE-Data Security-10.24.130.174</vmName>
+                      <hostName>10.24.130.174</hostName>
+                      <clusterName>Dev</clusterName>
+                      <dcName>dev</dcName>
+                      <vendorId>VMWARE</vendorId>
+                      <solutionId>6341068275337723904</solutionId> 
+                    </ActivationInfo>
+                    ... 
+                  </ActivatedSVMs>
+    /{vendorID}/{altitude}:
+      displayName: guestIntrospectionSolutionActivate
+      description: Activate a registered endpoint protection solution.
+      uriParameters:
+        vendorID:
+          displayName: vendorID
+          description: VMware-assigned ID for the vendor.
+          required: true
+        altitude:
+          displayName: altitude
+          description: |
+            VMware-assigned number to uniquely identify a solution. Describes the
+            type of solution and the order in which the solution receives events
+            relative to other solutions on the same host.
+      post:
+        displayName: guestIntrospectionSolutionActivate
+        description: |
+          Activate an endpoint protection solution that has been registered and located. Specify the following parameter in the request body.
+          
+          | Name            | Comments |
+          |-----------------|------------|
+          |**svmMoid**     | Managed object ID of the virtual machine of the activated endpoint protection solution. |
+        body:
+          application/xml:
+            example: |
+              <ActivationInfo>
+                <moid>svmMoid</moid>
+              </ActivationInfo>
+            schema: vShieldSolutionActivate
+      /{moid}:
+        displayName: guestIntrospectionSolutionStatus
+        description: Get the activation status or deactivate an endpoint protection solution on a host.
         uriParameters:
           moid:
-            displayName: moid
-            description: managed object reference
             required: true
+            displayName: moid
+            description: Managed object reference of a VM.
         get:
-          displayName: solutionActivationStatusRead
-          description: Get the solution activation status
-/2.0/endpointsecurity/activation:
-  displayName: vShieldSolutionActivation
-  description: vShield solution activation
-  get:
-    displayName: vShieldSolutionActivationRead
-    description: |
-      Retrieve activation information for all activated security vm's on the
-      specified host
-    queryParameters:
-      hostId:
-        required: true
-        displayName: hostId
-        description: Specified host ID
-  /{vendorID}/{solutionID}:
-    displayName: vShieldSolutionActivatedVMs
-    description: Activated security virtual machines
-    uriParameters:
-      vendorID:
-        displayName: vendorID
-        description: VMware-assigned ID for the vendor
-        required: true
-      solutionID:
-        displayName: solutionID
-        description: solution ID
-        required: true
-    get:
-      displayName: vShieldSolutionActivatedVMsRead
-      description: |
-        Get a list of activated security vm's for the specified solution
-  /{vendorID}/{altitude}:
-    displayName: vShieldSolutionActivate
-    description: Activate a registered vShield solution
-    uriParameters:
-      vendorID:
-        displayName: vendorID
-        description: VMware-assigned ID for the vendor
-        required: true
-      altitude:
-        displayName: altitude
-        description: |
-          VMware-assigned number to uniquely identify a solution. Describes the
-          type of solution and the order in which the solution receives events
-          relative to other solutions on the same host
-    post:
-      displayName: vShieldSolutionActivate
-      description: Activate a solution that has been registered and located
-      body:
-        application/xml:
-          example: |
-            <ActivationInfo>
-              <moid></moid>
-            </ActivationInfo>
-          schema: vShieldSolutionActivate
-    /{moid}:
-      displayName: vShieldSolutionDeactivate
-      description: Deactivate a solution on a host
-      uriParameters:
-        moid:
-          required: true
-          displayName: moid
-          description: Managed object reference of VM
-      delete:
-        displayName: vShieldSolutionDeactivate
-        description: Deactivate a solution on a host
+         displayName: guestIntrospectionSolutionActivationStatusRead
+         description: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
+        delete:
+          displayName: guestIntrospectionSolutionDeactivate
+          description: Deactivate an endpoint protection solution on a host.
 /4.0/firewall:
   displayName: dfw
   description: Working with Distributed Firewall

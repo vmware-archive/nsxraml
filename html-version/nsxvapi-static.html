@@ -3936,13 +3936,56 @@ pool, or vm)</p>
 </div>
 </section>
 <section class="resource">
-<h1 class="anchor" id="2-0-endpointsecurity-activation">
-  <a href="#2-0-endpointsecurity-activation">
-    /2.0/endpointsecurity/activation
+<h1 class="anchor" id="2-0-endpointsecurity">
+  <a href="#2-0-endpointsecurity">
+    /2.0/endpointsecurity
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>vShield solution activation</p>
+  <div class="description"><p>Work with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions</p>
+<h4 id="about-guest-introspection-and-endpoint-protection-solutions">About Guest Introspection and Endpoint Protection Solutions</h4>
+<p>VMware&#39;s Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution 
+that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.</p>
+<h4 id="version-compatibility">Version Compatibility</h4>
+<p><strong>Note:</strong> The management APIs listed in this section are to be used only with partner endpoint protection solutions 
+that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier). 
+These partner solutions are also supported on NSX 6.0 and need the APIs listed below. 
+These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as 
+these newer solutions automate the registration and deployment process by using the new features introduced in NSX. 
+Using these with newer NSX 6.0 based solutions could result in loss of features.</p>
+<h4 id="register-a-solution">Register a Solution</h4>
+<p>To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:</p>
+<ol>
+<li>Register the vendor.</li>
+<li>Register one or more solutions.</li>
+<li>Set the solution IP address and port (for all hosts).</li>
+<li>Activate registered solutions per host.</li>
+</ol>
+<p><strong>Note:</strong> Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.</p>
+<h4 id="unregister-a-solution">Unregister a Solution</h4>
+<p>To unregister a solution, clients perform these steps in reverse:</p>
+<ol>
+<li>Deactivate solutions per host.</li>
+<li>Unset a solution’s IP address and port.</li>
+<li>Unregister solutions.</li>
+<li>Unregister the vendor.</li>
+</ol>
+<h4 id="updating-registration-information">Updating Registration Information</h4>
+<p>To update registration information for a vendor or solution, clients must:</p>
+<ol>
+<li>Unregister the vendor or solution.</li>
+<li>Reregister the vendor or solution.</li>
+</ol>
+</div>
+</section>
+<section class="resource">
+<h1 class="anchor" id="2-0-endpointsecurity-activation">
+  <a href="#2-0-endpointsecurity-activation">
+    <span class="parent">/2.0/endpointsecurity</span>/activation
+  </a>
+</h1>
+  <h2 class="endpoint-description">Description</h2>
+  <div class="description"><p>Activate an Endpoint Protection Solution.</p>
 </div>
 <div class="method get">
   <a
@@ -3952,8 +3995,7 @@ pool, or vm)</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve activation information for all activated security vm&#39;s on the
-specified host</p>
+    <p><p>Retrieve activation information for all activated security VMs on the specified host.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -3973,11 +4015,31 @@ specified host</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified host ID</p>
+      <p>Host ID associated with activated security VMs.</p>
 
   </dd>
 </dl>
     </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ActivatedSVMs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ActivationInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">moid</span>&gt;</span>vm-819<span class="hljs-tag">&lt;/<span class="hljs-name">moid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostMoid</span>&gt;</span>host-9<span class="hljs-tag">&lt;/<span class="hljs-name">hostMoid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmName</span>&gt;</span>VMWARE-Data Security-10.24.130.174<span class="hljs-tag">&lt;/<span class="hljs-name">vmName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.24.130.174<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clusterName</span>&gt;</span>Dev<span class="hljs-tag">&lt;/<span class="hljs-name">clusterName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dcName</span>&gt;</span>dev<span class="hljs-tag">&lt;/<span class="hljs-name">dcName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vendorId</span>&gt;</span>VMWARE<span class="hljs-tag">&lt;/<span class="hljs-name">vendorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">solutionId</span>&gt;</span>6341068275337723904<span class="hljs-tag">&lt;/<span class="hljs-name">solutionId</span>&gt;</span> 
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ActivationInfo</span>&gt;</span>
+  ... 
+<span class="hljs-tag">&lt;/<span class="hljs-name">ActivatedSVMs</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -3988,7 +4050,7 @@ specified host</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Activate a registered vShield solution</p>
+  <div class="description"><p>Activate a registered endpoint protection solution.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -3999,7 +4061,7 @@ specified host</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>VMware-assigned ID for the vendor</p>
+      <p>VMware-assigned ID for the vendor.</p>
 
   </dd>
   <dt>
@@ -4010,7 +4072,7 @@ specified host</p>
   <dd>
       <p>VMware-assigned number to uniquely identify a solution. Describes the
 type of solution and the order in which the solution receives events
-relative to other solutions on the same host</p>
+relative to other solutions on the same host.</p>
 
   </dd>
 </dl>
@@ -4023,8 +4085,16 @@ relative to other solutions on the same host</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Activate a solution that has been registered and located</p>
-</p>
+    <p><p>Activate an endpoint protection solution that has been registered and located. Specify the following parameter in the request body.</p>
+<table class="table"><thead><tr>
+<th>Name</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>svmMoid</strong></td>
+<td>Managed object ID of the virtual machine of the activated endpoint protection solution.</td>
+</tr>
+</tbody></table></p>
     <h3>Security</h3>
     <ul class="security-schemes">
     <li>
@@ -4047,7 +4117,7 @@ relative to other solutions on the same host</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ActivationInfo</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">moid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">moid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">moid</span>&gt;</span>svmMoid<span class="hljs-tag">&lt;/<span class="hljs-name">moid</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ActivationInfo</span>&gt;</span>
 </code></pre>
   </div>
@@ -4060,7 +4130,7 @@ relative to other solutions on the same host</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Deactivate a solution on a host</p>
+  <div class="description"><p>Get the activation status or deactivate an endpoint protection solution on a host.</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -4071,11 +4141,32 @@ relative to other solutions on the same host</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Managed object reference of VM</p>
+      <p>Managed object reference of a VM.</p>
 
   </dd>
 </dl>
   </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/endpointsecurity/activation/{vendorID}/{altitude}/{moid}"
+    href="#GET/2.0/endpointsecurity/activation/{vendorID}/{altitude}/{moid}"
+  ><h2>get</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+  </div>
+</div>
 <div class="method delete">
   <a
     class="verb delete"
@@ -4084,7 +4175,7 @@ relative to other solutions on the same host</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Deactivate a solution on a host</p>
+    <p><p>Deactivate an endpoint protection solution on a host.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4116,7 +4207,7 @@ relative to other solutions on the same host</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>VMware-assigned ID for the vendor</p>
+      <p>VMware-assigned ID for the vendor.</p>
 
   </dd>
   <dt>
@@ -4125,7 +4216,7 @@ relative to other solutions on the same host</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>solution ID</p>
+      <p>solution ID for the endpoint protection solution.</p>
 
   </dd>
 </dl>
@@ -4138,7 +4229,7 @@ relative to other solutions on the same host</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Get a list of activated security vm&#39;s for the specified solution</p>
+    <p><p>Retrieve a list of activated security VMs for an endpoint protection solution.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4149,17 +4240,37 @@ relative to other solutions on the same host</p>
       </a>
     </li>
     </ul>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ActivatedSVMs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ActivationInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">moid</span>&gt;</span>vm-819<span class="hljs-tag">&lt;/<span class="hljs-name">moid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostMoid</span>&gt;</span>host-9<span class="hljs-tag">&lt;/<span class="hljs-name">hostMoid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmName</span>&gt;</span>VMWARE-Data Security-10.24.130.174<span class="hljs-tag">&lt;/<span class="hljs-name">vmName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.24.130.174<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clusterName</span>&gt;</span>Dev<span class="hljs-tag">&lt;/<span class="hljs-name">clusterName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dcName</span>&gt;</span>dev<span class="hljs-tag">&lt;/<span class="hljs-name">dcName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vendorId</span>&gt;</span>VMWARE<span class="hljs-tag">&lt;/<span class="hljs-name">vendorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">solutionId</span>&gt;</span>6341068275337723904<span class="hljs-tag">&lt;/<span class="hljs-name">solutionId</span>&gt;</span> 
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ActivationInfo</span>&gt;</span>
+  ... 
+<span class="hljs-tag">&lt;/<span class="hljs-name">ActivatedSVMs</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
 <section class="resource">
 <h1 class="anchor" id="2-0-endpointsecurity-registration">
   <a href="#2-0-endpointsecurity-registration">
-    /2.0/endpointsecurity/registration
+    <span class="parent">/2.0/endpointsecurity</span>/registration
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Register a vendor/solution, set network address</p>
+  <div class="description"><p>Register a Vendor and Solution with Guest Introspection</p>
 </div>
 <div class="method post">
   <a
@@ -4169,8 +4280,24 @@ relative to other solutions on the same host</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Register a vendor</p>
-</p>
+    <p><p>Register the vendor of an endpoint protection solution. Specify the following parameters in the request.</p>
+<table class="table"><thead><tr>
+<th>Name</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>vendorId</strong></td>
+<td>VMware-assigned ID for the vendor.</td>
+</tr>
+<tr>
+<td><strong>vendorTitle</strong></td>
+<td>Vendor-specified title.</td>
+</tr>
+<tr>
+<td><strong>vendorDescription</strong></td>
+<td>Vendor-specified description.</td>
+</tr>
+</tbody></table></p>
     <h3>Security</h3>
     <ul class="security-schemes">
     <li>
@@ -4195,9 +4322,9 @@ relative to other solutions on the same host</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">VendorInfo</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vendorId<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>vendorTitle<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>vendorDescription<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">VendorInfo</span>&gt;</span>
 </code></pre>
   </div>
@@ -4210,7 +4337,7 @@ relative to other solutions on the same host</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Registration status of vShield vendors</p>
+  <div class="description"><p>Registered Guest Introspection vendors</p>
 </div>
 <div class="method get">
   <a
@@ -4220,7 +4347,7 @@ relative to other solutions on the same host</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve the list of all registered vendors</p>
+    <p><p>Retrieve the list of all registered Guest Introspection vendors.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4241,7 +4368,7 @@ relative to other solutions on the same host</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Antivirus solutions</p>
+  <div class="description"><p>Guest Introspection vendors and endpoint protection solutions</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -4252,7 +4379,7 @@ relative to other solutions on the same host</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>VMware-assigned ID for the vendor</p>
+      <p>VMware-assigned ID for the vendor.</p>
 
   </dd>
 </dl>
@@ -4265,8 +4392,24 @@ relative to other solutions on the same host</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Register an antivirus solution</p>
-</p>
+    <p><p>Register an endpoint protection solution. Specify the following parameters in the request.</p>
+<table class="table"><thead><tr>
+<th>Name</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>solutionAltitude</strong></td>
+<td>VMware-assigned altitude for the solution. <em>Altitude</em> is a number that VMware assigns to uniquely identify the solution. The altitude describes the type of solution and the order in which the solution receives events relative to other solutions on the same host.</td>
+</tr>
+<tr>
+<td><strong>solutionTitle</strong></td>
+<td>Vendor-specified title for the solution.</td>
+</tr>
+<tr>
+<td><strong>solutionDescription</strong></td>
+<td>Vendor-specified description of the solution.</td>
+</tr>
+</tbody></table></p>
     <h3>Security</h3>
     <ul class="security-schemes">
     <li>
@@ -4291,9 +4434,9 @@ relative to other solutions on the same host</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">SolutionInfo</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">altitude</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">altitude</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">altitude</span>&gt;</span>solutionAltitude<span class="hljs-tag">&lt;/<span class="hljs-name">altitude</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>solutionTitle<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>solutionDescription<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">SolutionInfo</span>&gt;</span>
 </code></pre>
   </div>
@@ -4306,7 +4449,7 @@ relative to other solutions on the same host</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Get vendor registration information</p>
+    <p><p>Retrieve registration information for a Guest Introspection vendor.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4327,7 +4470,7 @@ relative to other solutions on the same host</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Unregister a vendor</p>
+    <p><p>Unregister a Guest Introspection vendor.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4348,7 +4491,7 @@ relative to other solutions on the same host</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Registration information for all registered solutions for a vendor</p>
+  <div class="description"><p>Information about registered endpoint protection solutions</p>
 </div>
 <div class="method get">
   <a
@@ -4358,8 +4501,7 @@ relative to other solutions on the same host</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Retrieve registration information for all registered solutions for a
-vendor</p>
+    <p><p>Get registration information for all endpoint protection solutions for a Guest Introspection vendor.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4380,7 +4522,7 @@ vendor</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Solution registration information</p>
+  <div class="description"><p>Endpoint protection solution registration information</p>
 </div>
   <div class="params">
     <h2>URI Parameters</h2>
@@ -4391,9 +4533,9 @@ vendor</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>VMware-assigned number to uniquely identify a solution. Describes
+      <p>VMware-assigned number that uniquely identifies a solution. Describes
 the type of solution and the order in which the solution receives
-events relative to other solutions on the same host</p>
+events relative to other solutions on the same host.</p>
 
   </dd>
 </dl>
@@ -4406,7 +4548,7 @@ events relative to other solutions on the same host</p>
   ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Get registration information for a given solution</p>
+    <p><p>Get registration information for an endpoint protection solution.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4427,7 +4569,7 @@ events relative to other solutions on the same host</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Unregister a solution</p>
+    <p><p>Unregister an endpoint protection solution.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4448,7 +4590,13 @@ events relative to other solutions on the same host</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>IP address and port for a solution</p>
+  <div class="description"><p>IP address and port for an endpoint protection solution.</p>
+<p>To change the location of an endpoint protection solution:</p>
+<ol>
+<li>Deactivate all security virtual machines.</li>
+<li>Change the location.</li>
+<li>Reactivate all security virtual machines.     </li>
+</ol>
 </div>
 <div class="method post">
   <a
@@ -4458,7 +4606,7 @@ events relative to other solutions on the same host</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Set a solution&#39;s IP address and port on the vNIC host</p>
+    <p><p>Set the IP address and port on the vNIC host for an endpoint protection solution.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4483,21 +4631,21 @@ events relative to other solutions on the same host</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">LocationInfo</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ip</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ip</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ip</span>&gt;</span>solutionIpAddress<span class="hljs-tag">&lt;/<span class="hljs-name">ip</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>solutionIPPort<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">LocationInfo</span>&gt;</span>
 </code></pre>
   </div>
 </div>
-<div class="method delete">
+<div class="method get">
   <a
-    class="verb delete"
-    id="DELETE/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
-    href="#DELETE/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
-  ><h2>delete</h2></a>
+    class="verb get"
+    id="GET/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
+    href="#GET/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
+  ><h2>get</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Unset a solution&#39;s IP address and port</p>
+    <p><p>Get the IP address and port on the vNIC host for an endpoint protection solution.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -4510,40 +4658,15 @@ events relative to other solutions on the same host</p>
     </ul>
   </div>
 </div>
-</section>
-<section class="resource">
-<h1 class="anchor" id="2-0-endpointsecurity-registration-vendorid-altitude-moid">
-  <a href="#2-0-endpointsecurity-registration-vendorid-altitude-moid">
-    <span class="parent">/2.0/endpointsecurity/registration/{vendorID}/{altitude}</span>/{moid}
-  </a>
-</h1>
-  <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Solution activation status, given the managed object reference of its
-virtual machine</p>
-</div>
-  <div class="params">
-    <h2>URI Parameters</h2>
-      <dl>
-  <dt>
-    <span class="param">moid</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>managed object reference</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
+<div class="method delete">
   <a
-    class="verb get"
-    id="GET/2.0/endpointsecurity/registration/{vendorID}/{altitude}/{moid}"
-    href="#GET/2.0/endpointsecurity/registration/{vendorID}/{altitude}/{moid}"
-  ><h2>get</h2></a>
+    class="verb delete"
+    id="DELETE/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
+    href="#DELETE/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
+  ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Get the solution activation status</p>
+    <p><p>Unset the IP address and port for an endpoint protection solution.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">

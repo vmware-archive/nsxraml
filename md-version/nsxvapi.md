@@ -1538,71 +1538,123 @@ Job instances on the task framework
 
 * **get** *(secured)*: Retrieve all job instances for the specified job ID
 
-## vShield
-Register a vendor/solution, set network address
+## guestIntrospection
+Work with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+
+#### About Guest Introspection and Endpoint Protection Solutions
+VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution 
+that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.
+
+#### Version Compatibility
+
+**Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions 
+that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier). 
+These partner solutions are also supported on NSX 6.0 and need the APIs listed below. 
+These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as 
+these newer solutions automate the registration and deployment process by using the new features introduced in NSX. 
+Using these with newer NSX 6.0 based solutions could result in loss of features.
+
+#### Register a Solution
+
+To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:
+1. Register the vendor.
+2. Register one or more solutions.
+3. Set the solution IP address and port (for all hosts).
+4. Activate registered solutions per host.
+
+**Note:** Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.
+
+#### Unregister a Solution
+
+To unregister a solution, clients perform these steps in reverse:
+1. Deactivate solutions per host.
+2. Unset a solution’s IP address and port.
+3. Unregister solutions.
+4. Unregister the vendor.
+
+#### Updating Registration Information
+
+To update registration information for a vendor or solution, clients must:
+1. Unregister the vendor or solution.
+2. Reregister the vendor or solution.
 
 ### /2.0/endpointsecurity/registration
+Register a Vendor and Solution with Guest Introspection
 
-* **post** *(secured)*: Register a vendor
+* **post** *(secured)*: Register the vendor of an endpoint protection solution. Specify the following parameters in the request.
+ 
+| Name            | Comments |
+|-----------------|------------|
+|**vendorId**     | VMware-assigned ID for the vendor. |
+|**vendorTitle**  | Vendor-specified title. |
+|**vendorDescription** | Vendor-specified description. |
 
 ### /2.0/endpointsecurity/registration/vendors
-Registration status of vShield vendors
+Registered Guest Introspection vendors
 
-* **get** *(secured)*: Retrieve the list of all registered vendors
+* **get** *(secured)*: Retrieve the list of all registered Guest Introspection vendors.
 
 ### /2.0/endpointsecurity/registration/{vendorID}
-Antivirus solutions
+Guest Introspection vendors and endpoint protection solutions
 
-* **post** *(secured)*: Register an antivirus solution
-* **get** *(secured)*: Get vendor registration information
-* **delete** *(secured)*: Unregister a vendor
+* **post** *(secured)*: Register an endpoint protection solution. Specify the following parameters in the request.
+
+| Name            | Comments |
+|-----------------|------------|
+|**solutionAltitude**     | VMware-assigned altitude for the solution. *Altitude* is a number that VMware assigns to uniquely identify the solution. The altitude describes the type of solution and the order in which the solution receives events relative to other solutions on the same host. |
+|**solutionTitle**  | Vendor-specified title for the solution. |
+|**solutionDescription** | Vendor-specified description of the solution. |
+
+* **get** *(secured)*: Retrieve registration information for a Guest Introspection vendor.
+* **delete** *(secured)*: Unregister a Guest Introspection vendor.
 
 ### /2.0/endpointsecurity/registration/{vendorID}/solutions
-Registration information for all registered solutions for a vendor
+Information about registered endpoint protection solutions
 
-* **get** *(secured)*: Retrieve registration information for all registered solutions for a
-vendor
+* **get** *(secured)*: Get registration information for all endpoint protection solutions for a Guest Introspection vendor.
 
 ### /2.0/endpointsecurity/registration/{vendorID}/{altitude}
-Solution registration information
+Endpoint protection solution registration information
 
-* **get** *(secured)*: Get registration information for a given solution
-* **delete** *(secured)*: Unregister a solution
+* **get** *(secured)*: Get registration information for an endpoint protection solution.
+* **delete** *(secured)*: Unregister an endpoint protection solution.
 
 ### /2.0/endpointsecurity/registration/{vendorID}/{altitude}/location
-IP address and port for a solution
+IP address and port for an endpoint protection solution.
 
-* **post** *(secured)*: Set a solution's IP address and port on the vNIC host
-* **delete** *(secured)*: Unset a solution's IP address and port
+To change the location of an endpoint protection solution:
+1. Deactivate all security virtual machines.
+2. Change the location.
+3. Reactivate all security virtual machines.	 
 
-### /2.0/endpointsecurity/registration/{vendorID}/{altitude}/{moid}
-Solution activation status, given the managed object reference of its
-virtual machine
-
-* **get** *(secured)*: Get the solution activation status
-
-## vShieldSolutionActivation
-vShield solution activation
+* **post** *(secured)*: Set the IP address and port on the vNIC host for an endpoint protection solution.
+* **get** *(secured)*: Get the IP address and port on the vNIC host for an endpoint protection solution.
+* **delete** *(secured)*: Unset the IP address and port for an endpoint protection solution.
 
 ### /2.0/endpointsecurity/activation
+Activate an Endpoint Protection Solution.
 
-* **get** *(secured)*: Retrieve activation information for all activated security vm's on the
-specified host
+* **get** *(secured)*: Retrieve activation information for all activated security VMs on the specified host.
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{solutionID}
 Activated security virtual machines
 
-* **get** *(secured)*: Get a list of activated security vm's for the specified solution
+* **get** *(secured)*: Retrieve a list of activated security VMs for an endpoint protection solution.
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{altitude}
-Activate a registered vShield solution
+Activate a registered endpoint protection solution.
 
-* **post** *(secured)*: Activate a solution that has been registered and located
+* **post** *(secured)*: Activate an endpoint protection solution that has been registered and located. Specify the following parameter in the request body.
+
+| Name            | Comments |
+|-----------------|------------|
+|**svmMoid**     | Managed object ID of the virtual machine of the activated endpoint protection solution. |
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{altitude}/{moid}
-Deactivate a solution on a host
+Get the activation status or deactivate an endpoint protection solution on a host.
 
-* **delete** *(secured)*: Deactivate a solution on a host
+* **get** *(secured)*: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
+* **delete** *(secured)*: Deactivate an endpoint protection solution on a host.
 
 ## dfw
 Working with Distributed Firewall
