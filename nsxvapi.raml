@@ -5515,12 +5515,12 @@ securitySchemes:
             Filter for specific **action** (*allow*, *deny*)
     put:
       displayName: dfwConfigUpdate
-      description: !include templates/documentation/reuse/firewall/dfwConfigUpdate
+      description: !include documentation/reuse/firewall/dfwConfigUpdate
       headers:
         If-Match:
           required: true
           displayName: If-Match
-          description: !include templates/documentation/reuse/firewall/if-match
+          description: !include documentation/reuse/firewall/if-match
       body:
         application/xml:
           example: |
@@ -5608,8 +5608,7 @@ securitySchemes:
         allow rule and one defaultLayer2Section with default allow rule.
     /layer3sections:
       displayName: dfwL3Section
-      description: |
-        Working with layer 3 sections in distributed firewall.
+      description: !include documentation/reuse/firewall/dfwL3Section
       get:
         displayName: dfwL3SectionRead
         description: |
@@ -5747,7 +5746,9 @@ securitySchemes:
           By default, the section is created at the top of the firewall table.
           You can specify a location for the section with the **operation**
           and **anchorId** query parameters.
-        queryParameters: !include templates/documentation/reuse/firewall/dfwSectionQueryParameters.raml
+        queryParameters:
+          operation: !include documentation/reuse/firewall/operation.raml
+          anchorId: !include documentation/reuse/firewall/anchorId.raml
         body:
           application/xml:
             example: |
@@ -5948,14 +5949,40 @@ securitySchemes:
                         <sectionId>4</sectionId>
                       </rule>
                     </section>
-        put:
-          displayName: dfwL3SectionIdUpdate
-          description: !include templates/documentation/reuse/firewall/dfwL3SectionIdUpdate
+        post:
+          displayName: dfwL3SectionIdRevise
+          description: Move the specified layer 3 section.
           headers:
             If-Match:
               required: true
               displayName: If-Match
-              description: !include templates/documentation/reuse/firewall/if-match
+              description: !include documentation/reuse/firewall/if-match
+          queryParameters:
+            action:
+              displayName: action
+              required: true
+              description: |
+                Set **action** to *revise* to change the position of the
+                firewall rule section.
+            operation: !include documentation/reuse/firewall/operation.raml
+            anchorId: !include documentation/reuse/firewall/anchorId.raml
+          body:
+            application/xml:
+              example: |
+                POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007?action=revise&operation=insert_before&anchorId=1006
+                If-Match: 1477989118875
+
+                <section id="1007" name="Web Section" generationNumber="1477989118875" timestamp="1477989118875" type="LAYER3">
+                  ...
+                </section>
+        put:
+          displayName: dfwL3SectionIdUpdate
+          description: !include documentation/reuse/firewall/dfwL3SectionIdUpdate
+          headers:
+            If-Match:
+              required: true
+              displayName: If-Match
+              description: !include documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
@@ -6036,47 +6063,39 @@ securitySchemes:
           description: Delete the specified layer 3 distributed firewall section.
         /rules:
           displayName: dfwL3Rules
-          description: TESTING Working with a specific layer 3 distributed firewall rule.
+          description: |
+            Working with distributed firewall rules in a layer 3 section.
           post:
             displayName: dfwL3RulesAdd
-            description: Add a layer 3 distributed firewall rule.
+            description: !include documentation/reuse/firewall/dfwL2RulesAdd
             headers:
               If-Match:
                 required: true
                 displayName: If-Match
-                description: !include templates/documentation/reuse/firewall/if-match
+                description: !include documentation/reuse/firewall/if-match
             body:
               application/xml:
                 example: |
-                  <rule disabled="" logged="">
-                    <name></name>
-                    <action></action>
+                  <rule disabled="false" logged="false">
+                    <name>AddRuleTest</name>
+                    <action>allow</action>
                     <notes></notes>
                     <appliedToList>
                       <appliedTo>
-                        <value></value>
-                        <type></type>
+                        <value>datacenter-26</value>
+                        <type>Datacenter</type>
                       </appliedTo>
                     </appliedToList>
-                    <sources excluded="">
+                    <sectionId>2</sectionId>
+                    <sources excluded="true">
                       <source>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
+                        <value>datacenter-26</value>
+                        <type>Datacenter</type>
                       </source>
                     </sources>
-                    <destinations excluded="">
-                      <destination>
-                        <name></name>
-                        <value></value>
-                        <type></type>
-                        <isValid></isValid>
-                      </destination>
-                    </destinations>
                     <services>
                       <service>
-                        <value></value>
+                        <value>application-216</value>
                       </service>
                     </services>
                   </rule>
@@ -6097,82 +6116,35 @@ securitySchemes:
                 Retrieve information about the specified distributed firewall rule.
             put:
               displayName: dfwL3RuleUpdate
-              description: |
-                Update a layer 3 distributed firewall rule in a layer 3
-                section.
+              description: !include documentation/reuse/firewall/dfwL3RuleUpdate
               headers:
                 If-Match:
                   required: true
                   displayName: If-Match
-                  description: !include templates/documentation/reuse/firewall/if-match
+                  description: !include documentation/reuse/firewall/if-match
               body:
                 application/xml:
                   example: |
-                    <rule id="1061" disabled="false" logged="false">
-                      <name>new rule-web to db VM 3</name>
-                      <action>reject</action>
+                    <rule id="23" disabled="enabled" logged="true">
+                      <name>AddRuleTestUpdated</name>
+                      <action>allow</action>
                       <notes></notes>
                       <appliedToList>
                         <appliedTo>
-                          <name>web-vm-01</name>
-                          <value>vm-72</value>
-                          <type>VirtualMachine</type>
-                          <isValid>true</isValid>
-                        </appliedTo>
-                        <appliedTo>
-                          <name>db-vm-01</name>
-                          <value>vm-84</value>
-                          <type>VirtualMachine</type>
-                          <isValid>true</isValid>
+                          <value>datacenter-26</value>
+                          <type>Datacenter</type>
                         </appliedTo>
                       </appliedToList>
-                      <sectionId>1028</sectionId>
-                      <sources excluded="false">
+                      <sectionId>2</sectionId>
+                      <sources excluded="true">
                         <source>
-                          <name>web-vm-01</name>
-                          <value>vm-72</value>
-                          <type>VirtualMachine</type>
-                          <isValid>true</isValid>
+                          <value>datacenter-26</value>
+                          <type>Datacenter</type>
                         </source>
                       </sources>
-                      <destinations excluded="false">
-                        <destination>
-                          <name>db-vm-01</name>
-                          <value>vm-84</value>
-                          <type>VirtualMachine</type>
-                          <isValid>true</isValid>
-                        </destination>
-                      </destinations>
-                    </rule>
-                    <rule disabled="" logged="">
-                      <name></name>
-                      <action></action>
-                      <notes></notes>
-                      <appliedToList>
-                        <appliedTo>
-                          <value></value>
-                          <type></type>
-                          </appliedTo>
-                        </appliedToList>
-                        <sources excluded="">
-                        <source>
-                          <name></name>
-                          <value></value>
-                          <type></type>
-                          <isValid></isValid>
-                        </source>
-                      </sources>
-                      <destinations excluded="">
-                        <destination>
-                          <name></name>
-                          <value></value>
-                          <type></type>
-                          <isValid></isValid>
-                        </destination>
-                      </destinations>
                       <services>
                         <service>
-                          <value></value>
+                          <value>application-216</value>
                         </service>
                       </services>
                     </rule>
@@ -6183,11 +6155,10 @@ securitySchemes:
                 If-Match:
                   required: true
                   displayName: If-Match
-                  description: !include templates/documentation/reuse/firewall/if-match
+                  description: !include documentation/reuse/firewall/if-match
     /layer2sections:
       displayName: dfwL2Section
-      description: |
-        Working with layer 2 sections in distributed firewall.
+      description: !include documentation/reuse/firewall/dfwL2Section
       get:
         displayName: dfwL2SectionRead
         description: |
@@ -6208,7 +6179,9 @@ securitySchemes:
           By default, the section is created at the top of the firewall table.
           You can specify a location for the section with the **operation**
           and **anchorId** query parameters.
-        queryParameters: !include templates/documentation/reuse/firewall/dfwSectionQueryParameters.raml
+        queryParameters:
+          operation: !include documentation/reuse/firewall/operation.raml
+          anchorId: !include documentation/reuse/firewall/anchorId.raml
         body:
          application/xml:
            example: |
@@ -6261,14 +6234,40 @@ securitySchemes:
         get:
           displayName: dfwL2SectionIdRead
           description: Retrieve information about the specified layer 2 section.
-        put:
-          displayName: dfwL2SectionIdUpdate
-          description: !include templates/documentation/reuse/firewall/dfwL2SectionIdUpdate
+        post:
+          displayName: dfwL2SectionIdRevise
+          description: Move the specified layer 2 section.
           headers:
             If-Match:
               required: true
               displayName: If-Match
-              description: !include templates/documentation/reuse/firewall/if-match
+              description: !include documentation/reuse/firewall/if-match
+          queryParameters:
+            action:
+              displayName: action
+              required: true
+              description: |
+                Set **action** to *revise* to change the position of the
+                firewall rule section.
+            operation: !include documentation/reuse/firewall/operation.raml
+            anchorId: !include documentation/reuse/firewall/anchorId.raml
+          body:
+            application/xml:
+              example: |
+                POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009?action=revise&operation=insert_before&anchorId=1008
+                If-Match: 1478307787160
+
+                <section id="1009" name="Test Section" generationNumber="1478307787160" timestamp="1478307787160" type="LAYER2">
+                  ...
+                </section>
+        put:
+          displayName: dfwL2SectionIdUpdate
+          description: !include documentation/reuse/firewall/dfwL2SectionIdUpdate
+          headers:
+            If-Match:
+              required: true
+              displayName: If-Match
+              description: !include documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
@@ -6307,15 +6306,16 @@ securitySchemes:
           description: Deletes a L2 section and its content by ID
         /rules:
           displayName: dfwL2Rules
-          description: Operations to add one or more L2 Rules
+          description: |
+            Working with distributed firewall rules in a layer 2 section.
           post:
             displayName: dfwL2RulesAdd
-            description: Add L2 Rule
+            description: !include documentation/reuse/firewall/dfwL2RulesAdd
             headers:
               If-Match:
                 required: true
                 displayName: If-Match
-                description: !include templates/documentation/reuse/firewall/if-match
+                description: !include documentation/reuse/firewall/if-match
             body:
               application/xml:
                 example: |
@@ -6368,15 +6368,12 @@ securitySchemes:
                 Read the configuration of a specific rule identified by rule Id
             put:
               displayName: dfwL2RuleUpdate
-              description: |
-                Updates a L2 DFW Rule. To do this you need to read it first,
-                make your changes, and then update the section by supplying the
-                Etag value received in the read in the If-Match header
+              description: !include documentation/reuse/firewall/dfwL2RuleUpdate
               headers:
                 If-Match:
                   required: true
                   displayName: If-Match
-                  description: !include templates/documentation/reuse/firewall/if-match
+                  description: !include documentation/reuse/firewall/if-match
               body:
                 application/xml:
                   example: |
@@ -6418,12 +6415,12 @@ securitySchemes:
                     </rule>
             delete:
               displayName: dfwL2RuleDelete
-              description: Delete a specific rule identified by rule Id
+              description: Delete the specified distributed firewall rule.
               headers:
                 If-Match:
                   required: true
                   displayName: If-Match
-                  description: !include templates/documentation/reuse/firewall/if-match
+                  description: !include documentation/reuse/firewall/if-match
     /layer3redirectsections:
       displayName: layer3RedirectSections
       description: Layer3 redirect sections and rules
@@ -6468,7 +6465,7 @@ securitySchemes:
             If-Match:
               required: true
               displayName: If-Match
-              description: !include templates/documentation/reuse/firewall/if-match
+              description: !include documentation/reuse/firewall/if-match
           body:
             application/xml:
               example: |
@@ -6535,7 +6532,7 @@ securitySchemes:
                 If-Match:
                   required: true
                   displayName: If-Match
-                  description: !include templates/documentation/reuse/firewall/if-match
+                  description: !include documentation/reuse/firewall/if-match
               body:
                 application/xml:
                   example: |
