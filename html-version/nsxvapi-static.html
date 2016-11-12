@@ -3944,14 +3944,14 @@ pool, or vm)</p>
   <h2 class="endpoint-description">Description</h2>
   <div class="description"><p>Work with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions</p>
 <h4 id="about-guest-introspection-and-endpoint-protection-solutions">About Guest Introspection and Endpoint Protection Solutions</h4>
-<p>VMware&#39;s Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution 
+<p>VMware&#39;s Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution
 that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.</p>
 <h4 id="version-compatibility">Version Compatibility</h4>
-<p><strong>Note:</strong> The management APIs listed in this section are to be used only with partner endpoint protection solutions 
-that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier). 
-These partner solutions are also supported on NSX 6.0 and need the APIs listed below. 
-These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as 
-these newer solutions automate the registration and deployment process by using the new features introduced in NSX. 
+<p><strong>Note:</strong> The management APIs listed in this section are to be used only with partner endpoint protection solutions
+that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier).
+These partner solutions are also supported on NSX 6.0 and need the APIs listed below.
+These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as
+these newer solutions automate the registration and deployment process by using the new features introduced in NSX.
 Using these with newer NSX 6.0 based solutions could result in loss of features.</p>
 <h4 id="register-a-solution">Register a Solution</h4>
 <p>To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:</p>
@@ -4035,9 +4035,9 @@ Using these with newer NSX 6.0 based solutions could result in loss of features.
     <span class="hljs-tag">&lt;<span class="hljs-name">clusterName</span>&gt;</span>Dev<span class="hljs-tag">&lt;/<span class="hljs-name">clusterName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">dcName</span>&gt;</span>dev<span class="hljs-tag">&lt;/<span class="hljs-name">dcName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vendorId</span>&gt;</span>VMWARE<span class="hljs-tag">&lt;/<span class="hljs-name">vendorId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">solutionId</span>&gt;</span>6341068275337723904<span class="hljs-tag">&lt;/<span class="hljs-name">solutionId</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">solutionId</span>&gt;</span>6341068275337723904<span class="hljs-tag">&lt;/<span class="hljs-name">solutionId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ActivationInfo</span>&gt;</span>
-  ... 
+  ...
 <span class="hljs-tag">&lt;/<span class="hljs-name">ActivatedSVMs</span>&gt;</span>
 </code></pre>
   </div>
@@ -4255,9 +4255,9 @@ relative to other solutions on the same host.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">clusterName</span>&gt;</span>Dev<span class="hljs-tag">&lt;/<span class="hljs-name">clusterName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">dcName</span>&gt;</span>dev<span class="hljs-tag">&lt;/<span class="hljs-name">dcName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vendorId</span>&gt;</span>VMWARE<span class="hljs-tag">&lt;/<span class="hljs-name">vendorId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">solutionId</span>&gt;</span>6341068275337723904<span class="hljs-tag">&lt;/<span class="hljs-name">solutionId</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">solutionId</span>&gt;</span>6341068275337723904<span class="hljs-tag">&lt;/<span class="hljs-name">solutionId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ActivationInfo</span>&gt;</span>
-  ... 
+  ...
 <span class="hljs-tag">&lt;/<span class="hljs-name">ActivatedSVMs</span>&gt;</span>
 </code></pre>
   </div>
@@ -4595,7 +4595,7 @@ events relative to other solutions on the same host.</p>
 <ol>
 <li>Deactivate all security virtual machines.</li>
 <li>Change the location.</li>
-<li>Reactivate all security virtual machines.     </li>
+<li>Reactivate all security virtual machines.</li>
 </ol>
 </div>
 <div class="method post">
@@ -28777,9 +28777,8 @@ Source/Destination objects and not Name and isValid tags.</p>
 <ul>
 <li>IDs for new objects (rule/section) should be removed or set to zero.</li>
 <li>If new entities (sections/rules) have been sent in the request, the response
-will contain the system-generated ids, which are assigned to these new
-entities. These ID identifies the resource and can be used in the urls if
-you want to operate on these entities using those URLs.</li>
+will contain the system-generated IDs, which are assigned to these new
+entities.</li>
 <li><strong>appliedTo</strong> can be any valid firewall rule element.</li>
 <li><strong>action</strong> can be <em>ALLOW</em>, <em>BLOCK</em>, or <em>REJECT</em>. REJECT sends reject message for
 unaccepted packets; RST packets are sent for TCP connections and ICMP
@@ -28925,6 +28924,19 @@ allow rule and one defaultLayer2Section with default allow rule.</p>
 </h1>
   <h2 class="endpoint-description">Description</h2>
   <div class="description"><p>Working with layer 2 sections in distributed firewall.</p>
+<p>You can use sections in the firewall table to group logical rules based on
+AppliedTo or for a tenant use case. A firewall section is the smallest unit of
+configuration which can be updated independently. Section types are as
+follows:</p>
+<ul>
+<li>Layer3Section contains layer3 rules</li>
+<li>Layer2Section contains layer2 rules</li>
+<li>Layer3RedirectSection contains traffic redirect rules.</li>
+</ul>
+<p>When Distributed Firewall is used with Service Composer, firewall sections
+created by Service Composer contain an additional attribute in the XML called
+managedBy. You should not modify Service Composer firewall sections using
+Distributed Firewall REST APIs.</p>
 </div>
 <div class="method get">
   <a
@@ -29183,6 +29195,85 @@ and <strong>anchorId</strong> query parameters.</p>
     </ul>
   </div>
 </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/firewall/globalroot-0/config/layer2sections/{sectionId}"
+    href="#POST/4.0/firewall/globalroot-0/config/layer2sections/{sectionId}"
+  ><h2>post</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Move the specified layer 2 section.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <div class="params">
+      <h3>Request Headers</h3>
+        <dl>
+  <dt>
+    <span class="param">If-Match</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>The Etag value from the response headers from a GET of the firewall
+configuration you want to modify.</p>
+
+  </dd>
+</dl>
+    </div>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Set <strong>action</strong> to <em>revise</em> to change the position of the
+firewall rule section.</p>
+
+  </dd>
+  <dt>
+    <span class="param">operation</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p><strong>operation</strong> can be <em>insert_after</em>, <em>insert_before</em>, <em>insert_top</em>, or
+<em>insert_before_default</em>.</p>
+
+  </dd>
+  <dt>
+    <span class="param">anchorId</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Specify the section ID to use for reference with <em>insert_before</em> or
+<em>insert_after</em> operations.</p>
+
+  </dd>
+</dl>
+    </div>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml">POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009?action=revise&amp;operation=insert_before&amp;anchorId=1008
+If-Match: 1478307787160
+
+<span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1009"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Test Section"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1478307787160"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1478307787160"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER2"</span>&gt;</span>
+  ...
+<span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
 <div class="method put">
   <a
     class="verb put"
@@ -29206,9 +29297,8 @@ Source/Destination objects and not Name and isValid tags.</p>
 <ul>
 <li>IDs for new objects (rule/section) should be removed or set to zero.</li>
 <li>If new entities (sections/rules) have been sent in the request, the response
-will contain the system-generated ids, which are assigned to these new
-entities. These ID identifies the resource and can be used in the urls if
-you want to operate on these entities using those URLs.</li>
+will contain the system-generated IDs, which are assigned to these new
+entities.</li>
 <li><strong>appliedTo</strong> can be any valid firewall rule element.</li>
 <li><strong>action</strong> can be <em>ALLOW</em>, <em>BLOCK</em>, or <em>REJECT</em>. REJECT sends reject message for
 unaccepted packets; RST packets are sent for TCP connections and ICMP
@@ -29311,7 +29401,7 @@ configuration you want to modify.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>Operations to add one or more L2 Rules</p>
+  <div class="description"><p>Working with distributed firewall rules in a layer 2 section.</p>
 </div>
 <div class="method post">
   <a
@@ -29321,7 +29411,48 @@ configuration you want to modify.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Add L2 Rule</p>
+    <p><p>Add rules to the specified layer 2 section in distributed firewall.</p>
+<p>You add firewall rules at the global scope. You can then narrow down the scope
+(datacenter, cluster, distributed virtual port group, network, virtual machine,
+vNIC, or logical switch) at which you want to apply the rule. Firewall allows
+you to add multiple objects at the source and destination levels for each rule,
+which helps reduce the total number of firewall rules to be added.  To add a
+identity based firewall rule, first create a security group based on Directory
+Group objects. Then create a firewall rule with the security group as the
+source or destination.  Rules that direct traffic to a third part service are
+referred to as layer3 redirect rules, and are displayed in the layer3 redirect
+tab.</p>
+<p>When Distributed Firewall is used with Service Composer, firewall
+rules created by Service Composer contain an additional attribute
+in the XML called managedBy.</p>
+<p>Follow this procedure to add a rule:</p>
+<ul>
+<li>Retrieve the configuration for the specified section.</li>
+<li>Retrieve the Etag value from the response headers.
+<strong>Note</strong>: Each section contains its own Etag, generationNumber, and
+timestamp. When adding a new rule, you must use the Etag value of the
+firewall section to which you wish to add the rule.</li>
+<li>Extract and modify the configuration from the response body as needed.</li>
+<li>Set the If-Match header to the section Etag value, and submit the request.</li>
+</ul>
+<p>Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.</p>
+<p>When updating the firewall configuration:</p>
+<ul>
+<li>IDs for new rules should be removed or set to zero.</li>
+<li>If new rules have been sent in the request, the response
+will contain the system-generated IDs, which are assigned to these new
+entities.</li>
+<li><strong>appliedTo</strong> can be any valid firewall rule element.</li>
+<li><strong>action</strong> can be <em>ALLOW</em>, <em>BLOCK</em>, or <em>REJECT</em>. REJECT sends reject message for
+unaccepted packets; RST packets are sent for TCP connections and ICMP
+unreachable code packets are sent for UDP, ICMP, and other IP connections</li>
+<li>source and destination can have an exclude flag. For example, if you add an
+exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+originating from all IPs other than 1.1.1.1.</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -29513,9 +29644,21 @@ Rule Id</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Updates a L2 DFW Rule. To do this you need to read it first,
-make your changes, and then update the section by supplying the
-Etag value received in the read in the If-Match header</p>
+    <p><p>Update a distributed firewall rule in a layer 2 section.</p>
+<ul>
+<li>Retrieve the configuration for the section that contains the rule you want
+to modify.</li>
+<li>Retrieve the Etag value from the response headers.
+<strong>Note</strong>: This is the Etag value of the firewall section to which you want
+to add the rule. If you are keeping this rule in the same section, you must
+keep the same Etag number.</li>
+<li>Extract and modify the rule configuration from the response body as needed.</li>
+<li>Set the If-Match header to the section Etag value, and submit the request.</li>
+</ul>
+<p>Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -29589,7 +29732,7 @@ configuration you want to modify.</p>
   ><h2>delete</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Delete a specific rule identified by rule Id</p>
+    <p><p>Delete the specified distributed firewall rule.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -30123,6 +30266,19 @@ configuration you want to modify.</p>
 </h1>
   <h2 class="endpoint-description">Description</h2>
   <div class="description"><p>Working with layer 3 sections in distributed firewall.</p>
+<p>You can use sections in the firewall table to group logical rules based on
+AppliedTo or for a tenant use case. A firewall section is the smallest unit of
+configuration which can be updated independently. Section types are as
+follows:</p>
+<ul>
+<li>Layer3Section contains layer3 rules</li>
+<li>Layer2Section contains layer2 rules</li>
+<li>Layer3RedirectSection contains traffic redirect rules.</li>
+</ul>
+<p>When Distributed Firewall is used with Service Composer, firewall sections
+created by Service Composer contain an additional attribute in the XML called
+managedBy. You should not modify Service Composer firewall sections using
+Distributed Firewall REST APIs.</p>
 </div>
 <div class="method get">
   <a
@@ -30650,6 +30806,85 @@ and <strong>anchorId</strong> query parameters.</p>
 </code></pre>
   </div>
 </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/firewall/globalroot-0/config/layer3sections/{sectionId}"
+    href="#POST/4.0/firewall/globalroot-0/config/layer3sections/{sectionId}"
+  ><h2>post</h2></a>
+  <div class="content">
+    <h3>Description</h3>
+    <p><p>Move the specified layer 3 section.</p>
+</p>
+    <h3>Security</h3>
+    <ul class="security-schemes">
+    <li>
+      <a href="#security:basic">
+        <span class="glyphicon glyphicon-lock"></span>
+        basic
+      </a>
+    </li>
+    </ul>
+    <div class="params">
+      <h3>Request Headers</h3>
+        <dl>
+  <dt>
+    <span class="param">If-Match</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>The Etag value from the response headers from a GET of the firewall
+configuration you want to modify.</p>
+
+  </dd>
+</dl>
+    </div>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Set <strong>action</strong> to <em>revise</em> to change the position of the
+firewall rule section.</p>
+
+  </dd>
+  <dt>
+    <span class="param">operation</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p><strong>operation</strong> can be <em>insert_after</em>, <em>insert_before</em>, <em>insert_top</em>, or
+<em>insert_before_default</em>.</p>
+
+  </dd>
+  <dt>
+    <span class="param">anchorId</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Specify the section ID to use for reference with <em>insert_before</em> or
+<em>insert_after</em> operations.</p>
+
+  </dd>
+</dl>
+    </div>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml">POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007?action=revise&amp;operation=insert_before&amp;anchorId=1006
+If-Match: 1477989118875
+
+<span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1007"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Web Section"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1477989118875"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1477989118875"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;</span>
+  ...
+<span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
 <div class="method put">
   <a
     class="verb put"
@@ -30673,9 +30908,8 @@ Source/Destination objects and not Name and isValid tags.</p>
 <ul>
 <li>IDs for new objects (rule/section) should be removed or set to zero.</li>
 <li>If new entities (sections/rules) have been sent in the request, the response
-will contain the system-generated ids, which are assigned to these new
-entities. These ID identifies the resource and can be used in the urls if
-you want to operate on these entities using those URLs.</li>
+will contain the system-generated IDs, which are assigned to these new
+entities.</li>
 <li><strong>appliedTo</strong> can be any valid firewall rule element.</li>
 <li><strong>action</strong> can be <em>ALLOW</em>, <em>BLOCK</em>, or <em>REJECT</em>. REJECT sends reject message for
 unaccepted packets; RST packets are sent for TCP connections and ICMP
@@ -30820,7 +31054,7 @@ configuration you want to modify.</p>
   </a>
 </h1>
   <h2 class="endpoint-description">Description</h2>
-  <div class="description"><p>TESTING Working with a specific layer 3 distributed firewall rule.</p>
+  <div class="description"><p>Working with distributed firewall rules in a layer 3 section.</p>
 </div>
 <div class="method post">
   <a
@@ -30830,7 +31064,48 @@ configuration you want to modify.</p>
   ><h2>post</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Add a layer 3 distributed firewall rule.</p>
+    <p><p>Add rules to the specified layer 2 section in distributed firewall.</p>
+<p>You add firewall rules at the global scope. You can then narrow down the scope
+(datacenter, cluster, distributed virtual port group, network, virtual machine,
+vNIC, or logical switch) at which you want to apply the rule. Firewall allows
+you to add multiple objects at the source and destination levels for each rule,
+which helps reduce the total number of firewall rules to be added.  To add a
+identity based firewall rule, first create a security group based on Directory
+Group objects. Then create a firewall rule with the security group as the
+source or destination.  Rules that direct traffic to a third part service are
+referred to as layer3 redirect rules, and are displayed in the layer3 redirect
+tab.</p>
+<p>When Distributed Firewall is used with Service Composer, firewall
+rules created by Service Composer contain an additional attribute
+in the XML called managedBy.</p>
+<p>Follow this procedure to add a rule:</p>
+<ul>
+<li>Retrieve the configuration for the specified section.</li>
+<li>Retrieve the Etag value from the response headers.
+<strong>Note</strong>: Each section contains its own Etag, generationNumber, and
+timestamp. When adding a new rule, you must use the Etag value of the
+firewall section to which you wish to add the rule.</li>
+<li>Extract and modify the configuration from the response body as needed.</li>
+<li>Set the If-Match header to the section Etag value, and submit the request.</li>
+</ul>
+<p>Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.</p>
+<p>When updating the firewall configuration:</p>
+<ul>
+<li>IDs for new rules should be removed or set to zero.</li>
+<li>If new rules have been sent in the request, the response
+will contain the system-generated IDs, which are assigned to these new
+entities.</li>
+<li><strong>appliedTo</strong> can be any valid firewall rule element.</li>
+<li><strong>action</strong> can be <em>ALLOW</em>, <em>BLOCK</em>, or <em>REJECT</em>. REJECT sends reject message for
+unaccepted packets; RST packets are sent for TCP connections and ICMP
+unreachable code packets are sent for UDP, ICMP, and other IP connections</li>
+<li>source and destination can have an exclude flag. For example, if you add an
+exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+originating from all IPs other than 1.1.1.1.</li>
+</ul>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -30933,35 +31208,26 @@ configuration you want to modify.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">""</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">""</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"false"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>AddRuleTest<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>allow<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">notes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">notes</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">appliedToList</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">appliedTo</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>datacenter-26<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">appliedTo</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">appliedToList</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sources</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">""</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sectionId</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">sectionId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sources</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">"true"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>datacenter-26<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">sources</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">destinations</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">""</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">destination</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">destination</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">destinations</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">services</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>application-216<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">services</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
@@ -31022,8 +31288,21 @@ Rule Id</p>
   ><h2>put</h2></a>
   <div class="content">
     <h3>Description</h3>
-    <p><p>Update a layer 3 distributed firewall rule in a layer 3
-section.</p>
+    <p><p>Update a distributed firewall rule in a layer 3 section.</p>
+<ul>
+<li>Retrieve the configuration for the section that contains the rule you want
+to modify.</li>
+<li>Retrieve the Etag value from the response headers.
+<strong>Note</strong>: This is the Etag value of the firewall section to which you want
+to add the rule. If you are keeping this rule in the same section, you must
+keep the same Etag number.</li>
+<li>Extract and modify the rule configuration from the response body as needed.</li>
+<li>Set the If-Match header to the section Etag value, and submit the request.</li>
+</ul>
+<p>Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.</p>
 </p>
     <h3>Security</h3>
     <ul class="security-schemes">
@@ -31050,71 +31329,26 @@ configuration you want to modify.</p>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1061"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"false"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>new rule-web to db VM 3<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>reject<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"23"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"enabled"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>AddRuleTestUpdated<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>allow<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">notes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">notes</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">appliedToList</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">appliedTo</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>web-vm-01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vm-72<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">appliedTo</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">appliedTo</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>db-vm-01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vm-84<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>datacenter-26<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">appliedTo</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">appliedToList</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sectionId</span>&gt;</span>1028<span class="hljs-tag">&lt;/<span class="hljs-name">sectionId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sources</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">"false"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sectionId</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">sectionId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sources</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">"true"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>web-vm-01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vm-72<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>datacenter-26<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">sources</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">destinations</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">"false"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">destination</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>db-vm-01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vm-84<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">destination</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">destinations</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">""</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">""</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">notes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">notes</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">appliedToList</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">appliedTo</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">appliedTo</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">appliedToList</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">sources</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">""</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">sources</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">destinations</span> <span class="hljs-attr">excluded</span>=<span class="hljs-string">""</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">destination</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">destination</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">destinations</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">services</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>application-216<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">services</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>

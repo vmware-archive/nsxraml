@@ -1542,16 +1542,16 @@ Job instances on the task framework
 Work with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
 
 #### About Guest Introspection and Endpoint Protection Solutions
-VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution 
+VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution
 that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.
 
 #### Version Compatibility
 
-**Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions 
-that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier). 
-These partner solutions are also supported on NSX 6.0 and need the APIs listed below. 
-These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as 
-these newer solutions automate the registration and deployment process by using the new features introduced in NSX. 
+**Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions
+that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier).
+These partner solutions are also supported on NSX 6.0 and need the APIs listed below.
+These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as
+these newer solutions automate the registration and deployment process by using the new features introduced in NSX.
 Using these with newer NSX 6.0 based solutions could result in loss of features.
 
 #### Register a Solution
@@ -1582,7 +1582,7 @@ To update registration information for a vendor or solution, clients must:
 Register a Vendor and Solution with Guest Introspection
 
 * **post** *(secured)*: Register the vendor of an endpoint protection solution. Specify the following parameters in the request.
- 
+
 | Name            | Comments |
 |-----------------|------------|
 |**vendorId**     | VMware-assigned ID for the vendor. |
@@ -1625,7 +1625,7 @@ IP address and port for an endpoint protection solution.
 To change the location of an endpoint protection solution:
 1. Deactivate all security virtual machines.
 2. Change the location.
-3. Reactivate all security virtual machines.	 
+3. Reactivate all security virtual machines.
 
 * **post** *(secured)*: Set the IP address and port on the vNIC host for an endpoint protection solution.
 * **get** *(secured)*: Get the IP address and port on the vNIC host for an endpoint protection solution.
@@ -1710,9 +1710,8 @@ Source/Destination objects and not Name and isValid tags.
 When updating the firewall configuration:
 * IDs for new objects (rule/section) should be removed or set to zero.
 * If new entities (sections/rules) have been sent in the request, the response
-  will contain the system-generated ids, which are assigned to these new
-  entities. These ID identifies the resource and can be used in the urls if
-  you want to operate on these entities using those URLs.
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
 * **appliedTo** can be any valid firewall rule element.
 * **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
   unaccepted packets; RST packets are sent for TCP connections and ICMP
@@ -1729,6 +1728,19 @@ allow rule and one defaultLayer2Section with default allow rule.
 ### /4.0/firewall/globalroot-0/config/layer3sections
 Working with layer 3 sections in distributed firewall.
 
+You can use sections in the firewall table to group logical rules based on
+AppliedTo or for a tenant use case. A firewall section is the smallest unit of
+configuration which can be updated independently. Section types are as
+follows:
+* Layer3Section contains layer3 rules
+* Layer2Section contains layer2 rules
+* Layer3RedirectSection contains traffic redirect rules.
+
+When Distributed Firewall is used with Service Composer, firewall sections
+created by Service Composer contain an additional attribute in the XML called
+managedBy. You should not modify Service Composer firewall sections using
+Distributed Firewall REST APIs.
+
 * **get** *(secured)*: Retrieve rules from the layer 3 section specified by section
 **name**.
 
@@ -1742,6 +1754,7 @@ and **anchorId** query parameters.
 Working with a specific layer 3 distributed firewall section.
 
 * **get** *(secured)*: Retrieve information about the specified layer 3 section.
+* **post** *(secured)*: Move the specified layer 3 section.
 * **put** *(secured)*: Update the specified layer 3 section in distributed firewall.
 
 * Retrieve the configuration for the specified section.
@@ -1757,9 +1770,8 @@ Source/Destination objects and not Name and isValid tags.
 When updating the firewall configuration:
 * IDs for new objects (rule/section) should be removed or set to zero.
 * If new entities (sections/rules) have been sent in the request, the response
-  will contain the system-generated ids, which are assigned to these new
-  entities. These ID identifies the resource and can be used in the urls if
-  you want to operate on these entities using those URLs.
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
 * **appliedTo** can be any valid firewall rule element.
 * **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
   unaccepted packets; RST packets are sent for TCP connections and ICMP
@@ -1778,9 +1790,53 @@ must synchronize firewall rules from Service Composer using the `GET
 * **delete** *(secured)*: Delete the specified layer 3 distributed firewall section.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules
-TESTING Working with a specific layer 3 distributed firewall rule.
+Working with distributed firewall rules in a layer 3 section.
 
-* **post** *(secured)*: Add a layer 3 distributed firewall rule.
+* **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
+
+You add firewall rules at the global scope. You can then narrow down the scope
+(datacenter, cluster, distributed virtual port group, network, virtual machine,
+vNIC, or logical switch) at which you want to apply the rule. Firewall allows
+you to add multiple objects at the source and destination levels for each rule,
+which helps reduce the total number of firewall rules to be added.  To add a
+identity based firewall rule, first create a security group based on Directory
+Group objects. Then create a firewall rule with the security group as the
+source or destination.  Rules that direct traffic to a third part service are
+referred to as layer3 redirect rules, and are displayed in the layer3 redirect
+tab.
+
+When Distributed Firewall is used with Service Composer, firewall
+rules created by Service Composer contain an additional attribute
+in the XML called managedBy.
+
+Follow this procedure to add a rule:
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+  **Note**: Each section contains its own Etag, generationNumber, and
+  timestamp. When adding a new rule, you must use the Etag value of the
+  firewall section to which you wish to add the rule.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+
+* IDs for new rules should be removed or set to zero.
+* If new rules have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules/{ruleId}
 Operations on L3 rules in sections identified by section Id and
@@ -1788,13 +1844,39 @@ Rule Id
 
 * **get** *(secured)*: Retrieve information about the specified distributed firewall rule.
 
-* **put** *(secured)*: Update a layer 3 distributed firewall rule in a layer 3
-section.
+* **put** *(secured)*: Update a distributed firewall rule in a layer 3 section.
+
+* Retrieve the configuration for the section that contains the rule you want
+  to modify.
+* Retrieve the Etag value from the response headers.
+  **Note**: This is the Etag value of the firewall section to which you want
+  to add the rule. If you are keeping this rule in the same section, you must
+  keep the same Etag number.
+* Extract and modify the rule configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
 
 * **delete** *(secured)*: Delete the specified distributed firewall rule.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections
 Working with layer 2 sections in distributed firewall.
+
+You can use sections in the firewall table to group logical rules based on
+AppliedTo or for a tenant use case. A firewall section is the smallest unit of
+configuration which can be updated independently. Section types are as
+follows:
+* Layer3Section contains layer3 rules
+* Layer2Section contains layer2 rules
+* Layer3RedirectSection contains traffic redirect rules.
+
+When Distributed Firewall is used with Service Composer, firewall sections
+created by Service Composer contain an additional attribute in the XML called
+managedBy. You should not modify Service Composer firewall sections using
+Distributed Firewall REST APIs.
 
 * **get** *(secured)*: Retrieve rules from the layer 2 section specified by section
 **name**.
@@ -1809,6 +1891,7 @@ and **anchorId** query parameters.
 Working with a specific layer 2 distributed firewall section.
 
 * **get** *(secured)*: Retrieve information about the specified layer 2 section.
+* **post** *(secured)*: Move the specified layer 2 section.
 * **put** *(secured)*: Update the specified layer 2 section in distributed firewall.
 
 * Retrieve the configuration for the specified section.
@@ -1824,9 +1907,8 @@ Source/Destination objects and not Name and isValid tags.
 When updating the firewall configuration:
 * IDs for new objects (rule/section) should be removed or set to zero.
 * If new entities (sections/rules) have been sent in the request, the response
-  will contain the system-generated ids, which are assigned to these new
-  entities. These ID identifies the resource and can be used in the urls if
-  you want to operate on these entities using those URLs.
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
 * **appliedTo** can be any valid firewall rule element.
 * **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
   unaccepted packets; RST packets are sent for TCP connections and ICMP
@@ -1845,9 +1927,53 @@ must synchronize firewall rules from Service Composer using the `GET
 * **delete** *(secured)*: Deletes a L2 section and its content by ID
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules
-Operations to add one or more L2 Rules
+Working with distributed firewall rules in a layer 2 section.
 
-* **post** *(secured)*: Add L2 Rule
+* **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
+
+You add firewall rules at the global scope. You can then narrow down the scope
+(datacenter, cluster, distributed virtual port group, network, virtual machine,
+vNIC, or logical switch) at which you want to apply the rule. Firewall allows
+you to add multiple objects at the source and destination levels for each rule,
+which helps reduce the total number of firewall rules to be added.  To add a
+identity based firewall rule, first create a security group based on Directory
+Group objects. Then create a firewall rule with the security group as the
+source or destination.  Rules that direct traffic to a third part service are
+referred to as layer3 redirect rules, and are displayed in the layer3 redirect
+tab.
+
+When Distributed Firewall is used with Service Composer, firewall
+rules created by Service Composer contain an additional attribute
+in the XML called managedBy.
+
+Follow this procedure to add a rule:
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+  **Note**: Each section contains its own Etag, generationNumber, and
+  timestamp. When adding a new rule, you must use the Etag value of the
+  firewall section to which you wish to add the rule.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+
+* IDs for new rules should be removed or set to zero.
+* If new rules have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules/{ruleId}
 Operations on L2 rules in sections identified by section Id and
@@ -1855,11 +1981,23 @@ Rule Id
 
 * **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
 
-* **put** *(secured)*: Updates a L2 DFW Rule. To do this you need to read it first,
-make your changes, and then update the section by supplying the
-Etag value received in the read in the If-Match header
+* **put** *(secured)*: Update a distributed firewall rule in a layer 2 section.
 
-* **delete** *(secured)*: Delete a specific rule identified by rule Id
+* Retrieve the configuration for the section that contains the rule you want
+  to modify.
+* Retrieve the Etag value from the response headers.
+  **Note**: This is the Etag value of the firewall section to which you want
+  to add the rule. If you are keeping this rule in the same section, you must
+  keep the same Etag number.
+* Extract and modify the rule configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+* **delete** *(secured)*: Delete the specified distributed firewall rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections
 Layer3 redirect sections and rules
