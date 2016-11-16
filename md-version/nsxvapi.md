@@ -1658,6 +1658,7 @@ Get the activation status or deactivate an endpoint protection solution on a hos
 
 ## dfw
 Working with Distributed Firewall
+=================================
 
 ### /4.0/firewall/globalroot-0/config
 Distributed firewall rules configuration
@@ -2122,25 +2123,30 @@ usage crosses these thresholds.
 
 ### /4.0/firewall/config/globalconfiguration
 Working with the Distributed Firewall Global Configuration
+----------------------------------------------------------
 ___
-You can use the following parameters to improve firewall performance:
+You can use the following parameters to improve firewall performancer:
+
 * **layer3RuleOptimize** and **layer2RuleOptimize** to turn
-on/off rule optimization
-* **tcpStrictOption** helps in tighter access and forwarding control
-* **autoDraftDisable** improves performances when making large numbers
+on/off rule optimization.
+* **tcpStrictOption** determines whether or not to drop an established
+TCP connection when the firewall does not see the initial three-way
+handshake. If set to true, the connection will be dropped.
+* **autoDraftDisabled** improves performances when making large numbers
 of changes to firewall rules.
-___
-You can disable the auto draft feature by setting autoDraftDisabled to
+
+You can disable the auto draft feature by setting **autoDraftDisabled** to
 true. Distributed Firewall saves up to 100 configurations, including
-manually saved drafts ("preserve" field can be set to true or false) and
-auto saved drafts ("preserve" field is set to false). Once 100
-configurations are saved, older drafts with the "preserve" field set to
-false will be deleted in order to save new configurations. You might
-want to disable the auto drafts feature before making large numbers of
-changes to the firewall rules, to improve performance, and to prevent
-previously saved drafts from being overwritten.
-___
-Note: The autoDraftDisabled field does not appear in a GET of the global
+manually saved drafts (**preserve** parameter can be set to true or
+false) and auto saved drafts (**preserve** parameter is set to false).
+Once 100 configurations are saved, older drafts with the **preserve**
+parameter set to false will be deleted in order to save new
+configurations. You might want to disable the auto drafts feature before
+making large numbers of changes to the firewall rules, to improve
+performance, and to prevent previously saved drafts from being
+overwritten.
+
+Note: The **autoDraftDisabled** parameter does not appear in a GET of the global
 configuration.
 
 * **get** *(secured)*: Retrieve performance configuration for distributed firewall.
