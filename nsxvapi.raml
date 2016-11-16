@@ -1573,6 +1573,7 @@ securitySchemes:
       description: |
         Working with hardware gateway bindings for a specific logical switch.
       get:
+      # new in 6.2.3
         displayName: logicalSwitchHardwareGatewayBindingsList
         description: |
           Retrieve hardware gateway bindings for the specified logical switch.
@@ -1602,11 +1603,13 @@ securitySchemes:
                     </hardwareGatewayBinding>
                   </list>
       /{hardwareGatewayBindingId}:
+      # new in 6.2.3
         displayName: logicalSwitchHardwareGatewayBinding
         description: |
           Working with connections between hardware gateways and logical
           switches.
         post:
+        # new in 6.2.3
           displayName: logicalSwitchHardwareGatewayBindingCreate
           description: |
             Manage the connection between a hardware gateway and a logical switch.
@@ -3097,6 +3100,38 @@ securitySchemes:
       displayName: networkSettingsRead
       description: |
         Retrieve network information i.e. host name, IP address, DNS settings
+  /system/tlssettings:
+  # new in 6.2.3
+    displayName: tlsSettings
+    description: Working with TLS Settings
+    get:
+    # new in 6.2.3
+      displayName: tlsSettingsList
+      description: Retrieve TLS settings.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <tlsSettings>
+                  <serverEnabledProtocols>TLSv1,TLSv1.1,TLSv1.2</serverEnabledProtocols>
+                  <clientEnabledProtocols>TLSv1,TLSv1.1,TLSv1.2</clientEnabledProtocols>
+                </tlsSettings>
+    post:
+    # new in 6.2.3
+      displayName: tlsSettingsUpdate
+      description: |
+        Update TLS settings.
+        ___
+        Include a comma separated list of the TLS versions you want to enable,
+        for both server and client.
+      body:
+        application/xml:
+          example: |
+            <tlsSettings>
+              <serverEnabledProtocols>TLSv1.1,TLSv1.2</serverEnabledProtocols>
+              <clientEnabledProtocols>TLSv1.1,TLSv1.2</clientEnabledProtocols>
+            </tlsSettings>
     /dns:
       displayName: applianceDnsClient
       description: Configure DNS
@@ -6940,6 +6975,7 @@ securitySchemes:
                   <tcpStrictOption>false</tcpStrictOption>
                 </globalConfiguration>
     put:
+    # changed in 6.2.3 - autoDraftDisabled parameter added
       displayName: dfwPerformanceUpdate
       description: |
         Update the distributed firewall performance configuration.
@@ -10668,6 +10704,7 @@ securitySchemes:
       | edgeMemoryReservationPercentage | integer value [0‐100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
       | megaHertzPerVCpu | integer value specifying the megahertz per each vCPU (1000, 1500, 2000) |
     get:
+    # new in 6.2.3
       displayName: nsxEdgePublishTuningList
       description: Retrieve the NSX Edge tuning configuration.
       responses:
@@ -10686,7 +10723,8 @@ securitySchemes:
                   <edgeMemoryReservationPercentage>100</edgeMemoryReservationPercentage>
                   <megaHertzPerVCpu>1000</megaHertzPerVCpu>
                 </tuningConfiguration
-    post:
+    put:
+    # new in 6.2.3
       displayName: nsxEdgePublishTuningUpdate
       description: Update the NSX Edge tuning configuration.
       body:
@@ -11088,6 +11126,7 @@ securitySchemes:
       displayName: secGroupPoliciesRead
       description: Retrieve security policies mapped to a security group
 /2.0/services/snmp:
+  # new is 6.2.3
   displayName: snmp
   description: |
     Working with SNMP
@@ -11318,6 +11357,7 @@ securitySchemes:
   displayName: hardwareGateways
   description: Working with Hardware Gateways
   post:
+  # new in 6.2.3
     displayName: hardwareGatewayCreate
     description: |
       Install a hardware gateway.
@@ -11333,6 +11373,7 @@ securitySchemes:
             <bfdEnabled></bfdEnabled>
           </hardwareGatewaySpec>
   get:
+  # new in 6.2.3
     displayName: hardwareGatewaysList
     description: Retrieve information about all hardware gateways.
     responses:
@@ -11373,6 +11414,7 @@ securitySchemes:
                   </hardwareGateway>
               </list>
   /{hardwareGatewayId}:
+  # new in 6.2.3
     displayName: hardwareGatewayId
     description: Working with a specific hardware gateway.
     uriParameters:
@@ -11381,6 +11423,7 @@ securitySchemes:
         description: Object ID of the hardware gateway.
         required: true
     get:
+    # new in 6.2.3
       displayName: hardwareGatewayRead
       description: Retrieve information about the specified hardware gateway.
       responses:
@@ -11404,6 +11447,7 @@ securitySchemes:
                   <bindingCount>2</bindingCount>
                 </hardwareGateway>
     put:
+    # new in 6.2.3
       displayName: hardwareGatewayUpdate
       description: Update the specified hardware gateway.
       body:
@@ -11416,12 +11460,14 @@ securitySchemes:
               <bfdEnabled></bfdEnabled>
             </hardwareGatewaySpec>
     delete:
+    # new in 6.2.3
       displayName: hardwareGatewayDelete
       description: Delete the specified hardware gateway.
     /switches:
       displayName: hardwareGatewaySwitches
       description: Working with switches on a specific hardware gateway.
       get:
+      # new in 6.2.3
         displayName: hardwareGatewaySwitchesList
         description: |
           Retrieve information about switches on the specified hardware
@@ -11440,15 +11486,18 @@ securitySchemes:
                     <hardwareGatewayId>torgateway-1</hardwareGatewayId>
                   </hardwareGatewaySwitches>
       /{switchName}:
+      # new in 6.2.3
         displayName: hardwareGatewaySwitch
         description: |
           Working with a specific switch on a specific hardware gateway.
         /switchports:
+        # new in 6.2.3
           displayName: hardwareGatewaySwitchPorts
           description: |
             Working with ports on a specific switch on a specific hardware
             gateway.
           get:
+          # new in 6.2.3
             displayName: hardwareGatewaySwitchPortsList
             description: |
               Retrive information about the hardware gateway switch ports for
@@ -11485,9 +11534,11 @@ securitySchemes:
                           <hardwareGatewayId>torgateway-1</hardwareGatewayId>
                       </hardwareGatewaySwitchPorts>
   /replicationcluster:
+  # new in 6.2.3
     displayName: hardwareGatewayReplicationCluster
     description: Working with the hardware gateway replication cluster.
     put:
+    # new in 6.2.3
       displayName: hardwareGatewayReplicationClusterUpdate
       description: |
         Update the hardware gateway replication cluster.
@@ -11510,6 +11561,7 @@ securitySchemes:
               </hosts>
             </replicationCluster>
     get:
+    # new in 6.2.3
       displayName: hardwareGatewayReplicationClusterRead
       description: |
         Retrieve information about the hardware gateway replication cluster.
@@ -11583,9 +11635,11 @@ securitySchemes:
                   </hosts>
                 </replicationCluster>
   /bindings:
+  # new in 6.2.3
     displayName: hardwareGatewayBindings
     description: Retrieve information about hardware gateway bindings.
     post:
+    # new in 6.2.3
       displayName: hardwareGatewayBindingCreate
       description: Create a hardware gateway binding.
       body:
@@ -11598,6 +11652,7 @@ securitySchemes:
               <portName></portName>
             </hardwareGatewayBinding>
     get:
+    # new in 6.2.3
       displayName: hardwareGatewayBindingsList
       description: Retrieve information about hardware gateway bindings.
       queryParameters:
@@ -11626,6 +11681,7 @@ securitySchemes:
                   <vni>5000</vni>
                 </hardwareGatewayBinding>
     /{bindingId}:
+    # new in 6.2.3
       displayName: hardwareGatewayBinding
       description: Working with a specific hardware gateway binding.
       uriParameters:
@@ -11633,10 +11689,12 @@ securitySchemes:
           displayName: bindingId
           description: hardware gateway binding ID.
       get:
+      # new in 6.2.3
         displayName: hardwareGatewayBindingRead
         description: |
           Retrieve information about the specified hardware gateway binding.
       put:
+      # new in 6.2.3
         displayName: hardwareGatewayBindingUpdate
         description: |
           Update the specified hardware gateway binding.
@@ -11657,12 +11715,14 @@ securitySchemes:
                 <virtualWire>virtualwire-1</virtualWire>
               </hardwareGatewayBinding>
       delete:
+      # new in 6.2.3
         displayName: hardwareGatewayBindingDelete
         description: Delete the specified hardware gateway binding.
       /statistic:
         displayName: hardwareGatewayBindingStatistic
         description: Working with hardware gateway binding statistics.
         get:
+        # new in 6.2.3
           displayName: hardwareGatewayBindingStatisticList
           description: |
             Retrieve statistics for the specified hardware gateway binding.
@@ -11684,6 +11744,7 @@ securitySchemes:
       description: |
         Working with hardware gateway binding objects.
       post:
+      # new in 6.2.3
         displayName: hardwareGatewayBindingsManageUpdate
         description: |
           Manage hardware gateway binding objects.
@@ -11732,6 +11793,7 @@ securitySchemes:
       displayName: hardwareGatewayBfdConfig
       description: Working with hardware gateway BFD configuration.
       put:
+      # new in 6.2.3
         displayName: hardwareGatewayBfdConfigUpdate
         description: Update global hardware gateway BFD configuration.
         body:
@@ -11742,6 +11804,7 @@ securitySchemes:
                 <probeInterval>100</probeInterval>
               </hardwareGatewayBfdParams>
       get:
+      # new in 6.2.3
         displayName: hardwareGatewayBfdConfigRead
         description: Retrieve global hardware gateway BFD configuration.
         responses:
@@ -11757,6 +11820,7 @@ securitySchemes:
       displayName: hardwareGatewayBfdStatus
       description: Working with hardware gateway BFD tunnel status.
       get:
+        # new in 6.2.3
         displayName: hardwareGatewayBfdStatusRead
         description: |
           Retrieve hardware gateway BFD tunnel status for all tunnel

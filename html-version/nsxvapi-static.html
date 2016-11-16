@@ -582,52 +582,6 @@ memory and storage</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure DNS</p>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/1.0/appliance-management/system/network/dns"
-    href="#PUT/1.0/appliance-management/system/network/dns"
-  ><h2>PUT /1.0/appliance-management/system/network/dns</h2></a>
-  <div class="content">
-    <p><p>Configure DNS</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="dns"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="ipv4Address"/&gt;
-        &lt;xs:element type="xs:string" name="ipv6Address"/&gt;
-        &lt;xs:element type="xs:string" name="domainList"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dns</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Address</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Address</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ipv6Address</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipv6Address</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">domainList</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">domainList</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">dns</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-<div class="method delete">
-  <a
-    class="verb delete"
-    id="DELETE/1.0/appliance-management/system/network/dns"
-    href="#DELETE/1.0/appliance-management/system/network/dns"
-  ><h2>DELETE /1.0/appliance-management/system/network/dns</h2></a>
-  <div class="content">
-    <p><p>Delete DNS servers</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
   <div class="description"><p>Reboot the appliance manager</p>
 </div>
 <div class="method post">
@@ -779,6 +733,98 @@ memory and storage</p>
   ><h2>DELETE /1.0/appliance-management/system/timesettings/ntp</h2></a>
   <div class="content">
     <p><p>Delete NTP server</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><p>Working with TLS Settings</p>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/1.0/appliance-management/system/tlssettings"
+    href="#GET/1.0/appliance-management/system/tlssettings"
+  ><h2>GET /1.0/appliance-management/system/tlssettings</h2></a>
+  <div class="content">
+    <p><p>Retrieve TLS settings.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tlsSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">serverEnabledProtocols</span>&gt;</span>TLSv1,TLSv1.1,TLSv1.2<span class="hljs-tag">&lt;/<span class="hljs-name">serverEnabledProtocols</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">clientEnabledProtocols</span>&gt;</span>TLSv1,TLSv1.1,TLSv1.2<span class="hljs-tag">&lt;/<span class="hljs-name">clientEnabledProtocols</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tlsSettings</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/appliance-management/system/tlssettings"
+    href="#POST/1.0/appliance-management/system/tlssettings"
+  ><h2>POST /1.0/appliance-management/system/tlssettings</h2></a>
+  <div class="content">
+    <p><p>Update TLS settings.</p>
+<hr>
+<p>Include a comma separated list of the TLS versions you want to enable,
+for both server and client.</p>
+</p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tlsSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">serverEnabledProtocols</span>&gt;</span>TLSv1.1,TLSv1.2<span class="hljs-tag">&lt;/<span class="hljs-name">serverEnabledProtocols</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">clientEnabledProtocols</span>&gt;</span>TLSv1.1,TLSv1.2<span class="hljs-tag">&lt;/<span class="hljs-name">clientEnabledProtocols</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tlsSettings</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><p>Configure DNS</p>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/1.0/appliance-management/system/tlssettings/dns"
+    href="#PUT/1.0/appliance-management/system/tlssettings/dns"
+  ><h2>PUT /1.0/appliance-management/system/tlssettings/dns</h2></a>
+  <div class="content">
+    <p><p>Configure DNS</p>
+</p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="dns"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="ipv4Address"/&gt;
+        &lt;xs:element type="xs:string" name="ipv6Address"/&gt;
+        &lt;xs:element type="xs:string" name="domainList"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Address</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Address</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipv6Address</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipv6Address</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">domainList</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">domainList</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dns</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/1.0/appliance-management/system/tlssettings/dns"
+    href="#DELETE/1.0/appliance-management/system/tlssettings/dns"
+  ><h2>DELETE /1.0/appliance-management/system/tlssettings/dns</h2></a>
+  <div class="content">
+    <p><p>Delete DNS servers</p>
 </p>
   </div>
 </div>
@@ -12887,12 +12933,12 @@ The default values are:</p>
 </span></code></pre>
   </div>
 </div>
-<div class="method post">
+<div class="method put">
   <a
-    class="verb post"
-    id="POST/4.0/edgePublish/tuningConfiguration"
-    href="#POST/4.0/edgePublish/tuningConfiguration"
-  ><h2>POST /4.0/edgePublish/tuningConfiguration</h2></a>
+    class="verb put"
+    id="PUT/4.0/edgePublish/tuningConfiguration"
+    href="#PUT/4.0/edgePublish/tuningConfiguration"
+  ><h2>PUT /4.0/edgePublish/tuningConfiguration</h2></a>
   <div class="content">
     <p><p>Update the NSX Edge tuning configuration.</p>
 </p>

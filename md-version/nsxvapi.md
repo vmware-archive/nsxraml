@@ -847,7 +847,16 @@ Working with network settings
 
 * **get** *(secured)*: Retrieve network information i.e. host name, IP address, DNS settings
 
-### /1.0/appliance-management/system/network/dns
+### /1.0/appliance-management/system/tlssettings
+Working with TLS Settings
+
+* **get** *(secured)*: Retrieve TLS settings.
+* **post** *(secured)*: Update TLS settings.
+___
+Include a comma separated list of the TLS versions you want to enable,
+for both server and client.
+
+### /1.0/appliance-management/system/tlssettings/dns
 Configure DNS
 
 * **put** *(secured)*: Configure DNS
@@ -3122,7 +3131,7 @@ ___
 | megaHertzPerVCpu | integer value specifying the megahertz per each vCPU (1000, 1500, 2000) |
 
 * **get** *(secured)*: Retrieve the NSX Edge tuning configuration.
-* **post** *(secured)*: Update the NSX Edge tuning configuration.
+* **put** *(secured)*: Update the NSX Edge tuning configuration.
 
 ## truststore
 Operation on truststore (certificates)
