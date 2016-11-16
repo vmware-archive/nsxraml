@@ -3231,6 +3231,61 @@ Retrieve security policies mapped to a security group
 
 * **get** *(secured)*: Retrieve security policies mapped to a security group
 
+## snmp
+Working with SNMP
+=================
+NSX Manager receives events from other NSX components, including NSX Edge,
+network fabric, and hypervisors.
+___
+You can configure NSX Manager to forward SNMP traps to an SNMP Manager.
+
+### /2.0/services/snmp/status
+Working with SNMP Settings
+___
+You can configure settings for SNMP on the NSX Manager.
+
+-------------------------
+Parameter | Description
+----------|------------
+serviceStatus | Boolean. Set to true to enable SNMP. There must be at least one SNMP manager configured to enable SNMP.
+groupNotification | Boolean. Set to true to group similar SNMP notifications. This reduces the number of notifications being sent out, which can improve SNMP manager performance when there is a high volume of SNMP notifications.
+
+* **get** *(secured)*: Retrieve SNMP settings.
+
+* **put** *(secured)*: Update SNMP settings.
+___
+
+### /2.0/services/snmp/manager
+## Working with SNMP Managers
+
+* **get** *(secured)*: Retrieve information about SNMP managers.
+
+* **post** *(secured)*: Add an SNMP manager.
+
+### /2.0/services/snmp/manager/{managerId}
+Working with a Specific SNMP Manager
+------------------------------------
+
+* **get** *(secured)*: Retrieve information about the specified SNMP manager.
+
+* **put** *(secured)*: Update an SNMP manager configuration.
+
+* **delete** *(secured)*: Delete an SNMP manager configuration.
+
+### /2.0/services/snmp/trap
+Working with SNMP Traps
+-----------------------
+
+* **get** *(secured)*: Retrieve information about SNMP traps.
+
+### /2.0/services/snmp/trap/{oid}
+Working with a Specific SNMP Trap
+-----------------------
+
+* **get** *(secured)*: Retrieve information about the specified SNMP trap.
+
+* **put** *(secured)*: Update the specified SNMP trap.
+
 ## nsxCli
 Working with the Central CLI
 

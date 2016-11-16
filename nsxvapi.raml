@@ -11080,6 +11080,201 @@ securitySchemes:
     get:
       displayName: secGroupPoliciesRead
       description: Retrieve security policies mapped to a security group
+/2.0/services/snmp:
+  displayName: snmp
+  description: |
+    Working with SNMP
+    =================
+    NSX Manager receives events from other NSX components, including NSX Edge,
+    network fabric, and hypervisors.
+    ___
+    You can configure NSX Manager to forward SNMP traps to an SNMP Manager.
+  /status:
+    displayName: snmpStatus
+    description: |
+      Working with SNMP Settings
+      ___
+      You can configure settings for SNMP on the NSX Manager.
+
+      -------------------------
+      Parameter | Description
+      ----------|------------
+      serviceStatus | Boolean. Set to true to enable SNMP. There must be at least one SNMP manager configured to enable SNMP.
+      groupNotification | Boolean. Set to true to group similar SNMP notifications. This reduces the number of notifications being sent out, which can improve SNMP manager performance when there is a high volume of SNMP notifications.
+    get:
+      displayName: snmpStatusRead
+      description: |
+        Retrieve SNMP settings.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <snmpServiceStatus>
+                  <serviceStatus>false</serviceStatus>
+                  <groupedNotification>true</groupedNotification>
+                </snmpServiceStatus>
+    put:
+      displayName: snmpStatusUpdate
+      description: |
+        Update SNMP settings.
+        ___
+      body:
+        application/xml:
+          example: |
+            <snmpServiceStatus>
+              <serviceStatus>true</serviceStatus>
+              <groupedNotification>true</groupedNotification>
+            </snmpServiceStatus>
+  /manager:
+    displayName: snmpManagers
+    description: |
+      ## Working with SNMP Managers
+    get:
+      displayName: snmpManagersList
+      description: |
+        Retrieve information about SNMP managers.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <snmpManagers>
+                  <snmpManager>
+                    <managerId>1330</managerId>
+                    <ip>10.10.10.10</ip>
+                    <port>162</port>
+                    <communityString>NSXManager</communityString>
+                    <enabled>true</enabled>
+                  </snmpManager>
+                  <snmpManager>
+                    <managerId>1331</managerId>
+                    <ip>10.10.10.11</ip>
+                    <port>162</port>
+                    <communityString>NSXManager</communityString>
+                    <enabled>true</enabled>
+                  </snmpManager>
+                </snmpManagers>
+    post:
+      displayName: snmpManagerCreate
+      description:
+        Add an SNMP manager.
+      body:
+        application/xml:
+          example: |
+            <snmpManager>
+              <ip>10.10.10.10</ip>
+              <port>162</port>
+              <communityString>NSXManager</communityString>
+              <enabled>true</enabled>
+            </snmpManager>
+    /{managerId}:
+      displayName: snmpManager
+      description: |
+        Working with a Specific SNMP Manager
+        ------------------------------------
+      uriParameters:
+        managerId:
+          displayName: managerId
+          description: ID of the SNMP manager.
+      get:
+        displayName: snmpManagerRead
+        description: |
+          Retrieve information about the specified SNMP manager.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <snmpManager>
+                    <managerId>1330</managerId>
+                    <ip>10.10.10.10</ip>
+                    <port>162</port>
+                    <communityString>NSXManager</communityString>
+                    <enabled>true</enabled>
+                  </snmpManager>
+      put:
+        displayName: snmpManagerUpdate
+        description: |
+          Update an SNMP manager configuration.
+        body:
+          application/xml:
+            example: |
+              <snmpManager>
+                <managerId>1330</managerId>
+                <ip>10.10.10.10</ip>
+                <port>162</port>
+                <communityString>NSXManager</communityString>
+                <enabled>false</enabled>
+              </snmpManager>
+      delete:
+        displayName: snmpManagerDelete
+        description: |
+          Delete an SNMP manager configuration.
+  /trap:
+    displayName: snmpTraps
+    description: |
+      Working with SNMP Traps
+      -----------------------
+    get:
+      displayName: snmpTrapsList
+      description: |
+        Retrieve information about SNMP traps.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <trapConfigs>
+                  <trapConfig>
+                    <eventId>300001</eventId>
+                    <oid>1.3.6.1.4.1.6876.90.1.2.10.0.1</oid>
+                    <componentName>ServiceComposer</componentName>
+                    <enabled>true</enabled>
+                  </trapConfig>
+                  <trapConfig>
+                    <eventId>300009</eventId>
+                    <oid>1.3.6.1.4.1.6876.90.1.2.10.0.10</oid>
+                    <componentName>ServiceComposer</componentName>
+                    <enabled>true</enabled>
+                  </trapConfig>
+                  ...
+                </trapConfigs>
+    /{oid}:
+      displayName: snmpTrap
+      description: |
+        Working with a Specific SNMP Trap
+        -----------------------
+      uriParameters:
+        oid:
+          displayName: oid
+          description: SNMP object identifier.
+      get:
+        displayName: snmpTrapRead
+        description: |
+          Retrieve information about the specified SNMP trap.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <trapConfig>
+                    <eventId>321100</eventId>
+                    <oid>1.3.6.1.4.1.6876.90.1.2.9.0.6</oid>
+                    <componentName>Messaging</componentName>
+                    <enabled>true</enabled>
+                  </trapConfig>
+      put:
+        displayName: snmpTrapUpdate
+        description: |
+          Update the specified SNMP trap.
+        body:
+          application/xml:
+            example: |
+              <trapConfig>
+                <oid>1.3.6.1.4.1.6876.90.1.2.3.0.1</oid>
+                <enabled>false</enabled>
+              </trapConfig>
 /1.0/nsx/cli:
   displayName: nsxCli
   description: |

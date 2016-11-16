@@ -1,15 +1,10 @@
 <section class="resource">
-<h1 class="anchor" id="{{pathId}}">
-  <a href="#{{pathId}}">
-    {{#if basePath}}<span class="parent">{{basePath}}</span>{{/if}}{{path}}
-  </a>
-</h1>
 {{#if description}}
   <div class="description">{{markdown description}}</div>
 {{/if}}
 {{#if uriParameters}}
   <div class="params">
-    <h2>URI Parameters</h2>
+    <h4>URI Parameters</h4>
     {{#> custom-parameters params=uriParameters}}
       {{> parameters params=uriParameters}}
     {{/ custom-parameters}}
@@ -25,19 +20,6 @@
   <div class="content">
   {{#if description}}
     <p>{{markdown description}}</p>
-  {{/if}}
-  {{#if securedBy}}
-    <h3>Security</h3>
-    <ul class="security-schemes">
-    {{#each securedBy}}
-    <li>
-      <a href="#security:{{.}}">
-        <span class="glyphicon glyphicon-lock"></span>
-        {{nameForSecurityScheme .}}
-      </a>
-    </li>
-    {{/each}}
-    </ul>
   {{/if}}
   {{#if headers}}
     <div class="params">
