@@ -27432,12 +27432,29 @@ each Edge. Each Edge must have at least one internal interface</p>
     <span class="parent">/4.0/firewall</span>/config/globalconfiguration
   </a>
 </h1>
-  <div class="description"><p>You can use the following flags to improve firewall performance:</p>
+  <div class="description"><p>Working with the Distributed Firewall Global Configuration</p>
+<hr>
+<p>You can use the following parameters to improve firewall performance:</p>
 <ul>
 <li><strong>layer3RuleOptimize</strong> and <strong>layer2RuleOptimize</strong> to turn
 on/off rule optimization</li>
 <li><strong>tcpStrictOption</strong> helps in tighter access and forwarding control</li>
+<li><strong>autoDraftDisable</strong> improves performances when making large numbers
+of changes to firewall rules.</li>
 </ul>
+<hr>
+<p>You can disable the auto draft feature by setting autoDraftDisabled to
+true. Distributed Firewall saves up to 100 configurations, including
+manually saved drafts (&quot;preserve&quot; field can be set to true or false) and
+auto saved drafts (&quot;preserve&quot; field is set to false). Once 100
+configurations are saved, older drafts with the &quot;preserve&quot; field set to
+false will be deleted in order to save new configurations. You might
+want to disable the auto drafts feature before making large numbers of
+changes to the firewall rules, to improve performance, and to prevent
+previously saved drafts from being overwritten.</p>
+<hr>
+<p>Note: The autoDraftDisabled field does not appear in a GET of the global
+configuration.</p>
 </div>
 <div class="method get">
   <a
@@ -27494,9 +27511,10 @@ on/off rule optimization</li>
   &lt;xs:element name="globalConfiguration"&gt;
     &lt;xs:complexType&gt;
       &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="layer3RuleOptimize"/&gt;
-        &lt;xs:element type="xs:string" name="layer2RuleOptimize"/&gt;
-        &lt;xs:element type="xs:string" name="tcpStrictOption"/&gt;
+        &lt;xs:element type="xs:boolean" name="layer3RuleOptimize"/&gt;
+        &lt;xs:element type="xs:boolean" name="layer2RuleOptimize"/&gt;
+        &lt;xs:element type="xs:boolean" name="tcpStrictOption"/&gt;
+        &lt;xs:element type="xs:boolean" name="autoDraftDisabled"/&gt;
       &lt;/xs:sequence&gt;
     &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
@@ -27507,6 +27525,7 @@ on/off rule optimization</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">layer3RuleOptimize</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">layer3RuleOptimize</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">layer2RuleOptimize</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">layer2RuleOptimize</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">tcpStrictOption</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">tcpStrictOption</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">autoDraftDisabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">autoDraftDisabled</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfiguration</span>&gt;</span>
 </code></pre>
   </div>

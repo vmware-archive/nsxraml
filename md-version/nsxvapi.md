@@ -2121,10 +2121,27 @@ usage crosses these thresholds.
 * **put** *(secured)*: Update threshold configuration for distributed firewall.
 
 ### /4.0/firewall/config/globalconfiguration
-You can use the following flags to improve firewall performance:
+Working with the Distributed Firewall Global Configuration
+___
+You can use the following parameters to improve firewall performance:
 * **layer3RuleOptimize** and **layer2RuleOptimize** to turn
 on/off rule optimization
 * **tcpStrictOption** helps in tighter access and forwarding control
+* **autoDraftDisable** improves performances when making large numbers
+of changes to firewall rules.
+___
+You can disable the auto draft feature by setting autoDraftDisabled to
+true. Distributed Firewall saves up to 100 configurations, including
+manually saved drafts ("preserve" field can be set to true or false) and
+auto saved drafts ("preserve" field is set to false). Once 100
+configurations are saved, older drafts with the "preserve" field set to
+false will be deleted in order to save new configurations. You might
+want to disable the auto drafts feature before making large numbers of
+changes to the firewall rules, to improve performance, and to prevent
+previously saved drafts from being overwritten.
+___
+Note: The autoDraftDisabled field does not appear in a GET of the global
+configuration.
 
 * **get** *(secured)*: Retrieve performance configuration for distributed firewall.
 * **put** *(secured)*: Update the distributed firewall performance configuration.
