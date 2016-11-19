@@ -51,6 +51,7 @@ The NSX Manager requires port 443/TCP for REST API requests.
 
 ## vdsManage
 Working with vSphere Distributed Switches
+===========
 
 ### /2.0/vdn/switches
 
@@ -78,10 +79,11 @@ Working With a Specific vSphere Distributed Switch
 
 ## vdnConfig
 Working with Segement ID Pools and Multicast Ranges
+========
 
 ### /2.0/vdn/config/segments
-Working with segment ID pools.
-___
+Working with segment ID pools
+-------------
 Segment ID pools (also called segment ID ranges) provide virtual network
 identifiers (VNIs) to logical switches.
 ___
@@ -181,6 +183,7 @@ addresses.
 
 ## vdnScopes
 Working with Transport Zones
+==============
 
 ### /2.0/vdn/scopes
 
@@ -241,6 +244,7 @@ the **packetSize** parameter.
 
 ## logicalSwitches
 Working with Logical Switches in a Specific Transport Zone
+==================
 
 ### /2.0/vdn/scopes/{scopeId}/virtualwires
 
@@ -298,6 +302,7 @@ Traceflow Observations
 
 ## logicalSwitchesGlobal
 Working with Logical Switches in All Transport Zones
+===========
 
 ### /2.0/vdn/virtualwires
 
@@ -380,7 +385,8 @@ switches.
 * **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
 
 ## arpMAC
-Working with ARP suppression and MAC learning for logical switches
+Working with ARP Suppression and MAC Learning for Logical Switches
+==============
 
 ### /2.0/xvs/networks/{ID}/features
 
@@ -388,7 +394,9 @@ Working with ARP suppression and MAC learning for logical switches
 * **put** *(secured)*: Enable or disable ARP suppression and MAC learning
 
 ## nsxControllers
-Working with NSX controllers - For the unicast or hybrid control plane mode,
+Working with NSX Controllers
+==============
+For the unicast or hybrid control plane mode,
 you must add an NSX controller to manage overlay transport and provide
 East-West routing. The controller optimizes virtual machine broadcast (ARP
 only) traffic, and the learning is stored on the host and the controller.
@@ -473,7 +481,8 @@ Change the NSX controller password
 * **put** *(secured)*: Change the NSX controller password
 
 ## servicesScope
-Working with services on a scope
+Working with Services
+=============
 
 ### /2.0/services/application/scope/{scopeId}
 
@@ -481,7 +490,8 @@ Working with services on a scope
 * **post** *(secured)*: Create a new service on the specified scope
 
 ## service
-Working with a specified service
+Working with a Specified Service
+============
 
 ### /2.0/services/application/{applicationId}
 
@@ -492,7 +502,8 @@ service
 * **delete** *(secured)*: Delete the specified service
 
 ## applicationgroup
-Operations on Application Groups
+Working with Application Groups
+============
 
 ### /2.0/services/applicationgroup/scope/{scopeId}
 Working with service groups
@@ -522,7 +533,8 @@ Get the members of a service group
 created on a particular scope.
 
 ## ipPools
-Working with IP pools.
+Working with IP Pools
+========
 
 ### /2.0/services/ipam/pools/scope/{scopeId}
 Working with IP pools by scope.
@@ -559,6 +571,8 @@ Release an IP Address allocation in the Pool
 * **delete** *(secured)*: Release an IP Address allocation in the Pool
 
 ## capacityUsage
+Working with Licensing Capacity
+============
 The licensing capacity usage API command reports usage of CPUs, VMs and
 concurrent users for the distributed firewall and VXLAN.
 
@@ -568,7 +582,8 @@ concurrent users for the distributed firewall and VXLAN.
 users for the distributed firewall and VXLAN.
 
 ## securityTag
-Working with security tags
+Working with Security Tags
+=====
 
 ### /2.0/services/securitytags/tag
 
@@ -592,7 +607,8 @@ Apply or detach a security tag to virtual machine
 * **delete** *(secured)*: Detach a security tag from a virtual machine
 
 ## ssoConfig
-Operations on NSX Manager SSO registration
+Working with NSX Manager SSO Registration
+============
 
 ### /2.0/services/ssoconfig
 
@@ -606,7 +622,8 @@ Query the SSO configuration status of NSX Manager
 * **get** *(secured)*: Query the SSO configuration status of NSX Manager
 
 ## userMgmt
-User Management Operations
+Working with User Management
+==========
 
 ### /2.0/services/usermgmt/user/{userId}
 Manage users
@@ -651,7 +668,8 @@ scope
 scope
 
 ## secGroup
-Operations on securitygroups
+Working with Security Groups
+===========
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
 Create a new security group on a global scope or universal scope. Use
@@ -725,7 +743,8 @@ Information on internal security groups
 users.
 
 ## ipsets
-Operations on IP Sets
+Working with IP Sets
+=======
 
 ### /2.0/services/ipset/scope/{scopeMoref}
 
@@ -743,6 +762,7 @@ Operations on IP Sets
 
 ## vCenterConfig
 Configuring NSX Manager with vCenter Server
+=========
 
 ### /2.0/services/vcconfig
 
@@ -755,7 +775,8 @@ Connection status for vCenter Server
 * **get** *(secured)*: Get default vCenter Server connection status
 
 ## universalSync
-Configuring Universal Sync for the NSX manager
+Working with Universal Configuration in cross-vCenter NSX
+======
 
 ### /2.0/universalsync/configuration/role
 Universal Sync Configuration
@@ -799,6 +820,7 @@ Universal sync status
 
 ## applianceManager
 Working with Appliance Manager
+========
 
 ### /1.0/appliance-management/global/info
 Global appliance manager information
@@ -976,14 +998,16 @@ NSX Manager certificate manager
 * **get** *(secured)*: Query the certificate thumbprint from a NSX manager
 
 ## systemEvents
-Get NSX Manager system events
+Working with NSX Manager System Events
+==========
 
 ### /2.0/systemevent
 
 * **get** *(secured)*: Get NSX Manager system events
 
 ## auditLogs
-Get NSX Manager audit logs
+Working with NSX Manager Audit Logs
+==========
 
 ### /2.0/auditlog
 
@@ -991,6 +1015,7 @@ Get NSX Manager audit logs
 
 ## nwfabric
 Working with Network Fabric Configuration
+=====
 
 ### /2.0/nwfabric/configure
 Working with Network Virtualization Components and VXLAN.
@@ -1085,7 +1110,8 @@ Working with locale ID configuration for hosts.
 * **delete** *(secured)*: Delete the locale ID for the specified host.
 
 ## securityFabric
-Security fabric
+Working with Security Fabric
+======
 
 ### /2.0/si/deploy
 
@@ -1116,7 +1142,8 @@ Information about a service
 * **get** *(secured)*: Retrieve detailed information about the service
 
 ## dataSecurityConfiguration
-Configuring Data Security
+Working with Data Security
+=======
 
 ### /2.0/dlp/regulation
 Data loss prevention regulation
@@ -1259,7 +1286,8 @@ format
 CSV format
 
 ## eventControl
-eventControl Operations
+Working with Data Collection for Activity Monitoring
+===========
 
 ### /1.0/eventcontrol/vm/{vmID}/request
 Enable or disable data collection on a virtual machine
@@ -1277,7 +1305,8 @@ Retrieve per vm configuration for data collection
 * **get** *(secured)*: Retrieve per vm configuration for data collection
 
 ## activityMonitoring
-Activity monitoring
+Working with Activity monitoring
+======
 
 ### /3.0/ai/records
 Get aggregated user activity (action records) using parameters. Requires
@@ -1363,17 +1392,12 @@ Specific security group details
 * **get** *(secured)*: Retrieve details about specific security group
 
 ## domain
-Working with domains
-
-### /3.0/directory/updateDomain
-
-* **post** *(secured)*: Register or update a domain with NSX Manager
-
-## domain
-LDAP / Domain Operations
+Working with Domains
+===========
 
 ### /1.0/directory/updateDomain
-Working with domains
+Updating Domains
+---------------
 
 * **post** *(secured)*: Register or update a domain with NSX Manager
 
@@ -1431,7 +1455,8 @@ Delete EventLog server
 * **delete** *(secured)*: Delete EventLog server
 
 ## mappingLists
-Working with mapping lists
+Working with Mapping Lists
+=========
 
 ### /1.0/identity/userIpMapping
 Query user-to-ip mapping list from database
@@ -1478,7 +1503,8 @@ Query static user IP mapping for specified IP
 * **delete** *(secured)*: Delete static user IP mapping for specified IP
 
 ## activityMonitoringSyslog
-Working with Activity Monitoring syslog support
+Working with Activity Monitoring Syslog Support
+==========
 
 ### /1.0/sam/syslog/enable
 Enable syslog support
@@ -1491,7 +1517,8 @@ Disable syslog support
 * **post** *(secured)*: Disable syslog support
 
 ## solutionIntegration
-Operations for solution Integrations
+Working with Solution Integrations
+=========
 
 ### /2.0/si/host/{hostID}/agents
 Agents on a specified host
@@ -1519,7 +1546,8 @@ conflicting EAM agencies, or delete deployment units for conflicting
 EAM agencies
 
 ## macsets
-Working with MAC sets.
+Working with MAC Sets
+=============
 
 ### /2.0/services/macset/{macsetId}
 Operations on an individual MAC set
@@ -1535,6 +1563,8 @@ Working with MAC Sets.
 * **get** *(secured)*: List MACsets created on a specified scope
 
 ## taskFramework
+Working with the Task Framework
+======
 Working with filtering criteria and paging information for jobs on the task
 framework
 
@@ -1548,13 +1578,16 @@ Job instances on the task framework
 * **get** *(secured)*: Retrieve all job instances for the specified job ID
 
 ## guestIntrospection
-Work with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+============
 
-#### About Guest Introspection and Endpoint Protection Solutions
+About Guest Introspection and Endpoint Protection Solutions
+----------
 VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution
 that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.
 
-#### Version Compatibility
+Version Compatibility
+-----------
 
 **Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions
 that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier).
@@ -1563,7 +1596,8 @@ These APIs should not be used with partner solutions developed specifically for 
 these newer solutions automate the registration and deployment process by using the new features introduced in NSX.
 Using these with newer NSX 6.0 based solutions could result in loss of features.
 
-#### Register a Solution
+Register a Solution
+----------
 
 To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:
 1. Register the vendor.
@@ -1573,7 +1607,8 @@ To register a third-party solution with Guest Introspection, clients can use fou
 
 **Note:** Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.
 
-#### Unregister a Solution
+Unregister a Solution
+----------
 
 To unregister a solution, clients perform these steps in reverse:
 1. Deactivate solutions per host.
@@ -1581,7 +1616,8 @@ To unregister a solution, clients perform these steps in reverse:
 3. Unregister solutions.
 4. Unregister the vendor.
 
-#### Updating Registration Information
+Updating Registration Information
+-----------
 
 To update registration information for a vendor or solution, clients must:
 1. Unregister the vendor or solution.
@@ -2180,7 +2216,8 @@ Export specific flows directly from firewall to a flow collector
 * **delete** *(secured)*: Deleting IPFix configuration resets the config to default values
 
 ## spoofGuardPolicies
-SpoofGuard policies
+Working with SpoofGuard Policies
+====================
 
 ### /4.0/services/spoofguard/policies
 
@@ -2200,6 +2237,7 @@ operations
 
 ## flowMonitoring
 Working with Flow Monitoring
+========
 
 ### /2.1/app/flow/flowstats
 Retrieve flow monitoring statistics information.
@@ -2210,7 +2248,7 @@ Response values for flow statistics:
 * **blocked** - indicates whether traffic is blocked:
   * 0 - flow allowed
   * 1 - flow blocked
-  * 2 - flow blocked by Spoofguard
+  * 2 - flow blocked by SpoofGuard
 * **protocol** - protocol in flow:
   * 0 - TCP
   * 1 - UDP
@@ -2265,7 +2303,8 @@ Flow configuration by contextId
 * **delete** *(secured)*: Delete flow records for the specified context.
 
 ## dfwExclusion
-Exclude VM's from firewall protection
+Exclude Virtual Machines from Firewall Protection
+=========
 
 ### /2.1/app/excludelist
 
@@ -2278,7 +2317,8 @@ Exclude VM's from firewall protection
 * **delete** *(secured)*: Delete a vm from exclusion list
 
 ## nsxEdges
-Installed NSX Edges in your inventory
+Working with NSX Edge
+=======
 
 ### /4.0/edges
 
@@ -3100,6 +3140,7 @@ the resource, and ID of the resource as shown in response body
 
 ## nsxEdgePublish
 Working with NSX Edge Configuration Publishing
+=========
 
 ### /4.0/edgePublish/tuningConfiguration
 Working with NSX Edge tuning configuration.
@@ -3134,7 +3175,8 @@ ___
 * **put** *(secured)*: Update the NSX Edge tuning configuration.
 
 ## truststore
-Operation on truststore (certificates)
+Working with Certificates
+=============
 
 ### /2.0/services/truststore/certificate
 Certificates and certificate chains
@@ -3192,32 +3234,191 @@ CRL certificates for specified certificate
 * **delete** *(secured)*: Delete the specified CRL
 
 ## policy
-Operations on policy objects
+Working with Security Policies and Actions
+============================
 
 ### /2.0/services/policy/securitypolicy
-Working with security policies (Endpoint, firewall, network introspection
-services applied to security group)
+Working with Security Policies
+------------------------------
+A security policy is a set of Endpoint, firewall, and network
+introspection services that can be applied to a security group.
 
-* **post** *(secured)*: Create a security policy
+* **post** *(secured)*: Create a security policy.
+___
+When creating a security policy, a parent security policy can be
+specified if required. The security policy inherits services from the
+parent security policy. Security group bindings and actions can also
+be specified while creating the policy. Note that execution order of
+actions in a category is implied by their order in the list. The
+response of the call has Location header populated with the URI using
+which the created object can be fetched.
+___
+Ensure that:
+* the required VMware built in services (such as Distributed Firewall,
+  Data Security, and Endpoint) are installed. See *NSX Installation
+  Guide*.
+* the required partner services have been registered with NSX Manager.
+* the required security groups have been created.
+___
+Tags related to Service Composer, security policies, and security
+groups:
+This section describes the tags specific to Service Composer
+management.
+Common Tags
+* **actionType** - Defines the type of action belonging to a given
+executionOrderCategory
+* **executionOrderCategory** - Category to which the action belongs to
+(endpoint, firewall or traffic_steering)
+* **isActive** - In a security policy hierarchy, an action within a policy
+may or may not be active based on the
+precedence of the policy or usage of isActionEnforced flag in that
+hierarchy
+* **isActionEnforced** - Enforces an action of a parent policy on its
+child policies for a given actionType and
+executionOrderCategory. Note that in a policy hierarchy, for a given
+actionType and executionOrderCategory, there can be only one action
+which can be marked as enforced.
+* **isEnabled** - Indicates whether an action is enabled
+* **secondarySecurityGroup** - Applicable for actions which need secondary
+security groups, say a
+source-destination firewall rule
+* **securityPolicy** - Parent policy in an action
+Output only Tags
+* **executionOrder** - Defines the sequence in which actions belonging to
+an executionOrderCategory are
+executed. Note that this is not an input parameter and its value is
+implied by the index in the list.
+Firewall Category Tags
+* **action** - Allow or block the traffic
+* **applications** - Applications / application groups on which the rules
+are to be applied
+* **direction** - Direction of traffic towards primary security group.
+Possible values: inbound, outbound, intra
+* **logged** - Flag to enable logging of the traffic that is hit by this
+rule
+* **outsideSecondaryContainer** - Flag to specify outside i.e. outside
+securitygroup-3
+Endpoint Category Tags
+* **serviceId** - ID of the service (as registered with the service
+insertion module). If this tag is null, the
+functionality type (as defined in actionType tag) is not applied which
+will also result in blocking the actions (of given functionality type)
+that are inherited from the parent security policy. This is true if
+there is no action of enforce type.
+* **invalidServiceId** - Flag to indicate that the service that was
+referenced in this rule is deleted, which make
+the rule ineffective (or deviate from the original intent that existed
+while configuring the rule). You must either modify this rule by
+adding correct Service or delete this rule.
+* **serviceName** -Name of the service
+* **serviceProfile** - Profile to be referenced in Endpoint rule.
+* **invalidServiceProfile** - Flag to indicate that the service profile
+that was referenced in this rule is deleted, which makes
+the rule ineffective (or deviate from the original intent that existed
+while configuring the rule). You must either modify this rule by
+adding correct Service Profile or delete this rule.
+The following tags are deprecated:
+* **vendorTemplateId**
+* **invalidVendorTemplateId**
+* **vendorTemplateName**
+Traffic Steering/NetX Category Tags
+* **redirect** - Flag to indicate whether to redirect the traffic or not
+* **serviceProfile** - Service profile for which redirection is being
+configured
+* **logged** - Flag to enable logging of the traffic that is hit by this
+rule
+
+### /2.0/services/policy/securitypolicy/status
+Working with Service Composer Status
+------------------------------------
+
+* **get** *(secured)*: Retrieve the consolidated status of Service Composer.
+___
+The possible return of value for status are: *in_sync*,
+*in_progress*, *out_of_sync*, and *pending*.
+
+### /2.0/services/policy/securitypolicy/alarms
+Working with Security Policy Alarms.
+-----------
+
+### /2.0/services/policy/securitypolicy/alarms/all
+Working with all Service Composer Alarms
+------------
+
+* **get** *(secured)*: Retrieve all system alarms that are raised at Service Composer
+level and policy level.
 
 ### /2.0/services/policy/securitypolicy/{ID}
-Specific security policy
+Working with Security Policies
+------------------
 
-* **get** *(secured)*: Retrieve security policy information
-* **put** *(secured)*: Edit a security policy
-* **delete** *(secured)*: Delete a security policy
+* **get** *(secured)*: Retrieve security policy information.
+
+* **put** *(secured)*: Edit a security policy.
+___
+To update a security policy, you must first fetch it.
+Then edit the received XML and pass it back as the input. The
+specified configuration replaces the current configuration.
+___
+Security group mappings provided in the PUT call replaces the
+security group mappings for the security policy. To remove all
+mappings, delete the securityGroupBindings parameter.
+___
+You can add or update actions for the security policy by editing the
+actionsByCategory parameter. To remove all actions (belonging to all
+categories), delete the actionsByCategory parameter. To remove
+actions belonging to a specific category, delete the block for that
+category.
+
+* **delete** *(secured)*: Delete a security policy.
+___
+When you delete a security policy, its child security policies and
+all the actions in it are deleted as well.
 
 ### /2.0/services/policy/securitypolicy/{ID}/securityactions
-Security actions for a security policy
+Working with Security Actions on a Security Policy
+-------------
 
-* **get** *(secured)*: Retrieve security actions for a security policy
+* **get** *(secured)*: Retrieve all security actions applicable on a security policy.
+___
+This list includes security actions from associated parent
+security policies, if any. Security actions per Execution Order
+Category are sorted based on the weight of security actions in
+descending order.
 
 ### /2.0/services/policy/securitypolicy/hierarchy
 Security policy configuration import/export
 
 * **post** *(secured)*: Import a security policy configuration
-* **get** *(secured)*: Export a Service Composer configuration and save to your desktop for
-use as a backup
+___
+You can create multiple security policies and parent-child
+hierarchies using the data fetched through export. All objects
+including security policies, security groups and security actions
+are created on a global scope.
+___
+The policy that is being imported needs to be included in the
+request body.
+___
+If a suffix is specified, it is added after the names of the
+security policy, security action, and security group objects in the
+exported XML. The suffix can thus be used to differentiate locally
+created objects from imported ones.
+___
+The location of the newly created security policy objects (multiple
+locations are separated by commas) is populated in the Location
+header of the response.
+
+* **get** *(secured)*: Export a Service Composer configuration (along with the
+security groups to which the security policies are mapped).
+You can save the response to a file.  The saved configuration can be
+used as a backup for situations where you may accidentally delete a
+policy configuration, or it can be exported for use in another NSX
+Manager environment.
+___
+If a prefix is specified, it is added before the names of the
+security policy, security action, and security group objects in the
+exported XML. The prefix can thus be used to indicate the remote
+source from where the hierarchy was exported.
 
 ### /2.0/services/policy/securityaction/category/virtualmachines
 Virtual machines for a security action
@@ -3303,6 +3504,7 @@ Working with a Specific SNMP Trap
 
 ## nsxCli
 Working with the Central CLI
+=======
 
 ### /1.0/nsx/cli
 
@@ -3315,8 +3517,37 @@ parameter. For a complete list of the Central CLI commands executable
 through the API, please see the Central CLI chapter of the *NSX Command
 Line Interface Reference*.
 
+## inventoryStatus
+Communication Status
+====================
+This feature allows the user to check the connection status between the
+NSX Manager and hosts. A hash map is used to hold all hosts' connection
+status. It keeps track of the latest heartbeat from each host.  When
+querying a host’s connection status, NSX Manager will get the latest
+heartbeat information to compare the last heartbeat time and current time.
+If the duration is longer than a threshold, it returns *DOWN*, otherwise
+it returns *UP*. If no last heartbeat information is found and this host
+has not been prepared or the netcpa version on this host is lower than
+6.2.0, it will return *NOT_AVAILABLE*.  But if no last heartbeat
+information is found and the host has been prepared with netcpa version no
+less than 6.2.0, it will return *DOWN*. When a host has been unprepared,
+its heartbeat information will be removed from the NSX Manager memory.
+
+### /2.0/vdn/inventory/host/{hostId}/connection/status
+Communication Status of a Specific Host
+---------------------------------------
+
+* **get** *(secured)*: Retrieve the status of the specified host.
+
+### /2.0/vdn/inventory/hosts/connection/status
+Communication Status of a List of Hosts
+---------------------------------------
+
+* **get** *(secured)*: Retrieve the status of a list of hosts.
+
 ## hardwareGateways
 Working with Hardware Gateways
+============
 
 ### /2.0/vdn/hardwaregateways
 

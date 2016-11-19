@@ -166,6 +166,7 @@ securitySchemes:
   displayName: vdsManage
   description: |
     Working with vSphere Distributed Switches
+    ===========
   post:
     displayName: vdsPrepare
     description: |
@@ -340,12 +341,14 @@ securitySchemes:
         Delete the specified vSphere Distributed Switch.
 /2.0/vdn/config:
   displayName: vdnConfig
-  description: Working with Segement ID Pools and Multicast Ranges
+  description: |
+    Working with Segement ID Pools and Multicast Ranges
+    ========
   /segments:
     displayName: vdnSegmentPools
     description: |
-      Working with segment ID pools.
-      ___
+      Working with segment ID pools
+      -------------
       Segment ID pools (also called segment ID ranges) provide virtual network
       identifiers (VNIs) to logical switches.
       ___
@@ -664,6 +667,7 @@ securitySchemes:
   displayName: vdnScopes
   description: |
     Working with Transport Zones
+    ==============
   get:
     displayName: vdnScopesList
     description: |
@@ -975,6 +979,7 @@ securitySchemes:
   displayName: logicalSwitches
   description: |
     Working with Logical Switches in a Specific Transport Zone
+    ==================
   uriParameters:
       scopeId:
         required: true
@@ -1263,7 +1268,9 @@ securitySchemes:
                   </traceflowObservations>
 /2.0/vdn/virtualwires:
   displayName: logicalSwitchesGlobal
-  description: Working with Logical Switches in All Transport Zones
+  description: |
+    Working with Logical Switches in All Transport Zones
+    ===========
   get:
     displayName: logicalSwitchesRead
     description: |
@@ -1658,7 +1665,8 @@ securitySchemes:
 /2.0/xvs/networks/{ID}/features:
   displayName: arpMAC
   description: |
-    Working with ARP suppression and MAC learning for logical switches
+    Working with ARP Suppression and MAC Learning for Logical Switches
+    ==============
   uriParameters:
     ID:
       required: true
@@ -1685,7 +1693,9 @@ securitySchemes:
 /2.0/vdn/controller:
   displayName: nsxControllers
   description: |
-    Working with NSX controllers - For the unicast or hybrid control plane mode,
+    Working with NSX Controllers
+    ==============
+    For the unicast or hybrid control plane mode,
     you must add an NSX controller to manage overlay transport and provide
     East-West routing. The controller optimizes virtual machine broadcast (ARP
     only) traffic, and the learning is stored on the host and the controller.
@@ -1893,7 +1903,9 @@ securitySchemes:
           schema: nsxControllerPasswordUpdate
 /2.0/services/application/scope/{scopeId}:
   displayName: servicesScope
-  description: Working with services on a scope
+  description: |
+    Working with Services
+    =============
   uriParameters:
     scopeId:
       required: true
@@ -1927,7 +1939,9 @@ securitySchemes:
         schema: servicesScopeCreate
 /2.0/services/application/{applicationId}:
   displayName: service
-  description: Working with a specified service
+  description: |
+    Working with a Specified Service
+    ============
   uriParameters:
     applicationId:
       required: true
@@ -1972,7 +1986,9 @@ securitySchemes:
           unforced (false)
 /2.0/services/applicationgroup:
   displayName: applicationgroup
-  description: Operations on Application Groups
+  description: |
+    Working with Application Groups
+    ============
   /scope/{scopeId}:
     displayName: serviceGroups
     description: Working with service groups
@@ -2091,7 +2107,9 @@ securitySchemes:
         created on a particular scope.
 /2.0/services/ipam/pools:
   displayName: ipPools
-  description: Working with IP pools.
+  description: |
+    Working with IP Pools
+    ========
   /scope/{scopeId}:
     displayName: ipPoolScope
     description: Working with IP pools by scope.
@@ -2307,9 +2325,12 @@ securitySchemes:
 /2.0/services/licensing/capacityusage:
   displayName: capacityUsage
   description: |
+    Working with Licensing Capacity
+    ============
     The licensing capacity usage API command reports usage of CPUs, VMs and
     concurrent users for the distributed firewall and VXLAN.
   get:
+  # new in 6.2.3
     displayName: capacityUsageRead
     description: |
       Read capacity usage information on the useage of CPUs, VMs and concurrent
@@ -2330,7 +2351,9 @@ securitySchemes:
               </featureCapacityUsageList>
 /2.0/services/securitytags/tag:
   displayName: securityTag
-  description: Working with security tags
+  description: |
+    Working with Security Tags
+    =====
   post:
     displayName: securityTagCreate
     description: Create a new security tag
@@ -2385,7 +2408,9 @@ securitySchemes:
           description: Detach a security tag from a virtual machine
 /2.0/services/ssoconfig:
   displayName: ssoConfig
-  description: Operations on NSX Manager SSO registration
+  description: |
+    Working with NSX Manager SSO Registration
+    ============
   get:
     displayName: ssoConfigRead
     description: Query SSO Details
@@ -2413,7 +2438,9 @@ securitySchemes:
       description: Query the SSO configuration status of NSX Manager
 /2.0/services/usermgmt:
   displayName: userMgmt
-  description: User Management Operations
+  description: |
+    Working with User Management
+    ==========
   /user/{userId}:
     displayName: userMgmtUser
     description: Manage users
@@ -2521,7 +2548,9 @@ securitySchemes:
         scope
 /2.0/services/securitygroup:
   displayName: secGroup
-  description: Operations on securitygroups
+  description: |
+    Working with Security Groups
+    ===========
   /bulk/{scopeId}:
     displayName: secGroupBulk
     description: |
@@ -2828,7 +2857,9 @@ securitySchemes:
         users.
 /2.0/services/ipset:
   displayName: ipsets
-  description: Operations on IP Sets
+  description: |
+    Working with IP Sets
+    =======
   /scope/{scopeMoref}:
     displayName: ipsetList
     uriParameters:
@@ -2907,7 +2938,9 @@ securitySchemes:
             required: false
 /2.0/services/vcconfig:
   displayName: vCenterConfig
-  description: Configuring NSX Manager with vCenter Server
+  description: |
+    Configuring NSX Manager with vCenter Server
+    =========
   get:
     displayName: vCenterConfigRead
     description: Get vCenter Server configuration details on NSX Manager
@@ -2935,7 +2968,9 @@ securitySchemes:
       description: Get default vCenter Server connection status
 /2.0/universalsync:
   displayName: universalSync
-  description: Configuring Universal Sync for the NSX manager
+  description: |
+    Working with Universal Configuration in cross-vCenter NSX
+    ======
   /configuration:
     /role:
       displayName: universalSyncConfigurationRole
@@ -3039,7 +3074,9 @@ securitySchemes:
       description: Read the universal sync status
 /1.0/appliance-management:
   displayName: applianceManager
-  description: Working with Appliance Manager
+  description: |
+    Working with Appliance Manager
+    ========
   /global/info:
     displayName: globalInfo
     description: Global appliance manager information
@@ -3400,7 +3437,9 @@ securitySchemes:
       description: Query the certificate thumbprint from a NSX manager
 /2.0/systemevent:
   displayName: systemEvents
-  description: Get NSX Manager system events
+  description: |
+    Working with NSX Manager System Events
+    ==========
   get:
     displayName: systemEventsRead
     description: Get NSX Manager system events
@@ -3416,7 +3455,9 @@ securitySchemes:
         required: false
 /2.0/auditlog:
   displayName: auditLogs
-  description: Get NSX Manager audit logs
+  description: |
+    Working with NSX Manager Audit Logs
+    ==========
   get:
     displayName: auditLogsRead
     description: Get NSX Manager audit logs
@@ -3432,7 +3473,9 @@ securitySchemes:
         default: 256
 /2.0/nwfabric:
   displayName: nwfabric
-  description: Working with Network Fabric Configuration
+  description: |
+    Working with Network Fabric Configuration
+    =====
   /configure:
     displayName: nwfabricConfig
     description: |
@@ -3939,7 +3982,9 @@ securitySchemes:
       description: Delete the locale ID for the specified host.
 /2.0/si/deploy:
   displayName: securityFabric
-  description: Security fabric
+  description: |
+    Working with Security Fabric
+    ======
   post:
     displayName: securityFabricCreate
     description: Deploy security fabric
@@ -4059,7 +4104,9 @@ securitySchemes:
         description: Retrieve detailed information about the service
 /2.0/dlp:
   displayName: dataSecurityConfiguration
-  description: Configuring Data Security
+  description: |
+    Working with Data Security
+    =======
   /regulation:
     displayName: dlpRegulation
     description: Data loss prevention regulation
@@ -4373,7 +4420,9 @@ securitySchemes:
           CSV format
 /1.0/eventcontrol:
   displayName: eventControl
-  description: eventControl Operations
+  description: |
+    Working with Data Collection for Activity Monitoring
+    ===========
   /vm/{vmID}/request:
     displayName: dataCollectionVM
     description: Enable or disable data collection on a virtual machine
@@ -4428,7 +4477,9 @@ securitySchemes:
       description: Retrieve per vm configuration for data collection
 /3.0/ai:
   displayName: activityMonitoring
-  description: Activity monitoring
+  description: |
+    Working with Activity monitoring
+    ======
   /records:
     displayName: userActivity
     description: |
@@ -4642,29 +4693,16 @@ securitySchemes:
       get:
         displayName: specificSecgroupDetailsRead
         description: Retrieve details about specific security group
-/3.0/directory/updateDomain:
-  displayName: domain
-  description: Working with domains
-  post:
-    displayName: domainCreate
-    description: Register or update a domain with NSX Manager
-    body:
-      application/xml:
-        example: |
-          <DirectoryDomain>
-            <name></name>
-            <type></type>
-            <netbiosName></netbiosName>
-            <username></username>
-            <password></password>
-          </DirectoryDomain>
-        schema: domainCreate
 /1.0/directory:
   displayName: domain
-  description: LDAP / Domain Operations
+  description: |
+    Working with Domains
+    ===========
   /updateDomain:
     displayName: domainUpdate
-    description: Working with domains
+    description: |
+      Updating Domains
+      ---------------
     post:
       displayName: domainCreate
       description: Register or update a domain with NSX Manager
@@ -4672,11 +4710,10 @@ securitySchemes:
         application/xml:
           example: |
             <DirectoryDomain>
-              <name></name>
-              <type></type>
-              <netbiosName></netbiosName>
-              <username></username>
-              <password></password>
+              <name>example.com</name>
+              <netbiosName>Example</netbiosName>
+              <username>Administrator</username>
+              <password>xxx</password>
             </DirectoryDomain>
           schema: domainCreate
   /listDomains:
@@ -4798,7 +4835,9 @@ securitySchemes:
         description: Delete EventLog server
 /1.0/identity:
   displayName: mappingLists
-  description: Working with mapping lists
+  description: |
+    Working with Mapping Lists
+    =========
   /userIpMapping:
     displayName: userIpMapping
     description: Query user-to-ip mapping list from database
@@ -4883,7 +4922,9 @@ securitySchemes:
       description: Delete static user IP mapping for specified IP
 /1.0/sam/syslog:
   displayName: activityMonitoringSyslog
-  description: Working with Activity Monitoring syslog support
+  description: |
+    Working with Activity Monitoring Syslog Support
+    ==========
   /enable:
     displayName: syslogEnable
     description: Enable syslog support
@@ -4898,7 +4939,9 @@ securitySchemes:
       description: Disable syslog support
 /2.0/si:
   displayName: solutionIntegration
-  description: Operations for solution Integrations
+  description: |
+    Working with Solution Integrations
+    =========
   /host/{hostID}/agents:
     displayName: hostAgents
     description: Agents on a specified host
@@ -4954,7 +4997,9 @@ securitySchemes:
             </conflictResolverInfo>
 /2.0/services/macset:
   displayName: macsets
-  description: Working with MAC sets.
+  description: |
+    Working with MAC Sets
+    =============
   /{macsetId}:
     displayName: macset
     description: Operations on an individual MAC set
@@ -5115,6 +5160,8 @@ securitySchemes:
 /2.0/services/taskservice/job:
   displayName: taskFramework
   description: |
+    Working with the Task Framework
+    ======
     Working with filtering criteria and paging information for jobs on the task
     framework
   get:
@@ -5156,13 +5203,16 @@ securitySchemes:
 /2.0/endpointsecurity:
   displayName: guestIntrospection
   description: |
-    Work with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+    Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+    ============
 
-    #### About Guest Introspection and Endpoint Protection Solutions
+    About Guest Introspection and Endpoint Protection Solutions
+    ----------
     VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution
     that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.
 
-    #### Version Compatibility
+    Version Compatibility
+    -----------
 
     **Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions
     that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier).
@@ -5171,7 +5221,8 @@ securitySchemes:
     these newer solutions automate the registration and deployment process by using the new features introduced in NSX.
     Using these with newer NSX 6.0 based solutions could result in loss of features.
 
-    #### Register a Solution
+    Register a Solution
+    ----------
 
     To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:
     1. Register the vendor.
@@ -5181,7 +5232,8 @@ securitySchemes:
 
     **Note:** Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.
 
-    #### Unregister a Solution
+    Unregister a Solution
+    ----------
 
     To unregister a solution, clients perform these steps in reverse:
     1. Deactivate solutions per host.
@@ -5189,12 +5241,12 @@ securitySchemes:
     3. Unregister solutions.
     4. Unregister the vendor.
 
-    #### Updating Registration Information
+    Updating Registration Information
+    -----------
 
     To update registration information for a vendor or solution, clients must:
     1. Unregister the vendor or solution.
     2. Reregister the vendor or solution.
-
   /registration:
     displayName: guestIntrospectionRegistration
     description: Register a Vendor and Solution with Guest Introspection
@@ -7051,7 +7103,9 @@ securitySchemes:
         Deleting IPFix configuration resets the config to default values
 /4.0/services/spoofguard/policies:
   displayName: spoofGuardPolicies
-  description: SpoofGuard policies
+  description: |
+    Working with SpoofGuard Policies
+    ====================
   post:
     displayName: spoofGuardPoliciesCreate
     description: |
@@ -7145,7 +7199,9 @@ securitySchemes:
       description: Delete a policy
 /2.1/app/flow:
   displayName: flowMonitoring
-  description: Working with Flow Monitoring
+  description: |
+    Working with Flow Monitoring
+    ========
   /flowstats:
     displayName: flowStats
     description: |
@@ -7159,7 +7215,7 @@ securitySchemes:
         * **blocked** - indicates whether traffic is blocked:
           * 0 - flow allowed
           * 1 - flow blocked
-          * 2 - flow blocked by Spoofguard
+          * 2 - flow blocked by SpoofGuard
         * **protocol** - protocol in flow:
           * 0 - TCP
           * 1 - UDP
@@ -7403,7 +7459,9 @@ securitySchemes:
       description: Delete flow records for the specified context.
 /2.1/app/excludelist:
   displayName: dfwExclusion
-  description: Exclude VM's from firewall protection
+  description: |
+    Exclude Virtual Machines from Firewall Protection
+    =========
   get:
     displayName: dfwExclusionRead
     description: Retrieve the set of vm's in the exclusion list
@@ -7422,7 +7480,9 @@ securitySchemes:
       description: Delete a vm from exclusion list
 /4.0/edges:
   displayName: nsxEdges
-  description: Installed NSX Edges in your inventory
+  description: |
+    Working with NSX Edge
+    =======
   post:
     displayName: nsxEdgesCreate
     description: |
@@ -10671,7 +10731,9 @@ securitySchemes:
           the resource, and ID of the resource as shown in response body
 /4.0/edgePublish:
   displayName: nsxEdgePublish
-  description: Working with NSX Edge Configuration Publishing
+  description: |
+    Working with NSX Edge Configuration Publishing
+    =========
   /tuningConfiguration:
   # new in 6.2.3
     displayName: nsxEdgePublishTuning
@@ -10743,7 +10805,9 @@ securitySchemes:
             </tuningConfiguration
 /2.0/services/truststore:
   displayName: truststore
-  description: Operation on truststore (certificates)
+  description: |
+    Working with Certificates
+    =============
   /certificate:
     displayName: certificate
     description: Certificates and certificate chains
@@ -10903,21 +10967,109 @@ securitySchemes:
       description: Delete the specified CRL
 /2.0/services/policy:
   displayName: policy
-  description: Operations on policy objects
+  description: |
+    Working with Security Policies and Actions
+    ============================
   /securitypolicy:
     displayName: securityPolicy
     description: |
-      Working with security policies (Endpoint, firewall, network introspection
-      services applied to security group)
+      Working with Security Policies
+      ------------------------------
+      A security policy is a set of Endpoint, firewall, and network
+      introspection services that can be applied to a security group.
     post:
       displayName: securityPolicyCreate
-      description: Create a security policy
+      description: |
+        Create a security policy.
+        ___
+        When creating a security policy, a parent security policy can be
+        specified if required. The security policy inherits services from the
+        parent security policy. Security group bindings and actions can also
+        be specified while creating the policy. Note that execution order of
+        actions in a category is implied by their order in the list. The
+        response of the call has Location header populated with the URI using
+        which the created object can be fetched.
+        ___
+        Ensure that:
+        * the required VMware built in services (such as Distributed Firewall,
+          Data Security, and Endpoint) are installed. See *NSX Installation
+          Guide*.
+        * the required partner services have been registered with NSX Manager.
+        * the required security groups have been created.
+        ___
+        Tags related to Service Composer, security policies, and security
+        groups:
+        This section describes the tags specific to Service Composer
+        management.
+        Common Tags
+        * **actionType** - Defines the type of action belonging to a given
+        executionOrderCategory
+        * **executionOrderCategory** - Category to which the action belongs to
+        (endpoint, firewall or traffic_steering)
+        * **isActive** - In a security policy hierarchy, an action within a policy
+        may or may not be active based on the
+        precedence of the policy or usage of isActionEnforced flag in that
+        hierarchy
+        * **isActionEnforced** - Enforces an action of a parent policy on its
+        child policies for a given actionType and
+        executionOrderCategory. Note that in a policy hierarchy, for a given
+        actionType and executionOrderCategory, there can be only one action
+        which can be marked as enforced.
+        * **isEnabled** - Indicates whether an action is enabled
+        * **secondarySecurityGroup** - Applicable for actions which need secondary
+        security groups, say a
+        source-destination firewall rule
+        * **securityPolicy** - Parent policy in an action
+        Output only Tags
+        * **executionOrder** - Defines the sequence in which actions belonging to
+        an executionOrderCategory are
+        executed. Note that this is not an input parameter and its value is
+        implied by the index in the list.
+        Firewall Category Tags
+        * **action** - Allow or block the traffic
+        * **applications** - Applications / application groups on which the rules
+        are to be applied
+        * **direction** - Direction of traffic towards primary security group.
+        Possible values: inbound, outbound, intra
+        * **logged** - Flag to enable logging of the traffic that is hit by this
+        rule
+        * **outsideSecondaryContainer** - Flag to specify outside i.e. outside
+        securitygroup-3
+        Endpoint Category Tags
+        * **serviceId** - ID of the service (as registered with the service
+        insertion module). If this tag is null, the
+        functionality type (as defined in actionType tag) is not applied which
+        will also result in blocking the actions (of given functionality type)
+        that are inherited from the parent security policy. This is true if
+        there is no action of enforce type.
+        * **invalidServiceId** - Flag to indicate that the service that was
+        referenced in this rule is deleted, which make
+        the rule ineffective (or deviate from the original intent that existed
+        while configuring the rule). You must either modify this rule by
+        adding correct Service or delete this rule.
+        * **serviceName** -Name of the service
+        * **serviceProfile** - Profile to be referenced in Endpoint rule.
+        * **invalidServiceProfile** - Flag to indicate that the service profile
+        that was referenced in this rule is deleted, which makes
+        the rule ineffective (or deviate from the original intent that existed
+        while configuring the rule). You must either modify this rule by
+        adding correct Service Profile or delete this rule.
+        The following tags are deprecated:
+        * **vendorTemplateId**
+        * **invalidVendorTemplateId**
+        * **vendorTemplateName**
+        Traffic Steering/NetX Category Tags
+        * **redirect** - Flag to indicate whether to redirect the traffic or not
+        * **serviceProfile** - Service profile for which redirection is being
+        configured
+        * **logged** - Flag to enable logging of the traffic that is hit by this
+        rule
       body:
         application/xml:
           example: |
             <securityPolicy>
-              <name></name>
-              <description></description>
+              <name>name</name>
+              <description>decription</description>
               <precedence></precedence>
               <parent>
                 <objectId></objectId>
@@ -10925,11 +11077,19 @@ securitySchemes:
               <securityGroupBinding>
                 <objectId></objectId>
               </securityGroupBinding>
+              <securityGroupBinding>
+                ...
+              </securityGroupBinding>
+              ...
+              ...
+              <securityGroupBinding>
+                ...
+              </securityGroupBinding>
               <actionsByCategory>
-                <category></category>
-                <action class="">
-                  <name></name>
-                  <description></description>
+                <category>firewall</category>
+                <action class="firewallSecurityAction">
+                  <name>name</name>
+                  <description>description</description>
                   <category></category>
                   <actionType></actionType>
                   <isActionEnforced></isActionEnforced>
@@ -10938,6 +11098,14 @@ securitySchemes:
                   <secondarySecurityGroup>
                     <objectId></objectId>
                   </secondarySecurityGroup>
+                  <secondarySecurityGroup>
+                    ...
+                  </secondarySecurityGroup>
+                  ...
+                  ...
+                  <secondarySecurityGroup>
+                    ...
+                  </secondarySecurityGroup>
                   <applications>
                     <application>
                       <objectId></objectId>
@@ -10945,35 +11113,379 @@ securitySchemes:
                     <applicationGroup>
                       <objectId></objectId>
                     </applicationGroup>
+                    ...
+                    ...
                   </applications>
                   <logged></logged>
-                  <scope>
-                    <id></id>
-                    <name></name>
-                    <objectTypeName></objectTypeName>
-                  </scope>
+                  <action></action>
+                  <direction></direction>
+                  <outsideSecondaryContainer></outsideSecondaryContainer>
                 </action>
-                <direction></direction>
-                <outsideSecondaryContainer></outsideSecondaryContainer>
-                </actionsByCategory>
+                <action>
+                  ...
+                </action>
+                ...
+                ...
+                <action>
+                  ...
+                </action>
+              </actionsByCategory>
+              <actionsByCategory>
+                <category>endpoint</category>
+                <action class="endpointSecurityAction">
+                  <name>name</name>
+                  <description>description</description>
+                  <category></category>
+                  <actionType></actionType>
+                  <isActionEnforced></isActionEnforced>
+                  <isActive></isActive>
+                  <isEnabled></isEnabled>
+                  <serviceId></serviceId>
+                  <serviceProfile>
+                    <objectId>serviceprofile-1</objectId>
+                    ...
+                  </serviceProfile>
+                  <invalidServiceProfile>false</invalidServiceProfile>
+                </action>
+              </actionsByCategory>
+              <actionsByCategory>
+                <category>traffic_steering</category>
+                <action class="trafficSteeringSecurityAction">
+                  <name>name</name>
+                  <description>description</description>
+                  <category></category>
+                  <actionType></actionType>
+                  <isActionEnforced></isActionEnforced>
+                  <isActive></isActive>
+                  <isEnabled></isEnabled>
+                  <logged></logged>
+                  <redirect></redirect>
+                  <serviceProfile>
+                    <objectId></objectId>
+                  </serviceProfile>
+                </action>
+              </actionsByCategory>
             </securityPolicy>
           schema: securityPolicyCreate
+    /status:
+      displayName: securityPolicyStatus
+      description: |
+        Working with Service Composer Status
+        ------------------------------------
+      get:
+      # new in 6.2.3
+        displayName: securityPolicyStatusRead
+        description: |
+          Retrieve the consolidated status of Service Composer.
+          ___
+          The possible return of value for status are: *in_sync*,
+          *in_progress*, *out_of_sync*, and *pending*.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <serviceComposerStatus>
+                    <status>in_sync</status>
+                  </serviceComposerStatus>
+    /alarms:
+      displayName: securityPolicyAlarms
+      description: |
+        Working with Security Policy Alarms.
+        -----------
+      /all:
+        displayName: securityPolicyAlarmsAll
+        description: |
+          Working with all Service Composer Alarms
+          ------------
+        get:
+        # new in 6.2.3
+          displayName: securityPolicyAlarmsAllRead
+          description: |
+            Retrieve all system alarms that are raised at Service Composer
+            level and policy level.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <systemAlarms>
+                      <systemAlarm>
+                        <eventId></eventId>
+                        <timestamp></timestamp>
+                        <severity></severity>
+                        <eventSource></eventSource>
+                        <eventCode></eventCode>
+                        <message></message>
+                        <module></module>
+                        <objectId></objectId>
+                        <reporterName></reporterName>
+                        <reporterType></reporterType>
+                        <sourceType></sourceType>
+                        <displayName></displayName>
+                        <eventMetadata>
+                          <data>
+                          <key></key>
+                          <value></value>
+                          </data>
+                          <data>
+                          ...
+                          </data>
+                          ...
+                          <data>
+                          ...
+                          </data>
+                        </eventMetadata>
+                        <resolutionAttempted></resolutionAttempted>
+                        <resolvable></resolvable>
+                        <alarmId></alarmId>
+                        <alarmCode></alarmCode>
+                        <alarmSource></alarmSource>
+                        <alarmBeingResolved></alarmBeingResolved>
+                        <alarmMetadata>
+                          <data>
+                          <key></key>
+                          <value></value>
+                          </data>
+                          <data>
+                          ...
+                          </data>
+                          ...
+                          <data>
+                          ...
+                          </data>
+                        </alarmMetadata>
+                      </systemAlarm>
+                    </systemAlarms>
     /{ID}:
       displayName: securityPolicyID
-      description: Specific security policy
+      description: |
+        Working with Security Policies
+        ------------------
       uriParameters:
         ID:
           required: true
           displayName: ID
           description: |
-            ID of desired security policy (or 'all' to include all security
-            policies for the securityPolicyID read method)
+            ID of desired security policy (or 'all' to for all security
+            policies).
       get:
         displayName: securityPolicyIDRead
-        description: Retrieve security policy information
+        description: |
+          Retrieve security policy information.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <securityPolicy>
+                    <securityPolicy>
+                      <name>name</name>
+                      <description>description</description>
+                      <precedence></precedence>
+                      <parent>
+                        <objectId></objectId>
+                      </parent>
+                      <securityGroupBinding>
+                        <objectId></objectId>
+                      </securityGroupBinding>
+                      <securityGroupBinding>
+                        ...
+                      </securityGroupBinding>
+                      ...
+                      ...
+                      <securityGroupBinding>
+                        ...
+                      </securityGroupBinding>
+                      <actionsByCategory>
+                        <category>firewall</category>
+                        <action class="firewallSecurityAction">
+                          <name>name</name>
+                          <description>description</description>
+                          <category></category>
+                          <actionType></actionType>
+                          <isActionEnforced></isActionEnforced>
+                          <isActive></isActive>
+                          <isEnabled></isEnabled>
+                          <secondarySecurityGroup>
+                            <objectId></objectId>
+                          </secondarySecurityGroup>
+                          <secondarySecurityGroup>
+                            ...
+                          </secondarySecurityGroup>
+                          ...
+                          ...
+                          <secondarySecurityGroup>
+                            ...
+                          </secondarySecurityGroup>
+                          <applications>
+                            <application>
+                              <objectId></objectId>
+                            </application>
+                            <applicationGroup>
+                              <objectId></objectId>
+                            </applicationGroup>
+                            ...
+                            ...
+                          </applications>
+                          <logged></logged>
+                          <action></action>
+                          <direction></direction>
+                          <outsideSecondaryContainer></outsideSecondaryContainer>
+                        </action>
+                        <action>
+                          ...
+                        </action>
+                        ...
+                        ...
+                        <action>
+                          ...
+                        </action>
+                      </actionsByCategory>
+                      <actionsByCategory>
+                        <category>endpoint</category>
+                        <action class="endpointSecurityAction">
+                          <name>name</name>
+                          <description>description</description>
+                          <category></category>
+                          <actionType></actionType>
+                          <isActionEnforced></isActionEnforced>
+                          <isActive></isActive>
+                          <isEnabled></isEnabled>
+                          <serviceId></serviceId>
+                          <vendorTemplateId></vendorTemplateId>
+                        </action>
+                      </actionsByCategory>
+                      <actionsByCategory>
+                        <category>traffic_steering</category>
+                        <action class="trafficSteeringSecurityAction">
+                          <name>name</name>
+                          <description>description</description>
+                          <category></category>
+                          <actionType></actionType>
+                          <isActionEnforced></isActionEnforced>
+                          <isActive></isActive>
+                          <isEnabled></isEnabled>
+                          <logged></logged>
+                          <redirect></redirect>
+                          <serviceProfile>
+                            <objectId></objectId>
+                          </serviceProfile>
+                        </action>
+                      </actionsByCategory>
+                    </securityPolicy>
+                    <name></name>
+                    <description></description>
+                    <precedence></precedence>
+                    <parent>
+                      <objectId></objectId>
+                    </parent>
+                    <securityGroupBinding>
+                      <objectId></objectId>
+                    </securityGroupBinding>
+                    <securityGroupBinding>
+                      ...
+                    </securityGroupBinding>
+                    ...
+                    ...
+                    <securityGroupBinding>
+                      ...
+                    </securityGroupBinding>
+                    <actionsByCategory>
+                      <category>firewall</category>
+                      <action class="firewallSecurityAction">
+                        <name>name</name>
+                        <description>description</description>
+                        <category></category>
+                        <actionType></actionType>
+                        <isActionEnforced></isActionEnforced>
+                        <isActive></isActive>
+                        <isEnabled></isEnabled>
+                        <secondarySecurityGroup>
+                          <objectId></objectId>
+                        </secondarySecurityGroup>
+                        <secondarySecurityGroup>
+                          ...
+                        </secondarySecurityGroup>
+                        ...
+                        ...
+                        <secondarySecurityGroup>
+                          ...
+                        </secondarySecurityGroup>
+                        <applications>
+                          <application>
+                            <objectId></objectId>
+                          </application>
+                          <applicationGroup>
+                            <objectId></objectId>
+                          </applicationGroup>
+                          ...
+                          ...
+                        </applications>
+                        <logged></logged>
+                        <action></action>
+                        <direction></direction>
+                        <outsideSecondaryContainer></outsideSecondaryContainer>
+                      </action>
+                      <action>
+                        ...
+                      </action>
+                      ...
+                      ...
+                      <action>
+                        ...
+                      </action>
+                    </actionsByCategory>
+                    <actionsByCategory>
+                      <category>endpoint</category>
+                      <action class="endpointSecurityAction">
+                        <name>name</name>
+                        <description>description</description>
+                        <category></category>
+                        <actionType></actionType>
+                        <isActionEnforced></isActionEnforced>
+                        <isActive></isActive>
+                        <isEnabled></isEnabled>
+                        <serviceId></serviceId>
+                        <vendorTemplateId></vendorTemplateId>
+                      </action>
+                    </actionsByCategory>
+                    <actionsByCategory>
+                      <category>traffic_steering</category>
+                      <action class="trafficSteeringSecurityAction">
+                        <name>name</name>
+                        <description>description</description>
+                        <category></category>
+                        <actionType></actionType>
+                        <isActionEnforced></isActionEnforced>
+                        <isActive></isActive>
+                        <isEnabled></isEnabled>
+                        <logged></logged>
+                        <redirect></redirect>
+                        <serviceProfile>
+                          <objectId></objectId>
+                        </serviceProfile>
+                      </action>
+                    </actionsByCategory>
+                  </securityPolicy>
       put:
         displayName: securityPolicyIDUpdate
-        description: Edit a security policy
+        description: |
+          Edit a security policy.
+          ___
+          To update a security policy, you must first fetch it.
+          Then edit the received XML and pass it back as the input. The
+          specified configuration replaces the current configuration.
+          ___
+          Security group mappings provided in the PUT call replaces the
+          security group mappings for the security policy. To remove all
+          mappings, delete the securityGroupBindings parameter.
+          ___
+          You can add or update actions for the security policy by editing the
+          actionsByCategory parameter. To remove all actions (belonging to all
+          categories), delete the actionsByCategory parameter. To remove
+          actions belonging to a specific category, delete the block for that
+          category.
         body:
           application/xml:
             example: |
@@ -11024,30 +11536,75 @@ securitySchemes:
             schema: securityPolicyIDUpdate
       delete:
         displayName: securityPolicyIDDelete
-        description: Delete a security policy
+        description: |
+          Delete a security policy.
+          ___
+          When you delete a security policy, its child security policies and
+          all the actions in it are deleted as well.
         queryParameters:
           force:
             type: boolean
             displayName: force
             description: |
-              If set to true, security policy is deleted even if it is being
-              used somewhere
+              If set to true, the security policy is deleted even if it is in use.
+            required: false
       /securityactions:
         displayName: securityActions
-        description: Security actions for a security policy
+        description: |
+          Working with Security Actions on a Security Policy
+          -------------
         get:
           displayName: securityActionsRead
-          description: Retrieve security actions for a security policy
+          description: |
+            Retrieve all security actions applicable on a security policy.
+            ___
+            This list includes security actions from associated parent
+            security policies, if any. Security actions per Execution Order
+            Category are sorted based on the weight of security actions in
+            descending order.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <securityPolicies>
+                      <securityPolicy></securityPolicy>
+                      <securityPolicy></securityPolicy>
+                      ...
+                      ...
+                      <securityPolicy></securityPolicy>
+                    </securityPolicies>
     /hierarchy:
       displayName: hierarchy
       description: Security policy configuration import/export
       post:
         displayName: hierarchyCreate
-        description: Import a security policy configuration
+        description: |
+          Import a security policy configuration
+          ___
+          You can create multiple security policies and parent-child
+          hierarchies using the data fetched through export. All objects
+          including security policies, security groups and security actions
+          are created on a global scope.
+          ___
+          The policy that is being imported needs to be included in the
+          request body.
+          ___
+          If a suffix is specified, it is added after the names of the
+          security policy, security action, and security group objects in the
+          exported XML. The suffix can thus be used to differentiate locally
+          created objects from imported ones.
+          ___
+          The location of the newly created security policy objects (multiple
+          locations are separated by commas) is populated in the Location
+          header of the response.
         queryParameters:
           suffix:
             displayName: suffix
-            description: (optional) Added after names
+            description:
+              A suffix to add after the names of the objects in the imported
+              XML.
+            required: false
         body:
           application/xml:
             example: |
@@ -11061,17 +11618,30 @@ securitySchemes:
       get:
         displayName: hierarchyRead
         description: |
-          Export a Service Composer configuration and save to your desktop for
-          use as a backup
+          Export a Service Composer configuration (along with the
+          security groups to which the security policies are mapped).
+          You can save the response to a file.  The saved configuration can be
+          used as a backup for situations where you may accidentally delete a
+          policy configuration, or it can be exported for use in another NSX
+          Manager environment.
+          ___
+          If a prefix is specified, it is added before the names of the
+          security policy, security action, and security group objects in the
+          exported XML. The prefix can thus be used to indicate the remote
+          source from where the hierarchy was exported.
         queryParameters:
           policyIds:
             displayName: policyIds
-            description: Comma separated security policy id's
+            description: |
+              Comma separated list of security policy IDs to export. If
+              omitted, all security policy IDs are exported.
+            required: false
           prefix:
             displayName: prefix
             description: |
-              (optional) Some prefix to add before the names of the objects in
-              the exported XML
+              A prefix to add before the names of the objects in the exported
+              XML.
+            required: false
   /securityaction/category/virtualmachines:
     displayName: securityActionVM
     description: Virtual machines for a security action
@@ -11325,6 +11895,7 @@ securitySchemes:
   displayName: nsxCli
   description: |
     Working with the Central CLI
+    =======
   post:
     displayName: nsxCliExecute
     description: |
@@ -11337,7 +11908,7 @@ securitySchemes:
       through the API, please see the Central CLI chapter of the *NSX Command
       Line Interface Reference*.
     queryParameters:
-      suffix:
+      action:
         displayName: action
         description: Use *action=execute*.
         required: true
@@ -11353,9 +11924,92 @@ securitySchemes:
             <command>show logical-switch list host host-21 vni</command>
           </nsxcli>
         schema: nsxCliExecute
+/2.0/vdn/inventory:
+  displayName: inventoryStatus
+  description: |
+    Communication Status
+    ====================
+    This feature allows the user to check the connection status between the
+    NSX Manager and hosts. A hash map is used to hold all hosts' connection
+    status. It keeps track of the latest heartbeat from each host.  When
+    querying a host’s connection status, NSX Manager will get the latest
+    heartbeat information to compare the last heartbeat time and current time.
+    If the duration is longer than a threshold, it returns *DOWN*, otherwise
+    it returns *UP*. If no last heartbeat information is found and this host
+    has not been prepared or the netcpa version on this host is lower than
+    6.2.0, it will return *NOT_AVAILABLE*.  But if no last heartbeat
+    information is found and the host has been prepared with netcpa version no
+    less than 6.2.0, it will return *DOWN*. When a host has been unprepared,
+    its heartbeat information will be removed from the NSX Manager memory.
+  /host/{hostId}/connection/status:
+    displayName: inventoryStatusHost
+    description: |
+      Communication Status of a Specific Host
+      ---------------------------------------
+    uriParameters:
+      hostId:
+        displayName: hostId
+        description: ID of the host to check.
+    get:
+      displayName: inventoryStatusHostRead
+      description: |
+        Retrieve the status of the specified host.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <hostConnStatus>
+                  <hostId>host-xx</hostId>
+                  <nsxMgrToFirewallAgentConn>UP</nsxMgrToFirewallAgentConn>
+                  <nsxMgrToControlPlaneAgentConn>UP</nsxMgrToControlPlaneAgentConn>
+                  <hostToControllerConn>UP</hostToControllerConn>
+                  <fullSyncCount>13</fullSyncCount>
+                </hostConnStatus>
+  /hosts/connection/status:
+    displayName: inventoryStatusHost
+    description: |
+      Communication Status of a List of Hosts
+      ---------------------------------------
+    get:
+      displayName: inventoryStatusHostList
+      description: |
+        Retrieve the status of a list of hosts.
+      queryParameters:
+        hostId:
+          displayName: hostId
+          description: |
+            ID of a host to check. You can provide multiple hosts with
+            ?hostId=*host1*&hostId=*host2*...
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <hostConnStatusList>
+                  <hostConnStatuses>
+                    <hostConnStatus>
+                      <hostId>host-31</hostId>
+                      <nsxMgrToFirewallAgentConn>UP</nsxMgrToFirewallAgentConn>
+                      <nsxMgrToControlPlaneAgentConn>UP</nsxMgrToControlPlaneAgentConn>
+                      <hostToControllerConn>UP</hostToControllerConn>
+                      <fullSyncCount>3</fullSyncCount>
+                    </hostConnStatus>
+                    <hostConnStatus>
+                      <hostId>host-32</hostId>
+                      <nsxMgrToFirewallAgentConn>UP</nsxMgrToFirewallAgentConn>
+                      <nsxMgrToControlPlaneAgentConn>UP</nsxMgrToControlPlaneAgentConn>
+                      <hostToControllerConn>DOWN</hostToControllerConn>
+                      <fullSyncCount>0</fullSyncCount>
+                    </hostConnStatus>
+                    ...
+                  </hostConnStatuses>
+                </hostConnStatusList>
 /2.0/vdn/hardwaregateways:
   displayName: hardwareGateways
-  description: Working with Hardware Gateways
+  description: |
+    Working with Hardware Gateways
+    ============
   post:
   # new in 6.2.3
     displayName: hardwareGatewayCreate
