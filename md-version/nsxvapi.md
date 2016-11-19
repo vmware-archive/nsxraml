@@ -3437,10 +3437,18 @@ Fetch the security actions applicable on a virtual machine
 * **get** *(secured)*: Fetch the security actions applicable on a virtual machine
 
 ### /2.0/services/policy/policy/serviceprovider/firewall
-Synchronizing Service Composer rules with distributed firewall
+Working with Service Composer Firewall
+--------------
 
-* **get** *(secured)*: Query the time since when Service Composer firewall is out of sync with
-dfw, or synchronize Service Composer firewall with dfw
+* **get** *(secured)*: This method can perform the following functions, depending on the
+request body provided.
+
+Key | Description | Comments
+----|-------------|----------
+getServiceComposerFirewallOutOfSyncTimestamp | Check if Service Composer firewall and Distributed Firewall are in sync. | If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
+forceSync | Synchronize Service Composer firewall with Distributed Firewall. |
+getAutoSaveDraft | Retrieve the state of the auto save draft property in Service Composer. | Response is true or false.
+autoSaveDraft | Change the state of the auto save draft property in Service Composer. | Provide value true or false.
 
 ### /2.0/services/policy/policy/securitygroup/{ID}/securitypolicies
 Retrieve security policies mapped to a security group

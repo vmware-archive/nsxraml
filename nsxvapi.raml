@@ -11678,13 +11678,57 @@ securitySchemes:
       displayName: vmApplicableSecurityAction
       description: Fetch the security actions applicable on a virtual machine
   /policy/serviceprovider/firewall:
-    displayName: serviceComposerDFWSync
-    description: Synchronizing Service Composer rules with distributed firewall
+    displayName: serviceComposerDFW
+    description: |
+      Working with Service Composer Firewall
+      --------------
     get:
-      displayName: serviceComposerDFWSyncRead
+      displayName: serviceComposerDFWRead
       description: |
-        Query the time since when Service Composer firewall is out of sync with
-        dfw, or synchronize Service Composer firewall with dfw
+        This method can perform the following functions, depending on the
+        request body provided.
+
+        Key | Description | Comments
+        ----|-------------|----------
+        getServiceComposerFirewallOutOfSyncTimestamp | Check if Service Composer firewall and Distributed Firewall are in sync. | If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
+        forceSync | Synchronize Service Composer firewall with Distributed Firewall. |
+        getAutoSaveDraft | Retrieve the state of the auto save draft property in Service Composer. | Response is true or false.
+        autoSaveDraft | Change the state of the auto save draft property in Service Composer. | Provide value true or false.
+      body:
+        application/xml:
+          example: |
+            * Check if Service Composer firewall and Distributed Firewall are in sync
+
+            <keyValues>
+              <keyValue>
+                <key>getServiceComposerFirewallOutOfSyncTimestamp</key>
+              </keyValue>
+            </keyValues>
+
+            * Synchronize Service Composer firewall with Distributed Firewall
+
+            <keyValues>
+              <keyValue>
+                <key>forceSync</key>
+              </keyValue>
+            </keyValues>
+
+            * Retrieve the state of the auto save draft property in Service Composer
+
+            <keyValues>
+              <keyValue>
+                <key>getAutoSaveDraft</key>
+              </keyValue>
+            </keyValues>
+
+            * Change the state of the auto save draft property in Service Composer
+
+            <keyValues>
+              <keyValue>
+                <key>autoSaveDraft</key>
+                <value>false</value>
+              </keyValue>
+            </keyValues>
   /policy/securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
     description: Retrieve security policies mapped to a security group

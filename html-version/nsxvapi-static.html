@@ -5226,7 +5226,7 @@ fails.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Synchronizing Service Composer rules with distributed firewall</p>
+  <div class="description"><h2 id="working-with-service-composer-firewall">Working with Service Composer Firewall</h2>
 </div>
 <div class="method get">
   <a
@@ -5235,9 +5235,68 @@ fails.</p>
     href="#GET/2.0/services/policy/policy/serviceprovider/firewall"
   ><h2>GET /2.0/services/policy/policy/serviceprovider/firewall</h2></a>
   <div class="content">
-    <p><p>Query the time since when Service Composer firewall is out of sync with
-dfw, or synchronize Service Composer firewall with dfw</p>
-</p>
+    <p><p>This method can perform the following functions, depending on the
+request body provided.</p>
+<table class="table"><thead><tr>
+<th>Key</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>getServiceComposerFirewallOutOfSyncTimestamp</td>
+<td>Check if Service Composer firewall and Distributed Firewall are in sync.</td>
+<td>If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.</td>
+</tr>
+<tr>
+<td>forceSync</td>
+<td>Synchronize Service Composer firewall with Distributed Firewall.</td>
+<td></td>
+</tr>
+<tr>
+<td>getAutoSaveDraft</td>
+<td>Retrieve the state of the auto save draft property in Service Composer.</td>
+<td>Response is true or false.</td>
+</tr>
+<tr>
+<td>autoSaveDraft</td>
+<td>Change the state of the auto save draft property in Service Composer.</td>
+<td>Provide value true or false.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml">* Check if Service Composer firewall and Distributed Firewall are in sync
+
+<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>getServiceComposerFirewallOutOfSyncTimestamp<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+
+* Synchronize Service Composer firewall with Distributed Firewall
+
+<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>forceSync<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+
+* Retrieve the state of the auto save draft property in Service Composer
+
+<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>getAutoSaveDraft<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+
+* Change the state of the auto save draft property in Service Composer
+
+<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>autoSaveDraft<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
