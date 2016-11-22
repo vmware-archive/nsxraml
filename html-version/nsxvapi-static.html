@@ -258,7 +258,11 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>NSX Manager certificate manager</p>
+  <div class="description"><h1 id="working-with-certificates-on-the-nsx-manager-appliance">Working with Certificates on the NSX Manager Appliance</h1>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="nsx-manager-certificate-manager">NSX Manager Certificate Manager</h1>
 </div>
 <div class="method get">
   <a
@@ -267,7 +271,137 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
     href="#GET/1.0/appliance-management/certificatemanager/certificates/nsx"
   ><h2>GET /1.0/appliance-management/certificatemanager/certificates/nsx</h2></a>
   <div class="content">
-    <p><p>Query the certificate thumbprint from a NSX manager</p>
+    <p><p>Retrieve certificate information from NSX Manager.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">x509Certificates</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">x509certificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">subjectCn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subjectCn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">issuerCn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">issuerCn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serialNumber</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serialNumber</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">signatureAlgo</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">signatureAlgo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">signature</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">signature</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">notBefore</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">notBefore</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">notAfter</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">notAfter</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">issuer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">issuer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">subject</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subject</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">publicKeyAlgo</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">publicKeyAlgo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">publicKeyLength</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">publicKeyLength</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rsaPublicKeyModulus</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">rsaPublicKeyModulus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rsaPublicKeyExponent</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">rsaPublicKeyExponent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sha1Hash</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sha1Hash</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">md5Hash</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">md5Hash</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isCa</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isCa</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">x509certificate</span>&gt;</span>
+  ....
+<span class="hljs-tag">&lt;/<span class="hljs-name">x509Certificates</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="working-with-certificate-signing-requests">Working with Certificate Signing Requests</h1>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/appliance-management/certificatemanager/csr/nsx"
+    href="#POST/1.0/appliance-management/certificatemanager/csr/nsx"
+  ><h2>POST /1.0/appliance-management/certificatemanager/csr/nsx</h2></a>
+  <div class="content">
+    <p><p>Create a certificate signing request (CSR) for NSX Manager.</p>
+<hr>
+<p>The response header contains the created file location.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced. Replaces <code>PUT /api/1.0/appliance-management/certificatemanager/nsx/csr</code>.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">csr</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">keySize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">keySize</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">subjectDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">commonName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">commonName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">organizationUnit</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">organizationUnit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">organizationName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">organizationName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">localityName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">localityName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">stateName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">stateName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">countryCode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">countryCode</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">subjectDto</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">csr</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/1.0/appliance-management/certificatemanager/csr/nsx"
+    href="#GET/1.0/appliance-management/certificatemanager/csr/nsx"
+  ><h2>GET /1.0/appliance-management/certificatemanager/csr/nsx</h2></a>
+  <div class="content">
+    <p><p>Retrieve generated certificate signing request (CSR).</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-keystore-files">Working with Keystore Files</h2>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/appliance-management/certificatemanager/pkcs12keystore/nsx"
+    href="#POST/1.0/appliance-management/certificatemanager/pkcs12keystore/nsx"
+  ><h2>POST /1.0/appliance-management/certificatemanager/pkcs12keystore/nsx</h2></a>
+  <div class="content">
+    <p><p>Upload keystore file.</p>
+<hr>
+<p>Input is PKCS#12 formatted NSX file along with password.</p>
+</p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">password</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Password.</p>
+
+  </dd>
+</dl>
+    </div>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="working-with-certificate-chains">Working with Certificate Chains</h1>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/appliance-management/certificatemanager/uploadchain/nsx"
+    href="#POST/1.0/appliance-management/certificatemanager/uploadchain/nsx"
+  ><h2>POST /1.0/appliance-management/certificatemanager/uploadchain/nsx</h2></a>
+  <div class="content">
+    <p><p>Upload certificate chain.</p>
+<hr>
+<p>Input is certificate chain file which is a PEM encoded chain of
+certificates received from the CA after signing a CSR.</p>
 </p>
   </div>
 </div>
@@ -748,7 +882,16 @@ memory and storage</p>
   ><h2>GET /1.0/appliance-management/system/tlssettings</h2></a>
   <div class="content">
     <p><p>Retrieve TLS settings.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -773,7 +916,16 @@ memory and storage</p>
 <hr>
 <p>Include a comma separated list of the TLS versions you want to enable,
 for both server and client.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tlsSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">serverEnabledProtocols</span>&gt;</span>TLSv1.1,TLSv1.2<span class="hljs-tag">&lt;/<span class="hljs-name">serverEnabledProtocols</span>&gt;</span>
@@ -4898,9 +5050,18 @@ concurrent users for the distributed firewall and VXLAN.</p>
     href="#GET/2.0/services/licensing/capacityusage"
   ><h2>GET /2.0/services/licensing/capacityusage</h2></a>
   <div class="content">
-    <p><p>Read capacity usage information on the useage of CPUs, VMs and concurrent
+    <p><p>Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
 users for the distributed firewall and VXLAN.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -4910,10 +5071,33 @@ users for the distributed firewall and VXLAN.</p>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">featureCapacityUsageList</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">featureCapacityUsageInfo</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span>CPU_CAPACITY_TYPE<span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">feature</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">feature</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span>VM_CAPACITY_TYPE<span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span>CONCURRENT_USER_CAPACITY_TYPE<span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">feature</span>&gt;</span>dfw<span class="hljs-tag">&lt;/<span class="hljs-name">feature</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapacityUsageInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureCapacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span>CPU_CAPACITY_TYPE<span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span>VM_CAPACITY_TYPE<span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">capacityType</span>&gt;</span>CONCURRENT_USER_CAPACITY_TYPE<span class="hljs-tag">&lt;/<span class="hljs-name">capacityType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">usageCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">usageCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">capacityUsageInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">feature</span>&gt;</span>vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">feature</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapacityUsageInfo</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapacityUsageList</span>&gt;</span>
 </code></pre>
@@ -5401,8 +5585,6 @@ Guide</em>.</li>
 <hr>
 <p>Tags related to Service Composer, security policies, and security
 groups:
-This section describes the tags specific to Service Composer
-management.
 Common Tags</p>
 <ul>
 <li><strong>actionType</strong> - Defines the type of action belonging to a given
@@ -5676,7 +5858,16 @@ rule</li>
   <div class="content">
     <p><p>Retrieve all system alarms that are raised at Service Composer
 level and policy level.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -5863,7 +6054,16 @@ XML.</p>
 <hr>
 <p>The possible return of value for status are: <em>in_sync</em>,
 <em>in_progress</em>, <em>out_of_sync</em>, and <em>pending</em>.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -7282,7 +7482,16 @@ network fabric, and hypervisors.</p>
   ><h2>GET /2.0/services/snmp/manager</h2></a>
   <div class="content">
     <p><p>Retrieve information about SNMP managers.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -7316,7 +7525,16 @@ network fabric, and hypervisors.</p>
   ><h2>POST /2.0/services/snmp/manager</h2></a>
   <div class="content">
     <p><p>Add an SNMP manager.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">snmpManager</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ip</span>&gt;</span>10.10.10.10<span class="hljs-tag">&lt;/<span class="hljs-name">ip</span>&gt;</span>
@@ -7353,7 +7571,16 @@ network fabric, and hypervisors.</p>
   ><h2>GET /2.0/services/snmp/manager/{managerId}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified SNMP manager.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -7378,7 +7605,16 @@ network fabric, and hypervisors.</p>
   ><h2>PUT /2.0/services/snmp/manager/{managerId}</h2></a>
   <div class="content">
     <p><p>Update an SNMP manager configuration.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">snmpManager</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">managerId</span>&gt;</span>1330<span class="hljs-tag">&lt;/<span class="hljs-name">managerId</span>&gt;</span>
@@ -7398,7 +7634,16 @@ network fabric, and hypervisors.</p>
   ><h2>DELETE /2.0/services/snmp/manager/{managerId}</h2></a>
   <div class="content">
     <p><p>Delete an SNMP manager configuration.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>
@@ -7428,7 +7673,16 @@ network fabric, and hypervisors.</p>
   ><h2>GET /2.0/services/snmp/status</h2></a>
   <div class="content">
     <p><p>Retrieve SNMP settings.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -7450,8 +7704,16 @@ network fabric, and hypervisors.</p>
   ><h2>PUT /2.0/services/snmp/status</h2></a>
   <div class="content">
     <p><p>Update SNMP settings.</p>
-<hr>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">snmpServiceStatus</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">serviceStatus</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">serviceStatus</span>&gt;</span>
@@ -7472,7 +7734,16 @@ network fabric, and hypervisors.</p>
   ><h2>GET /2.0/services/snmp/trap</h2></a>
   <div class="content">
     <p><p>Retrieve information about SNMP traps.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -7523,7 +7794,16 @@ network fabric, and hypervisors.</p>
   ><h2>GET /2.0/services/snmp/trap/{oid}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified SNMP trap.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -7547,7 +7827,16 @@ network fabric, and hypervisors.</p>
   ><h2>PUT /2.0/services/snmp/trap/{oid}</h2></a>
   <div class="content">
     <p><p>Update the specified SNMP trap.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">trapConfig</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">oid</span>&gt;</span>1.3.6.1.4.1.6876.90.1.2.3.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">oid</span>&gt;</span>
@@ -9701,7 +9990,16 @@ the primary NSX Manager.</p>
   ><h2>GET /2.0/vdn/config/vxlan/udp/port/taskStatus</h2></a>
   <div class="content">
     <p><p>Retrieve the status of the VXLAN port configuration update.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10178,7 +10476,16 @@ streams a fairly large bundle back (possibly hundreds of MB).</p>
     <p><p>Install a hardware gateway.</p>
 <hr>
 <p><strong>bfdEnabled</strong> is true by default.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewaySpec</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
@@ -10197,7 +10504,16 @@ streams a fairly large bundle back (possibly hundreds of MB).</p>
   ><h2>GET /2.0/vdn/hardwaregateways</h2></a>
   <div class="content">
     <p><p>Retrieve information about all hardware gateways.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10255,7 +10571,16 @@ streams a fairly large bundle back (possibly hundreds of MB).</p>
   ><h2>PUT /2.0/vdn/hardwaregateways/bfd/config</h2></a>
   <div class="content">
     <p><p>Update global hardware gateway BFD configuration.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayBfdParams</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">bfdEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">bfdEnabled</span>&gt;</span>
@@ -10272,7 +10597,16 @@ streams a fairly large bundle back (possibly hundreds of MB).</p>
   ><h2>GET /2.0/vdn/hardwaregateways/bfd/config</h2></a>
   <div class="content">
     <p><p>Retrieve global hardware gateway BFD configuration.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10299,7 +10633,16 @@ streams a fairly large bundle back (possibly hundreds of MB).</p>
   <div class="content">
     <p><p>Retrieve hardware gateway BFD tunnel status for all tunnel
 endpoints, including hosts and hardware gateways.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10401,7 +10744,16 @@ endpoints, including hosts and hardware gateways.</p>
   ><h2>POST /2.0/vdn/hardwaregateways/bindings</h2></a>
   <div class="content">
     <p><p>Create a hardware gateway binding.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayId</span>&gt;</span>
@@ -10420,7 +10772,16 @@ endpoints, including hosts and hardware gateways.</p>
   ><h2>GET /2.0/vdn/hardwaregateways/bindings</h2></a>
   <div class="content">
     <p><p>Retrieve information about hardware gateway bindings.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -10481,7 +10842,16 @@ delete. Each list accepts a hardwareGatewayManageBindingsItem with a
 full description of the new binding with its objectID. This API
 handles a maximum of 100 HardwareGatewayManageBindingsItem objects
 for each of the Add/Update/Delete lists.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayManageBindings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">addItems</span>&gt;</span>
@@ -10540,7 +10910,16 @@ for each of the Add/Update/Delete lists.</p>
   ><h2>GET /2.0/vdn/hardwaregateways/bindings/{bindingId}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified hardware gateway binding.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 <div class="method put">
@@ -10559,7 +10938,16 @@ for each of the Add/Update/Delete lists.</p>
 gateway on the binding.</li>
 <li>the new binding value is a duplicate of an existing binding.</li>
 </ul>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayId</span>&gt;</span>hardwaregateway1<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayId</span>&gt;</span>
@@ -10579,7 +10967,16 @@ gateway on the binding.</li>
   ><h2>DELETE /2.0/vdn/hardwaregateways/bindings/{bindingId}</h2></a>
   <div class="content">
     <p><p>Delete the specified hardware gateway binding.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>
@@ -10594,7 +10991,16 @@ gateway on the binding.</li>
   ><h2>GET /2.0/vdn/hardwaregateways/bindings/{bindingId}/statistic</h2></a>
   <div class="content">
     <p><p>Retrieve statistics for the specified hardware gateway binding.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10626,7 +11032,16 @@ gateway on the binding.</li>
     <p><p>Update the hardware gateway replication cluster.</p>
 <hr>
 <p>Add or remove hosts on a replication cluster.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>appplication/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">replicationCluster</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">hosts</span>&gt;</span>
@@ -10652,7 +11067,16 @@ gateway on the binding.</li>
   ><h2>GET /2.0/vdn/hardwaregateways/replicationcluster</h2></a>
   <div class="content">
     <p><p>Retrieve information about the hardware gateway replication cluster.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10752,7 +11176,16 @@ gateway on the binding.</li>
   ><h2>GET /2.0/vdn/hardwaregateways/{hardwareGatewayId}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified hardware gateway.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10785,7 +11218,16 @@ gateway on the binding.</li>
   ><h2>PUT /2.0/vdn/hardwaregateways/{hardwareGatewayId}</h2></a>
   <div class="content">
     <p><p>Update the specified hardware gateway.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewaySpec</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
@@ -10804,7 +11246,16 @@ gateway on the binding.</li>
   ><h2>DELETE /2.0/vdn/hardwaregateways/{hardwareGatewayId}</h2></a>
   <div class="content">
     <p><p>Delete the specified hardware gateway.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>
@@ -10820,7 +11271,16 @@ gateway on the binding.</li>
   <div class="content">
     <p><p>Retrieve information about switches on the specified hardware
 gateway.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10868,7 +11328,16 @@ gateway.</p>
   <div class="content">
     <p><p>Retrive information about the hardware gateway switch ports for
 the specified switch and hardware gateway.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10946,7 +11415,16 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
   ><h2>GET /2.0/vdn/inventory/host/{hostId}/connection/status</h2></a>
   <div class="content">
     <p><p>Retrieve the status of the specified host.</p>
-</p>
+<p>History:</p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Introduced <strong>hostToControllerConnectionErrors</strong> array.<br>Deprecated <strong>fullSyncCount</strong>parameter. Parameter is still present, but always has value of -1.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -10958,7 +11436,7 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">nsxMgrToFirewallAgentConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">nsxMgrToFirewallAgentConn</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">nsxMgrToControlPlaneAgentConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">nsxMgrToControlPlaneAgentConn</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">hostToControllerConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">hostToControllerConn</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCount</span>&gt;</span>13<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCount</span>&gt;</span>-1<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCount</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatus</span>&gt;</span>
 </code></pre>
   </div>
@@ -10975,7 +11453,15 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
   ><h2>GET /2.0/vdn/inventory/hosts/connection/status</h2></a>
   <div class="content">
     <p><p>Retrieve the status of a list of hosts.</p>
-</p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Introduced <strong>hostToControllerConnectionErrors</strong> array.<br>Deprecated <strong>fullSyncCount</strong>parameter. Parameter is still present, but always has value of -1.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -11004,14 +11490,26 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">nsxMgrToFirewallAgentConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">nsxMgrToFirewallAgentConn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">nsxMgrToControlPlaneAgentConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">nsxMgrToControlPlaneAgentConn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">hostToControllerConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">hostToControllerConn</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCount</span>&gt;</span>-1<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCount</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatus</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">hostConnStatus</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-32<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">nsxMgrToFirewallAgentConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">nsxMgrToFirewallAgentConn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">nsxMgrToControlPlaneAgentConn</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">nsxMgrToControlPlaneAgentConn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">hostToControllerConn</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">hostToControllerConn</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCount</span>&gt;</span>-1<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostToControllerConnectionErrors</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">hostToControllerConnectionError</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">controllerIp</span>&gt;</span>10.160.203.236<span class="hljs-tag">&lt;/<span class="hljs-name">controllerIp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>1255604<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorMessage</span>&gt;</span>Connection Refused<span class="hljs-tag">&lt;/<span class="hljs-name">errorMessage</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">hostToControllerConnectionError</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostToControllerConnectionError</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">controllerIp</span>&gt;</span>10.160.203.237<span class="hljs-tag">&lt;/<span class="hljs-name">controllerIp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>1255603<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">errorMessage</span>&gt;</span>SSL Handshake Failure<span class="hljs-tag">&lt;/<span class="hljs-name">errorMessage</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">hostToControllerConnectionError</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">hostToControllerConnectionErrors</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatus</span>&gt;</span>
     ...
   <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatuses</span>&gt;</span>
@@ -12349,7 +12847,16 @@ the <strong>packetSize</strong> parameter.</li>
   ><h2>GET /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways</h2></a>
   <div class="content">
     <p><p>Retrieve hardware gateway bindings for the specified logical switch.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -12404,7 +12911,16 @@ switches.</p>
   ><h2>POST /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways/{hardwareGatewayBindingId}</h2></a>
   <div class="content">
     <p><p>Manage the connection between a hardware gateway and a logical switch.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -13555,7 +14071,16 @@ The default values are:</p>
   ><h2>GET /4.0/edgePublish/tuningConfiguration</h2></a>
   <div class="content">
     <p><p>Retrieve the NSX Edge tuning configuration.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -13584,7 +14109,16 @@ The default values are:</p>
   ><h2>PUT /4.0/edgePublish/tuningConfiguration</h2></a>
   <div class="content">
     <p><p>Update the NSX Edge tuning configuration.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tuningConfiguration</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">lockUpdatesOnEdge</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">lockUpdatesOnEdge</span>&gt;</span>

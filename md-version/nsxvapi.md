@@ -175,6 +175,12 @@ VXLAN port configuration update status.
 
 * **get** *(secured)*: Retrieve the status of the VXLAN port configuration update.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ### /2.0/vdn/config/resources/allocated
 Working with allocated resources.
 
@@ -378,11 +384,23 @@ Working with hardware gateway bindings for a specific logical switch.
 
 * **get** *(secured)*: Retrieve hardware gateway bindings for the specified logical switch.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways/{hardwareGatewayBindingId}
 Working with connections between hardware gateways and logical
 switches.
 
 * **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ## arpMAC
 Working with ARP Suppression and MAC Learning for Logical Switches
@@ -578,8 +596,14 @@ concurrent users for the distributed firewall and VXLAN.
 
 ### /2.0/services/licensing/capacityusage
 
-* **get** *(secured)*: Read capacity usage information on the useage of CPUs, VMs and concurrent
+* **get** *(secured)*: Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
 users for the distributed firewall and VXLAN.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ## securityTag
 Working with Security Tags
@@ -873,10 +897,23 @@ Working with network settings
 Working with TLS Settings
 
 * **get** *(secured)*: Retrieve TLS settings.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **post** *(secured)*: Update TLS settings.
 ___
 Include a comma separated list of the TLS versions you want to enable,
 for both server and client.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /1.0/appliance-management/system/tlssettings/dns
 Configure DNS
@@ -992,10 +1029,48 @@ Query upgrade status
 
 * **get** *(secured)*: Query upgrade status
 
-### /1.0/appliance-management/certificatemanager/certificates/nsx
-NSX Manager certificate manager
+### /1.0/appliance-management/certificatemanager
+Working with Certificates on the NSX Manager Appliance
+=================
 
-* **get** *(secured)*: Query the certificate thumbprint from a NSX manager
+### /1.0/appliance-management/certificatemanager/pkcs12keystore/nsx
+Working with Keystore Files
+------------
+
+* **post** *(secured)*: Upload keystore file.
+___
+Input is PKCS#12 formatted NSX file along with password.
+
+### /1.0/appliance-management/certificatemanager/certificates/nsx
+NSX Manager Certificate Manager
+================
+
+* **get** *(secured)*: Retrieve certificate information from NSX Manager.
+
+### /1.0/appliance-management/certificatemanager/csr/nsx
+Working with Certificate Signing Requests
+===========
+
+* **post** *(secured)*: Create a certificate signing request (CSR) for NSX Manager.
+___
+The response header contains the created file location.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/nsx/csr`.
+
+* **get** *(secured)*: Retrieve generated certificate signing request (CSR).
+
+### /1.0/appliance-management/certificatemanager/uploadchain/nsx
+Working with Certificate Chains
+==============
+
+* **post** *(secured)*: Upload certificate chain.
+___
+Input is certificate chain file which is a PEM encoded chain of
+certificates received from the CA after signing a CSR.
 
 ## systemEvents
 Working with NSX Manager System Events
@@ -3172,7 +3247,20 @@ ___
 | megaHertzPerVCpu | integer value specifying the megahertz per each vCPU (1000, 1500, 2000) |
 
 * **get** *(secured)*: Retrieve the NSX Edge tuning configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **put** *(secured)*: Update the NSX Edge tuning configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ## truststore
 Working with Certificates
@@ -3262,8 +3350,6 @@ Ensure that:
 ___
 Tags related to Service Composer, security policies, and security
 groups:
-This section describes the tags specific to Service Composer
-management.
 Common Tags
 * **actionType** - Defines the type of action belonging to a given
 executionOrderCategory
@@ -3337,6 +3423,12 @@ ___
 The possible return of value for status are: *in_sync*,
 *in_progress*, *out_of_sync*, and *pending*.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ### /2.0/services/policy/securitypolicy/alarms
 Working with Security Policy Alarms.
 -----------
@@ -3347,6 +3439,12 @@ Working with all Service Composer Alarms
 
 * **get** *(secured)*: Retrieve all system alarms that are raised at Service Composer
 level and policy level.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/services/policy/securitypolicy/{ID}
 Working with Security Policies
@@ -3476,15 +3574,38 @@ groupNotification | Boolean. Set to true to group similar SNMP notifications. Th
 
 * **get** *(secured)*: Retrieve SNMP settings.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **put** *(secured)*: Update SNMP settings.
-___
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/services/snmp/manager
 ## Working with SNMP Managers
 
 * **get** *(secured)*: Retrieve information about SNMP managers.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **post** *(secured)*: Add an SNMP manager.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/services/snmp/manager/{managerId}
 Working with a Specific SNMP Manager
@@ -3492,9 +3613,27 @@ Working with a Specific SNMP Manager
 
 * **get** *(secured)*: Retrieve information about the specified SNMP manager.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **put** *(secured)*: Update an SNMP manager configuration.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **delete** *(secured)*: Delete an SNMP manager configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/services/snmp/trap
 Working with SNMP Traps
@@ -3502,13 +3641,31 @@ Working with SNMP Traps
 
 * **get** *(secured)*: Retrieve information about SNMP traps.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ### /2.0/services/snmp/trap/{oid}
 Working with a Specific SNMP Trap
 -----------------------
 
 * **get** *(secured)*: Retrieve information about the specified SNMP trap.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **put** *(secured)*: Update the specified SNMP trap.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ## nsxCli
 Working with the Central CLI
@@ -3547,11 +3704,21 @@ Communication Status of a Specific Host
 
 * **get** *(secured)*: Retrieve the status of the specified host.
 
+History:
+
+Release | Modification
+--------|-------------
+6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount**parameter. Parameter is still present, but always has value of -1.
+
 ### /2.0/vdn/inventory/hosts/connection/status
 Communication Status of a List of Hosts
 ---------------------------------------
 
 * **get** *(secured)*: Retrieve the status of a list of hosts.
+
+Release | Modification
+--------|-------------
+6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount**parameter. Parameter is still present, but always has value of -1.
 
 ## hardwareGateways
 Working with Hardware Gateways
@@ -3563,20 +3730,58 @@ Working with Hardware Gateways
 ___
 **bfdEnabled** is true by default.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **get** *(secured)*: Retrieve information about all hardware gateways.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/{hardwareGatewayId}
 Working with a specific hardware gateway.
 
 * **get** *(secured)*: Retrieve information about the specified hardware gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **put** *(secured)*: Update the specified hardware gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **delete** *(secured)*: Delete the specified hardware gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches
 Working with switches on a specific hardware gateway.
 
 * **get** *(secured)*: Retrieve information about switches on the specified hardware
 gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches/{switchName}
 Working with a specific switch on a specific hardware gateway.
@@ -3588,6 +3793,12 @@ gateway.
 * **get** *(secured)*: Retrive information about the hardware gateway switch ports for
 the specified switch and hardware gateway.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ### /2.0/vdn/hardwaregateways/replicationcluster
 Working with the hardware gateway replication cluster.
 
@@ -3595,18 +3806,49 @@ Working with the hardware gateway replication cluster.
 ___
 Add or remove hosts on a replication cluster.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **get** *(secured)*: Retrieve information about the hardware gateway replication cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/bindings
 Retrieve information about hardware gateway bindings.
 
 * **post** *(secured)*: Create a hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **get** *(secured)*: Retrieve information about hardware gateway bindings.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/bindings/{bindingId}
 Working with a specific hardware gateway binding.
 
 * **get** *(secured)*: Retrieve information about the specified hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 * **put** *(secured)*: Update the specified hardware gateway binding.
 ___
@@ -3616,12 +3858,30 @@ You can update the binding parameters. This API will fail if:
   gateway on the binding.
 * the new binding value is a duplicate of an existing binding.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **delete** *(secured)*: Delete the specified hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/bindings/{bindingId}/statistic
 Working with hardware gateway binding statistics.
 
 * **get** *(secured)*: Retrieve statistics for the specified hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/bindings/manage
 Working with hardware gateway binding objects.
@@ -3635,6 +3895,12 @@ full description of the new binding with its objectID. This API
 handles a maximum of 100 HardwareGatewayManageBindingsItem objects
 for each of the Add/Update/Delete lists.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ### /2.0/vdn/hardwaregateways/bfd
 Working with hardware gateway BFD (bidirectional forwarding).
 
@@ -3642,11 +3908,30 @@ Working with hardware gateway BFD (bidirectional forwarding).
 Working with hardware gateway BFD configuration.
 
 * **put** *(secured)*: Update global hardware gateway BFD configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 * **get** *(secured)*: Retrieve global hardware gateway BFD configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/bfd/status
 Working with hardware gateway BFD tunnel status.
 
 * **get** *(secured)*: Retrieve hardware gateway BFD tunnel status for all tunnel
 endpoints, including hosts and hardware gateways.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 

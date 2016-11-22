@@ -632,6 +632,12 @@ securitySchemes:
         displayName: vdnConfigUDPUpdateStatusRead
         description: |
           Retrieve the status of the VXLAN port configuration update.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
@@ -1584,6 +1590,12 @@ securitySchemes:
         displayName: logicalSwitchHardwareGatewayBindingsList
         description: |
           Retrieve hardware gateway bindings for the specified logical switch.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
@@ -1620,6 +1632,12 @@ securitySchemes:
           displayName: logicalSwitchHardwareGatewayBindingCreate
           description: |
             Manage the connection between a hardware gateway and a logical switch.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method introduced.
           queryParameters:
             action:
               displayName: action
@@ -2333,8 +2351,14 @@ securitySchemes:
   # new in 6.2.3
     displayName: capacityUsageRead
     description: |
-      Read capacity usage information on the useage of CPUs, VMs and concurrent
+      Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
       users for the distributed firewall and VXLAN.
+
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.2.3 | Method introduced.
     responses:
       200:
         body:
@@ -2343,10 +2367,33 @@ securitySchemes:
               <featureCapacityUsageList>
                 <featureCapacityUsageInfo>
                   <capacityUsageInfo>
-                    <capacityType></capacityType>
-                    <usageCount></usageCount>
+                    <capacityType>CPU_CAPACITY_TYPE</capacityType>
+                    <usageCount>16</usageCount>
                   </capacityUsageInfo>
-                  <feature></feature>
+                  <capacityUsageInfo>
+                    <capacityType>VM_CAPACITY_TYPE</capacityType>
+                    <usageCount>3</usageCount>
+                  </capacityUsageInfo>
+                  <capacityUsageInfo>
+                    <capacityType>CONCURRENT_USER_CAPACITY_TYPE</capacityType>
+                    <usageCount>3</usageCount>
+                  </capacityUsageInfo>
+                  <feature>dfw</feature>
+                </featureCapacityUsageInfo>
+                <featureCapacityUsageInfo>
+                  <capacityUsageInfo>
+                    <capacityType>CPU_CAPACITY_TYPE</capacityType>
+                    <usageCount>16</usageCount>
+                  </capacityUsageInfo>
+                  <capacityUsageInfo>
+                    <capacityType>VM_CAPACITY_TYPE</capacityType>
+                    <usageCount>3</usageCount>
+                  </capacityUsageInfo>
+                  <capacityUsageInfo>
+                    <capacityType>CONCURRENT_USER_CAPACITY_TYPE</capacityType>
+                    <usageCount>3</usageCount>
+                  </capacityUsageInfo>
+                  <feature>vxlan</feature>
                 </featureCapacityUsageInfo>
               </featureCapacityUsageList>
 /2.0/services/securitytags/tag:
@@ -3144,7 +3191,14 @@ securitySchemes:
     get:
     # new in 6.2.3
       displayName: tlsSettingsList
-      description: Retrieve TLS settings.
+      description: |
+        Retrieve TLS settings.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       responses:
         200:
           body:
@@ -3162,6 +3216,12 @@ securitySchemes:
         ___
         Include a comma separated list of the TLS versions you want to enable,
         for both server and client.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       body:
         application/xml:
           example: |
@@ -3429,12 +3489,111 @@ securitySchemes:
     get:
       displayName: upgradeStatus
       description: Query upgrade status
-  /certificatemanager/certificates/nsx:
+  /certificatemanager:
     displayName: certificateManager
-    description: NSX Manager certificate manager
-    get:
-      displayName: certificateManagerCertificatesNsxRead
-      description: Query the certificate thumbprint from a NSX manager
+    description: |
+      Working with Certificates on the NSX Manager Appliance
+      =================
+    /pkcs12keystore/nsx:
+      displayName: certificatesKeystore
+      description: |
+        Working with Keystore Files
+        ------------
+      post:
+        displayName: certificatesKeystoreUpdate
+        description: |
+          Upload keystore file.
+          ___
+          Input is PKCS#12 formatted NSX file along with password.
+        queryParameters:
+          password:
+            displayName: password
+            description: Password.
+    /certificates/nsx:
+      displayName: certificateManagerNsx
+      description: |
+        NSX Manager Certificate Manager
+        ================
+      get:
+        displayName: certificateManagerCertificatesNsxRead
+        description: |
+          Retrieve certificate information from NSX Manager.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <x509Certificates>
+                    <x509certificate>
+                      <subjectCn></subjectCn>
+                      <issuerCn></issuerCn>
+                      <version></version>
+                      <serialNumber></serialNumber>
+                      <signatureAlgo></signatureAlgo>
+                      <signature></signature>
+                      <notBefore></notBefore>
+                      <notAfter></notAfter>
+                      <issuer></issuer>
+                      <subject></subject>
+                      <publicKeyAlgo></publicKeyAlgo>
+                      <publicKeyLength></publicKeyLength>
+                      <rsaPublicKeyModulus></rsaPublicKeyModulus>
+                      <rsaPublicKeyExponent></rsaPublicKeyExponent>
+                      <sha1Hash></sha1Hash>
+                      <md5Hash></md5Hash>
+                      <isCa></isCa>
+                      <isValid></isValid>
+                    </x509certificate>
+                    ....
+                  </x509Certificates>
+    /csr/nsx:
+      displayName: certificateCsr
+      description: |
+        Working with Certificate Signing Requests
+        ===========
+      post:
+        displayName: certificateCsrCreate
+        description: |
+          Create a certificate signing request (CSR) for NSX Manager.
+          ___
+          The response header contains the created file location.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/nsx/csr`.
+        body:
+          application/xml:
+            example: |
+              <csr>
+                <algorithm></algorithm>
+                <keySize></keySize>
+                <subjectDto>
+                  <commonName></commonName>
+                  <organizationUnit></organizationUnit>
+                  <organizationName></organizationName>
+                  <localityName></localityName>
+                  <stateName></stateName>
+                  <countryCode></countryCode>
+                </subjectDto>
+              </csr>
+      get:
+        displayName: certificateCsrRead
+        description: |
+          Retrieve generated certificate signing request (CSR).
+    /uploadchain/nsx:
+      displayName: certificateChain
+      description: |
+        Working with Certificate Chains
+        ==============
+      post:
+        displayName: certificateChainUpload
+        description: |
+          Upload certificate chain.
+          ___
+          Input is certificate chain file which is a PEM encoded chain of
+          certificates received from the CA after signing a CSR.
 /2.0/systemevent:
   displayName: systemEvents
   description: |
@@ -10768,7 +10927,14 @@ securitySchemes:
     get:
     # new in 6.2.3
       displayName: nsxEdgePublishTuningList
-      description: Retrieve the NSX Edge tuning configuration.
+      description: |
+        Retrieve the NSX Edge tuning configuration.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       responses:
         200:
           body:
@@ -10788,7 +10954,14 @@ securitySchemes:
     put:
     # new in 6.2.3
       displayName: nsxEdgePublishTuningUpdate
-      description: Update the NSX Edge tuning configuration.
+      description: |
+        Update the NSX Edge tuning configuration.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       body:
         application/xml:
           example: |
@@ -10999,8 +11172,6 @@ securitySchemes:
         ___
         Tags related to Service Composer, security policies, and security
         groups:
-        This section describes the tags specific to Service Composer
-        management.
         Common Tags
         * **actionType** - Defines the type of action belonging to a given
         executionOrderCategory
@@ -11180,6 +11351,12 @@ securitySchemes:
           ___
           The possible return of value for status are: *in_sync*,
           *in_progress*, *out_of_sync*, and *pending*.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
@@ -11204,6 +11381,12 @@ securitySchemes:
           description: |
             Retrieve all system alarms that are raised at Service Composer
             level and policy level.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method introduced.
           responses:
             200:
               body:
@@ -11765,6 +11948,12 @@ securitySchemes:
       displayName: snmpStatusRead
       description: |
         Retrieve SNMP settings.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       responses:
         200:
           body:
@@ -11778,7 +11967,12 @@ securitySchemes:
       displayName: snmpStatusUpdate
       description: |
         Update SNMP settings.
-        ___
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       body:
         application/xml:
           example: |
@@ -11794,6 +11988,12 @@ securitySchemes:
       displayName: snmpManagersList
       description: |
         Retrieve information about SNMP managers.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       responses:
         200:
           body:
@@ -11817,8 +12017,14 @@ securitySchemes:
                 </snmpManagers>
     post:
       displayName: snmpManagerCreate
-      description:
+      description: |
         Add an SNMP manager.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       body:
         application/xml:
           example: |
@@ -11841,6 +12047,12 @@ securitySchemes:
         displayName: snmpManagerRead
         description: |
           Retrieve information about the specified SNMP manager.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
@@ -11857,6 +12069,12 @@ securitySchemes:
         displayName: snmpManagerUpdate
         description: |
           Update an SNMP manager configuration.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         body:
           application/xml:
             example: |
@@ -11871,6 +12089,12 @@ securitySchemes:
         displayName: snmpManagerDelete
         description: |
           Delete an SNMP manager configuration.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
   /trap:
     displayName: snmpTraps
     description: |
@@ -11880,6 +12104,12 @@ securitySchemes:
       displayName: snmpTrapsList
       description: |
         Retrieve information about SNMP traps.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       responses:
         200:
           body:
@@ -11913,6 +12143,12 @@ securitySchemes:
         displayName: snmpTrapRead
         description: |
           Retrieve information about the specified SNMP trap.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
@@ -11928,6 +12164,12 @@ securitySchemes:
         displayName: snmpTrapUpdate
         description: |
           Update the specified SNMP trap.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         body:
           application/xml:
             example: |
@@ -11998,6 +12240,12 @@ securitySchemes:
       displayName: inventoryStatusHostRead
       description: |
         Retrieve the status of the specified host.
+
+        History:
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount**parameter. Parameter is still present, but always has value of -1.
       responses:
         200:
           body:
@@ -12008,7 +12256,7 @@ securitySchemes:
                   <nsxMgrToFirewallAgentConn>UP</nsxMgrToFirewallAgentConn>
                   <nsxMgrToControlPlaneAgentConn>UP</nsxMgrToControlPlaneAgentConn>
                   <hostToControllerConn>UP</hostToControllerConn>
-                  <fullSyncCount>13</fullSyncCount>
+                  <fullSyncCount>-1</fullSyncCount>
                 </hostConnStatus>
   /hosts/connection/status:
     displayName: inventoryStatusHost
@@ -12019,6 +12267,11 @@ securitySchemes:
       displayName: inventoryStatusHostList
       description: |
         Retrieve the status of a list of hosts.
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount**parameter. Parameter is still present, but always has value of -1.
+
       queryParameters:
         hostId:
           displayName: hostId
@@ -12037,14 +12290,26 @@ securitySchemes:
                       <nsxMgrToFirewallAgentConn>UP</nsxMgrToFirewallAgentConn>
                       <nsxMgrToControlPlaneAgentConn>UP</nsxMgrToControlPlaneAgentConn>
                       <hostToControllerConn>UP</hostToControllerConn>
-                      <fullSyncCount>3</fullSyncCount>
+                      <fullSyncCount>-1</fullSyncCount>
                     </hostConnStatus>
                     <hostConnStatus>
                       <hostId>host-32</hostId>
                       <nsxMgrToFirewallAgentConn>UP</nsxMgrToFirewallAgentConn>
                       <nsxMgrToControlPlaneAgentConn>UP</nsxMgrToControlPlaneAgentConn>
                       <hostToControllerConn>DOWN</hostToControllerConn>
-                      <fullSyncCount>0</fullSyncCount>
+                      <fullSyncCount>-1</fullSyncCount>
+                      <hostToControllerConnectionErrors>
+                        <hostToControllerConnectionError>
+                          <controllerIp>10.160.203.236</controllerIp>
+                          <errorCode>1255604</errorCode>
+                          <errorMessage>Connection Refused</errorMessage>
+                          </hostToControllerConnectionError>
+                          <hostToControllerConnectionError>
+                          <controllerIp>10.160.203.237</controllerIp>
+                          <errorCode>1255603</errorCode>
+                          <errorMessage>SSL Handshake Failure</errorMessage>
+                        </hostToControllerConnectionError>
+                      </hostToControllerConnectionErrors>
                     </hostConnStatus>
                     ...
                   </hostConnStatuses>
@@ -12061,6 +12326,12 @@ securitySchemes:
       Install a hardware gateway.
       ___
       **bfdEnabled** is true by default.
+
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.2.3 | Method introduced.
     body:
       application/xml:
         example: |
@@ -12073,7 +12344,14 @@ securitySchemes:
   get:
   # new in 6.2.3
     displayName: hardwareGatewaysList
-    description: Retrieve information about all hardware gateways.
+    description: |
+      Retrieve information about all hardware gateways.
+
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.2.3 | Method introduced.
     responses:
       200:
         body:
@@ -12123,7 +12401,14 @@ securitySchemes:
     get:
     # new in 6.2.3
       displayName: hardwareGatewayRead
-      description: Retrieve information about the specified hardware gateway.
+      description: |
+        Retrieve information about the specified hardware gateway.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       responses:
         200:
           body:
@@ -12147,7 +12432,14 @@ securitySchemes:
     put:
     # new in 6.2.3
       displayName: hardwareGatewayUpdate
-      description: Update the specified hardware gateway.
+      description: |
+        Update the specified hardware gateway.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       body:
         application/xml:
           example: |
@@ -12160,7 +12452,14 @@ securitySchemes:
     delete:
     # new in 6.2.3
       displayName: hardwareGatewayDelete
-      description: Delete the specified hardware gateway.
+      description: |
+        Delete the specified hardware gateway.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
     /switches:
       displayName: hardwareGatewaySwitches
       description: Working with switches on a specific hardware gateway.
@@ -12170,6 +12469,12 @@ securitySchemes:
         description: |
           Retrieve information about switches on the specified hardware
           gateway.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
@@ -12200,6 +12505,12 @@ securitySchemes:
             description: |
               Retrive information about the hardware gateway switch ports for
               the specified switch and hardware gateway.
+
+              **Method history:**
+
+              Release | Modification
+              --------|-------------
+              6.2.3 | Method introduced.
             responses:
               200:
                 body:
@@ -12242,6 +12553,12 @@ securitySchemes:
         Update the hardware gateway replication cluster.
         ___
         Add or remove hosts on a replication cluster.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       body:
         appplication/xml:
           example: |
@@ -12263,6 +12580,12 @@ securitySchemes:
       displayName: hardwareGatewayReplicationClusterRead
       description: |
         Retrieve information about the hardware gateway replication cluster.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       responses:
         200:
           body:
@@ -12339,7 +12662,14 @@ securitySchemes:
     post:
     # new in 6.2.3
       displayName: hardwareGatewayBindingCreate
-      description: Create a hardware gateway binding.
+      description: |
+        Create a hardware gateway binding.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       body:
         application/xml:
           example: |
@@ -12352,7 +12682,14 @@ securitySchemes:
     get:
     # new in 6.2.3
       displayName: hardwareGatewayBindingsList
-      description: Retrieve information about hardware gateway bindings.
+      description: |
+        Retrieve information about hardware gateway bindings.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
       queryParameters:
         hardwareGatewayId:
           displayName: hardwareGatewayId
@@ -12391,6 +12728,12 @@ securitySchemes:
         displayName: hardwareGatewayBindingRead
         description: |
           Retrieve information about the specified hardware gateway binding.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
       put:
       # new in 6.2.3
         displayName: hardwareGatewayBindingUpdate
@@ -12402,6 +12745,12 @@ securitySchemes:
           * the specified logical switch (*virtualWire*) is not present or there is a software
             gateway on the binding.
           * the new binding value is a duplicate of an existing binding.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         body:
           application/xml:
             example: |
@@ -12415,7 +12764,14 @@ securitySchemes:
       delete:
       # new in 6.2.3
         displayName: hardwareGatewayBindingDelete
-        description: Delete the specified hardware gateway binding.
+        description: |
+          Delete the specified hardware gateway binding.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
       /statistic:
         displayName: hardwareGatewayBindingStatistic
         description: Working with hardware gateway binding statistics.
@@ -12424,6 +12780,12 @@ securitySchemes:
           displayName: hardwareGatewayBindingStatisticList
           description: |
             Retrieve statistics for the specified hardware gateway binding.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method introduced.
           responses:
             200:
               body:
@@ -12453,6 +12815,12 @@ securitySchemes:
           full description of the new binding with its objectID. This API
           handles a maximum of 100 HardwareGatewayManageBindingsItem objects
           for each of the Add/Update/Delete lists.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         body:
           application/xml:
             example: |
@@ -12493,7 +12861,14 @@ securitySchemes:
       put:
       # new in 6.2.3
         displayName: hardwareGatewayBfdConfigUpdate
-        description: Update global hardware gateway BFD configuration.
+        description: |
+          Update global hardware gateway BFD configuration.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         body:
           application/xml:
             example: |
@@ -12504,7 +12879,14 @@ securitySchemes:
       get:
       # new in 6.2.3
         displayName: hardwareGatewayBfdConfigRead
-        description: Retrieve global hardware gateway BFD configuration.
+        description: |
+          Retrieve global hardware gateway BFD configuration.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
@@ -12523,6 +12905,12 @@ securitySchemes:
         description: |
           Retrieve hardware gateway BFD tunnel status for all tunnel
           endpoints, including hosts and hardware gateways.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
         responses:
           200:
             body:
