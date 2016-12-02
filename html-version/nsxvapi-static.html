@@ -51,8 +51,80 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
 <h3 id="vmware-professional-services">VMware Professional Services</h3>
 <p>VMware Education Services courses offer extensive hands‐on labs, case study examples, and course materials designed to be used as on‐the‐job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
 <a href="http://www.vmware.com/services">http://www.vmware.com/services</a>.</p>
-<h3 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h3>
+<h2 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h2>
 <p>The NSX Manager requires port 443/TCP for REST API requests.</p>
+<h2 id="finding-vcenter-object-ids">Finding vCenter Object IDs</h2>
+<p>Many API methods reference vCenter object IDs in URI parameters, query
+parameters, request bodies, and response bodies. You can find vCenter object
+IDs via the vCenter Managed Object Browser.</p>
+<h3 id="find-datacenter-id">Find Datacenter ID</h3>
+<ol>
+<li>In a web browser, enter the vCenter Managed Object Browser URL:
+<code>http://vCenter-IP-Address/mob</code>.</li>
+<li>Click <strong>content</strong>.</li>
+<li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
+the Value column. e.g. <em>group-d1</em>.</li>
+<li>Find the <strong>childEntity</strong> in the Name column, and the corresponding
+Value column entry is the datacenter MOID. e.g. <em>datacenter-21</em>.</li>
+</ol>
+<h3 id="find-host-id">Find Host ID</h3>
+<ol>
+<li>In a web browser, enter the vCenter Managed Object Browser URL:
+<code>http://vCenter-IP-Address/mob</code>.</li>
+<li>Click <strong>content</strong>.</li>
+<li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
+the Value column. e.g. <em>group-d1</em>.</li>
+<li>Find <strong>childEntity</strong> in the Name column, and click the corresponding
+link in the Value column. e.g. <em>datacenter-21</em>.</li>
+<li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
+link in the Value column. e.g. <em>group-h23</em>.</li>
+<li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
+contains links to host clusters. Click the appropriate host cluster link.
+e.g. <em>domain-c33</em>.</li>
+<li>Find <em>host</em> in the Name column. The corresponding Value column
+lists the hosts in that cluster by vCenter MOID and hostname. e.g.
+<em>host-32 (esx-02a.corp.local)</em>.</li>
+</ol>
+<h3 id="find-portgroup-id">Find Portgroup ID</h3>
+<ol>
+<li>In a web browser, enter the vCenter Managed Object Browser URL:
+<code>http://vCenter-IP-Address/mob</code>.</li>
+<li>Click <strong>content</strong>.</li>
+<li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
+the Value column. e.g. <em>group-d1</em>.</li>
+<li>Find <strong>childEntity</strong> in the Name column, and click the corresponding
+link in the Value column. e.g. <em>datacenter-21</em>.</li>
+<li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
+link in the Value column. e.g. <em>group-h23</em>.</li>
+<li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
+contains links to host clusters. Click the appropriate host cluster link.
+e.g. <em>domain-c33</em>.</li>
+<li>Find <strong>host</strong> in the Name column. The corresponding Value column lists the
+hosts in that cluster by vCenter MOID and hostname. Click the appropriate
+host link, e.g. host-32. </li>
+<li>Find <strong>network</strong> in the Name column. The corresponding Value column lists
+the port groups on that host, e.g. <em>dvportgroup-388</em>. </li>
+</ol>
+<h3 id="find-vmid">Find VMID</h3>
+<ol>
+<li>In a web browser, enter the vCenter Managed Object Browser URL:
+<code>http://vCenter-IP-Address/mob</code>.</li>
+<li>Click <strong>content</strong>.</li>
+<li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
+the Value column. e.g. <em>group-d1</em>.</li>
+<li>Find <strong>childEntity</strong> in the Name column, and click the corresponding
+link in the Value column. e.g. <em>datacenter-21</em>.</li>
+<li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
+link in the Value column. e.g. <em>group-h23</em>.</li>
+<li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
+contains links to host clusters. Click the appropriate host cluster link.
+e.g. <em>domain-c33</em>.</li>
+<li>Find <strong>host</strong> in the Name column. The corresponding Value column lists the
+hosts in that cluster by vCenter MOID and hostname. Click the appropriate
+host link, e.g. host-32. </li>
+<li>Find <strong>vm</strong> in the Name column. The corresponding Value column lists the
+virtual machines by vCenter MOID and hostname. e.g. <em>vm-216 (web-01a)</em>.</li>
+</ol>
 </div>
 </section>
     <section class="security-schemes">
