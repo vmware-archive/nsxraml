@@ -3422,47 +3422,47 @@ and a host or cluster.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml">* Install Network Virtualization Components
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- * Install Network Virtualization Components
 
 POST /api/2.0/nwfabric/configure
 
-<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+&lt;nwFabricFeatureConfig&gt;
+  &lt;resourceConfig&gt;
+    &lt;resourceId&gt;CLUSTER MOID&lt;/resourceId&gt;
+  &lt;/resourceConfig&gt;
+&lt;/nwFabricFeatureConfig&gt; --&gt;</span>
 
-* Configure VXLAN
-
-POST /api/2.0/nwfabric/configure
-
-<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"clusterMappingSpec"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">vlanId</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vlanId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">vmknicCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vmknicCount</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipPoolId</span>&gt;</span>IPADDRESSPOOL ID<span class="hljs-tag">&lt;/<span class="hljs-name">ipPoolId</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"vdsContext"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>ETHER_CHANNEL<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-
-* Configure VXLAN with LACPv2
+<span class="hljs-comment">&lt;!-- * Configure VXLAN
 
 POST /api/2.0/nwfabric/configure
+
+&lt;nwFabricFeatureConfig&gt;
+  &lt;featureId&gt;com.vmware.vshield.vsm.vxlan&lt;/featureId&gt;
+  &lt;resourceConfig&gt;
+    &lt;resourceId&gt;CLUSTER MOID&lt;/resourceId&gt;
+    &lt;configSpec class="clusterMappingSpec"&gt;
+      &lt;switch&gt;
+        &lt;objectId&gt;DVS MOID&lt;/objectId&gt;&lt;/switch&gt;
+        &lt;vlanId&gt;0&lt;/vlanId&gt;
+        &lt;vmknicCount&gt;1&lt;/vmknicCount&gt;
+        &lt;ipPoolId&gt;IPADDRESSPOOL ID&lt;/ipPoolId&gt;
+    &lt;/configSpec&gt;
+  &lt;/resourceConfig&gt;
+  &lt;resourceConfig&gt;
+    &lt;resourceId&gt;DVS MOID&lt;/resourceId&gt;
+    &lt;configSpec class="vdsContext"&gt;
+      &lt;switch&gt;
+          &lt;objectId&gt;DVS MOID&lt;/objectId&gt;
+      &lt;/switch&gt;
+      &lt;mtu&gt;1600&lt;/mtu&gt;
+      &lt;teaming&gt;ETHER_CHANNEL&lt;/teaming&gt;
+    &lt;/configSpec&gt;
+  &lt;/resourceConfig&gt;
+&lt;/nwFabricFeatureConfig&gt; --&gt;</span>
+
+<span class="hljs-comment">&lt;!-- * Configure VXLAN with LACPv2
+
+POST /api/2.0/nwfabric/configure --&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.nsxmgr.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
@@ -3489,16 +3489,16 @@ POST /api/2.0/nwfabric/configure
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
 
-* Reset Communication
+<span class="hljs-comment">&lt;!-- * Reset Communication
 
 POST /api/2.0/nwfabric/configure?action=synchronize
 
-<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.messagingInfra<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>resourceId<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+&lt;nwFabricFeatureConfig&gt;
+  &lt;featureId&gt;com.vmware.vshield.vsm.messagingInfra&lt;/featureId&gt;
+  &lt;resourceConfig&gt;
+    &lt;resourceId&gt;resourceId&lt;/resourceId&gt;
+  &lt;/resourceConfig&gt;
+&lt;/nwFabricFeatureConfig&gt; --&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -3592,7 +3592,7 @@ from the cluster.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml">* Remove Network Virtualization Components
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- * Remove Network Virtualization Components --&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
@@ -3600,29 +3600,29 @@ from the cluster.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
 
-* Remove VXLAN
+<span class="hljs-comment">&lt;!-- * Remove VXLAN
 
-<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
-   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+&lt;nwFabricFeatureConfig&gt;
+  &lt;featureId&gt;com.vmware.vshield.vsm.vxlan&lt;/featureId&gt;
+  &lt;resourceConfig&gt;
+    &lt;resourceId&gt;CLUSTER MOID&lt;/resourceId&gt;
+   &lt;/resourceConfig&gt;
+&lt;/nwFabricFeatureConfig&gt;
 
 * Remove VXLAN with vDS context
 
-<span class="hljs-tag">&lt;<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>com.vmware.vshield.vsm.vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>CLUSTER MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"map"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">entry</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">keyclass="java.lang.String"</span>&gt;</span>vxlan<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">valueclass="java.lang.String"</span>&gt;</span>cascadeDeleteVdsContext<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">entry</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span>
+&lt;nwFabricFeatureConfig&gt;
+  &lt;featureId&gt;com.vmware.vshield.vsm.vxlan&lt;/featureId&gt;
+  &lt;resourceConfig&gt;
+    &lt;resourceId&gt;CLUSTER MOID&lt;/resourceId&gt;
+    &lt;configSpec class="map"&gt;
+      &lt;entry&gt;
+        &lt;keyclass="java.lang.String"&gt;vxlan&lt;/key&gt;
+        &lt;valueclass="java.lang.String"&gt;cascadeDeleteVdsContext&lt;/value&gt;
+      &lt;/entry&gt;
+    &lt;/configSpec&gt;
+  &lt;/resourceConfig&gt;
+&lt;/nwFabricFeatureConfig&gt; --&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -3650,7 +3650,7 @@ from the cluster.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">featureId</span>&gt;</span>FEATURE ID<span class="hljs-tag">&lt;/<span class="hljs-name">featureId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>FEATURE VERSION<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">featureInfo</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">featureInfos</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">featureInfos</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -4435,7 +4435,7 @@ service group</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttrubutes</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
@@ -4878,7 +4878,7 @@ the &#39;ipAddress&#39; fields in the body.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.112.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.112.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>eng.vmware.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">allocationNote</span>/&gt;</span>sample note<span class="hljs-tag">&lt;/<span class="hljs-name">allocationNote</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocationNote</span>&gt;</span>sample note<span class="hljs-tag">&lt;/<span class="hljs-name">allocationNote</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
 </code></pre>
   </div>
@@ -5520,7 +5520,7 @@ request body provided.</p>
 </tr>
 </tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml">* Check if Service Composer firewall and Distributed Firewall are in sync
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- * Check if Service Composer firewall and Distributed Firewall are in sync --&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
@@ -5528,30 +5528,30 @@ request body provided.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
 
-* Synchronize Service Composer firewall with Distributed Firewall
+<span class="hljs-comment">&lt;!-- * Synchronize Service Composer firewall with Distributed Firewall
 
-<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>forceSync<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+&lt;keyValues&gt;
+  &lt;keyValue&gt;
+    &lt;key&gt;forceSync&lt;/key&gt;
+  &lt;/keyValue&gt;
+&lt;/keyValues&gt;
 
 * Retrieve the state of the auto save draft property in Service Composer
 
-<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>getAutoSaveDraft<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+&lt;keyValues&gt;
+  &lt;keyValue&gt;
+    &lt;key&gt;getAutoSaveDraft&lt;/key&gt;
+  &lt;/keyValue&gt;
+&lt;/keyValues&gt;
 
 * Change the state of the auto save draft property in Service Composer
 
-<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>autoSaveDraft<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+&lt;keyValues&gt;
+  &lt;keyValue&gt;
+    &lt;key&gt;autoSaveDraft&lt;/key&gt;
+    &lt;value&gt;false&lt;/value&gt;
+  &lt;/keyValue&gt;
+&lt;/keyValues&gt; --&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -7024,7 +7024,7 @@ universalroot-0 for universal security groups.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">excludeMember</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">dynamicMemberDefinition</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">dynamicSet</span>&gt;</span>
@@ -10934,7 +10934,7 @@ for each of the Add/Update/Delete lists.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">portname</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">portname</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">vlan</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vlan</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
-    <span class="hljs-tag">&lt;/ <span class="hljs-attr">hardwareGatewayManageBindingItem</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayManageBindingItem</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">addItems</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">updateItems</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayManageBindingItem</span>&gt;</span>
@@ -10950,9 +10950,9 @@ for each of the Add/Update/Delete lists.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">deleteItems</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayManageBindingItem</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-    <span class="hljs-tag">&lt;/ <span class="hljs-attr">hardwareGatewayManageBindingItem</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayManageBindingItem</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">deleteItems</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayManageBindings</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayManageBindings</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -12291,6 +12291,8 @@ is higher than the standard MTU. You must set the MTU for each switch to
       <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
       ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+    ...
   <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
 </code></pre>
@@ -12361,6 +12363,8 @@ is higher than the standard MTU. You must set the MTU for each switch to
       <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-47<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
       ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+    ...
   <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContext</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContexts</span>&gt;</span>
 </code></pre>
@@ -13012,35 +13016,32 @@ switch.</p>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml">* Attach a hardware gateway to a logical switch and create a
-  new binding with the information provided
-
-POST /api/2.0/vdn/virtualwires/<span class="hljs-tag">&lt;<span class="hljs-name">virtualwire</span> <span class="hljs-attr">id</span>&gt;</span>/hardwaregateways
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- Attach a hardware gateway to a logical switch and create a new binding with the information provided
+POST /api/2.0/vdn/virtualwires/&lt;virtualwireid&gt;/hardwaregateways --&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayId</span>&gt;</span>hardwarewgateway1<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vlan</span>&gt;</span>v1<span class="hljs-tag">&lt;/<span class="hljs-name">vlan</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">switchName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">switchName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">portName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">portName</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span> 
 
-* Attach a hardware gateway to a logical switch, specifying an
-  existing binding by ID
+<span class="hljs-comment">&lt;!-- Attach a hardware gateway to a logical switch, specifying an existing binding by ID
 
-POST /api/2.0/vdn/virtualwires/<span class="hljs-tag">&lt;<span class="hljs-name">virtualwireId</span>&gt;</span>/hardwaregateways/<span class="hljs-tag">&lt;<span class="hljs-name">bindingId</span>&gt;</span>?action=attach
+POST /api/2.0/vdn/virtualwires/&lt;virtualwireId&gt;/hardwaregateways/&lt;bindingId&gt;?action=attach 
 
-<span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
+&lt;virtualWire&gt;
   ...
-  <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayBindings</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>binding id<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBindings</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+  &lt;hardwareGatewayBindings&gt;
+    &lt;hardwareGatewayBinding&gt;
+      &lt;id&gt;binding id&lt;/id&gt;
+    &lt;/hardwareGatewayBinding&gt;
+  &lt;/hardwareGatewayBindings&gt;
+&lt;/virtualWire&gt; --&gt;</span>
 
-* Detach a hardware gateway from a logical switch
+<span class="hljs-comment">&lt;!-- Detach a hardware gateway from a logical switch
 
-POST /api/2.0/vdn/virtualwires/<span class="hljs-tag">&lt;<span class="hljs-name">virtualwireId</span>&gt;</span>/hardwaregateways/<span class="hljs-tag">&lt;<span class="hljs-name">bindingId</span>&gt;</span>?action=detach
+POST /api/2.0/vdn/virtualwires/&lt;virtualwireId&gt;/hardwaregateways/&lt;bindingId&gt;?action=detach --&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -13497,8 +13498,8 @@ vNIC for which traffic flow is to be retrieved</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">controlDestinationPort</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDestinationPort</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">controlDirection</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDirection</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">flowStatsTcpUdp</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">FlowStatsPage</span>
-</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">FlowStatsPage</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -14169,8 +14170,8 @@ The default values are:</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">tuningConfiguration</span>
-</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tuningConfiguration</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -14202,8 +14203,8 @@ The default values are:</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">edgeVCpuReservationPercentage</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">edgeMemoryReservationPercentage</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">megaHertzPerVCpu</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">tuningConfiguration</span>
-</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tuningConfiguration</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -22936,6 +22937,7 @@ and <strong>anchorId</strong> query parameters.</p>
         <span class="hljs-tag">&lt;<span class="hljs-name">subProtocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subProtocol</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">services</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
 </code></pre>
   </div>
@@ -23029,8 +23031,8 @@ firewall rule section.</p>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml">POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009?action=revise&amp;operation=insert_before&amp;anchorId=1008
-If-Match: 1478307787160
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009?action=revise&amp;operation=insert_before&amp;anchorId=1008
+If-Match: 1478307787160 --&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1009"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Test Section"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1478307787160"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1478307787160"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER2"</span>&gt;</span>
   ...
@@ -24396,8 +24398,8 @@ firewall rule section.</p>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml">POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007?action=revise&amp;operation=insert_before&amp;anchorId=1006
-If-Match: 1477989118875
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007?action=revise&amp;operation=insert_before&amp;anchorId=1006
+If-Match: 1477989118875 --&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1007"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Web Section"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1477989118875"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1477989118875"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;</span>
   ...

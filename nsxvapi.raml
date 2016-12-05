@@ -235,6 +235,8 @@ securitySchemes:
                     <objectId>dvs-47</objectId>
                     <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
                     ...
+                  </switch>
+                  ...
                 </vdsContext>
               </vdsContexts>
   /datacenter/{datacenterID}:
@@ -288,6 +290,8 @@ securitySchemes:
                       <objectId>dvs-47</objectId>
                       <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
                       ...
+                    </switch>
+                    ...
                   </vdsContext>
                 </vdsContexts>
   /{vdsId}:
@@ -1651,22 +1655,19 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                * Attach a hardware gateway to a logical switch and create a
-                  new binding with the information provided
-
-                POST /api/2.0/vdn/virtualwires/<virtualwire id>/hardwaregateways
+                <!-- Attach a hardware gateway to a logical switch and create a new binding with the information provided
+                POST /api/2.0/vdn/virtualwires/<virtualwireid>/hardwaregateways -->
 
                 <hardwareGatewayBinding>
                   <hardwareGatewayId>hardwarewgateway1</hardwareGatewayId>
                   <vlan>v1</vlan>
                   <switchName>s1</switchName>
                   <portName>s1</portName>
-                </hardwareGatewayBinding>
+                </hardwareGatewayBinding> 
 
-                * Attach a hardware gateway to a logical switch, specifying an
-                  existing binding by ID
+                <!-- Attach a hardware gateway to a logical switch, specifying an existing binding by ID
 
-                POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/<bindingId>?action=attach
+                POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/<bindingId>?action=attach 
 
                 <virtualWire>
                   ...
@@ -1675,11 +1676,11 @@ securitySchemes:
                       <id>binding id</id>
                     </hardwareGatewayBinding>
                   </hardwareGatewayBindings>
-                </virtualWire>
+                </virtualWire> -->
 
-                * Detach a hardware gateway from a logical switch
+                <!-- Detach a hardware gateway from a logical switch
 
-                POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/<bindingId>?action=detach
+                POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/<bindingId>?action=detach -->
 /2.0/xvs/networks/{ID}/features:
   displayName: arpMAC
   description: |
@@ -2067,7 +2068,7 @@ securitySchemes:
                 <objectTypeName></objectTypeName>
                 <name></name>
               </scope>
-              <extendedAttributes></extendedAttrubutes>
+              <extendedAttributes></extendedAttributes>
               <inheritanceAllowed></inheritanceAllowed>
               <member>
                 <objectId></objectId>
@@ -2326,7 +2327,7 @@ securitySchemes:
                     <dnsServer1>10.112.0.1</dnsServer1>
                     <dnsServer2>10.112.0.2</dnsServer2>
                     <dnsSuffix>eng.vmware.com</dnsSuffix>
-                    <allocationNote/>sample note</allocationNote>
+                    <allocationNote>sample note</allocationNote>
                   </allocatedIpAddress>
       /{ipAddress}:
         displayName: ipAddressRelease
@@ -2738,7 +2739,7 @@ securitySchemes:
                   <name></name>
                 </scope>
                 <clientHandle></clientHandle>
-                <extendedAttributes><extendedAttributes/>
+                <extendedAttributes></extendedAttributes>
               </excludeMember>
               <dynamicMemberDefinition>
                 <dynamicSet>
@@ -3677,7 +3678,7 @@ securitySchemes:
       body:
         application/xml:
           example: |
-            * Install Network Virtualization Components
+            <!-- * Install Network Virtualization Components
 
             POST /api/2.0/nwfabric/configure
 
@@ -3685,9 +3686,9 @@ securitySchemes:
               <resourceConfig>
                 <resourceId>CLUSTER MOID</resourceId>
               </resourceConfig>
-            </nwFabricFeatureConfig>
+            </nwFabricFeatureConfig> -->
 
-            * Configure VXLAN
+            <!-- * Configure VXLAN
 
             POST /api/2.0/nwfabric/configure
 
@@ -3713,11 +3714,11 @@ securitySchemes:
                   <teaming>ETHER_CHANNEL</teaming>
                 </configSpec>
               </resourceConfig>
-            </nwFabricFeatureConfig>
+            </nwFabricFeatureConfig> -->
 
-            * Configure VXLAN with LACPv2
+            <!-- * Configure VXLAN with LACPv2
 
-            POST /api/2.0/nwfabric/configure
+            POST /api/2.0/nwfabric/configure -->
 
             <nwFabricFeatureConfig>
               <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
@@ -3744,7 +3745,7 @@ securitySchemes:
               </resourceConfig>
             </nwFabricFeatureConfig>
 
-            * Reset Communication
+            <!-- * Reset Communication
 
             POST /api/2.0/nwfabric/configure?action=synchronize
 
@@ -3753,7 +3754,7 @@ securitySchemes:
               <resourceConfig>
                 <resourceId>resourceId</resourceId>
               </resourceConfig>
-            </nwFabricFeatureConfig>
+            </nwFabricFeatureConfig> -->
           schema: nwFabricConfig
       queryParameters:
         action:
@@ -3799,7 +3800,7 @@ securitySchemes:
       body:
         application/xml:
           example: |
-            * Remove Network Virtualization Components
+            <!-- * Remove Network Virtualization Components -->
 
             <nwFabricFeatureConfig>
               <resourceConfig>
@@ -3807,7 +3808,7 @@ securitySchemes:
               </resourceConfig>
             </nwFabricFeatureConfig>
 
-            * Remove VXLAN
+            <!-- * Remove VXLAN
 
             <nwFabricFeatureConfig>
               <featureId>com.vmware.vshield.vsm.vxlan</featureId>
@@ -3829,7 +3830,7 @@ securitySchemes:
                   </entry>
                 </configSpec>
               </resourceConfig>
-            </nwFabricFeatureConfig>
+            </nwFabricFeatureConfig> -->
           schema: nwFabricConfig
   /features:
     displayName: nwfabricFeatures
@@ -3849,7 +3850,7 @@ securitySchemes:
                     <featureId>FEATURE ID</featureId>
                     <version>FEATURE VERSION</version>
                   </featureInfo>
-                <featureInfos>
+                </featureInfos>
   /status:
     displayName: nwfabricStatus
     description: Working with network fabric status.
@@ -6217,8 +6218,8 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007?action=revise&operation=insert_before&anchorId=1006
-                If-Match: 1477989118875
+                <!-- POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007?action=revise&operation=insert_before&anchorId=1006
+                If-Match: 1477989118875 -->
 
                 <section id="1007" name="Web Section" generationNumber="1477989118875" timestamp="1477989118875" type="LAYER3">
                   ...
@@ -6468,6 +6469,7 @@ securitySchemes:
                     <subProtocol></subProtocol>
                   </service>
                 </services>
+              </rule>
             </section>
            schema: dfwSection
       /{sectionId}:
@@ -6502,8 +6504,8 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009?action=revise&operation=insert_before&anchorId=1008
-                If-Match: 1478307787160
+                <!-- POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009?action=revise&operation=insert_before&anchorId=1008
+                If-Match: 1478307787160 -->
 
                 <section id="1009" name="Test Section" generationNumber="1478307787160" timestamp="1478307787160" type="LAYER2">
                   ...
@@ -7475,7 +7477,7 @@ securitySchemes:
                 <controlDestinationPort>0</controlDestinationPort>
                 <controlDirection>0</controlDirection>
               </flowStatsTcpUdp>
-            </FlowStatsPage
+            </FlowStatsPage>
     /info:
       displayName: flowStatsInfo
       description: Working with flow monitoring meta-data.
@@ -10950,7 +10952,7 @@ securitySchemes:
                   <edgeVCpuReservationPercentage>100</edgeVCpuReservationPercentage>
                   <edgeMemoryReservationPercentage>100</edgeMemoryReservationPercentage>
                   <megaHertzPerVCpu>1000</megaHertzPerVCpu>
-                </tuningConfiguration
+                </tuningConfiguration>
     put:
     # new in 6.2.3
       displayName: nsxEdgePublishTuningUpdate
@@ -10975,7 +10977,7 @@ securitySchemes:
               <edgeVCpuReservationPercentage>0</edgeVCpuReservationPercentage>
               <edgeMemoryReservationPercentage>0</edgeMemoryReservationPercentage>
               <megaHertzPerVCpu>1000</megaHertzPerVCpu>
-            </tuningConfiguration
+            </tuningConfiguration>
 /2.0/services/truststore:
   displayName: truststore
   description: |
@@ -11880,7 +11882,7 @@ securitySchemes:
       body:
         application/xml:
           example: |
-            * Check if Service Composer firewall and Distributed Firewall are in sync
+            <!-- * Check if Service Composer firewall and Distributed Firewall are in sync -->
 
             <keyValues>
               <keyValue>
@@ -11888,7 +11890,7 @@ securitySchemes:
               </keyValue>
             </keyValues>
 
-            * Synchronize Service Composer firewall with Distributed Firewall
+            <!-- * Synchronize Service Composer firewall with Distributed Firewall
 
             <keyValues>
               <keyValue>
@@ -11911,7 +11913,7 @@ securitySchemes:
                 <key>autoSaveDraft</key>
                 <value>false</value>
               </keyValue>
-            </keyValues>
+            </keyValues> -->
   /policy/securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
     description: Retrieve security policies mapped to a security group
@@ -12833,7 +12835,7 @@ securitySchemes:
                     <portname></portname>
                     <vlan></vlan>
                     <virtualWire></virtualWire>
-                  </ hardwareGatewayManageBindingItem>
+                  </hardwareGatewayManageBindingItem>
                 </addItems>
                 <updateItems>
                   <hardwareGatewayManageBindingItem>
@@ -12849,9 +12851,9 @@ securitySchemes:
                 <deleteItems>
                   <hardwareGatewayManageBindingItem>
                     <objectId></objectId>
-                  </ hardwareGatewayManageBindingItem>
+                  </hardwareGatewayManageBindingItem>
                 </deleteItems>
-              <hardwareGatewayManageBindings>
+              </hardwareGatewayManageBindings>
   /bfd:
     displayName: hardwareGatewayBfd
     description: Working with hardware gateway BFD (bidirectional forwarding).
