@@ -121,6 +121,9 @@ IDs via the vCenter Managed Object Browser.
 5. Find **vm** in the Name column. The corresponding Value column lists the
    virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
 
+### part-number
+EN-001545-07
+
 ---
 
 ## vdsManage
