@@ -36,7 +36,7 @@ To find out how VMware support offerings can help meet your business needs, go t
 
 ### VMware Professional Services
 
-VMware Education Services courses offer extensive hands‐on labs, case study examples, and course materials designed to be used as on‐the‐job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
+VMware Education Services courses offer extensive hands-on labs, case study examples, and course materials designed to be used as on-the-job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
 http://www.vmware.com/services.
 
 ## Ports Required for the NSX REST API
@@ -93,9 +93,9 @@ IDs via the vCenter Managed Object Browser.
    e.g. *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32. 
+   host link, e.g. host-32.
 5. Find **network** in the Name column. The corresponding Value column lists
-   the port groups on that host, e.g. *dvportgroup-388*. 
+   the port groups on that host, e.g. *dvportgroup-388*.
 
 ### Find VMID
 
@@ -113,6 +113,6 @@ IDs via the vCenter Managed Object Browser.
    e.g. *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32. 
+   host link, e.g. host-32.
 5. Find **vm** in the Name column. The corresponding Value column lists the
    virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
