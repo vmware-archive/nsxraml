@@ -9,7 +9,7 @@ documentation:
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
-    description: This is the hostname or IP address of the NSX Manager
+    description: Hostname or IP address of the NSX Manager.
 version: 6.2.4
 securedBy: [basic]
 schemas:
@@ -142,7 +142,7 @@ schemas:
     systemTimeUpdate: !include schemas/systemTimeUpdate.xsd
     traceflowCreate: !include schemas/traceflowCreate.xsd
     universalSyncConfigurationNsxManagersCreate: !include schemas/universalSyncConfigurationNsxManagersCreate.xsd
-    universalSyncConfigurationManagersThumbprintUpdate: !include schemas/universalSyncConfigurationManagersThumbprintUpdate.xsd
+    universalSyncConfigurationManagersUpdate: !include schemas/universalSyncConfigurationManagersUpdate.xsd
     userRoleMgmtCreate: !include schemas/userRoleMgmtCreate.xsd
     userRoleMgmtUpdate: !include schemas/userRoleMgmtUpdate.xsd
     usersCreate: !include schemas/usersCreate.xsd
@@ -245,6 +245,7 @@ securitySchemes:
     displayName: vdsInDc
     description: |
       Working with vSphere Distributed Switches in a Datacenter
+      ------
     uriParameters:
       datacenterID:
           required: true
@@ -300,6 +301,7 @@ securitySchemes:
     displayName: vds
     description: |
       Working With a Specific vSphere Distributed Switch
+      ------
     uriParameters:
       vdsId:
           required: true
@@ -426,6 +428,7 @@ securitySchemes:
       displayName: vdnSegmentPool
       description: |
         Working With a Specific Segment ID Pool
+        ------
       uriParameters:
         segmentPoolId:
           required: true
@@ -474,8 +477,8 @@ securitySchemes:
   /multicasts:
     displayName: vdnMulticastPools
     description: |
-      Working with multicast address ranges.
-      ___
+      Working with Multicast Address Ranges
+      ------
       If any of your transport zones will use multicast or hybrid replication
       mode, you must add a multicast address range (also called a multicast
       address pool). Specifying a multicast address range helps in spreading
@@ -537,6 +540,7 @@ securitySchemes:
       displayName: vdnMulticastPool
       description: |
         Working With a Specific Multicast Address Range
+        --------
       uriParameters:
         multicastAddresssRangeId:
           required: true
@@ -585,7 +589,8 @@ securitySchemes:
   /vxlan/udp/port:
     displayName: vdnConfigUDP
     description: |
-      Working with the VXLAN port configuration.
+      Working with the VXLAN Port Configuration
+      ----------
     get:
       displayName: vdnConfigUDPShow
       description: |
@@ -599,7 +604,8 @@ securitySchemes:
     /{portNumber}:
       displayName: vdnConfigUDPUpdate
       description: |
-        Update the VXLAN port configuration.
+        Update the VXLAN Port Configuration
+        -------
       uriParameters:
         portNumber:
           required: true
@@ -617,6 +623,12 @@ securitySchemes:
           change the VXLAN port on the primary NSX Manager to propagate this
           change on all NSX Managers and hosts in the cross-vCenter NSX
           environment.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated. Port change is now non-disruptive, and propagates to secondary NSX Managers if performed on the primary NSX Manager. Force parameter added.
         queryParameters:
           force:
             displayName: force
@@ -632,9 +644,8 @@ securitySchemes:
     /taskStatus:
       displayName: vdnConfigUDPUpdateStatus
       description: |
-        VXLAN port configuration update status.
+        VXLAN Port Configuration Update Status
       get:
-      # new in 6.2.3
         displayName: vdnConfigUDPUpdateStatusRead
         description: |
           Retrieve the status of the VXLAN port configuration update.
@@ -657,7 +668,9 @@ securitySchemes:
                   </vxlanPortUpdatingStatus>
   /resources/allocated:
     displayName: allocatedResources
-    description: Working with allocated resources.
+    description: |
+      Working with Allocated Resources
+      ------
     get:
       displayName: allocatedResourcesRead
       description: |
@@ -786,6 +799,7 @@ securitySchemes:
     displayName: vdnScopeCreate
     description: |
       Create a transport zone.
+
       Request body parameters:
 
         * **name** - Required. The name of the transport zone.
@@ -823,7 +837,8 @@ securitySchemes:
   /{scopeId}:
     displayName: vdnScope
     description: |
-      Working with a specific transport zone.
+      Working with a Specific Transport Zone
+      ---------
     uriParameters:
       scopeId:
         required: true
@@ -955,7 +970,9 @@ securitySchemes:
             schema: vdnScopeUpdate
     /conn-check/multicast:
       displayName: vdnScopeConnCheck
-      description: Testing multicast group connectivity.
+      description: |
+        Testing multicast group connectivity.
+        -------
       post:
         displayName: vdnScopeConnCheck
         description: |
@@ -1045,6 +1062,8 @@ securitySchemes:
 /api/2.0/vdn/traceflow:
   displayName: traceflows
   description: |
+    Working with Traceflow
+    ================
     For Traceflow to work as expected, make sure that the controller cluster is
     connected and in healthy state. The Traceflow operation requires active
     communication between vCenter, NSX Manager, controller cluster, and netcpa
@@ -1063,7 +1082,7 @@ securitySchemes:
     traceflow packet out.
   post:
     displayName: traceflowCreate
-    description: Create Traceflow
+    description: Create a traceflow.
     body:
       application/xml:
         example: |
@@ -1088,7 +1107,9 @@ securitySchemes:
         schema: traceflowCreate
   /{traceflowId}:
     displayName: traceflow
-    description: Per traceflow operations.
+    description: |
+      Working with a Specific Traceflow
+      ---------
     get:
       displayName: traceflowRead
       description: |
@@ -1120,10 +1141,12 @@ securitySchemes:
                 </traceflowDto>
     /observations:
       displayName: traceflowObservations
-      description: Traceflow Observations
+      description: |
+        Traceflow Observations
+        -----
       get:
         displayName: traceflowObservationsList
-        description: List traceflow observations
+        description: Retrieve traceflow observations.
         responses:
           200:
             body:
@@ -1395,7 +1418,9 @@ securitySchemes:
           </virtualWires>
   /vm/vnic:
     displayName: logicalSwitchVmAttach
-    description: Working Virtual Machine Connections to Logical Switches
+    description: |
+      Working Virtual Machine Connections to Logical Switches
+      -----
     post:
       displayName: logicalSwitchVmAttach
       description: |
@@ -1517,7 +1542,9 @@ securitySchemes:
       description: Delete the specified logical switch.
     /conn-check/multicast:
       displayName: logicalSwitchConnCheck
-      description: Testing host connectivity.
+      description: |
+        Testing Host Connectivity
+        -----
       post:
         displayName: logicalSwitchConnCheck
         description: |
@@ -1591,9 +1618,9 @@ securitySchemes:
     /hardwaregateways:
       displayName: logicalSwitchHardwareGatewayBindings
       description: |
-        Working with hardware gateway bindings for a specific logical switch.
+        Working with Hardware Gateway Bindings for a Specific Logical Switch
+        -----
       get:
-      # new in 6.2.3
         displayName: logicalSwitchHardwareGatewayBindingsList
         description: |
           Retrieve hardware gateway bindings for the specified logical switch.
@@ -1629,13 +1656,11 @@ securitySchemes:
                     </hardwareGatewayBinding>
                   </list>
       /{hardwareGatewayBindingId}:
-      # new in 6.2.3
         displayName: logicalSwitchHardwareGatewayBinding
         description: |
-          Working with connections between hardware gateways and logical
-          switches.
+          Working with Connections Between Hardware Gateways and Logical Switches
+          -------
         post:
-        # new in 6.2.3
           displayName: logicalSwitchHardwareGatewayBindingCreate
           description: |
             Manage the connection between a hardware gateway and a logical switch.
@@ -1696,10 +1721,10 @@ securitySchemes:
       description: dvpg MoID or virtual wire ID
   get:
     displayName: arpMACRead
-    description: Query ARP suppression and MAC learning information
+    description: Retrieve ARP suppression and MAC learning information.
   put:
     displayName: arpMACUpdate
-    description: Enable or disable ARP suppression and MAC learning
+    description: Enable or disable ARP suppression and MAC learning.
     body:
       application/xml:
         example: |
@@ -1781,13 +1806,17 @@ securitySchemes:
               </controllers>
   /upgrade-available:
     displayName: nsxControllerUpgradeAvailability
-    description: Query controller upgrade availability
+    description: |
+      Retrieve Controller Upgrade Availability
+      ----
     get:
       displayName: nsxControllerUpgradeAvailability
-      description: Query controller upgrade availability
+      description: Retrieve controller upgrade availability.
   /progress/{jobId}:
     displayName: nsxControllerJob
-    description: Status of controller creation or removal
+    description: |
+      Status of Controller Job
+      -----
     uriParameters:
       jobId:
         required: true
@@ -1811,26 +1840,43 @@ securitySchemes:
                 </controllerDeploymentInfo>
   /{controllerId}:
     displayName: nsxController
-    description: Working with specified controller
+    description: |
+      Working with a Specific Controller
+      -----
     uriParameters:
       controllerId:
         required: true
         displayName: controllerId
-        description: Specified controller
+        description: |
+          Specified controller ID.
+
+          To retrieve the controller IDs, log in to the vSphere Web Client.
+          Navigate to Networking & Security > Installation > Management, and
+          view the **NSX Controller nodes** section. The controller ID is
+          listed in the **Controller ID** or **Controller Node** column,
+          depending on NSX version. An example controller ID is
+          *controller-1*. 
+
+          In a cross-vCenter NSX environment, retrieve the controller IDs from
+          rows where the NSX Manager column contains the primary NSX Manager
+          IP address.
     delete:
       displayName: nsxControllerDelete
       description: |
-        Deletes NSX controller. When deleting the last controller from a
-        cluster, the parameter forceRemovalForLast must be set to true.
+        Deletes the NSX controller.
       queryParameters:
         forceRemoval:
           type: boolean
           required: true
           displayName: forceRemoval
-          description: Force removal of controller (true/false)
+          description: |
+            Specify whether to force removal of controller. Must be set to
+            true to remove last controller of the controller cluster.
     /techsupportlogs:
       displayName: nsxControllerLogs
-      description: Controller logs
+      description: |
+        Working with Controller Tech Support Logs
+        -----
       get:
         displayName: nsxControllerLogsRead
         description: |
@@ -1840,10 +1886,11 @@ securitySchemes:
     /syslog:
       displayName: nsxControllerSyslog
       description: |
-        Configures a syslog exporter on the specified controller node.
+        Working with Controller Syslog
+        -----
       post:
         displayName: nsxControllerSyslogCreate
-        description: Add controller syslog exporter on the controller
+        description: Add controller syslog exporter on the controller.
         body:
           application/xml:
             example: |
@@ -1857,7 +1904,7 @@ securitySchemes:
       get:
         displayName: nsxControllerSyslogRead
         description: |
-          Retrieve details about the syslog exporter on the controller
+          Retrieve details about the syslog exporter on the controller.
         responses:
           200:
             body:
@@ -1876,18 +1923,18 @@ securitySchemes:
     /snapshot:
       displayName: nsxControllerSnapshot
       description: |
-        Take a snapshot of the control cluster from the specified controller
-        node.
+        Working with Controller Cluster Snapshots
+        -----
       get:
         displayName: nsxControllerSnapshot
         description: |
-          To retrieve the controller IDs, log in to the vSphere Web Client.
-          Navigate to Networking & Security > Installation. The NSX Controller
-          Nodes table lists the controller IDs (Name column) and IP addresses
-          (Node column) of each controller.
+          Take a snapshot of the control cluster from the specified controller
+          node.
   /cluster:
     displayName: nsxControllerCluster
-    description: Cluster configuration
+    description: |
+      Working with the NSX Controller Cluster Configuration
+      ----
     get:
       displayName: nsxControllerClusterRead
       description: |
@@ -1903,7 +1950,7 @@ securitySchemes:
     put:
       displayName: nsxControllerClusterUpdate
       description: |
-        Modify cluster wide configuration information for controller
+        Modify cluster wide configuration information for controller.
       body:
         application/xml:
           example: |
@@ -1913,10 +1960,12 @@ securitySchemes:
           schema: clusterUpdate
   /credential:
     displayName: nsxControllerPassword
-    description: Change the NSX controller password
+    description: |
+      Working with the NSX Controller Password
+      ------
     put:
       displayName: nsxControllerPasswordUpdate
-      description: Change the NSX controller password
+      description: Change the NSX controller password.
       body:
         application/xml:
           example: |
@@ -1938,10 +1987,10 @@ securitySchemes:
         cases.
   get:
     displayName: servicesScopeRead
-    description: List services that have been created on the scope
+    description: List services that have been created on the scope.
   post:
     displayName: servicesScopeCreate
-    description: Create a new service on the specified scope
+    description: Create a new service on the specified scope.
     body:
       application/xml:
         example: |
@@ -1969,15 +2018,17 @@ securitySchemes:
     applicationId:
       required: true
       displayName: applicationId
-      description: Specified as returned by a servicesScope POST call
+      description: |
+        Application ID. You can get a list of application IDs from `GET
+        /api/2.0/services/application/scope/{scopeId}`.
   get:
     displayName: serviceRead
-    description: Retrieve details about the specified service
+    description: Retrieve details about the specified service.
   put:
     displayName: serviceUpdate
     description: |
       Modify the name, description, applicationProtocol, or port value of a
-      service
+      service.
     body:
       application/xml:
         example: |
@@ -1998,7 +2049,7 @@ securitySchemes:
         schema: serviceUpdate
   delete:
     displayName: serviceDelete
-    description: Delete the specified service
+    description: Delete the specified service.
     queryParameters:
       force:
         type: boolean
@@ -2006,15 +2057,17 @@ securitySchemes:
         displayName: force
         description: |
           Indicates if the delete should be forced or unforced. The default is
-          unforced (false)
+          unforced (false).
 /2.0/services/applicationgroup:
   displayName: applicationgroup
   description: |
-    Working with Application Groups
+    Working with Service Groups
     ============
   /scope/{scopeId}:
     displayName: serviceGroups
-    description: Working with service groups
+    description: |
+      Working with Service Groups on a Specific Scope
+      -------
     uriParameters:
       scopeId:
         required: true
@@ -2024,7 +2077,7 @@ securitySchemes:
           in upgrade use cases
     post:
       displayName: serviceGroupsCreate
-      description: Create a new service group on the specified scope
+      description: Create a new service group on the specified scope.
       body:
         application/xml:
           example: |
@@ -2038,10 +2091,12 @@ securitySchemes:
     get:
       displayName: serviceGroupsRead
       description: |
-        Retrieve a list of service groups that have been created on the scope
+        Retrieve a list of service groups that have been created on the scope.
   /{applicationgroupId}:
     displayName: serviceGroup
-    description: Working with an individual service group
+    description: |
+      Working with a Specific Service Group
+      ----
     uriParameters:
       applicationgroupId:
         required: true
@@ -2049,12 +2104,12 @@ securitySchemes:
         description: Application group ID
     get:
       displayName: serviceGroupRead
-      description: Retrieve details about a service group
+      description: Retrieve details about the specified service group.
     put:
       displayName: serviceGroupUpdate
       description: |
-        Modify the name, description, applicationProtocol, or port value of a
-        service group
+        Modify the name, description, applicationProtocol, or port value of
+        the specified service group.
       body:
         application/xml:
           example: |
@@ -2092,7 +2147,7 @@ securitySchemes:
           schema: serviceGroupUpdate
     delete:
       displayName: serviceGroupDelete
-      description: Delete a service group from a scope
+      description: Delete the specified service group from a scope.
       queryParameters:
         force:
           type: boolean
@@ -2100,34 +2155,43 @@ securitySchemes:
           displayName: force
           description: |
             Indicates if the delete should be forced or unforced. The default
-            is unforced (false)
+            is unforced (false).
     /members/{moref}:
       displayName: serviceGroupMembers
-      description: Add or delete service group members
+      description: |
+        Working with a Specific Service Group Member
+        -----
       uriParameters:
         moref:
           required: true
           displayName: moref
-          description: Management object reference to the member
+          description: Managed object reference to the member.
       put:
         displayName: serviceGroupMembersCreate
-        description: Add a member to the service group
+        description: Add a member to the service group.
       delete:
         displayName: serviceGroupMembersDelete
-        description: Delete a member from the service group
+        description: Delete a member from the service group.
   /scope/{scopeId}/members:
-    displayName: serviceGroupMembersRead
-    description: Get the members of a service group
+    displayName: serviceGroupMembersScope
+    description: |
+      Working with Service Group Members on a Specific Scope
+      ------
     uriParameters:
       scopeId:
         required: true
         displayName: scopeId
         description: globalroot-0 or datacenterId in upgrade use cases
     get:
-      displayName: serviceGroupMembersRead
+      displayName: serviceGroupMembersScopeList
       description: |
         Get a list of member elements that can be added to the service groups
         created on a particular scope.
+        ___
+        Since service group allows only either services or other service
+        groups as members to be added, this helps you get a list of all
+        possible valid elements that can be added to the
+        service.
 /2.0/services/ipam/pools:
   displayName: ipPools
   description: |
@@ -2135,13 +2199,16 @@ securitySchemes:
     ========
   /scope/{scopeId}:
     displayName: ipPoolScope
-    description: Working with IP pools by scope.
+    description: |
+      Working with IP Pools on a Specific Scope
+      -----
     uriParameters:
       scopeId:
         required: true
         displayName: scopeId
         description: |
-          For *scopeID* use globalroot-0 or *datacenterId* in upgrade use cases
+          For *scopeID* use globalroot-0 or *datacenterId* in upgrade use
+          cases.
     get:
       displayName: ipPoolRead
       description: |
@@ -2182,7 +2249,7 @@ securitySchemes:
     post:
       displayName: ipPoolCreate
       description: |
-        You can create a pool of IP addresses. For *scopeId* use globalroot-0 or
+        Create a pool of IP addresses. For *scopeId* use globalroot-0 or
         the *datacenterId* in upgrade use cases.
       body:
         application/xml:
@@ -2204,7 +2271,9 @@ securitySchemes:
           schema: ipPool
   /{poolId}:
     displayName: ipPool
-    description: Working with a specified IP pool.
+    description: |
+      Working with a Specific IP Pool
+      ------
     uriParameters:
       poolId:
         required: true
@@ -2278,10 +2347,12 @@ securitySchemes:
           schema: ipPoolUpdate
     delete:
       displayName: ipPoolDelete
-      description: Delete an IP pool
+      description: Delete an IP pool.
     /ipaddresses:
       displayName: ipPoolAllocate
-      description: Work with IP's and their allocation status in IP Pools
+      description: |
+        Working with IP Pool Address Allocations
+        ------
       get:
         displayName: ipPoolIpsRead
         description: |
@@ -2306,10 +2377,10 @@ securitySchemes:
       post:
         displayName: ipPoolAllocateIp
         description: |
-          Allocate an IP Address from the pool. Use 'ALLOCATE' in the
-          'allocationMode' field in the body to allocate the next available ip.
-          To allocate a specific one use 'RESERVE' and pass the IP to reserve in
-          the 'ipAddress' fields in the body.
+          Allocate an IP Address from the pool. Use *ALLOCATE* in the
+          **allocationMode** field in the body to allocate the next available
+          IP. To allocate a specific one use *RESERVE* and pass the IP to
+          reserve in the **ipAddress** fields in the body.
         body:
           application/xml:
             example: |
@@ -2335,7 +2406,9 @@ securitySchemes:
                   </allocatedIpAddress>
       /{ipAddress}:
         displayName: ipAddressRelease
-        description: Release an IP Address allocation in the Pool
+        description: |
+          Working with Specific IPs Allocated to an IP Pool
+          ----
         uriParameters:
           ipAddress:
             required: true
@@ -2344,7 +2417,7 @@ securitySchemes:
               The IP address to release, e.g. '192.168.10.10'
         delete:
           displayName: ipAddressRelease
-          description: Release an IP Address allocation in the Pool
+          description: Release an IP address allocation in the pool.
 /2.0/services/licensing/capacityusage:
   displayName: capacityUsage
   description: |
@@ -2353,7 +2426,6 @@ securitySchemes:
     The licensing capacity usage API command reports usage of CPUs, VMs and
     concurrent users for the distributed firewall and VXLAN.
   get:
-  # new in 6.2.3
     displayName: capacityUsageRead
     description: |
       Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
@@ -2408,7 +2480,7 @@ securitySchemes:
     =====
   post:
     displayName: securityTagCreate
-    description: Create a new security tag
+    description: Create a new security tag.
     body:
       application/xml:
         example: |
@@ -2424,29 +2496,31 @@ securitySchemes:
         schema: securityTagCreate
   get:
     displayName: securityTagRead
-    description: Retrieve security tags
+    description: Retrieve security tags.
   /{tagId}:
     displayName: securityTagDelete
-    description: Delete a security tag
+    description: Delete a security tag.
     uriParameters:
       tagId:
-        description: Specified security tag
+        description: Specified security tag.
         displayName: tagId
         required: true
     delete:
       displayName: securityTagDelete
-      description: Delete the specified security tag
+      description: Delete the specified security tag.
     /vm:
       displayName: securityTagVMsList
       description: |
-        Retrieve the list of vm's that have the specified tag attached to them
+        Retrieve the list of VMs that have the specified tag attached to
+        them.
       get:
         displayName: securityTagVMsList
         description: |
-          Retrieve the list of vm's that have the specified tag attached to them
+          Retrieve the list of VMs that have the specified tag attached to
+          them.
       /{vmMoid}:
         displayName: securityTagVM
-        description: Apply or detach a security tag to virtual machine
+        description: Apply or detach a security tag to virtual machine.
         uriParameters:
           vmMoid:
             description: ID of VM
@@ -2454,10 +2528,10 @@ securitySchemes:
             required: true
         put:
           displayName: securityTagVMAttach
-          description: Apply a security tag to virtual machine
+          description: Apply a security tag to virtual machine.
         delete:
           displayName: securityTagVMDetach
-          description: Detach a security tag from a virtual machine
+          description: Detach a security tag from a virtual machine.
 /2.0/services/ssoconfig:
   displayName: ssoConfig
   description: |
@@ -2465,10 +2539,10 @@ securitySchemes:
     ============
   get:
     displayName: ssoConfigRead
-    description: Query SSO Details
+    description: Retrieve SSO Configuration.
   post:
     displayName: ssoConfigSet
-    description: Register NSX Manager to SSO Services
+    description: Register NSX Manager to SSO Services.
     body:
       application/xml:
         example: |
@@ -2481,13 +2555,15 @@ securitySchemes:
         schema: ssoConfig
   delete:
     displayName: ssoConfigDelete
-    description: Deletes the NSX Manager SSO Configuration
+    description: Deletes the NSX Manager SSO Configuration.
   /status:
     displayName: ssoStatus
-    description: Query the SSO configuration status of NSX Manager
+    description: |
+      Working with SSO Configuration Status
+      -----
     get:
       displayName: ssoStatusRead
-      description: Query the SSO configuration status of NSX Manager
+      description: Retrieve the SSO configuration status of NSX Manager.
 /2.0/services/usermgmt:
   displayName: userMgmt
   description: |
@@ -2495,7 +2571,9 @@ securitySchemes:
     ==========
   /user/{userId}:
     displayName: userMgmtUser
-    description: Manage users
+    description: |
+      Manage Users on NSX Manager
+      -----
     uriParameters:
       userId:
         required: true
@@ -2503,26 +2581,28 @@ securitySchemes:
         description: user ID
     get:
       displayName: userMgmtUserRead
-      description: Get information about a user
+      description: Get information about a user.
     delete:
       displayName: userMgmtUserDelete
-      description: Remove the NSX role for a vCenter user
+      description: Remove the NSX role for a vCenter user.
   /role/{userId}:
     displayName: userRoleMgmt
-    description: Manage roles for users
+    description: |
+      Manage NSX Roles for Users
+      -----
     uriParameters:
       userId:
         required: true
         displayName: userId
-        description: user to retrieve role information from
+        description: User to retrieve role information from.
     get:
       displayName: userMgmtRoleRead
       description: |
         Retrieve a user's role (possible roles are super_user, vshield_admin,
-        enterprise_admin, security_admin, and audit)
+        enterprise_admin, security_admin, and audit).
     post:
       displayName: userMgmtRoleCreate
-      description: Add role and resources for a user
+      description: Add role and resources for a user.
       queryParameters:
         isGroup:
           displayName: isGroup
@@ -2543,7 +2623,7 @@ securitySchemes:
           schema: userRoleMgmtCreate
     put:
       displayName: userMgmtRoleUpdate
-      description: Change a user's role
+      description: Change a user's role.
       body:
         application/xml:
           example: |
@@ -2562,29 +2642,33 @@ securitySchemes:
         role for a local user.
   /enablestate/{value}:
     displayName: userMgmtState
-    description: Change the state of a user account (enabled/disabled)
+    description: |
+      Working with User Account State
+      -----
     uriParameters:
       value:
         required: true
         type: integer
         displayName: value
-        description: value can be 0 to disable, or 1 to enable
+        description: value can be 0 to disable, or 1 to enable.
     put:
       displayName: userMgmtStateUpdate
-      description: Enable or disable a user account
+      description: Enable or disable a user account.
   /users/vsm:
     displayName: userNSXManagerInfo
     description: |
-      Get information about users who have been assigned a NSX Manager role
-      (local users as well as vCenter users with NSX Manager role)
+      Working with NSX Manager Role Assignment
+      ----
     get:
       displayName: userNSXManagerInfoRead
       description: |
         Get information about users who have been assigned a NSX Manager role
-        (local users as well as vCenter users with NSX Manager role)
+        (local users as well as vCenter users with NSX Manager role).
   /roles:
     displayName: userMgmtRoles
-    description: NSX Manager user management operations on roles
+    description: |
+      Working with Available NSX Manager Roles
+      ----
     get:
       displayName: userMgmtRoleRead
       description: Read all possible roles in NSX Manager
@@ -2606,6 +2690,8 @@ securitySchemes:
   /bulk/{scopeId}:
     displayName: secGroupBulk
     description: |
+      Create a new security group
+      ----
       Create a new security group on a global scope or universal scope. Use
       either "globalroot-0" or "universalroot-0". Universal security groups are
       read-only when querying a secondary NSX manager.
@@ -2618,7 +2704,7 @@ securitySchemes:
           universalroot-0 for universal security groups.
     post:
       displayName: secGroupBulkCreate
-      description: Create a new security group on a global scope
+      description: Create a new security group on a scope.
       body:
         application/xml:
           example: |
@@ -2689,7 +2775,7 @@ securitySchemes:
           schema: secGroupBulkCreate
     put:
       displayName: secGroupUpdate
-      description: Update a specific security group
+      description: Update a security group.
       body:
         application/xml:
           example: |
@@ -2761,7 +2847,8 @@ securitySchemes:
   /scope/{scopeId}:
     displayName: secGroupScope
     description: |
-      Operations to list information about security groups on a given scope
+      Working with Security Groups on a Specific Scope
+      ----
     uriParameters:
       scopeId:
         required: true
@@ -2771,11 +2858,12 @@ securitySchemes:
           portgroupID in upgrade use cases
     get:
       displayName: secGroupScopeRead
-      description: List all the security groups created on a specific scope
+      description: List all the security groups created on a specific scope.
     /memberTypes:
       displayName: secGroupMemberTypes
       description: |
-        Information on valid elements that can be added to a security group
+        Working with Security Group Member Types
+        ----
       get:
         displayName: secGroupScopeMembersRead
         description: |
@@ -2783,7 +2871,9 @@ securitySchemes:
           group.
     /members/{memberType}:
       displayName: secGroupScopeMemberByType
-      description: Retrieve members of a specific type under a scope
+      description: |
+        Working with a Specific Security Group Member Type
+        ----
       uriParameters:
         memberType:
           required: true
@@ -2791,21 +2881,23 @@ securitySchemes:
           description: Specific member type
       get:
         displayName: secGroupScopeMemberTypeRead
-        description: Retrieve members of a specific type under a scope
+        description: Retrieve members of a specific type in the specified scope.
   /{objectId}:
     displayName: secGroupObject
-    description: Operations for an individual security group
+    description: |
+      Working with a Specific Security Group
+      ----
     uriParameters:
       objectId:
         required: true
         displayName: objectId
-        description: Specified security group
+        description: Security group ID.
     get:
       displayName: secGroupObjectRead
-      description: Retrieve all members of the specified security group
+      description: Retrieve all members of the specified security group.
     put:
       displayName: secGroupObjectUpdate
-      description: Update members of the specified security group
+      description: Update members of the specified security group.
       body:
         application/xml:
           example: |
@@ -2830,59 +2922,74 @@ securitySchemes:
           schema: secGroupObjectUpdate
     delete:
       displayName: secGroupObjectDelete
-      description: Delete an existing security group
+      description: Delete an existing security group.
       queryParameters:
         force:
           displayName: force
           required: true
           type: boolean
-    /members/{memberMoref}:
+    /members/{memberId}:
       displayName: secGroupMember
-      description: Operations on members of an individual security group
+      description: |
+        Working with Members of a Specific Security Group
+        ----
       uriParameters:
-        memberMoref:
+        memberId:
           required: true
-          displayName: memberMoref
-          description: Security group member
+          displayName: memberId
+          description: | 
+            Security group member, can be a vSphere managed object ID or NSX
+            object ID.
       put:
         displayName: secGroupMemberUpdate
-        description: Add a new member to specified security group
+        description: Add a new member to the specified security group.
       delete:
         displayName: secGroupMemberDelete
-        description: Delete member from specified security group
+        description: Delete member from the specified security group.
     /translation/virtualmachines:
       displayName: secGroupVMNodes
+      description: |
+        Working with Virtual Machines in a Security Group
+        ----
       get:
         displayName: secGroupVMNodesRead
         description: |
-          Retrieve list of VmNode entities that belong to a specific security
+          Retrieve list of virtual machine entities that belong to a specific security
           group.
     /translation/ipaddresses:
       displayName: secGroupIPNodes
+      description: |
+        Working with IP Addresses in a Security Group
+        -----
       get:
         displayName: secGroupIPNodesRead
         description: |
-          Retrieve list of IpNode entities that belong to a specific security
+          Retrieve list of IP addresses that belong to a specific security
           group.
     /translation/macaddresses:
       displayName: secGroupMacNodes
+      description: |
+        Working with Mac Addresses in a Security Group
+        -----
       get:
         displayName: secGroupMacNodesRead
         description: |
-          Retrieve list of MacNode entities that belong to a specific security
+          Retrieve list of MAC addresses that belong to a specific security
           group.
     /translation/vnics:
       displayName: secGroupVnicNodes
+      description: |
+        Working with vNICs in a Security Group
+        -----
       get:
         displayName: secGroupVnicNodesRead
         description: |
-          Retrieve list of VnicNode entities that belong to a specific security
-          group.
+          Retrieve list of vNICs that belong to a specific security group.
   /lookup/virtualmachine/{virtualMachineId}:
     displayName: secGroupLookupVM
     description: |
-      Retrieve list of security groups that the specified virtual machine
-      belongs to.
+      Working with Virtual Machine Security Group Membership
+      ------
     uriParameters:
       virtualMachineId:
         required: true
@@ -2895,7 +3002,9 @@ securitySchemes:
         belongs to.
   /internal/scope/{scopeId}:
     displayName: secGroupInternal
-    description: Information on internal security groups
+    description: |
+      Working with Internal Security Groups
+      ----
     uriParameters:
       scopeId:
         required: true
@@ -2914,6 +3023,9 @@ securitySchemes:
     =======
   /scope/{scopeMoref}:
     displayName: ipsetList
+    description: |
+      Working with IP Sets on a Specific Scope
+      ----
     uriParameters:
       scopeMoref:
         required: true
@@ -2926,6 +3038,9 @@ securitySchemes:
       description: Retrieve all configured IPSets
   /{scopeMoref}:
     displayName: ipsetCreate
+    description: |
+      Creating New IP Sets
+      -----
     uriParameters:
       scopeMoref:
         required: true
@@ -2935,7 +3050,7 @@ securitySchemes:
           "universalroot-0" for universal IP sets.
     post:
       displayName: ipsetCreate
-      description: creates a new IPset
+      description: Create a new IP set.
       body:
         application/xml:
           example: |
@@ -2954,17 +3069,20 @@ securitySchemes:
           schema: ipsetCreate
   /{ipsetId}:
     displayName: ipset
+    description: |
+      Working with a Specific IP Set
+      ----
     uriParameters:
       ipsetId:
         required: true
         displayName: ipsetId
-        description: The IPset to be queried or changed
+        description: The IP set to be queried or changed.
     get:
       displayName: ipsetRead
-      description: Retrieve an individual IPset
+      description: Retrieve an individual IP set.
     put:
       displayName: ipsetUpdate
-      description: Modify an existing IPset
+      description: Modify an existing IP set.
       body:
           application/xml:
             example: |
@@ -2981,7 +3099,7 @@ securitySchemes:
             schema: ipsetUpdate
     delete:
       displayName: ipsetDelete
-      description: delete an IPset
+      description: Delete an IP set.
       queryParameters:
           force:
             displayName: force
@@ -2995,10 +3113,10 @@ securitySchemes:
     =========
   get:
     displayName: vCenterConfigRead
-    description: Get vCenter Server configuration details on NSX Manager
+    description: Get vCenter Server configuration details on NSX Manager.
   put:
     displayName: vCenterConfigUpdate
-    description: Synchronize NSX Manager with vCenter server
+    description: Synchronize NSX Manager with vCenter server.
     body:
       application/xml:
         example: |
@@ -3014,37 +3132,59 @@ securitySchemes:
         schema: vcConfig
   /status:
     displayName: vCenterStatus
-    description: Connection status for vCenter Server
+    description: |
+      Connection Status for vCenter Server
+      -----
     get:
       displayName: vCenterStatusRead
       description: Get default vCenter Server connection status
 /2.0/universalsync:
   displayName: universalSync
   description: |
-    Working with Universal Configuration in cross-vCenter NSX
+    Working with Universal Sync Configuration in Cross-vCenter NSX
     ======
-  /configuration:
-    /role:
-      displayName: universalSyncConfigurationRole
-      description: Universal Sync Configuration
-      post:
-        displayName: universalSyncConfigurationRoleSet
-        description: Set the Universal Sync Configuration role
-        queryParameters:
-          action:
-            displayName: action
-            description: |
-              Set the role of the NSX manager. Possible values are
-              set-as-standalone, set-as-primary, set-as-secondary
-      get:
-        displayName: universalSyncConfigurationRoleRead
-        description: Get the Universal Sync Configuration role
-    /nsxmanagers:
+  /configuration/role:
+    displayName: universalSyncConfigurationRole
+    description: |
+      Working with Universal Sync Configuration Roles
+      ----
+      You can set the role of an NSX Manager to primary, secondary, or
+      standalone. If you set an NSX Manager’s role to primary, then use it to
+      create universal objects, and then set the role to standalone, the role
+      will be set as transit. In the transit role, the universal objects will
+      still exist, but cannot be modified, other than being deleted.
+    post:
+      displayName: universalSyncConfigurationRoleSet
+      description: Set the universal sync configuration role.
+      queryParameters:
+        action:
+          displayName: action
+          description: |
+            Set the role of the NSX manager. Possible values are
+            *set-as-standalone*, or *set-as-primary*. To set an NSX Manager as
+            secondary, use the `POST
+            /api/2.0/universalsync/configuration/nsxmanagers` method on the
+            primary NSX Manager.
+    get:
+      displayName: universalSyncConfigurationRoleRead
+      description: Retrieve the universal sync configuration role.
+  /configuration/nsxmanagers:
       displayName: universalSyncConfigurationNsxManagers
-      description: Universal sync configuration of NSX managers
+      description: |
+        Working with Universal Sync Configuration of NSX Managers
+        -----
       post:
         displayName: universalSyncConfigurationNsxManagersCreate
-        description: Create a secondary NSX manager
+        description: | 
+          Add a secondary NSX manager.
+
+          Run this method on the primary NSX Manager, providing details of the
+          secondary NSX Manager.
+
+          Retrieve the certificate thumbprint of the secondary NSX Manager
+          using the `GET
+          /api/1.0/appliance-management/certificatemanager/certificates/nsx`
+          method. The **sha1Hash** parameter contains the thumbprint.
         body:
           application/xml:
             example: |
@@ -3056,37 +3196,30 @@ securitySchemes:
                 <isPrimary></isPrimary>
               </nsxManagerInfo>
             schema: universalSyncConfigurationNsxManagersCreate
+      get:
+        displayName: universalSyncConfigurationNsxManagersList
+        description: |
+          If run on a primary NSX Manager, it will list secondary NSX Managers
+          configured on the primary NSX Manager.
+
+          If run on a secondary NSX Manager, it will list information about
+          the secondary NSX Manager and the primary NSX Manager it is
+          associated with.
       delete:
         displayName: universalSyncConfigurationNsxManagersDelete
-        description: Delete secondary NSX manager configuration
-      /thumbprint:
-        displayName: universalSyncConfigurationNsxManagersThumbprint
-        description: Universal sync configuration NSX manager thumbprint
-        put:
-          displayName: universalSyncConfigurationNsxManagersThumbprintUpdate
-          description: |
-            Update the NSX manager thumprint in the universal sync configuration
-          body:
-            application/xml:
-              example: |
-                <nsxManagerInfo>
-                  <uuid></uuid>
-                  <nsxManagerIp></nsxManagerIp>
-                  <certificateThumbprint></certificateThumbprint>
-                  <isPrimary></isPrimary>
-                </nsxManagerInfo>
-              schema: universalSyncConfigurationManagersThumbprintUpdate
+        description: Delete secondary NSX manager configuration.
       /{nsxManagerID}:
         displayName: universalSyncConfigurationManagers
-        description: Universal sync configuration of a specific NSX manager
+        description: |
+          Universal Sync Configuration of a Specific NSX Manager
+          ----
         get:
           displayName: universalSyncConfigurationManagersRead
           description: |
-            Query universal sync configuration information on a specific NSX
-            manager by ID
+            Retrieve information about the specified secondary NSX Manager.
         delete:
           displayName: universalSyncConfigurationManagersDelete
-          description: Delete a secondary NSX manager by ID.
+          description: Delete the specified secondary NSX Manager.
           queryParameters:
             forceRemoval:
               type: boolean
@@ -3095,35 +3228,55 @@ securitySchemes:
               description: |
                 Force removal of a secondary NSX manager. Options are true and
                 false.
+        put:
+          displayName: universalSyncConfigurationManagersUpdate
+          description: |
+            Update the the specified secondary NSX manager IP or thumbprint in
+            the universal sync configuration.
+          body:
+            application/xml:
+              example: |
+                <nsxManagerInfo>
+                  <uuid></uuid>
+                  <nsxManagerIp></nsxManagerIp>
+                  <certificateThumbprint></certificateThumbprint>
+                </nsxManagerInfo>
+              schema: universalSyncConfigurationManagersUpdate.xsd
   /sync:
     displayName: universalSyncSync
-    description: Sync all objects on the NSX manager
+    description: |
+      NSX Manager Synchronization
+      ----
     post:
       displayName: universalSyncSync
-      description: Sync all objects on the NSX manager
+      description: Sync all objects on the NSX Manager.
       queryParameters:
         action:
           displayName: application
-          description: Use "invoke" to sync all objects on the NSX manager
+          description: Use *invoke* to sync all objects on the NSX Manager.
   /entitystatus:
     displayName: universalSyncEntityStatus
-    description: The status of an universal sync entity
+    description: |
+      Working with Universal Sync Entities
+      ----
     get:
       displayName: universalSyncEntityStatusRead
-      description: Read the status of a universal sync entity
+      description: Retrieve the status of a universal sync entity.
       queryParameters:
         objectType:
           displayName: objectType
           description: Specifiy the object type. For example "VdnScope"
         objectId:
           displayName: objectId
-          description: Specify the bojectID. For example "globalvdnscope"
+          description: Specify the objectID. For example "globalvdnscope"
   /status:
     displayName: universalSyncStatus
-    description: Universal sync status
+    description: |
+      Working wiht Universal Sync Status
+      -----
     get:
       displayName: universalSyncStatusRead
-      description: Read the universal sync status
+      description: Retrieve the universal sync status.
 /1.0/appliance-management:
   displayName: applianceManager
   description: |
@@ -3131,70 +3284,88 @@ securitySchemes:
     ========
   /global/info:
     displayName: globalInfo
-    description: Global appliance manager information
+    description: |
+      Global Information for NSX Manager
+      ----
     get:
       displayName: globalInfoRead
       description: |
         Retrieve global information containing version information as well as
-        current logged in user
+        current logged in user.
   /summary/system:
     displayName: systemInfo
-    description: Summary appliance manager information
+    description: | 
+      Summary Information for NSX Manager
+      ----
     get:
       displayName: summaryInfoRead
       description: |
         Retrieve system summary info such as address, dns name, version, CPU,
-        memory and storage
+        memory and storage.
   /summary/components:
     displayName: componentInfo
-    description: Component information
+    description: |
+      Component Information for NSX Manager
+      ----
     get:
       displayName: componentInfoRead
       description: |
-        Retrieve summary of all available components and their status info
+        Retrieve summary of all available components and their status info.
   /system/restart:
     displayName: systemReboot
-    description: Reboot the appliance manager
+    description: |
+      Reboot NSX Manager
+      -----
     post:
       displayName: systemReboot
-      description: Reboot the appliance manager
+      description: Reboot the NSX Manager appliance.
   /system/cpuinfo:
     displayName: systemCPUInfo
-    description: CPU Info
+    description: |
+      NSX Manager CPU Information
+      -----
     get:
       displayName: systemCPUInfo
-      description: Query CPU information
+      description: Retrieve NSX Manager CPU information.
   /system/uptime:
     displayName: systemUptime
-    description: Appliance Manager uptime
+    description: |
+      NSX Manager Appliance Uptime Information
+      ----
     get:
       displayName: systemUptime
-      description: Query appliance manager uptime
+      description: Retrieve NSX Manager uptime information.
   /system/meminfo:
     displayName: systemMemoryInfo
-    description: Appliance Manager memory
+    description: |
+      NSX Manager Appliance Memory Information
+      -----
     get:
       displayName: systemMemoryInfo
-      description: Query memory
+      description: Retrieve NSX Manager memory information.
   /system/storageinfo:
     displayName: systemStorageInfo
-    description: Appliance Manager storage
+    description: |
+      NSX Manager Appliance Storage Information
+      ----
     get:
       displayName: systemStorageInfo
-      description: Query storage
+      description: Retrieve NSX Manager storage information.
   /system/network:
     displayName: networkSettings
-    description: Working with network settings
+    description: |
+      NSX Manager Appliance Network Settings
+      ----
     get:
       displayName: networkSettingsRead
       description: |
         Retrieve network information i.e. host name, IP address, DNS settings
   /system/tlssettings:
-  # new in 6.2.3
     displayName: tlsSettings
-    description: Working with TLS Settings
+    description: |
+      Working with TLS Settings
+      ----
     get:
-    # new in 6.2.3
       displayName: tlsSettingsList
       description: |
         Retrieve TLS settings.
@@ -3214,7 +3385,6 @@ securitySchemes:
                   <clientEnabledProtocols>TLSv1,TLSv1.1,TLSv1.2</clientEnabledProtocols>
                 </tlsSettings>
     post:
-    # new in 6.2.3
       displayName: tlsSettingsUpdate
       description: |
         Update TLS settings.
@@ -3236,10 +3406,12 @@ securitySchemes:
             </tlsSettings>
     /dns:
       displayName: applianceDnsClient
-      description: Configure DNS
+      description: |
+        Working with DNS Configuration
+        -----
       put:
         displayName: applianceDnsClientUpdate
-        description: Configure DNS
+        description: Configure DNS.
         body:
           application/xml:
             example: |
@@ -3251,17 +3423,22 @@ securitySchemes:
             schema: applianceDnsClientUpdate
       delete:
         displayName: applianceDnsClientDelete
-        description: Delete DNS servers
+        description: Delete DNS server configuration.
   /system/timesettings:
     displayName: systemTime
-    description: Working with time settings
+    description: |
+      Working with Time Settings
+      ------
     get:
       displayName: systemTimeRead
-      description: Retrieve time settings
+      description: |
+        Retrieve time settings, like timezone or current date and time with
+        NTP server, if configured.
     put:
       displayName: systemTimeUpdate
       description: |
-        Configure time or specify the NTP server to use for time synchronization
+        Configure time or specify the NTP server to use for time
+        synchronization.
       body:
         application/xml:
           example: |
@@ -3275,19 +3452,23 @@ securitySchemes:
           schema: systemTimeUpdate
     /ntp:
       displayName: ntp
-      description: Delete NTP server
+      description: |
+        Working with NTP Settings
+        ----
       delete:
         displayName: ntpDelete
-        description: Delete NTP server
+        description: Delete NTP server.
   /system/locale:
     displayName: systemLocale
-    description: Configure locale
+    description: |
+      Configure System Locale
+      ----
     get:
       displayName: systemLocaleRead
-      description: Retrieve locale info
+      description: Retrieve locale info.
     put:
       displayName: systemLocaleUpdate
-      description: Configure locale
+      description: Configure locale.
       body:
         application/xml:
           example: |
@@ -3298,13 +3479,15 @@ securitySchemes:
           schema: systemLocaleUpdate
   /system/syslogserver:
     displayName: systemSyslogServer
-    description: Working with syslog servers
+    description: |
+      Working with Syslog Servers
+      -----
     get:
       displayName: systemSyslogServerRead
-      description: Retrieve syslog servers
+      description: Retrieve syslog servers.
     put:
       displayName: systemSyslogServerUpdate
-      description: Configure syslog servers
+      description: Configure syslog servers.
       body:
         application/xml:
           example: |
@@ -3316,51 +3499,62 @@ securitySchemes:
           schema: systemSyslogServerUpdate
     delete:
       displayName: systemSyslogServerDelete
-      description: Delete syslog servers
+      description: Delete syslog servers.
   /components:
     displayName: componentsManagement
-    description: Components management
+    description: |
+      Components management
+      ----
     get:
       displayName: componentsManagementRead
-      description: Retrieve all Appliance Manager components
+      description: Retrieve all appliance manager components.
     /{componentID}:
       displayName: componentManagement
-      description: Specific component management
+      description: |
+        Working with a Specific Component
+        ----
       uriParameters:
         componentID:
           required: true
           displayName: componentID
-          description: Specified component ID
+          description: Specified component ID.
       get:
         displayName: componentManagementRead
-        description: Retrieve details for specified component
+        description: Retrieve details for specified component.
       /dependencies:
         displayName: componentDependencies
-        description: Component dependencies
+        description: |
+          Working with Component Dependencies
+          ----
         get:
           displayName: componentDependenciesRead
-          description: Retrieve dependency details for specified component
+          description: Retrieve dependency details for specified component.
       /dependents:
         displayName: componentDependents
-        description: Component dependents
+        description: |
+          Working with Component Dependents
+          ----
         get:
           displayName: componentDependentsRead
-          description: Retrieve dependents for the specified component
+          description: Retrieve dependents for the specified component.
       /status:
         displayName: componentStatus
-        description: Component status
+        description: |
+          Working with Component Status
         get:
           displayName: componentStatusRead
-          description: Retrieve current status for specified component
+          description: Retrieve current status for specified component.
   /backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
-    description: Appliance Manager backup settings
+    description: |
+      NSX Manager Appliance Backup Settings
+      -----
     get:
       displayName: applianceMgrBackupSettingsRead
-      description: Retrieve backup settings
+      description: Retrieve backup settings.
     put:
       displayName: applianceMgrBackupSettingsUpdate
-      description: Configure backup on the Appliance Manager
+      description: Configure backup on the appliance manager.
       body:
         application/xml:
           example: |
@@ -3390,91 +3584,135 @@ securitySchemes:
           schema: applianceMgrBackupSettingsUpdate
     delete:
       displayName: applianceMgrBackupSettingsDelete
-      description: Delete Appliance Manager backup configuration
+      description: Delete appliance manager backup configuration.
   /backuprestore/backup:
     displayName: applianceMgrBackup
-    description: On-demand backup
+    description: |
+      NSX Manager Appliance On-Demand Backup
+      ----
     post:
       displayName: applianceMgrBackupCreate
-      description: Backup NSX data on-demand
+      description: Backup NSX data on-demand.
   /backuprestore/backups:
     displayName: applianceMgrBackups
     description: |
-      Retrieve list of all backups available at configured backup location
+      Working with NSX Manager Appliance Backup Files
+      -----
     get:
       displayName: applianceMgrBackupsRead
       description: |
-        Retrieve list of all backups available at configured backup location
+        Retrieve list of all backups available at configured backup location.
   /backuprestore/restore:
     displayName: applianceMgrBackupRestore
-    description: Restore data from a backup file
+    description: |
+      Restoring Data from a NSX Manager Appliance Backup File
+      ------
     post:
       displayName: applianceMgrBackupRestoreExecute
-      description: Restore data from a backup file
+      description: Restore data from a backup file.
       queryParameters:
         restoreFile:
           required: true
           displayName: restoreFile
-          description: file name of restore file
+          description: File name of restore file.
   /techsupportlogs/{componentID}:
     displayName: techLogs
-    description: Generate tech support logs
+    description: |
+      Working with Tech Support Logs by Component
+      ----
     uriParameters:
       componentID:
         required: true
         displayName: componentID
-        description: Specified component to generate tech support logs
+        description: |
+          Specified component to generate tech support logs. For example,
+          *NSX*.
     post:
       displayName: techLogsCreate
-      description: Generate tech support logs
+      description: | 
+        Generate tech support logs. The location response header contains the
+        location of the created tech support file. 
   /techsupportlogs/{filename}:
     displayName: techLogsDownload
-    description: Download tech support logs
+    description: | 
+      Working with Tech Support Log Files
+      -----
     uriParameters:
       filename:
         required: true
         displayName: filename
-        description: Name of log file to download
+        description: Name of log file to download.
     get:
       displayName: techLogsDownload
       description: Download tech support logs
   /notifications:
     displayName: notifications
-    description: Working with support notifications
+    description: |
+      Working with Support Notifications
+      ----
     get:
       displayName: notificationsRead
-      description: Retrieve all system generated notifications
+      description: Retrieve all system generated notifications.
     delete:
       displayName: notificationsDelete
-      description: Delete all notifications
+      description: Delete all notifications.
     /{ID}/acknowledge:
       displayName: notificationsAcknowledge
-      description: Acknowledge a notification
+      description: |
+        Acknowledge Notifications
+        ----
       uriParameters:
         ID:
           displayName: ID
-          description: Notification ID
+          description: Notification ID.
           required: true
       post:
         displayName: notificationsAcknowledge
-        description: Acknowledge a notification
+        description: |
+          Acknowledge a notification. The notification is then deleted from
+          the system.
   /upgrade/uploadbundle/{componentID}:
     displayName: upgrade
-    description: NSX Manager upgrade details
+    description: |
+      Upgrading NSX Manager
+      ----
+      If you are upgrading from vCloud Networking and Security to NSX, all
+      grouping objects from vShield Manager 5.5 are carried over to NSX.
+      Though new objects in NSX can be created only at a global scope, the
+      scope of upgraded objects is maintained, and these objects can be
+      edited. For example, you can nest the following security groups within
+      an upgraded security group at the datacenter scope:
+
+      * security groups created at same datacenter scope (via REST only)
+      * security groups created at portgroup scope, which fall under the
+      datacenter (via REST only).
+
+      Security groups created at the global scope cannot be nested under a
+      security group created at a lower scope such as a
+      datacenter.
+
+      All users and associated roles are carried over to NSX as well.
+      In all API calls for upgrading the NSX Manager, the **componentId**
+      parameter can be *NSX* or *NSXAPIMGMT*.
     uriParameters:
       componentID:
         required: true
         displayName: componentID
-        description: Component ID
+        description: Component ID.
     post:
       displayName: upgradeBundleUpload
-      description: Upload upgrade bundle
+      description: Upload upgrade bundle.
     get:
       displayName: upgradeBundleDetails
-      description: Query upgrade details (after uploading upgrade bundle)
+      description: |
+        After the upgrade bundle is uploaded, you can query upgrade details
+        such as pre‐upgrade validation warning or error messages along with
+        pre‐upgrade questions.
   /upgrade/start/{componentID}:
     displayName: upgradeStart
-    description: Start upgrade process
+    description: |
+      Start Upgrade
+      ----
     uriParameters:
       componentID:
         required: true
@@ -3482,23 +3720,25 @@ securitySchemes:
         description: Component ID
     get:
       displayName: upgradeStart
-      description: Start upgrade process
+      description: Start upgrade process.
   /status/{componentID}:
     displayName: upgradeStatus
-    description: Query upgrade status
+    description: |
+      Upgrade Status
+      ----
     uriParameters:
       componentID:
         required: true
         displayName: componentID
-        description: Component ID
+        description: Component ID.
     get:
       displayName: upgradeStatus
-      description: Query upgrade status
+      description: Query upgrade status.
   /certificatemanager:
     displayName: certificateManager
     description: |
       Working with Certificates on the NSX Manager Appliance
-      =================
+      -------
     /pkcs12keystore/nsx:
       displayName: certificatesKeystore
       description: |
@@ -3518,7 +3758,7 @@ securitySchemes:
       displayName: certificateManagerNsx
       description: |
         NSX Manager Certificate Manager
-        ================
+        --------
       get:
         displayName: certificateManagerCertificatesNsxRead
         description: |
@@ -3555,7 +3795,7 @@ securitySchemes:
       displayName: certificateCsr
       description: |
         Working with Certificate Signing Requests
-        ===========
+        ------
       post:
         displayName: certificateCsrCreate
         description: |
@@ -3591,7 +3831,7 @@ securitySchemes:
       displayName: certificateChain
       description: |
         Working with Certificate Chains
-        ==============
+        -----
       post:
         displayName: certificateChainUpload
         description: |
@@ -4589,7 +4829,9 @@ securitySchemes:
     ===========
   /vm/{vmID}/request:
     displayName: dataCollectionVM
-    description: Enable or disable data collection on a virtual machine
+    description: |
+      Working With Data Collection on a Specific Virtual Machine
+      ----
     uriParameters:
       vmID:
         displayName: vmID
@@ -4612,7 +4854,9 @@ securitySchemes:
           schema: dataCollectionVMCreate
   /eventcontrol-root/request:
     displayName: dataCollectionKillSwitch
-    description: Data collection kill switch on/off
+    description: |
+      Working with the Data Collection Kill Switch
+      ----
     post:
       displayName: dataCollectionKillSwitchToggle
       description: Turn on/off data collection at global level
@@ -4630,7 +4874,9 @@ securitySchemes:
           schema: dataCollectionKillSwitchToggle
   /config/vm/{vmID}:
     displayName: dataCollectionVMInfo
-    description: Retrieve per vm configuration for data collection
+    description: |
+      Retrieve Data Collection Configuration
+      -----
     uriParameters:
       vmID:
         displayName: vmID
@@ -4882,13 +5128,17 @@ securitySchemes:
           schema: domainCreate
   /listDomains:
     displayName: domainList
-    description: Retrieve all agent discovered (or configured) LDAP domains
+    description: |
+      Retrieve LDAP Domains
+      ---
     get:
       displayName: domainListRead
       description: Retrieve all agent discovered (or configured) LDAP domains
   /deleteDomain/{ID}:
     displayName: domainDelete
-    description: Delete domain
+    description: |
+      Delete a Specific Domain
+      ----
     uriParameters:
       ID:
         required: true
@@ -4899,13 +5149,17 @@ securitySchemes:
       description: Delete domain
   /directory:
     displayName: ldapEventLogServer
-    description: Working with LDAP servers and EventLog servers
+    description: |
+      Working with LDAP Servers and EventLog Servers
+      ----
     /updateLdapServer:
       displayName: ldapServerCreate
-      description: Create LDAP server
+      description: | 
+        Create LDAP Server
+        ----
       post:
         displayName: ldapServerCreate
-        description: Create LDAP server
+        description: Create LDAP server.
         body:
           application/xml:
             example: |
@@ -4917,7 +5171,9 @@ securitySchemes:
             schema: ldapServerCreate
     /listLdapServersForDomain/{domainID}:
       displayName: ldapServerDomain
-      description: Query LDAP servers for a domain
+      description: |
+        Query LDAP Servers for a Domain
+        ----
       uriParameters:
         domainID:
           displayName: domainID
@@ -4928,7 +5184,9 @@ securitySchemes:
         description: Query LDAP servers for a domain
     /fullSync/{domainID}:
       displayName: ldapServerSync
-      description: Start LDAP full sync
+      description: |
+        Start LDAP Full Sync
+        ----
       uriParameters:
         domainID:
           displayName: domainID
@@ -4936,10 +5194,12 @@ securitySchemes:
           required: true
       put:
         displayName: ldapServerSync
-        description: Start LDAP full sync
+        description: Start LDAP full sync.
     /deltaSync/{domainID}:
       displayName: ldapServerDeltaSync
-      description: Start LDAP delta sync
+      description: |
+        Start LDAP Delta Sync
+        -----
       uriParameters:
         domainID:
           displayName: domainID
@@ -4947,10 +5207,12 @@ securitySchemes:
           required: true
       put:
         displayName: ldapServerDeltaSync
-        description: Start LDAP delta sync
+        description: Start LDAP delta sync.
     /deleteLdapServer/{serverID}:
       displayName: ldapServerDelete
-      description: Delete LDAP server
+      description: |
+        Delete LDAP Server
+        ----
       uriParameters:
         serverID:
           required: true
@@ -4958,10 +5220,12 @@ securitySchemes:
           description: Specified LDAP server
       delete:
         displayName: ldapServerDelete
-        description: Delete LDAP server
+        description: Delete LDAP server.
     /updateEventLogServer:
       displayName: eLogServer
-      description: EventLog server
+      description: |
+        EventLog Server
+        ----
       post:
         displayName: eLogServerCreate
         description: Create EventLog server
@@ -4977,7 +5241,9 @@ securitySchemes:
             schema: eLogServerCreate
     /listEventLogServersForDomain/{domainID}:
       displayName: eLogServerDomainRead
-      description: Query EventLog servers for a domain
+      description: |
+        Working with EventLog Servers for a Domain
+        ----
       uriParameters:
         domainID:
           required: true
@@ -5091,16 +5357,19 @@ securitySchemes:
     ==========
   /enable:
     displayName: syslogEnable
-    description: Enable syslog support
+    description: |
+      Enable Syslog Support
     post:
       displayName: syslogEnable
-      description: Enable syslog support
+      description: Enable syslog support.
   /disable:
     displayName: syslogDisable
-    description: Disable syslog support
+    description: |
+      Disable Syslog Support
+      ----
     post:
       displayName: syslogDisable
-      description: Disable syslog support
+      description: Disable syslog support.
 /2.0/si:
   displayName: solutionIntegration
   description: |
@@ -6839,18 +7108,20 @@ securitySchemes:
   /globalroot-0/status:
     displayName: dfwStatus
     description: |
+      Working with Distributed Firewall Status
+      ----
       Retrieve status of last publish action for each cluster in the NSX
       environment.
-      ___
-      The status output displays a generation number (generationNumber) for
+
+      The status output displays a generation number (**generationNumber**) for
       each rule set, which can be used to verify whether a change in rule sets
       has propagated to a host. In 6.2.4, a generation number for objects
-      (generationNumberObjects) has been added to the status API. This allows
+      (**generationNumberObjects**) has been added to the status API. This allows
       you to verify whether a change in objects consumed in firewall rules has
       propagated to a host. Note that the object generation number may change
       frequently and will always be equal to or greater than the ruleset
       generation number.
-      ___
+
       Starting in NSX 6.2.4, clusters (and hosts inside the cluster) are no
       longer included in the firewall status output if distributed firewall is
       disabled at the cluster level, or if the cluster is not prepared (NSX
@@ -6859,10 +7130,15 @@ securitySchemes:
       configured for firewall, after a firewall rule publish their status is
       *inprogress*.
     get:
-    # updated in 6.2.4: generationNumberObjects added, non-participating
-    # clusters/hosts removed from output
       displayName: dfwStatusRead
-      description: Get firewall configuration status
+      description: |
+        Get firewall configuration status
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
       responses:
         200:
           body:
@@ -6939,17 +7215,22 @@ securitySchemes:
     /layer3sections/{sectionID}:
       displayName: L3SectionStatus
       description: |
-        Retrieve status of the last publish action for the specified layer 3 section.
+        Working with Layer 3 Section Status
       uriParameters:
         sectionID:
           required: true
           displayName: sectionID
           description: Section ID
       get:
-      # updated in 6.2.4: generationNumberObjects added, non-participating
-      # clusters/hosts removed from output
         displayName: L3SectionStatusRead
-        description: Get Layer3 status
+        description: |
+          Retrieve status of the last publish action for the specified layer 3 section.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
     /layer2sections/{sectionID}:
       displayName: L2SectionStatus
       description: L2 section status
@@ -6959,11 +7240,15 @@ securitySchemes:
           displayName: sectionID
           description: Section ID
       get:
-      # updated in 6.2.4: generationNumberObjects added, non-participating
-      # clusters/hosts removed from output
         displayName: L2SectionStatusRead
         description: |
           Retrieve status of the last publish action for the specified layer 2 section.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
   /globalroot-0/drafts:
     displayName: dfwDrafts
     description: Import and export firewall configurations
@@ -7154,7 +7439,6 @@ securitySchemes:
     description: |
       Working with the Distributed Firewall Global Configuration
       ----------------------------------------------------------
-      ___
       You can use the following parameters to improve firewall performancer:
 
       * **layer3RuleOptimize** and **layer2RuleOptimize** to turn
@@ -10900,7 +11184,6 @@ securitySchemes:
     Working with NSX Edge Configuration Publishing
     =========
   /tuningConfiguration:
-  # new in 6.2.3
     displayName: nsxEdgePublishTuning
     description: |
       Working with NSX Edge tuning configuration.
@@ -10931,7 +11214,6 @@ securitySchemes:
       | edgeMemoryReservationPercentage | integer value [0-100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
       | megaHertzPerVCpu | integer value specifying the megahertz per each vCPU (1000, 1500, 2000) |
     get:
-    # new in 6.2.3
       displayName: nsxEdgePublishTuningList
       description: |
         Retrieve the NSX Edge tuning configuration.
@@ -10958,7 +11240,6 @@ securitySchemes:
                   <megaHertzPerVCpu>1000</megaHertzPerVCpu>
                 </tuningConfiguration>
     put:
-    # new in 6.2.3
       displayName: nsxEdgePublishTuningUpdate
       description: |
         Update the NSX Edge tuning configuration.
@@ -11108,10 +11389,10 @@ securitySchemes:
       scopeId:
         required: true
         displayName: scopeId
-        description: Specified scope
+        description: Specified scope.
     post:
       displayName: crlCreate
-      description: Create CRL on the specified scope
+      description: Create CRL on the specified scope.
       body:
         application/xml:
           example: |
@@ -11121,7 +11402,9 @@ securitySchemes:
           schema: crlCreate
   /crl/scope/{scopeId}:
     displayName: crlScope
-    description: Retrieve all certificates for the specified scope
+    description: |
+      Working with CRL Certificates in a Specific Scope
+      ----
     uriParameters:
       scopeId:
         displayName: scopeId
@@ -11129,10 +11412,12 @@ securitySchemes:
         required: true
     get:
       displayName: crlScopeRead
-      description: Retrieve all certificates for the specified scope
+      description: Retrieve all certificates for the specified scope.
   /crl/{crlId}:
     displayName: crlID
-    description: CRL certificates for specified certificate
+    description: |
+      Working with a Specific CRL Certificate
+      ----
     uriParameters:
       crlId:
         required: true
@@ -11140,10 +11425,10 @@ securitySchemes:
         description: CRL ID
     get:
       displayName: crlIDRead
-      description: Retrieve certificate object for specified crlID
+      description: Retrieve certificate object for the specified CRL.
     delete:
       displayName: crlIDDelete
-      description: Delete the specified CRL
+      description: Delete the specified CRL.
 /2.0/services/policy:
   displayName: policy
   description: |
@@ -11350,7 +11635,6 @@ securitySchemes:
         Working with Service Composer Status
         ------------------------------------
       get:
-      # new in 6.2.3
         displayName: securityPolicyStatusRead
         description: |
           Retrieve the consolidated status of Service Composer.
@@ -11374,15 +11658,14 @@ securitySchemes:
     /alarms:
       displayName: securityPolicyAlarms
       description: |
-        Working with Security Policy Alarms.
+        Working with Security Policy Alarms
         -----------
       /all:
         displayName: securityPolicyAlarmsAll
         description: |
-          Working with all Service Composer Alarms
+          Working with All Service Composer Alarms
           ------------
         get:
-        # new in 6.2.3
           displayName: securityPolicyAlarmsAllRead
           description: |
             Retrieve all system alarms that are raised at Service Composer
@@ -11765,7 +12048,9 @@ securitySchemes:
                     </securityPolicies>
     /hierarchy:
       displayName: hierarchy
-      description: Security policy configuration import/export
+      description: |
+        Working With Security Policy Configuration Hierarchies
+        -----
       post:
         displayName: hierarchyCreate
         description: |
@@ -11833,39 +12118,46 @@ securitySchemes:
             required: false
   /securityaction/category/virtualmachines:
     displayName: securityActionVM
-    description: Virtual machines for a security action
+    description: |
+      Working with Virtual Machines with Security Actions Applied
+      -----
     get:
       displayName: securityActionVMRead
       description: |
-        Fetch all vm objects on which security action of a given category and
-        attribute has been applied
+        Fetch all VM objects on which security action of a given category and
+        attribute has been applied.
       queryParameters:
         attributeKey:
           displayName: attributeKey
-          description: Attribute name
+          description: Attribute name.
         attributeValue:
           displayName: attributeValue
-          description: Attribute value
+          description: Attribute value.
   /securitygroup/{ID}/securityactions:
     displayName: securityActionSecGroup
-    description: Security actions on a security group
+    description: |
+      Working With Security Actions Applicable on Security Groups
+      -----
     uriParameters:
       ID:
         displayName: ID
-        description: Specified security group
+        description: Specified security group.
     get:
       displayName: securityActionRead
-      description: Query all security actions applicable on a security group
+      description: Retrieve all security actions applicable on a security group.
   /virtualmachine/{ID}/securityactions:
     displayName: vmApplicableSecurityAction
-    description: Fetch the security actions applicable on a virtual machine
+    description: |
+      Working with Security Actions Applicable on a Virtual Machine
+      ----
     uriParameters:
       ID:
         displayName: ID
         description: VM ID
     get:
       displayName: vmApplicableSecurityAction
-      description: Fetch the security actions applicable on a virtual machine
+      description: |
+        Retrieve the security actions applicable on a virtual machine.
   /policy/serviceprovider/firewall:
     displayName: serviceComposerDFW
     description: |
@@ -11920,14 +12212,16 @@ securitySchemes:
             </keyValues> -->
   /policy/securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
-    description: Retrieve security policies mapped to a security group
+    description: |
+      Working with Security Policies Mapped to a Security Group
+      -----
     uriParameters:
       ID:
         displayName: ID
         description: Specified security group ID
     get:
       displayName: secGroupPoliciesRead
-      description: Retrieve security policies mapped to a security group
+      description: Retrieve security policies mapped to a security group.
 /2.0/services/snmp:
   # new is 6.2.3
   displayName: snmp
@@ -11941,8 +12235,8 @@ securitySchemes:
   /status:
     displayName: snmpStatus
     description: |
-      Working with SNMP Settings
-      ___
+      Working with SNMP Status Settings
+      -----
       You can configure settings for SNMP on the NSX Manager.
 
       -------------------------
@@ -11953,7 +12247,7 @@ securitySchemes:
     get:
       displayName: snmpStatusRead
       description: |
-        Retrieve SNMP settings.
+        Retrieve SNMP status settings.
 
         **Method history:**
 
@@ -11972,7 +12266,7 @@ securitySchemes:
     put:
       displayName: snmpStatusUpdate
       description: |
-        Update SNMP settings.
+        Update SNMP status settings.
 
         **Method history:**
 
@@ -11989,7 +12283,8 @@ securitySchemes:
   /manager:
     displayName: snmpManagers
     description: |
-      ## Working with SNMP Managers
+      Working with SNMP Managers
+      -----
     get:
       displayName: snmpManagersList
       description: |
@@ -12326,11 +12621,10 @@ securitySchemes:
     Working with Hardware Gateways
     ============
   post:
-  # new in 6.2.3
     displayName: hardwareGatewayCreate
     description: |
       Install a hardware gateway.
-      ___
+
       **bfdEnabled** is true by default.
 
       **Method history:**
@@ -12348,7 +12642,6 @@ securitySchemes:
             <bfdEnabled></bfdEnabled>
           </hardwareGatewaySpec>
   get:
-  # new in 6.2.3
     displayName: hardwareGatewaysList
     description: |
       Retrieve information about all hardware gateways.
@@ -12396,16 +12689,16 @@ securitySchemes:
                   </hardwareGateway>
               </list>
   /{hardwareGatewayId}:
-  # new in 6.2.3
     displayName: hardwareGatewayId
-    description: Working with a specific hardware gateway.
+    description: |
+      Working With a Specific Hardware Gateway
+      ----
     uriParameters:
       hardwareGatewayId:
         displayName: hardwareGatewayId
         description: Object ID of the hardware gateway.
         required: true
     get:
-    # new in 6.2.3
       displayName: hardwareGatewayRead
       description: |
         Retrieve information about the specified hardware gateway.
@@ -12436,7 +12729,6 @@ securitySchemes:
                   <bindingCount>2</bindingCount>
                 </hardwareGateway>
     put:
-    # new in 6.2.3
       displayName: hardwareGatewayUpdate
       description: |
         Update the specified hardware gateway.
@@ -12456,7 +12748,6 @@ securitySchemes:
               <bfdEnabled></bfdEnabled>
             </hardwareGatewaySpec>
     delete:
-    # new in 6.2.3
       displayName: hardwareGatewayDelete
       description: |
         Delete the specified hardware gateway.
@@ -12468,9 +12759,10 @@ securitySchemes:
         6.2.3 | Method introduced.
     /switches:
       displayName: hardwareGatewaySwitches
-      description: Working with switches on a specific hardware gateway.
+      description: | 
+        Working With Switches on a Specific Hardware Gateway
+        -----
       get:
-      # new in 6.2.3
         displayName: hardwareGatewaySwitchesList
         description: |
           Retrieve information about switches on the specified hardware
@@ -12495,18 +12787,16 @@ securitySchemes:
                     <hardwareGatewayId>torgateway-1</hardwareGatewayId>
                   </hardwareGatewaySwitches>
       /{switchName}:
-      # new in 6.2.3
         displayName: hardwareGatewaySwitch
         description: |
-          Working with a specific switch on a specific hardware gateway.
+          Working With a Specific Switch on a Specific Hardware Gateway
+          -----
         /switchports:
-        # new in 6.2.3
           displayName: hardwareGatewaySwitchPorts
           description: |
-            Working with ports on a specific switch on a specific hardware
-            gateway.
+            Working With Ports on a Specific Switch on a Specific Hardware Gateway
+            ----
           get:
-          # new in 6.2.3
             displayName: hardwareGatewaySwitchPortsList
             description: |
               Retrive information about the hardware gateway switch ports for
@@ -12549,11 +12839,11 @@ securitySchemes:
                           <hardwareGatewayId>torgateway-1</hardwareGatewayId>
                       </hardwareGatewaySwitchPorts>
   /replicationcluster:
-  # new in 6.2.3
     displayName: hardwareGatewayReplicationCluster
-    description: Working with the hardware gateway replication cluster.
+    description: |
+      Working With the Hardware Gateway Replication Cluster
+      ----
     put:
-    # new in 6.2.3
       displayName: hardwareGatewayReplicationClusterUpdate
       description: |
         Update the hardware gateway replication cluster.
@@ -12582,7 +12872,6 @@ securitySchemes:
               </hosts>
             </replicationCluster>
     get:
-    # new in 6.2.3
       displayName: hardwareGatewayReplicationClusterRead
       description: |
         Retrieve information about the hardware gateway replication cluster.
@@ -12662,11 +12951,11 @@ securitySchemes:
                   </hosts>
                 </replicationCluster>
   /bindings:
-  # new in 6.2.3
     displayName: hardwareGatewayBindings
-    description: Retrieve information about hardware gateway bindings.
+    description: |
+      Retrieve Information About Hardware Gateway Bindings
+      -----
     post:
-    # new in 6.2.3
       displayName: hardwareGatewayBindingCreate
       description: |
         Create a hardware gateway binding.
@@ -12686,7 +12975,6 @@ securitySchemes:
               <portName></portName>
             </hardwareGatewayBinding>
     get:
-    # new in 6.2.3
       displayName: hardwareGatewayBindingsList
       description: |
         Retrieve information about hardware gateway bindings.
@@ -12722,15 +13010,15 @@ securitySchemes:
                   <vni>5000</vni>
                 </hardwareGatewayBinding>
     /{bindingId}:
-    # new in 6.2.3
       displayName: hardwareGatewayBinding
-      description: Working with a specific hardware gateway binding.
+      description: |
+        Working With a Specific Hardware Gateway Binding
+        -----
       uriParameters:
         bindingId:
           displayName: bindingId
           description: hardware gateway binding ID.
       get:
-      # new in 6.2.3
         displayName: hardwareGatewayBindingRead
         description: |
           Retrieve information about the specified hardware gateway binding.
@@ -12741,7 +13029,6 @@ securitySchemes:
           --------|-------------
           6.2.3 | Method introduced.
       put:
-      # new in 6.2.3
         displayName: hardwareGatewayBindingUpdate
         description: |
           Update the specified hardware gateway binding.
@@ -12768,7 +13055,6 @@ securitySchemes:
                 <virtualWire>virtualwire-1</virtualWire>
               </hardwareGatewayBinding>
       delete:
-      # new in 6.2.3
         displayName: hardwareGatewayBindingDelete
         description: |
           Delete the specified hardware gateway binding.
@@ -12780,9 +13066,10 @@ securitySchemes:
           6.2.3 | Method introduced.
       /statistic:
         displayName: hardwareGatewayBindingStatistic
-        description: Working with hardware gateway binding statistics.
+        description: |
+          Working with Hardware Gateway Binding Statistics
+          ----
         get:
-        # new in 6.2.3
           displayName: hardwareGatewayBindingStatisticList
           description: |
             Retrieve statistics for the specified hardware gateway binding.
@@ -12808,9 +13095,9 @@ securitySchemes:
     /manage:
       displayName: hardwareGatewayBindingsManage
       description: |
-        Working with hardware gateway binding objects.
+        Working With Hardware Gateway Binding Objects
+        ----
       post:
-      # new in 6.2.3
         displayName: hardwareGatewayBindingsManageUpdate
         description: |
           Manage hardware gateway binding objects.
@@ -12860,12 +13147,15 @@ securitySchemes:
               </hardwareGatewayManageBindings>
   /bfd:
     displayName: hardwareGatewayBfd
-    description: Working with hardware gateway BFD (bidirectional forwarding).
+    description: |
+      Working With Hardware Gateway BFD (Bidirectional Forwarding Detection)
+      -----
     /config:
       displayName: hardwareGatewayBfdConfig
-      description: Working with hardware gateway BFD configuration.
+      description: |
+        Working With Hardware Gateway BFD Configuration
+        -----
       put:
-      # new in 6.2.3
         displayName: hardwareGatewayBfdConfigUpdate
         description: |
           Update global hardware gateway BFD configuration.
@@ -12883,7 +13173,6 @@ securitySchemes:
                 <probeInterval>100</probeInterval>
               </hardwareGatewayBfdParams>
       get:
-      # new in 6.2.3
         displayName: hardwareGatewayBfdConfigRead
         description: |
           Retrieve global hardware gateway BFD configuration.
@@ -12904,9 +13193,10 @@ securitySchemes:
                   </hardwareGatewayBfdParams>
     /status:
       displayName: hardwareGatewayBfdStatus
-      description: Working with hardware gateway BFD tunnel status.
+      description: |
+        Working With Hardware Gateway BFD Tunnel Status
+        ------
       get:
-        # new in 6.2.3
         displayName: hardwareGatewayBfdStatusRead
         description: |
           Retrieve hardware gateway BFD tunnel status for all tunnel
