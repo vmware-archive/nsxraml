@@ -40,7 +40,7 @@ To find out how VMware support offerings can help meet your business needs, go t
 
 ### VMware Professional Services
 
-VMware Education Services courses offer extensive hands‐on labs, case study examples, and course materials designed to be used as on‐the‐job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
+VMware Education Services courses offer extensive hands-on labs, case study examples, and course materials designed to be used as on-the-job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
 http://www.vmware.com/services.
 
 ## Ports Required for the NSX REST API
@@ -97,9 +97,9 @@ IDs via the vCenter Managed Object Browser.
    e.g. *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32. 
+   host link, e.g. host-32.
 5. Find **network** in the Name column. The corresponding Value column lists
-   the port groups on that host, e.g. *dvportgroup-388*. 
+   the port groups on that host, e.g. *dvportgroup-388*.
 
 ### Find VMID
 
@@ -117,7 +117,7 @@ IDs via the vCenter Managed Object Browser.
    e.g. *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32. 
+   host link, e.g. host-32.
 5. Find **vm** in the Name column. The corresponding Value column lists the
    virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
 
@@ -274,7 +274,8 @@ Working with Transport Zones
 scopes).
 
 * **post** *(secured)*: Create a transport zone.
-Request body parameters&#58;
+Request body parameters:
+
   * **name** - Required. The name of the transport zone.
   * **description** - Optional. Description of the transport zone.
   * **objectId** - Required. The cluster object ID from vSphere. One or more are
@@ -513,13 +514,14 @@ Request without body to upgrade controller cluster.
 
 * **get** *(secured)*: Retrieves details and runtime status for all controllers.  Runtime status
 can be one of the following:
-  * **Deploying** ‐ controller is being deployed and the procedure has not
+
+  * **Deploying** - controller is being deployed and the procedure has not
   completed yet.
-  * **Removing** ‐ controller is being removed and the procedure has not
+  * **Removing** - controller is being removed and the procedure has not
   completed yet.
-  * **Running** ‐ controller has been deployed and can respond to API
+  * **Running** - controller has been deployed and can respond to API
   invocation.
-  * **Unknown** ‐ controller has been deployed but fails to respond to API
+  * **Unknown** - controller has been deployed but fails to respond to API
   invocation.
 
 ### /2.0/vdn/controller/upgrade-available
@@ -1184,7 +1186,7 @@ Cluster preparation can be broken down into the following:
 * **post** *(secured)*: Install network fabric or VXLAN.
 ___
 You install the network infrastructure components in your virtual
-environment on a per‐cluster level for each vCenter server, which
+environment on a per-cluster level for each vCenter server, which
 deploys the required software on all hosts in the cluster. This software
 is also referred to as an NSX vSwitch. When a new host is added to this
 cluster, the required software is automatically installed on the newly
@@ -2409,8 +2411,8 @@ Response values for flow statistics:
   * 0 - to virtual machine
   * 1 - from virtual machine
 * **controlDirection** - control direction for dynamic TCP traffic:
-  * 0 - source ‐> destination
-  * 1 - destination ‐> source
+  * 0 - source -> destination
+  * 1 - destination -> source
 
 ### /2.1/app/flow/flowstats/info
 Working with flow monitoring meta-data.
@@ -3320,7 +3322,7 @@ ___
 | maxParallelVixCallsForHealthCheck | The maximum concurrent health check calls that can be made for NSX Edge VMʹs based on VIX communication channel is 25.|
 | publishingTimeoutInMs | The timeout value to publish a configuration change on NSX Edge appliance.  Default is 1200000 (20 minutes).|
 | edgeVCpuReservationPercentage | Integer value [0-100], specifying the CPU reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
-| edgeMemoryReservationPercentage | integer value [0‐100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
+| edgeMemoryReservationPercentage | integer value [0-100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
 | megaHertzPerVCpu | integer value specifying the megahertz per each vCPU (1000, 1500, 2000) |
 
 * **get** *(secured)*: Retrieve the NSX Edge tuning configuration.
