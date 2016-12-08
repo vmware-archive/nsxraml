@@ -5528,81 +5528,6 @@ fails.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-service-composer-firewall">Working with Service Composer Firewall</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/services/policy/policy/serviceprovider/firewall"
-    href="#GET/2.0/services/policy/policy/serviceprovider/firewall"
-  ><h2>GET /2.0/services/policy/policy/serviceprovider/firewall</h2></a>
-  <div class="content">
-    <p><p>This method can perform the following functions, depending on the
-request body provided.</p>
-<table class="table"><thead><tr>
-<th>Key</th>
-<th>Description</th>
-<th>Comments</th>
-</tr>
-</thead><tbody><tr>
-<td>getServiceComposerFirewallOutOfSyncTimestamp</td>
-<td>Check if Service Composer firewall and Distributed Firewall are in sync.</td>
-<td>If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.</td>
-</tr>
-<tr>
-<td>forceSync</td>
-<td>Synchronize Service Composer firewall with Distributed Firewall.</td>
-<td></td>
-</tr>
-<tr>
-<td>getAutoSaveDraft</td>
-<td>Retrieve the state of the auto save draft property in Service Composer.</td>
-<td>Response is true or false.</td>
-</tr>
-<tr>
-<td>autoSaveDraft</td>
-<td>Change the state of the auto save draft property in Service Composer.</td>
-<td>Provide value true or false.</td>
-</tr>
-</tbody></table></p>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- * Check if Service Composer firewall and Distributed Firewall are in sync --&gt;</span>
-
-<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>getServiceComposerFirewallOutOfSyncTimestamp<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
-
-<span class="hljs-comment">&lt;!-- * Synchronize Service Composer firewall with Distributed Firewall
-
-&lt;keyValues&gt;
-  &lt;keyValue&gt;
-    &lt;key&gt;forceSync&lt;/key&gt;
-  &lt;/keyValue&gt;
-&lt;/keyValues&gt;
-
-* Retrieve the state of the auto save draft property in Service Composer
-
-&lt;keyValues&gt;
-  &lt;keyValue&gt;
-    &lt;key&gt;getAutoSaveDraft&lt;/key&gt;
-  &lt;/keyValue&gt;
-&lt;/keyValues&gt;
-
-* Change the state of the auto save draft property in Service Composer
-
-&lt;keyValues&gt;
-  &lt;keyValue&gt;
-    &lt;key&gt;autoSaveDraft&lt;/key&gt;
-    &lt;value&gt;false&lt;/value&gt;
-  &lt;/keyValue&gt;
-&lt;/keyValues&gt; --&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
   <div class="description"><h2 id="working-with-virtual-machines-with-security-actions-applied">Working with Virtual Machines with Security Actions Applied</h2>
 </div>
 <div class="method get">
@@ -5612,8 +5537,8 @@ request body provided.</p>
     href="#GET/2.0/services/policy/securityaction/category/virtualmachines"
   ><h2>GET /2.0/services/policy/securityaction/category/virtualmachines</h2></a>
   <div class="content">
-    <p><p>Fetch all VM objects on which security action of a given category and
-attribute has been applied.</p>
+    <p><p>Retrieve all VirtualMachine objects on which security action of a
+given category and attribute has been applied.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -5624,7 +5549,7 @@ attribute has been applied.</p>
     
   </dt>
   <dd>
-      <p>Attribute name.</p>
+      <p>Attribute key.</p>
 
   </dd>
   <dt>
@@ -5638,6 +5563,29 @@ attribute has been applied.</p>
   </dd>
 </dl>
     </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vmnodes</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vmnode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vmnode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vmnode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vmnode</span>&gt;</span>
+  ...
+  ...
+  <span class="hljs-tag">&lt;<span class="hljs-name">vmnode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">vmnode</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vmnodes</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -5666,7 +5614,290 @@ attribute has been applied.</p>
   ><h2>GET /2.0/services/policy/securitygroup/{ID}/securityactions</h2></a>
   <div class="content">
     <p><p>Retrieve all security actions applicable on a security group.</p>
+<hr>
+<p>Retrieve all security actions applicable on a security group for all
+ExecutionOrderCategories. The list is sorted based on the weight of
+security actions in descending order.  The <strong>isActive</strong> tag indicates
+if a securityaction will be applied (by the enforcement engine) on the
+security group.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securityActionsByCategoryMap</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">actionsByCategory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span>firewall<span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>  <span class="hljs-attr">class</span>=<span class="hljs-string">"firewallSecurityAction"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">executionOrder</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">executionOrder</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">actionType</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">actionType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isActionEnforced</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isActionEnforced</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isActive</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isActive</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isEnabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">secondarySecurityGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">secondarySecurityGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">secondarySecurityGroup</span>&gt;</span>
+        ...
+      <span class="hljs-tag">&lt;/<span class="hljs-name">secondarySecurityGroup</span>&gt;</span>
+      ...
+      ...
+      <span class="hljs-tag">&lt;<span class="hljs-name">secondarySecurityGroup</span>&gt;</span>
+        ...
+      <span class="hljs-tag">&lt;/<span class="hljs-name">secondarySecurityGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">securityPolicy</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">securityPolicy</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">invalidSecondaryContainers</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">invalidSecondaryContainers</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">applications</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+           <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">element</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">applicationProtocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applicationProtocol</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">element</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
+          ...
+        <span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span>
+        ...
+        ...
+      <span class="hljs-tag">&lt;/<span class="hljs-name">applications</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">invalidApplications</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">invalidApplications</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logged</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">logged</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>block<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span>inbound<span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">outsideSecondaryContainer</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">outsideSecondaryContainer</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+    ...
+    ...
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">actionsByCategory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">actionsByCategory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span>endpoint<span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"endpointSecurityAction"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">executionOrder</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">executionOrder</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">actionType</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">actionType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isActionEnforced</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isActionEnforced</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isActive</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isActive</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isEnabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">securityPolicy</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">securityPolicy</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">serviceName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serviceName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">serviceId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serviceId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">invalidServiceId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">invalidServiceId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ServiceProfile</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>serviceprofile-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        ...
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ServiceProfile</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">invalidServiceProfile</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">invalidServiceProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+    ...
+    ...
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">actionsByCategory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">actionsByCategory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span>traffic_steering<span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"trafficSteeringSecurityAction"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">executionOrder</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">executionOrder</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">actionType</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">actionType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isActionEnforced</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isActionEnforced</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isActive</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isActive</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">isEnabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">securityPolicy</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">securityPolicy</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logged</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logged</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">serviceProfile</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>P<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">profileAttributes</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">attribute</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span>&gt;</span>
+            ...
+          <span class="hljs-tag">&lt;/<span class="hljs-name">attribute</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">profileAttributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+           <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vendorTemplate</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">idFromVendor</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">idFromVendor</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">vendorAttributes</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">vendorAttributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">vendorTemplate</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vendorAttributes</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">vendorAttributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">runtime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">nonCompliantDvpg</span>/&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">nonCompliantVwire</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nonCompliantVwire</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">runtime</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">serviceProfileBinding</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">distributedVirtualPortGroups</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">distributedVirtualPortGroups</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">virtualWires</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">virtualWires</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">excludedVnics</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">excludedVnics</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">virtualServers</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">virtualServers</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">serviceProfileBinding</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">serviceProfile</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">redirect</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">redirect</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+    ...
+    ...
+    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>
+      ...
+    <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">actionsByCategory</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">securityActionsByCategoryMap</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -6159,6 +6390,69 @@ XML.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="working-with-service-composer-firewall-applied-to-setting">Working with Service Composer Firewall Applied To Setting</h2>
+<p>You can set the applied to setting for all firewall rules created
+though Service Composer to either Distributed Firewall or Policy&#39;s
+Security Groups. By default, the applied to is set to Distributed
+Firewall. When Service Composer firewall rules have an applied to
+setting of distributed firewall, the rules are applied to all clusters
+on which distributed firewall is installed. If the firewall rules are
+set to apply to the policy&#39;s security groups, you have more granular
+control over the firewall rules, but may need multiple security
+policies or firewall rules to get the desired result.</p>
+<p><strong>Applied To Values for Service Composer Firewall Rules</strong></p>
+<table class="table"><thead><tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td>dfw_only</td>
+<td>Firewall rules are applied to all clusters on which Distributed Firewall is installed.</td>
+</tr>
+<tr>
+<td>policy_security_group</td>
+<td>Firewall rules are applied to security groups on which the security policy is applied.</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/policy/securitypolicy/serviceprovider/firewall"
+    href="#GET/2.0/services/policy/securitypolicy/serviceprovider/firewall"
+  ><h2>GET /2.0/services/policy/securitypolicy/serviceprovider/firewall</h2></a>
+  <div class="content">
+    <p><p>Retrieve the Service Composer firewall applied to setting.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">SecurityPolicyFirewallConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliedTo</span>&gt;</span>dfw_only<span class="hljs-tag">&lt;/<span class="hljs-name">appliedTo</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">SecurityPolicyFirewallConfig</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/services/policy/securitypolicy/serviceprovider/firewall"
+    href="#PUT/2.0/services/policy/securitypolicy/serviceprovider/firewall"
+  ><h2>PUT /2.0/services/policy/securitypolicy/serviceprovider/firewall</h2></a>
+  <div class="content">
+    <p><p>Update the Service Composer firewall applied to setting.</p>
+</p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">SecurityPolicyFirewallConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliedTo</span>&gt;</span>policy_security_group<span class="hljs-tag">&lt;/<span class="hljs-name">appliedTo</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">SecurityPolicyFirewallConfig</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h2 id="working-with-service-composer-status">Working with Service Composer Status</h2>
 </div>
 <div class="method get">
@@ -6644,6 +6938,94 @@ descending order.</p>
   ...
   <span class="hljs-tag">&lt;<span class="hljs-name">securityPolicy</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">securityPolicy</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">securityPolicies</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-service-composer-firewall">Working with Service Composer Firewall</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/policy/serviceprovider/firewall"
+    href="#GET/2.0/services/policy/serviceprovider/firewall"
+  ><h2>GET /2.0/services/policy/serviceprovider/firewall</h2></a>
+  <div class="content">
+    <p><p>If Service Composer goes out of sync with Distributed Firewall, you
+must re-synchronize Service Composer rules with firewall rules. If
+Service Composer stays out of sync, firewall configuration may not
+stay enforced as expected.</p>
+<p>This method can perform the following functions, depending on the
+request body provided.</p>
+<table class="table"><thead><tr>
+<th>Key</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>getServiceComposerFirewallOutOfSyncTimestamp</td>
+<td>Check if Service Composer firewall and Distributed Firewall are in sync.</td>
+<td>If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.</td>
+</tr>
+<tr>
+<td>forceSync</td>
+<td>Synchronize Service Composer firewall with Distributed Firewall.</td>
+<td></td>
+</tr>
+<tr>
+<td>getAutoSaveDraft</td>
+<td>Retrieve the state of the auto save draft property in Service Composer.</td>
+<td>Response is true or false.</td>
+</tr>
+<tr>
+<td>autoSaveDraft</td>
+<td><strong>Note:</strong> Deprecated. Change the state of the auto save draft property in Service Composer.</td>
+<td>Provide value true or false.</td>
+</tr>
+</tbody></table><p>  <strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>  6.2.3</td>
+<td>Method to change audo save draft via <strong>autoSaveDraft</strong> parameter is deprecated, and will be removed in a future release.  <br>The default setting of <strong>autoSaveDraft</strong> is changed from <em>true</em> to <em>false</em>.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-comment">&lt;!-- * Check if Service Composer firewall and Distributed Firewall are in sync --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">keyValues</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">keyValue</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>getServiceComposerFirewallOutOfSyncTimestamp<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">keyValue</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">keyValues</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- * Synchronize Service Composer firewall with Distributed Firewall
+
+&lt;keyValues&gt;
+  &lt;keyValue&gt;
+    &lt;key&gt;forceSync&lt;/key&gt;
+  &lt;/keyValue&gt;
+&lt;/keyValues&gt;
+
+* Retrieve the state of the auto save draft property in Service Composer
+
+&lt;keyValues&gt;
+  &lt;keyValue&gt;
+    &lt;key&gt;getAutoSaveDraft&lt;/key&gt;
+  &lt;/keyValue&gt;
+&lt;/keyValues&gt;
+
+* Change the state of the auto save draft property in Service Composer
+
+&lt;keyValues&gt;
+  &lt;keyValue&gt;
+    &lt;key&gt;autoSaveDraft&lt;/key&gt;
+    &lt;value&gt;false&lt;/value&gt;
+  &lt;/keyValue&gt;
+&lt;/keyValues&gt; --&gt;</span>
 </code></pre>
   </div>
 </div>

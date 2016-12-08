@@ -11729,6 +11729,49 @@ securitySchemes:
                         </alarmMetadata>
                       </systemAlarm>
                     </systemAlarms>
+    /serviceprovider/firewall:
+      displayName: serviceComposerFirewallAppliedTo
+      description: |
+        Working with Service Composer Firewall Applied To Setting
+        -------------
+        You can set the applied to setting for all firewall rules created
+        though Service Composer to either Distributed Firewall or Policy's
+        Security Groups. By default, the applied to is set to Distributed
+        Firewall. When Service Composer firewall rules have an applied to
+        setting of distributed firewall, the rules are applied to all clusters
+        on which distributed firewall is installed. If the firewall rules are
+        set to apply to the policy's security groups, you have more granular
+        control over the firewall rules, but may need multiple security
+        policies or firewall rules to get the desired result.
+
+        **Applied To Values for Service Composer Firewall Rules**
+
+        Value | Description
+        ------|----------
+        dfw_only | Firewall rules are applied to all clusters on which Distributed Firewall is installed.
+        policy_security_group | Firewall rules are applied to security groups on which the security policy is applied.
+      get:
+        displayName: serviceComposerFirewallAppliedToRead
+        description: |
+          Retrieve the Service Composer firewall applied to setting.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <SecurityPolicyFirewallConfig>
+                    <appliedTo>dfw_only</appliedTo>
+                  </SecurityPolicyFirewallConfig>
+      put:
+        displayName: serviceComposerFirewallAppliedToUpdate
+        description: |
+          Update the Service Composer firewall applied to setting.
+        body:
+          application/xml:
+            example: |
+              <SecurityPolicyFirewallConfig>
+                <appliedTo>policy_security_group</appliedTo>
+              </SecurityPolicyFirewallConfig>
     /{ID}:
       displayName: securityPolicyID
       description: |
@@ -12120,31 +12163,334 @@ securitySchemes:
     displayName: securityActionVM
     description: |
       Working with Virtual Machines with Security Actions Applied
-      -----
+      --------------
     get:
       displayName: securityActionVMRead
       description: |
-        Fetch all VM objects on which security action of a given category and
-        attribute has been applied.
+        Retrieve all VirtualMachine objects on which security action of a
+        given category and attribute has been applied.
       queryParameters:
         attributeKey:
           displayName: attributeKey
-          description: Attribute name.
+          description: Attribute key.
         attributeValue:
           displayName: attributeValue
           description: Attribute value.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <vmnodes>
+                  <vmnode>
+                    <vmId></vmId>
+                    <vmName></vmName>
+                  </vmnode>
+                  <vmnode>
+                    <vmId></vmId>
+                    <vmName></vmName>
+                  </vmnode>
+                  ...
+                  ...
+                  <vmnode>
+                    <vmId></vmId>
+                    <vmName></vmName>
+                  </vmnode>
+                </vmnodes>
   /securitygroup/{ID}/securityactions:
     displayName: securityActionSecGroup
     description: |
       Working With Security Actions Applicable on Security Groups
-      -----
+      ----
     uriParameters:
       ID:
         displayName: ID
         description: Specified security group.
     get:
       displayName: securityActionRead
-      description: Retrieve all security actions applicable on a security group.
+      description: |
+        Retrieve all security actions applicable on a security group.
+        ___
+        Retrieve all security actions applicable on a security group for all
+        ExecutionOrderCategories. The list is sorted based on the weight of
+        security actions in descending order.  The **isActive** tag indicates
+        if a securityaction will be applied (by the enforcement engine) on the
+        security group.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <securityActionsByCategoryMap>
+                  <actionsByCategory>
+                    <category>firewall</category>
+                    <action  class="firewallSecurityAction">
+                      <objectId></objectId>
+                      <objectTypeName></objectTypeName>
+                      <vsmUuid></vsmUuid>
+                      <revision></revision>
+                      <type>
+                        <typeName></typeName>
+                      </type>
+                      <name>name</name>
+                      <description>description</description>
+                      <category></category>
+                      <executionOrder></executionOrder>
+                      <actionType></actionType>
+                      <isActionEnforced></isActionEnforced>
+                      <isActive></isActive>
+                      <isEnabled></isEnabled>
+                      <secondarySecurityGroup>
+                        <objectId></objectId>
+                        <objectTypeName></objectTypeName>
+                        <vsmUuid></vsmUuid>
+                        <revision></revision>
+                        <type>
+                          <typeName></typeName>
+                        </type>
+                        <name>name</name>
+                        <description>description</description>
+                        <scope>
+                          <id></id>
+                          <objectTypeName></objectTypeName>
+                          <name>name</name>
+                          <description>description</description>
+                        </scope>
+                        <extendedAttributes></extendedAttributes>
+                      </secondarySecurityGroup>
+                      <secondarySecurityGroup>
+                        ...
+                      </secondarySecurityGroup>
+                      ...
+                      ...
+                      <secondarySecurityGroup>
+                        ...
+                      </secondarySecurityGroup>
+                      <securityPolicy>
+                        <objectId></objectId>
+                        <objectTypeName></objectTypeName>
+                        <vsmUuid></vsmUuid>
+                        <revision></revision>
+                        <type>
+                          <typeName></typeName>
+                        </type>
+                        <name>name</name>
+                        <description>description</description>
+                        <scope>
+                          <id></id>
+                          <objectTypeName></objectTypeName>
+                          <name>name</name>
+                          <description>description</description>
+                        </scope>
+                      </securityPolicy>
+                      <invalidSecondaryContainers></invalidSecondaryContainers>
+                      <applications>
+                        <application>
+                          <objectId></objectId>
+                          <objectTypeName></objectTypeName>
+                          <vsmUuid></vsmUuid>
+                          <revision></revision>
+                          <type>
+                            <typeName></typeName>
+                          </type>
+                          <name></name>
+                          <scope>
+                            <id></id>
+                            <objectTypeName></objectTypeName>
+                            <name></name>
+                          </scope>
+                          <clientHandle></clientHandle>
+                           <extendedAttributes></extendedAttributes>
+                          <inheritanceAllowed></inheritanceAllowed>
+                          <element>
+                            <applicationProtocol></applicationProtocol>
+                            <value></value>
+                          </element>
+                        </application>
+                        <application>
+                          ...
+                        </application>
+                        ...
+                        ...
+                      </applications>
+                      <invalidApplications>false</invalidApplications>
+                      <logged>false</logged>
+                      <action>block</action>
+                      <direction>inbound</direction>
+                      <outsideSecondaryContainer>true</outsideSecondaryContainer>
+                    </action>
+                    <action>
+                    </action>
+                    ...
+                    ...
+                    <action>
+                      ...
+                    </action>
+                  </actionsByCategory>
+                  <actionsByCategory>
+                    <category>endpoint</category>
+                    <action class="endpointSecurityAction">
+                      <objectId></objectId>
+                      <objectTypeName></objectTypeName>
+                      <vsmUuid></vsmUuid>
+                      <revision></revision>
+                      <type>
+                        <typeName></typeName>
+                      </type>
+                      <name>name</name>
+                      <description>description</description>
+                      <category></category>
+                      <executionOrder></executionOrder>
+                      <actionType></actionType>
+                      <isActionEnforced></isActionEnforced>
+                      <isActive></isActive>
+                      <isEnabled></isEnabled>
+                      <securityPolicy>
+                        <objectId></objectId>
+                        <objectTypeName></objectTypeName>
+                        <vsmUuid></vsmUuid>
+                        <revision></revision>
+                        <type>
+                          <typeName></typeName>
+                        </type>
+                        <name></name>
+                        <description></description>
+                        <scope>
+                          <id></id>
+                          <objectTypeName></objectTypeName>
+                          <name>name</name>
+                          <description>description</description>
+                        </scope>
+                      </securityPolicy>
+                      <serviceName></serviceName>
+                      <serviceId></serviceId>
+                      <invalidServiceId></invalidServiceId>
+                      <ServiceProfile>
+                        <objectId>serviceprofile-1</objectId>
+                        ...
+                      </ServiceProfile>
+                      <invalidServiceProfile>false</invalidServiceProfile>
+                    </action>
+                    <action>
+                    </action>
+                    ...
+                    ...
+                    <action>
+                      ...
+                    </action>
+                  </actionsByCategory>
+                  <actionsByCategory>
+                    <category>traffic_steering</category>
+                    <action class="trafficSteeringSecurityAction">
+                      <objectId></objectId>
+                      <objectTypeName></objectTypeName>
+                      <vsmUuid></vsmUuid>
+                      <revision></revision>
+                      <type>
+                        <typeName></typeName>
+                      </type>
+                      <name>name</name>
+                      <description>description</description>
+                      <category></category>
+                      <executionOrder></executionOrder>
+                      <actionType></actionType>
+                      <isActionEnforced></isActionEnforced>
+                      <isActive></isActive>
+                      <isEnabled></isEnabled>
+                      <securityPolicy>
+                        <objectId></objectId>
+                        <objectTypeName></objectTypeName>
+                        <vsmUuid></vsmUuid>
+                        <revision></revision>
+                        <type>
+                          <typeName></typeName>
+                        </type>
+                        <name>name</name>
+                        <description>description</description>
+                        <scope>
+                          <id></id>
+                          <objectTypeName></objectTypeName>
+                          <name>name</name>
+                          <description>description</description>
+                        </scope>
+                      </securityPolicy>
+                      <logged></logged>
+                      <serviceProfile>
+                        <objectId></objectId>
+                        <objectTypeName></objectTypeName>
+                        <vsmUuid></vsmUuid>
+                        <revision></revision>
+                        <type>
+                          <typeName></typeName>
+                        </type>
+                        <name>P</name>
+                        <clientHandle>
+                        </clientHandle>
+                         <extendedAttributes></extendedAttributes>
+                        <profileAttributes>
+                          <id></id>
+                          <revision></revision>
+                          <attribute>
+                            <id></id>
+                            <revision></revision>
+                            <key></key>
+                            <name></name>
+                            <value></value>
+                          </attribute>
+                          <attribute>
+                            ...
+                          </attribute>
+                        </profileAttributes>
+                        <service>
+                          <objectId></objectId>
+                          <objectTypeName></objectTypeName>
+                          <vsmUuid></vsmUuid>
+                          <revision></revision>
+                          <type>
+                            <typeName></typeName>
+                          </type>
+                          <name>name</name>
+                          <clientHandle></clientHandle>
+                           <extendedAttributes></extendedAttributes>
+                        </service>
+                        <category></category>
+                        <vendorTemplate>
+                          <id></id>
+                          <revision></revision>
+                          <name>name</name>
+                          <idFromVendor></idFromVendor>
+                          <vendorAttributes>
+                            <id></id>
+                            <revision></revision>
+                          </vendorAttributes>
+                        </vendorTemplate>
+                        <status></status>
+                        <vendorAttributes>
+                          <id></id>
+                          <revision></revision>
+                        </vendorAttributes>
+                        <runtime>
+                          <nonCompliantDvpg/>
+                          <nonCompliantVwire></nonCompliantVwire>
+                        </runtime>
+                        <serviceProfileBinding>
+                          <distributedVirtualPortGroups></distributedVirtualPortGroups>
+                          <virtualWires></virtualWires>
+                          <excludedVnics></excludedVnics>
+                          <virtualServers></virtualServers>
+                        </serviceProfileBinding>
+                      </serviceProfile>
+                      <redirect></redirect>
+                    </action>
+                    <action>
+                    </action>
+                    ...
+                    ...
+                    <action>
+                      ...
+                    </action>
+                  </actionsByCategory>
+                </securityActionsByCategoryMap>
   /virtualmachine/{ID}/securityactions:
     displayName: vmApplicableSecurityAction
     description: |
@@ -12158,7 +12504,7 @@ securitySchemes:
       displayName: vmApplicableSecurityAction
       description: |
         Retrieve the security actions applicable on a virtual machine.
-  /policy/serviceprovider/firewall:
+  /serviceprovider/firewall:
     displayName: serviceComposerDFW
     description: |
       Working with Service Composer Firewall
@@ -12166,6 +12512,11 @@ securitySchemes:
     get:
       displayName: serviceComposerDFWRead
       description: |
+        If Service Composer goes out of sync with Distributed Firewall, you
+        must re-synchronize Service Composer rules with firewall rules. If
+        Service Composer stays out of sync, firewall configuration may not
+        stay enforced as expected.
+
         This method can perform the following functions, depending on the
         request body provided.
 
@@ -12174,7 +12525,12 @@ securitySchemes:
         getServiceComposerFirewallOutOfSyncTimestamp | Check if Service Composer firewall and Distributed Firewall are in sync. | If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
         forceSync | Synchronize Service Composer firewall with Distributed Firewall. |
         getAutoSaveDraft | Retrieve the state of the auto save draft property in Service Composer. | Response is true or false.
-        autoSaveDraft | Change the state of the auto save draft property in Service Composer. | Provide value true or false.
+        autoSaveDraft | **Note:** Deprecated. Change the state of the auto save draft property in Service Composer. | Provide value true or false.
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method to change audo save draft via **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.
       body:
         application/xml:
           example: |

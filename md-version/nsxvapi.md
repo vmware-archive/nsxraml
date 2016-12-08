@@ -3707,6 +3707,30 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
+### /2.0/services/policy/securitypolicy/serviceprovider/firewall
+Working with Service Composer Firewall Applied To Setting
+-------------
+You can set the applied to setting for all firewall rules created
+though Service Composer to either Distributed Firewall or Policy's
+Security Groups. By default, the applied to is set to Distributed
+Firewall. When Service Composer firewall rules have an applied to
+setting of distributed firewall, the rules are applied to all clusters
+on which distributed firewall is installed. If the firewall rules are
+set to apply to the policy's security groups, you have more granular
+control over the firewall rules, but may need multiple security
+policies or firewall rules to get the desired result.
+
+**Applied To Values for Service Composer Firewall Rules**
+
+Value | Description
+------|----------
+dfw_only | Firewall rules are applied to all clusters on which Distributed Firewall is installed.
+policy_security_group | Firewall rules are applied to security groups on which the security policy is applied.
+
+* **get** *(secured)*: Retrieve the Service Composer firewall applied to setting.
+
+* **put** *(secured)*: Update the Service Composer firewall applied to setting.
+
 ### /2.0/services/policy/securitypolicy/{ID}
 Working with Security Policies
 ------------------
@@ -3782,16 +3806,22 @@ source from where the hierarchy was exported.
 
 ### /2.0/services/policy/securityaction/category/virtualmachines
 Working with Virtual Machines with Security Actions Applied
------
+--------------
 
-* **get** *(secured)*: Fetch all VM objects on which security action of a given category and
-attribute has been applied.
+* **get** *(secured)*: Retrieve all VirtualMachine objects on which security action of a
+given category and attribute has been applied.
 
 ### /2.0/services/policy/securitygroup/{ID}/securityactions
 Working With Security Actions Applicable on Security Groups
------
+----
 
 * **get** *(secured)*: Retrieve all security actions applicable on a security group.
+___
+Retrieve all security actions applicable on a security group for all
+ExecutionOrderCategories. The list is sorted based on the weight of
+security actions in descending order.  The **isActive** tag indicates
+if a securityaction will be applied (by the enforcement engine) on the
+security group.
 
 ### /2.0/services/policy/virtualmachine/{ID}/securityactions
 Working with Security Actions Applicable on a Virtual Machine
@@ -3799,11 +3829,16 @@ Working with Security Actions Applicable on a Virtual Machine
 
 * **get** *(secured)*: Retrieve the security actions applicable on a virtual machine.
 
-### /2.0/services/policy/policy/serviceprovider/firewall
+### /2.0/services/policy/serviceprovider/firewall
 Working with Service Composer Firewall
 --------------
 
-* **get** *(secured)*: This method can perform the following functions, depending on the
+* **get** *(secured)*: If Service Composer goes out of sync with Distributed Firewall, you
+must re-synchronize Service Composer rules with firewall rules. If
+Service Composer stays out of sync, firewall configuration may not
+stay enforced as expected.
+
+This method can perform the following functions, depending on the
 request body provided.
 
 Key | Description | Comments
@@ -3811,7 +3846,12 @@ Key | Description | Comments
 getServiceComposerFirewallOutOfSyncTimestamp | Check if Service Composer firewall and Distributed Firewall are in sync. | If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
 forceSync | Synchronize Service Composer firewall with Distributed Firewall. |
 getAutoSaveDraft | Retrieve the state of the auto save draft property in Service Composer. | Response is true or false.
-autoSaveDraft | Change the state of the auto save draft property in Service Composer. | Provide value true or false.
+autoSaveDraft | **Note:** Deprecated. Change the state of the auto save draft property in Service Composer. | Provide value true or false.
+  **Method history:**
+
+  Release | Modification
+  --------|-------------
+  6.2.3 | Method to change audo save draft via **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.
 
 ### /2.0/services/policy/policy/securitygroup/{ID}/securitypolicies
 Working with Security Policies Mapped to a Security Group
