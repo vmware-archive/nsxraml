@@ -1589,40 +1589,287 @@ CSV format
 ## eventControl
 Working with Data Collection for Activity Monitoring
 ===========
+Activity Monitoring provides visibility into your virtual network to
+ensure that security policies at your organization are being enforced
+correctly.
+___
+A Security policy may mandate who is allowed access to what applications.
+The Cloud administrator can generate Activity Monitoring reports to see if
+the IP based firewall rule that they set is doing the intended work. By
+providing user and application level detail, Activity Monitoring
+translates high level security policies to low level IP address and
+network based implementation.
+___
+Once you enable data collection for Activity Monitoring, you can run
+reports to view inbound traffic (such as virtual machines being accessed
+by users) as well as outbound traffic (resource utilization, interaction
+between inventory containers, and AD groups that accessed a server).
+___
+You must enable data collection for one or more virtual machines on a
+vCenter Server before running an Activity Monitoring report. Before
+running a report, ensure that the enabled virtual machines are active and
+are generating network traffic.
+___
+You should also register NSX Manager with the AD Domain Controller. See
+"Working with Domains".
+___
+Note that only active connections are tracked by Activity Monitoring.
+Virtual machine traffic blocked by firewall rules at the vNIC level is not
+reflected in reports.
+___
+In case of an emergency such as a network overload, you can turn off data
+collection at a global level. This overrides all other data collection
+settings.
+___
+Some API calls may require the VMID, which is the MOID of the guest
+virtual machine. You can retrieve this by queuing the vCenter mob
+structure (https:VC‐IP‐Address/mob). The VMID is listed under host
+structure.
 
 ### /1.0/eventcontrol/vm/{vmID}/request
 Working With Data Collection on a Specific Virtual Machine
 ----
+You must enable data collection at least five minutes before running an
+Activity Monitoring report.
 
 * **post** *(secured)*: Enable or disable data collection on a virtual machine
+___
+Set **value** to *enabled* or *disabled*.
 
 ### /1.0/eventcontrol/eventcontrol-root/request
-Working with the Data Collection Kill Switch
+Override Data Collection
 ----
 
-* **post** *(secured)*: Turn on/off data collection at global level
+* **post** *(secured)*: Turn data collection on or off at the global level.
+___
+In case of an emergency such as a network overload, you can turn off
+data collection at a global level (kill switch). This overrides all
+other data collection settings.
+___
+Set **value** to *enabled* or *disabled*.
 
 ### /1.0/eventcontrol/config/vm/{vmID}
-Retrieve Data Collection Configuration
+Retrieve Data Collection Configuration for a Specific Virtual Machine
 -----
+When reporting per virtual machine configuration, current kill switch
+status is also reported too. The effective configuration of a virtual
+machine is determined by both kill switch config and per virtual machine
+configuration. If kill switch is on, event collection is effectively
+disabled regardless of what its per virtual machine configuration is; if
+kill switch is off, per virtual machine configuration determines whether
+event collection should be performed for this virtual machine.
 
-* **get** *(secured)*: Retrieve per vm configuration for data collection
+* **get** *(secured)*: Retrieve per VM configuration for data collection.
 
 ## activityMonitoring
 Working with Activity monitoring
 ======
 
 ### /3.0/ai/records
+Retrieve Aggregated User Activity
+--------------
 Get aggregated user activity (action records) using parameters. Requires
-vShield Endpoint and NSX Endpoint configured, and Data collection enabled
-on 1+ vm's
+that NSX Guest Introspection is configured, NSX Manager must be
+registered with Active Directory, and data collection is enabled on one
+or more VMs.
 
-* **get** *(secured)*: Get aggregated user activity
+* **get** *(secured)*: ### View Outbound Activity
+
+You can view what applications are being run by a security group or
+desktop pool and then drill down into the report to find out which
+client applications are making outbound connections by a particular
+group of users. You can also discover all user groups and users who are
+accessing a particular application, which can help you determine if you
+need to adjust identity firewall in your environment.
+
+* query=*resource*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *VIRTUAL_MACHINE*
+    * for app: *SRC_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
+
+**Example:** View user activities to VM ID 1 originating from application
+ID 1  
+`GET /api/3.0/ai/records?query=resource&interval=60m&param=src:DIRECTORY_GROUP&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1`
+
+### View Inbound Activity
+
+You can view all inbound activity to a server by desktop pool, security
+group, or AD group.
+
+* query=*sam*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *VIRTUAL_MACHINE*
+    * for app: *DEST_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
+
+**Example:** View user activities to VM ID 1 originating from
+application ID 1  
+`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1`
+
+### View Interaction between Inventory Containers
+You can view the traffic passing between defined containers such as AD
+groups, security groups and/or desktop pools. This can help you identify
+and configure access to shared services and to resolve misconfigured
+relationships between Inventory container definitions, desktop pools and
+AD groups.
+
+* query=*containers*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
+
+**Example:** View interaction between inventory containers  
+`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1`
+
+### View Outbound AD Group Activity
+
+You can view the traffic between members of defined Active Directory
+groups and can use this data to fine tune your firewall rules.
+
+* query=*adg*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *adg*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
+    * for adg: *USER*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default * is *INCLUDE*).
+
+**Example:** View outbound AD group activity    
+`GET https://NSX-Manager-IP-Address/api/3.0/ai/records?query=adg&interval=24h&param =adg:USER:1:INCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
 
 ### /3.0/ai/userdetails
 Retrieve user detail records in accordance with given query parameters
+---------
 
-* **get** *(secured)*: Retrieve user detail records in accordance with given query parameters
+* **get** *(secured)*: ### View Outbound Activity
+You can view what applications are being run by a security group or
+desktop pool and then drill down into the report to find out which
+client applications are making outbound connections by a particular
+group of users. You can also discover all user groups and users who
+are accessing a particular application, which can help you determine
+if you need to adjust identity firewall in your environment.
+
+* query=*resource*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *IP* - a valid IP address in dot notation, xx.xx.xx.xx
+    * for app: *SRC_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
+
+**Example:** View user activities to VM ID 1 originating from application ID 1  
+`GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00&param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52`
+
+### View Inbound Activity
+
+You can view all inbound activity to a server by desktop pool, security
+group, or AD group.
+
+* query=*sam*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app* (required)
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *VIRTUAL_MACHINE*
+    * for app: *DEST_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
+
+**Example:** View user activities to VM ID 1 originating from
+application ID 1  
+`GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
+
+### View Interaction between Inventory Containers
+You can view the traffic passing between defined containers such as AD
+groups, security groups and/or desktop pools. This can help you identify
+and configure access to shared services and to resolve misconfigured
+relationships between Inventory container definitions, desktop pools and
+AD groups.
+
+* query=*containers*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
+
+**Example:** View interaction between inventory containers  
+`GET /api/3.0/ai/userdetails?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1`
+
+### View Outbound AD Group Activity
+
+You can view the traffic between members of defined Active Directory
+groups and can use this data to fine tune your firewall rules.
+
+* query=*adg*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *adg*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
+    * for adg: *USER*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
+
+**Example:** View outbound AD group activity    
+`GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
+
+### View Virtual Machine Activity Report
+
+* query=*vma*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src*
+    * *dst*
+    * *app*
+    * If no parameters are passed, then this would show all SAM
+    activities
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
+    * for dst: *VIRTUAL_MACHINE*, *VM_UUID*
+    * for app - *SRC_APP* or *DEST_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
+
+**Example:** View outbound AD group activity    
+`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&param=app:DEST_APP:16`
 
 ### /3.0/ai/user/{userID}
 Retrieve details for a specific user
@@ -1689,6 +1936,11 @@ AD groups that a user belongs to
 Security group details
 
 * **get** *(secured)*: Retrieve list of all observed security groups
+___
+Observed entities are the ones that are reported by the agents. For
+example, if a host activity is reported by an agent and if that host
+belongs to a security group then that security group would reported as
+observed in SAM database:
 
 ### /3.0/ai/securitygroup/{secgroupID}
 Specific security group details
@@ -1698,73 +1950,97 @@ Specific security group details
 ## domain
 Working with Domains
 ===========
+After you create a domain, you can apply a security policy to it and run
+queries to view the applications and virtual machines being accessed by
+the users of a domain.
 
 ### /1.0/directory/updateDomain
 Updating Domains
 ---------------
+You can a register one or more Windows domains with an NSX Manager and
+associated vCenter server.  NSX Manager gets group and user information
+as well as the relationship between them from each domain that it is
+registered with. NSX Manager also retrieves Active Directory
+credentials.  You can apply security policies on an Active Directory
+domain and run queries to get information on virtual machines and
+applications accessed by users within an Active Directory domain.
+
+**Parameter Values for Registering or Updating a Domain**
+
+Parameter Name | Description | Mandatory? 
+----------------|-------------|------------
+ID |  Domain id.  If you want to create a new domain, do not provide this value.  Otherwise, the system will find an existing domain object by this ID and update it. | true if update existing domain 
+name |  Domain name.  This should be domain's full qualified name. In case agent discovered, this will be NetBIOS name, so you need to update it to FQN in order to support LDAP sync and event log reader. | true if creating a new domain. 
+description | Domain description | false 
+type | Domain type. Valid value include: AGENT_DISCOVERED, ActiveDirectory, SPECIAL (Do NOT modify SPECIAL domain). For LDAP sync and event log reader work, this need to be set to ActiveDirectory. | true if creating a new domain 
+netbiosName |  NetBIOS name of domain. This is Domain's NetBIOS name. Check windows domain setting, for value of it. Normally Agent report domain name is NetBIOS name. But confirm from Windows domain setting. | false 
+baseDn | Domain's Base DN (for LDAP sync).  Base DN is REQUIRED for LDAP Sync. If you have a domain like: w2k3.vshield.vmware.com, the base DN is very likely to be: DC=w2k3,DC=vshield,DC=vmware,DC=com. Another example is: domain name is: vs4.net, the base DN should be: DC=vs4,DC=net. You can use a LDAP client and connect to domain controller to find the domain's base DN. |  false 
+rootDn | LDAP Sync root DN.  Specify where should LDAP sync start from LDAP tree. This could be absolute path, for example: OU=Engineer,DC=vs4,DC=net, or relative path (relate to Base DN), for example: OU=Engineer. |  false
+securityId | Domain's Security ID (SID). This should be filled by LDAP sync process, and should not need to be modified. |  false 
+username |  Domain's User name (Used for LDAP Sync and/or Event Log reader) | false 
+password | User password | false
+eventLogUsername | Domain's event log reader username (will use above username if this is NULL) | false
+eventLogPassword | Domain's event log reader password | false
 
 * **post** *(secured)*: Register or update a domain with NSX Manager
 
 ### /1.0/directory/listDomains
 Retrieve LDAP Domains
----
+-----
 
-* **get** *(secured)*: Retrieve all agent discovered (or configured) LDAP domains
+* **get** *(secured)*: Retrieve all agent discovered (or configured) LDAP domains.
 
 ### /1.0/directory/deleteDomain/{ID}
 Delete a Specific Domain
 ----
 
-* **delete** *(secured)*: Delete domain
+* **delete** *(secured)*: Delete domain.
 
-### /1.0/directory/directory
-Working with LDAP Servers and EventLog Servers
-----
-
-### /1.0/directory/directory/updateLdapServer
+### /1.0/directory/updateLdapServer
 Create LDAP Server
-----
+------------
 
 * **post** *(secured)*: Create LDAP server.
 
-### /1.0/directory/directory/listLdapServersForDomain/{domainID}
+### /1.0/directory/listLdapServersForDomain/{domainID}
 Query LDAP Servers for a Domain
 ----
 
-* **get** *(secured)*: Query LDAP servers for a domain
+* **get** *(secured)*: Query LDAP servers for a domain.
 
-### /1.0/directory/directory/fullSync/{domainID}
+### /1.0/directory/fullSync/{domainID}
 Start LDAP Full Sync
 ----
 
 * **put** *(secured)*: Start LDAP full sync.
 
-### /1.0/directory/directory/deltaSync/{domainID}
+### /1.0/directory/deltaSync/{domainID}
 Start LDAP Delta Sync
 -----
 
 * **put** *(secured)*: Start LDAP delta sync.
 
-### /1.0/directory/directory/deleteLdapServer/{serverID}
+### /1.0/directory/deleteLdapServer/{serverID}
 Delete LDAP Server
 ----
 
-* **delete** *(secured)*: Delete LDAP server.
+* **delete** *(secured)*: Delete LDAP server
 
-### /1.0/directory/directory/updateEventLogServer
+### /1.0/directory/updateEventLogServer
 EventLog Server
-----
+------
 
-* **post** *(secured)*: Create EventLog server
+* **post** *(secured)*: Create EventLog server.
 
-### /1.0/directory/directory/listEventLogServersForDomain/{domainID}
+### /1.0/directory/listEventLogServersForDomain/{domainID}
 Working with EventLog Servers for a Domain
 ----
 
-* **get** *(secured)*: Query EventLog servers for a domain
+* **get** *(secured)*: Query EventLog servers for a domain.
 
-### /1.0/directory/directory/deleteEventLogServer/{serverID}
-Delete EventLog server
+### /1.0/directory/deleteEventLogServer/{serverID}
+Delete EventLog Server
+-----
 
 * **delete** *(secured)*: Delete EventLog server
 
@@ -1785,9 +2061,12 @@ Query host-to-ip mapping list from database
 ### /1.0/identity/ipToUserMapping
 Query set of users associated with a given set of Ip addresses
 
-* **get** *(secured)*: Query set of users associated with a given set of Ip addresses
+* **get** *(secured)*: Retrieve set of users associated with a given set of IP addresses during
+a specified time period. Since more than one user can be associated
+with a single IP address during the specified time period, each IP
+address can be associated with zero or more (i.e a SET of) users
 
-### /1.0/identity/directoryGroupsForUser/{userID}
+### /1.0/identity/directoryGroupsForUser
 Query set of Windows Domain Groups (AD Groups) to which the specified
 user belongs
 
