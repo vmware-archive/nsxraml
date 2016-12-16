@@ -497,6 +497,38 @@ Working with Connections Between Hardware Gateways and Logical Switches
 
 * **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
 
+**Attach a hardware gateway to a logical switch and create a new binding with the information provided**
+
+`POST /api/2.0/vdn/virtualwires/{virtualwireid}/hardwaregateways`
+
+```
+<hardwareGatewayBinding>
+  <hardwareGatewayId>hardwarewgateway1</hardwareGatewayId>
+  <vlan>v1</vlan>
+  <switchName>s1</switchName>
+  <portName>s1</portName>
+</hardwareGatewayBinding> 
+```
+
+**Attach a hardware gateway to a logical switch, specifying an existing binding by ID**
+
+`POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=attach`
+
+```
+<virtualWire>
+  ...
+  <hardwareGatewayBindings>
+    <hardwareGatewayBinding>
+      <id>binding id</id>
+    </hardwareGatewayBinding>
+  </hardwareGatewayBindings>
+</virtualWire>
+```
+
+**Detach a hardware gateway from a logical switch**
+
+`POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=detach`
+
 **Method history:**
 
 Release | Modification
@@ -1319,8 +1351,8 @@ Working with Network Fabric Configuration
 =====
 
 ### /2.0/nwfabric/configure
-Working with Network Virtualization Components and VXLAN.
-___
+Working with Network Virtualization Components and VXLAN
+---
 Cluster preparation can be broken down into the following:
   * Install VIB and non-VIB related action: Before any per-host config
   a VIB must be installed on the host. The feature can use this time to
@@ -1331,28 +1363,108 @@ Cluster preparation can be broken down into the following:
   VXLAN, create vmknics.
 
 * **post** *(secured)*: Install network fabric or VXLAN.
-___
-You install the network infrastructure components in your virtual
-environment on a per-cluster level for each vCenter server, which
-deploys the required software on all hosts in the cluster. This software
-is also referred to as an NSX vSwitch. When a new host is added to this
-cluster, the required software is automatically installed on the newly
-added host. After the network infrastructure is installed on a cluster,
-Logical Firewall is enabled on that cluster.
-___
-See examples for the following tasks:
+
+This method can be used to perform the following tasks: 
 * Install Network Virtualization Components
 * Configure VXLAN
 * Configure VXLAN with LACPv2
-* Reset Communication
-___
+* Reset Communication Between NSX Manager and a Host or Cluster
+
+**Parameter Information**
+
 | Name | Comments |
 |------|----------|
-|**resourceId** | vCenter MOB ID of cluster. For example, domain-7. A host can be specified when resetting communication. For example, host-24. |
+|**resourceId** | vCenter MOB ID of cluster. For example, *domain-7*. A host can be specified when resetting communication. For example, *host-24*. |
 |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations, *com.vmware.vshield.vsm.messagingInfra* for message bus operations.|
 |**ipPoolId** | Used for VXLAN installation. If not specified, DHCP is used for VTEP address assignment.|
 |**teaming** | Used for VXLAN installation. Options are *FAILOVER_ORDER*, *ETHER_CHANNEL*, *LACP_ACTIVE*, *LACP_PASSIVE*, *LOADBALANCE_LOADBASED*, *LOADBALANCE_SRCID*, *LOADBALANCE_SRCMAC*, *LACP_V2*|
 |**uplinkPortName** | The *uplinkPortName* as specified in vCenter.|
+
+### Install Network Virtualization Components
+
+`POST /api/2.0/nwfabric/configure`
+
+```
+<nwFabricFeatureConfig>
+  <resourceConfig>
+    <resourceId>CLUSTER MOID</resourceId>
+  </resourceConfig>
+</nwFabricFeatureConfig>
+```
+
+### Configure VXLAN
+
+`POST /api/2.0/nwfabric/configure`
+
+```
+<nwFabricFeatureConfig>
+  <featureId>com.vmware.vshield.vsm.vxlan</featureId>
+  <resourceConfig>
+    <resourceId>CLUSTER MOID</resourceId>
+    <configSpec class="clusterMappingSpec">
+      <switch>
+        <objectId>DVS MOID</objectId></switch>
+        <vlanId>0</vlanId>
+        <vmknicCount>1</vmknicCount>
+        <ipPoolId>IPADDRESSPOOL ID</ipPoolId>
+    </configSpec>
+  </resourceConfig>
+  <resourceConfig>
+    <resourceId>DVS MOID</resourceId>
+    <configSpec class="vdsContext">
+      <switch>
+          <objectId>DVS MOID</objectId>
+      </switch>
+      <mtu>1600</mtu>
+      <teaming>ETHER_CHANNEL</teaming>
+    </configSpec>
+  </resourceConfig>
+</nwFabricFeatureConfig>
+```
+
+### Configure VXLAN with LACPv2
+
+`POST /api/2.0/nwfabric/configure`
+
+```
+<nwFabricFeatureConfig>
+  <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
+  <resourceConfig>
+    <resourceId>CLUSTER MOID</resourceId>
+    <configSpec class="clusterMappingSpec">
+      <switch>
+        <objectId>DVS MOID</objectId>
+      </switch>
+      <vlanId>0</vlanId>
+      <vmknicCount>1</vmknicCount>
+    </configSpec>
+  </resourceConfig>
+  <resourceConfig>
+    <resourceId>DVS MOID</resourceId>
+    <configSpec class="vdsContext">
+      <switch>
+        <objectId>DVS MOID</objectId>
+      </switch>
+      <mtu>1600</mtu>
+      <teaming>LACP_V2</teaming>
+      <uplinkPortName>LAG NAME</uplinkPortName>
+    </configSpec>
+  </resourceConfig>
+</nwFabricFeatureConfig>
+```
+
+### Reset Communication Between NSX Manager and a Host or Cluster
+
+`POST /api/2.0/nwfabric/configure?action=synchronize`
+
+``` 
+<nwFabricFeatureConfig>
+  <featureId>com.vmware.vshield.vsm.messagingInfra</featureId>
+  <resourceConfig>
+    <resourceId>resourceId</resourceId>
+  </resourceConfig>
+</nwFabricFeatureConfig> 
+```
 
 * **put** *(secured)*: Upgrade Network virtualization components.
 ____
@@ -1375,6 +1487,43 @@ ___
 |------|----------|
 |**resourceId** | vCenter MOB ID of cluster. For example, domain-7.|
 |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations.|
+
+**Remove Network Virtualization Components**
+
+```
+<nwFabricFeatureConfig>
+  <resourceConfig>
+    <resourceId>CLUSTER MOID</resourceId>
+  </resourceConfig>
+</nwFabricFeatureConfig>
+
+**Remove VXLAN**
+
+```
+<nwFabricFeatureConfig>
+  <featureId>com.vmware.vshield.vsm.vxlan</featureId>
+  <resourceConfig>
+    <resourceId>CLUSTER MOID</resourceId>
+   </resourceConfig>
+</nwFabricFeatureConfig>
+```
+
+**Remove VXLAN with vDS context**
+
+```
+<nwFabricFeatureConfig>
+  <featureId>com.vmware.vshield.vsm.vxlan</featureId>
+  <resourceConfig>
+    <resourceId>CLUSTER MOID</resourceId>
+    <configSpec class="map">
+      <entry>
+        <keyclass="java.lang.String">vxlan</key>
+        <valueclass="java.lang.String">cascadeDeleteVdsContext</value>
+      </entry>
+    </configSpec>
+  </resourceConfig>
+</nwFabricFeatureConfig>
+```
 
 ### /2.0/nwfabric/features
 
@@ -2391,10 +2540,26 @@ You can specify a location for the section with the **operation**
 and **anchorId** query parameters.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}
-Working with a specific layer 3 distributed firewall section.
+Working With a Specific Layer 3 Distributed Firewall Section
+---
 
 * **get** *(secured)*: Retrieve information about the specified layer 3 section.
 * **post** *(secured)*: Move the specified layer 3 section.
+
+Use the **action**, **operation**, and optionally **achorId**
+query parameters to specify the destination for the section.
+
+`POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007
+?action=revise&operation=insert_before&anchorId=1006`
+
+`If-Match: 1477989118875` 
+
+```
+<section id="1007" name="Web Section" generationNumber="1477989118875" timestamp="1477989118875" type="LAYER3">
+  ...
+</section>
+```
+
 * **put** *(secured)*: Update the specified layer 3 section in distributed firewall.
 
 * Retrieve the configuration for the specified section.
@@ -2532,6 +2697,20 @@ Working with a specific layer 2 distributed firewall section.
 
 * **get** *(secured)*: Retrieve information about the specified layer 2 section.
 * **post** *(secured)*: Move the specified layer 2 section.
+
+Use the **action**, **operation**, and optionally **achorId**
+query parameters to specify the destination for the section.
+
+`POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009
+?action=revise&operation=insert_before&anchorId=1008`
+`If-Match: 1478307787160`
+
+```
+<section id="1009" name="Test Section" generationNumber="1478307787160" timestamp="1478307787160" type="LAYER2">
+  ...
+</section>
+```
+
 * **put** *(secured)*: Update the specified layer 2 section in distributed firewall.
 
 * Retrieve the configuration for the specified section.
@@ -2956,12 +3135,12 @@ NOTE: Do not use hidden/system resource pool IDs as they are not
 supported on the UI.
 ___
 Request body paramaters:
-  * **name** - Optional. Default is *vShield-<edgeId>*. Used as a vm name
-    on VC appended by "-<haIndex>"
+  * **name** - Optional. Default is *vShield-&lt;edgeId&gt;*. Used as a VM name
+    on vCenter appended by "-<haIndex>"
   * **description** - Optional. A text string that describes the object.
   * **tenant** - Optional. Will be used in syslog messages.
-  * **fqdn** - Optional. Defaut is *vshield-<edgeId>*. Used to set
-    hostanme on the vm. Appended by *-<haIndex>*
+  * **fqdn** - Optional. Defaut is *vshield-&lt;edgeId&gt;*. Used to set
+    hostanme on the vm. Appended by *-&lt;haIndex&gt;*
   * **vseLogLevel** - Optional. Default is *INFO*. Other possible values:
       * *EMERGENCY*
       * *ALERT*
@@ -3001,10 +3180,10 @@ Request body paramaters:
         * **primaryAddress** - This is mandatory for an **addressGroup**.
           May be either IPv4 of IPv6.
         * **secondaryAddresses** - Optional. Should be used to add/define
-          other IPs used for NAT, LB, VPN, etc..
+          IPs used for other services, such as NAT, LB, VPN.
           * **ipAddress** - Optional. One or more can be provided.
             This way multiple IP Addresses can be assigned to a
-            vnic/interface. May be eitehr IPv4 or IPv6.
+            vnic/interface. May be either IPv4 or IPv6.
         * **subnetMask** - Either **subnetMask** or **subnetPrefixLength**
           should be provided. If both then **subnetprefixLength** is
           ignored.
@@ -3028,7 +3207,7 @@ Request body paramaters:
       * **burstSize>** - Example 0
       * **enabled** - Value can be *true* or *false*.
       * **inherite** - Value can be *true* or *false*.
-    * **outShapingPolicy -Optional
+    * **outShapingPolicy** - Optional
       * **averageBandwidth** - Example 400000000
       * **peakBandwidth** - Example 400000000
       * **burstSize** - Example 0
@@ -4117,22 +4296,71 @@ must re-synchronize Service Composer rules with firewall rules. If
 Service Composer stays out of sync, firewall configuration may not
 stay enforced as expected.
 
-This method can perform the following functions, depending on the
-request body provided.
+This GET method can perform the following functions, depending on the
+request body provided. **Note:** Some REST clients do not allow you to
+specify a request body with a GET request.
 
-Key | Description | Comments
-----|-------------|----------
-getServiceComposerFirewallOutOfSyncTimestamp | Check if Service Composer firewall and Distributed Firewall are in sync. | If they are in sync, the response body does not contain any data.  <br>If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
-forceSync | Synchronize Service Composer firewall with Distributed Firewall. |
-getAutoSaveDraft | Retrieve the state of the auto save draft property in Service Composer. | Response is true or false.
-autoSaveDraft | **Note:** Deprecated. Change the state of the auto save draft property in Service Composer. | Provide value true or false.
-  **Method history:**
+### Check if Service Composer firewall and Distributed Firewall are in sync
+
+**Note: Deprecated.** Use `GET /2.0/services/policy/securitypolicy/status` instead. 
+
+* If they are in sync, the response body does not contain any data.  
+* If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
+
+```
+<keyValues>
+  <keyValue>
+    <key>getServiceComposerFirewallOutOfSyncTimestamp</key>
+  </keyValue>
+</keyValues>
+```
+
+### Synchronize Service Composer firewall with Distributed Firewall
+
+```
+<keyValues>
+  <keyValue>
+    <key>forceSync</key>
+  </keyValue>
+</keyValues>
+```
+
+### Retrieve the state of the auto save draft property in Service Composer
+
+Retrieve the state of the auto save draft property in Service
+Composer. Response is true or false.
+
+```
+<keyValues>
+  <keyValue>
+    <key>getAutoSaveDraft</key>
+  </keyValue>
+</keyValues>
+```
+
+### Change the state of the auto save draft property in Service Composer
+
+**Note: Deprecated.**
+
+Change the state of the auto save draft property in Service Composer.
+Provide request body value of true or false.
+
+```
+<keyValues>
+  <keyValue>
+    <key>autoSaveDraft</key>
+    <value>false</value>
+  </keyValue>
+</keyValues> 
+```
+
+**Method history:**
 
   Release | Modification
   --------|-------------
-  6.2.3 | Method to change audo save draft via **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.
+  6.2.3 | Method to change auto save draft via **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
 
-### /2.0/services/policy/policy/securitygroup/{ID}/securitypolicies
+### /2.0/services/policy/securitygroup/{ID}/securitypolicies
 Working with Security Policies Mapped to a Security Group
 -----
 
