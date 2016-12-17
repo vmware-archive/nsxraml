@@ -2922,24 +2922,31 @@ pool, or vm)</p>
 <section class="resource">
   <div class="description"><h1 id="working-with-guest-introspection-and-third-party-endpoint-protection-anti-virus-solutions">Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions</h1>
 <h2 id="about-guest-introspection-and-endpoint-protection-solutions">About Guest Introspection and Endpoint Protection Solutions</h2>
-<p>VMware&#39;s Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution
-that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.</p>
+<p>VMware&#39;s Guest Introspection Service enables vendors to deliver an
+introspection-based, endpoint protection (anti-virus) solution that uses
+the hypervisor to scan guest virtual machines from the outside, with only
+a thin agent on each guest virtual machine.</p>
 <h2 id="version-compatibility">Version Compatibility</h2>
-<p><strong>Note:</strong> The management APIs listed in this section are to be used only with partner endpoint protection solutions
-that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier).
-These partner solutions are also supported on NSX 6.0 and need the APIs listed below.
-These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as
-these newer solutions automate the registration and deployment process by using the new features introduced in NSX.
-Using these with newer NSX 6.0 based solutions could result in loss of features.</p>
+<p><strong>Note:</strong> The management APIs listed in this section are to be used only
+with partner endpoint protection solutions that were developed with EPSec
+Partner Program 3.0 or earlier (for vShield 5.5 or earlier).  These
+partner solutions are also supported on NSX 6.0 and need the APIs listed
+below.  These APIs should not be used with partner solutions developed
+specifically for NSX 6.0 or later, as these newer solutions automate the
+registration and deployment process by using the new features introduced
+in NSX.  Using these with newer NSX 6.0 based solutions could result in
+loss of features.</p>
 <h2 id="register-a-solution">Register a Solution</h2>
-<p>To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:</p>
+<p>To register a third-party solution with Guest Introspection, clients can
+use four REST calls to do the following:</p>
 <ol>
 <li>Register the vendor.</li>
 <li>Register one or more solutions.</li>
 <li>Set the solution IP address and port (for all hosts).</li>
 <li>Activate registered solutions per host.</li>
 </ol>
-<p><strong>Note:</strong> Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.</p>
+<p><strong>Note:</strong> Steps 1 through 3 need to be performed once per solution. Step 4
+needs to be performed for each host.</p>
 <h2 id="unregister-a-solution">Unregister a Solution</h2>
 <p>To unregister a solution, clients perform these steps in reverse:</p>
 <ol>
@@ -2957,7 +2964,8 @@ Using these with newer NSX 6.0 based solutions could result in loss of features.
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Activate an Endpoint Protection Solution.</p>
+  <div class="description"><h2 id="activate-an-endpoint-protection-solution">Activate an Endpoint Protection Solution</h2>
+<p>You can activate a solution that has been registered and located.</p>
 </div>
 <div class="method get">
   <a
@@ -2966,7 +2974,8 @@ Using these with newer NSX 6.0 based solutions could result in loss of features.
     href="#GET/2.0/endpointsecurity/activation"
   ><h2>GET /2.0/endpointsecurity/activation</h2></a>
   <div class="content">
-    <p><p>Retrieve activation information for all activated security VMs on the specified host.</p>
+    <p><p>Retrieve activation information for all activated security VMs on the
+specified host.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -3006,7 +3015,7 @@ Using these with newer NSX 6.0 based solutions could result in loss of features.
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Activate a registered endpoint protection solution.</p>
+  <div class="description"><h2 id="activate-a-registered-endpoint-protection-solution">Activate a Registered Endpoint Protection Solution</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -3040,7 +3049,8 @@ relative to other solutions on the same host.</p>
     href="#POST/2.0/endpointsecurity/activation/{vendorID}/{altitude}"
   ><h2>POST /2.0/endpointsecurity/activation/{vendorID}/{altitude}</h2></a>
   <div class="content">
-    <p><p>Activate an endpoint protection solution that has been registered and located. Specify the following parameter in the request body.</p>
+    <p><p>Activate an endpoint protection solution that has been registered
+and located. Specify the following parameter in the request body.</p>
 <table class="table"><thead><tr>
 <th>Name</th>
 <th>Comments</th>
@@ -3070,7 +3080,7 @@ relative to other solutions on the same host.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Get the activation status or deactivate an endpoint protection solution on a host.</p>
+  <div class="description"><h2 id="working-with-solution-activation-status">Working with Solution Activation Status</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -3110,7 +3120,7 @@ relative to other solutions on the same host.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Activated security virtual machines</p>
+  <div class="description"><h2 id="activated-security-virtual-machines">Activated Security Virtual Machines</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -3177,7 +3187,8 @@ relative to other solutions on the same host.</p>
     href="#POST/2.0/endpointsecurity/registration"
   ><h2>POST /2.0/endpointsecurity/registration</h2></a>
   <div class="content">
-    <p><p>Register the vendor of an endpoint protection solution. Specify the following parameters in the request.</p>
+    <p><p>Register the vendor of an endpoint protection solution. Specify the
+following parameters in the request.</p>
 <table class="table"><thead><tr>
 <th>Name</th>
 <th>Comments</th>
@@ -3219,7 +3230,7 @@ relative to other solutions on the same host.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Registered Guest Introspection vendors</p>
+  <div class="description"><h2 id="working-with-registered-guest-introspection-vendors">Working With Registered Guest Introspection Vendors</h2>
 </div>
 <div class="method get">
   <a
@@ -3234,7 +3245,7 @@ relative to other solutions on the same host.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Guest Introspection vendors and endpoint protection solutions</p>
+  <div class="description"><h2 id="working-with-guest-introspection-vendors-and-endpoint-protection-solutions">Working With Guest Introspection Vendors and Endpoint Protection Solutions</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -3321,7 +3332,7 @@ relative to other solutions on the same host.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Information about registered endpoint protection solutions</p>
+  <div class="description"><h2 id="information-about-registered-endpoint-protection-solutions">Information About Registered Endpoint Protection Solutions</h2>
 </div>
 <div class="method get">
   <a
@@ -3336,7 +3347,7 @@ relative to other solutions on the same host.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Endpoint protection solution registration information</p>
+  <div class="description"><h2 id="endpoint-protection-solution-registration-information">Endpoint Protection Solution Registration Information</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -3378,7 +3389,7 @@ events relative to other solutions on the same host.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>IP address and port for an endpoint protection solution.</p>
+  <div class="description"><h2 id="ip-address-and-port-for-an-endpoint-protection-solution">IP Address and Port For an Endpoint Protection Solution</h2>
 <p>To change the location of an endpoint protection solution:</p>
 <ol>
 <li>Deactivate all security virtual machines.</li>
@@ -3393,7 +3404,8 @@ events relative to other solutions on the same host.</p>
     href="#POST/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
   ><h2>POST /2.0/endpointsecurity/registration/{vendorID}/{altitude}/location</h2></a>
   <div class="content">
-    <p><p>Set the IP address and port on the vNIC host for an endpoint protection solution.</p>
+    <p><p>Set the IP address and port on the vNIC host for an endpoint
+protection solution.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -3422,7 +3434,8 @@ events relative to other solutions on the same host.</p>
     href="#GET/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
   ><h2>GET /2.0/endpointsecurity/registration/{vendorID}/{altitude}/location</h2></a>
   <div class="content">
-    <p><p>Get the IP address and port on the vNIC host for an endpoint protection solution.</p>
+    <p><p>Get the IP address and port on the vNIC host for an endpoint
+protection solution.</p>
 </p>
   </div>
 </div>
@@ -3433,7 +3446,8 @@ events relative to other solutions on the same host.</p>
     href="#DELETE/2.0/endpointsecurity/registration/{vendorID}/{altitude}/location"
   ><h2>DELETE /2.0/endpointsecurity/registration/{vendorID}/{altitude}/location</h2></a>
   <div class="content">
-    <p><p>Unset the IP address and port for an endpoint protection solution.</p>
+    <p><p>Unset the IP address and port for an endpoint protection
+solution.</p>
 </p>
   </div>
 </div>
@@ -5373,7 +5387,9 @@ users for the distributed firewall and VXLAN.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-mac-sets">Working with MAC Sets</h1>
+  <div class="description"><h1 id="working-with-mac-address-sets">Working with MAC Address Sets</h1>
+<p>You can create a MAC address set on the specified scope. On success, the API
+returns a string identifier for the new MAC address set.</p>
 </div>
 </section>
 <section class="resource">
@@ -5401,7 +5417,7 @@ use cases. Universal MAC sets are read-only from secondary managers.</p>
     href="#POST/2.0/services/macset/scope/{scopeId}"
   ><h2>POST /2.0/services/macset/scope/{scopeId}</h2></a>
   <div class="content">
-    <p><p>Create a MACset on a specified scope</p>
+    <p><p>Create a MAC address set on a specified scope</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -5448,7 +5464,7 @@ use cases. Universal MAC sets are read-only from secondary managers.</p>
     href="#GET/2.0/services/macset/scope/{scopeId}"
   ><h2>GET /2.0/services/macset/scope/{scopeId}</h2></a>
   <div class="content">
-    <p><p>List MACsets created on a specified scope</p>
+    <p><p>List MAC address set created on a specified scope</p>
 </p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
@@ -5498,7 +5514,7 @@ use cases. Universal MAC sets are read-only from secondary managers.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Operations on an individual MAC set</p>
+  <div class="description"><h2 id="working-with-a-specific-mac-address-set">Working With a Specific MAC Address Set</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -5509,7 +5525,8 @@ use cases. Universal MAC sets are read-only from secondary managers.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified MACset ID (Can be retrieved by listing the MACset on a scope)</p>
+      <p>Specified MAC address set ID (can be retrieved by listing the MAC
+address set on a scope).</p>
 
   </dd>
 </dl>
@@ -8563,7 +8580,7 @@ network fabric, and hypervisors.</p>
 <section class="resource">
   <div class="description"><h1 id="working-with-the-task-framework">Working with the Task Framework</h1>
 <p>Working with filtering criteria and paging information for jobs on the task
-framework</p>
+framework.</p>
 </div>
 <div class="method get">
   <a
@@ -8619,7 +8636,7 @@ framework</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Job instances on the task framework</p>
+  <div class="description"><h2 id="working-with-a-specific-job-instance">Working With a Specific Job Instance</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8642,7 +8659,7 @@ framework</p>
     href="#GET/2.0/services/taskservice/job/{jobId}"
   ><h2>GET /2.0/services/taskservice/job/{jobId}</h2></a>
   <div class="content">
-    <p><p>Retrieve all job instances for the specified job ID</p>
+    <p><p>Retrieve all job instances for the specified job ID.</p>
 </p>
   </div>
 </div>
@@ -9431,8 +9448,65 @@ scope</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-security-fabric">Working with Security Fabric</h1>
-</div>
+  <div class="description"><h1 id="working-with-security-fabric-and-security-services">Working with Security Fabric and Security Services</h1>
+<p>The security fabric simplifies and automates deployment of security
+services and provide a platform for configuration of the elements that are
+required to provide security to workloads. These elements include:</p>
+<p>Internal components:</p>
+<ul>
+<li>Guest Introspection Universal Service Virtual Machine</li>
+<li>Guest Introspection Mux</li>
+<li>Data Security</li>
+<li>Logical Firewall</li>
+</ul>
+<p>External components:</p>
+<ul>
+<li>Partner OVFs / VIBs</li>
+<li>Partner vendor policy templates</li>
+</ul>
+<p>For partner services, the overall workflow begins with registration of
+services by partner consoles, followed by deployment of the services by
+the administrator.</p>
+<p>Subsequent workflow is as follows:</p>
+<ol>
+<li>Select the clusters on which to deploy the security fabric (Mux,
+Traffic filter, USVM).</li>
+<li>Specify an IP pool to be used with the SVMs (available only if the
+partner registration indicates requirement of static IPs)</li>
+<li>Select portgroup (DVPG) to be used for each cluster (a default is
+pre‐populated for the user).</li>
+<li>Select datastore to be used for each cluster (a default is
+pre‐populated for the user).</li>
+<li>NSX Manager deploys the components on all hosts of the selected
+clusters.</li>
+</ol>
+<p>Once you deploy the security fabric, an agency defines the configuration
+needed to deploy agents (host components and appliances). An agency is
+created per cluster per deployment spec associated with services.  Agents
+are deployed on the selected clusters, and events / hooks for all the
+relevant actions are generated.</p>
+<p><strong>Request parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description </th>
+</tr>
+</thead><tbody><tr>
+<td>dataStore</td>
+<td>Needs to be specified only in POST call. In PUT call, it should be left empty. </td>
+</tr>
+<tr>
+<td>dvPortGroup</td>
+<td>Optional. If not specified, then user will set the Agent using vCenter Server. </td>
+</tr>
+<tr>
+<td>ipPool</td>
+<td>Optional. If not specified, IP address is assigned through DHCP. </td>
+</tr>
+<tr>
+<td>startTime</td>
+<td>Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. </td>
+</tr>
+</tbody></table></div>
 <div class="method post">
   <a
     class="verb post"
@@ -9440,7 +9514,7 @@ scope</p>
     href="#POST/2.0/si/deploy"
   ><h2>POST /2.0/si/deploy</h2></a>
   <div class="content">
-    <p><p>Deploy security fabric</p>
+    <p><p>Deploy security fabric.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -9451,7 +9525,7 @@ scope</p>
     
   </dt>
   <dd>
-      <p>Time to start deployment task. If not specified, deploy immediately</p>
+      <p>Time to start deployment task. If not specified, deploy immediately.</p>
 
   </dd>
 </dl>
@@ -9513,7 +9587,7 @@ scope</p>
     href="#PUT/2.0/si/deploy"
   ><h2>PUT /2.0/si/deploy</h2></a>
   <div class="content">
-    <p><p>Upgrade service to recent version</p>
+    <p><p>Upgrade service to recent version.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -9524,7 +9598,7 @@ scope</p>
     
   </dt>
   <dd>
-      <p>optional; specify time to start upgrade</p>
+      <p>Specify time to start upgrade.</p>
 
   </dd>
 </dl>
@@ -9786,7 +9860,11 @@ immediately</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with conflicting agencies</p>
+  <div class="description"><h2 id="working-with-conflicting-agencies">Working With Conflicting Agencies</h2>
+<p>When the NSX Manager database backup is restored to an older point in
+time, it is possible that deployment units for some EAM Agencies are
+missing. These APIs help the administratoridentify such EAM Agencies and
+take appropriate action.</p>
 </div>
 <div class="method get">
   <a
@@ -9809,8 +9887,17 @@ allowed operations on them</p>
   <div class="content">
     <p><p>Create deployment units for conflicting EAM Agencies, delete
 conflicting EAM agencies, or delete deployment units for conflicting
-EAM agencies</p>
-</p>
+EAM agencies.</p>
+<p><strong>Create deployment units for conflicting EAM agencies</strong></p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">conflictResolverInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">agencyAction</span>&gt;</span>RESTORE<span class="hljs-tag">&lt;/<span class="hljs-name">agencyAction</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">conflictResolverInfo</span>&gt;</span></code></pre><p><strong>Delete conflicting EAM agencies</strong></p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">conflictResolverInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">agencyAction</span>&gt;</span>DELETE<span class="hljs-tag">&lt;/<span class="hljs-name">agencyAction</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">conflictResolverInfo</span>&gt;</span></code></pre><p><strong>Delete deployment units for conflicting EAM agencies</strong></p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">conflictResolverInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">deploymentUnitAction</span>&gt;</span>DELETE<span class="hljs-tag">&lt;/<span class="hljs-name">deploymentUnitAction</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">conflictResolverInfo</span>&gt;</span></code></pre></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">conflictResolverInfo</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">agencyAction</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">agencyAction</span>&gt;</span>
@@ -23107,8 +23194,17 @@ configuration.</p>
     href="#PUT/4.0/firewall/config/globalconfiguration"
   ><h2>PUT /4.0/firewall/config/globalconfiguration</h2></a>
   <div class="content">
-    <p><p>Update the distributed firewall performance configuration.</p>
-</p>
+    <p><p>Update the distributed firewall performance configuration.
+<strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. <strong>autoDraftDisabled</strong> parameter added.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="globalConfiguration"&gt;
@@ -23135,8 +23231,9 @@ configuration.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Synchronize hosts and clusters with the last good configuration in NSX
-Mgr database</p>
+  <div class="description"><h2 id="synchronize-firewall">Synchronize Firewall</h2>
+<p>Synchronize hosts and clusters with the last good configuration in NSX
+Manager database.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -23159,17 +23256,15 @@ Mgr database</p>
     href="#POST/4.0/firewall/forceSync/{ID}"
   ><h2>POST /4.0/firewall/forceSync/{ID}</h2></a>
   <div class="content">
-    <p><p>Force sync host/cluster</p>
+    <p><p>Force sync host or cluster.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Distributed firewall rules configuration</p>
-<hr>
+  <div class="description"><h2 id="distributed-firewall-rules-configuration">Distributed Firewall Rules Configuration</h2>
 <p>The following table lists the elements that can be used in firewall
 rules.</p>
-<hr>
 <table class="table"><thead><tr>
 <th>Element</th>
 <th>Keyword for API</th>
@@ -23246,7 +23341,7 @@ rules.</p>
 <td>source/destination<br>appliedTo</td>
 </tr>
 <tr>
-<td>MAC set</td>
+<td>MAC address set</td>
 <td>MACSet</td>
 <td>source/destination</td>
 </tr>
@@ -23319,7 +23414,7 @@ specifying <em>LAYER2</em> will return all rule types.</p>
     
   </dt>
   <dd>
-      <p><strong>source</strong> can contain IPv4/v6 address or vm-id</p>
+      <p><strong>source</strong> can contain IPv4/v6 address or vm-id.</p>
 
   </dd>
   <dt>
@@ -23328,7 +23423,7 @@ specifying <em>LAYER2</em> will return all rule types.</p>
     
   </dt>
   <dd>
-      <p><strong>destination</strong> can contain IPv4/v6 address or vm-id</p>
+      <p><strong>destination</strong> can contain IPv4/v6 address or vm-id.</p>
 
   </dd>
   <dt>
@@ -23574,7 +23669,7 @@ allow rule and one defaultLayer2Section with default allow rule.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with layer 2 sections in distributed firewall.</p>
+  <div class="description"><h2 id="working-with-layer-2-sections-in-distributed-firewall">Working With Layer 2 Sections in Distributed Firewall</h2>
 <p>You can use sections in the firewall table to group logical rules based on
 AppliedTo or for a tenant use case. A firewall section is the smallest unit of
 configuration which can be updated independently. Section types are as
@@ -23784,7 +23879,7 @@ and <strong>anchorId</strong> query parameters.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with a specific layer 2 distributed firewall section.</p>
+  <div class="description"><h2 id="working-with-a-specific-layer-2-distributed-firewall-section">Working With a Specific Layer 2 Distributed Firewall Section</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -23995,7 +24090,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with distributed firewall rules in a layer 2 section.</p>
+  <div class="description"><h2 id="working-with-distributed-firewall-rules-in-a-layer-2-section">Working With Distributed Firewall Rules in a Layer 2 Section</h2>
 </div>
 <div class="method post">
   <a
@@ -24176,8 +24271,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Operations on L2 rules in sections identified by section Id and
-Rule Id</p>
+  <div class="description"><h2 id="working-with-a-specific-rule-in-a-specific-layer-2-section">Working with a Specific Rule in a Specific Layer 2 Section</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -24310,7 +24404,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Service Insertion profiles that can be applied to layer3 redirect rules</p>
+  <div class="description"><h2 id="service-insertion-profiles-and-layer-3-redirect-rules">Service Insertion Profiles and Layer 3 Redirect Rules</h2>
 </div>
 <div class="method get">
   <a
@@ -24319,13 +24413,14 @@ configuration you want to modify.</p>
     href="#GET/4.0/firewall/globalroot-0/config/layer3redirect/profiles"
   ><h2>GET /4.0/firewall/globalroot-0/config/layer3redirect/profiles</h2></a>
   <div class="content">
-    <p><p>Retrieve the Service Insertion profiles</p>
+    <p><p>Retrieve the Service Insertion profiles that can be applied to
+layer3 redirect rules.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Layer3 redirect sections and rules</p>
+  <div class="description"><h2 id="layer-3-redirect-sections-and-rules">Layer 3 Redirect Sections and Rules</h2>
 </div>
 <div class="method post">
   <a
@@ -24384,7 +24479,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Layer3 redirect section</p>
+  <div class="description"><h2 id="layer-3-redirect-section">Layer 3 Redirect Section</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -24418,9 +24513,9 @@ configuration you want to modify.</p>
     href="#PUT/4.0/firewall/globalroot-0/config/layer3redirectsections/{section}"
   ><h2>PUT /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}</h2></a>
   <div class="content">
-    <p><p>Modify L3 Redirect section. You will need to get the Etag value out
-of the GET first. Then pass the modified version of the whole
-redirect section configuration in the GET body</p>
+    <p><p>Modify layer 3 redirect section. You will need to get the Etag
+value out of the GET first. Then pass the modified version of the
+whole redirect section configuration in the GET body.</p>
 </p>
     <div class="params">
       <h3>Request Headers</h3>
@@ -24511,7 +24606,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>L3 redirect rules for specified section</p>
+  <div class="description"><h2 id="working-with-layer-3-redirect-rules-for-a-specific-section">Working with Layer 3 Redirect Rules for a Specific Section</h2>
 </div>
 <div class="method post">
   <a
@@ -24574,7 +24669,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Rule for specified section</p>
+  <div class="description"><h2 id="working-with-a-specific-layer-3-redirect-rule-for-a-specific-section">Working With a Specific Layer 3 Redirect Rule for a Specific Section</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -24687,7 +24782,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with layer 3 sections in distributed firewall.</p>
+  <div class="description"><h2 id="working-with-layer-3-sections-in-distributed-firewall">Working With Layer 3 Sections in Distributed Firewall</h2>
 <p>You can use sections in the firewall table to group logical rules based on
 AppliedTo or for a tenant use case. A firewall section is the smallest unit of
 configuration which can be updated independently. Section types are as
@@ -25418,7 +25513,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with distributed firewall rules in a layer 3 section.</p>
+  <div class="description"><h2 id="working-with-distributed-firewall-rules-in-a-layer-3-section">Working With Distributed Firewall Rules in a Layer 3 Section</h2>
 </div>
 <div class="method post">
   <a
@@ -25590,8 +25685,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Operations on L3 rules in sections identified by section Id and
-Rule Id</p>
+  <div class="description"><h2 id="working-with-a-specific-rule-in-a-specific-layer-3-section">Working with a Specific Rule in a Specific Layer 3 Section</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -25711,7 +25805,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Import and export firewall configurations</p>
+  <div class="description"><h2 id="import-and-export-firewall-configurations">Import and Export Firewall Configurations</h2>
 </div>
 <div class="method post">
   <a
@@ -25836,7 +25930,7 @@ configuration you want to modify.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specified saved firewall configuration</p>
+  <div class="description"><h2 id="working-with-a-specific-saved-firewall-configuration">Working With a Specific Saved Firewall Configuration</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -25859,7 +25953,7 @@ configuration you want to modify.</p>
     href="#GET/4.0/firewall/globalroot-0/drafts/{draftID}"
   ><h2>GET /4.0/firewall/globalroot-0/drafts/{draftID}</h2></a>
   <div class="content">
-    <p><p>Get a saved firewall configuration</p>
+    <p><p>Get a saved firewall configuration.</p>
 </p>
   </div>
 </div>
@@ -25870,7 +25964,7 @@ configuration you want to modify.</p>
     href="#PUT/4.0/firewall/globalroot-0/drafts/{draftID}"
   ><h2>PUT /4.0/firewall/globalroot-0/drafts/{draftID}</h2></a>
   <div class="content">
-    <p><p>Update a saved firewall configuration</p>
+    <p><p>Update a saved firewall configuration.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -25980,13 +26074,13 @@ configuration you want to modify.</p>
     href="#DELETE/4.0/firewall/globalroot-0/drafts/{draftID}"
   ><h2>DELETE /4.0/firewall/globalroot-0/drafts/{draftID}</h2></a>
   <div class="content">
-    <p><p>Delete a configuration</p>
+    <p><p>Delete a configuration.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Export a configuration</p>
+  <div class="description"><h2 id="export-a-firewall-configuration">Export a Firewall Configuration</h2>
 </div>
 <div class="method get">
   <a
@@ -25995,7 +26089,7 @@ configuration you want to modify.</p>
     href="#GET/4.0/firewall/globalroot-0/drafts/{draftID}/action/export"
   ><h2>GET /4.0/firewall/globalroot-0/drafts/{draftID}/action/export</h2></a>
   <div class="content">
-    <p><p>Export a configuration</p>
+    <p><p>Export a configuration.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -26006,7 +26100,7 @@ configuration you want to modify.</p>
     
   </dt>
   <dd>
-      <p>Set to &quot;true&quot; to export the lasted universal draft from a
+      <p>Set to &quot;true&quot; to export the latest universal draft from a
 secondary NSX manager.</p>
 
   </dd>
@@ -26016,7 +26110,7 @@ secondary NSX manager.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Import a configuration</p>
+  <div class="description"><h2 id="import-a-firewall-configuration">Import a Firewall Configuration</h2>
 </div>
 <div class="method post">
   <a
@@ -26025,7 +26119,7 @@ secondary NSX manager.</p>
     href="#POST/4.0/firewall/globalroot-0/drafts/{draftID}/action/import"
   ><h2>POST /4.0/firewall/globalroot-0/drafts/{draftID}/action/import</h2></a>
   <div class="content">
-    <p><p>Import a configuration</p>
+    <p><p>Import a configuration.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -26386,7 +26480,8 @@ configured for firewall, after a firewall rule publish their status is
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure memory, CPU, and connections per second (CPS) thresholds for
+  <div class="description"><h2 id="working-with-distributed-firewall-thresholds">Working With Distributed Firewall Thresholds</h2>
+<p>Configure memory, CPU, and connections per second (CPS) thresholds for
 distributed firewall.</p>
 <hr>
 <p>The firewall module generates system events when the memory and CPU
@@ -26478,7 +26573,9 @@ usage crosses these thresholds.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Export specific flows directly from firewall to a flow collector</p>
+  <div class="description"><h2 id="working-with-ipfix">Working with IPFIX</h2>
+<p>Configuring IPFIX exports specific flows directly from Distributed
+Firewall to a flow collector.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -26501,7 +26598,7 @@ usage crosses these thresholds.</p>
     href="#GET/4.0/firewall/{contextId}/config/ipfix"
   ><h2>GET /4.0/firewall/{contextId}/config/ipfix</h2></a>
   <div class="content">
-    <p><p>Query IPFix configuration</p>
+    <p><p>Query IPFIX configuration.</p>
 </p>
   </div>
 </div>
@@ -26512,7 +26609,7 @@ usage crosses these thresholds.</p>
     href="#PUT/4.0/firewall/{contextId}/config/ipfix"
   ><h2>PUT /4.0/firewall/{contextId}/config/ipfix</h2></a>
   <div class="content">
-    <p><p>Configure IPFix</p>
+    <p><p>Configure IPFIX.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -26557,13 +26654,14 @@ usage crosses these thresholds.</p>
     href="#DELETE/4.0/firewall/{contextId}/config/ipfix"
   ><h2>DELETE /4.0/firewall/{contextId}/config/ipfix</h2></a>
   <div class="content">
-    <p><p>Deleting IPFix configuration resets the config to default values</p>
+    <p><p>Deleting IPFIX configuration resets the config to default values</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Enable or disable firewall components on a cluster</p>
+  <div class="description"><h2 id="enable-firewall">Enable Firewall</h2>
+<p>Enable or disable firewall components on a cluster.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -26601,7 +26699,32 @@ usage crosses these thresholds.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-spoofguard-policies">Working with SpoofGuard Policies</h1>
+  <div class="description"><h1 id="working-with-spoofguard">Working With SpoofGuard</h1>
+<p>After synchronizing with the vCenter Server, NSX Manager collects the IP
+addresses of all vCenter guest virtual machines If a virtual machine has
+been compromised, the IP address can be spoofed and malicious
+transmissions can bypass firewall policies.</p>
+<p>You create a SpoofGuard policy for specific networks that allows you to
+authorize the reported IP addresses and alter them if necessary to prevent
+spoofing.  SpoofGuard inherently trusts the MAC addresses of virtual
+machines collected from the VMX files and vSphere SDK. Operating
+separately from Firewall rules, you can use SpoofGuard to block traffic
+determined to be spoofed.</p>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-spoofguard-policies">Working with SpoofGuard Policies</h2>
+<p>You can create a SpoofGuard policy to specify the operation mode for
+specific networks. The system generated policy applies to port groups
+and logical switches not covered by existing SpoofGuard policies.</p>
+<p>The operationMode for a SpoofGuard policy can be set to one of the
+following:</p>
+<ul>
+<li><strong>TOFU</strong> - Automatically trust IP assignments on their first use</li>
+<li><strong>MANUAL</strong> - Manually inspect and approve all IP assignments before first
+use</li>
+<li><strong>DISABLE</strong> - Disable the SpoofGuard policy</li>
+</ul>
 </div>
 <div class="method post">
   <a
@@ -26657,13 +26780,13 @@ usage crosses these thresholds.</p>
     href="#GET/4.0/services/spoofguard/policies"
   ><h2>GET /4.0/services/spoofguard/policies</h2></a>
   <div class="content">
-    <p><p>Retrieve all SpoofGuard policies</p>
+    <p><p>Retrieve informationa about all SpoofGuard policies.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specified policy</p>
+  <div class="description"><h2 id="working-with-a-specific-spoofguard-policy">Working With a Specific SpoofGuard Policy</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -26674,30 +26797,131 @@ usage crosses these thresholds.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
+      <p>SpoofGuard policy ID.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/services/spoofguard/policies/{policyID}"
+    href="#GET/4.0/services/spoofguard/policies/{policyID}"
+  ><h2>GET /4.0/services/spoofguard/policies/{policyID}</h2></a>
+  <div class="content">
+    <p><p>Retrieve information about the specified SpoofGuard policy.</p>
+</p>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/4.0/services/spoofguard/policies/{policyID}"
+    href="#PUT/4.0/services/spoofguard/policies/{policyID}"
+  ><h2>PUT /4.0/services/spoofguard/policies/{policyID}</h2></a>
+  <div class="content">
+    <p><p>Modify the specified SpoofGuard policy.</p>
+</p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="spoofguardPolicy"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="policyId"/&gt;
+        &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element type="xs:string" name="description"/&gt;
+        &lt;xs:element type="xs:string" name="operationMode"/&gt;
+        &lt;xs:element name="enforcementPoint"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="id"/&gt;
+              &lt;xs:element type="xs:string" name="name"/&gt;
+              &lt;xs:element type="xs:string" name="type"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element type="xs:string" name="allowLocalIPs"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">spoofguardPolicy</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">policyId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">policyId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">operationMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">operationMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enforcementPoint</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">enforcementPoint</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allowLocalIPs</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">allowLocalIPs</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">spoofguardPolicy</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/4.0/services/spoofguard/policies/{policyID}"
+    href="#DELETE/4.0/services/spoofguard/policies/{policyID}"
+  ><h2>DELETE /4.0/services/spoofguard/policies/{policyID}</h2></a>
+  <div class="content">
+    <p><p>Delete the specified SpoofGuard policy.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="perform-spoofguard-operations-on-ip-addresses-in-a-specific-policy">Perform SpoofGuard Operations on IP Addresses in a Specific Policy</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">policyID</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>SpoofGuard policy ID.</p>
+
   </dd>
 </dl>
   </div>
 <div class="method post">
   <a
     class="verb post"
-    id="POST/4.0/services/spoofguard/policies/{policyID}"
-    href="#POST/4.0/services/spoofguard/policies/{policyID}"
-  ><h2>POST /4.0/services/spoofguard/policies/{policyID}</h2></a>
+    id="POST/4.0/services/spoofguard/{policyID}"
+    href="#POST/4.0/services/spoofguard/{policyID}"
+  ><h2>POST /4.0/services/spoofguard/{policyID}</h2></a>
   <div class="content">
-    <p><p>Use query parameters to perform operations on a policy</p>
+    <p><p>Approve or publish IP addresses.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
+  <dt>
+    <span class="param">vnicId</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Perform the specified action on IP addresses for the specified
+vNIC ID.</p>
+
+  </dd>
   <dt>
     <span class="param">action</span>
     <span class="badge">string</span>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Set to &quot;approve&quot; along with specified IP addresses in body to
-approve them, or set to &quot;publish&quot; to publish the approved IP
-addresses</p>
+      <p>Set to <em>approve</em> along with specified IP addresses in body to
+approve them, or set to <em>publish</em> to publish approved IP
+addresses.</p>
 
   </dd>
 </dl>
@@ -26765,12 +26989,11 @@ addresses</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/4.0/services/spoofguard/policies/{policyID}"
-    href="#GET/4.0/services/spoofguard/policies/{policyID}"
-  ><h2>GET /4.0/services/spoofguard/policies/{policyID}</h2></a>
+    id="GET/4.0/services/spoofguard/{policyID}"
+    href="#GET/4.0/services/spoofguard/{policyID}"
+  ><h2>GET /4.0/services/spoofguard/{policyID}</h2></a>
   <div class="content">
-    <p><p>Retrieve policy information, or use the query parameters to perform
-operations</p>
+    <p><p>Retrieve IP addresses for the specified state.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -26781,72 +27004,12 @@ operations</p>
     
   </dt>
   <dd>
-      <p>Use to retrieve IP addresses for specified state
-(ACTIVE|INACTIVE|PUBLISHED|UNPUBLISHED|REVIEW_PENDING|DUPLICATE)</p>
+      <p>Specify one of the following states: <em>ACTIVE</em>, <em>INACTIVE</em>,
+<em>PUBLISHED</em>, <em>UNPUBLISHED</em>, <em>REVIEW_PENDING</em>, <em>DUPLICATE</em>.</p>
 
   </dd>
 </dl>
     </div>
-  </div>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/4.0/services/spoofguard/policies/{policyID}"
-    href="#PUT/4.0/services/spoofguard/policies/{policyID}"
-  ><h2>PUT /4.0/services/spoofguard/policies/{policyID}</h2></a>
-  <div class="content">
-    <p><p>Modify SpoofGuard policy</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="spoofguardPolicy"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="policyId"/&gt;
-        &lt;xs:element type="xs:string" name="name"/&gt;
-        &lt;xs:element type="xs:string" name="description"/&gt;
-        &lt;xs:element type="xs:string" name="operationMode"/&gt;
-        &lt;xs:element name="enforcementPoint"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="id"/&gt;
-              &lt;xs:element type="xs:string" name="name"/&gt;
-              &lt;xs:element type="xs:string" name="type"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element type="xs:string" name="allowLocalIPs"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">spoofguardPolicy</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">policyId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">policyId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">operationMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">operationMode</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enforcementPoint</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">enforcementPoint</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">allowLocalIPs</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">allowLocalIPs</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">spoofguardPolicy</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-<div class="method delete">
-  <a
-    class="verb delete"
-    id="DELETE/4.0/services/spoofguard/policies/{policyID}"
-    href="#DELETE/4.0/services/spoofguard/policies/{policyID}"
-  ><h2>DELETE /4.0/services/spoofguard/policies/{policyID}</h2></a>
-  <div class="content">
-    <p><p>Delete a policy</p>
-</p>
   </div>
 </div>
 </section>

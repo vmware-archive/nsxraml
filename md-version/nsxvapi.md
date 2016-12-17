@@ -1560,13 +1560,58 @@ Working with locale ID configuration for hosts.
 * **delete** *(secured)*: Delete the locale ID for the specified host.
 
 ## securityFabric
-Working with Security Fabric
+Working with Security Fabric and Security Services
 ======
+The security fabric simplifies and automates deployment of security
+services and provide a platform for configuration of the elements that are
+required to provide security to workloads. These elements include:
+
+Internal components:
+* Guest Introspection Universal Service Virtual Machine
+* Guest Introspection Mux
+* Data Security
+* Logical Firewall
+
+External components:
+* Partner OVFs / VIBs
+* Partner vendor policy templates
+
+For partner services, the overall workflow begins with registration of
+services by partner consoles, followed by deployment of the services by
+the administrator.
+
+Subsequent workflow is as follows:
+1. Select the clusters on which to deploy the security fabric (Mux,
+Traffic filter, USVM).
+2. Specify an IP pool to be used with the SVMs (available only if the
+partner registration indicates requirement of static IPs)
+3. Select portgroup (DVPG) to be used for each cluster (a default is
+pre‐populated for the user).
+4. Select datastore to be used for each cluster (a default is
+pre‐populated for the user).
+5. NSX Manager deploys the components on all hosts of the selected
+clusters.
+
+Once you deploy the security fabric, an agency defines the configuration
+needed to deploy agents (host components and appliances). An agency is
+created per cluster per deployment spec associated with services.  Agents
+are deployed on the selected clusters, and events / hooks for all the
+relevant actions are generated.
+
+**Request parameters**
+
+Parameter | Description 
+-------|---------
+dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
+dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
+ipPool | Optional. If not specified, IP address is assigned through DHCP. 
+startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
 
 ### /2.0/si/deploy
 
-* **post** *(secured)*: Deploy security fabric
-* **put** *(secured)*: Upgrade service to recent version
+* **post** *(secured)*: Deploy security fabric.
+
+* **put** *(secured)*: Upgrade service to recent version.
 
 ### /2.0/si/deploy/service/{serviceID}
 Working with a specified service
@@ -2279,21 +2324,53 @@ Agents for a specified deployment
 * **get** *(secured)*: Retrieve all agents for the specified deployment
 
 ### /2.0/si/fabric/sync/conflicts
-Working with conflicting agencies
+Working With Conflicting Agencies
+----
+When the NSX Manager database backup is restored to an older point in
+time, it is possible that deployment units for some EAM Agencies are
+missing. These APIs help the administratoridentify such EAM Agencies and
+take appropriate action.
 
 * **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
 allowed operations on them
 
 * **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete
 conflicting EAM agencies, or delete deployment units for conflicting
-EAM agencies
+EAM agencies.
+
+**Create deployment units for conflicting EAM agencies**
+
+```
+<conflictResolverInfo>
+  <agencyAction>RESTORE</agencyAction>
+</conflictResolverInfo>
+```
+
+**Delete conflicting EAM agencies**
+
+```
+<conflictResolverInfo>
+  <agencyAction>DELETE</agencyAction>
+</conflictResolverInfo>
+```
+
+**Delete deployment units for conflicting EAM agencies**
+
+```
+<conflictResolverInfo>
+  <deploymentUnitAction>DELETE</deploymentUnitAction>
+</conflictResolverInfo>
+```
 
 ## macsets
-Working with MAC Sets
+Working with MAC Address Sets
 =============
+You can create a MAC address set on the specified scope. On success, the API
+returns a string identifier for the new MAC address set.
 
 ### /2.0/services/macset/{macsetId}
-Operations on an individual MAC set
+Working With a Specific MAC Address Set
+---------
 
 * **get** *(secured)*: Retrieve details about a MAC set
 * **put** *(secured)*: Modify an existing MAC set.
@@ -2302,23 +2379,24 @@ Operations on an individual MAC set
 ### /2.0/services/macset/scope/{scopeId}
 Working with MAC Sets.
 
-* **post** *(secured)*: Create a MACset on a specified scope
-* **get** *(secured)*: List MACsets created on a specified scope
+* **post** *(secured)*: Create a MAC address set on a specified scope
+* **get** *(secured)*: List MAC address set created on a specified scope
 
 ## taskFramework
 Working with the Task Framework
 ======
 Working with filtering criteria and paging information for jobs on the task
-framework
+framework.
 
 ### /2.0/services/taskservice/job
 
 * **get** *(secured)*: Query job instances by criterion
 
 ### /2.0/services/taskservice/job/{jobId}
-Job instances on the task framework
+Working With a Specific Job Instance
+------
 
-* **get** *(secured)*: Retrieve all job instances for the specified job ID
+* **get** *(secured)*: Retrieve all job instances for the specified job ID.
 
 ## guestIntrospection
 Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
@@ -2326,29 +2404,36 @@ Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus
 
 About Guest Introspection and Endpoint Protection Solutions
 ----------
-VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution
-that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.
+VMware's Guest Introspection Service enables vendors to deliver an
+introspection-based, endpoint protection (anti-virus) solution that uses
+the hypervisor to scan guest virtual machines from the outside, with only
+a thin agent on each guest virtual machine.
 
 Version Compatibility
 -----------
 
-**Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions
-that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier).
-These partner solutions are also supported on NSX 6.0 and need the APIs listed below.
-These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as
-these newer solutions automate the registration and deployment process by using the new features introduced in NSX.
-Using these with newer NSX 6.0 based solutions could result in loss of features.
+**Note:** The management APIs listed in this section are to be used only
+with partner endpoint protection solutions that were developed with EPSec
+Partner Program 3.0 or earlier (for vShield 5.5 or earlier).  These
+partner solutions are also supported on NSX 6.0 and need the APIs listed
+below.  These APIs should not be used with partner solutions developed
+specifically for NSX 6.0 or later, as these newer solutions automate the
+registration and deployment process by using the new features introduced
+in NSX.  Using these with newer NSX 6.0 based solutions could result in
+loss of features.
 
 Register a Solution
 ----------
 
-To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:
+To register a third-party solution with Guest Introspection, clients can
+use four REST calls to do the following:
 1. Register the vendor.
 2. Register one or more solutions.
 3. Set the solution IP address and port (for all hosts).
 4. Activate registered solutions per host.
 
-**Note:** Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.
+**Note:** Steps 1 through 3 need to be performed once per solution. Step 4
+needs to be performed for each host.
 
 Unregister a Solution
 ----------
@@ -2369,7 +2454,8 @@ To update registration information for a vendor or solution, clients must:
 ### /2.0/endpointsecurity/registration
 Register a Vendor and Solution with Guest Introspection
 
-* **post** *(secured)*: Register the vendor of an endpoint protection solution. Specify the following parameters in the request.
+* **post** *(secured)*: Register the vendor of an endpoint protection solution. Specify the
+following parameters in the request.
 
 | Name            | Comments |
 |-----------------|------------|
@@ -2378,12 +2464,14 @@ Register a Vendor and Solution with Guest Introspection
 |**vendorDescription** | Vendor-specified description. |
 
 ### /2.0/endpointsecurity/registration/vendors
-Registered Guest Introspection vendors
+Working With Registered Guest Introspection Vendors
+----
 
 * **get** *(secured)*: Retrieve the list of all registered Guest Introspection vendors.
 
 ### /2.0/endpointsecurity/registration/{vendorID}
-Guest Introspection vendors and endpoint protection solutions
+Working With Guest Introspection Vendors and Endpoint Protection Solutions
+-----
 
 * **post** *(secured)*: Register an endpoint protection solution. Specify the following parameters in the request.
 
@@ -2397,49 +2485,63 @@ Guest Introspection vendors and endpoint protection solutions
 * **delete** *(secured)*: Unregister a Guest Introspection vendor.
 
 ### /2.0/endpointsecurity/registration/{vendorID}/solutions
-Information about registered endpoint protection solutions
+Information About Registered Endpoint Protection Solutions
+----
 
 * **get** *(secured)*: Get registration information for all endpoint protection solutions for a Guest Introspection vendor.
 
 ### /2.0/endpointsecurity/registration/{vendorID}/{altitude}
-Endpoint protection solution registration information
+Endpoint Protection Solution Registration Information
+----
 
 * **get** *(secured)*: Get registration information for an endpoint protection solution.
 * **delete** *(secured)*: Unregister an endpoint protection solution.
 
 ### /2.0/endpointsecurity/registration/{vendorID}/{altitude}/location
-IP address and port for an endpoint protection solution.
-
+IP Address and Port For an Endpoint Protection Solution
+-----
 To change the location of an endpoint protection solution:
 1. Deactivate all security virtual machines.
 2. Change the location.
 3. Reactivate all security virtual machines.
 
-* **post** *(secured)*: Set the IP address and port on the vNIC host for an endpoint protection solution.
-* **get** *(secured)*: Get the IP address and port on the vNIC host for an endpoint protection solution.
-* **delete** *(secured)*: Unset the IP address and port for an endpoint protection solution.
+* **post** *(secured)*: Set the IP address and port on the vNIC host for an endpoint
+protection solution.
+
+* **get** *(secured)*: Get the IP address and port on the vNIC host for an endpoint
+protection solution.
+
+* **delete** *(secured)*: Unset the IP address and port for an endpoint protection
+solution.
 
 ### /2.0/endpointsecurity/activation
-Activate an Endpoint Protection Solution.
+Activate an Endpoint Protection Solution
+-------
+You can activate a solution that has been registered and located.
 
-* **get** *(secured)*: Retrieve activation information for all activated security VMs on the specified host.
+* **get** *(secured)*: Retrieve activation information for all activated security VMs on the
+specified host.
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{solutionID}
-Activated security virtual machines
+Activated Security Virtual Machines
+---
 
 * **get** *(secured)*: Retrieve a list of activated security VMs for an endpoint protection solution.
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{altitude}
-Activate a registered endpoint protection solution.
+Activate a Registered Endpoint Protection Solution
+-----
 
-* **post** *(secured)*: Activate an endpoint protection solution that has been registered and located. Specify the following parameter in the request body.
+* **post** *(secured)*: Activate an endpoint protection solution that has been registered
+and located. Specify the following parameter in the request body.
 
 | Name            | Comments |
 |-----------------|------------|
 |**svmMoid**     | Managed object ID of the virtual machine of the activated endpoint protection solution. |
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{altitude}/{moid}
-Get the activation status or deactivate an endpoint protection solution on a host.
+Working with Solution Activation Status
+----
 
 * **get** *(secured)*: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
 * **delete** *(secured)*: Deactivate an endpoint protection solution on a host.
@@ -2449,11 +2551,11 @@ Working with Distributed Firewall
 =================================
 
 ### /4.0/firewall/globalroot-0/config
-Distributed firewall rules configuration
-___
+Distributed Firewall Rules Configuration
+---
 The following table lists the elements that can be used in firewall
 rules.
-___
+
 | Element | Keyword for API | Used in |
 |---|---|---|
 | All Edges | ALL_EDGES | appliedTo |
@@ -2470,7 +2572,7 @@ ___
 | IPv4 addresses | Ipv4Address | source/destination |
 | IPv6 addresses | Ipv6Address | source/destination |
 | logical switch | VirtualWire | source/destination<br>appliedTo |
-| MAC set | MACSet | source/destination |
+| MAC address set | MACSet | source/destination |
 | network | Network | for legacy portgroups, network can be used in source or destination instead of appliedTo |
 | profile | ALL_PROFILE_BINDINGS | |
 | resource pool | ResourcePool | source/destination |
@@ -2515,7 +2617,8 @@ Restores a configuration with one defaultLayer3 section with default
 allow rule and one defaultLayer2Section with default allow rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections
-Working with layer 3 sections in distributed firewall.
+Working With Layer 3 Sections in Distributed Firewall
+-----
 
 You can use sections in the firewall table to group logical rules based on
 AppliedTo or for a tenant use case. A firewall section is the smallest unit of
@@ -2541,7 +2644,7 @@ and **anchorId** query parameters.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}
 Working With a Specific Layer 3 Distributed Firewall Section
----
+----
 
 * **get** *(secured)*: Retrieve information about the specified layer 3 section.
 * **post** *(secured)*: Move the specified layer 3 section.
@@ -2595,7 +2698,8 @@ must synchronize firewall rules from Service Composer using the `GET
 * **delete** *(secured)*: Delete the specified layer 3 distributed firewall section.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules
-Working with distributed firewall rules in a layer 3 section.
+Working With Distributed Firewall Rules in a Layer 3 Section
+----
 
 * **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
 
@@ -2644,8 +2748,8 @@ When updating the firewall configuration:
   originating from all IPs other than 1.1.1.1.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules/{ruleId}
-Operations on L3 rules in sections identified by section Id and
-Rule Id
+Working with a Specific Rule in a Specific Layer 3 Section
+----
 
 * **get** *(secured)*: Retrieve information about the specified distributed firewall rule.
 
@@ -2668,7 +2772,8 @@ Source/Destination objects and not Name and isValid tags.
 * **delete** *(secured)*: Delete the specified distributed firewall rule.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections
-Working with layer 2 sections in distributed firewall.
+Working With Layer 2 Sections in Distributed Firewall
+----
 
 You can use sections in the firewall table to group logical rules based on
 AppliedTo or for a tenant use case. A firewall section is the smallest unit of
@@ -2693,7 +2798,8 @@ You can specify a location for the section with the **operation**
 and **anchorId** query parameters.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}
-Working with a specific layer 2 distributed firewall section.
+Working With a Specific Layer 2 Distributed Firewall Section
+----
 
 * **get** *(secured)*: Retrieve information about the specified layer 2 section.
 * **post** *(secured)*: Move the specified layer 2 section.
@@ -2746,7 +2852,8 @@ must synchronize firewall rules from Service Composer using the `GET
 * **delete** *(secured)*: Deletes a L2 section and its content by ID
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules
-Working with distributed firewall rules in a layer 2 section.
+Working With Distributed Firewall Rules in a Layer 2 Section
+------
 
 * **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
 
@@ -2795,8 +2902,8 @@ When updating the firewall configuration:
   originating from all IPs other than 1.1.1.1.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules/{ruleId}
-Operations on L2 rules in sections identified by section Id and
-Rule Id
+Working with a Specific Rule in a Specific Layer 2 Section
+-----
 
 * **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
 
@@ -2819,27 +2926,31 @@ Source/Destination objects and not Name and isValid tags.
 * **delete** *(secured)*: Delete the specified distributed firewall rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections
-Layer3 redirect sections and rules
+Layer 3 Redirect Sections and Rules
+----
 
 * **post** *(secured)*: Add L3 redirect section
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}
-Layer3 redirect section
+Layer 3 Redirect Section
+----
 
 * **get** *(secured)*: Get L3 redirect section configuration
-* **put** *(secured)*: Modify L3 Redirect section. You will need to get the Etag value out
-of the GET first. Then pass the modified version of the whole
-redirect section configuration in the GET body
+* **put** *(secured)*: Modify layer 3 redirect section. You will need to get the Etag
+value out of the GET first. Then pass the modified version of the
+whole redirect section configuration in the GET body.
 
 * **delete** *(secured)*: Delete specified L3 redirect section
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules
-L3 redirect rules for specified section
+Working with Layer 3 Redirect Rules for a Specific Section
+----
 
 * **post** *(secured)*: Add L3 redirect rule
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules/{ruleID}
-Rule for specified section
+Working With a Specific Layer 3 Redirect Rule for a Specific Section
+----
 
 * **get** *(secured)*: Get L3 redirect rule
 * **put** *(secured)*: Modify L3 redirect rule. You will need Etag value from the
@@ -2849,9 +2960,11 @@ if-match header in PUT call
 * **delete** *(secured)*: Delete specified L3 redirect rule
 
 ### /4.0/firewall/globalroot-0/config/layer3redirect/profiles
-Service Insertion profiles that can be applied to layer3 redirect rules
+Service Insertion Profiles and Layer 3 Redirect Rules
+----
 
-* **get** *(secured)*: Retrieve the Service Insertion profiles
+* **get** *(secured)*: Retrieve the Service Insertion profiles that can be applied to
+layer3 redirect rules.
 
 ### /4.0/firewall/globalroot-0/state
 Enable distributed firewall after upgrade.
@@ -2926,29 +3039,35 @@ Release | Modification
 6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
 
 ### /4.0/firewall/globalroot-0/drafts
-Import and export firewall configurations
+Import and Export Firewall Configurations
+----
 
 * **post** *(secured)*: Save a firewall configuration
 * **get** *(secured)*: Displays the draft IDs of all saved configurations
 
 ### /4.0/firewall/globalroot-0/drafts/{draftID}
-Specified saved firewall configuration
+Working With a Specific Saved Firewall Configuration
+----
 
-* **get** *(secured)*: Get a saved firewall configuration
-* **put** *(secured)*: Update a saved firewall configuration
-* **delete** *(secured)*: Delete a configuration
+* **get** *(secured)*: Get a saved firewall configuration.
+* **put** *(secured)*: Update a saved firewall configuration.
+* **delete** *(secured)*: Delete a configuration.
 
 ### /4.0/firewall/globalroot-0/drafts/{draftID}/action/export
-Export a configuration
+Export a Firewall Configuration
+----
 
-* **get** *(secured)*: Export a configuration
+* **get** *(secured)*: Export a configuration.
 
 ### /4.0/firewall/globalroot-0/drafts/{draftID}/action/import
-Import a configuration
+Import a Firewall Configuration
+-----
 
-* **post** *(secured)*: Import a configuration
+* **post** *(secured)*: Import a configuration.
 
 ### /4.0/firewall/stats/eventthresholds
+Working With Distributed Firewall Thresholds
+----
 Configure memory, CPU, and connections per second (CPS) thresholds for
 distributed firewall.
 ___
@@ -2988,44 +3107,87 @@ configuration.
 
 * **get** *(secured)*: Retrieve performance configuration for distributed firewall.
 * **put** *(secured)*: Update the distributed firewall performance configuration.
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. **autoDraftDisabled** parameter added.
 
 ### /4.0/firewall/forceSync/{ID}
+Synchronize Firewall
+----
 Synchronize hosts and clusters with the last good configuration in NSX
-Mgr database
+Manager database.
 
-* **post** *(secured)*: Force sync host/cluster
+* **post** *(secured)*: Force sync host or cluster.
 
 ### /4.0/firewall/{domainID}/enable/{truefalse}
-Enable or disable firewall components on a cluster
+Enable Firewall
+----
+Enable or disable firewall components on a cluster.
 
 * **post** *(secured)*: Enable or disable firewall components on a cluster
 
 ### /4.0/firewall/{contextId}/config/ipfix
-Export specific flows directly from firewall to a flow collector
+Working with IPFIX
+---
+Configuring IPFIX exports specific flows directly from Distributed
+Firewall to a flow collector.
 
-* **get** *(secured)*: Query IPFix configuration
-* **put** *(secured)*: Configure IPFix
-* **delete** *(secured)*: Deleting IPFix configuration resets the config to default values
+* **get** *(secured)*: Query IPFIX configuration.
+* **put** *(secured)*: Configure IPFIX.
+* **delete** *(secured)*: Deleting IPFIX configuration resets the config to default values
 
-## spoofGuardPolicies
-Working with SpoofGuard Policies
-====================
+## spoofGuard
+Working With SpoofGuard
+==========
+After synchronizing with the vCenter Server, NSX Manager collects the IP
+addresses of all vCenter guest virtual machines If a virtual machine has
+been compromised, the IP address can be spoofed and malicious
+transmissions can bypass firewall policies.
+
+You create a SpoofGuard policy for specific networks that allows you to
+authorize the reported IP addresses and alter them if necessary to prevent
+spoofing.  SpoofGuard inherently trusts the MAC addresses of virtual
+machines collected from the VMX files and vSphere SDK. Operating
+separately from Firewall rules, you can use SpoofGuard to block traffic
+determined to be spoofed.
 
 ### /4.0/services/spoofguard/policies
+Working with SpoofGuard Policies
+---------
+You can create a SpoofGuard policy to specify the operation mode for
+specific networks. The system generated policy applies to port groups
+and logical switches not covered by existing SpoofGuard policies.
+
+The operationMode for a SpoofGuard policy can be set to one of the
+following:
+
+* **TOFU** - Automatically trust IP assignments on their first use
+* **MANUAL** - Manually inspect and approve all IP assignments before first
+use
+* **DISABLE** - Disable the SpoofGuard policy
 
 * **post** *(secured)*: Create a SpoofGuard policy to specify the operation mode for networks.
 
-* **get** *(secured)*: Retrieve all SpoofGuard policies
+* **get** *(secured)*: Retrieve informationa about all SpoofGuard policies.
 
 ### /4.0/services/spoofguard/policies/{policyID}
-Specified policy
+Working With a Specific SpoofGuard Policy
+---
 
-* **post** *(secured)*: Use query parameters to perform operations on a policy
-* **get** *(secured)*: Retrieve policy information, or use the query parameters to perform
-operations
+* **get** *(secured)*: Retrieve information about the specified SpoofGuard policy.
 
-* **put** *(secured)*: Modify SpoofGuard policy
-* **delete** *(secured)*: Delete a policy
+* **put** *(secured)*: Modify the specified SpoofGuard policy.
+* **delete** *(secured)*: Delete the specified SpoofGuard policy.
+
+### /4.0/services/spoofguard/{policyID}
+
+Perform SpoofGuard Operations on IP Addresses in a Specific Policy
+---
+
+* **post** *(secured)*: Approve or publish IP addresses.
+* **get** *(secured)*: Retrieve IP addresses for the specified state.
 
 ## flowMonitoring
 Working with Flow Monitoring
