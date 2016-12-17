@@ -4438,16 +4438,61 @@ securitySchemes:
 /2.0/si/deploy:
   displayName: securityFabric
   description: |
-    Working with Security Fabric
+    Working with Security Fabric and Security Services
     ======
+    The security fabric simplifies and automates deployment of security
+    services and provide a platform for configuration of the elements that are
+    required to provide security to workloads. These elements include:
+
+    Internal components:
+    * Guest Introspection Universal Service Virtual Machine
+    * Guest Introspection Mux
+    * Data Security
+    * Logical Firewall
+
+    External components:
+    * Partner OVFs / VIBs
+    * Partner vendor policy templates
+
+    For partner services, the overall workflow begins with registration of
+    services by partner consoles, followed by deployment of the services by
+    the administrator.
+
+    Subsequent workflow is as follows:
+    1. Select the clusters on which to deploy the security fabric (Mux,
+    Traffic filter, USVM).
+    2. Specify an IP pool to be used with the SVMs (available only if the
+    partner registration indicates requirement of static IPs)
+    3. Select portgroup (DVPG) to be used for each cluster (a default is
+    pre‐populated for the user).
+    4. Select datastore to be used for each cluster (a default is
+    pre‐populated for the user).
+    5. NSX Manager deploys the components on all hosts of the selected
+    clusters.
+
+    Once you deploy the security fabric, an agency defines the configuration
+    needed to deploy agents (host components and appliances). An agency is
+    created per cluster per deployment spec associated with services.  Agents
+    are deployed on the selected clusters, and events / hooks for all the
+    relevant actions are generated.
+
+    **Request parameters**
+
+    Parameter | Description 
+    -------|---------
+    dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
+    dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
+    ipPool | Optional. If not specified, IP address is assigned through DHCP. 
+    startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
   post:
     displayName: securityFabricCreate
-    description: Deploy security fabric
+    description: |
+      Deploy security fabric.
     queryParameters:
       startTime:
         displayName: startTime
         description: |
-          Time to start deployment task. If not specified, deploy immediately
+          Time to start deployment task. If not specified, deploy immediately.
     body:
       application/xml:
         example: |
@@ -4467,11 +4512,12 @@ securitySchemes:
         schema: securityFabricCreate
   put:
     displayName: serviceUpgrade
-    description: Upgrade service to recent version
+    description: Upgrade service to recent version.
     queryParameters:
       startTime:
         displayName: startTime
-        description: optional; specify time to start upgrade
+        description: Specify time to start upgrade.
+        required: false
     body:
       application/xml:
         example: |
@@ -5778,7 +5824,13 @@ securitySchemes:
       description: Retrieve all agents for the specified deployment
   /fabric/sync/conflicts:
     displayName: agentConflicts
-    description: Working with conflicting agencies
+    description: |
+      Working With Conflicting Agencies
+      ----
+      When the NSX Manager database backup is restored to an older point in
+      time, it is possible that deployment units for some EAM Agencies are
+      missing. These APIs help the administratoridentify such EAM Agencies and
+      take appropriate action.
     get:
       displayName: agentConflictsRead
       description: |
@@ -5789,7 +5841,31 @@ securitySchemes:
       description: |
         Create deployment units for conflicting EAM Agencies, delete
         conflicting EAM agencies, or delete deployment units for conflicting
-        EAM agencies
+        EAM agencies.
+
+        **Create deployment units for conflicting EAM agencies**
+
+        ```
+        <conflictResolverInfo>
+          <agencyAction>RESTORE</agencyAction>
+        </conflictResolverInfo>
+        ```
+
+        **Delete conflicting EAM agencies**
+
+        ```
+        <conflictResolverInfo>
+          <agencyAction>DELETE</agencyAction>
+        </conflictResolverInfo>
+        ```
+
+        **Delete deployment units for conflicting EAM agencies**
+
+        ```
+        <conflictResolverInfo>
+          <deploymentUnitAction>DELETE</deploymentUnitAction>
+        </conflictResolverInfo>
+        ```
       body:
         application/xml:
           example: |
@@ -5799,17 +5875,22 @@ securitySchemes:
 /2.0/services/macset:
   displayName: macsets
   description: |
-    Working with MAC Sets
+    Working with MAC Address Sets
     =============
+    You can create a MAC address set on the specified scope. On success, the API
+    returns a string identifier for the new MAC address set.
   /{macsetId}:
     displayName: macset
-    description: Operations on an individual MAC set
+    description: |
+      Working With a Specific MAC Address Set
+      ---------
     uriParameters:
       macsetId:
         required: true
         displayName: macsetId
         description: |
-          Specified MACset ID (Can be retrieved by listing the MACset on a scope)
+          Specified MAC address set ID (can be retrieved by listing the MAC
+          address set on a scope).
     get:
       displayName: macsetRead
       description: Retrieve details about a MAC set
@@ -5897,7 +5978,7 @@ securitySchemes:
           use cases. Universal MAC sets are read-only from secondary managers.
     post:
       displayName: macsetScopesCreate
-      description: Create a MACset on a specified scope
+      description: Create a MAC address set on a specified scope
       body:
         application/xml:
           example: |
@@ -5915,7 +5996,7 @@ securitySchemes:
           schema: macSetCreateUpdate
     get:
       displayName: macsetScopesRead
-      description: List MACsets created on a specified scope
+      description: List MAC address set created on a specified scope
       responses:
         200:
           body:
@@ -5964,7 +6045,7 @@ securitySchemes:
     Working with the Task Framework
     ======
     Working with filtering criteria and paging information for jobs on the task
-    framework
+    framework.
   get:
     displayName: taskFrameworkCriteria
     description: Query job instances by criterion
@@ -5992,7 +6073,9 @@ securitySchemes:
         type: boolean
   /{jobId}:
     displayName: taskFrameworkJobs
-    description: Job instances on the task framework
+    description: |
+      Working With a Specific Job Instance
+      ------
     uriParameters:
       jobId:
         required: true
@@ -6000,7 +6083,7 @@ securitySchemes:
         description: Specified job Id
     get:
       displayName: taskFrameworkJobsRead
-      description: Retrieve all job instances for the specified job ID
+      description: Retrieve all job instances for the specified job ID.
 /2.0/endpointsecurity:
   displayName: guestIntrospection
   description: |
@@ -6009,29 +6092,36 @@ securitySchemes:
 
     About Guest Introspection and Endpoint Protection Solutions
     ----------
-    VMware's Guest Introspection Service enables vendors to deliver an introspection-based, endpoint protection (anti-virus) solution
-    that uses the hypervisor to scan guest virtual machines from the outside, with only a thin agent on each guest virtual machine.
+    VMware's Guest Introspection Service enables vendors to deliver an
+    introspection-based, endpoint protection (anti-virus) solution that uses
+    the hypervisor to scan guest virtual machines from the outside, with only
+    a thin agent on each guest virtual machine.
 
     Version Compatibility
     -----------
 
-    **Note:** The management APIs listed in this section are to be used only with partner endpoint protection solutions
-    that were developed with EPSec Partner Program 3.0 or earlier (for vShield 5.5 or earlier).
-    These partner solutions are also supported on NSX 6.0 and need the APIs listed below.
-    These APIs should not be used with partner solutions developed specifically for NSX 6.0 or later, as
-    these newer solutions automate the registration and deployment process by using the new features introduced in NSX.
-    Using these with newer NSX 6.0 based solutions could result in loss of features.
+    **Note:** The management APIs listed in this section are to be used only
+    with partner endpoint protection solutions that were developed with EPSec
+    Partner Program 3.0 or earlier (for vShield 5.5 or earlier).  These
+    partner solutions are also supported on NSX 6.0 and need the APIs listed
+    below.  These APIs should not be used with partner solutions developed
+    specifically for NSX 6.0 or later, as these newer solutions automate the
+    registration and deployment process by using the new features introduced
+    in NSX.  Using these with newer NSX 6.0 based solutions could result in
+    loss of features.
 
     Register a Solution
     ----------
 
-    To register a third-party solution with Guest Introspection, clients can use four REST calls to do the following:
+    To register a third-party solution with Guest Introspection, clients can
+    use four REST calls to do the following:
     1. Register the vendor.
     2. Register one or more solutions.
     3. Set the solution IP address and port (for all hosts).
     4. Activate registered solutions per host.
 
-    **Note:** Steps 1 through 3 need to be performed once per solution. Step 4 needs to be performed for each host.
+    **Note:** Steps 1 through 3 need to be performed once per solution. Step 4
+    needs to be performed for each host.
 
     Unregister a Solution
     ----------
@@ -6050,12 +6140,13 @@ securitySchemes:
     2. Reregister the vendor or solution.
   /registration:
     displayName: guestIntrospectionRegistration
-    description: Register a Vendor and Solution with Guest Introspection
-
+    description: |
+      Register a Vendor and Solution with Guest Introspection
     post:
       displayName: guestIntrospectionVendorCreate
       description: |
-        Register the vendor of an endpoint protection solution. Specify the following parameters in the request.
+        Register the vendor of an endpoint protection solution. Specify the
+        following parameters in the request.
 
         | Name            | Comments |
         |-----------------|------------|
@@ -6073,13 +6164,17 @@ securitySchemes:
           schema: vShieldVendorCreate
     /vendors:
       displayName: guestIntrospectionVendorsInfo
-      description: Registered Guest Introspection vendors
+      description: |
+        Working With Registered Guest Introspection Vendors
+        ----
       get:
         displayName: vShieldVendorsInfoRead
         description: Retrieve the list of all registered Guest Introspection vendors.
     /{vendorID}:
       displayName: guestIntrospectionSolution
-      description: Guest Introspection vendors and endpoint protection solutions
+      description: |
+        Working With Guest Introspection Vendors and Endpoint Protection Solutions
+        -----
       uriParameters:
         vendorID:
           displayName: vendorID
@@ -6113,14 +6208,17 @@ securitySchemes:
       /solutions:
         displayName: guestIntrospectionSolutionsInfo
         description: |
-          Information about registered endpoint protection solutions
+          Information About Registered Endpoint Protection Solutions
+          ----
         get:
           displayName: guestIntrospectionSolutionsInfoRead
           description: |
             Get registration information for all endpoint protection solutions for a Guest Introspection vendor.
       /{altitude}:
         displayName: guestIntrospectionSolutionInfo
-        description: Endpoint protection solution registration information
+        description: |
+          Endpoint Protection Solution Registration Information
+          ----
         uriParameters:
           altitude:
             displayName: altitude
@@ -6137,15 +6235,17 @@ securitySchemes:
         /location:
           displayName: guestIntrospectionSolutionIPPort
           description: |
-                       IP address and port for an endpoint protection solution.
-
-                       To change the location of an endpoint protection solution:
-                       1. Deactivate all security virtual machines.
-                       2. Change the location.
-                       3. Reactivate all security virtual machines.
+            IP Address and Port For an Endpoint Protection Solution
+            -----
+            To change the location of an endpoint protection solution:
+            1. Deactivate all security virtual machines.
+            2. Change the location.
+            3. Reactivate all security virtual machines.
           post:
             displayName: guestIntrospectionSolutionIPPortSet
-            description: Set the IP address and port on the vNIC host for an endpoint protection solution.
+            description: |
+              Set the IP address and port on the vNIC host for an endpoint
+              protection solution.
             body:
               application/xml:
                 example: |
@@ -6156,17 +6256,25 @@ securitySchemes:
                 schema: solutionIPPortSet
           get:
             displayName: guestIntrospectionSolutionIPPortGet
-            description: Get the IP address and port on the vNIC host for an endpoint protection solution.
+            description: |
+              Get the IP address and port on the vNIC host for an endpoint
+              protection solution.
           delete:
             displayName: guestIntrospectionSolutionIPPortDelete
-            description: Unset the IP address and port for an endpoint protection solution.
+            description: |
+              Unset the IP address and port for an endpoint protection
+              solution.
   /activation:
     displayName: guestIntrospectionSolutionActivation
-    description: Activate an Endpoint Protection Solution.
+    description: |
+      Activate an Endpoint Protection Solution
+      -------
+      You can activate a solution that has been registered and located.
     get:
       displayName: guestIntrospectionSolutionActivationRead
       description: |
-        Retrieve activation information for all activated security VMs on the specified host.
+        Retrieve activation information for all activated security VMs on the
+        specified host.
       queryParameters:
         hostId:
           required: true
@@ -6192,7 +6300,9 @@ securitySchemes:
                 </ActivatedSVMs>
     /{vendorID}/{solutionID}:
       displayName: guestIntrospectionSolutionActivatedVMs
-      description: Activated security virtual machines
+      description: |
+        Activated Security Virtual Machines
+        ---
       uriParameters:
         vendorID:
           displayName: vendorID
@@ -6226,7 +6336,9 @@ securitySchemes:
                   </ActivatedSVMs>
     /{vendorID}/{altitude}:
       displayName: guestIntrospectionSolutionActivate
-      description: Activate a registered endpoint protection solution.
+      description: |
+        Activate a Registered Endpoint Protection Solution
+        -----
       uriParameters:
         vendorID:
           displayName: vendorID
@@ -6241,7 +6353,8 @@ securitySchemes:
       post:
         displayName: guestIntrospectionSolutionActivate
         description: |
-          Activate an endpoint protection solution that has been registered and located. Specify the following parameter in the request body.
+          Activate an endpoint protection solution that has been registered
+          and located. Specify the following parameter in the request body.
 
           | Name            | Comments |
           |-----------------|------------|
@@ -6255,15 +6368,17 @@ securitySchemes:
             schema: vShieldSolutionActivate
       /{moid}:
         displayName: guestIntrospectionSolutionStatus
-        description: Get the activation status or deactivate an endpoint protection solution on a host.
+        description: |
+          Working with Solution Activation Status
+          ----
         uriParameters:
           moid:
             required: true
             displayName: moid
             description: Managed object reference of a VM.
         get:
-         displayName: guestIntrospectionSolutionActivationStatusRead
-         description: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
+          displayName: guestIntrospectionSolutionActivationStatusRead
+          description: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
         delete:
           displayName: guestIntrospectionSolutionDeactivate
           description: Deactivate an endpoint protection solution on a host.
@@ -6275,11 +6390,11 @@ securitySchemes:
   /globalroot-0/config:
     displayName: dfwConfig
     description: |
-      Distributed firewall rules configuration
-      ___
+      Distributed Firewall Rules Configuration
+      ---
       The following table lists the elements that can be used in firewall
       rules.
-      ___
+
       | Element | Keyword for API | Used in |
       |---|---|---|
       | All Edges | ALL_EDGES | appliedTo |
@@ -6296,7 +6411,7 @@ securitySchemes:
       | IPv4 addresses | Ipv4Address | source/destination |
       | IPv6 addresses | Ipv6Address | source/destination |
       | logical switch | VirtualWire | source/destination<br>appliedTo |
-      | MAC set | MACSet | source/destination |
+      | MAC address set | MACSet | source/destination |
       | network | Network | for legacy portgroups, network can be used in source or destination instead of appliedTo |
       | profile | ALL_PROFILE_BINDINGS | |
       | resource pool | ResourcePool | source/destination |
@@ -6364,12 +6479,12 @@ securitySchemes:
           required: false
           displayName: source
           description: |
-            **source** can contain IPv4/v6 address or vm-id
+            **source** can contain IPv4/v6 address or vm-id.
         destination:
           required: false
           displayName: destination
           description: |
-            **destination** can contain IPv4/v6 address or vm-id
+            **destination** can contain IPv4/v6 address or vm-id.
         ruleId:
           required: false
           displayName: ruleId
@@ -6714,7 +6829,7 @@ securitySchemes:
         displayName: dfwL3SectionId
         description: |
           Working With a Specific Layer 3 Distributed Firewall Section
-          ---
+          ----
         uriParameters:
           sectionId:
             required: true
@@ -6977,7 +7092,8 @@ securitySchemes:
         /rules:
           displayName: dfwL3Rules
           description: |
-            Working with distributed firewall rules in a layer 3 section.
+            Working With Distributed Firewall Rules in a Layer 3 Section
+            ----
           post:
             displayName: dfwL3RulesAdd
             description: !include documentation/reuse/firewall/dfwL2RulesAdd
@@ -7016,8 +7132,8 @@ securitySchemes:
           /{ruleId}:
             displayName: dfwL3Rule
             description: |
-              Operations on L3 rules in sections identified by section Id and
-              Rule Id
+              Working with a Specific Rule in a Specific Layer 3 Section
+              ----
             uriParameters:
               ruleId:
                 required: true
@@ -7139,7 +7255,8 @@ securitySchemes:
       /{sectionId}:
         displayName: dfwL2SectionId
         description: |
-          Working with a specific layer 2 distributed firewall section.
+          Working With a Specific Layer 2 Distributed Firewall Section
+          ----
         uriParameters:
           sectionId:
             required: true
@@ -7242,7 +7359,8 @@ securitySchemes:
         /rules:
           displayName: dfwL2Rules
           description: |
-            Working with distributed firewall rules in a layer 2 section.
+            Working With Distributed Firewall Rules in a Layer 2 Section
+            ------
           post:
             displayName: dfwL2RulesAdd
             description: !include documentation/reuse/firewall/dfwL2RulesAdd
@@ -7290,8 +7408,8 @@ securitySchemes:
           /{ruleId}:
             displayName: dfwL2Rule
             description: |
-              Operations on L2 rules in sections identified by section Id and
-              Rule Id
+              Working with a Specific Rule in a Specific Layer 2 Section
+              -----
             uriParameters:
               ruleId:
                 required: true
@@ -7358,7 +7476,9 @@ securitySchemes:
                   description: !include documentation/reuse/firewall/if-match
     /layer3redirectsections:
       displayName: layer3RedirectSections
-      description: Layer3 redirect sections and rules
+      description: |
+        Layer 3 Redirect Sections and Rules
+        ----
       post:
         displayName: layer3RedirectSectionsCreate
         description: Add L3 redirect section
@@ -7381,7 +7501,9 @@ securitySchemes:
             schema: layer3RedirectSectionsCreate
       /{section}:
         displayName: section
-        description: Layer3 redirect section
+        description: |
+          Layer 3 Redirect Section
+          ----
         uriParameters:
           section:
             required: true
@@ -7393,9 +7515,9 @@ securitySchemes:
         put:
           displayName: sectionUpdate
           description: |
-            Modify L3 Redirect section. You will need to get the Etag value out
-            of the GET first. Then pass the modified version of the whole
-            redirect section configuration in the GET body
+            Modify layer 3 redirect section. You will need to get the Etag
+            value out of the GET first. Then pass the modified version of the
+            whole redirect section configuration in the GET body.
           headers:
             If-Match:
               required: true
@@ -7425,7 +7547,9 @@ securitySchemes:
           description: Delete specified L3 redirect section
         /rules:
           displayName: rules
-          description: L3 redirect rules for specified section
+          description: |
+            Working with Layer 3 Redirect Rules for a Specific Section
+            ----
           post:
             displayName: rulesCreate
             description: Add L3 redirect rule
@@ -7448,7 +7572,9 @@ securitySchemes:
                 schema: rulesCreate
           /{ruleID}:
             displayName: rule
-            description: Rule for specified section
+            description: |
+              Working With a Specific Layer 3 Redirect Rule for a Specific Section
+              ----
             uriParameters:
               ruleID:
                 displayName: ruleID
@@ -7490,10 +7616,13 @@ securitySchemes:
     /layer3redirect/profiles:
       displayName: serviceInsertionProfiles
       description: |
-        Service Insertion profiles that can be applied to layer3 redirect rules
+        Service Insertion Profiles and Layer 3 Redirect Rules
+        ----
       get:
         displayName: serviceInsertionProfilesRead
-        description: Retrieve the Service Insertion profiles
+        description: | 
+          Retrieve the Service Insertion profiles that can be applied to
+          layer3 redirect rules.
   /globalroot-0/state:
     displayName: dfwUpgrade
     description: |
@@ -7663,7 +7792,9 @@ securitySchemes:
           6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
   /globalroot-0/drafts:
     displayName: dfwDrafts
-    description: Import and export firewall configurations
+    description: |
+      Import and Export Firewall Configurations
+      ----
     post:
       displayName: dfwDraftsCreate
       description: Save a firewall configuration
@@ -7702,7 +7833,9 @@ securitySchemes:
       description: Displays the draft IDs of all saved configurations
     /{draftID}:
       displayName: dfwDraft
-      description: Specified saved firewall configuration
+      description: |
+        Working With a Specific Saved Firewall Configuration
+        ----
       uriParameters:
         draftID:
           required: true
@@ -7710,10 +7843,10 @@ securitySchemes:
           description: Specified draft ID (retrieved through dfwDrafts GET call)
       get:
         displayName: dfwDraftRead
-        description: Get a saved firewall configuration
+        description: Get a saved firewall configuration.
       put:
         displayName: dfwDraftUpdate
-        description: Update a saved firewall configuration
+        description: Update a saved firewall configuration.
         body:
           application/xml:
             example: |
@@ -7746,27 +7879,31 @@ securitySchemes:
             schema: dfwDraftUpdate
       delete:
         displayName: dfwDraftDelete
-        description: Delete a configuration
+        description: Delete a configuration.
       /action/export:
         displayName: dfwConfigExport
-        description: Export a configuration
+        description: |
+          Export a Firewall Configuration
+          ----
         get:
           displayName: dfwConfigExportExecute
-          description: Export a configuration
+          description: Export a configuration.
           queryParameters:
               getLatestForUniversal:
                 displayName: getLatestForUniversal
                 description: |
-                  Set to "true" to export the lasted universal draft from a
+                  Set to "true" to export the latest universal draft from a
                   secondary NSX manager.
                 type: boolean
                 required: false
       /action/import:
         displayName: dfwConfigImport
-        description: Import a configuration
+        description: |
+          Import a Firewall Configuration
+          -----
         post:
           displayName: dfwConfigImportExecute
-          description: Import a configuration
+          description: Import a configuration.
           body:
             application/xml:
               example: |
@@ -7802,6 +7939,8 @@ securitySchemes:
   /stats/eventthresholds:
     displayName: dfwThresholds
     description: |
+      Working With Distributed Firewall Thresholds
+      ----
       Configure memory, CPU, and connections per second (CPS) thresholds for
       distributed firewall.
       ___
@@ -7888,10 +8027,14 @@ securitySchemes:
                   <tcpStrictOption>false</tcpStrictOption>
                 </globalConfiguration>
     put:
-    # changed in 6.2.3 - autoDraftDisabled parameter added
       displayName: dfwPerformanceUpdate
       description: |
         Update the distributed firewall performance configuration.
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method updated. **autoDraftDisabled** parameter added.
       body:
         application/xml:
           example: |
@@ -7905,8 +8048,10 @@ securitySchemes:
   /forceSync/{ID}:
     displayName: dfwSync
     description: |
+      Synchronize Firewall
+      ----
       Synchronize hosts and clusters with the last good configuration in NSX
-      Mgr database
+      Manager database.
     uriParameters:
       ID:
         required: true
@@ -7914,10 +8059,13 @@ securitySchemes:
         description: Specified host or cluster to synchronize
     post:
       displayName: dfwSyncExecute
-      description: Force sync host/cluster
+      description: Force sync host or cluster.
   /{domainID}/enable/{truefalse}:
     displayName: dfwEnableDisable
-    description: Enable or disable firewall components on a cluster
+    description: |
+      Enable Firewall
+      ----
+      Enable or disable firewall components on a cluster.
     uriParameters:
       domainID:
         required: true
@@ -7933,17 +8081,20 @@ securitySchemes:
   /{contextId}/config/ipfix:
     displayName: dfwIPFix
     description: |
-      Export specific flows directly from firewall to a flow collector
+      Working with IPFIX
+      ---
+      Configuring IPFIX exports specific flows directly from Distributed
+      Firewall to a flow collector.
     uriParameters:
       contextId:
         displayName: contextId
         description: Specified context
     get:
       displayName: dfwIPFixRead
-      description: Query IPFix configuration
+      description: Query IPFIX configuration.
     put:
       displayName: dfwIPFixUpdate
-      description: Configure IPFix
+      description: Configure IPFIX.
       body:
         application/xml:
           example: |
@@ -7961,48 +8112,125 @@ securitySchemes:
     delete:
       displayName: dfwIPFixDelete
       description: |
-        Deleting IPFix configuration resets the config to default values
-/4.0/services/spoofguard/policies:
-  displayName: spoofGuardPolicies
+        Deleting IPFIX configuration resets the config to default values
+/4.0/services/spoofguard:
+  displayName: spoofGuard
   description: |
-    Working with SpoofGuard Policies
-    ====================
-  post:
-    displayName: spoofGuardPoliciesCreate
+    Working With SpoofGuard
+    ==========
+    After synchronizing with the vCenter Server, NSX Manager collects the IP
+    addresses of all vCenter guest virtual machines If a virtual machine has
+    been compromised, the IP address can be spoofed and malicious
+    transmissions can bypass firewall policies.
+    
+    You create a SpoofGuard policy for specific networks that allows you to
+    authorize the reported IP addresses and alter them if necessary to prevent
+    spoofing.  SpoofGuard inherently trusts the MAC addresses of virtual
+    machines collected from the VMX files and vSphere SDK. Operating
+    separately from Firewall rules, you can use SpoofGuard to block traffic
+    determined to be spoofed.
+# /4.0/services/spoofguard/policies
+  /policies:
+    displayName: spoofGuardPolicies
     description: |
-      Create a SpoofGuard policy to specify the operation mode for networks.
-    body:
-      application/xml:
-        example: |
-          <spoofguardPolicy>
-            <name></name>
-            <description></description>
-            <operationMode></operationMode>
-            <enforcementPoint>
-              <id></id>
-              <name></name>
-              <type></type>
-            </enforcementPoint>
-            <allowLocalIPs></allowLocalIPs>
-          </spoofguardPolicy>
-        schema: spoofGuardPoliciesCreate
-  get:
-    displayName: spoofGuardPoliciesRead
-    description: Retrieve all SpoofGuard policies
-  /{policyID}:
-    displayName: spoofGuardPolicy
-    description: Specified policy
+      Working with SpoofGuard Policies
+      ---------
+      You can create a SpoofGuard policy to specify the operation mode for
+      specific networks. The system generated policy applies to port groups
+      and logical switches not covered by existing SpoofGuard policies.
+
+      The operationMode for a SpoofGuard policy can be set to one of the
+      following:
+
+      * **TOFU** - Automatically trust IP assignments on their first use
+      * **MANUAL** - Manually inspect and approve all IP assignments before first
+      use
+      * **DISABLE** - Disable the SpoofGuard policy
     post:
-      displayName: spoofGuardPolicyApprove
-      description: Use query parameters to perform operations on a policy
+      displayName: spoofGuardPoliciesCreate
+      description: |
+        Create a SpoofGuard policy to specify the operation mode for networks.
+      body:
+        application/xml:
+          example: |
+            <spoofguardPolicy>
+              <name></name>
+              <description></description>
+              <operationMode></operationMode>
+              <enforcementPoint>
+                <id></id>
+                <name></name>
+                <type></type>
+              </enforcementPoint>
+              <allowLocalIPs></allowLocalIPs>
+            </spoofguardPolicy>
+          schema: spoofGuardPoliciesCreate
+    get:
+      displayName: spoofGuardPoliciesList
+      description: Retrieve informationa about all SpoofGuard policies.
+# /4.0/services/spoofguard/policies/{policyID}
+    /{policyID}:
+      displayName: spoofGuardPolicy
+      description: | 
+        Working With a Specific SpoofGuard Policy
+        ---
+      uriParameters:
+        policyID:
+          displayName: SpoofGuardPolicyID
+          description: SpoofGuard policy ID.
+      get:
+        displayName: spoofGuardPolicyRead
+        description: |
+          Retrieve information about the specified SpoofGuard policy.
+      put:
+        displayName: spoofGuardPolicyUpdate
+        description: Modify the specified SpoofGuard policy.
+        body:
+          application/xml:
+            example: |
+              <spoofguardPolicy>
+                <policyId></policyId>
+                <name></name>
+                <description></description>
+                <operationMode></operationMode>
+                <enforcementPoint>
+                  <id></id>
+                  <name></name>
+                  <type></type>
+                </enforcementPoint>
+                <allowLocalIPs></allowLocalIPs>
+              </spoofguardPolicy>
+            schema: spoofGuardPolicyUpdate
+      delete:
+        displayName: spoofGuardPolicyDelete
+        description: Delete the specified SpoofGuard policy.
+  /{policyID}:
+    displayName: SpoofGuardPolicyIP
+    description: |
+
+      Perform SpoofGuard Operations on IP Addresses in a Specific Policy
+      ---
+    uriParameters:
+      policyID:
+        displayName: SpoofGuardPolicyID
+        description: SpoofGuard policy ID.
+    post:
+      displayName: spoofGuardPolicyIPOperations
+      description: Approve or publish IP addresses.
       queryParameters:
+        vnicId:
+          displayName: vnicId
+          description: | 
+            Perform the specified action on IP addresses for the specified
+            vNIC ID.
+          required: false
         action:
-          required: true
           displayName: action
           description: |
-            Set to "approve" along with specified IP addresses in body to
-            approve them, or set to "publish" to publish the approved IP
-            addresses
+            Set to *approve* along with specified IP addresses in body to
+            approve them, or set to *publish* to publish approved IP
+            addresses.
+          required: true
       body:
         application/xml:
           example: |
@@ -8026,38 +8254,16 @@ securitySchemes:
             </spoofguardList>
           schema: spoofGuardPolicyApprove
     get:
-      displayName: spoofGuardPolicyRead
+      displayName: spoofGuardPolicyIPRead
       description: |
-        Retrieve policy information, or use the query parameters to perform
-        operations
+        Retrieve IP addresses for the specified state.
       queryParameters:
         list:
           displayName: list
           description: |
-            Use to retrieve IP addresses for specified state
-            (ACTIVE|INACTIVE|PUBLISHED|UNPUBLISHED|REVIEW_PENDING|DUPLICATE)
-    put:
-      displayName: spoofGuardPolicyUpdate
-      description: Modify SpoofGuard policy
-      body:
-        application/xml:
-          example: |
-            <spoofguardPolicy>
-              <policyId></policyId>
-              <name></name>
-              <description></description>
-              <operationMode></operationMode>
-              <enforcementPoint>
-                <id></id>
-                <name></name>
-                <type></type>
-              </enforcementPoint>
-              <allowLocalIPs></allowLocalIPs>
-            </spoofguardPolicy>
-          schema: spoofGuardPolicyUpdate
-    delete:
-      displayName: spoofGuardPolicyDelete
-      description: Delete a policy
+            Specify one of the following states: *ACTIVE*, *INACTIVE*,
+            *PUBLISHED*, *UNPUBLISHED*, *REVIEW_PENDING*, *DUPLICATE*.
+          required: false
 /2.1/app/flow:
   displayName: flowMonitoring
   description: |
