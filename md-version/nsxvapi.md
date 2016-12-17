@@ -133,7 +133,7 @@ Working with vSphere Distributed Switches
 ### /2.0/vdn/switches
 
 * **post** *(secured)*: Prepare a vSphere Distributed Switch.
-___
+
 The MTU is the maximum amount of data that can be transmitted in one
 packet before it is divided into smaller packets. VXLAN frames are slightly
 larger in size because of the traffic encapsulation, so the MTU required
@@ -165,19 +165,19 @@ Working with segment ID pools
 -------------
 Segment ID pools (also called segment ID ranges) provide virtual network
 identifiers (VNIs) to logical switches.
-___
+
 You must configure a segment ID pool for each NSX Manager. You can have
 more than one segment ID pool. The segment ID pool includes the beginning
 and ending IDs.
-___
+
 You should not configure more than 10,000 VNIs in a single vCenter
 server because vCenter limits the number of dvPortgroups to 10,000.
-___
+
 If any of your transport zones will use multicast or hybrid replication
 mode, you must also configure a multicast address range.
 
 * **post** *(secured)*: Add a segment ID pool.
-___
+
 * **name** - Required property.
 * **desc** - Optional property.
 * **begin** - Required property. Minimum value is *5000*
@@ -192,12 +192,12 @@ Working With a Specific Segment ID Pool
 * **get** *(secured)*: Retrieve information about the specified segment ID pool.
 
 * **put** *(secured)*: Update the specified segment ID pool.
-___
+
 If the segment ID pool is universal you must send the API request to
 the primary NSX Manager.
 
 * **delete** *(secured)*: Delete the specified segment ID pool.
-___
+
 If the segment ID pool is universal you must send the API request to
 the primary NSX Manager.
 
@@ -211,11 +211,11 @@ traffic across your network to avoid overloading a single multicast
 address.
 
 * **post** *(secured)*: Add a multicast address range for logical switches.
-___
+
 The address range includes the beginning and ending addresses.
 
 * **get** *(secured)*: Retrieve information about all configured multicast address ranges.
-___
+
 Universal multicast address ranges have the property isUniversal
 set to *true*.
 
@@ -226,12 +226,12 @@ Working With a Specific Multicast Address Range
 * **get** *(secured)*: Retrieve information about the specified multicast address range.
 
 * **put** *(secured)*: Update the specified multicast address range.
-___
+
 If the multicast address range is universal you must send the API
 request to the primary NSX Manager.
 
 * **delete** *(secured)*: Delete the specified multicast address range.
-___
+
 If the multicast address range is universal you must send the API
 request to the primary NSX Manager.
 
@@ -246,7 +246,7 @@ Update the VXLAN Port Configuration
 -------
 
 * **put** *(secured)*: Update the VXLAN port configuration to use port *portNumber*.
-___
+
 This method changes the VXLAN port in a three phrase process, avoiding
 disruption of VXLAN traffic. In a cross-vCenter NSX environment,
 change the VXLAN port on the primary NSX Manager to propagate this
@@ -307,9 +307,9 @@ Working with a Specific Transport Zone
 * **get** *(secured)*: Retrieve information about the specified transport zone.
 
 * **post** *(secured)*: Update the specified transport zone.
-___
+
 You can add a cluster to or delete a cluster from a transport zone.
-___
+
 You can also repair missing portgroups. For every logical switch
 created, NSX creates a corresponding portgroup in vCenter. If the
 portgroup is lost for any reason, the logical switch will stop
@@ -321,7 +321,7 @@ functioning. The repair action recreates any missing portgroups.
 Working with transport zone attributes.
 
 * **put** *(secured)*: Update the attributes of a transport zone.
-___
+
 For example, you can update the name, description, or control plane
 mode. You must include the cluster object IDs for the transport zone
 in the request body.
@@ -331,10 +331,10 @@ Testing multicast group connectivity.
 -------
 
 * **post** *(secured)*: Test multicast group connectivity.
-___
+
 Test multicast group connectivity between two hosts connected to the
 specified transport zone.
-___
+
 Parameter **packetSizeMode** has one of the following values:
 * *0* - VXLAN standard packet size
 * *1* - minimum packet size
@@ -352,7 +352,7 @@ Working with Logical Switches in a Specific Transport Zone
 transport zone (network scope).
 
 * **post** *(secured)*: Create a logical switch.
-___
+
 To create a universal logical switch use *universalvdnscope* as the
 scopeId in the URI and send the request to the primary NSX Manager.
 Request body parameters:
@@ -417,17 +417,17 @@ Working Virtual Machine Connections to Logical Switches
 -----
 
 * **post** *(secured)*: Attach a VM vNIC to, or detach a VM vNIC from a logical switch.
-___
+
 Specify the logical switch ID in the **portgroupId** parameter. To
 detach a VM vNIC from a logical switch, leave the **portgroupId** parameter
 empty.
-___
+
 To find the ID of a VM vNIC, do the following:
 1. In the vSphere MOB, navigate to the VM you want to connect or disconnect.
 2. Click **config** and take note of the **instanceUuid**.
 3. Click **hardware** and take note of the last three digits of the
 appropriate network interface device.
-___
+
 Use these two values to form the VM vNIC ID.  For example, if the
 **instanceUuid** is *502e71fa-1a00-759b-e40f-ce778e915f16* and the
 appropriate **device** value is *device[4000]*, the **objectId** and
@@ -437,12 +437,12 @@ appropriate **device** value is *device[4000]*, the **objectId** and
 Working with a specific logical switch.
 
 * **get** *(secured)*: Retrieve information about the specified logical switch.
-___
+
 If the switch is a universal logical switch the **isUniversal**
 parameter is set to true in the response body.
 
 * **put** *(secured)*: Update the specified logical switch.
-___
+
 For example, you can update the name, description, or control plane
 mode.
 
@@ -453,10 +453,10 @@ Testing Host Connectivity
 -----
 
 * **post** *(secured)*: Test multicast group connectivity.
-___
+
 Test multicast group connectivity between two hosts connected to the
 specified logical switch.
-___
+
 Parameter **packetSizeMode** has one of the following values:
 * *0* - VXLAN standard packet size
 * *1* - minimum packet size
@@ -468,10 +468,10 @@ the **packetSize** parameter.
 Test point-to-point connectivity.
 
 * **post** *(secured)*: Test point-to-point connectivity.
-___
+
 Test point-to-point connectivity between two hosts connected to the
 specified logical switch.
-___
+
 Parameter **packetSizeMode** has one of the following values:
 * *0* - VXLAN standard packet size
 * *1* - minimum packet size
@@ -497,7 +497,7 @@ Working with Connections Between Hardware Gateways and Logical Switches
 
 * **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
 
-**Attach a hardware gateway to a logical switch and create a new binding with the information provided**
+### Attach a hardware gateway to a logical switch and create a new binding with the information provided
 
 `POST /api/2.0/vdn/virtualwires/{virtualwireid}/hardwaregateways`
 
@@ -510,7 +510,7 @@ Working with Connections Between Hardware Gateways and Logical Switches
 </hardwareGatewayBinding> 
 ```
 
-**Attach a hardware gateway to a logical switch, specifying an existing binding by ID**
+### Attach a hardware gateway to a logical switch, specifying an existing binding by ID
 
 `POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=attach`
 
@@ -525,7 +525,7 @@ Working with Connections Between Hardware Gateways and Logical Switches
 </virtualWire>
 ```
 
-**Detach a hardware gateway from a logical switch**
+### Detach a hardware gateway from a logical switch
 
 `POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=detach`
 
@@ -557,7 +557,7 @@ only) traffic, and the learning is stored on the host and the controller.
 * **post** *(secured)*: Adds a new NSX controller on the specified given cluster. The *hostId*
 parameter is optional. The *resourcePoolId* can be either the
 *clusterId* or *resourcePoolId*.
-___
+
 The IP address of the controller node will be allocated
 from the specified IP pool. The *deployType* property determines the
 controller node memory size and can be small, medium, or large. However,
@@ -691,7 +691,7 @@ Working with Service Group Members on a Specific Scope
 
 * **get** *(secured)*: Get a list of member elements that can be added to the service groups
 created on a particular scope.
-___
+
 Since service group allows only either services or other service
 groups as members to be added, this helps you get a list of all
 possible valid elements that can be added to the
@@ -1118,7 +1118,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 * **post** *(secured)*: Update TLS settings.
-___
+
 Include a comma separated list of the TLS versions you want to enable,
 for both server and client.
 
@@ -1272,8 +1272,8 @@ parameter can be *NSX* or *NSXAPIMGMT*.
 
 * **post** *(secured)*: Upload upgrade bundle.
 * **get** *(secured)*: After the upgrade bundle is uploaded, you can query upgrade details
-such as pre‐upgrade validation warning or error messages along with
-pre‐upgrade questions.
+such as pre-upgrade validation warning or error messages along with
+pre-upgrade questions.
 
 ### /1.0/appliance-management/upgrade/start/{componentID}
 Start Upgrade
@@ -1296,7 +1296,7 @@ Working with Keystore Files
 ------------
 
 * **post** *(secured)*: Upload keystore file.
-___
+
 Input is PKCS#12 formatted NSX file along with password.
 
 ### /1.0/appliance-management/certificatemanager/certificates/nsx
@@ -1310,7 +1310,7 @@ Working with Certificate Signing Requests
 ------
 
 * **post** *(secured)*: Create a certificate signing request (CSR) for NSX Manager.
-___
+
 The response header contains the created file location.
 
 **Method history:**
@@ -1326,7 +1326,7 @@ Working with Certificate Chains
 -----
 
 * **post** *(secured)*: Upload certificate chain.
-___
+
 Input is certificate chain file which is a PEM encoded chain of
 certificates received from the CA after signing a CSR.
 
@@ -1467,28 +1467,28 @@ This method can be used to perform the following tasks:
 ```
 
 * **put** *(secured)*: Upgrade Network virtualization components.
-____
+_
 This API call can be used to upgrade network virtualization components.
 After NSX Manager is upgraded, previously prepared clusters must have
 the 6.x network virtualization components installed.
 
 * **delete** *(secured)*: Remove VXLAN or network virtualization components.
-___
+
 Removing network virtualization components removes previously
 installed VIBs, tears down NSX Manager to ESXi messaging, and removes
 any other network fabric dependent features such as logical switches.
 If a feature such as logical switches is being used in your
 environment, this call fails.
-___
+
 Removing VXLAN does not remove the network virtualization components
 from the cluster.
-___
+
 | Name | Comments |
 |------|----------|
 |**resourceId** | vCenter MOB ID of cluster. For example, domain-7.|
 |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations.|
 
-**Remove Network Virtualization Components**
+### Remove Network Virtualization Components
 
 ```
 <nwFabricFeatureConfig>
@@ -1496,8 +1496,9 @@ ___
     <resourceId>CLUSTER MOID</resourceId>
   </resourceConfig>
 </nwFabricFeatureConfig>
+```
 
-**Remove VXLAN**
+### Remove VXLAN
 
 ```
 <nwFabricFeatureConfig>
@@ -1508,7 +1509,7 @@ ___
 </nwFabricFeatureConfig>
 ```
 
-**Remove VXLAN with vDS context**
+### Remove VXLAN with vDS context
 
 ```
 <nwFabricFeatureConfig>
@@ -1531,17 +1532,20 @@ ___
 **featureInfo** sections may be returned.
 
 ### /2.0/nwfabric/status
-Working with network fabric status.
+Working With Network Fabric Status
+----
 
 * **get** *(secured)*: Retrieve the network fabric status of the specified resource.
 
 ### /2.0/nwfabric/status/child/{parentResourceID}
-Working with network fabric status of child resources.
+Working With Network Fabric Status of Child Resources
+----
 
 * **get** *(secured)*: Retrieve the network fabric status of child resources of the specified resource.
 
 ### /2.0/nwfabric/status/alleligible/{resourceType}
-Working with status of resources by criterion.
+Working With Status of Resources by Criterion
+----
 
 * **get** *(secured)*: Retrieve status of resources by criterion.
 
@@ -1586,9 +1590,9 @@ Traffic filter, USVM).
 2. Specify an IP pool to be used with the SVMs (available only if the
 partner registration indicates requirement of static IPs)
 3. Select portgroup (DVPG) to be used for each cluster (a default is
-pre‐populated for the user).
+pre-populated for the user).
 4. Select datastore to be used for each cluster (a default is
-pre‐populated for the user).
+pre-populated for the user).
 5. NSX Manager deploys the components on all hosts of the selected
 clusters.
 
@@ -1786,38 +1790,38 @@ Working with Data Collection for Activity Monitoring
 Activity Monitoring provides visibility into your virtual network to
 ensure that security policies at your organization are being enforced
 correctly.
-___
+
 A Security policy may mandate who is allowed access to what applications.
 The Cloud administrator can generate Activity Monitoring reports to see if
 the IP based firewall rule that they set is doing the intended work. By
 providing user and application level detail, Activity Monitoring
 translates high level security policies to low level IP address and
 network based implementation.
-___
+
 Once you enable data collection for Activity Monitoring, you can run
 reports to view inbound traffic (such as virtual machines being accessed
 by users) as well as outbound traffic (resource utilization, interaction
 between inventory containers, and AD groups that accessed a server).
-___
+
 You must enable data collection for one or more virtual machines on a
 vCenter Server before running an Activity Monitoring report. Before
 running a report, ensure that the enabled virtual machines are active and
 are generating network traffic.
-___
+
 You should also register NSX Manager with the AD Domain Controller. See
 "Working with Domains".
-___
+
 Note that only active connections are tracked by Activity Monitoring.
 Virtual machine traffic blocked by firewall rules at the vNIC level is not
 reflected in reports.
-___
+
 In case of an emergency such as a network overload, you can turn off data
 collection at a global level. This overrides all other data collection
 settings.
-___
+
 Some API calls may require the VMID, which is the MOID of the guest
 virtual machine. You can retrieve this by queuing the vCenter mob
-structure (https:VC‐IP‐Address/mob). The VMID is listed under host
+structure (https:VC-IP-Address/mob). The VMID is listed under host
 structure.
 
 ### /1.0/eventcontrol/vm/{vmID}/request
@@ -1827,7 +1831,7 @@ You must enable data collection at least five minutes before running an
 Activity Monitoring report.
 
 * **post** *(secured)*: Enable or disable data collection on a virtual machine
-___
+
 Set **value** to *enabled* or *disabled*.
 
 ### /1.0/eventcontrol/eventcontrol-root/request
@@ -1835,11 +1839,11 @@ Override Data Collection
 ----
 
 * **post** *(secured)*: Turn data collection on or off at the global level.
-___
+
 In case of an emergency such as a network overload, you can turn off
 data collection at a global level (kill switch). This overrides all
 other data collection settings.
-___
+
 Set **value** to *enabled* or *disabled*.
 
 ### /1.0/eventcontrol/config/vm/{vmID}
@@ -1877,7 +1881,7 @@ accessing a particular application, which can help you determine if you
 need to adjust identity firewall in your environment.
 
 * query=*resource*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
   * &lt;param-name&gt; is one of:
     * *src* (required)
     * *dest* (required)
@@ -1891,7 +1895,8 @@ need to adjust identity firewall in your environment.
 
 **Example:** View user activities to VM ID 1 originating from application
 ID 1  
-`GET /api/3.0/ai/records?query=resource&interval=60m&param=src:DIRECTORY_GROUP&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1`
+`GET /api/3.0/ai/records?query=resource&interval=60m&param=src:DIRECTORY_GROUP`  
+`&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1`
 
 ### View Inbound Activity
 
@@ -1899,7 +1904,7 @@ You can view all inbound activity to a server by desktop pool, security
 group, or AD group.
 
 * query=*sam*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
   * &lt;param-name&gt; is one of:
     * *src* (required)
     * *dest* (required)
@@ -1913,7 +1918,8 @@ group, or AD group.
 
 **Example:** View user activities to VM ID 1 originating from
 application ID 1  
-`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1`
+`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
+`&param=src:SECURITY_GROUP:1`
 
 ### View Interaction between Inventory Containers
 You can view the traffic passing between defined containers such as AD
@@ -1923,7 +1929,7 @@ relationships between Inventory container definitions, desktop pools and
 AD groups.
 
 * query=*containers*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
   * &lt;param-name&gt; is one of:
     * *src* (required)
     * *dest* (required)
@@ -1934,7 +1940,8 @@ AD groups.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
 
 **Example:** View interaction between inventory containers  
-`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1`
+`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
+`&param=src:SECURITY_GROUP:1`
 
 ### View Outbound AD Group Activity
 
@@ -1942,7 +1949,7 @@ You can view the traffic between members of defined Active Directory
 groups and can use this data to fine tune your firewall rules.
 
 * query=*adg*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
   * &lt;param-name&gt; is one of:
     * *src* (required)
     * *adg*
@@ -1953,7 +1960,8 @@ groups and can use this data to fine tune your firewall rules.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default * is *INCLUDE*).
 
 **Example:** View outbound AD group activity    
-`GET https://NSX-Manager-IP-Address/api/3.0/ai/records?query=adg&interval=24h&param =adg:USER:1:INCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
+`GET https://NSX-Manager-IP-Address/api/3.0/ai/records?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
+`&param=src:SECURITY_GROUP:1:EXCLUDE`
 
 ### /3.0/ai/userdetails
 Retrieve user detail records in accordance with given query parameters
@@ -1981,7 +1989,8 @@ if you need to adjust identity firewall in your environment.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
 **Example:** View user activities to VM ID 1 originating from application ID 1  
-`GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00&param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52`
+`GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00`  
+`&param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52`
 
 ### View Inbound Activity
 
@@ -2003,7 +2012,8 @@ group, or AD group.
 
 **Example:** View user activities to VM ID 1 originating from
 application ID 1  
-`GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
+`GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE`  
+`&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
 
 ### View Interaction between Inventory Containers
 You can view the traffic passing between defined containers such as AD
@@ -2024,7 +2034,8 @@ AD groups.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
 
 **Example:** View interaction between inventory containers  
-`GET /api/3.0/ai/userdetails?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1`
+`GET /api/3.0/ai/userdetails?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
+`&param=src:SECURITY_GROUP:1`
 
 ### View Outbound AD Group Activity
 
@@ -2043,7 +2054,8 @@ groups and can use this data to fine tune your firewall rules.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
 **Example:** View outbound AD group activity    
-`GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
+`GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
+`&param=src:SECURITY_GROUP:1:EXCLUDE`
 
 ### View Virtual Machine Activity Report
 
@@ -2130,11 +2142,11 @@ AD groups that a user belongs to
 Security group details
 
 * **get** *(secured)*: Retrieve list of all observed security groups
-___
+
 Observed entities are the ones that are reported by the agents. For
 example, if a host activity is reported by an agent and if that host
 belongs to a security group then that security group would reported as
-observed in SAM database:
+observed in SAM database.
 
 ### /3.0/ai/securitygroup/{secgroupID}
 Specific security group details
@@ -2582,7 +2594,7 @@ rules.
 | vNIC | Vnic | source/destination<br>appliedTo |
 
 * **get** *(secured)*: Retrieve distributed firewall rule configuration.
-___
+
 If no query parameters are used, all rule configuration is retrieved.
 Use the query parameters to filter the rule configuration information.
 
@@ -2612,7 +2624,7 @@ When updating the firewall configuration:
   originating from all IPs other than 1.1.1.1.
 
 * **delete** *(secured)*: Restore default configuration.
-___
+
 Restores a configuration with one defaultLayer3 section with default
 allow rule and one defaultLayer2Section with default allow rule.
 
@@ -2637,7 +2649,7 @@ Distributed Firewall REST APIs.
 **name**.
 
 * **post** *(secured)*: Create a layer 3 distributed firewall section.
-___
+
 By default, the section is created at the top of the firewall table.
 You can specify a location for the section with the **operation**
 and **anchorId** query parameters.
@@ -2792,7 +2804,7 @@ Distributed Firewall REST APIs.
 **name**.
 
 * **post** *(secured)*: Create a layer 2 distributed firewall section.
-___
+
 By default, the section is created at the top of the firewall table.
 You can specify a location for the section with the **operation**
 and **anchorId** query parameters.
@@ -2809,6 +2821,7 @@ query parameters to specify the destination for the section.
 
 `POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009
 ?action=revise&operation=insert_before&anchorId=1008`
+
 `If-Match: 1478307787160`
 
 ```
@@ -2968,11 +2981,11 @@ layer3 redirect rules.
 
 ### /4.0/firewall/globalroot-0/state
 Enable distributed firewall after upgrade.
-___
+
 After upgrading NSX Manager, controllers, and network virtualization
 components, check the status of distributed firewall. If it is ready to
 enable, you can enable distributed firewall.
-___
+
 | State | Description |
 |-------|-------------|
 | backwardCompatible | This is the default state after an upgrade from vCloud Networking and Security to NSX, which means that vShield App is being used for protection instead of distributed firewall.|
@@ -3070,7 +3083,7 @@ Working With Distributed Firewall Thresholds
 ----
 Configure memory, CPU, and connections per second (CPS) thresholds for
 distributed firewall.
-___
+
 The firewall module generates system events when the memory and CPU
 usage crosses these thresholds.
 
@@ -3197,7 +3210,7 @@ Working with Flow Monitoring
 Retrieve flow monitoring statistics information.
 
 * **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
-___
+
 Response values for flow statistics:
 * **blocked** - indicates whether traffic is blocked:
   * 0 - flow allowed
@@ -3218,7 +3231,7 @@ Response values for flow statistics:
 Working with flow monitoring meta-data.
 
 * **get** *(secured)*: Retrieve flow statistics meta-data.
-___
+
 This method retrieves the following information for each flow type:
 * minimum start time
 * maximum end time
@@ -3226,13 +3239,13 @@ This method retrieves the following information for each flow type:
 
 ### /2.1/app/flow/config
 Working with flow monitoring configuration.
-___
+
 Flow records generated on all hosts are sent to NSX Manager, which
 consumes the records and displays aggregated information.  Hosts can
 generate large numbers of flow records.  You can configure flow
 monitoring to exclude certain records from collection.  The flow
 configuration applies to all hosts.
-___
+
 * **collectFlows** - if true, flow collection is enabled.
 * **ignoreBlockedFlows** - if true, ignore blocked flows.
 * **ignoreLayer2Flows** - if true, ignore layer 2 flows.
@@ -3242,7 +3255,7 @@ ___
 * **destinationContainer** - destination containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
 * **destinationPorts** - destination ports to exclude.
 * **serviceContainers** - service containers to exclude. Container can contain application or application group.
-___
+
 Flow exclusion happens at the host. The following flows are discarded by default:
 * Broadcast IP (255.255.255.255)
 * Local multicast group (224.0.0.0/24)
@@ -3278,24 +3291,24 @@ Working with NSX Edge
 
 * **post** *(secured)*: Install NSX Edge services gateway or logical router, depending on request
 body.
-___
+
 The NSX Edge installation API copies the NSX Edge OVF from the Edge
 Manager to the specified datastore and deploys an NSX Edge on the given
 datacenter. After the NSX Edge is installed, the virtual machine powers
 on and initializes according to the given network configuration. If an
 appliance is added, it is deployed with the specified configuration.
-___
+
 Installing an NSX Edge instance adds a virtual machine to the vCenter
 Server inventory, you must specify an IP address for the management
 interface, and you may name the NSX Edge instance.
-___
+
 The configuration you specify when you install an NSX Edge is stored in
 the database. If an appliance is added, the configuration is applied to
 it and it is deployed.
-___
+
 NOTE: Do not use hidden/system resource pool IDs as they are not
 supported on the UI.
-___
+
 Request body paramaters:
   * **name** - Optional. Default is *vShield-&lt;edgeId&gt;*. Used as a VM name
     on vCenter appended by "-<haIndex>"
@@ -3637,10 +3650,10 @@ Specific load balancer monitor
 Working with virtual servers.
 
 * **post** *(secured)*: Add a virtual server.
-___
+
 You can add an NSX Edge internal or uplink interface as a virtual
 server.
-___
+
 | Name | Required | Comments |
 |----------------|----------|----------|
 | **name** | yes | |
@@ -3655,7 +3668,6 @@ ___
 | **applicationProfileId** | no | The application profile identifier |
 | **accelerationEnabled** | no | Use the faster L4 load balancer engine rather than L7 load balancer engine. <br>**Note:**  If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.|
 | **applicationRuleId** | no | The application rule identifier list |
-___
 
 * **get** *(secured)*: Retrieve all virtual servers
 * **delete** *(secured)*: Delete all
@@ -4098,7 +4110,7 @@ Working with NSX Edge Configuration Publishing
 
 ### /4.0/edgePublish/tuningConfiguration
 Working with NSX Edge tuning configuration.
-___
+
 Starting in 6.2.3 you can configure default values for NSX Edge
 configuration parameters, including publishing and health check
 timeouts, and CPU and memory reservation, which are applicable to all
@@ -4112,14 +4124,14 @@ The default values are:
 * 100% for CPU reservation
 * 100% for Memory reservation
 * 1000 MHz per CPU
-___
+
 | Name | Comments |
 |------|----------|
 | lockUpdatesOnEdge | Default value is false. Serialize specific Edge operations related to DHCP and vnic configuration to avoid concurrency errors when too many configuration change requests arrive at the same time.|
 | aggregatePublishing | Default value is true (enabled). Speed up configuration change publishing to the NSX Edge by aggregating over the configuration versions.|
-| edgeVMHealthCheckIntervalInMin | Default value for time interval between NSX Edge VMʹs health check is 0, where NSX Manager manages the interval based on the number of NSX Edge VMʹs. A positive integer value overrides the default behavior.|
+| edgeVMHealthCheckIntervalInMin | Default value for time interval between NSX Edge VM's health check is 0, where NSX Manager manages the interval based on the number of NSX Edge VM's. A positive integer value overrides the default behavior.|
 | healthCheckCommandTimeoutInMs | Default timeout value for health check command is 120000.|
-| maxParallelVixCallsForHealthCheck | The maximum concurrent health check calls that can be made for NSX Edge VMʹs based on VIX communication channel is 25.|
+| maxParallelVixCallsForHealthCheck | The maximum concurrent health check calls that can be made for NSX Edge VM's based on VIX communication channel is 25.|
 | publishingTimeoutInMs | The timeout value to publish a configuration change on NSX Edge appliance.  Default is 1200000 (20 minutes).|
 | edgeVCpuReservationPercentage | Integer value [0-100], specifying the CPU reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
 | edgeMemoryReservationPercentage | integer value [0-100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
@@ -4213,7 +4225,7 @@ A security policy is a set of Endpoint, firewall, and network
 introspection services that can be applied to a security group.
 
 * **post** *(secured)*: Create a security policy.
-___
+
 When creating a security policy, a parent security policy can be
 specified if required. The security policy inherits services from the
 parent security policy. Security group bindings and actions can also
@@ -4221,14 +4233,14 @@ be specified while creating the policy. Note that execution order of
 actions in a category is implied by their order in the list. The
 response of the call has Location header populated with the URI using
 which the created object can be fetched.
-___
+
 Ensure that:
 * the required VMware built in services (such as Distributed Firewall,
   Data Security, and Endpoint) are installed. See *NSX Installation
   Guide*.
 * the required partner services have been registered with NSX Manager.
 * the required security groups have been created.
-___
+
 Tags related to Service Composer, security policies, and security
 groups:
 Common Tags
@@ -4300,7 +4312,7 @@ Working with Service Composer Status
 ------------------------------------
 
 * **get** *(secured)*: Retrieve the consolidated status of Service Composer.
-___
+
 The possible return of value for status are: *in_sync*,
 *in_progress*, *out_of_sync*, and *pending*.
 
@@ -4358,15 +4370,15 @@ Working with Security Policies
 * **get** *(secured)*: Retrieve security policy information.
 
 * **put** *(secured)*: Edit a security policy.
-___
+
 To update a security policy, you must first fetch it.
 Then edit the received XML and pass it back as the input. The
 specified configuration replaces the current configuration.
-___
+
 Security group mappings provided in the PUT call replaces the
 security group mappings for the security policy. To remove all
 mappings, delete the securityGroupBindings parameter.
-___
+
 You can add or update actions for the security policy by editing the
 actionsByCategory parameter. To remove all actions (belonging to all
 categories), delete the actionsByCategory parameter. To remove
@@ -4374,7 +4386,7 @@ actions belonging to a specific category, delete the block for that
 category.
 
 * **delete** *(secured)*: Delete a security policy.
-___
+
 When you delete a security policy, its child security policies and
 all the actions in it are deleted as well.
 
@@ -4383,7 +4395,7 @@ Working with Security Actions on a Security Policy
 -------------
 
 * **get** *(secured)*: Retrieve all security actions applicable on a security policy.
-___
+
 This list includes security actions from associated parent
 security policies, if any. Security actions per Execution Order
 Category are sorted based on the weight of security actions in
@@ -4394,20 +4406,20 @@ Working With Security Policy Configuration Hierarchies
 -----
 
 * **post** *(secured)*: Import a security policy configuration
-___
+
 You can create multiple security policies and parent-child
 hierarchies using the data fetched through export. All objects
 including security policies, security groups and security actions
 are created on a global scope.
-___
+
 The policy that is being imported needs to be included in the
 request body.
-___
+
 If a suffix is specified, it is added after the names of the
 security policy, security action, and security group objects in the
 exported XML. The suffix can thus be used to differentiate locally
 created objects from imported ones.
-___
+
 The location of the newly created security policy objects (multiple
 locations are separated by commas) is populated in the Location
 header of the response.
@@ -4418,7 +4430,7 @@ You can save the response to a file.  The saved configuration can be
 used as a backup for situations where you may accidentally delete a
 policy configuration, or it can be exported for use in another NSX
 Manager environment.
-___
+
 If a prefix is specified, it is added before the names of the
 security policy, security action, and security group objects in the
 exported XML. The prefix can thus be used to indicate the remote
@@ -4436,7 +4448,7 @@ Working With Security Actions Applicable on Security Groups
 ----
 
 * **get** *(secured)*: Retrieve all security actions applicable on a security group.
-___
+
 Retrieve all security actions applicable on a security group for all
 ExecutionOrderCategories. The list is sorted based on the weight of
 security actions in descending order.  The **isActive** tag indicates
@@ -4533,7 +4545,7 @@ Working with SNMP
 =================
 NSX Manager receives events from other NSX components, including NSX Edge,
 network fabric, and hypervisors.
-___
+
 You can configure NSX Manager to forward SNMP traps to an SNMP Manager.
 
 ### /2.0/services/snmp/status
@@ -4652,7 +4664,7 @@ Working with the Central CLI
 * **post** *(secured)*: The central command-line interface (central CLI) commands are run from the
 NSX Manager command line, and retrieve information from the NSX Manager and other
 devices. These commands can also be executed in the API.
-___
+
 You can insert any valid Central CLI command as the **command**
 parameter. For a complete list of the Central CLI commands executable
 through the API, please see the Central CLI chapter of the *NSX Command
@@ -4684,7 +4696,7 @@ History:
 
 Release | Modification
 --------|-------------
-6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount**parameter. Parameter is still present, but always has value of -1.
+6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
 ### /2.0/vdn/inventory/hosts/connection/status
 Communication Status of a List of Hosts
@@ -4694,7 +4706,7 @@ Communication Status of a List of Hosts
 
 Release | Modification
 --------|-------------
-6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount**parameter. Parameter is still present, but always has value of -1.
+6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
 ## hardwareGateways
 Working with Hardware Gateways
@@ -4783,7 +4795,7 @@ Working With the Hardware Gateway Replication Cluster
 ----
 
 * **put** *(secured)*: Update the hardware gateway replication cluster.
-___
+
 Add or remove hosts on a replication cluster.
 
 **Method history:**
@@ -4833,7 +4845,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 * **put** *(secured)*: Update the specified hardware gateway binding.
-___
+
 You can update the binding parameters. This API will fail if:
 * the specified *hardwareGatewayId* does not exist.
 * the specified logical switch (*virtualWire*) is not present or there is a software
@@ -4871,7 +4883,7 @@ Working With Hardware Gateway Binding Objects
 ----
 
 * **post** *(secured)*: Manage hardware gateway binding objects.
-___
+
 Use this API to attach, detach, and update multiple bindings in a
 single API call.  This API accepts three lists for add, update, and
 delete. Each list accepts a hardwareGatewayManageBindingsItem with a
