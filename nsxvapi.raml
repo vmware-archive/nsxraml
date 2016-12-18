@@ -645,6 +645,7 @@ securitySchemes:
       displayName: vdnConfigUDPUpdateStatus
       description: |
         VXLAN Port Configuration Update Status
+        ----
       get:
         displayName: vdnConfigUDPUpdateStatusRead
         description: |
@@ -5789,20 +5790,25 @@ securitySchemes:
     =========
   /userIpMapping:
     displayName: userIpMapping
-    description: Query user-to-ip mapping list from database.
+    description: |
+      Working With User to IP Mappings
+      ---
     get:
       displayName: userIpMappingRead
       description: Query user-to-ip mapping list from database.
   /hostIpMapping:
     displayName: hostIpMapping
-    description: Query host-to-ip mapping list from database.
+    description: |
+      Working With Host to IP Mappings
+      ---
     get:
       displayName: hostIpMappingRead
       description: Query host-to-ip mapping list from database.
   /ipToUserMapping:
     displayName: ipToUserMapping
     description: |
-      Query set of users associated with a given set of IP addresses.
+      Working With IP to User Mappings
+      ----
     get:
       displayName: ipToUserMappingRead
       description: |
@@ -5813,8 +5819,8 @@ securitySchemes:
   /directoryGroupsForUser:
     displayName: userDirGroups
     description: |
-      Query set of Windows Domain Groups (AD Groups) to which the specified
-      user belongs.
+      Working With User Domain Groups
+      ----
     get:
       displayName: userDirGroupsRead
       description: |
@@ -5822,7 +5828,9 @@ securitySchemes:
         user belongs.
   /staticUserMapping/{userID}/{IP}:
     displayName: staticUserMapping
-    description: Create static user IP mapping
+    description: |
+      Working with a Specific Static User Mapping
+      ----
     uriParameters:
       userID:
         required: true
@@ -5834,16 +5842,20 @@ securitySchemes:
         description: IP address
     post:
       displayName: staticUserMappingCreate
-      description: Create static user IP mapping
+      description: Create static user IP mapping.
   /staticUserMappings:
     displayName: staticUserMappings
-    description: Query static user IP mapping list
+    description: |
+      Working with Static User Mappings
+      ----
     get:
       displayName: staticUserMappingsRead
-      description: Query static user IP mapping list
+      description: Query static user IP mapping list.
   /staticUserMappingsbyUser/{userID}:
     displayName: staticUserMappingsbyUser
-    description: Query static user IP mapping for specified user
+    description: |
+      Working with Static User IP Mappings for a Specific User
+      ----
     uriParameters:
       userID:
         required: true
@@ -5851,13 +5863,15 @@ securitySchemes:
         description: User ID
     get:
       displayName: staticUserMappingsbyUserRead
-      description: Query static user IP mapping for specified user
+      description: Query static user IP mapping for specified user.
     delete:
       displayName: staticUserMappingsbyUserDelete
-      description: Delete static user IP mapping for specified user
+      description: Delete static user IP mapping for specified user.
   /staticUserMappingsbyIP/{IP}:
     displayName: staticUserMappingsbyIP
-    description: Query static user IP mapping for specified IP
+    description: |
+      Working With Static User IP Mappings for a Specific IP
+      ----
     uriParameters:
       IP:
         required: true
@@ -5865,10 +5879,10 @@ securitySchemes:
         description: IP address
     get:
       displayName: staticUserMappingsbyIPRead
-      description: Query static user IP mapping for specified IP
+      description: Query static user IP mapping for specified IP.
     delete:
       displayName: staticUserMappingsbyIPDelete
-      description: Delete static user IP mapping for specified IP
+      description: Delete static user IP mapping for specified IP.
 /1.0/sam/syslog:
   displayName: activityMonitoringSyslog
   description: |
@@ -5878,6 +5892,7 @@ securitySchemes:
     displayName: syslogEnable
     description: |
       Enable Syslog Support
+      ----
     post:
       displayName: syslogEnable
       description: Enable syslog support.
@@ -5896,7 +5911,9 @@ securitySchemes:
     =========
   /host/{hostID}/agents:
     displayName: hostAgents
-    description: Agents on a specified host
+    description: |
+      Working With Agents on a Specific Host
+      ----
     uriParameters:
       hostID:
         required: true
@@ -5907,7 +5924,9 @@ securitySchemes:
       description: Retrieve all agents on the host
   /agent/{agentID}:
     displayName: agentInformation
-    description: Agent details (host components and appliances)
+    description: |
+      Working with a Specific Agent
+      ----
     uriParameters:
       agentID:
         required: true
@@ -5915,18 +5934,20 @@ securitySchemes:
         description: Specified agent
     get:
       displayName: agentInformationRead
-      description: Retrieve agent details
+      description: Retrieve agent details.
   /deployment/{deploymentunitID}/agents:
     displayName: deploymentAgents
-    description: Agents for a specified deployment
+    description: |
+      Working with Agents on a Specific Deployment
+      ----
     uriParameters:
       deploymentunitID:
         required: true
         displayName: deploymentunitID
-        description: Specified deployment
+        description: Specified deployment.
     get:
       displayName: deploymentAgentsRead
-      description: Retrieve all agents for the specified deployment
+      description: Retrieve all agents for the specified deployment.
   /fabric/sync/conflicts:
     displayName: agentConflicts
     description: |
@@ -5948,7 +5969,7 @@ securitySchemes:
         conflicting EAM agencies, or delete deployment units for conflicting
         EAM agencies.
 
-        **Create deployment units for conflicting EAM agencies**
+        ### Create deployment units for conflicting EAM agencies
 
         ```
         <conflictResolverInfo>
@@ -5956,7 +5977,7 @@ securitySchemes:
         </conflictResolverInfo>
         ```
 
-        **Delete conflicting EAM agencies**
+        ### Delete conflicting EAM agencies
 
         ```
         <conflictResolverInfo>
@@ -5964,7 +5985,7 @@ securitySchemes:
         </conflictResolverInfo>
         ```
 
-        **Delete deployment units for conflicting EAM agencies**
+        ### Delete deployment units for conflicting EAM agencies
 
         ```
         <conflictResolverInfo>
@@ -5998,7 +6019,7 @@ securitySchemes:
           address set on a scope).
     get:
       displayName: macsetRead
-      description: Retrieve details about a MAC set
+      description: Retrieve details about a MAC address set.
       responses:
         200:
           body:
@@ -6041,7 +6062,7 @@ securitySchemes:
                 </macset>
     put:
       displayName: macsetUpdate
-      description: Modify an existing MAC set.
+      description: Modify an existing MAC address set.
       body:
         application/xml:
           example: |
@@ -6059,7 +6080,7 @@ securitySchemes:
           schema: macSetCreateUpdate
     delete:
       displayName: macsetDelete
-      description: Delete a MAC set
+      description: Delete a MAC address set.
       queryParameters:
         force:
           required: false
@@ -6073,17 +6094,20 @@ securitySchemes:
           type: boolean
   /scope/{scopeId}:
     displayName: macsetScopes
-    description: Working with MAC Sets.
+    description: |
+      Working with MAC Address Sets on a Specific Scope
+      ----
     uriParameters:
       scopeId:
         required: true
         displayName: scopeId
         description: |
           Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade
-          use cases. Universal MAC sets are read-only from secondary managers.
+          use cases. Universal MAC address sets are read-only from secondary
+          managers.
     post:
       displayName: macsetScopesCreate
-      description: Create a MAC address set on a specified scope
+      description: Create a MAC address set on the specified scope.
       body:
         application/xml:
           example: |
@@ -6101,7 +6125,7 @@ securitySchemes:
           schema: macSetCreateUpdate
     get:
       displayName: macsetScopesRead
-      description: List MAC address set created on a specified scope
+      description: List MAC address sets on the specified scope.
       responses:
         200:
           body:
@@ -6153,7 +6177,7 @@ securitySchemes:
     framework.
   get:
     displayName: taskFrameworkCriteria
-    description: Query job instances by criterion
+    description: Query job instances by criterion.
     queryParameters:
       startIndex:
         displayName: startIndex
@@ -6185,7 +6209,7 @@ securitySchemes:
       jobId:
         required: true
         displayName: jobId
-        description: Specified job Id
+        description: Specified job ID.
     get:
       displayName: taskFrameworkJobsRead
       description: Retrieve all job instances for the specified job ID.
@@ -7462,7 +7486,7 @@ securitySchemes:
                 </section>
         delete:
           displayName: dfwL2SectionIdDelete
-          description: Deletes a L2 section and its content by ID
+          description: Deletes a L2 section and its content by ID.
         /rules:
           displayName: dfwL2Rules
           description: |
@@ -7515,17 +7539,18 @@ securitySchemes:
           /{ruleId}:
             displayName: dfwL2Rule
             description: |
-              Working with a Specific Rule in a Specific Layer 2 Section
+              Working With a Specific Rule in a Specific Layer 2 Section
               -----
             uriParameters:
               ruleId:
                 required: true
                 displayName: ruleId
-                description: The ID of the rule beeing read, updated or deleted
+                description: |
+                  The ID of the rule.
             get:
               displayName: dfwL2RuleRead
               description: |
-                Read the configuration of a specific rule identified by rule Id
+                Retrieve the configuration of the specified rule.
             put:
               displayName: dfwL2RuleUpdate
               description: !include documentation/reuse/firewall/dfwL2RuleUpdate
@@ -7733,8 +7758,8 @@ securitySchemes:
   /globalroot-0/state:
     displayName: dfwUpgrade
     description: |
-      Enable distributed firewall after upgrade.
-      
+      Enable Distributed Firewall After Upgrade
+      -----
       After upgrading NSX Manager, controllers, and network virtualization
       components, check the status of distributed firewall. If it is ready to
       enable, you can enable distributed firewall.
@@ -7863,7 +7888,8 @@ securitySchemes:
     /layer3sections/{sectionID}:
       displayName: L3SectionStatus
       description: |
-        Working with Layer 3 Section Status
+        Working with a Specific Layer 3 Section Status
+        ----
       uriParameters:
         sectionID:
           required: true
@@ -7881,7 +7907,9 @@ securitySchemes:
           6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
     /layer2sections/{sectionID}:
       displayName: L2SectionStatus
-      description: L2 section status
+      description: |
+        Working with a Specific Layer 2 Section Status
+        ----
       uriParameters:
         sectionID:
           required: true
@@ -7904,7 +7932,7 @@ securitySchemes:
       ----
     post:
       displayName: dfwDraftsCreate
-      description: Save a firewall configuration
+      description: Save a firewall configuration.
       body:
         application/xml:
           example: |
@@ -7937,7 +7965,7 @@ securitySchemes:
           schema: dfwDraftsCreate
     get:
       displayName: dfwSaveConfigRead
-      description: Displays the draft IDs of all saved configurations
+      description: Displays the draft IDs of all saved configurations.
     /{draftID}:
       displayName: dfwDraft
       description: |
@@ -7947,7 +7975,9 @@ securitySchemes:
         draftID:
           required: true
           displayName: draftID
-          description: Specified draft ID (retrieved through dfwDrafts GET call)
+          description: |
+            Specified draft ID. Use `GET /4.0/firewall/globalroot-0/drafts` to
+            retrieve all drafts.
       get:
         displayName: dfwDraftRead
         description: Get a saved firewall configuration.
@@ -7999,7 +8029,7 @@ securitySchemes:
               getLatestForUniversal:
                 displayName: getLatestForUniversal
                 description: |
-                  Set to "true" to export the latest universal draft from a
+                  Set to *true* to export the latest universal draft from a
                   secondary NSX manager.
                 type: boolean
                 required: false
@@ -8379,7 +8409,8 @@ securitySchemes:
   /flowstats:
     displayName: flowStats
     description: |
-      Retrieve flow monitoring statistics information.
+      Working With Flow Monitoring Statistics 
+      ----
     get:
       displayName: flowStatsRead
       description: |
@@ -8493,7 +8524,9 @@ securitySchemes:
             </FlowStatsPage>
     /info:
       displayName: flowStatsInfo
-      description: Working with flow monitoring meta-data.
+      description: |
+        Working With Flow Monitoring Meta-Data
+        ----
       get:
         displayName: flowStatsInfoRead
         description: |
@@ -8504,8 +8537,8 @@ securitySchemes:
           * maximum end time
           * total flow count
         body:
-         application/xml:
-           example: |
+          application/xml:
+            example: |
               <FlowStatsInfo>
                 <flowStatsInfoTcpUdp>
                   <minimumStartTime>1327405883000</minimumStartTime>
@@ -8526,7 +8559,8 @@ securitySchemes:
   /config:
     displayName: flowConfig
     description: |
-      Working with flow monitoring configuration.
+      Working With Flow Monitoring Configuration
+      ----
       
       Flow records generated on all hosts are sent to NSX Manager, which
       consumes the records and displays aggregated information.  Hosts can
@@ -8550,7 +8584,7 @@ securitySchemes:
       * Broadcast MAC address (FF:FF:FF:FF:FF:FF)
     get:
       displayName: flowConfigRead
-      description: Retrieve flow monitoring configuration
+      description: Retrieve flow monitoring configuration.
       body:
         application/xml:
           example: |
@@ -8588,7 +8622,7 @@ securitySchemes:
             </FlowConfiguration>
     put:
       displayName: flowsConfigCreate
-      description: Update flow monitoring configuration
+      description: Update flow monitoring configuration.
       body:
         application/xml:
           example: |
@@ -8627,7 +8661,9 @@ securitySchemes:
           schema: flowsExcludeCreate
   /{contextId}:
     displayName: flowContext
-    description: Flow configuration by contextId
+    description: |
+      Working with Flow Configuration for a Specific Context
+      ----
     delete:
       displayName: flowContextDelete
       description: Delete flow records for the specified context.
@@ -8638,20 +8674,22 @@ securitySchemes:
     =========
   get:
     displayName: dfwExclusionRead
-    description: Retrieve the set of vm's in the exclusion list
+    description: Retrieve the set of VMs in the exclusion list.
   /{memberID}:
     displayName: dfwExcludeMember
-    description: Exclude VM's from firewall protection
+    description: |
+      Working with the Exclusion List
+      ---
     uriParameters:
       memberID:
         displayName: memberID
-        description: vc-moref-id of a virtual machine
+        description: vc-moref-id of a virtual machine.
     put:
       displayName: dfwExclusionUpdate
-      description: Add a vm to the exclusion list
+      description: Add a vm to the exclusion list.
     delete:
       displayName: dfwExclusionDelete
-      description: Delete a vm from exclusion list
+      description: Delete a vm from exclusion list.
 /4.0/edges:
   displayName: nsxEdges
   description: |
@@ -8794,7 +8832,7 @@ securitySchemes:
           displayName: isUniversal
           description: |
             Set to "true" when creating a universal logical router. Note the
-            <type> in the request body must be "DISTRIBUTED_ROUTER"
+            <type> in the request body must be "DISTRIBUTED_ROUTER".
           type: boolean
           required: false
     body:
@@ -8917,22 +8955,24 @@ securitySchemes:
     displayName: nsxEdgesRead
     description: |
       Retrieve a list of NSX Edges in your inventory or use the query
-      parameters to filter results by datacenter or port group
+      parameters to filter results by datacenter or port group.
     queryParameters:
       datacenter:
         displayName: datacenter
-        description: Retrieve Edges by datacenter MoId
+        description: Retrieve Edges by datacenter MoId.
       tenant:
         displayName: tenant
-        description: Retrieve Edges on specified tenant (by tenant ID)
+        description: Retrieve Edges on specified tenant (by tenant ID).
       pg:
         displayName: pg
         description: |
           Retrieve Edges with one interface on specified port group (by port
-          group MoId)
+          group MoId).
   /{edgeId}:
     displayName: nsxEdge
-    description: NSX Edge operations
+    description: |
+      Working With a Specific NSX Edge
+      ------
     uriParameters:
       edgeId:
         required: true
@@ -8940,7 +8980,7 @@ securitySchemes:
         description: Specify the ID of the edge in *edgeId*.
     post:
       displayName: nsxEdgeCreate
-      description: Manage NSX Edge
+      description: Manage NSX Edge.
       queryParameters:
         action:
           displayName: action
@@ -8952,17 +8992,17 @@ securitySchemes:
               * *upgrade* - Upgrade the edge to a newer version
     get:
       displayName: nsxEdgeRead
-      description: Retrieve Edge details
+      description: Retrieve Edge details.
       queryParameters:
         isUniversal:
           displayName: isUniversal
           description: |
-            Filter read of Edges to display only universal logical routers
+            Filter read of Edges to display only universal logical routers.
           type: boolean
           required: false
     put:
       displayName: nsxEdgeUpdate
-      description: Update the NSX Edge configuration
+      description: Update the NSX Edge configuration.
       body:
         application/xml:
           example: |
@@ -9173,13 +9213,15 @@ securitySchemes:
       displayName: nsxEdgeDelete
       description: |
         Delete specified Edge from database. Associated appliances are also
-        deleted
+        deleted.
     /dnsclient:
       displayName: edgeDnsClient
-      description: DNS settings (primary/secondary and search domain) of an Edge
+      description: |
+        Working with DNS Client Configuration
+        ----
       put:
         displayName: edgeDnsClientUpdate
-        description: Update Edge DNS settings
+        description: Update Edge DNS settings.
         body:
           application/xml:
             example: |
@@ -9191,10 +9233,12 @@ securitySchemes:
             schema: edgeDnsClientUpdate
     /aesni:
       displayName: aesni
-      description: AESNI Setting
+      description: |
+        Working with AESNI 
+        ----
       post:
         displayName: aesniCreate
-        description: Modify AESNI setting
+        description: Modify AESNI setting.
         queryParameters:
           enable:
             type: boolean
@@ -9203,18 +9247,22 @@ securitySchemes:
     /coredump:
       displayName: coreDump
       description: |
+        Working With Core Dumps
+        -----
         Enabling core-dump feature results in deployment of inbuilt extra disk
-        to save core-dump files. 1GB for compact edge and 8GB for other types.
+        to save core-dump files. 1 GB for compact edge and 8 GB for other types.
         Disabling detaches the disk
       post:
         displayName: coreDumpCreate
-        description: Modify core dump setting
+        description: Modify core dump setting.
     /fips:
       displayName: fips
-      description: FIPs setting
+      description: |
+        Working with FIPS on NSX Edge
+        ----
       post:
         displayName: fipsCreate
-        description: Modify FIPs setting
+        description: Modify FIPS setting.
         queryParameters:
           enable:
             type: boolean
@@ -9222,56 +9270,67 @@ securitySchemes:
             displayName: enable
     /logging:
       displayName: logging
-      description: Log setting
+      description: |
+        Working With NSX Edge Logs
+        -----
       post:
         displayName: loggingCreate
-        description: Modify log setting
+        description: Modify log setting.
         queryParameters:
           level:
             displayName: level
+            description: Logging level.
     /summary:
       displayName: summary
-      description: Edge summary
+      description: |
+        Working With NSX Edge Summary
+        ----
       get:
         displayName: summaryRead
-        description: Retrieve details about the specified Edge
+        description: Retrieve details about the specified Edge.
     /status:
       displayName: status
-      description: Edge status
+      description: |
+        Working With Edge Status
+        ----
       get:
         displayName: statusRead
-        description: Retrieve the status of the specified Edge
+        description: Retrieve the status of the specified Edge.
         queryParameters:
           getlatest:
             type: boolean
             displayName: getlatest
             description: |
               true = fetch the status live from NSX Edge, false = fetch the
-              latest available status from database
+              latest available status from database.
           detailed:
             type: boolean
             displayName: detailed
             description: |
               true = fetch detailed status per feature, false = aggregated
-              summary of status per feature
+              summary of status per feature.
           preRulesStatus:
             type: boolean
             displayName: preRulesStatus
             description: |
               true = fetch detailed output for pre rules in addition to the
-              regular output
+              regular output.
     /techsupportlogs:
       displayName: techSupportLogs
-      description: Tech support logs for specified Edge
+      description: |
+        Working with NSX Edge Tech Support Logs 
+        ----
       get:
         displayName: techSupportLogsRead
-        description: Retrieve the tech support logs for Edge
+        description: Retrieve the tech support logs for Edge.
     /clisettings:
       displayName: cliSettings
-      description: Manage CLI credentials and access
+      description: |
+        Working with NSX Edge CLI Settings
+        ----
       put:
         displayName: cliSettingsUpdate
-        description: Modify CLI credentials and enable/disable SSH for Edge
+        description: Modify CLI credentials and enable/disable SSH for Edge.
         body:
           application/xml:
             example: |
@@ -9285,7 +9344,9 @@ securitySchemes:
             schema: cliSettingsUpdate
     /cliremoteaccess:
       displayName: cliRemote
-      description: Enable or disable SSH on the Edge
+      description: |
+        Working with NSX Edge Remote Access 
+        ----
       post:
         displayName: cliRemoteCreate
         description: Change CLI remote access
@@ -9296,13 +9357,15 @@ securitySchemes:
             displayName: enable
     /firewall/config:
       displayName: nsxEdgeFirewallConfig
-      description: Configure firewall for an Edge
+      description: |
+        Working With NSX Edge Firewall Configuration
+        ----
       get:
         displayName: nsxEdgeFirewallConfigRead
-        description: Read the firewall configuration
+        description: Retrieve the NSX Edge firewall configuration.
       put:
         displayName: nsxEdgeFirewallConfigUpdate
-        description: Configure firewall for an Edge
+        description: Configure NSX Edge firewall.
         body:
           application/xml:
             example: |
@@ -9361,10 +9424,12 @@ securitySchemes:
             schema: nsxEdgeFirewallConfigUpdate
       delete:
         displayName: nsxEdgeFirewallConfigDelete
-        description: Delete firewall configuration
+        description: Delete NSX Edge firewall configuration.
       /rules:
         displayName: firewallRules
-        description: Firewall rules
+        description: |
+          Working With Firewall Rules
+          ----
         post:
           displayName: firewallRulesCreate
           description: |
@@ -9373,7 +9438,7 @@ securitySchemes:
           queryParameters:
             aboveRuleId:
               displayName: aboveRuleId
-              description: rule Id
+              description: rule Id.
           body:
             application/xml:
               example: |
@@ -9431,18 +9496,20 @@ securitySchemes:
               schema: firewallRulesCreate
         /{ruleId}:
           displayName: firewallRule
-          description: Specific firewall rule
+          description: |
+            Working With a Specific Firewall Rule
+            ----
           uriParameters:
             ruleId:
               required: true
               displayName: ruleId
-              description: Rule ID
+              description: Rule ID.
           get:
             displayName: firewallRuleRead
-            description: Retrieve specific rule
+            description: Retrieve specific rule.
           put:
             displayName: firewallRuleUpdate
-            description: Modify a specific firewall rule
+            description: Modify a specific firewall rule.
             body:
               application/xml:
                 example: |
@@ -9473,13 +9540,15 @@ securitySchemes:
             description: Delete firewall rule
       /global:
         displayName: globalFirewallConfig
-        description: NSX Edge global firewall configuration
+        description: |
+          Working With the NSX Edge Global Firewall Configuration
+          ----
         get:
           displayName: globalFirewallConfigRead
-          description: Retrieve the firewall default policy for an Edge
+          description: Retrieve the firewall default policy for an Edge.
         put:
           displayName: globalFirewallConfigUpdate
-          description: Configure firewall global config for an Edge
+          description: Configure firewall global config for an Edge.
           body:
             application/xml:
               example: |
@@ -9500,7 +9569,9 @@ securitySchemes:
               schema: globalFirewallConfigUpdate
       /defaultpolicy:
         displayName: defaultFirewallPolicy
-        description: Default firewall policy for an Edge
+        description: |
+          Working With the Default Firewall Policy for an Edge
+          -----
         get:
           displayName: defaultFirewallPolicyRead
           description: Retrieve default firewall policy
@@ -9517,33 +9588,41 @@ securitySchemes:
               schema: defaultFirewallPolicyUpdate
     /firewall/statistics/firewall:
       displayName: firewallStatistics
-      description: Edge firewall statistics
+      description: |
+        Working With NSX Edge Firewall Statistics
+        ----
       get:
         displayName: firewallStatisticsRead
-        description: Retrieve number of ongoing connections for the firewall config
+        description: |
+          Retrieve number of ongoing connections for the firewall
+          configuration.
         queryParameters:
           interval:
             displayName: interval
             description: |
               60 min by default, can be given as 1 -60 min, oneDay | oneWeek |
-              oneMonth | oneYear
+              oneMonth | oneYear.
     /firewall/statistics/{ruleId}:
       displayName: firewallRuleStatistics
-      description: Statistics for firewall rules
+      description: |
+        Working with Statistics for a Specific Firewall Rule
+        -----
       uriParameters:
         ruleId:
           displayName: ruleId
           required: true
-          description: Specified rule
+          description: Specified rule.
       get:
         displayName: firewallRuleStatisticsRead
-        description: Retrieve stats for firewall rule
+        description: Retrieve stats for firewall rule.
     /nat/config:
       displayName: edgeNat
-      description: SNAT and DNAT rules for NSX Edge
+      description: |
+        Working With NAT Configuration
+        -----
       put:
         displayName: edgeNatConfig
-        description: Configure SNAT and DNAT rules for an Edge
+        description: Configure SNAT and DNAT rules for an Edge.
         body:
           application/xml:
             example: |
@@ -9567,24 +9646,26 @@ securitySchemes:
             schema: edgeNatConfig
       get:
         displayName: edgeNatRead
-        description: Query SNAT and DNAT rules for an Edge
+        description: Retrieve SNAT and DNAT rules for an Edge.
       delete:
         displayName: edgeNatDelete
-        description: Delete all NAT rules for an Edge
+        description: Delete all NAT rules for an Edge.
       /rules:
         displayName: edgeNatRules
-        description: NAT rules
+        description: |
+          Working With NAT Rules
+          ----
         post:
           displayName: edgeNatRulesCreate
           description: |
             Add a NAT rule above a specific rule in the NAT rules table
-            (using aboveRuleId) or append NAT rules to the bottom
+            (using **aboveRuleId**) or append NAT rules to the bottom.
           queryParameters:
             aboveRuleId:
               displayName: aboveRuleId
               description: |
                 Specified rule ID. If the ID does not exist, Edge Manager
-                displays an error
+                displays an error.
           body:
             application/xml:
               example: |
@@ -9605,12 +9686,14 @@ securitySchemes:
               schema: edgeNatRulesCreate
         /{ruleID}:
           displayName: edgeNatRule
-          description: Specified NAT rule
+          description: |
+            Working With a Specific NAT Rule
+            -----
           uriParameters:
             ruleID:
               required: true
               displayName: ruleID
-              description: Specified rule ID
+              description: Specified rule ID.
           put:
             displayName: edgeNatRuleUpdate
             description: Modify a NAT rule
@@ -9635,13 +9718,15 @@ securitySchemes:
             description: Delete a NAT rule
     /routing/config:
       displayName: routingConfig
-      description: Static and dynamic routing for each NSX Edge
+      description: |
+        Working with the NSX Edge Routing Configuration
+        ----
       get:
         displayName: routingConfigRead
-        description: Retrieve routes
+        description: Retrieve routes.
       put:
         displayName: routingConfigUpdate
-        description: Configure globalConfig, staticRouting, OSPG, BGP, and IS-IS
+        description: Configure globalConfig, staticRouting, OSPG, and BGP.
         body:
           application/xml:
             example: |
@@ -9709,7 +9794,6 @@ securitySchemes:
                       <rule>
                         <prefixName></prefixName>
                         <from>
-                          <isis></isis>
                           <ospf></ospf>
                           <bgp></bgp>
                           <static></static>
@@ -9720,45 +9804,6 @@ securitySchemes:
                     </rules>
                   </redistribution>
                 </ospf>
-                <isis>
-                  <enabled></enabled>
-                  <systemId></systemId>
-                  <areaIds>
-                    <areaId></areaId>
-                  </areaIds>
-                  <isType></isType>
-                  <domainPassword></domainPassword>
-                  <areaPassword></areaPassword>
-                  <isisInterfaces>
-                    <isisInterface>
-                      <vnic></vnic>
-                      <meshGroup></meshGroup>
-                      <helloInterval></helloInterval>
-                      <helloMultiplier></helloMultiplier>
-                      <lspInterval></lspInterval>
-                      <metric></metric>
-                      <priority></priority>
-                      <circuitType></circuitType>
-                      <password></password>
-                    </isisInterface>
-                  </isisInterfaces>
-                  <redistribution>
-                    <enabled></enabled>
-                    <rules>
-                      <rule>
-                        <prefixName></prefixName>
-                        <from>
-                          <isis></isis>
-                          <ospf></ospf>
-                          <bgp></bgp>
-                          <static></static>
-                          <connected></connected>
-                        </from>
-                        <action></action>
-                      </rule>
-                    </rules>
-                  </redistribution>
-                </isis>
                 <bgp>
                   <enabled></enabled>
                   <localAS></localAS>
@@ -9787,7 +9832,6 @@ securitySchemes:
                       <rule>
                         <prefixName></prefixName>
                         <from>
-                          <isis></isis>
                           <ospf></ospf>
                           <bgp></bgp>
                           <static></static>
@@ -9802,13 +9846,17 @@ securitySchemes:
             schema: routingConfigUpdate
       delete:
         displayName: routingConfigDelete
-        description: Delete the routing config stored in the NSX Mgr database and the default routes from the specified NSX Edge appliance
+        description: |
+          Delete the routing config stored in the NSX Manager database and the
+          default routes from the specified NSX Edge appliance.
       /global:
         displayName: routingGlobalConfig
-        description: Global configuration
+        description: |
+          Working with the NSX Edge Global Configuration
+          ----
         put:
           displayName: routingGlobalConfigUpdate
-          description: Configure global route
+          description: Configure global route.
           body:
             application/xml:
               example: |
@@ -9830,17 +9878,19 @@ securitySchemes:
         get:
           displayName: routingGlobalConfigRead
           description: |
-            Retrieve routing info from NSX Mgr database (default route
-            settings, static route configurations)
+            Retrieve routing info from NSX Manager database (default route
+            settings, static route configurations).
       /static:
         displayName: routingConfigStatic
-        description: Static and default routes for specified Edge
+        description: |
+          Working with Static and Default Routes
+          ----
         get:
           displayName: routingConfigStaticRead
-          description: Read static and default routes
+          description: Read static and default routes.
         put:
           displayName: routingConfigStaticUpdate
-          description: Configure static and default routes
+          description: Configure static and default routes.
           body:
             application/xml:
               example: |
@@ -9866,16 +9916,18 @@ securitySchemes:
           displayName: routingConfigStaticDelete
           description: |
             Delete both static and default routing config stored in the NSX
-            Mgr database
+            Manager database.
       /ospf:
         displayName: routingOSPF
-        description: OSPF Routing for NSX Edge
+        description: |
+          Working With OSPF Routing for NSX Edge
+          ----
         get:
           displayName: routingOSPFRead
-          description: Query OSPF config
+          description: Retrieve OSPF configuration.
         put:
           displayName: routingOSPFUpdate
-          description: Configure OSPF
+          description: Configure OSPF.
           body:
             application/xml:
               example: |
@@ -9921,71 +9973,18 @@ securitySchemes:
               schema: routingOSPFUpdate
         delete:
           displayName: routingOSPFDelete
-          description: Delete OSPF routing
-      /isis:
-        displayName: routingISIS
-        description: IS-IS Routes for NSX Edge
-        get:
-          displayName: routingISISRead
-          description: Query ISIS
-        put:
-          displayName: routingISISUpdate
-          description: Config ISIS
-          body:
-            application/xml:
-              example: |
-                <isis>
-                  <enabled></enabled>
-                  <systemId></systemId>
-                  <areaIds>
-                    <areaId></areaId>
-                  </areaIds>
-                  <isType></isType>
-                  <domainPassword></domainPassword>
-                  <areaPassword></areaPassword>
-                  <isisInterfaces>
-                    <isisInterface>
-                      <vnic></vnic>
-                      <meshGroup></meshGroup>
-                      <helloInterval></helloInterval>
-                      <helloMultiplier></helloMultiplier>
-                      <lspInterval></lspInterval>
-                      <metric></metric>
-                      <priority></priority>
-                      <circuitType></circuitType>
-                      <password></password>
-                    </isisInterface>
-                  </isisInterfaces>
-                  <redistribution>
-                    <enabled></enabled>
-                      <rules>
-                        <rule>
-                          <prefixName></prefixName>
-                            <from>
-                              <isis></isis>
-                              <ospf></ospf>
-                              <bgp></bgp>
-                              <static></static>
-                              <connected></connected>
-                            </from>
-                            <action></action>
-                          </rule>
-                      </rules>
-                  </redistribution>
-                </isis>
-              schema: routingISISUpdate
-        delete:
-          displayName: routingISISDelete
-          description: Delete ISIS routing
+          description: Delete OSPF routing.
       /bgp:
         displayName: routingBGP
-        description: Manage BGP routes for NSX Edge
+        description: |
+          Working with BGP Routes for NSX Edge
+          ---
         get:
           displayName: routingBGPRead
-          description: Query BGP
+          description: Retrieve BGP configuration.
         put:
           displayName: routingBGPUpdate
-          description: Configure BGP
+          description: Configure BGP.
           body:
             application/xml:
               example: |
@@ -10034,13 +10033,15 @@ securitySchemes:
           description: Delete BGP Routing
     /bridging/config:
       displayName: bridging
-      description: Working with L2 bridging
+      description: |
+        Working With Layer 2 Bridging
+        ----
       get:
         displayName: bridgingRead
-        description: Retrieve bridge configuration
+        description: Retrieve bridge configuration.
       put:
         displayName: bridingUpdate
-        description: Configure a bridge
+        description: Configure a bridge.
         body:
           application/xml:
             example: |
@@ -10056,16 +10057,18 @@ securitySchemes:
             schema: bridingUpdate
       delete:
         displayName: bridgingDelete
-        description: Delete bridges
+        description: Delete bridges.
     /loadbalancer/config:
       displayName: loadBalancer
-      description: NSX Edge load balancer
+      description: |
+        Working With NSX Edge Load Balancer
+        ----
       get:
         displayName: loadBalancerRead
-        description: Get current load balancer config
+        description: Get load balancer configuration.
       put:
         displayName: loadBalancerConfig
-        description: Configure load balancer
+        description: Configure load balancer.
         body:
           application/xml:
             example: |
@@ -10146,15 +10149,17 @@ securitySchemes:
             schema: loadBalancerConfig
       delete:
         displayName: loadBalancerDelete
-        description: Delete load balancer configuration
+        description: Delete load balancer configuration.
       /applicationprofiles:
         displayName: applicationProfiles
         description: |
+          Working with Application Profiles
+          ----
           Application profiles define the behavior of a particular type of
-          network traffic
+          network traffic.
         post:
           displayName: applicationProfilesCreate
-          description: Add an application profile
+          description: Add an application profile.
           body:
             application/xml:
               example: |
@@ -10171,10 +10176,10 @@ securitySchemes:
               schema: applicationProfilesCreate
         get:
           displayName: applicationProfilesRead
-          description: Retrieve all application profiles on Edge
+          description: Retrieve all application profiles on the specified Edge.
         delete:
           displayName: applicationProfilesDelete
-          description: Delete all application profiles
+          description: Delete all application profiles on the specified Edge.
         /{appProfileID}:
           displayName: applicationProfile
           description: Modify or retrieve an application profile

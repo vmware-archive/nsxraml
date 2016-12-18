@@ -261,6 +261,7 @@ Release | Modification
 
 ### /2.0/vdn/config/vxlan/udp/port/taskStatus
 VXLAN Port Configuration Update Status
+----
 
 * **get** *(secured)*: Retrieve the status of the VXLAN port configuration update.
 
@@ -2301,17 +2302,20 @@ Working with Mapping Lists
 =========
 
 ### /1.0/identity/userIpMapping
-Query user-to-ip mapping list from database.
+Working With User to IP Mappings
+---
 
 * **get** *(secured)*: Query user-to-ip mapping list from database.
 
 ### /1.0/identity/hostIpMapping
-Query host-to-ip mapping list from database.
+Working With Host to IP Mappings
+---
 
 * **get** *(secured)*: Query host-to-ip mapping list from database.
 
 ### /1.0/identity/ipToUserMapping
-Query set of users associated with a given set of IP addresses.
+Working With IP to User Mappings
+----
 
 * **get** *(secured)*: Retrieve set of users associated with a given set of IP addresses during
 a specified time period. Since more than one user can be associated
@@ -2319,33 +2323,37 @@ with a single IP address during the specified time period, each IP
 address can be associated with zero or more (i.e a SET of) users.
 
 ### /1.0/identity/directoryGroupsForUser
-Query set of Windows Domain Groups (AD Groups) to which the specified
-user belongs.
+Working With User Domain Groups
+----
 
 * **get** *(secured)*: Query set of Windows Domain Groups (AD Groups) to which the specified
 user belongs.
 
 ### /1.0/identity/staticUserMapping/{userID}/{IP}
-Create static user IP mapping
+Working with a Specific Static User Mapping
+----
 
-* **post** *(secured)*: Create static user IP mapping
+* **post** *(secured)*: Create static user IP mapping.
 
 ### /1.0/identity/staticUserMappings
-Query static user IP mapping list
+Working with Static User Mappings
+----
 
-* **get** *(secured)*: Query static user IP mapping list
+* **get** *(secured)*: Query static user IP mapping list.
 
 ### /1.0/identity/staticUserMappingsbyUser/{userID}
-Query static user IP mapping for specified user
+Working with Static User IP Mappings for a Specific User
+----
 
-* **get** *(secured)*: Query static user IP mapping for specified user
-* **delete** *(secured)*: Delete static user IP mapping for specified user
+* **get** *(secured)*: Query static user IP mapping for specified user.
+* **delete** *(secured)*: Delete static user IP mapping for specified user.
 
 ### /1.0/identity/staticUserMappingsbyIP/{IP}
-Query static user IP mapping for specified IP
+Working With Static User IP Mappings for a Specific IP
+----
 
-* **get** *(secured)*: Query static user IP mapping for specified IP
-* **delete** *(secured)*: Delete static user IP mapping for specified IP
+* **get** *(secured)*: Query static user IP mapping for specified IP.
+* **delete** *(secured)*: Delete static user IP mapping for specified IP.
 
 ## activityMonitoringSyslog
 Working with Activity Monitoring Syslog Support
@@ -2353,6 +2361,7 @@ Working with Activity Monitoring Syslog Support
 
 ### /1.0/sam/syslog/enable
 Enable Syslog Support
+----
 
 * **post** *(secured)*: Enable syslog support.
 
@@ -2367,19 +2376,22 @@ Working with Solution Integrations
 =========
 
 ### /2.0/si/host/{hostID}/agents
-Agents on a specified host
+Working With Agents on a Specific Host
+----
 
 * **get** *(secured)*: Retrieve all agents on the host
 
 ### /2.0/si/agent/{agentID}
-Agent details (host components and appliances)
+Working with a Specific Agent
+----
 
-* **get** *(secured)*: Retrieve agent details
+* **get** *(secured)*: Retrieve agent details.
 
 ### /2.0/si/deployment/{deploymentunitID}/agents
-Agents for a specified deployment
+Working with Agents on a Specific Deployment
+----
 
-* **get** *(secured)*: Retrieve all agents for the specified deployment
+* **get** *(secured)*: Retrieve all agents for the specified deployment.
 
 ### /2.0/si/fabric/sync/conflicts
 Working With Conflicting Agencies
@@ -2396,7 +2408,7 @@ allowed operations on them
 conflicting EAM agencies, or delete deployment units for conflicting
 EAM agencies.
 
-**Create deployment units for conflicting EAM agencies**
+### Create deployment units for conflicting EAM agencies
 
 ```
 <conflictResolverInfo>
@@ -2404,7 +2416,7 @@ EAM agencies.
 </conflictResolverInfo>
 ```
 
-**Delete conflicting EAM agencies**
+### Delete conflicting EAM agencies
 
 ```
 <conflictResolverInfo>
@@ -2412,7 +2424,7 @@ EAM agencies.
 </conflictResolverInfo>
 ```
 
-**Delete deployment units for conflicting EAM agencies**
+### Delete deployment units for conflicting EAM agencies
 
 ```
 <conflictResolverInfo>
@@ -2430,15 +2442,16 @@ returns a string identifier for the new MAC address set.
 Working With a Specific MAC Address Set
 ---------
 
-* **get** *(secured)*: Retrieve details about a MAC set
-* **put** *(secured)*: Modify an existing MAC set.
-* **delete** *(secured)*: Delete a MAC set
+* **get** *(secured)*: Retrieve details about a MAC address set.
+* **put** *(secured)*: Modify an existing MAC address set.
+* **delete** *(secured)*: Delete a MAC address set.
 
 ### /2.0/services/macset/scope/{scopeId}
-Working with MAC Sets.
+Working with MAC Address Sets on a Specific Scope
+----
 
-* **post** *(secured)*: Create a MAC address set on a specified scope
-* **get** *(secured)*: List MAC address set created on a specified scope
+* **post** *(secured)*: Create a MAC address set on the specified scope.
+* **get** *(secured)*: List MAC address sets on the specified scope.
 
 ## taskFramework
 Working with the Task Framework
@@ -2448,7 +2461,7 @@ framework.
 
 ### /2.0/services/taskservice/job
 
-* **get** *(secured)*: Query job instances by criterion
+* **get** *(secured)*: Query job instances by criterion.
 
 ### /2.0/services/taskservice/job/{jobId}
 Working With a Specific Job Instance
@@ -2909,7 +2922,7 @@ firewall sections using Distributed Firewall REST APIs. If you do, you
 must synchronize firewall rules from Service Composer using the `GET
 /api/2.0/services/policy/serviceprovider/firewall` API.
 
-* **delete** *(secured)*: Deletes a L2 section and its content by ID
+* **delete** *(secured)*: Deletes a L2 section and its content by ID.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules
 Working With Distributed Firewall Rules in a Layer 2 Section
@@ -2962,10 +2975,10 @@ When updating the firewall configuration:
   originating from all IPs other than 1.1.1.1.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules/{ruleId}
-Working with a Specific Rule in a Specific Layer 2 Section
+Working With a Specific Rule in a Specific Layer 2 Section
 -----
 
-* **get** *(secured)*: Read the configuration of a specific rule identified by rule Id
+* **get** *(secured)*: Retrieve the configuration of the specified rule.
 
 * **put** *(secured)*: Update a distributed firewall rule in a layer 2 section.
 
@@ -3027,8 +3040,8 @@ Service Insertion Profiles and Layer 3 Redirect Rules
 layer3 redirect rules.
 
 ### /4.0/firewall/globalroot-0/state
-Enable distributed firewall after upgrade.
-
+Enable Distributed Firewall After Upgrade
+-----
 After upgrading NSX Manager, controllers, and network virtualization
 components, check the status of distributed firewall. If it is ready to
 enable, you can enable distributed firewall.
@@ -3077,7 +3090,8 @@ Release | Modification
 6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
 
 ### /4.0/firewall/globalroot-0/status/layer3sections/{sectionID}
-Working with Layer 3 Section Status
+Working with a Specific Layer 3 Section Status
+----
 
 * **get** *(secured)*: Retrieve status of the last publish action for the specified layer 3 section.
 
@@ -3088,7 +3102,8 @@ Release | Modification
 6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
 
 ### /4.0/firewall/globalroot-0/status/layer2sections/{sectionID}
-L2 section status
+Working with a Specific Layer 2 Section Status
+----
 
 * **get** *(secured)*: Retrieve status of the last publish action for the specified layer 2 section.
 
@@ -3102,8 +3117,8 @@ Release | Modification
 Import and Export Firewall Configurations
 ----
 
-* **post** *(secured)*: Save a firewall configuration
-* **get** *(secured)*: Displays the draft IDs of all saved configurations
+* **post** *(secured)*: Save a firewall configuration.
+* **get** *(secured)*: Displays the draft IDs of all saved configurations.
 
 ### /4.0/firewall/globalroot-0/drafts/{draftID}
 Working With a Specific Saved Firewall Configuration
@@ -3254,7 +3269,8 @@ Working with Flow Monitoring
 ========
 
 ### /2.1/app/flow/flowstats
-Retrieve flow monitoring statistics information.
+Working With Flow Monitoring Statistics 
+----
 
 * **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
 
@@ -3275,7 +3291,8 @@ Response values for flow statistics:
   * 1 - destination -> source
 
 ### /2.1/app/flow/flowstats/info
-Working with flow monitoring meta-data.
+Working With Flow Monitoring Meta-Data
+----
 
 * **get** *(secured)*: Retrieve flow statistics meta-data.
 
@@ -3285,7 +3302,8 @@ This method retrieves the following information for each flow type:
 * total flow count
 
 ### /2.1/app/flow/config
-Working with flow monitoring configuration.
+Working With Flow Monitoring Configuration
+----
 
 Flow records generated on all hosts are sent to NSX Manager, which
 consumes the records and displays aggregated information.  Hosts can
@@ -3308,11 +3326,12 @@ Flow exclusion happens at the host. The following flows are discarded by default
 * Local multicast group (224.0.0.0/24)
 * Broadcast MAC address (FF:FF:FF:FF:FF:FF)
 
-* **get** *(secured)*: Retrieve flow monitoring configuration
-* **put** *(secured)*: Update flow monitoring configuration
+* **get** *(secured)*: Retrieve flow monitoring configuration.
+* **put** *(secured)*: Update flow monitoring configuration.
 
 ### /2.1/app/flow/{contextId}
-Flow configuration by contextId
+Working with Flow Configuration for a Specific Context
+----
 
 * **delete** *(secured)*: Delete flow records for the specified context.
 
@@ -3322,13 +3341,14 @@ Exclude Virtual Machines from Firewall Protection
 
 ### /2.1/app/excludelist
 
-* **get** *(secured)*: Retrieve the set of vm's in the exclusion list
+* **get** *(secured)*: Retrieve the set of VMs in the exclusion list.
 
 ### /2.1/app/excludelist/{memberID}
-Exclude VM's from firewall protection
+Working with the Exclusion List
+---
 
-* **put** *(secured)*: Add a vm to the exclusion list
-* **delete** *(secured)*: Delete a vm from exclusion list
+* **put** *(secured)*: Add a vm to the exclusion list.
+* **delete** *(secured)*: Delete a vm from exclusion list.
 
 ## nsxEdges
 Working with NSX Edge
@@ -3467,194 +3487,220 @@ Request body paramaters:
     * **port** - Default to 5666.
 
 * **get** *(secured)*: Retrieve a list of NSX Edges in your inventory or use the query
-parameters to filter results by datacenter or port group
+parameters to filter results by datacenter or port group.
 
 ### /4.0/edges/{edgeId}
-NSX Edge operations
+Working With a Specific NSX Edge
+------
 
-* **post** *(secured)*: Manage NSX Edge
-* **get** *(secured)*: Retrieve Edge details
-* **put** *(secured)*: Update the NSX Edge configuration
+* **post** *(secured)*: Manage NSX Edge.
+* **get** *(secured)*: Retrieve Edge details.
+* **put** *(secured)*: Update the NSX Edge configuration.
 * **delete** *(secured)*: Delete specified Edge from database. Associated appliances are also
-deleted
+deleted.
 
 ### /4.0/edges/{edgeId}/dnsclient
-DNS settings (primary/secondary and search domain) of an Edge
+Working with DNS Client Configuration
+----
 
-* **put** *(secured)*: Update Edge DNS settings
+* **put** *(secured)*: Update Edge DNS settings.
 
 ### /4.0/edges/{edgeId}/aesni
-AESNI Setting
+Working with AESNI 
+----
 
-* **post** *(secured)*: Modify AESNI setting
+* **post** *(secured)*: Modify AESNI setting.
 
 ### /4.0/edges/{edgeId}/coredump
+Working With Core Dumps
+-----
 Enabling core-dump feature results in deployment of inbuilt extra disk
-to save core-dump files. 1GB for compact edge and 8GB for other types.
+to save core-dump files. 1 GB for compact edge and 8 GB for other types.
 Disabling detaches the disk
 
-* **post** *(secured)*: Modify core dump setting
+* **post** *(secured)*: Modify core dump setting.
 
 ### /4.0/edges/{edgeId}/fips
-FIPs setting
+Working with FIPS on NSX Edge
+----
 
-* **post** *(secured)*: Modify FIPs setting
+* **post** *(secured)*: Modify FIPS setting.
 
 ### /4.0/edges/{edgeId}/logging
-Log setting
+Working With NSX Edge Logs
+-----
 
-* **post** *(secured)*: Modify log setting
+* **post** *(secured)*: Modify log setting.
 
 ### /4.0/edges/{edgeId}/summary
-Edge summary
+Working With NSX Edge Summary
+----
 
-* **get** *(secured)*: Retrieve details about the specified Edge
+* **get** *(secured)*: Retrieve details about the specified Edge.
 
 ### /4.0/edges/{edgeId}/status
-Edge status
+Working With Edge Status
+----
 
-* **get** *(secured)*: Retrieve the status of the specified Edge
+* **get** *(secured)*: Retrieve the status of the specified Edge.
 
 ### /4.0/edges/{edgeId}/techsupportlogs
-Tech support logs for specified Edge
+Working with NSX Edge Tech Support Logs 
+----
 
-* **get** *(secured)*: Retrieve the tech support logs for Edge
+* **get** *(secured)*: Retrieve the tech support logs for Edge.
 
 ### /4.0/edges/{edgeId}/clisettings
-Manage CLI credentials and access
+Working with NSX Edge CLI Settings
+----
 
-* **put** *(secured)*: Modify CLI credentials and enable/disable SSH for Edge
+* **put** *(secured)*: Modify CLI credentials and enable/disable SSH for Edge.
 
 ### /4.0/edges/{edgeId}/cliremoteaccess
-Enable or disable SSH on the Edge
+Working with NSX Edge Remote Access 
+----
 
 * **post** *(secured)*: Change CLI remote access
 
 ### /4.0/edges/{edgeId}/firewall/config
-Configure firewall for an Edge
+Working With NSX Edge Firewall Configuration
+----
 
-* **get** *(secured)*: Read the firewall configuration
-* **put** *(secured)*: Configure firewall for an Edge
-* **delete** *(secured)*: Delete firewall configuration
+* **get** *(secured)*: Retrieve the NSX Edge firewall configuration.
+* **put** *(secured)*: Configure NSX Edge firewall.
+* **delete** *(secured)*: Delete NSX Edge firewall configuration.
 
 ### /4.0/edges/{edgeId}/firewall/config/rules
-Firewall rules
+Working With Firewall Rules
+----
 
 * **post** *(secured)*: Add one or more rules. You can add a rule above a specific rule
 using the query parameter, indicating the desired ruleID.
 
 ### /4.0/edges/{edgeId}/firewall/config/rules/{ruleId}
-Specific firewall rule
+Working With a Specific Firewall Rule
+----
 
-* **get** *(secured)*: Retrieve specific rule
-* **put** *(secured)*: Modify a specific firewall rule
+* **get** *(secured)*: Retrieve specific rule.
+* **put** *(secured)*: Modify a specific firewall rule.
 * **delete** *(secured)*: Delete firewall rule
 
 ### /4.0/edges/{edgeId}/firewall/config/global
-NSX Edge global firewall configuration
+Working With the NSX Edge Global Firewall Configuration
+----
 
-* **get** *(secured)*: Retrieve the firewall default policy for an Edge
-* **put** *(secured)*: Configure firewall global config for an Edge
+* **get** *(secured)*: Retrieve the firewall default policy for an Edge.
+* **put** *(secured)*: Configure firewall global config for an Edge.
 
 ### /4.0/edges/{edgeId}/firewall/config/defaultpolicy
-Default firewall policy for an Edge
+Working With the Default Firewall Policy for an Edge
+-----
 
 * **get** *(secured)*: Retrieve default firewall policy
 * **put** *(secured)*: Configure default firewall policy
 
 ### /4.0/edges/{edgeId}/firewall/statistics/firewall
-Edge firewall statistics
+Working With NSX Edge Firewall Statistics
+----
 
-* **get** *(secured)*: Retrieve number of ongoing connections for the firewall config
+* **get** *(secured)*: Retrieve number of ongoing connections for the firewall
+configuration.
 
 ### /4.0/edges/{edgeId}/firewall/statistics/{ruleId}
-Statistics for firewall rules
+Working with Statistics for a Specific Firewall Rule
+-----
 
-* **get** *(secured)*: Retrieve stats for firewall rule
+* **get** *(secured)*: Retrieve stats for firewall rule.
 
 ### /4.0/edges/{edgeId}/nat/config
-SNAT and DNAT rules for NSX Edge
+Working With NAT Configuration
+-----
 
-* **put** *(secured)*: Configure SNAT and DNAT rules for an Edge
-* **get** *(secured)*: Query SNAT and DNAT rules for an Edge
-* **delete** *(secured)*: Delete all NAT rules for an Edge
+* **put** *(secured)*: Configure SNAT and DNAT rules for an Edge.
+* **get** *(secured)*: Retrieve SNAT and DNAT rules for an Edge.
+* **delete** *(secured)*: Delete all NAT rules for an Edge.
 
 ### /4.0/edges/{edgeId}/nat/config/rules
-NAT rules
+Working With NAT Rules
+----
 
 * **post** *(secured)*: Add a NAT rule above a specific rule in the NAT rules table
-(using aboveRuleId) or append NAT rules to the bottom
+(using **aboveRuleId**) or append NAT rules to the bottom.
 
 ### /4.0/edges/{edgeId}/nat/config/rules/{ruleID}
-Specified NAT rule
+Working With a Specific NAT Rule
+-----
 
 * **put** *(secured)*: Modify a NAT rule
 * **delete** *(secured)*: Delete a NAT rule
 
 ### /4.0/edges/{edgeId}/routing/config
-Static and dynamic routing for each NSX Edge
+Working with the NSX Edge Routing Configuration
+----
 
-* **get** *(secured)*: Retrieve routes
-* **put** *(secured)*: Configure globalConfig, staticRouting, OSPG, BGP, and IS-IS
-* **delete** *(secured)*: Delete the routing config stored in the NSX Mgr database and the default routes from the specified NSX Edge appliance
+* **get** *(secured)*: Retrieve routes.
+* **put** *(secured)*: Configure globalConfig, staticRouting, OSPG, and BGP.
+* **delete** *(secured)*: Delete the routing config stored in the NSX Manager database and the
+default routes from the specified NSX Edge appliance.
 
 ### /4.0/edges/{edgeId}/routing/config/global
-Global configuration
+Working with the NSX Edge Global Configuration
+----
 
-* **put** *(secured)*: Configure global route
-* **get** *(secured)*: Retrieve routing info from NSX Mgr database (default route
-settings, static route configurations)
+* **put** *(secured)*: Configure global route.
+* **get** *(secured)*: Retrieve routing info from NSX Manager database (default route
+settings, static route configurations).
 
 ### /4.0/edges/{edgeId}/routing/config/static
-Static and default routes for specified Edge
+Working with Static and Default Routes
+----
 
-* **get** *(secured)*: Read static and default routes
-* **put** *(secured)*: Configure static and default routes
+* **get** *(secured)*: Read static and default routes.
+* **put** *(secured)*: Configure static and default routes.
 * **delete** *(secured)*: Delete both static and default routing config stored in the NSX
-Mgr database
+Manager database.
 
 ### /4.0/edges/{edgeId}/routing/config/ospf
-OSPF Routing for NSX Edge
+Working With OSPF Routing for NSX Edge
+----
 
-* **get** *(secured)*: Query OSPF config
-* **put** *(secured)*: Configure OSPF
-* **delete** *(secured)*: Delete OSPF routing
-
-### /4.0/edges/{edgeId}/routing/config/isis
-IS-IS Routes for NSX Edge
-
-* **get** *(secured)*: Query ISIS
-* **put** *(secured)*: Config ISIS
-* **delete** *(secured)*: Delete ISIS routing
+* **get** *(secured)*: Retrieve OSPF configuration.
+* **put** *(secured)*: Configure OSPF.
+* **delete** *(secured)*: Delete OSPF routing.
 
 ### /4.0/edges/{edgeId}/routing/config/bgp
-Manage BGP routes for NSX Edge
+Working with BGP Routes for NSX Edge
+---
 
-* **get** *(secured)*: Query BGP
-* **put** *(secured)*: Configure BGP
+* **get** *(secured)*: Retrieve BGP configuration.
+* **put** *(secured)*: Configure BGP.
 * **delete** *(secured)*: Delete BGP Routing
 
 ### /4.0/edges/{edgeId}/bridging/config
-Working with L2 bridging
+Working With Layer 2 Bridging
+----
 
-* **get** *(secured)*: Retrieve bridge configuration
-* **put** *(secured)*: Configure a bridge
-* **delete** *(secured)*: Delete bridges
+* **get** *(secured)*: Retrieve bridge configuration.
+* **put** *(secured)*: Configure a bridge.
+* **delete** *(secured)*: Delete bridges.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config
-NSX Edge load balancer
+Working With NSX Edge Load Balancer
+----
 
-* **get** *(secured)*: Get current load balancer config
-* **put** *(secured)*: Configure load balancer
-* **delete** *(secured)*: Delete load balancer configuration
+* **get** *(secured)*: Get load balancer configuration.
+* **put** *(secured)*: Configure load balancer.
+* **delete** *(secured)*: Delete load balancer configuration.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles
+Working with Application Profiles
+----
 Application profiles define the behavior of a particular type of
-network traffic
+network traffic.
 
-* **post** *(secured)*: Add an application profile
-* **get** *(secured)*: Retrieve all application profiles on Edge
-* **delete** *(secured)*: Delete all application profiles
+* **post** *(secured)*: Add an application profile.
+* **get** *(secured)*: Retrieve all application profiles on the specified Edge.
+* **delete** *(secured)*: Delete all application profiles on the specified Edge.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}
 Modify or retrieve an application profile
