@@ -138,7 +138,7 @@ The MTU is the maximum amount of data that can be transmitted in one
 packet before it is divided into smaller packets. VXLAN frames are slightly
 larger in size because of the traffic encapsulation, so the MTU required
 is higher than the standard MTU. You must set the MTU for each switch to
-1600 or higher.
+1602 or higher.
 
 * **get** *(secured)*: Retrieve information about all vSphere Distributed Switches.
 
@@ -161,7 +161,7 @@ Working with Segement ID Pools and Multicast Ranges
 ========
 
 ### /2.0/vdn/config/segments
-Working with segment ID pools
+Working With Segment ID Pools
 -------------
 Segment ID pools (also called segment ID ranges) provide virtual network
 identifiers (VNIs) to logical switches.
@@ -318,7 +318,8 @@ functioning. The repair action recreates any missing portgroups.
 * **delete** *(secured)*: Delete the specified transport zone.
 
 ### /2.0/vdn/scopes/{scopeId}/attributes
-Working with transport zone attributes.
+Working With Transport Zone Attributes
+----
 
 * **put** *(secured)*: Update the attributes of a transport zone.
 
@@ -327,7 +328,7 @@ mode. You must include the cluster object IDs for the transport zone
 in the request body.
 
 ### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
-Testing multicast group connectivity.
+Testing Multicast Group Connectivity
 -------
 
 * **post** *(secured)*: Test multicast group connectivity.
@@ -434,7 +435,8 @@ appropriate **device** value is *device[4000]*, the **objectId** and
 **vnicUuid** are both *502e71fa-1a00-759b-e40f-ce778e915f16.000*.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}
-Working with a specific logical switch.
+Working With a Specific Logical Switch
+----
 
 * **get** *(secured)*: Retrieve information about the specified logical switch.
 
@@ -465,7 +467,8 @@ If you set **packetSizeMode** to *2*, you must specify the size using
 the **packetSize** parameter.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/p2p
-Test point-to-point connectivity.
+Test Point-to-Point Connectivity
+----
 
 * **post** *(secured)*: Test point-to-point connectivity.
 
@@ -646,7 +649,7 @@ Working with Services
 * **post** *(secured)*: Create a new service on the specified scope.
 
 ## service
-Working with a Specified Service
+Working With a Specified Service
 ============
 
 ### /2.0/services/application/{applicationId}
@@ -766,19 +769,21 @@ Working with Security Tags
 * **get** *(secured)*: Retrieve security tags.
 
 ### /2.0/services/securitytags/tag/{tagId}
-Delete a security tag.
+Delete a Security Tag
+----
 
 * **delete** *(secured)*: Delete the specified security tag.
 
 ### /2.0/services/securitytags/tag/{tagId}/vm
-Retrieve the list of VMs that have the specified tag attached to
-them.
+Working with Security Tags on Virtual Machines
+----
 
 * **get** *(secured)*: Retrieve the list of VMs that have the specified tag attached to
 them.
 
 ### /2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}
-Apply or detach a security tag to virtual machine.
+Manage a Security Tag on a Virtual Machine
+----
 
 * **put** *(secured)*: Apply a security tag to virtual machine.
 * **delete** *(secured)*: Detach a security tag from a virtual machine.
@@ -843,18 +848,18 @@ Working with Available NSX Manager Roles
 * **get** *(secured)*: Read all possible roles in NSX Manager
 
 ### /2.0/services/usermgmt/scopingobjects
-Retrieve a list of objects that can be used to define a user's access
-scope
+Working With Scoping Objects
+----
 
 * **get** *(secured)*: Retrieve a list of objects that can be used to define a user's access
-scope
+scope.
 
 ## secGroup
 Working with Security Groups
 ===========
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
-Create a new security group
+Create a New Security Group
 ----
 Create a new security group on a global scope or universal scope. Use
 either "globalroot-0" or "universalroot-0". Universal security groups are
@@ -912,7 +917,7 @@ Working with IP Addresses in a Security Group
 group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/macaddresses
-Working with Mac Addresses in a Security Group
+Working with MAC Addresses in a Security Group
 -----
 
 * **get** *(secured)*: Retrieve list of MAC addresses that belong to a specific security
@@ -1167,7 +1172,7 @@ Working with Syslog Servers
 * **delete** *(secured)*: Delete syslog servers.
 
 ### /1.0/appliance-management/components
-Components management
+Working with Components
 ----
 
 * **get** *(secured)*: Retrieve all appliance manager components.
@@ -1216,7 +1221,7 @@ Working with NSX Manager Appliance Backup Files
 * **get** *(secured)*: Retrieve list of all backups available at configured backup location.
 
 ### /1.0/appliance-management/backuprestore/restore
-Restoring Data from a NSX Manager Appliance Backup File
+Restoring Data from an NSX Manager Appliance Backup File
 ------
 
 * **post** *(secured)*: Restore data from a backup file.
@@ -1276,13 +1281,13 @@ such as pre-upgrade validation warning or error messages along with
 pre-upgrade questions.
 
 ### /1.0/appliance-management/upgrade/start/{componentID}
-Start Upgrade
+Start NSX Manager Upgrade
 ----
 
 * **get** *(secured)*: Start upgrade process.
 
 ### /1.0/appliance-management/status/{componentID}
-Upgrade Status
+NSX Manager Upgrade Status
 ----
 
 * **get** *(secured)*: Query upgrade status.
@@ -1550,14 +1555,16 @@ Working With Status of Resources by Criterion
 * **get** *(secured)*: Retrieve status of resources by criterion.
 
 ### /2.0/nwfabric/clusters/{clusterID}
-Working with locale ID configuration for clusters.
+Working With Locale ID Configuration For Clusters
+---
 
 * **get** *(secured)*: Retrieve the locale ID for the specified cluster.
 * **put** *(secured)*: Update the locale ID for the specified cluster.
 * **delete** *(secured)*: Delete locale ID for the specified cluster.
 
 ### /2.0/nwfabric/hosts/{hostID}
-Working with locale ID configuration for hosts.
+Working With Locale ID Configuration for Hosts
+----
 
 * **get** *(secured)*: Retrieve the locale ID for the specified host.
 * **put** *(secured)*: Update the locale ID for the specified host.
@@ -1618,25 +1625,29 @@ startTime | Time when the deployment task(s) are scheduled for. If this is not
 * **put** *(secured)*: Upgrade service to recent version.
 
 ### /2.0/si/deploy/service/{serviceID}
-Working with a specified service
+Working With a Specified Service
+----
 
-* **get** *(secured)*: Retrieve all clusters on which the service is installed
-* **delete** *(secured)*: Uninstall specified service from specified clusters
+* **get** *(secured)*: Retrieve all clusters on which the service is installed.
+* **delete** *(secured)*: Uninstall specified service from specified clusters.
 
 ### /2.0/si/deploy/service/{serviceID}/dependsOn
-Identify service on which the specified service depends on
+Working with Service Dependencies
+----
 
-* **get** *(secured)*: Identify service on which the specified service depends on
+* **get** *(secured)*: Identify service on which the specified service depends on.
 
 ### /2.0/si/deploy/cluster/{clusterID}
-Working with installed services on a cluster
+Working With Installed Services on a Cluster
+---
 
-* **get** *(secured)*: Retrieve all services deployed along with their status
+* **get** *(secured)*: Retrieve all services deployed along with their status.
 * **delete** *(secured)*: Uninstall a service. Fails if you try to remove a service that another
-service depends on
+service depends on.
 
 ### /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}
-Information about a service
+Working with a Specific Service on a Cluster
+-----
 
 * **get** *(secured)*: Retrieve detailed information about the service
 
@@ -1645,144 +1656,164 @@ Working with Data Security
 =======
 
 ### /2.0/dlp/regulation
-Data loss prevention regulation
+Data Loss Prevention Regulation
+----
 
 * **get** *(secured)*: Retrieve the list of available regulations for a policy.
 
 ### /2.0/dlp/policy/regulations
-Enable one or more regulations by putting the regulation IDs into the
-policy. You can get the IDs from the output of the dlpRegulation GET call
+Working with Regulations
+----
 
 * **put** *(secured)*: Enable one or more regulations by putting the regulation IDs into the
 policy. You can get the IDs from the output of the dlpRegulation GET
 call
 
 ### /2.0/dlp/classificationvalue
-Classification values associated with regulations
+Working with Classification Values
+----
 
-* **get** *(secured)*: Get all classification values
+* **get** *(secured)*: Get all classification values.
 
 ### /2.0/dlp/policy/classificationvalues
-Configure a customized regex as a classification value
+Working with Regular Expressions as a Classification Value
+----
 
-* **put** *(secured)*: Configure a customized regex as a classification value
+* **put** *(secured)*: Configure a customized regex as a classification value.
 
 ### /2.0/dlp/excludableareas
-Retrieve list of datacenters, clusters, and resource pools that are
-excludable from policy inspection
+Working with Excludable Areas
+----
 
 * **get** *(secured)*: Retrieve list of datacenters, clusters, and resource pools that are
-excludable from policy inspection
+excludable from policy inspection.
 
 ### /2.0/dlp/policy/excludedareas
-(DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
-Exclude areas from policy inspection
+Excluding Areas from Policies
+----
 
 * **put** *(secured)*: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
-Exclude areas from policy inspection
+Exclude areas from policy inspection.
 
 ### /2.0/dlp/policy/includedsecuritygroups
-Include security groups in data security scan
+Working With Included Security Groups
+----
 
-* **get** *(secured)*: Retrieve security groups that have been included in data security scans
+* **get** *(secured)*: Retrieve security groups that have been included in data security
+scans.
 
-* **put** *(secured)*: Include security groups in data security scan
+* **put** *(secured)*: Include security groups in data security scan.
 
 ### /2.0/dlp/policy/excludedsecuritygroups
-Exclude security groups in data security scan
+Working With Excluded Security Groups
+----
 
 * **get** *(secured)*: Retrieve security groups that have been excluded from data security
-scans
+scans.
 
-* **put** *(secured)*: Exclude security groups in data security scan
+* **put** *(secured)*: Exclude security groups in data security scan.
 
 ### /2.0/dlp/policy/FileFilters
-Configure file filters for scanning
+Working with File Filters
+----
 
-* **put** *(secured)*: Configure file filters for scanning
+* **put** *(secured)*: Configure file filters for scanning.
 
 ### /2.0/dlp/policy/saved
-Retrieve last saved policy
+Working With Saved Policies
+---
 
-* **get** *(secured)*: Get saved policy
+* **get** *(secured)*: Retrieve saved policy.
 
 ### /2.0/dlp/policy/published
-Retrieve currently published SDD policy
+Working with Published Policies
+----
 
-* **get** *(secured)*: Retrieve currently published policy
+* **get** *(secured)*: Retrieve currently published policy.
 
 ### /2.0/dlp/policy/publish
-After updating a policy with added regulations, excluded areas, or
-customized regex values, publish an updated policy to enforce new
-parameters
+Publishing Policies
+----
 
-* **put** *(secured)*: Publish the updated policy
+* **put** *(secured)*: After updating a policy with added regulations, excluded areas, or
+customized regex values, publish an updated policy to enforce new
+parameters.
 
 ### /2.0/dlp/scanop
-Start, pause, resume, or stop a data security scan
+Working with Scanning
+----
 
-* **put** *(secured)*: Start, pause, resume, or stop a data security scan
+* **put** *(secured)*: Start, pause, resume, or stop a data security scan.
 
 ### /2.0/dlp/scanstatus
-Retrieve the status of a scan operation
+Working With Scan Status
+----
 
-* **get** *(secured)*: Retrieve the status of a scan operation
+* **get** *(secured)*: Retrieve the status of a scan operation.
 
 ### /2.0/dlp/scan/current/vms/{ID}
-Retrieve information about the vm's being scanned
+Working with a Specific Scan
+----
 
-* **get** *(secured)*: Retrieve information about the vm's being scanned
+* **get** *(secured)*: Retrieve information about the VMs being scanned.
 
 ### /2.0/dlp/completedscansummaries
-Retrieve start and end time, total number of vm's scanned, and total
-number of violations for the last five completed data security scans
+Working with Scan Summaries
+----
 
-* **get** *(secured)*: Retrieve scan summaries
+* **get** *(secured)*: Retrieve start and end time, total number of VMs scanned, and total
+number of violations for the last five completed data security scans.
 
 ### /2.0/dlp/scan/{scanID}/detailsascsv
-Retrieve report on results of previous scan in CSV format
+Working with Scans in CSV Format
+----
 
 * **get** *(secured)*: Retrieve ID, Name, Scan status, and Violation counts for VM's scanned
-during specified scan
+during the specified scan.
 
 ### /2.0/dlp/scan/{scanID}/policyasxml
-Retrieve XML representation of the policy used in the previous scan
+Working with Scans in XML Format
+----
 
-* **get** *(secured)*: Retrieve XML representation of the policy used in the previous scan
+* **get** *(secured)*: Retrieve XML representation of the policy used in the previous scan.
 
 ### /2.0/dlp/violations
-Query the regulations that have been violated in scans
+Working With Violations
+----
 
-* **get** *(secured)*: Get violation count for entire inventory
+* **get** *(secured)*: Retrieve the regulations that have been violated in scans.
 
 ### /2.0/dlp/violations/{contextID}
-Get violation count for specific resource
+Working with Violations for a Specific Resource
+----
 
-* **get** *(secured)*: Get violation count for specific resource
+* **get** *(secured)*: Get violation count for specific resource.
 
 ### /2.0/dlp/violatingfiles
-Get violating files and the regulations each file violated
+Working with Violating Files
+----
 
 * **get** *(secured)*: Get violating files and the regulations each file violated
 
 ### /2.0/dlp/violatingfiles/{contextID}
-Get violating files for a resource
+Working with Violating Files for a Specific Resource
+----
 
-* **get** *(secured)*: Get violating files for a resource
+* **get** *(secured)*: Get violating files for a resource.
 
 ### /2.0/dlp/violatingfilesascsv
-Display the violating files and the regulations each file violated in CSV
-format
+Working with Violating Files in CSV Format
+----
 
 * **get** *(secured)*: Display the violating files and the regulations each file violated in
-CSV format
+CSV format.
 
 ### /2.0/dlp/violatingfilesascsv/{contextID}
-Get violated regulations and violating files for the resource in CSV
-format
+Working With Violating Files in CSV Format for a Specific Resource
+----
 
 * **get** *(secured)*: Get violated regulations and violating files for the resource in
-CSV format
+CSV format.
 
 ## eventControl
 Working with Data Collection for Activity Monitoring
@@ -1860,11 +1891,11 @@ event collection should be performed for this virtual machine.
 * **get** *(secured)*: Retrieve per VM configuration for data collection.
 
 ## activityMonitoring
-Working with Activity monitoring
+Working with Activity Monitoring
 ======
 
 ### /3.0/ai/records
-Retrieve Aggregated User Activity
+Working With Aggregated User Activity
 --------------
 Get aggregated user activity (action records) using parameters. Requires
 that NSX Guest Introspection is configured, NSX Manager must be
@@ -1964,7 +1995,7 @@ groups and can use this data to fine tune your firewall rules.
 `&param=src:SECURITY_GROUP:1:EXCLUDE`
 
 ### /3.0/ai/userdetails
-Retrieve user detail records in accordance with given query parameters
+Working with User Details
 ---------
 
 * **get** *(secured)*: ### View Outbound Activity
@@ -2078,70 +2109,84 @@ groups and can use this data to fine tune your firewall rules.
 `GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&param=app:DEST_APP:16`
 
 ### /3.0/ai/user/{userID}
-Retrieve details for a specific user
+Working With a Specific User
+----
 
-* **get** *(secured)*: Retrieve details for a specific user
+* **get** *(secured)*: Retrieve details for a specific user.
 
 ### /3.0/ai/app
-Retrieve app details
+Working With Applications
+----
 
-* **get** *(secured)*: Retrieve app details
+* **get** *(secured)*: Retrieve app details.
 
 ### /3.0/ai/app/{appID}
-Retrieve details for specific app
+Working with a Specific Application
+----
 
-* **get** *(secured)*: Retrieve details for specific app
+* **get** *(secured)*: Retrieve details for specific app.
 
 ### /3.0/ai/host
-Host details
+Working With Discovered Hosts
+----
 
 * **get** *(secured)*: Retrieve list of all discovered hosts (both by agent introspection and
-LDAP Sync) and their detail
+LDAP Sync) and their detail.
 
 ### /3.0/ai/host/{hostID}
-Specific host details
+Working with a Specific Discovered Host
+----
 
-* **get** *(secured)*: Get host details
+* **get** *(secured)*: Get host details.
 
 ### /3.0/ai/desktoppool
-Desktop pool details
+Working With Desktop Pools
+-----
 
-* **get** *(secured)*: Retrieve list of all discovered desktop pools by agent introspection
+* **get** *(secured)*: Retrieve list of all discovered desktop pools by agent introspection.
 
 ### /3.0/ai/desktoppool/{desktoppoolID}
-Specific desktop pool details
+Working with a Specific Desktop Pool
+----
 
-* **get** *(secured)*: Retrieve specific desktop pool details
+* **get** *(secured)*: Retrieve specific desktop pool details.
 
 ### /3.0/ai/vm
-Virtual machine details
+Working with Virtual Machines
+----
 
-* **get** *(secured)*: Retrieve list of all discovered vm's
+* **get** *(secured)*: Retrieve list of all discovered VMs.
 
 ### /3.0/ai/vm/{vmID}
-Specific VM details
+Working with a Specific Virtual Machine
+----
 
-* **get** *(secured)*: Retrieve details about a specific virtual machine
+* **get** *(secured)*: Retrieve details about a specific virtual machine.
 
 ### /3.0/ai/directorygroup
-LDAP directory group details
+Working with LDAP Directory Groups
+----
 
-* **get** *(secured)*: Retrieve list of all discovered (and configured) LDAP directory groups
+* **get** *(secured)*: Retrieve list of all discovered (and configured) LDAP directory
+groups.
 
 ### /3.0/ai/directorygroup/{directorygroupID}
-Specific directory group details
+Working with a Specific LDAP Directory Group
+----
 
-* **get** *(secured)*: Retrieve details about a specific directory group
+* **get** *(secured)*: Retrieve details about a specific directory group.
 
 ### /3.0/ai/directorygroup/user/{userID}
-AD groups that a user belongs to
+Working with a Specific User's Active Directory Groups
+-----
 
-* **get** *(secured)*: Retrieve AD groups that user belongs to
+* **get** *(secured)*: Retrieve Active Directory groups that user belongs to.
 
 ### /3.0/ai/securitygroup
-Security group details
+Working with Security Groups
+-----
 
-* **get** *(secured)*: Retrieve list of all observed security groups
+* **get** *(secured)*: Retrieve list of all observed security groups.
 
 Observed entities are the ones that are reported by the agents. For
 example, if a host activity is reported by an agent and if that host
@@ -2149,9 +2194,10 @@ belongs to a security group then that security group would reported as
 observed in SAM database.
 
 ### /3.0/ai/securitygroup/{secgroupID}
-Specific security group details
+Working with a Specific Security Group
+----
 
-* **get** *(secured)*: Retrieve details about specific security group
+* **get** *(secured)*: Retrieve details about specific security group.
 
 ## domain
 Working with Domains
@@ -2161,7 +2207,7 @@ queries to view the applications and virtual machines being accessed by
 the users of a domain.
 
 ### /1.0/directory/updateDomain
-Updating Domains
+Registering Domains
 ---------------
 You can a register one or more Windows domains with an NSX Manager and
 associated vCenter server.  NSX Manager gets group and user information
@@ -2230,7 +2276,7 @@ Start LDAP Delta Sync
 Delete LDAP Server
 ----
 
-* **delete** *(secured)*: Delete LDAP server
+* **delete** *(secured)*: Delete LDAP server.
 
 ### /1.0/directory/updateEventLogServer
 EventLog Server
@@ -2248,36 +2294,36 @@ Working with EventLog Servers for a Domain
 Delete EventLog Server
 -----
 
-* **delete** *(secured)*: Delete EventLog server
+* **delete** *(secured)*: Delete EventLog server.
 
 ## mappingLists
 Working with Mapping Lists
 =========
 
 ### /1.0/identity/userIpMapping
-Query user-to-ip mapping list from database
+Query user-to-ip mapping list from database.
 
-* **get** *(secured)*: Query user-to-ip mapping list from database
+* **get** *(secured)*: Query user-to-ip mapping list from database.
 
 ### /1.0/identity/hostIpMapping
-Query host-to-ip mapping list from database
+Query host-to-ip mapping list from database.
 
-* **get** *(secured)*: Query host-to-ip mapping list from database
+* **get** *(secured)*: Query host-to-ip mapping list from database.
 
 ### /1.0/identity/ipToUserMapping
-Query set of users associated with a given set of Ip addresses
+Query set of users associated with a given set of IP addresses.
 
 * **get** *(secured)*: Retrieve set of users associated with a given set of IP addresses during
 a specified time period. Since more than one user can be associated
 with a single IP address during the specified time period, each IP
-address can be associated with zero or more (i.e a SET of) users
+address can be associated with zero or more (i.e a SET of) users.
 
 ### /1.0/identity/directoryGroupsForUser
 Query set of Windows Domain Groups (AD Groups) to which the specified
-user belongs
+user belongs.
 
 * **get** *(secured)*: Query set of Windows Domain Groups (AD Groups) to which the specified
-user belongs
+user belongs.
 
 ### /1.0/identity/staticUserMapping/{userID}/{IP}
 Create static user IP mapping
@@ -2465,6 +2511,7 @@ To update registration information for a vendor or solution, clients must:
 
 ### /2.0/endpointsecurity/registration
 Register a Vendor and Solution with Guest Introspection
+---
 
 * **post** *(secured)*: Register the vendor of an endpoint protection solution. Specify the
 following parameters in the request.

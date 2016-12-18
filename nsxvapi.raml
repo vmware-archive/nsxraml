@@ -178,7 +178,7 @@ securitySchemes:
       packet before it is divided into smaller packets. VXLAN frames are slightly
       larger in size because of the traffic encapsulation, so the MTU required
       is higher than the standard MTU. You must set the MTU for each switch to
-      1600 or higher.
+      1602 or higher.
     body:
       application/xml:
         example: |
@@ -355,7 +355,7 @@ securitySchemes:
   /segments:
     displayName: vdnSegmentPools
     description: |
-      Working with segment ID pools
+      Working With Segment ID Pools
       -------------
       Segment ID pools (also called segment ID ranges) provide virtual network
       identifiers (VNIs) to logical switches.
@@ -944,7 +944,8 @@ securitySchemes:
     /attributes:
       displayName: vdnScopeAttribUpdate
       description: |
-        Working with transport zone attributes.
+        Working With Transport Zone Attributes
+        ----
       put:
         displayName: vdnScopeAttribUpdate
         description: |
@@ -971,7 +972,7 @@ securitySchemes:
     /conn-check/multicast:
       displayName: vdnScopeConnCheck
       description: |
-        Testing multicast group connectivity.
+        Testing Multicast Group Connectivity
         -------
       post:
         displayName: vdnScopeConnCheck
@@ -1452,7 +1453,8 @@ securitySchemes:
   /{virtualWireID}:
     displayName: logicalSwitch
     description: |
-      Working with a specific logical switch.
+      Working With a Specific Logical Switch
+      ----
     uriParameters:
       virtualWireID:
         required: true
@@ -1581,7 +1583,8 @@ securitySchemes:
     /conn-check/p2p:
       displayName: logicalSwitchPing
       description: |
-        Test point-to-point connectivity.
+        Test Point-to-Point Connectivity
+        ----
       post:
         displayName: logicalSwitchPing
         description: |
@@ -2025,7 +2028,7 @@ securitySchemes:
 /2.0/services/application/{applicationId}:
   displayName: service
   description: |
-    Working with a Specified Service
+    Working With a Specified Service
     ============
   uriParameters:
     applicationId:
@@ -2512,7 +2515,9 @@ securitySchemes:
     description: Retrieve security tags.
   /{tagId}:
     displayName: securityTagDelete
-    description: Delete a security tag.
+    description: |
+      Delete a Security Tag
+      ----
     uriParameters:
       tagId:
         description: Specified security tag.
@@ -2524,8 +2529,8 @@ securitySchemes:
     /vm:
       displayName: securityTagVMsList
       description: |
-        Retrieve the list of VMs that have the specified tag attached to
-        them.
+        Working with Security Tags on Virtual Machines
+        ----
       get:
         displayName: securityTagVMsList
         description: |
@@ -2533,7 +2538,9 @@ securitySchemes:
           them.
       /{vmMoid}:
         displayName: securityTagVM
-        description: Apply or detach a security tag to virtual machine.
+        description: |
+          Manage a Security Tag on a Virtual Machine
+          ----
         uriParameters:
           vmMoid:
             description: ID of VM
@@ -2688,13 +2695,13 @@ securitySchemes:
   /scopingobjects:
     displayName: userScopingObjects
     description: |
-      Retrieve a list of objects that can be used to define a user's access
-      scope
+      Working With Scoping Objects
+      ----
     get:
       displayName: userScopingObjectsRead
       description: |
         Retrieve a list of objects that can be used to define a user's access
-        scope
+        scope.
 /2.0/services/securitygroup:
   displayName: secGroup
   description: |
@@ -2703,7 +2710,7 @@ securitySchemes:
   /bulk/{scopeId}:
     displayName: secGroupBulk
     description: |
-      Create a new security group
+      Create a New Security Group
       ----
       Create a new security group on a global scope or universal scope. Use
       either "globalroot-0" or "universalroot-0". Universal security groups are
@@ -2982,7 +2989,7 @@ securitySchemes:
     /translation/macaddresses:
       displayName: secGroupMacNodes
       description: |
-        Working with Mac Addresses in a Security Group
+        Working with MAC Addresses in a Security Group
         -----
       get:
         displayName: secGroupMacNodesRead
@@ -3516,7 +3523,7 @@ securitySchemes:
   /components:
     displayName: componentsManagement
     description: |
-      Components management
+      Working with Components
       ----
     get:
       displayName: componentsManagementRead
@@ -3618,7 +3625,7 @@ securitySchemes:
   /backuprestore/restore:
     displayName: applianceMgrBackupRestore
     description: |
-      Restoring Data from a NSX Manager Appliance Backup File
+      Restoring Data from an NSX Manager Appliance Backup File
       ------
     post:
       displayName: applianceMgrBackupRestoreExecute
@@ -3724,7 +3731,7 @@ securitySchemes:
   /upgrade/start/{componentID}:
     displayName: upgradeStart
     description: |
-      Start Upgrade
+      Start NSX Manager Upgrade
       ----
     uriParameters:
       componentID:
@@ -3737,7 +3744,7 @@ securitySchemes:
   /status/{componentID}:
     displayName: upgradeStatus
     description: |
-      Upgrade Status
+      NSX Manager Upgrade Status
       ----
     uriParameters:
       componentID:
@@ -4404,7 +4411,9 @@ securitySchemes:
                   </resourceStatuses>
   /clusters/{clusterID}:
     displayName: nwfabricClusters
-    description: Working with locale ID configuration for clusters.
+    description: |
+      Working With Locale ID Configuration For Clusters
+      ---
     get:
       displayName: nwfabricClustersRead
       description: Retrieve the locale ID for the specified cluster.
@@ -4423,7 +4432,9 @@ securitySchemes:
       description: Delete locale ID for the specified cluster.
   /hosts/{hostID}:
     displayName: nwfabricHosts
-    description: Working with locale ID configuration for hosts.
+    description: |
+      Working With Locale ID Configuration for Hosts
+      ----
     get:
       displayName: nwfabricHostsRead
       description: Retrieve the locale ID for the specified host.
@@ -4543,38 +4554,45 @@ securitySchemes:
         schema: serviceUpgrade
   /service/{serviceID}:
     displayName: service
-    description: Working with a specified service
+    description: |
+      Working With a Specified Service
+      ----
     uriParameters:
       serviceID:
         displayName: serviceID
-        description: Specified service
+        description: Specified service.
         required: true
     get:
       displayName: serviceRead
-      description: Retrieve all clusters on which the service is installed
+      description: Retrieve all clusters on which the service is installed.
     delete:
       displayName: serviceDelete
-      description: Uninstall specified service from specified clusters
+      description: Uninstall specified service from specified clusters.
       queryParameters:
         clusters:
           displayName: clusters
           description: |
-            Comma-separated list of cluster id's that service needs to be
-            uninstalled from
+            Comma-separated list of cluster IDs from which to uninstall the
+            service.
         startTime:
           displayName: startTime
           description: |
             Time for uninstall to be scheduled. If not specified, uninstall
-            immediately
+            immediately.
     /dependsOn:
       displayName: serviceDependency
-      description: Identify service on which the specified service depends on
+      description: |
+        Working with Service Dependencies
+        ----
       get:
         displayName: serviceDependencyRead
-        description: Identify service on which the specified service depends on
+        description: |
+          Identify service on which the specified service depends on.
   /cluster/{clusterID}:
     displayName: serviceCluster
-    description: Working with installed services on a cluster
+    description: |
+      Working With Installed Services on a Cluster
+      ---
     uriParameters:
       clusterID:
         required: true
@@ -4582,25 +4600,30 @@ securitySchemes:
         description: Cluster ID
     get:
       displayName: serviceRead
-      description: Retrieve all services deployed along with their status
+      description: Retrieve all services deployed along with their status.
     delete:
       displayName: serviceDelete
       description: |
         Uninstall a service. Fails if you try to remove a service that another
-        service depends on
+        service depends on.
       queryParameters:
         services:
           displayName: services
           description: |
-            Comma-separated list of service id's to specify which services to
-            uninstall
+            Comma-separated list of service IDs to specify which services to
+            uninstall. If this is not specified then all the services are
+            uninstalled.
+          required: false
         startTime:
           displayName: startTime
           description: |
-            Time for uninstall to be scheduled. If not specified, do immediately
+            Time for uninstall to be scheduled. If not specified, do
+            immediately.
     /service/{serviceID}:
       displayName: serviceDetails
-      description: Information about a service
+      description: |
+        Working with a Specific Service on a Cluster
+        -----
       uriParameters:
         serviceID:
           displayName: serviceID
@@ -4615,15 +4638,17 @@ securitySchemes:
     =======
   /regulation:
     displayName: dlpRegulation
-    description: Data loss prevention regulation
+    description: |
+      Data Loss Prevention Regulation
+      ----
     get:
       displayName: dlpRegulationRead
       description: Retrieve the list of available regulations for a policy.
   /policy/regulations:
     displayName: dlpPolicyRegulations
     description: |
-      Enable one or more regulations by putting the regulation IDs into the
-      policy. You can get the IDs from the output of the dlpRegulation GET call
+      Working with Regulations
+      ----
     put:
       displayName: dlpPolicyRegulationsUpdate
       description: |
@@ -4639,16 +4664,20 @@ securitySchemes:
           schema: dlpPolicyRegulationsUpdate
   /classificationvalue:
     displayName: dlpClassificationValue
-    description: Classification values associated with regulations
+    description: |
+      Working with Classification Values
+      ----
     get:
       displayName: dlpClassificationValueRead
-      description: Get all classification values
+      description: Get all classification values.
   /policy/classificationvalues:
     displayName: dlpRegexClassificationValue
-    description: Configure a customized regex as a classification value
+    description: |
+      Working with Regular Expressions as a Classification Value
+      ----
     put:
       displayName: dlpRegexClassificationValueUpdate
-      description: Configure a customized regex as a classification value
+      description: Configure a customized regex as a classification value.
       body:
         application/xml:
           example: |
@@ -4669,23 +4698,23 @@ securitySchemes:
   /excludableareas:
     displayName: dlpExcludableAreas
     description: |
-      Retrieve list of datacenters, clusters, and resource pools that are
-      excludable from policy inspection
+      Working with Excludable Areas
+      ----
     get:
       displayName: dlpExcludableAreasList
       description: |
         Retrieve list of datacenters, clusters, and resource pools that are
-        excludable from policy inspection
+        excludable from policy inspection.
   /policy/excludedareas:
     displayName: dlpExcludeArea
     description: |
-      (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
-      Exclude areas from policy inspection
+      Excluding Areas from Policies
+      ----
     put:
       displayName: dlpExcludeAreaUpdate
       description: |
         (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
-        Exclude areas from policy inspection
+        Exclude areas from policy inspection.
       body:
         application/xml:
           example: |
@@ -4695,14 +4724,17 @@ securitySchemes:
           schema: dlpExcludeAreaUpdate
   /policy/includedsecuritygroups:
     displayName: dlpIncludeSecGroup
-    description: Include security groups in data security scan
+    description: |
+      Working With Included Security Groups
+      ----
     get:
       displayName: dlpIncludeSecGroupRead
       description: |
-        Retrieve security groups that have been included in data security scans
+        Retrieve security groups that have been included in data security
+        scans.
     put:
       displayName: dlpIncludeSecGroupUpdate
-      description: Include security groups in data security scan
+      description: Include security groups in data security scan.
       body:
         application/xml:
           example: |
@@ -4713,15 +4745,17 @@ securitySchemes:
           schema: dlpIncludeSecGroupUpdate
   /policy/excludedsecuritygroups:
     displayName: dlpExcludeSecGroup
-    description: Exclude security groups in data security scan
+    description: |
+      Working With Excluded Security Groups
+      ----
     get:
       displayName: dlpExcludeSecGroupRead
       description: |
         Retrieve security groups that have been excluded from data security
-        scans
+        scans.
     put:
       displayName: dlpExcludeSecGroupUpdate
-      description: Exclude security groups in data security scan
+      description: Exclude security groups in data security scan.
       body:
         application/xml:
           example: |
@@ -4732,10 +4766,12 @@ securitySchemes:
           schema: dlpExcludeSecGroupUpdate
   /policy/FileFilters:
     displayName: dlpFileFilters
-    description: Configure file filters for scanning
+    description: |
+      Working with File Filters
+      ----
     put:
       displayName: dlpFileFiltersUpdate
-      description: Configure file filters for scanning
+      description: Configure file filters for scanning.
       body:
         application/xml:
           example: |
@@ -4748,31 +4784,39 @@ securitySchemes:
           schema: dlpFileFiltersUpdate
   /policy/saved:
     displayName: dlpPolicySaved
-    description: Retrieve last saved policy
+    description: |
+      Working With Saved Policies
+      ---
     get:
       displayName: dlpPolicySavedList
-      description: Get saved policy
+      description: Retrieve saved policy.
   /policy/published:
     displayName: dlpPolicyPublished
-    description: Retrieve currently published SDD policy
+    description: |
+      Working with Published Policies
+      ----
     get:
       displayName: dlpPolicyPublishedList
-      description: Retrieve currently published policy
+      description: Retrieve currently published policy.
   /policy/publish:
     displayName: dlpPolicyPublish
     description: |
-      After updating a policy with added regulations, excluded areas, or
-      customized regex values, publish an updated policy to enforce new
-      parameters
+      Publishing Policies
+      ----
     put:
       displayName: dlpPolicyPublishExecute
-      description: Publish the updated policy
+      description: |
+        After updating a policy with added regulations, excluded areas, or
+        customized regex values, publish an updated policy to enforce new
+        parameters.
   /scanop:
     displayName: dlpScanning
-    description: Start, pause, resume, or stop a data security scan
+    description: |
+      Working with Scanning
+      ----
     put:
       displayName: dlpScanningUpdate
-      description: Start, pause, resume, or stop a data security scan
+      description: Start, pause, resume, or stop a data security scan.
       body:
         application/xml:
           example: |
@@ -4780,28 +4824,32 @@ securitySchemes:
           schema: dlpScanningUpdate
   /scanstatus:
     displayName: dlpScanStatus
-    description: Retrieve the status of a scan operation
+    description: |
+      Working With Scan Status
+      ----
     get:
       displayName: dlpScanStatusList
-      description: Retrieve the status of a scan operation
+      description: Retrieve the status of a scan operation.
   /scan/current/vms/{ID}:
     displayName: dlpScanVMs
-    description: Retrieve information about the vm's being scanned
+    description: |
+      Working with a Specific Scan
+      ----
     uriParameters:
       ID:
         displayName: ID
         description: |
           Limit filter results by VC MOID of datacenter, cluster, or resource
-          pool
+          pool.
     get:
       displayName: dlpScanVMsRead
-      description: Retrieve information about the vm's being scanned
+      description: Retrieve information about the VMs being scanned.
       queryParameters:
         scanstatus:
           displayName: scanstatus
           description: |
-            Specify scan status of vm's to be retrieved
-            (all|notstarted|started|completed)
+            Specify scan status of VMs to be retrieved:
+            all, notstarted, started, completed
         pagesize:
           displayName: pagesize
           description: !include documentation/reuse/pagesize-1024
@@ -4812,14 +4860,18 @@ securitySchemes:
   /completedscansummaries:
     displayName: dlpScanSummaries
     description: |
-      Retrieve start and end time, total number of vm's scanned, and total
-      number of violations for the last five completed data security scans
+      Working with Scan Summaries
+      ----
     get:
       displayName: dlpScanSummariesRead
-      description: Retrieve scan summaries
+      description: |
+        Retrieve start and end time, total number of VMs scanned, and total
+        number of violations for the last five completed data security scans.
   /scan/{scanID}/detailsascsv:
     displayName: dlpPreviousScan
-    description: Retrieve report on results of previous scan in CSV format
+    description: |
+      Working with Scans in CSV Format
+      ----
     uriParameters:
       scanID:
         required: true
@@ -4829,42 +4881,50 @@ securitySchemes:
       displayName: dlpPreviousScanRead
       description: |
         Retrieve ID, Name, Scan status, and Violation counts for VM's scanned
-        during specified scan
+        during the specified scan.
   /scan/{scanID}/policyasxml:
     displayName: dlpPolicyAsXML
     description: |
-      Retrieve XML representation of the policy used in the previous scan
+      Working with Scans in XML Format
+      ----
     uriParameters:
       scanID:
         required: true
         displayName: scanID
-        description: Specified previous scan
+        description: Specified previous scan.
     get:
       displayName: dlpPolicyAsXMLList
       description: |
-        Retrieve XML representation of the policy used in the previous scan
+        Retrieve XML representation of the policy used in the previous scan.
   /violations:
     displayName: dlpViolations
-    description: Query the regulations that have been violated in scans
+    description: |
+      Working With Violations
+      ----
     get:
       displayName: dlpViolationsRead
-      description: Get violation count for entire inventory
+      description: |
+        Retrieve the regulations that have been violated in scans.
     /{contextID}:
       displayName: dlpViolation
-      description: Get violation count for specific resource
+      description: |
+        Working with Violations for a Specific Resource
+        ----
       uriParameters:
         contextID:
           required: true
           displayName: contextID
           description: |
             Specified resource (moid of datacenter, cluster, folder, resource
-            pool, or vm)
+            pool, or VM).
       get:
         displayName: dlpViolationRead
-        description: Get violation count for specific resource
+        description: Get violation count for specific resource.
   /violatingfiles:
     displayName: dlpViolatingFiles
-    description: Get violating files and the regulations each file violated
+    description: |
+      Working with Violating Files
+      ----
     get:
       displayName: dlpViolatingFilesRead
       description: Get violating files and the regulations each file violated
@@ -4879,17 +4939,19 @@ securitySchemes:
           required: true
     /{contextID}:
       displayName: dlpViolatingFilesContext
-      description: Get violating files for a resource
+      description: |
+        Working with Violating Files for a Specific Resource
+        ----
       uriParameters:
         contextID:
          required: true
          displayName: contextID
          description: |
           Specified resource (moid of datacenter, cluster, folder, resource
-          pool, or vm)
+          pool, or VM).
       get:
         displayName: dlpViolatingFilesContext
-        description: Get violating files for a resource
+        description: Get violating files for a resource.
         queryParameters:
           pagesize:
             displayName: pagesize
@@ -4900,30 +4962,30 @@ securitySchemes:
   /violatingfilesascsv:
     displayName: dlpViolatingFilesCSV
     description: |
-      Display the violating files and the regulations each file violated in CSV
-      format
+      Working with Violating Files in CSV Format
+      ----
     get:
       displayName: dlpViolatingFilesCSVList
       description: |
         Display the violating files and the regulations each file violated in
-        CSV format
+        CSV format.
     /{contextID}:
       displayName: dlpViolatingFilesContextCSV
       description: |
-        Get violated regulations and violating files for the resource in CSV
-        format
+        Working With Violating Files in CSV Format for a Specific Resource
+        ----
       uriParameters:
         contextID:
          required: true
          displayName: contextID
          description: |
           Specified resource (moid of datacenter, cluster, folder, resource
-          pool, or vm)
+          pool, or VM).
       get:
         displayName: dlpViolatingFilesContextCSVList
         description: |
           Get violated regulations and violating files for the resource in
-          CSV format
+          CSV format.
 /1.0/eventcontrol:
   displayName: eventControl
   description: |
@@ -5063,12 +5125,12 @@ securitySchemes:
 /3.0/ai:
   displayName: activityMonitoring
   description: |
-    Working with Activity monitoring
+    Working with Activity Monitoring
     ======
   /records:
     displayName: userActivity
     description: |
-      Retrieve Aggregated User Activity
+      Working With Aggregated User Activity
       --------------
       Get aggregated user activity (action records) using parameters. Requires
       that NSX Guest Introspection is configured, NSX Manager must be
@@ -5171,13 +5233,13 @@ securitySchemes:
       queryParameters:
         query:
           displayName: query
-          description: Name of report (resource,adg,containers,sam,vma)
+          description: Name of report (resource,adg,containers,sam,vma).
           default: resource
           required: true
         interval:
           displayName: interval
           description: |
-            Relative time to current time (number followed by either m,h,d,s)
+            Relative time to current time (number followed by either m,h,d,s).
           example: 60m
           required: true
         stime:
@@ -5210,7 +5272,7 @@ securitySchemes:
   /userdetails:
     displayName: userDetails
     description: |
-      Retrieve user detail records in accordance with given query parameters
+      Working with User Details
       ---------
     get:
       displayName: userDetailsRead
@@ -5360,7 +5422,9 @@ securitySchemes:
           default: 0
   /user/{userID}:
     displayName: specificUserDetails
-    description: Retrieve details for a specific user
+    description: |
+      Working With a Specific User
+      ----
     uriParameters:
       userID:
         required: true
@@ -5368,70 +5432,86 @@ securitySchemes:
         description: User ID
     get:
       displayName: specificUserDetailsRead
-      description: Retrieve details for a specific user
+      description: Retrieve details for a specific user.
   /app:
     displayName: appDetails
-    description: Retrieve app details
+    description: |
+      Working With Applications
+      ----
     get:
       displayName: appDetailsRead
-      description: Retrieve app details
+      description: Retrieve app details.
     /{appID}:
       displayName: specificAppDetails
-      description: Retrieve details for specific app
+      description: |
+        Working with a Specific Application
+        ----
       uriParameters:
         appID:
           required: true
           displayName: appID
-          description: Specified app ID
+          description: Specified app ID.
       get:
         displayName: specificAppDetailsRead
-        description: Retrieve details for specific app
+        description: Retrieve details for specific app.
   /host:
     displayName: hostDetails
-    description: Host details
+    description: |
+      Working With Discovered Hosts
+      ----
     get:
       displayName: hostDetailsRead
       description: |
         Retrieve list of all discovered hosts (both by agent introspection and
-        LDAP Sync) and their detail
+        LDAP Sync) and their detail.
     /{hostID}:
       displayName: specificHostDetails
-      description: Specific host details
+      description: |
+        Working with a Specific Discovered Host
+        ----
       uriParameters:
         hostID:
           displayName: hostID
-          description: Specified host ID
+          description: Specified host ID.
           required: true
       get:
         displayName: specificHostDetailsRead
-        description: Get host details
+        description: Get host details.
   /desktoppool:
     displayName: desktopPool
-    description: Desktop pool details
+    description: |
+      Working With Desktop Pools
+      -----
     get:
       displayName: desktopPoolRead
       description: |
-        Retrieve list of all discovered desktop pools by agent introspection
+        Retrieve list of all discovered desktop pools by agent introspection.
     /{desktoppoolID}:
       displayName: specificDesktopPool
-      description: Specific desktop pool details
+      description: |
+        Working with a Specific Desktop Pool
+        ----
       uriParameters:
         desktoppoolID:
           displayName: desktoppoolID
-          description: Specified desktop pool
+          description: Specified desktop pool.
           required: true
       get:
         displayName: specificDesktopPoolRead
-        description: Retrieve specific desktop pool details
+        description: Retrieve specific desktop pool details.
   /vm:
     displayName: vmDetails
-    description: Virtual machine details
+    description: |
+      Working with Virtual Machines
+      ----
     get:
       displayName: vmDetailsRead
-      description: Retrieve list of all discovered vm's
+      description: Retrieve list of all discovered VMs.
     /{vmID}:
       displayName: specificVMDetails
-      description: Specific VM details
+      description: |
+        Working with a Specific Virtual Machine
+        ----
       uriParameters:
         vmID:
           required: true
@@ -5439,43 +5519,52 @@ securitySchemes:
           description: VM ID
       get:
         displayName: specificVMDetailsRead
-        description: Retrieve details about a specific virtual machine
+        description: Retrieve details about a specific virtual machine.
   /directorygroup:
     displayName: dirGroup
-    description: LDAP directory group details
+    description: |
+      Working with LDAP Directory Groups
+      ----
     get:
       displayName: dirGroupRead
       description: |
-        Retrieve list of all discovered (and configured) LDAP directory groups
+        Retrieve list of all discovered (and configured) LDAP directory
+        groups.
     /{directorygroupID}:
       displayName: specificDirGroup
-      description: Specific directory group details
+      description: |
+        Working with a Specific LDAP Directory Group
+        ----
       uriParameters:
         directorygroupID:
           displayName: directorygroupID
-          description: Specified directory group
+          description: Specified directory group.
           required: true
       get:
         displayName: specificDirGroupRead
-        description: Retrieve details about a specific directory group
+        description: Retrieve details about a specific directory group.
     /user/{userID}:
       displayName: userDirGroup
-      description: AD groups that a user belongs to
+      description: |
+        Working with a Specific User's Active Directory Groups
+        -----
       uriParameters:
         userID:
           displayName: userID
           required: true
-          description: User ID
+          description: User ID.
       get:
         displayName: userDirGroupRead
-        description: Retrieve AD groups that user belongs to
+        description: Retrieve Active Directory groups that user belongs to.
   /securitygroup:
     displayName: secgroupDetails
-    description: Security group details
+    description: |
+      Working with Security Groups
+      -----
     get:
       displayName: secgroupDetailsRead
       description: |
-        Retrieve list of all observed security groups
+        Retrieve list of all observed security groups.
         
         Observed entities are the ones that are reported by the agents. For
         example, if a host activity is reported by an agent and if that host
@@ -5483,15 +5572,17 @@ securitySchemes:
         observed in SAM database.
     /{secgroupID}:
       displayName: specificSecgroupDetails
-      description: Specific security group details
+      description: |
+        Working with a Specific Security Group
+        ----
       uriParameters:
         secgroupID:
           required: true
           displayName: secgroupID
-          description: Specified security group
+          description: Specified security group.
       get:
         displayName: specificSecgroupDetailsRead
-        description: Retrieve details about specific security group
+        description: Retrieve details about specific security group.
 /1.0/directory:
   displayName: domain
   description: |
@@ -5503,7 +5594,7 @@ securitySchemes:
   /updateDomain:
     displayName: domainUpdate
     description: |
-      Updating Domains
+      Registering Domains
       ---------------
       You can a register one or more Windows domains with an NSX Manager and
       associated vCenter server.  NSX Manager gets group and user information
@@ -5643,10 +5734,10 @@ securitySchemes:
       serverID:
         required: true
         displayName: serverID
-        description: Specified LDAP server
+        description: Specified LDAP server.
     delete:
       displayName: ldapServerDelete
-      description: Delete LDAP server
+      description: Delete LDAP server.
   /updateEventLogServer:
     displayName: eLogServer
     description: |
@@ -5687,10 +5778,10 @@ securitySchemes:
       serverID:
         required: true
         displayName: serverID
-        description: Specified EventLog server ID
+        description: Specified EventLog server ID.
     delete:
       displayName: eLogServerDelete
-      description: Delete EventLog server
+      description: Delete EventLog server.
 /1.0/identity:
   displayName: mappingLists
   description: |
@@ -5698,36 +5789,37 @@ securitySchemes:
     =========
   /userIpMapping:
     displayName: userIpMapping
-    description: Query user-to-ip mapping list from database
+    description: Query user-to-ip mapping list from database.
     get:
       displayName: userIpMappingRead
-      description: Query user-to-ip mapping list from database
+      description: Query user-to-ip mapping list from database.
   /hostIpMapping:
     displayName: hostIpMapping
-    description: Query host-to-ip mapping list from database
+    description: Query host-to-ip mapping list from database.
     get:
       displayName: hostIpMappingRead
-      description: Query host-to-ip mapping list from database
+      description: Query host-to-ip mapping list from database.
   /ipToUserMapping:
     displayName: ipToUserMapping
-    description: Query set of users associated with a given set of Ip addresses
+    description: |
+      Query set of users associated with a given set of IP addresses.
     get:
       displayName: ipToUserMappingRead
       description: |
         Retrieve set of users associated with a given set of IP addresses during
         a specified time period. Since more than one user can be associated
         with a single IP address during the specified time period, each IP
-        address can be associated with zero or more (i.e a SET of) users
+        address can be associated with zero or more (i.e a SET of) users.
   /directoryGroupsForUser:
     displayName: userDirGroups
     description: |
       Query set of Windows Domain Groups (AD Groups) to which the specified
-      user belongs
+      user belongs.
     get:
       displayName: userDirGroupsRead
       description: |
         Query set of Windows Domain Groups (AD Groups) to which the specified
-        user belongs
+        user belongs.
   /staticUserMapping/{userID}/{IP}:
     displayName: staticUserMapping
     description: Create static user IP mapping
@@ -6155,6 +6247,7 @@ securitySchemes:
     displayName: guestIntrospectionRegistration
     description: |
       Register a Vendor and Solution with Guest Introspection
+      ---
     post:
       displayName: guestIntrospectionVendorCreate
       description: |
