@@ -3723,52 +3723,142 @@ Get DNS server statistics
 
 ### /4.0/edges/{edgeId}/dhcp/config
 Configure DHCP for NSX Edge
+----
+NSX Edge provides DHCP service to bind assigned IP addresses to MAC
+addresses, helping to prevent MAC spoofing attacks. All virtual
+machines protected by a NSX Edge can obtain IP addresses dynamically
+from the NSX Edge DHCP service.
 
-* **get** *(secured)*: Get DHCP configuration
-* **put** *(secured)*: Configure DHCP service
-* **delete** *(secured)*: Delete the DHCP configuration, restoring it to factory default
+NSX Edge supports IP address pooling and one-to-one static IP address
+allocation based on the vCenter managed object ID (vmId) and interface
+ID (interfaceId) of the requesting client.
+
+If either bindings or pools are not included in the PUT call, existing
+bindings or pools are deleted.
+
+NSX Edge DHCP service adheres to the following rules:
+* Listens on the NSX Edge internal interface (non-uplink interface)
+for DHCP discovery.
+* As stated above, vmId specifies the vc-moref-id of the virtual
+machine, and vnicId specifies the index of the
+vNic for the requesting client. The hostname is an identification of
+the binding being created. This hostName is not pushed as the
+specified host name of the virtual machine.
+* By default, all clients use the IP address of the internal interface
+of the NSX Edge as the default gateway address. To override it,
+specify **defaultGateway** per binding or per pool. The client’s broadcast
+and subnetMask values are from the internal interface for the
+container network.
+* **leaseTime** can be infinite, or a number of seconds. If not specified,
+the default lease time is 1 day.
+* Logging is disabled by default.
+* Setting the parameter **enable** to *true* starts the DHCP service
+while setting **enable** to *false* stops the service.  
+* Both **staticBinding** and **ipPools** must be part of the PUT request body.
+Else, they will be deleted if configured earlier.
+
+**DHCP Configuration Paramters**
+
+Parameter Name | Parameter Information 
+------|-----
+**enabled** | Default is true.
+**staticBinding** | Assign an IP address via DHCP statically rather than dynamically. You can either specify **macAddress** directly, or specify **vmId** and **vnicId**. In case both are specified, only **macAddress** will be used; **vmId** and **vnicId** will be ignored.
+**staticBinding > macAddress** | Optional.
+**staticBinding > vmId** | Optional. The VM must be connected to the specified **vnicId**.
+**staticBinding > vnicId** | Optional. Possible values 0 to 9.
+**staticBinding > hostname** | Optional. Disallow duplicate.
+**staticBinding > ipAddress** | The IP can either belong to a a subnet of one of Edge's vNics or it can be any valid IP address, but the IP must not overlap with any primary/secondary IP addresses associated with any of Edge's vNICs. If the IP does not belong to any Edge vNic subnets, you must ensure that the default gateway and subnetMask are configured via this API call.
+**ipPool > ipRange** |  Required. The IP range can either fall entirely within one of the Edge vNIC subnets, or it can be a valid IP range outside any Edge subnets. The IP range, however, cannot contain an IP that is defined as a vNic primary secondary IP. If the range does not fall entirely within one of the Edge vNIC subnets, you must provide correct **subnetMask** and **defaultGateway**.
+**defaultGateway**<br>(staticBinding and ipPool) | Optional. If the ipRange (for ipPool) or assigned IP (for staticBinding) falls entirely within one of the Edge vNIC subnets, **defaultGateway** is set to the primary IP of the vNIC configured with the matching subnet.  Otherwise, you must provide the correct gateway IP. If an IP is not provided, the client host may not get default gateway IP from the DHCP server.
+**subnetMask**<br>(staticBinding and ipPool) | Optional. If not specified, and the the ipRange (for ipPool) or assigned IP (for staticBinding) belongs to an Edge vNic subnet, it is defaulted to the subnet mask of this vNic subnet. Otherwise, it is defaulted to a minimum subnet mask which is figured out with the IP range itself, e.g. the mask of range 192.168.5.2-192.168.5.20 is 255.255.255.224. You can edit this range, if required.
+**domainName** <br>(staticBinding and ipPool) | Optional.
+**primaryNameServer**<br>**secondaryNameServer**<br>(staticBinding and ipPool)|  Optional. If **autoConfigureDNS** is *true*, the DNS primary/secondary IPs will be generated from DNS service (if configured).
+**leaseTime**<br>(staticBinding and ipPool) | Optional. In seconds, default is *86400*. Valid **leaseTime** is a valid number or *infinite*. 
+**autoConfigureDns**<br>(staticBinding and ipPool) |  Optional. Default is *true*. 
+**nextServer**<br>(staticBinding and ipPool) | Global TFTP server setting. If an IP pool or static binding has a TFTP server configured via **option66** or **option150**, that server will be used instead.
+**dhcpOptions** <br>(staticBinding and ipPool) | Optional.
+**dhcpOptions > option121**<br>(staticBinding and ipPool) | Add a static route.
+**dhcpOptions > option121 > destinationSubnet**<br>(staticBinding and ipPool) | Destination network, for example 1.1.1.4/30.
+**dhcpOptions > option121 > router**<br>(staticBinding and ipPool) | Router IP address.
+**dhcpOptions > option66**<br>(staticBinding and ipPool) | Hostname or IP address of a single TFTP server for this IP pool.
+**dhcpOptions > option67**<br>(staticBinding and ipPool) | Filename to be downloaded from TFTP server.
+**dhcpOptions > option150**<br>(staticBinding and ipPool) | IP address of TFTP server.
+**dhcpOptions > option150 > server**<br>(staticBinding and ipPool) | Use to specify more than one TFTP server by IP address for this IP Pool.
+**dhcpOptions > option26**<br>(staticBinding and ipPool) | MTU.
+**dhcpOptions > other**<br>(staticBinding and ipPool) | Opaque options.
+**dhcpOptions > other > code**<br>(staticBinding and ipPool) | 
+**dhcpOptions > other > value**<br>(staticBinding and ipPool) | 
+**logging** | Optional. Logging is disabled by default.
+**logging > enable** |  Optional, default is *false*.
+**logging > logLevel** | Optional, default is *info*.
+
+* **get** *(secured)*: Get DHCP configuration.
+* **put** *(secured)*: Configure DHCP service.
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. DHCP options added.
+
+* **delete** *(secured)*: Delete the DHCP configuration, restoring it to factory default.
 
 ### /4.0/edges/{edgeId}/dhcp/config/ippools
-Adding IP pools to DHCP configuration
+Working with DHCP IP Pools
+-----
 
-* **post** *(secured)*: Add an IP pool to the DHCP configuration. returns a pool ID within
-a Location HTTP header
+* **post** *(secured)*: Add an IP pool to the DHCP configuration. Returns a pool ID within
+a Location HTTP header.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. DHCP options added.
 
 ### /4.0/edges/{edgeId}/dhcp/config/ippools/{poolID}
-Specific DHCP pool
+Working with a Specific DHCP IP Pool
+----
 
 * **delete** *(secured)*: Delete a pool specified by pool ID
 
 ### /4.0/edges/{edgeId}/dhcp/config/bindings
-Adding static-binding to DHCP configuration.
+Working With DHCP Static Bindings
+----
 
 * **post** *(secured)*: Append a static-binding to DHCP config. A static-binding ID is
-returned within a Location HTTP header
+returned within a Location HTTP header.
+
+Method history:
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. DHCP options added.
 
 ### /4.0/edges/{edgeId}/dhcp/config/bindings/{bindingID}
-Specific DHCP static binding
+Working with a Specific DHCP Static Binding
+----
 
 * **delete** *(secured)*: Delete the static-binding by ID
 
 ### /4.0/edges/{edgeId}/dhcp/config/relay
-Configure DHCP relay
+Working With DHCP Relays
+----
 
 * **get** *(secured)*: Query DHCP relay
 * **put** *(secured)*: Configure DHCP relay
 * **delete** *(secured)*: Delete DHCP relay configuration
 
 ### /4.0/edges/{edgeId}/dhcp/leaseInfo
-DHCP Lease information
+Working With DHCP Leases
 
-* **get** *(secured)*: Get DHCP lease information
+* **get** *(secured)*: Get DHCP lease information.
 
 ### /4.0/edges/{edgeId}/highavailability/config
-Ensures that an Edge appliance is always available on your virtualized
-network.
+Working with NSX Edge High Availability
+----
 
-* **get** *(secured)*: Get high availability configuration
-* **put** *(secured)*: Configure high availability
-* **delete** *(secured)*: Delete high availability configuration
+* **get** *(secured)*: Get high availability configuration.
+* **put** *(secured)*: Configure high availability.
+* **delete** *(secured)*: Delete high availability configuration.
 
 ### /4.0/edges/{edgeId}/syslog/config
 Configure one or two remote syslog servers. Edge events and logs

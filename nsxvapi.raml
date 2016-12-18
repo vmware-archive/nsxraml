@@ -10438,80 +10438,220 @@ securitySchemes:
         description: Get DNS server statistics
     /dhcp/config:
       displayName: dhcp
-      description: Configure DHCP for NSX Edge
+      description: |
+        Configure DHCP for NSX Edge
+        ----
+        NSX Edge provides DHCP service to bind assigned IP addresses to MAC
+        addresses, helping to prevent MAC spoofing attacks. All virtual
+        machines protected by a NSX Edge can obtain IP addresses dynamically
+        from the NSX Edge DHCP service.
+
+        NSX Edge supports IP address pooling and one-to-one static IP address
+        allocation based on the vCenter managed object ID (vmId) and interface
+        ID (interfaceId) of the requesting client.
+
+        If either bindings or pools are not included in the PUT call, existing
+        bindings or pools are deleted.
+
+        NSX Edge DHCP service adheres to the following rules:
+        * Listens on the NSX Edge internal interface (non-uplink interface)
+        for DHCP discovery.
+        * As stated above, vmId specifies the vc-moref-id of the virtual
+        machine, and vnicId specifies the index of the
+        vNic for the requesting client. The hostname is an identification of
+        the binding being created. This hostName is not pushed as the
+        specified host name of the virtual machine.
+        * By default, all clients use the IP address of the internal interface
+        of the NSX Edge as the default gateway address. To override it,
+        specify **defaultGateway** per binding or per pool. The client’s broadcast
+        and subnetMask values are from the internal interface for the
+        container network.
+        * **leaseTime** can be infinite, or a number of seconds. If not specified,
+        the default lease time is 1 day.
+        * Logging is disabled by default.
+        * Setting the parameter **enable** to *true* starts the DHCP service
+        while setting **enable** to *false* stops the service.  
+        * Both **staticBinding** and **ipPools** must be part of the PUT request body.
+        Else, they will be deleted if configured earlier.
+
+        **DHCP Configuration Paramters**
+
+        Parameter Name | Parameter Information 
+        ------|-----
+        **enabled** | Default is true.
+        **staticBinding** | Assign an IP address via DHCP statically rather than dynamically. You can either specify **macAddress** directly, or specify **vmId** and **vnicId**. In case both are specified, only **macAddress** will be used; **vmId** and **vnicId** will be ignored.
+        **staticBinding > macAddress** | Optional.
+        **staticBinding > vmId** | Optional. The VM must be connected to the specified **vnicId**.
+        **staticBinding > vnicId** | Optional. Possible values 0 to 9.
+        **staticBinding > hostname** | Optional. Disallow duplicate.
+        **staticBinding > ipAddress** | The IP can either belong to a a subnet of one of Edge's vNics or it can be any valid IP address, but the IP must not overlap with any primary/secondary IP addresses associated with any of Edge's vNICs. If the IP does not belong to any Edge vNic subnets, you must ensure that the default gateway and subnetMask are configured via this API call.
+        **ipPool > ipRange** |  Required. The IP range can either fall entirely within one of the Edge vNIC subnets, or it can be a valid IP range outside any Edge subnets. The IP range, however, cannot contain an IP that is defined as a vNic primary secondary IP. If the range does not fall entirely within one of the Edge vNIC subnets, you must provide correct **subnetMask** and **defaultGateway**.
+        **defaultGateway**<br>(staticBinding and ipPool) | Optional. If the ipRange (for ipPool) or assigned IP (for staticBinding) falls entirely within one of the Edge vNIC subnets, **defaultGateway** is set to the primary IP of the vNIC configured with the matching subnet.  Otherwise, you must provide the correct gateway IP. If an IP is not provided, the client host may not get default gateway IP from the DHCP server.
+        **subnetMask**<br>(staticBinding and ipPool) | Optional. If not specified, and the the ipRange (for ipPool) or assigned IP (for staticBinding) belongs to an Edge vNic subnet, it is defaulted to the subnet mask of this vNic subnet. Otherwise, it is defaulted to a minimum subnet mask which is figured out with the IP range itself, e.g. the mask of range 192.168.5.2-192.168.5.20 is 255.255.255.224. You can edit this range, if required.
+        **domainName** <br>(staticBinding and ipPool) | Optional.
+        **primaryNameServer**<br>**secondaryNameServer**<br>(staticBinding and ipPool)|  Optional. If **autoConfigureDNS** is *true*, the DNS primary/secondary IPs will be generated from DNS service (if configured).
+        **leaseTime**<br>(staticBinding and ipPool) | Optional. In seconds, default is *86400*. Valid **leaseTime** is a valid number or *infinite*. 
+        **autoConfigureDns**<br>(staticBinding and ipPool) |  Optional. Default is *true*. 
+        **nextServer**<br>(staticBinding and ipPool) | Global TFTP server setting. If an IP pool or static binding has a TFTP server configured via **option66** or **option150**, that server will be used instead.
+        **dhcpOptions** <br>(staticBinding and ipPool) | Optional.
+        **dhcpOptions > option121**<br>(staticBinding and ipPool) | Add a static route.
+        **dhcpOptions > option121 > destinationSubnet**<br>(staticBinding and ipPool) | Destination network, for example 1.1.1.4/30.
+        **dhcpOptions > option121 > router**<br>(staticBinding and ipPool) | Router IP address.
+        **dhcpOptions > option66**<br>(staticBinding and ipPool) | Hostname or IP address of a single TFTP server for this IP pool.
+        **dhcpOptions > option67**<br>(staticBinding and ipPool) | Filename to be downloaded from TFTP server.
+        **dhcpOptions > option150**<br>(staticBinding and ipPool) | IP address of TFTP server.
+        **dhcpOptions > option150 > server**<br>(staticBinding and ipPool) | Use to specify more than one TFTP server by IP address for this IP Pool.
+        **dhcpOptions > option26**<br>(staticBinding and ipPool) | MTU.
+        **dhcpOptions > other**<br>(staticBinding and ipPool) | Opaque options.
+        **dhcpOptions > other > code**<br>(staticBinding and ipPool) | 
+        **dhcpOptions > other > value**<br>(staticBinding and ipPool) | 
+        **logging** | Optional. Logging is disabled by default.
+        **logging > enable** |  Optional, default is *false*.
+        **logging > logLevel** | Optional, default is *info*.
       get:
         displayName: dhcpRead
-        description: Get DHCP configuration
+        description: Get DHCP configuration.
       put:
         displayName: dhcpUpdate
-        description: Configure DHCP service
+        description: |
+          Configure DHCP service.
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated. DHCP options added.
         body:
           application/xml:
             example: |
               <dhcp>
-                <enabled></enabled>
+                <enabled>true</enabled>
                 <staticBindings>
-                  <staticBinding>
-                    <macAddress></macAddress>
-                    <vmId></vmId>
-                    <vnicId></vnicId>
-                    <hostname></hostname>
-                    <ipAddress></ipAddress>
-                    <subnetMask></subnetMask>
-                    <defaultGateway></defaultGateway>
-                    <domainName></domainName>
-                    <primaryNameServer></primaryNameServer>
-                    <secondaryNameServer></secondaryNameServer>
-                    <leaseTime></leaseTime>
-                    <autoConfigDNS></autoConfigDNS>
+                  <staticBinding> 
+                    <macAddress>12:34:56:78:90:AB</macAddress> 
+                    <vmId>vm-111</vmId> 
+                    <vnicId>1</vnicId>
+                    <hostname>abcd</hostname>
+                    <ipAddress>192.168.4.2</ipAddress> 
+                    <subnetMask>255.255.255.0</subnetMask> 
+                    <defaultGateway>192.168.4.1</defaultGateway> 
+                    <domainName>eng.vmware.com</domainName> 
+                    <primaryNameServer>192.168.4.1</primaryNameServer> 
+                    <secondaryNameServer>4.2.2.4</secondaryNameServer> 
+                    <leaseTime>infinite</leaseTime> 
+                    <autoConfigureDNS>true</autoConfigureDNS> 
                   </staticBinding>
                 </staticBindings>
                 <ipPools>
                   <ipPool>
-                    <ipRange></ipRange>
-                    <defaultGateway></defaultGateway>
-                    <subnetMask></subnetMask>
-                    <domainName></domainName>
-                    <primaryNameServer></primaryNameServer>
-                    <secondaryNameServer></secondaryNameServer>
-                    <leaseTime></leaseTime>
-                    <autoConfigDNS></autoConfigDNS>
+                    <ipRange>192.168.4.192-192.168.4.220</ipRange> 
+                    <defaultGateway>192.168.4.1</defaultGateway> 
+                    <subnetMask>255.255.255.0</subnetMask> 
+                    <domainName>eng.vmware.com</domainName> 
+                    <primaryNameServer>192.168.4.1</primaryNameServer> 
+                    <secondaryNameServer>4.2.2.4</secondaryNameServer> 
+                    <leaseTime>3600</leaseTime> 
+                    <autoConfigureDNS>true</autoConfigureDNS> 
+                    <nextServer>11.11.18.105</nextServer>  
+                    <dhcpOptions> 
+                      <option121> 
+                        <staticRoute> 
+                          <destinationSubnet>1.1.1.4/30</destinationSubnet>  
+                          <router>10.10.10.254</router> 
+                        </staticRoute>  
+                        <staticRoute> 
+                          <destinationSubnet>2.2.2.4/30</destinationSubnet>  
+                          <router>10.10.10.210</router> 
+                        </staticRoute> 
+                      </option121>  
+                      <option66>boot.tftp.org</option66>  
+                      <option67>/opt/tftpServer</option67>  
+                      <option150> 
+                        <server>10.10.10.1</server>  
+                        <server>100.100.100.1</server> 
+                      </option150>  
+                      <option26>2048</option26>  
+                      <other> 
+                        <code>80</code>  
+                        <value>2F766172</value> 
+                      </other>  
+                      <other> 
+                        <code>85</code>  
+                        <value>01010101</value> 
+                      </other> 
+                    </dhcpOptions> 
                   </ipPool>
                 </ipPools>
-                <logging>
-                  <enable></enable>
-                  <logLevel></logLevel>
+                <logging> 
+                  <enable>false</enable> 
+                  <logLevel>info</logLevel> 
                 </logging>
               </dhcp>
             schema: dhcpUpdate
       delete:
         displayName: dhcpDelete
         description: |
-          Delete the DHCP configuration, restoring it to factory default
+          Delete the DHCP configuration, restoring it to factory default.
       /ippools:
         displayName: dhcpPool
-        description: Adding IP pools to DHCP configuration
+        description: |
+          Working with DHCP IP Pools
+          -----
         post:
           displayName: dhcpPoolCreate
           description: |
-            Add an IP pool to the DHCP configuration. returns a pool ID within
-            a Location HTTP header
+            Add an IP pool to the DHCP configuration. Returns a pool ID within
+            a Location HTTP header.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. DHCP options added.
           body:
             application/xml:
               example: |
                 <ipPool>
-                  <ipRange></ipRange>
-                  <defaultGateway></defaultGateway>
-                  <domainName></domainName>
-                  <primaryNameServer></primaryNameServer>
-                  <secondaryNameServer></secondaryNameServer>
-                  <leaseTime></leaseTime>
-                  <autoConfigureDNS></autoConfigureDNS>
+                  <ipRange>192.168.5.2-192.168.5.20</ipRange>
+                  <defaultGateway>192.168.5.1</defaultGateway>
+                  <domainName>eng.vmware.com</domainName>
+                  <primaryNameServer>1.2.3.4</primaryNameServer>
+                  <secondaryNameServer>4.3.2.1</secondaryNameServer>
+                  <leaseTime>3600</leaseTime>
+                  <autoConfigureDNS>true</autoConfigureDNS>
+                  <nextServer>11.11.18.105</nextServer>  
+                  <dhcpOptions> 
+                    <option121> 
+                      <staticRoute> 
+                        <destinationSubnet>1.1.1.4/30</destinationSubnet>  
+                        <router>10.10.10.254</router> 
+                      </staticRoute>  
+                      <staticRoute> 
+                        <destinationSubnet>2.2.2.4/30</destinationSubnet>  
+                        <router>10.10.10.210</router> 
+                      </staticRoute> 
+                    </option121>  
+                    <option66>boot.tftp.org</option66>  
+                    <option67>/opt/tftpServer</option67>  
+                    <option150> 
+                      <server>10.10.10.1</server>  
+                      <server>100.100.100.1</server> 
+                    </option150>  
+                    <option26>2048</option26>  
+                    <other> 
+                      <code>80</code>  
+                      <value>2F766172</value> 
+                    </other>  
+                    <other> 
+                      <code>85</code>  
+                      <value>01010101</value> 
+                    </other> 
+                  </dhcpOptions> 
                 </ipPool>
               schema: dhcpPoolCreate
         /{poolID}:
           displayName: dhcpPoolID
-          description: Specific DHCP pool
+          description: |
+            Working with a Specific DHCP IP Pool
+            ----
           uriParameters:
             poolID:
               required: true
@@ -10522,12 +10662,20 @@ securitySchemes:
             description: Delete a pool specified by pool ID
       /bindings:
         displayName: dhcpStaticBinding
-        description: Adding static-binding to DHCP configuration.
+        description: |
+          Working With DHCP Static Bindings
+          ----
         post:
           displayName: dhcpStaticBindingCreate
           description: |
             Append a static-binding to DHCP config. A static-binding ID is
-            returned within a Location HTTP header
+            returned within a Location HTTP header.
+
+            Method history:
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. DHCP options added.
           body:
             application/xml:
               example: |
@@ -10542,11 +10690,41 @@ securitySchemes:
                   <secondaryNameServer></secondaryNameServer>
                   <leaseTime></leaseTime>
                   <autoConfigureDNS></autoConfigureDNS>
+                  <nextServer>11.11.18.105</nextServer>  
+                  <dhcpOptions> 
+                    <option121> 
+                      <staticRoute> 
+                        <destinationSubnet>1.1.1.4/30</destinationSubnet>  
+                        <router>10.10.10.254</router> 
+                      </staticRoute>  
+                      <staticRoute> 
+                        <destinationSubnet>2.2.2.4/30</destinationSubnet>  
+                        <router>10.10.10.210</router> 
+                      </staticRoute> 
+                    </option121>  
+                    <option66>boot.tftp.org</option66>  
+                    <option67>/opt/tftpServer</option67>  
+                    <option150> 
+                      <server>10.10.10.1</server>  
+                      <server>100.100.100.1</server> 
+                    </option150>  
+                    <option26>2048</option26>  
+                    <other> 
+                      <code>80</code>  
+                      <value>2F766172</value> 
+                    </other>  
+                    <other> 
+                      <code>85</code>  
+                      <value>01010101</value> 
+                    </other> 
+                  </dhcpOptions> 
                 </staticBinding>
               schema: dhcpStaticBindingCreate
         /{bindingID}:
           displayName: dhcpStaticBindingID
-          description: Specific DHCP static binding
+          description: |
+            Working with a Specific DHCP Static Binding
+            ----
           uriParameters:
             bindingID:
               required: true
@@ -10557,7 +10735,9 @@ securitySchemes:
             description: Delete the static-binding by ID
       /relay:
         displayName: dhcpRelay
-        description: Configure DHCP relay
+        description: |
+          Working With DHCP Relays
+          ----
         get:
           displayName: dhcpRelayRead
           description: Query DHCP relay
@@ -10587,21 +10767,22 @@ securitySchemes:
           description: Delete DHCP relay configuration
     /dhcp/leaseInfo:
       displayName: dhcpLease
-      description: DHCP Lease information
+      description: |
+        Working With DHCP Leases
       get:
         displayName: dhcpLeaseRead
-        description: Get DHCP lease information
+        description: Get DHCP lease information.
     /highavailability/config:
       displayName: highAvailability
       description: |
-        Ensures that an Edge appliance is always available on your virtualized
-        network.
+        Working with NSX Edge High Availability
+        ----
       get:
         displayName: highAvailabilityRead
-        description: Get high availability configuration
+        description: Get high availability configuration.
       put:
         displayName: highAvailabilityCreate
-        description: Configure high availability
+        description: Configure high availability.
         body:
           application/xml:
             example: |
@@ -10616,7 +10797,7 @@ securitySchemes:
             schema: highAvailabilityCreate
       delete:
         displayName: highAvailabilityDelete
-        description: Delete high availability configuration
+        description: Delete high availability configuration.
     /syslog/config:
       displayName: syslog
       description: |

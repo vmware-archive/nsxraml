@@ -16699,8 +16699,164 @@ Disabling detaches the disk</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure DHCP for NSX Edge</p>
-</div>
+  <div class="description"><h2 id="configure-dhcp-for-nsx-edge">Configure DHCP for NSX Edge</h2>
+<p>NSX Edge provides DHCP service to bind assigned IP addresses to MAC
+addresses, helping to prevent MAC spoofing attacks. All virtual
+machines protected by a NSX Edge can obtain IP addresses dynamically
+from the NSX Edge DHCP service.</p>
+<p>NSX Edge supports IP address pooling and one-to-one static IP address
+allocation based on the vCenter managed object ID (vmId) and interface
+ID (interfaceId) of the requesting client.</p>
+<p>If either bindings or pools are not included in the PUT call, existing
+bindings or pools are deleted.</p>
+<p>NSX Edge DHCP service adheres to the following rules:</p>
+<ul>
+<li>Listens on the NSX Edge internal interface (non-uplink interface)
+for DHCP discovery.</li>
+<li>As stated above, vmId specifies the vc-moref-id of the virtual
+machine, and vnicId specifies the index of the
+vNic for the requesting client. The hostname is an identification of
+the binding being created. This hostName is not pushed as the
+specified host name of the virtual machine.</li>
+<li>By default, all clients use the IP address of the internal interface
+of the NSX Edge as the default gateway address. To override it,
+specify <strong>defaultGateway</strong> per binding or per pool. The client’s broadcast
+and subnetMask values are from the internal interface for the
+container network.</li>
+<li><strong>leaseTime</strong> can be infinite, or a number of seconds. If not specified,
+the default lease time is 1 day.</li>
+<li>Logging is disabled by default.</li>
+<li>Setting the parameter <strong>enable</strong> to <em>true</em> starts the DHCP service
+while setting <strong>enable</strong> to <em>false</em> stops the service.  </li>
+<li>Both <strong>staticBinding</strong> and <strong>ipPools</strong> must be part of the PUT request body.
+Else, they will be deleted if configured earlier.</li>
+</ul>
+<p><strong>DHCP Configuration Paramters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter Name</th>
+<th>Parameter Information </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>Default is true.</td>
+</tr>
+<tr>
+<td><strong>staticBinding</strong></td>
+<td>Assign an IP address via DHCP statically rather than dynamically. You can either specify <strong>macAddress</strong> directly, or specify <strong>vmId</strong> and <strong>vnicId</strong>. In case both are specified, only <strong>macAddress</strong> will be used; <strong>vmId</strong> and <strong>vnicId</strong> will be ignored.</td>
+</tr>
+<tr>
+<td><strong>staticBinding &gt; macAddress</strong></td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>staticBinding &gt; vmId</strong></td>
+<td>Optional. The VM must be connected to the specified <strong>vnicId</strong>.</td>
+</tr>
+<tr>
+<td><strong>staticBinding &gt; vnicId</strong></td>
+<td>Optional. Possible values 0 to 9.</td>
+</tr>
+<tr>
+<td><strong>staticBinding &gt; hostname</strong></td>
+<td>Optional. Disallow duplicate.</td>
+</tr>
+<tr>
+<td><strong>staticBinding &gt; ipAddress</strong></td>
+<td>The IP can either belong to a a subnet of one of Edge&#39;s vNics or it can be any valid IP address, but the IP must not overlap with any primary/secondary IP addresses associated with any of Edge&#39;s vNICs. If the IP does not belong to any Edge vNic subnets, you must ensure that the default gateway and subnetMask are configured via this API call.</td>
+</tr>
+<tr>
+<td><strong>ipPool &gt; ipRange</strong></td>
+<td>Required. The IP range can either fall entirely within one of the Edge vNIC subnets, or it can be a valid IP range outside any Edge subnets. The IP range, however, cannot contain an IP that is defined as a vNic primary secondary IP. If the range does not fall entirely within one of the Edge vNIC subnets, you must provide correct <strong>subnetMask</strong> and <strong>defaultGateway</strong>.</td>
+</tr>
+<tr>
+<td><strong>defaultGateway</strong><br>(staticBinding and ipPool)</td>
+<td>Optional. If the ipRange (for ipPool) or assigned IP (for staticBinding) falls entirely within one of the Edge vNIC subnets, <strong>defaultGateway</strong> is set to the primary IP of the vNIC configured with the matching subnet.  Otherwise, you must provide the correct gateway IP. If an IP is not provided, the client host may not get default gateway IP from the DHCP server.</td>
+</tr>
+<tr>
+<td><strong>subnetMask</strong><br>(staticBinding and ipPool)</td>
+<td>Optional. If not specified, and the the ipRange (for ipPool) or assigned IP (for staticBinding) belongs to an Edge vNic subnet, it is defaulted to the subnet mask of this vNic subnet. Otherwise, it is defaulted to a minimum subnet mask which is figured out with the IP range itself, e.g. the mask of range 192.168.5.2-192.168.5.20 is 255.255.255.224. You can edit this range, if required.</td>
+</tr>
+<tr>
+<td><strong>domainName</strong> <br>(staticBinding and ipPool)</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>primaryNameServer</strong><br><strong>secondaryNameServer</strong><br>(staticBinding and ipPool)</td>
+<td>Optional. If <strong>autoConfigureDNS</strong> is <em>true</em>, the DNS primary/secondary IPs will be generated from DNS service (if configured).</td>
+</tr>
+<tr>
+<td><strong>leaseTime</strong><br>(staticBinding and ipPool)</td>
+<td>Optional. In seconds, default is <em>86400</em>. Valid <strong>leaseTime</strong> is a valid number or <em>infinite</em>. </td>
+</tr>
+<tr>
+<td><strong>autoConfigureDns</strong><br>(staticBinding and ipPool)</td>
+<td>Optional. Default is <em>true</em>. </td>
+</tr>
+<tr>
+<td><strong>nextServer</strong><br>(staticBinding and ipPool)</td>
+<td>Global TFTP server setting. If an IP pool or static binding has a TFTP server configured via <strong>option66</strong> or <strong>option150</strong>, that server will be used instead.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions</strong> <br>(staticBinding and ipPool)</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option121</strong><br>(staticBinding and ipPool)</td>
+<td>Add a static route.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option121 &gt; destinationSubnet</strong><br>(staticBinding and ipPool)</td>
+<td>Destination network, for example 1.1.1.4/30.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option121 &gt; router</strong><br>(staticBinding and ipPool)</td>
+<td>Router IP address.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option66</strong><br>(staticBinding and ipPool)</td>
+<td>Hostname or IP address of a single TFTP server for this IP pool.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option67</strong><br>(staticBinding and ipPool)</td>
+<td>Filename to be downloaded from TFTP server.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option150</strong><br>(staticBinding and ipPool)</td>
+<td>IP address of TFTP server.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option150 &gt; server</strong><br>(staticBinding and ipPool)</td>
+<td>Use to specify more than one TFTP server by IP address for this IP Pool.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; option26</strong><br>(staticBinding and ipPool)</td>
+<td>MTU.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; other</strong><br>(staticBinding and ipPool)</td>
+<td>Opaque options.</td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; other &gt; code</strong><br>(staticBinding and ipPool)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>dhcpOptions &gt; other &gt; value</strong><br>(staticBinding and ipPool)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>logging</strong></td>
+<td>Optional. Logging is disabled by default.</td>
+</tr>
+<tr>
+<td><strong>logging &gt; enable</strong></td>
+<td>Optional, default is <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>logging &gt; logLevel</strong></td>
+<td>Optional, default is <em>info</em>.</td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -16708,7 +16864,7 @@ Disabling detaches the disk</p>
     href="#GET/4.0/edges/{edgeId}/dhcp/config"
   ><h2>GET /4.0/edges/{edgeId}/dhcp/config</h2></a>
   <div class="content">
-    <p><p>Get DHCP configuration</p>
+    <p><p>Get DHCP configuration.</p>
 </p>
   </div>
 </div>
@@ -16719,8 +16875,16 @@ Disabling detaches the disk</p>
     href="#PUT/4.0/edges/{edgeId}/dhcp/config"
   ><h2>PUT /4.0/edges/{edgeId}/dhcp/config</h2></a>
   <div class="content">
-    <p><p>Configure DHCP service</p>
-</p>
+    <p><p>Configure DHCP service.</p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. DHCP options added.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="dhcp"&gt;
@@ -16745,6 +16909,45 @@ Disabling detaches the disk</p>
                     &lt;xs:element type="xs:string" name="secondaryNameServer"/&gt;
                     &lt;xs:element type="xs:string" name="leaseTime"/&gt;
                     &lt;xs:element type="xs:string" name="autoConfigDNS"/&gt;
+                    &lt;xs:element type="xs:string" name="nextServer"/&gt;
+                    &lt;xs:element name="dhcpOptions"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element name="option121"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element name="staticRoute"&gt;
+                                  &lt;xs:complexType&gt;
+                                    &lt;xs:sequence&gt;
+                                      &lt;xs:element type="xs:string" name="destinationSubnet"/&gt;
+                                      &lt;xs:element type="xs:string" name="router"/&gt;
+                                    &lt;/xs:sequence&gt;
+                                  &lt;/xs:complexType&gt;
+                                &lt;/xs:element&gt;
+                              &lt;/xs:sequence&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                          &lt;xs:element type="xs:string" name="option66"/&gt;
+                          &lt;xs:element type="xs:string" name="option67"/&gt;
+                          &lt;xs:element name="option150"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element type="xs:string" name="server"/&gt;
+                              &lt;/xs:sequence&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                          &lt;xs:element type="xs:string" name="option26"/&gt;
+                          &lt;xs:element name="other"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element type="xs:string" name="code"/&gt;
+                                &lt;xs:element type="xs:string" name="value"/&gt;
+                              &lt;/xs:sequence&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
                   &lt;/xs:sequence&gt;
                 &lt;/xs:complexType&gt;
               &lt;/xs:element&gt;
@@ -16765,6 +16968,45 @@ Disabling detaches the disk</p>
                     &lt;xs:element type="xs:string" name="secondaryNameServer"/&gt;
                     &lt;xs:element type="xs:string" name="leaseTime"/&gt;
                     &lt;xs:element type="xs:string" name="autoConfigDNS"/&gt;
+                    &lt;xs:element type="xs:string" name="nextServer"/&gt;
+                    &lt;xs:element name="dhcpOptions"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element name="option121"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element name="staticRoute"&gt;
+                                  &lt;xs:complexType&gt;
+                                    &lt;xs:sequence&gt;
+                                      &lt;xs:element type="xs:string" name="destinationSubnet"/&gt;
+                                      &lt;xs:element type="xs:string" name="router"/&gt;
+                                    &lt;/xs:sequence&gt;
+                                  &lt;/xs:complexType&gt;
+                                &lt;/xs:element&gt;
+                              &lt;/xs:sequence&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                          &lt;xs:element type="xs:string" name="option66"/&gt;
+                          &lt;xs:element type="xs:string" name="option67"/&gt;
+                          &lt;xs:element name="option150"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element type="xs:string" name="server"/&gt;
+                              &lt;/xs:sequence&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                          &lt;xs:element type="xs:string" name="option26"/&gt;
+                          &lt;xs:element name="other"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element type="xs:string" name="code"/&gt;
+                                &lt;xs:element type="xs:string" name="value"/&gt;
+                              &lt;/xs:sequence&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
                   &lt;/xs:sequence&gt;
                 &lt;/xs:complexType&gt;
               &lt;/xs:element&gt;
@@ -16786,38 +17028,66 @@ Disabling detaches the disk</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dhcp</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">staticBindings</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">staticBinding</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">macAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">macAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vnicId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">hostname</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">hostname</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">defaultGateway</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">defaultGateway</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">primaryNameServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">primaryNameServer</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">secondaryNameServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">secondaryNameServer</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigDNS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigDNS</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">staticBinding</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">macAddress</span>&gt;</span>12:34:56:78:90:AB<span class="hljs-tag">&lt;/<span class="hljs-name">macAddress</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-111<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnicId</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vnicId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">hostname</span>&gt;</span>abcd<span class="hljs-tag">&lt;/<span class="hljs-name">hostname</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.4.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">defaultGateway</span>&gt;</span>192.168.4.1<span class="hljs-tag">&lt;/<span class="hljs-name">defaultGateway</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span>eng.vmware.com<span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">primaryNameServer</span>&gt;</span>192.168.4.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryNameServer</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">secondaryNameServer</span>&gt;</span>4.2.2.4<span class="hljs-tag">&lt;/<span class="hljs-name">secondaryNameServer</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span>infinite<span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigureDNS</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigureDNS</span>&gt;</span> 
     <span class="hljs-tag">&lt;/<span class="hljs-name">staticBinding</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">staticBindings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ipPools</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ipPool</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">ipRange</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipRange</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">defaultGateway</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">defaultGateway</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">primaryNameServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">primaryNameServer</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">secondaryNameServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">secondaryNameServer</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigDNS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigDNS</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipRange</span>&gt;</span>192.168.4.192-192.168.4.220<span class="hljs-tag">&lt;/<span class="hljs-name">ipRange</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">defaultGateway</span>&gt;</span>192.168.4.1<span class="hljs-tag">&lt;/<span class="hljs-name">defaultGateway</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span>eng.vmware.com<span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">primaryNameServer</span>&gt;</span>192.168.4.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryNameServer</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">secondaryNameServer</span>&gt;</span>4.2.2.4<span class="hljs-tag">&lt;/<span class="hljs-name">secondaryNameServer</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span>3600<span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigureDNS</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigureDNS</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">nextServer</span>&gt;</span>11.11.18.105<span class="hljs-tag">&lt;/<span class="hljs-name">nextServer</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">dhcpOptions</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">option121</span>&gt;</span> 
+          <span class="hljs-tag">&lt;<span class="hljs-name">staticRoute</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">destinationSubnet</span>&gt;</span>1.1.1.4/30<span class="hljs-tag">&lt;/<span class="hljs-name">destinationSubnet</span>&gt;</span>  
+            <span class="hljs-tag">&lt;<span class="hljs-name">router</span>&gt;</span>10.10.10.254<span class="hljs-tag">&lt;/<span class="hljs-name">router</span>&gt;</span> 
+          <span class="hljs-tag">&lt;/<span class="hljs-name">staticRoute</span>&gt;</span>  
+          <span class="hljs-tag">&lt;<span class="hljs-name">staticRoute</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">destinationSubnet</span>&gt;</span>2.2.2.4/30<span class="hljs-tag">&lt;/<span class="hljs-name">destinationSubnet</span>&gt;</span>  
+            <span class="hljs-tag">&lt;<span class="hljs-name">router</span>&gt;</span>10.10.10.210<span class="hljs-tag">&lt;/<span class="hljs-name">router</span>&gt;</span> 
+          <span class="hljs-tag">&lt;/<span class="hljs-name">staticRoute</span>&gt;</span> 
+        <span class="hljs-tag">&lt;/<span class="hljs-name">option121</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">option66</span>&gt;</span>boot.tftp.org<span class="hljs-tag">&lt;/<span class="hljs-name">option66</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">option67</span>&gt;</span>/opt/tftpServer<span class="hljs-tag">&lt;/<span class="hljs-name">option67</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">option150</span>&gt;</span> 
+          <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>10.10.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span>  
+          <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>100.100.100.1<span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span> 
+        <span class="hljs-tag">&lt;/<span class="hljs-name">option150</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">option26</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">option26</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">other</span>&gt;</span> 
+          <span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span>  
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2F766172<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span> 
+        <span class="hljs-tag">&lt;/<span class="hljs-name">other</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">other</span>&gt;</span> 
+          <span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>85<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span>  
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>01010101<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span> 
+        <span class="hljs-tag">&lt;/<span class="hljs-name">other</span>&gt;</span> 
+      <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpOptions</span>&gt;</span> 
     <span class="hljs-tag">&lt;/<span class="hljs-name">ipPool</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ipPools</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span> 
   <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">dhcp</span>&gt;</span>
 </code></pre>
@@ -16830,13 +17100,13 @@ Disabling detaches the disk</p>
     href="#DELETE/4.0/edges/{edgeId}/dhcp/config"
   ><h2>DELETE /4.0/edges/{edgeId}/dhcp/config</h2></a>
   <div class="content">
-    <p><p>Delete the DHCP configuration, restoring it to factory default</p>
+    <p><p>Delete the DHCP configuration, restoring it to factory default.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Adding static-binding to DHCP configuration.</p>
+  <div class="description"><h2 id="working-with-dhcp-static-bindings">Working With DHCP Static Bindings</h2>
 </div>
 <div class="method post">
   <a
@@ -16846,8 +17116,17 @@ Disabling detaches the disk</p>
   ><h2>POST /4.0/edges/{edgeId}/dhcp/config/bindings</h2></a>
   <div class="content">
     <p><p>Append a static-binding to DHCP config. A static-binding ID is
-returned within a Location HTTP header</p>
-</p>
+returned within a Location HTTP header.</p>
+<p>Method history:</p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. DHCP options added.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="staticBinding"&gt;
@@ -16863,6 +17142,45 @@ returned within a Location HTTP header</p>
         &lt;xs:element type="xs:string" name="secondaryNameServer"/&gt;
         &lt;xs:element type="xs:string" name="leaseTime"/&gt;
         &lt;xs:element type="xs:string" name="autoConfigureDNS"/&gt;
+        &lt;xs:element type="xs:string" name="nextServer"/&gt;
+        &lt;xs:element name="dhcpOptions"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="option121"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name="staticRoute"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element type="xs:string" name="destinationSubnet"/&gt;
+                          &lt;xs:element type="xs:string" name="router"/&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="option66"/&gt;
+              &lt;xs:element type="xs:string" name="option67"/&gt;
+              &lt;xs:element name="option150"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="server"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="option26"/&gt;
+              &lt;xs:element name="other"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="code"/&gt;
+                    &lt;xs:element type="xs:string" name="value"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
       &lt;/xs:sequence&gt;
     &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
@@ -16880,13 +17198,41 @@ returned within a Location HTTP header</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">secondaryNameServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">secondaryNameServer</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigureDNS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigureDNS</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nextServer</span>&gt;</span>11.11.18.105<span class="hljs-tag">&lt;/<span class="hljs-name">nextServer</span>&gt;</span>  
+  <span class="hljs-tag">&lt;<span class="hljs-name">dhcpOptions</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">option121</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">staticRoute</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">destinationSubnet</span>&gt;</span>1.1.1.4/30<span class="hljs-tag">&lt;/<span class="hljs-name">destinationSubnet</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">router</span>&gt;</span>10.10.10.254<span class="hljs-tag">&lt;/<span class="hljs-name">router</span>&gt;</span> 
+      <span class="hljs-tag">&lt;/<span class="hljs-name">staticRoute</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">staticRoute</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">destinationSubnet</span>&gt;</span>2.2.2.4/30<span class="hljs-tag">&lt;/<span class="hljs-name">destinationSubnet</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">router</span>&gt;</span>10.10.10.210<span class="hljs-tag">&lt;/<span class="hljs-name">router</span>&gt;</span> 
+      <span class="hljs-tag">&lt;/<span class="hljs-name">staticRoute</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">option121</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option66</span>&gt;</span>boot.tftp.org<span class="hljs-tag">&lt;/<span class="hljs-name">option66</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option67</span>&gt;</span>/opt/tftpServer<span class="hljs-tag">&lt;/<span class="hljs-name">option67</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option150</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>10.10.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>100.100.100.1<span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">option150</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option26</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">option26</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">other</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2F766172<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">other</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">other</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>85<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>01010101<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">other</span>&gt;</span> 
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpOptions</span>&gt;</span> 
 <span class="hljs-tag">&lt;/<span class="hljs-name">staticBinding</span>&gt;</span>
 </code></pre>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specific DHCP static binding</p>
+  <div class="description"><h2 id="working-with-a-specific-dhcp-static-binding">Working with a Specific DHCP Static Binding</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -16915,7 +17261,7 @@ returned within a Location HTTP header</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Adding IP pools to DHCP configuration</p>
+  <div class="description"><h2 id="working-with-dhcp-ip-pools">Working with DHCP IP Pools</h2>
 </div>
 <div class="method post">
   <a
@@ -16924,9 +17270,18 @@ returned within a Location HTTP header</p>
     href="#POST/4.0/edges/{edgeId}/dhcp/config/ippools"
   ><h2>POST /4.0/edges/{edgeId}/dhcp/config/ippools</h2></a>
   <div class="content">
-    <p><p>Add an IP pool to the DHCP configuration. returns a pool ID within
-a Location HTTP header</p>
-</p>
+    <p><p>Add an IP pool to the DHCP configuration. Returns a pool ID within
+a Location HTTP header.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. DHCP options added.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="ipPool"&gt;
@@ -16939,6 +17294,45 @@ a Location HTTP header</p>
         &lt;xs:element type="xs:string" name="secondaryNameServer"/&gt;
         &lt;xs:element type="xs:string" name="leaseTime"/&gt;
         &lt;xs:element type="xs:string" name="autoConfigureDNS"/&gt;
+        &lt;xs:element type="xs:string" name="nextServer"/&gt;
+        &lt;xs:element name="dhcpOptions"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="option121"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name="staticRoute"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element type="xs:string" name="destinationSubnet"/&gt;
+                          &lt;xs:element type="xs:string" name="router"/&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="option66"/&gt;
+              &lt;xs:element type="xs:string" name="option67"/&gt;
+              &lt;xs:element name="option150"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="server"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="option26"/&gt;
+              &lt;xs:element name="other"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="code"/&gt;
+                    &lt;xs:element type="xs:string" name="value"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
       &lt;/xs:sequence&gt;
     &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
@@ -16946,20 +17340,48 @@ a Location HTTP header</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipPool</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ipRange</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipRange</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">defaultGateway</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">defaultGateway</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">primaryNameServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">primaryNameServer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">secondaryNameServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">secondaryNameServer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigureDNS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigureDNS</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipRange</span>&gt;</span>192.168.5.2-192.168.5.20<span class="hljs-tag">&lt;/<span class="hljs-name">ipRange</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">defaultGateway</span>&gt;</span>192.168.5.1<span class="hljs-tag">&lt;/<span class="hljs-name">defaultGateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span>eng.vmware.com<span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">primaryNameServer</span>&gt;</span>1.2.3.4<span class="hljs-tag">&lt;/<span class="hljs-name">primaryNameServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">secondaryNameServer</span>&gt;</span>4.3.2.1<span class="hljs-tag">&lt;/<span class="hljs-name">secondaryNameServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span>3600<span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigureDNS</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigureDNS</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nextServer</span>&gt;</span>11.11.18.105<span class="hljs-tag">&lt;/<span class="hljs-name">nextServer</span>&gt;</span>  
+  <span class="hljs-tag">&lt;<span class="hljs-name">dhcpOptions</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">option121</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">staticRoute</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">destinationSubnet</span>&gt;</span>1.1.1.4/30<span class="hljs-tag">&lt;/<span class="hljs-name">destinationSubnet</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">router</span>&gt;</span>10.10.10.254<span class="hljs-tag">&lt;/<span class="hljs-name">router</span>&gt;</span> 
+      <span class="hljs-tag">&lt;/<span class="hljs-name">staticRoute</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">staticRoute</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">destinationSubnet</span>&gt;</span>2.2.2.4/30<span class="hljs-tag">&lt;/<span class="hljs-name">destinationSubnet</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">router</span>&gt;</span>10.10.10.210<span class="hljs-tag">&lt;/<span class="hljs-name">router</span>&gt;</span> 
+      <span class="hljs-tag">&lt;/<span class="hljs-name">staticRoute</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">option121</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option66</span>&gt;</span>boot.tftp.org<span class="hljs-tag">&lt;/<span class="hljs-name">option66</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option67</span>&gt;</span>/opt/tftpServer<span class="hljs-tag">&lt;/<span class="hljs-name">option67</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option150</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>10.10.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>100.100.100.1<span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">option150</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">option26</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">option26</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">other</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2F766172<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">other</span>&gt;</span>  
+    <span class="hljs-tag">&lt;<span class="hljs-name">other</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>85<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span>  
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>01010101<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span> 
+    <span class="hljs-tag">&lt;/<span class="hljs-name">other</span>&gt;</span> 
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpOptions</span>&gt;</span> 
 <span class="hljs-tag">&lt;/<span class="hljs-name">ipPool</span>&gt;</span>
 </code></pre>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specific DHCP pool</p>
+  <div class="description"><h2 id="working-with-a-specific-dhcp-ip-pool">Working with a Specific DHCP IP Pool</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -16988,7 +17410,7 @@ a Location HTTP header</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure DHCP relay</p>
+  <div class="description"><h2 id="working-with-dhcp-relays">Working With DHCP Relays</h2>
 </div>
 <div class="method get">
   <a
@@ -17074,7 +17496,7 @@ a Location HTTP header</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>DHCP Lease information</p>
+  <div class="description"><p>Working With DHCP Leases</p>
 </div>
 <div class="method get">
   <a
@@ -17083,7 +17505,7 @@ a Location HTTP header</p>
     href="#GET/4.0/edges/{edgeId}/dhcp/leaseInfo"
   ><h2>GET /4.0/edges/{edgeId}/dhcp/leaseInfo</h2></a>
   <div class="content">
-    <p><p>Get DHCP lease information</p>
+    <p><p>Get DHCP lease information.</p>
 </p>
   </div>
 </div>
@@ -17891,8 +18313,7 @@ oneMonth | oneYear</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Ensures that an Edge appliance is always available on your virtualized
-network.</p>
+  <div class="description"><h2 id="working-with-nsx-edge-high-availability">Working with NSX Edge High Availability</h2>
 </div>
 <div class="method get">
   <a
@@ -17901,7 +18322,7 @@ network.</p>
     href="#GET/4.0/edges/{edgeId}/highavailability/config"
   ><h2>GET /4.0/edges/{edgeId}/highavailability/config</h2></a>
   <div class="content">
-    <p><p>Get high availability configuration</p>
+    <p><p>Get high availability configuration.</p>
 </p>
   </div>
 </div>
@@ -17912,7 +18333,7 @@ network.</p>
     href="#PUT/4.0/edges/{edgeId}/highavailability/config"
   ><h2>PUT /4.0/edges/{edgeId}/highavailability/config</h2></a>
   <div class="content">
-    <p><p>Configure high availability</p>
+    <p><p>Configure high availability.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -17953,7 +18374,7 @@ network.</p>
     href="#DELETE/4.0/edges/{edgeId}/highavailability/config"
   ><h2>DELETE /4.0/edges/{edgeId}/highavailability/config</h2></a>
   <div class="content">
-    <p><p>Delete high availability configuration</p>
+    <p><p>Delete high availability configuration.</p>
 </p>
   </div>
 </div>
