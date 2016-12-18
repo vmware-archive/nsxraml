@@ -10182,15 +10182,17 @@ securitySchemes:
           description: Delete all application profiles on the specified Edge.
         /{appProfileID}:
           displayName: applicationProfile
-          description: Modify or retrieve an application profile
+          description: |
+            Working With a Specific Application Profile
+            ----
           uriParameters:
             appProfileID:
               required: true
               displayName: appProfileID
-              description: Specified application profile
+              description: Specified application profile.
           put:
             displayName: applicationProfileUpdate
-            description: Modify an application profile
+            description: Modify an application profile.
             body:
               application/xml:
                 example: |
@@ -10207,18 +10209,20 @@ securitySchemes:
                 schema: applicationProfileUpdate
           get:
             displayName: applicationProfileRead
-            description: Retrieve an application profile
+            description: Retrieve an application profile.
           delete:
             displayName: applicationProfileDelete
-            description: Delete an application profile
+            description: Delete an application profile.
       /applicationrules:
         displayName: appRules
         description: |
-          Manage application rules that directly manipulate and manage IP app
-          traffic
+          Working With Application Rules
+          ----
+          Manage application rules that directly manipulate and manage IP
+          application traffic.
         post:
           displayName: appRulesCreate
-          description: Add an application rule
+          description: Add an application rule.
           body:
             application/xml:
               example: |
@@ -10229,24 +10233,26 @@ securitySchemes:
               schema: appRulesCreate
         get:
           displayName: appRulesRead
-          description: Read all application rules
+          description: Retrieve all application rules.
         delete:
           displayName: appRulesDelete
-          description: Delete all application rules
+          description: Delete all application rules.
         /{appruleID}:
           displayName: appRule
-          description: Application rule
+          description: |
+            Working with a Specific Application Rule
+            ----
           uriParameters:
             appruleID:
               required: true
               displayName: appruleID
-              description: Specified application rule
+              description: Specified application rule.
           get:
             displayName: appRuleRead
-            description: Retrieve an application rule
+            description: Retrieve an application rule.
           put:
             displayName: appRuleUpdate
-            description: Modify an app rule
+            description: Modify an application rule.
             body:
               application/xml:
                 example: |
@@ -10257,15 +10263,17 @@ securitySchemes:
                 schema: appRuleUpdate
           delete:
             displayName: appRuleDelete
-            description: Delete an application rule
+            description: Delete an application rule.
       /monitors:
         displayName: lbMonitors
         description: |
+          Working With Load Balancer Monitors
+          ----
           Load balancer monitors define health check parameters for a
-          particular type of network traffic
+          particular type of network traffic.
         post:
           displayName: lbMonitorsCreate
-          description: Add a load balancer monitor
+          description: Add a load balancer monitor.
           body:
             application/xml:
               example: |
@@ -10281,24 +10289,26 @@ securitySchemes:
               schema: lbMonitorsCreate
         get:
           displayName: lbMonitorsRead
-          description: Retrieve all load balancer monitors
+          description: Retrieve all load balancer monitors.
         delete:
           displayName: lbMonitorsDelete
-          description: Delete all load balancer monitors
+          description: Delete all load balancer monitors.
         /{monitorID}:
           displayName: lbMonitor
-          description: Specific load balancer monitor
+          description: |
+            Working With a Specific Load Balancer Monitor
+            ----
           uriParameters:
             monitorID:
               required: true
               displayName: monitorID
-              description: Specified monitor
+              description: Specified monitor.
           get:
             displayName: lbMonitorRead
-            description: Retrieve a load balancer monitor
+            description: Retrieve a load balancer monitor.
           put:
             displayName: lbMonitorUpdate
-            description: Modify a load balancer monitor
+            description: Modify a load balancer monitor.
             body:
               application/xml:
                 example: |
@@ -10314,11 +10324,12 @@ securitySchemes:
                 schema: lbMonitorUpdate
           delete:
             displayName: lbMonitorDelete
-            description: Delete a load balancer monitor
+            description: Delete a load balancer monitor.
       /virtualservers:
         displayName: virtualServers
         description: |
-          Working with virtual servers.
+          Working With Virtual Servers
+          ----
         post:
           displayName: virtualServersCreate
           description: |
@@ -10341,64 +10352,54 @@ securitySchemes:
             | **applicationProfileId** | no | The application profile identifier |
             | **accelerationEnabled** | no | Use the faster L4 load balancer engine rather than L7 load balancer engine. <br>**Note:**  If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.|
             | **applicationRuleId** | no | The application rule identifier list |
-            
-          responses:
-            200:
-              description: !include documentation/reuse/status-codes/200
-              body:
-                application/xml:
-                  example: |
-                    <virtualServer>
-                      <name>http_vip_2</name>
-                      <description>http virtualServer 2</description>
-                      <enabled>true</enabled>
-                      <ipAddress>10.117.35.172</ipAddress>
-                      <protocol>http</protocol>
-                      <port>443,6000-7000</port>
-                      <connectionLimit>123</connectionLimit>
-                      <connectionRateLimit>123</connectionRateLimit>
-                      <applicationProfileId>applicationProfile-1</applicationProfileId>
-                      <defaultPoolId>pool-1</defaultPoolId>
-                      <enableServiceInsertion>false</enableServiceInsertion>
-                      <accelerationEnabled>true</accelerationEnabled>
-                    </virtualServer>
-                  schema: virtualServersCreate
-            400:
-              description: !include documentation/reuse/status-codes/400
-            403:
-              description: !include documentation/reuse/status-codes/403
-            404:
-              description: !include documentation/reuse/status-codes/404
-            505:
-              description: !include documentation/reuse/status-codes/505
+          body:
+            application/xml:
+              example: |
+                <virtualServer>
+                  <name>http_vip_2</name>
+                  <description>http virtualServer 2</description>
+                  <enabled>true</enabled>
+                  <ipAddress>10.117.35.172</ipAddress>
+                  <protocol>http</protocol>
+                  <port>443,6000-7000</port>
+                  <connectionLimit>123</connectionLimit>
+                  <connectionRateLimit>123</connectionRateLimit>
+                  <applicationProfileId>applicationProfile-1</applicationProfileId>
+                  <defaultPoolId>pool-1</defaultPoolId>
+                  <enableServiceInsertion>false</enableServiceInsertion>
+                  <accelerationEnabled>true</accelerationEnabled>
+                </virtualServer>
+              schema: virtualServersCreate
         get:
           displayName: virtualServersRead
-          description: Retrieve all virtual servers
+          description: Retrieve all virtual servers.
         delete:
           displayName: virtualServersDelete
-          description: Delete all
+          description: Delete all virtual servers.
         /{virtualserverID}:
           displayName: virtualServer
-          description: Specified virtual server
+          description: Specified virtual server.
           uriParameters:
             virtualserverID:
               required: true
               displayName: virtualserverID
-              description: Specified virtual server ID
+              description: Specified virtual server ID.
           get:
             displayName: virtualServerRead
-            description: Retrieve virtual server details
+            description: Retrieve details for the specified virtual server.
           delete:
             displayName: virtualServerDelete
-            description: Delete a virtual server
+            description: Delete the specified virtual server.
       /pools:
         displayName: pools
         description: |
-          Server pools manage load balancer distribution methods and has a
-          monitor attached to it for health check parameters
+          Working with Server Pools
+          ----
+          Server pools manage load balancer distribution methods and have
+          monitors attached to them for health check parameters.
         post:
           displayName: poolsCreate
-          description: Add a load balancer server pool to the Edge
+          description: Add a load balancer server pool to the Edge.
           body:
             application/xml:
               example: |
@@ -10421,25 +10422,25 @@ securitySchemes:
               schema: poolsCreate
         get:
           displayName: poolsRead
-          description: Get all backend pools for the specified NSX Edge
+          description: Get all server pools on the specified NSX Edge.
         delete:
           displayName: poolsDelete
           description: |
-            Delete all backend pools configured on the specified NSX Edge
+            Delete all server pools configured on the specified NSX Edge.
         /{poolID}:
           displayName: pool
-          description: Specific backend pool
+          description: Specific server pool.
           uriParameters:
             poolID:
               required: true
               displayName: poolID
-              description: Specified pool ID
+              description: Specified pool ID.
           get:
             displayName: poolRead
-            description: Get backend pool details
+            description: Retrieve information about the specified server pool.
           put:
             displayName: poolUpdate
-            description: Modify the specified pool
+            description: Update the specified server pool.
             body:
               application/xml:
                 example: |
@@ -10462,66 +10463,91 @@ securitySchemes:
                 schema: poolUpdate
           delete:
             displayName: poolDelete
-            description: Delete backend pool
+            description: Delete the specified server pool.
       /members/{memberID}:
         displayName: lbMemberCond
-        description: Load balancer member condition
+        description: |
+          Working With a Specific Load Balancer Member
+          ----
         uriParameters:
           memberID:
             required: true
             displayName: memberID
-            description: Member ID
+            description: Member ID.
         post:
           displayName: lbMemberCond
-          description: Update member condition
+          description: Update enabled status of the specified member.
           queryParameters:
             enable:
               required: true
               displayName: enable
               type: boolean
-              description: Enable or disable member condition
+              description: |
+                Set to *true* to enable member, *false* to disable member.
     /loadbalancer/statistics:
       displayName: lbStatistics
-      description: Load balancer statistics
+      description: |
+        Working With Load Balancer Statistics
+        ----
       get:
         displayName: lbStatisticsRead
-        description: Retrieve load balancer statistics
+        description: Retrieve load balancer statistics.
     /loadbalancer/acceleration:
       displayName: lbAcceleration
-      description: Update acceleration mode
+      description: |
+        Working With Load Balancer Acceleration
+        ----
       post:
         queryParameters:
           enable:
             required: true
             displayName: enable
-            description: Enable or disable load balancer acceleration mode
+            description: Enable or disable load balancer acceleration mode.
             type: boolean
     /dns/config:
       displayName: edgeDns
       description: |
-        Configure DNS servers to which the Edge can relay name resolution
-        requests
+        Working with NSX Edge DNS Server Configuration
+        ----
+        You can configure external DNS servers to which NSX Edge can relay
+        name resolution requests from clients. NSX Edge will relay client
+        application requests to the DNS servers to fully resolve a network
+        name and cache the response from the servers.
       get:
         displayName: edgeDnsRead
-        description: Retrieve DNS configuration
+        description: Retrieve DNS configuration.
       put:
         displayName: edgeDnsUpdate
-        description: Configure DNS servers
+        description: Configure DNS servers.
         body:
           application/xml:
             example: |
               <dns>
-                <enabled></enabled>
-                <dnsServers>
-                  <ipAddress></ipAddress>
-                </dnsServers>
-                <cacheSize></cacheSize>
+                <version>2</version>
+                <enabled>true</enabled>
+                <cacheSize>128</cacheSize>
                 <listeners>
-                  <ipAddress></ipAddress>
+                  <ipAddress>192.168.100.1</ipAddress>
+                  <ipAddress>192.168.100.2</ipAddress>
                 </listeners>
+                <dnsViews>
+                  <dnsView>
+                    <viewId>view-0</viewId>
+                    <name>vsm-default-view</name>
+                    <enabled>true</enabled>
+                    <viewMatch>
+                      <ipAddress>any</ipAddress>
+                      <vnic>any</vnic>
+                    </viewMatch>
+                    <recursion>false</recursion>
+                    <forwarders>
+                      <ipAddress>10.117.0.1</ipAddress>
+                    </forwarders>
+                  </dnsView>
+                </dnsViews>
                 <logging>
-                  <logLevel></logLevel>
-                  <enable></enable>
+                  <enable>true</enable>
+                  <logLevel>info</logLevel>
                 </logging>
               </dns>
             schema: edgeDnsUpdate

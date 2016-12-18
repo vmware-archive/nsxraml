@@ -3703,44 +3703,52 @@ network traffic.
 * **delete** *(secured)*: Delete all application profiles on the specified Edge.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}
-Modify or retrieve an application profile
+Working With a Specific Application Profile
+----
 
-* **put** *(secured)*: Modify an application profile
-* **get** *(secured)*: Retrieve an application profile
-* **delete** *(secured)*: Delete an application profile
+* **put** *(secured)*: Modify an application profile.
+* **get** *(secured)*: Retrieve an application profile.
+* **delete** *(secured)*: Delete an application profile.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationrules
-Manage application rules that directly manipulate and manage IP app
-traffic
+Working With Application Rules
+----
+Manage application rules that directly manipulate and manage IP
+application traffic.
 
-* **post** *(secured)*: Add an application rule
-* **get** *(secured)*: Read all application rules
-* **delete** *(secured)*: Delete all application rules
+* **post** *(secured)*: Add an application rule.
+* **get** *(secured)*: Retrieve all application rules.
+* **delete** *(secured)*: Delete all application rules.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}
-Application rule
+Working with a Specific Application Rule
+----
 
-* **get** *(secured)*: Retrieve an application rule
-* **put** *(secured)*: Modify an app rule
-* **delete** *(secured)*: Delete an application rule
+* **get** *(secured)*: Retrieve an application rule.
+* **put** *(secured)*: Modify an application rule.
+* **delete** *(secured)*: Delete an application rule.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/monitors
+Working With Load Balancer Monitors
+----
 Load balancer monitors define health check parameters for a
-particular type of network traffic
+particular type of network traffic.
 
-* **post** *(secured)*: Add a load balancer monitor
-* **get** *(secured)*: Retrieve all load balancer monitors
-* **delete** *(secured)*: Delete all load balancer monitors
+* **post** *(secured)*: Add a load balancer monitor.
+* **get** *(secured)*: Retrieve all load balancer monitors.
+* **delete** *(secured)*: Delete all load balancer monitors.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/monitors/{monitorID}
-Specific load balancer monitor
+Working With a Specific Load Balancer Monitor
+----
 
-* **get** *(secured)*: Retrieve a load balancer monitor
-* **put** *(secured)*: Modify a load balancer monitor
-* **delete** *(secured)*: Delete a load balancer monitor
+* **get** *(secured)*: Retrieve a load balancer monitor.
+* **put** *(secured)*: Modify a load balancer monitor.
+* **delete** *(secured)*: Delete a load balancer monitor.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/virtualservers
-Working with virtual servers.
+Working With Virtual Servers
+----
 
 * **post** *(secured)*: Add a virtual server.
 
@@ -3762,51 +3770,60 @@ server.
 | **accelerationEnabled** | no | Use the faster L4 load balancer engine rather than L7 load balancer engine. <br>**Note:**  If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.|
 | **applicationRuleId** | no | The application rule identifier list |
 
-* **get** *(secured)*: Retrieve all virtual servers
-* **delete** *(secured)*: Delete all
+* **get** *(secured)*: Retrieve all virtual servers.
+* **delete** *(secured)*: Delete all virtual servers.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/virtualservers/{virtualserverID}
-Specified virtual server
+Specified virtual server.
 
-* **get** *(secured)*: Retrieve virtual server details
-* **delete** *(secured)*: Delete a virtual server
+* **get** *(secured)*: Retrieve details for the specified virtual server.
+* **delete** *(secured)*: Delete the specified virtual server.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools
-Server pools manage load balancer distribution methods and has a
-monitor attached to it for health check parameters
+Working with Server Pools
+----
+Server pools manage load balancer distribution methods and have
+monitors attached to them for health check parameters.
 
-* **post** *(secured)*: Add a load balancer server pool to the Edge
-* **get** *(secured)*: Get all backend pools for the specified NSX Edge
-* **delete** *(secured)*: Delete all backend pools configured on the specified NSX Edge
+* **post** *(secured)*: Add a load balancer server pool to the Edge.
+* **get** *(secured)*: Get all server pools on the specified NSX Edge.
+* **delete** *(secured)*: Delete all server pools configured on the specified NSX Edge.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}
-Specific backend pool
+Specific server pool.
 
-* **get** *(secured)*: Get backend pool details
-* **put** *(secured)*: Modify the specified pool
-* **delete** *(secured)*: Delete backend pool
+* **get** *(secured)*: Retrieve information about the specified server pool.
+* **put** *(secured)*: Update the specified server pool.
+* **delete** *(secured)*: Delete the specified server pool.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/members/{memberID}
-Load balancer member condition
+Working With a Specific Load Balancer Member
+----
 
-* **post** *(secured)*: Update member condition
+* **post** *(secured)*: Update enabled status of the specified member.
 
 ### /4.0/edges/{edgeId}/loadbalancer/statistics
-Load balancer statistics
+Working With Load Balancer Statistics
+----
 
-* **get** *(secured)*: Retrieve load balancer statistics
+* **get** *(secured)*: Retrieve load balancer statistics.
 
 ### /4.0/edges/{edgeId}/loadbalancer/acceleration
-Update acceleration mode
+Working With Load Balancer Acceleration
+----
 
 * **post** *(secured)*: 
 
 ### /4.0/edges/{edgeId}/dns/config
-Configure DNS servers to which the Edge can relay name resolution
-requests
+Working with NSX Edge DNS Server Configuration
+----
+You can configure external DNS servers to which NSX Edge can relay
+name resolution requests from clients. NSX Edge will relay client
+application requests to the DNS servers to fully resolve a network
+name and cache the response from the servers.
 
-* **get** *(secured)*: Retrieve DNS configuration
-* **put** *(secured)*: Configure DNS servers
+* **get** *(secured)*: Retrieve DNS configuration.
+* **put** *(secured)*: Configure DNS servers.
 * **delete** *(secured)*: Delete DNS configuration
 
 ### /4.0/edges/{edgeId}/dns/statistics

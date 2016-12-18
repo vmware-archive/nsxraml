@@ -17509,8 +17509,11 @@ a Location HTTP header.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure DNS servers to which the Edge can relay name resolution
-requests</p>
+  <div class="description"><h2 id="working-with-nsx-edge-dns-server-configuration">Working with NSX Edge DNS Server Configuration</h2>
+<p>You can configure external DNS servers to which NSX Edge can relay
+name resolution requests from clients. NSX Edge will relay client
+application requests to the DNS servers to fully resolve a network
+name and cache the response from the servers.</p>
 </div>
 <div class="method get">
   <a
@@ -17519,7 +17522,7 @@ requests</p>
     href="#GET/4.0/edges/{edgeId}/dns/config"
   ><h2>GET /4.0/edges/{edgeId}/dns/config</h2></a>
   <div class="content">
-    <p><p>Retrieve DNS configuration</p>
+    <p><p>Retrieve DNS configuration.</p>
 </p>
   </div>
 </div>
@@ -17530,34 +17533,59 @@ requests</p>
     href="#PUT/4.0/edges/{edgeId}/dns/config"
   ><h2>PUT /4.0/edges/{edgeId}/dns/config</h2></a>
   <div class="content">
-    <p><p>Configure DNS servers</p>
+    <p><p>Configure DNS servers.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="dns"&gt;
     &lt;xs:complexType&gt;
       &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="version"/&gt;
         &lt;xs:element type="xs:string" name="enabled"/&gt;
-        &lt;xs:element name="dnsServers"&gt;
+        &lt;xs:element type="xs:string" name="cacheSize"/&gt;
+        &lt;xs:element name="listeners"&gt;
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
               &lt;xs:element type="xs:string" name="ipAddress"/&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
-        &lt;xs:element type="xs:string" name="cacheSize"/&gt;
-        &lt;xs:element name="listeners"&gt;
+        &lt;xs:element name="dnsViews"&gt;
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+              &lt;xs:element name="dnsView"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="viewId"&gt;
+                    &lt;xs:element type="xs:string" name="name"&gt;
+                    &lt;xs:element type="xs:string" name="enabled"&gt;
+                    &lt;xs:element name="viewMatch"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element type="xs:string" name="ipAddress"/&gt;
+                          &lt;xs:element type="xs:string" name="vnic"/&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                    &lt;xs:element type="xs:boolean" name="recursion"/&gt;
+                    &lt;xs:element name="forwarders"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element type="xs:string" name="ipAddress"&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
         &lt;xs:element name="logging"&gt;
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="logLevel"/&gt;
               &lt;xs:element type="xs:string" name="enable"/&gt;
+              &lt;xs:element type="xs:string" name="logLevel"/&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
@@ -17568,17 +17596,31 @@ requests</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dns</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServers</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">dnsServers</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">cacheSize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cacheSize</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cacheSize</span>&gt;</span>128<span class="hljs-tag">&lt;/<span class="hljs-name">cacheSize</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">listeners</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.100.1<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.100.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">listeners</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsViews</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsView</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">viewId</span>&gt;</span>view-0<span class="hljs-tag">&lt;/<span class="hljs-name">viewId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vsm-default-view<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">viewMatch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">viewMatch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">recursion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">recursion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">forwarders</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">forwarders</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dnsView</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dnsViews</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">dns</span>&gt;</span>
 </code></pre>
@@ -18760,7 +18802,7 @@ sent bytes, received bytes etc. for the given Edge</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Update acceleration mode</p>
+  <div class="description"><h2 id="working-with-load-balancer-acceleration">Working With Load Balancer Acceleration</h2>
 </div>
 <div class="method post">
   <a
@@ -18778,7 +18820,7 @@ sent bytes, received bytes etc. for the given Edge</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Enable or disable load balancer acceleration mode</p>
+      <p>Enable or disable load balancer acceleration mode.</p>
 
   </dd>
 </dl>
@@ -19090,7 +19132,7 @@ network traffic.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Modify or retrieve an application profile</p>
+  <div class="description"><h2 id="working-with-a-specific-application-profile">Working With a Specific Application Profile</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -19101,7 +19143,7 @@ network traffic.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified application profile</p>
+      <p>Specified application profile.</p>
 
   </dd>
 </dl>
@@ -19113,7 +19155,7 @@ network traffic.</p>
     href="#PUT/4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}"
   ><h2>PUT /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}</h2></a>
   <div class="content">
-    <p><p>Modify an application profile</p>
+    <p><p>Modify an application profile.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -19158,7 +19200,7 @@ network traffic.</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}</h2></a>
   <div class="content">
-    <p><p>Retrieve an application profile</p>
+    <p><p>Retrieve an application profile.</p>
 </p>
   </div>
 </div>
@@ -19169,14 +19211,15 @@ network traffic.</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles/{appProfileID}</h2></a>
   <div class="content">
-    <p><p>Delete an application profile</p>
+    <p><p>Delete an application profile.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Manage application rules that directly manipulate and manage IP app
-traffic</p>
+  <div class="description"><h2 id="working-with-application-rules">Working With Application Rules</h2>
+<p>Manage application rules that directly manipulate and manage IP
+application traffic.</p>
 </div>
 <div class="method post">
   <a
@@ -19185,7 +19228,7 @@ traffic</p>
     href="#POST/4.0/edges/{edgeId}/loadbalancer/config/applicationrules"
   ><h2>POST /4.0/edges/{edgeId}/loadbalancer/config/applicationrules</h2></a>
   <div class="content">
-    <p><p>Add an application rule</p>
+    <p><p>Add an application rule.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -19214,7 +19257,7 @@ traffic</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/applicationrules"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/applicationrules</h2></a>
   <div class="content">
-    <p><p>Read all application rules</p>
+    <p><p>Retrieve all application rules.</p>
 </p>
   </div>
 </div>
@@ -19225,13 +19268,13 @@ traffic</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/applicationrules"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/applicationrules</h2></a>
   <div class="content">
-    <p><p>Delete all application rules</p>
+    <p><p>Delete all application rules.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Application rule</p>
+  <div class="description"><h2 id="working-with-a-specific-application-rule">Working with a Specific Application Rule</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -19242,7 +19285,7 @@ traffic</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified application rule</p>
+      <p>Specified application rule.</p>
 
   </dd>
 </dl>
@@ -19254,7 +19297,7 @@ traffic</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}</h2></a>
   <div class="content">
-    <p><p>Retrieve an application rule</p>
+    <p><p>Retrieve an application rule.</p>
 </p>
   </div>
 </div>
@@ -19265,7 +19308,7 @@ traffic</p>
     href="#PUT/4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}"
   ><h2>PUT /4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}</h2></a>
   <div class="content">
-    <p><p>Modify an app rule</p>
+    <p><p>Modify an application rule.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -19294,13 +19337,13 @@ traffic</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}</h2></a>
   <div class="content">
-    <p><p>Delete an application rule</p>
+    <p><p>Delete an application rule.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Load balancer member condition</p>
+  <div class="description"><h2 id="working-with-a-specific-load-balancer-member">Working With a Specific Load Balancer Member</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -19311,7 +19354,7 @@ traffic</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Member ID</p>
+      <p>Member ID.</p>
 
   </dd>
 </dl>
@@ -19323,7 +19366,7 @@ traffic</p>
     href="#POST/4.0/edges/{edgeId}/loadbalancer/config/members/{memberID}"
   ><h2>POST /4.0/edges/{edgeId}/loadbalancer/config/members/{memberID}</h2></a>
   <div class="content">
-    <p><p>Update member condition</p>
+    <p><p>Update enabled status of the specified member.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -19334,7 +19377,7 @@ traffic</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Enable or disable member condition</p>
+      <p>Set to <em>true</em> to enable member, <em>false</em> to disable member.</p>
 
   </dd>
 </dl>
@@ -19343,8 +19386,9 @@ traffic</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Load balancer monitors define health check parameters for a
-particular type of network traffic</p>
+  <div class="description"><h2 id="working-with-load-balancer-monitors">Working With Load Balancer Monitors</h2>
+<p>Load balancer monitors define health check parameters for a
+particular type of network traffic.</p>
 </div>
 <div class="method post">
   <a
@@ -19353,7 +19397,7 @@ particular type of network traffic</p>
     href="#POST/4.0/edges/{edgeId}/loadbalancer/config/monitors"
   ><h2>POST /4.0/edges/{edgeId}/loadbalancer/config/monitors</h2></a>
   <div class="content">
-    <p><p>Add a load balancer monitor</p>
+    <p><p>Add a load balancer monitor.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -19392,7 +19436,7 @@ particular type of network traffic</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/monitors"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/monitors</h2></a>
   <div class="content">
-    <p><p>Retrieve all load balancer monitors</p>
+    <p><p>Retrieve all load balancer monitors.</p>
 </p>
   </div>
 </div>
@@ -19403,13 +19447,13 @@ particular type of network traffic</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/monitors"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/monitors</h2></a>
   <div class="content">
-    <p><p>Delete all load balancer monitors</p>
+    <p><p>Delete all load balancer monitors.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specific load balancer monitor</p>
+  <div class="description"><h2 id="working-with-a-specific-load-balancer-monitor">Working With a Specific Load Balancer Monitor</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -19420,7 +19464,7 @@ particular type of network traffic</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified monitor</p>
+      <p>Specified monitor.</p>
 
   </dd>
 </dl>
@@ -19432,7 +19476,7 @@ particular type of network traffic</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/monitors/{monitorID}"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/monitors/{monitorID}</h2></a>
   <div class="content">
-    <p><p>Retrieve a load balancer monitor</p>
+    <p><p>Retrieve a load balancer monitor.</p>
 </p>
   </div>
 </div>
@@ -19443,7 +19487,7 @@ particular type of network traffic</p>
     href="#PUT/4.0/edges/{edgeId}/loadbalancer/config/monitors/{monitorID}"
   ><h2>PUT /4.0/edges/{edgeId}/loadbalancer/config/monitors/{monitorID}</h2></a>
   <div class="content">
-    <p><p>Modify a load balancer monitor</p>
+    <p><p>Modify a load balancer monitor.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -19482,14 +19526,15 @@ particular type of network traffic</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/monitors/{monitorID}"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/monitors/{monitorID}</h2></a>
   <div class="content">
-    <p><p>Delete a load balancer monitor</p>
+    <p><p>Delete a load balancer monitor.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Server pools manage load balancer distribution methods and has a
-monitor attached to it for health check parameters</p>
+  <div class="description"><h2 id="working-with-server-pools">Working with Server Pools</h2>
+<p>Server pools manage load balancer distribution methods and have
+monitors attached to them for health check parameters.</p>
 </div>
 <div class="method post">
   <a
@@ -19498,7 +19543,7 @@ monitor attached to it for health check parameters</p>
     href="#POST/4.0/edges/{edgeId}/loadbalancer/config/pools"
   ><h2>POST /4.0/edges/{edgeId}/loadbalancer/config/pools</h2></a>
   <div class="content">
-    <p><p>Add a load balancer server pool to the Edge</p>
+    <p><p>Add a load balancer server pool to the Edge.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -19555,7 +19600,7 @@ monitor attached to it for health check parameters</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/pools"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/pools</h2></a>
   <div class="content">
-    <p><p>Get all backend pools for the specified NSX Edge</p>
+    <p><p>Get all server pools on the specified NSX Edge.</p>
 </p>
   </div>
 </div>
@@ -19566,13 +19611,13 @@ monitor attached to it for health check parameters</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/pools"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/pools</h2></a>
   <div class="content">
-    <p><p>Delete all backend pools configured on the specified NSX Edge</p>
+    <p><p>Delete all server pools configured on the specified NSX Edge.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specific backend pool</p>
+  <div class="description"><p>Specific server pool.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -19583,7 +19628,7 @@ monitor attached to it for health check parameters</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified pool ID</p>
+      <p>Specified pool ID.</p>
 
   </dd>
 </dl>
@@ -19595,7 +19640,7 @@ monitor attached to it for health check parameters</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}</h2></a>
   <div class="content">
-    <p><p>Get backend pool details</p>
+    <p><p>Retrieve information about the specified server pool.</p>
 </p>
   </div>
 </div>
@@ -19606,7 +19651,7 @@ monitor attached to it for health check parameters</p>
     href="#PUT/4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}"
   ><h2>PUT /4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}</h2></a>
   <div class="content">
-    <p><p>Modify the specified pool</p>
+    <p><p>Update the specified server pool.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -19663,13 +19708,13 @@ monitor attached to it for health check parameters</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}</h2></a>
   <div class="content">
-    <p><p>Delete backend pool</p>
+    <p><p>Delete the specified server pool.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with virtual servers.</p>
+  <div class="description"><h2 id="working-with-virtual-servers">Working With Virtual Servers</h2>
 </div>
 <div class="method post">
   <a
@@ -19747,15 +19792,31 @@ server.</p>
 <td>The application rule identifier list</td>
 </tr>
 </tbody></table></p>
-    <h3>Responses</h3>
-        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
-        <p>OK</p>
-
-          <h5>
-            Response Example
-              (<tt>application/xml</tt>)
-          </h5>
-          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="virtualServer"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element type="xs:string" name="description"/&gt;
+        &lt;xs:element type="xs:boolean" name="enabled"/&gt;
+        &lt;xs:element type="xs:string" name="ipAddress"/&gt;
+        &lt;xs:element type="xs:string" name="protocol"/&gt;
+        &lt;xs:element type="xs:string" name="port"/&gt;
+        &lt;xs:element type="xs:long" name="connectionLimit"/&gt;
+        &lt;xs:element type="xs:long" name="connectionRateLimit"/&gt;
+        &lt;xs:element type="xs:string" name="applicationProfileId"/&gt;
+        &lt;xs:element type="xs:string" name="defaultPoolId"/&gt;
+        &lt;xs:element type="xs:string" name="enableServiceInsertion"/&gt;
+        &lt;xs:element type="xs:boolean" name="accelerationEnabled"/&gt;
+        &lt;xs:element type="xs:string" name="applicationRuleId"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http_vip_2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>http virtualServer 2<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
@@ -19770,18 +19831,6 @@ server.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
 </code></pre>
-        <h4><span class="response-code response-code-4xx">400 Bad Request</span></h4>
-        <p>Bad request. Request object passed is invalid.</p>
-
-        <h4><span class="response-code response-code-4xx">403 Forbidden</span></h4>
-        <p>Forbidden. Authorization header not provided.</p>
-
-        <h4><span class="response-code response-code-4xx">404 Not Found</span></h4>
-        <p>Not found. Requested object not found.</p>
-
-        <h4><span class="response-code response-code-5xx">505 HTTP Version Not Supported</span></h4>
-        <p>Internal server error. Input contained no data.</p>
-
   </div>
 </div>
 <div class="method get">
@@ -19791,7 +19840,7 @@ server.</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/virtualservers"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/virtualservers</h2></a>
   <div class="content">
-    <p><p>Retrieve all virtual servers</p>
+    <p><p>Retrieve all virtual servers.</p>
 </p>
   </div>
 </div>
@@ -19802,13 +19851,13 @@ server.</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/virtualservers"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/virtualservers</h2></a>
   <div class="content">
-    <p><p>Delete all</p>
+    <p><p>Delete all virtual servers.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specified virtual server</p>
+  <div class="description"><p>Specified virtual server.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -19819,7 +19868,7 @@ server.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified virtual server ID</p>
+      <p>Specified virtual server ID.</p>
 
   </dd>
 </dl>
@@ -19831,7 +19880,7 @@ server.</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/config/virtualservers/{virtualserverID}"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/config/virtualservers/{virtualserverID}</h2></a>
   <div class="content">
-    <p><p>Retrieve virtual server details</p>
+    <p><p>Retrieve details for the specified virtual server.</p>
 </p>
   </div>
 </div>
@@ -19842,13 +19891,13 @@ server.</p>
     href="#DELETE/4.0/edges/{edgeId}/loadbalancer/config/virtualservers/{virtualserverID}"
   ><h2>DELETE /4.0/edges/{edgeId}/loadbalancer/config/virtualservers/{virtualserverID}</h2></a>
   <div class="content">
-    <p><p>Delete a virtual server</p>
+    <p><p>Delete the specified virtual server.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Load balancer statistics</p>
+  <div class="description"><h2 id="working-with-load-balancer-statistics">Working With Load Balancer Statistics</h2>
 </div>
 <div class="method get">
   <a
@@ -19857,7 +19906,7 @@ server.</p>
     href="#GET/4.0/edges/{edgeId}/loadbalancer/statistics"
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/statistics</h2></a>
   <div class="content">
-    <p><p>Retrieve load balancer statistics</p>
+    <p><p>Retrieve load balancer statistics.</p>
 </p>
   </div>
 </div>
