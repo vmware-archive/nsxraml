@@ -540,13 +540,47 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ## arpMAC
-Working with ARP Suppression and MAC Learning for Logical Switches
+Working with IP Discovery and MAC Learning for Logical Switches
 ==============
+
+You can enable IP discovery (ARP suppression) and MAC learning for logical
+switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
+pair learning table on each vNic.
+
+This table is stored as part of the dvfilter data. During vMotion,
+dvfilter saves/restores the table at the new location. The switch then
+issues RARPs for all the VLAN - MAC entries in the table.
+
+Enabling this feature avoids possible traffic loss during vMotion in the
+following cases:
+
+* the vNic is in VLAN trunk mode
+* the VM is using more  than one unicast MAC address. Since Etherswitch
+supports only one unicast MAC per vNic, RARP is not processed.
+
+When a logical switch is created using the API, IP discovery is enabled,
+and MAC learning is disabled.
+
+In cross-vCenter NSX, the following applies:
+* The MAC learning setting for a universal logical switch is managed
+on the primary NSX Manager. Any changes are synchronized to all secondary
+NSX Managers.
+* The IP discovery setting for a universal logical switch is managed
+separately on each NSX Manager.
+
+**Note:** In NSX 6.2.2 and earlier you cannot disable IP discovery for
+universal logical switches on secondary NSX Managers.
 
 ### /2.0/xvs/networks/{ID}/features
 
-* **get** *(secured)*: Retrieve ARP suppression and MAC learning information.
-* **put** *(secured)*: Enable or disable ARP suppression and MAC learning.
+* **get** *(secured)*: Retrieve IP discovery and MAC learning information.
+* **put** *(secured)*: Enable or disable IP discovery and MAC learning.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. IP discovery can be disabled on secondary NSX Managers.
 
 ## nsxControllers
 Working with NSX Controllers

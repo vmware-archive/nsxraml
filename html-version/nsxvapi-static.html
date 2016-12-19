@@ -13653,7 +13653,32 @@ switch.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-arp-suppression-and-mac-learning-for-logical-switches">Working with ARP Suppression and MAC Learning for Logical Switches</h1>
+  <div class="description"><h1 id="working-with-ip-discovery-and-mac-learning-for-logical-switches">Working with IP Discovery and MAC Learning for Logical Switches</h1>
+<p>You can enable IP discovery (ARP suppression) and MAC learning for logical
+switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
+pair learning table on each vNic.</p>
+<p>This table is stored as part of the dvfilter data. During vMotion,
+dvfilter saves/restores the table at the new location. The switch then
+issues RARPs for all the VLAN - MAC entries in the table.</p>
+<p>Enabling this feature avoids possible traffic loss during vMotion in the
+following cases:</p>
+<ul>
+<li>the vNic is in VLAN trunk mode</li>
+<li>the VM is using more  than one unicast MAC address. Since Etherswitch
+supports only one unicast MAC per vNic, RARP is not processed.</li>
+</ul>
+<p>When a logical switch is created using the API, IP discovery is enabled,
+and MAC learning is disabled.</p>
+<p>In cross-vCenter NSX, the following applies:</p>
+<ul>
+<li>The MAC learning setting for a universal logical switch is managed
+on the primary NSX Manager. Any changes are synchronized to all secondary
+NSX Managers.</li>
+<li>The IP discovery setting for a universal logical switch is managed
+separately on each NSX Manager.</li>
+</ul>
+<p><strong>Note:</strong> In NSX 6.2.2 and earlier you cannot disable IP discovery for
+universal logical switches on secondary NSX Managers.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -13664,7 +13689,7 @@ switch.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>dvpg MoID or virtual wire ID</p>
+      <p>dvPortGroup MOID or logical switch (virtual wire) ID.</p>
 
   </dd>
 </dl>
@@ -13676,7 +13701,7 @@ switch.</p>
     href="#GET/2.0/xvs/networks/{ID}/features"
   ><h2>GET /2.0/xvs/networks/{ID}/features</h2></a>
   <div class="content">
-    <p><p>Retrieve ARP suppression and MAC learning information.</p>
+    <p><p>Retrieve IP discovery and MAC learning information.</p>
 </p>
   </div>
 </div>
@@ -13687,8 +13712,17 @@ switch.</p>
     href="#PUT/2.0/xvs/networks/{ID}/features"
   ><h2>PUT /2.0/xvs/networks/{ID}/features</h2></a>
   <div class="content">
-    <p><p>Enable or disable ARP suppression and MAC learning.</p>
-</p>
+    <p><p>Enable or disable IP discovery and MAC learning.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. IP discovery can be disabled on secondary NSX Managers.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="networkFeatureConfig"&gt;
@@ -23688,8 +23722,13 @@ associated with L3 redirect rule. Search is case insensitive.</p>
   </dd>
 </dl>
     </div>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallConfiguration</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360144793284"</span>&gt;</span>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallConfiguration</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360144793284"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">contextId</span>&gt;</span>globalroot-0<span class="hljs-tag">&lt;/<span class="hljs-name">contextId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">layer3Sections</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"2"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer3"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1360144793284"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360144793284"</span>&gt;</span>

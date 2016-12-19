@@ -1736,19 +1736,53 @@ securitySchemes:
 /2.0/xvs/networks/{ID}/features:
   displayName: arpMAC
   description: |
-    Working with ARP Suppression and MAC Learning for Logical Switches
+    Working with IP Discovery and MAC Learning for Logical Switches
     ==============
+
+    You can enable IP discovery (ARP suppression) and MAC learning for logical
+    switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
+    pair learning table on each vNic.
+
+    This table is stored as part of the dvfilter data. During vMotion,
+    dvfilter saves/restores the table at the new location. The switch then
+    issues RARPs for all the VLAN - MAC entries in the table.
+
+    Enabling this feature avoids possible traffic loss during vMotion in the
+    following cases:
+
+    * the vNic is in VLAN trunk mode
+    * the VM is using more  than one unicast MAC address. Since Etherswitch
+    supports only one unicast MAC per vNic, RARP is not processed.
+
+    When a logical switch is created using the API, IP discovery is enabled,
+    and MAC learning is disabled.
+
+    In cross-vCenter NSX, the following applies:
+    * The MAC learning setting for a universal logical switch is managed
+    on the primary NSX Manager. Any changes are synchronized to all secondary
+    NSX Managers.
+    * The IP discovery setting for a universal logical switch is managed
+    separately on each NSX Manager.
+
+    **Note:** In NSX 6.2.2 and earlier you cannot disable IP discovery for
+    universal logical switches on secondary NSX Managers.
   uriParameters:
     ID:
       required: true
-      displayName: ID
-      description: dvpg MoID or virtual wire ID
+      description: dvPortGroup MOID or logical switch (virtual wire) ID.
   get:
     displayName: arpMACRead
-    description: Retrieve ARP suppression and MAC learning information.
+    description: Retrieve IP discovery and MAC learning information.
   put:
     displayName: arpMACUpdate
-    description: Enable or disable ARP suppression and MAC learning.
+    description: |
+      Enable or disable IP discovery and MAC learning.
+
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.2.3 | Method updated. IP discovery can be disabled on secondary NSX Managers.
     body:
       application/xml:
         example: |
@@ -6576,46 +6610,48 @@ securitySchemes:
         
         If no query parameters are used, all rule configuration is retrieved.
         Use the query parameters to filter the rule configuration information.
-      body:
-        application/xml:
-          example: |
-            <firewallConfiguration timestamp="1360144793284">
-              <contextId>globalroot-0</contextId>
-              <layer3Sections>
-                <section id="2" name="defaultSectionLayer3" generationNumber="1360144793284" timestamp="1360144793284">
-                  <rule id="2" disabled="false" logged="false">
-                    <name>Default Rule</name>
-                    <action>DENY</action>
-                    <appliedToList>
-                      <appliedTo>
-                        <name>DISTRIBUTED_FIREWALL</name>
-                        <value>DISTRIBUTED_FIREWALL</value>
-                        <type>DISTRIBUTED_FIREWALL</type>
-                        <isValid>true</isValid>
-                      </appliedTo>
-                    </appliedToList>
-                    <sectionId>2</sectionId>
-                  </rule>
-                </section>
-              </layer3Sections>
-              <layer2Sections>
-                <section id="1" name="defaultSectionLayer2" generationNumber="1360144793284" timestamp="1360144793284">
-                  <rule id="1" disabled="false" logged="false">
-                    <name>Default Rule</name>
-                    <action>ALLOW</action>
-                    <appliedToList>
-                      <appliedTo>
-                        <name>DISTRIBUTED_FIREWALL</name>
-                        <value>DISTRIBUTED_FIREWALL</value>
-                        <type>DISTRIBUTED_FIREWALL</type>
-                        <isValid>true</isValid>
-                      </appliedTo>
-                    </appliedToList>
-                    <sectionId>1</sectionId>
-                  </rule>
-                </section>
-              </layer2Sections>
-            </firewallConfiguration>
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <firewallConfiguration timestamp="1360144793284">
+                  <contextId>globalroot-0</contextId>
+                  <layer3Sections>
+                    <section id="2" name="defaultSectionLayer3" generationNumber="1360144793284" timestamp="1360144793284">
+                      <rule id="2" disabled="false" logged="false">
+                        <name>Default Rule</name>
+                        <action>DENY</action>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>DISTRIBUTED_FIREWALL</name>
+                            <value>DISTRIBUTED_FIREWALL</value>
+                            <type>DISTRIBUTED_FIREWALL</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                        <sectionId>2</sectionId>
+                      </rule>
+                    </section>
+                  </layer3Sections>
+                  <layer2Sections>
+                    <section id="1" name="defaultSectionLayer2" generationNumber="1360144793284" timestamp="1360144793284">
+                      <rule id="1" disabled="false" logged="false">
+                        <name>Default Rule</name>
+                        <action>ALLOW</action>
+                        <appliedToList>
+                          <appliedTo>
+                            <name>DISTRIBUTED_FIREWALL</name>
+                            <value>DISTRIBUTED_FIREWALL</value>
+                            <type>DISTRIBUTED_FIREWALL</type>
+                            <isValid>true</isValid>
+                          </appliedTo>
+                        </appliedToList>
+                        <sectionId>1</sectionId>
+                      </rule>
+                    </section>
+                  </layer2Sections>
+                </firewallConfiguration>
       queryParameters:
         ruleType:
           required: false
