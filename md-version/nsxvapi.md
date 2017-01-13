@@ -674,20 +674,25 @@ Working with the NSX Controller Password
 
 * **put** *(secured)*: Change the NSX controller password.
 
-## servicesScope
+## servicesApps
 Working with Services
 =============
 
 ### /2.0/services/application/scope/{scopeId}
+Retrieve Services from a Specific Scope
+----
 
-* **get** *(secured)*: List services that have been created on the scope.
+* **get** *(secured)*: Retrieve services that have been created on the specified scope.
+
+### /2.0/services/application/{scopeId}
+Create a Service on a Specific Scope
+------
+
 * **post** *(secured)*: Create a new service on the specified scope.
 
-## service
-Working With a Specified Service
-============
-
 ### /2.0/services/application/{applicationId}
+Working With a Specified Service
+-------
 
 * **get** *(secured)*: Retrieve details about the specified service.
 * **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a

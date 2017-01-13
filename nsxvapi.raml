@@ -2031,92 +2031,102 @@ securitySchemes:
               <apiPassword></apiPassword>
             </controllerCredential>
           schema: nsxControllerPasswordUpdate
-/2.0/services/application/scope/{scopeId}:
-  displayName: servicesScope
+/2.0/services/application:
+  displayName: servicesApps
   description: |
     Working with Services
     =============
-  uriParameters:
-    scopeId:
-      required: true
-      displayName: scopeId
-      description: |
-        Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use
-        cases.
-  get:
-    displayName: servicesScopeRead
-    description: List services that have been created on the scope.
-  post:
-    displayName: servicesScopeCreate
-    description: |
-      Create a new service on the specified scope.
-    body:
-      application/xml:
-        example: |
-          <application>
-            <objectId></objectId>
-            <type>
-              <typeName/>
-            </type>
-            <description></description>
-            <name></name>
-            <revision></revision>
-            <objectTypeName></objectTypeName>
-            <element>
-              <applicationProtocol>mandatory</applicationProtocol>
-              <value>mandatory</value>
-            </element>
-          </application>
-        schema: servicesScopeCreate
-/2.0/services/application/{applicationId}:
-  displayName: service
-  description: |
-    Working With a Specified Service
-    ============
-  uriParameters:
-    applicationId:
-      required: true
-      displayName: applicationId
-      description: |
-        Application ID. You can get a list of application IDs from `GET
-        /api/2.0/services/application/scope/{scopeId}`.
-  get:
-    displayName: serviceRead
-    description: Retrieve details about the specified service.
-  put:
-    displayName: serviceUpdate
-    description: |
-      Modify the name, description, applicationProtocol, or port value of a
-      service.
-    body:
-      application/xml:
-        example: |
-          <application>
-            <objectId></objectId>
-            <type>
-              <typeName></typeName>
-            </type>
-            <description></description>
-            <name></name>
-            <revision></revision>
-            <objectTypeName></objectTypeName>
-            <element>
-              <applicationProtocol></applicationProtocol>
-              <value></value>
-            </element>
-          </application>
-        schema: serviceUpdate
-  delete:
-    displayName: serviceDelete
-    description: Delete the specified service.
-    queryParameters:
-      force:
-        type: boolean
-        required: false
-        displayName: force
+  /scope/{scopeId}:
+    displayName: servicesAppsScopeScope
+    description: | 
+      Retrieve Services from a Specific Scope
+      ----
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
         description: |
-          Indicates if the delete should be forced or unforced. The default is
-          unforced (false).
+          Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use
+          cases.
+    get:
+      displayName: servicesAppsScopeScopeRead
+      description: Retrieve services that have been created on the specified scope.
+  /{scopeId}:
+    displayName: servicesAppsScope
+    description: |
+      Create a Service on a Specific Scope
+      ------
+    post:
+      displayName: servicesAppsScopeCreate
+      description: |
+        Create a new service on the specified scope.
+      body:
+        application/xml:
+          example: |
+            <application>
+              <objectId></objectId>
+              <type>
+                <typeName/>
+              </type>
+              <description></description>
+              <name></name>
+              <revision></revision>
+              <objectTypeName></objectTypeName>
+              <element>
+                <applicationProtocol>mandatory</applicationProtocol>
+                <value>mandatory</value>
+              </element>
+            </application>
+          schema: servicesScopeCreate
+  /{applicationId}:
+    displayName: serviceApp
+    description: |
+      Working With a Specified Service
+      -------
+    uriParameters:
+      applicationId:
+        required: true
+        displayName: applicationId
+        description: |
+          Application ID. You can get a list of application IDs from `GET
+          /api/2.0/services/application/scope/{scopeId}`.
+    get:
+      displayName: serviceAppRead
+      description: Retrieve details about the specified service.
+    put:
+      displayName: serviceAppUpdate
+      description: |
+        Modify the name, description, applicationProtocol, or port value of a
+        service.
+      body:
+        application/xml:
+          example: |
+            <application>
+              <objectId></objectId>
+              <type>
+                <typeName></typeName>
+              </type>
+              <description></description>
+              <name></name>
+              <revision></revision>
+              <objectTypeName></objectTypeName>
+              <element>
+                <applicationProtocol></applicationProtocol>
+                <value></value>
+              </element>
+            </application>
+          schema: serviceUpdate
+    delete:
+      displayName: serviceAppDelete
+      description: Delete the specified service.
+      queryParameters:
+        force:
+          type: boolean
+          required: false
+          displayName: force
+          description: |
+            Indicates if the delete should be forced or unforced. The default is
+            unforced (false).
 /2.0/services/applicationgroup:
   displayName: applicationgroup
   description: |

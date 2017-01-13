@@ -4202,6 +4202,10 @@ vCenter MOID (e.g. domain-c34 for a cluster).</p>
 <section class="resource">
   <div class="description"><h1 id="working-with-services">Working with Services</h1>
 </div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="retrieve-services-from-a-specific-scope">Retrieve Services from a Specific Scope</h2>
+</div>
   <div class="params">
     <h4>URI Parameters</h4>
       <dl>
@@ -4224,70 +4228,13 @@ cases.</p>
     href="#GET/2.0/services/application/scope/{scopeId}"
   ><h2>GET /2.0/services/application/scope/{scopeId}</h2></a>
   <div class="content">
-    <p><p>List services that have been created on the scope.</p>
+    <p><p>Retrieve services that have been created on the specified scope.</p>
 </p>
-  </div>
-</div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/2.0/services/application/scope/{scopeId}"
-    href="#POST/2.0/services/application/scope/{scopeId}"
-  ><h2>POST /2.0/services/application/scope/{scopeId}</h2></a>
-  <div class="content">
-    <p><p>Create a new service on the specified scope.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="application"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="objectId"/&gt;
-        &lt;xs:element name="type"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="typeName"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element type="xs:string" name="description"/&gt;
-        &lt;xs:element type="xs:string" name="name"/&gt;
-        &lt;xs:element type="xs:byte" name="revision"/&gt;
-        &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
-        &lt;xs:element name="element"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="applicationProtocol"/&gt;
-              &lt;xs:element type="xs:string" name="value"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>/&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">element</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProtocol</span>&gt;</span>mandatory<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProtocol</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>mandatory<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">element</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span>
-</code></pre>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-a-specified-service">Working With a Specified Service</h1>
+  <div class="description"><h2 id="working-with-a-specified-service">Working With a Specified Service</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -4397,6 +4344,79 @@ unforced (false).</p>
   </dd>
 </dl>
     </div>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="create-a-service-on-a-specific-scope">Create a Service on a Specific Scope</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">scopeId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/services/application/{scopeId}"
+    href="#POST/2.0/services/application/{scopeId}"
+  ><h2>POST /2.0/services/application/{scopeId}</h2></a>
+  <div class="content">
+    <p><p>Create a new service on the specified scope.</p>
+</p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="application"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="objectId"/&gt;
+        &lt;xs:element name="type"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="typeName"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element type="xs:string" name="description"/&gt;
+        &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element type="xs:byte" name="revision"/&gt;
+        &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
+        &lt;xs:element name="element"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="applicationProtocol"/&gt;
+              &lt;xs:element type="xs:string" name="value"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>/&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">element</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProtocol</span>&gt;</span>mandatory<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProtocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>mandatory<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">element</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
