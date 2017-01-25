@@ -3679,6 +3679,13 @@ Working with the NSX Edge Routing Configuration
 
 * **get** *(secured)*: Retrieve routes.
 * **put** *(secured)*: Configure globalConfig, staticRouting, OSPG, and BGP.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+
 * **delete** *(secured)*: Delete the routing config stored in the NSX Manager database and the
 default routes from the specified NSX Edge appliance.
 
@@ -3704,7 +3711,21 @@ Working With OSPF Routing for NSX Edge
 ----
 
 * **get** *(secured)*: Retrieve OSPF configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+
 * **put** *(secured)*: Configure OSPF.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+
 * **delete** *(secured)*: Delete OSPF routing.
 
 ### /4.0/edges/{edgeId}/routing/config/bgp
@@ -3712,7 +3733,21 @@ Working with BGP Routes for NSX Edge
 ---
 
 * **get** *(secured)*: Retrieve BGP configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+
 * **put** *(secured)*: Configure BGP.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+
 * **delete** *(secured)*: Delete BGP Routing
 
 ### /4.0/edges/{edgeId}/bridging/config

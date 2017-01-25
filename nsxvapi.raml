@@ -110,7 +110,6 @@ schemas:
     routingConfigUpdate: !include schemas/routingConfigUpdate.xsd
     routingConfigStaticUpdate: !include schemas/routingConfigStaticUpdate.xsd
     routingGlobalConfigUpdate: !include schemas/routingGlobalConfigUpdate.xsd
-    routingISISUpdate: !include schemas/routingISISUpdate.xsd
     routingOSPFUpdate: !include schemas/routingOSPFUpdate.xsd
     rulesCreate: !include schemas/rulesCreate.xsd
     ruleUpdate: !include schemas/ruleUpdate.xsd
@@ -9806,7 +9805,14 @@ securitySchemes:
         description: Retrieve routes.
       put:
         displayName: routingConfigUpdate
-        description: Configure globalConfig, staticRouting, OSPG, and BGP.
+        description: |
+          Configure globalConfig, staticRouting, OSPG, and BGP.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
         body:
           application/xml:
             example: |
@@ -10004,10 +10010,24 @@ securitySchemes:
           ----
         get:
           displayName: routingOSPFRead
-          description: Retrieve OSPF configuration.
+          description: |
+            Retrieve OSPF configuration.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
         put:
           displayName: routingOSPFUpdate
-          description: Configure OSPF.
+          description: |
+            Configure OSPF.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
           body:
             application/xml:
               example: |
@@ -10039,7 +10059,6 @@ securitySchemes:
                       <rule>
                         <prefixName></prefixName>
                         <from>
-                          <isis></isis>
                           <ospf></ospf>
                           <bgp></bgp>
                           <static></static>
@@ -10061,10 +10080,24 @@ securitySchemes:
           ---
         get:
           displayName: routingBGPRead
-          description: Retrieve BGP configuration.
+          description: | 
+            Retrieve BGP configuration.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
         put:
           displayName: routingBGPUpdate
-          description: Configure BGP.
+          description: |
+            Configure BGP.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
           body:
             application/xml:
               example: |
@@ -10096,7 +10129,6 @@ securitySchemes:
                       <rule>
                         <prefixName></prefixName>
                         <from>
-                          <isis></isis>
                           <ospf></ospf>
                           <bgp></bgp>
                           <static></static>
