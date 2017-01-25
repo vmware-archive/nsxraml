@@ -1,4 +1,4 @@
-# VMware NSX for vSphere API documentation version 6.2.4
+# VMware NSX for vSphere API documentation version 6.3.0
 https://{nsxmanager}/api
 
 ### Introduction
@@ -122,7 +122,7 @@ IDs via the vCenter Managed Object Browser.
    virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
 
 ### part-number
-EN-001545-07
+EN-002339-00
 
 ---
 
@@ -1691,170 +1691,6 @@ Working with a Specific Service on a Cluster
 
 * **get** *(secured)*: Retrieve detailed information about the service
 
-## dataSecurityConfiguration
-Working with Data Security
-=======
-
-### /2.0/dlp/regulation
-Data Loss Prevention Regulation
-----
-
-* **get** *(secured)*: Retrieve the list of available regulations for a policy.
-
-### /2.0/dlp/policy/regulations
-Working with Regulations
-----
-
-* **put** *(secured)*: Enable one or more regulations by putting the regulation IDs into the
-policy. You can get the IDs from the output of the dlpRegulation GET
-call
-
-### /2.0/dlp/classificationvalue
-Working with Classification Values
-----
-
-* **get** *(secured)*: Get all classification values.
-
-### /2.0/dlp/policy/classificationvalues
-Working with Regular Expressions as a Classification Value
-----
-
-* **put** *(secured)*: Configure a customized regex as a classification value.
-
-### /2.0/dlp/excludableareas
-Working with Excludable Areas
-----
-
-* **get** *(secured)*: Retrieve list of datacenters, clusters, and resource pools that are
-excludable from policy inspection.
-
-### /2.0/dlp/policy/excludedareas
-Excluding Areas from Policies
-----
-
-* **put** *(secured)*: (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
-Exclude areas from policy inspection.
-
-### /2.0/dlp/policy/includedsecuritygroups
-Working With Included Security Groups
-----
-
-* **get** *(secured)*: Retrieve security groups that have been included in data security
-scans.
-
-* **put** *(secured)*: Include security groups in data security scan.
-
-### /2.0/dlp/policy/excludedsecuritygroups
-Working With Excluded Security Groups
-----
-
-* **get** *(secured)*: Retrieve security groups that have been excluded from data security
-scans.
-
-* **put** *(secured)*: Exclude security groups in data security scan.
-
-### /2.0/dlp/policy/FileFilters
-Working with File Filters
-----
-
-* **put** *(secured)*: Configure file filters for scanning.
-
-### /2.0/dlp/policy/saved
-Working With Saved Policies
----
-
-* **get** *(secured)*: Retrieve saved policy.
-
-### /2.0/dlp/policy/published
-Working with Published Policies
-----
-
-* **get** *(secured)*: Retrieve currently published policy.
-
-### /2.0/dlp/policy/publish
-Publishing Policies
-----
-
-* **put** *(secured)*: After updating a policy with added regulations, excluded areas, or
-customized regex values, publish an updated policy to enforce new
-parameters.
-
-### /2.0/dlp/scanop
-Working with Scanning
-----
-
-* **put** *(secured)*: Start, pause, resume, or stop a data security scan.
-
-### /2.0/dlp/scanstatus
-Working With Scan Status
-----
-
-* **get** *(secured)*: Retrieve the status of a scan operation.
-
-### /2.0/dlp/scan/current/vms/{ID}
-Working with a Specific Scan
-----
-
-* **get** *(secured)*: Retrieve information about the VMs being scanned.
-
-### /2.0/dlp/completedscansummaries
-Working with Scan Summaries
-----
-
-* **get** *(secured)*: Retrieve start and end time, total number of VMs scanned, and total
-number of violations for the last five completed data security scans.
-
-### /2.0/dlp/scan/{scanID}/detailsascsv
-Working with Scans in CSV Format
-----
-
-* **get** *(secured)*: Retrieve ID, Name, Scan status, and Violation counts for VM's scanned
-during the specified scan.
-
-### /2.0/dlp/scan/{scanID}/policyasxml
-Working with Scans in XML Format
-----
-
-* **get** *(secured)*: Retrieve XML representation of the policy used in the previous scan.
-
-### /2.0/dlp/violations
-Working With Violations
-----
-
-* **get** *(secured)*: Retrieve the regulations that have been violated in scans.
-
-### /2.0/dlp/violations/{contextID}
-Working with Violations for a Specific Resource
-----
-
-* **get** *(secured)*: Get violation count for specific resource.
-
-### /2.0/dlp/violatingfiles
-Working with Violating Files
-----
-
-* **get** *(secured)*: Get violating files and the regulations each file violated
-
-### /2.0/dlp/violatingfiles/{contextID}
-Working with Violating Files for a Specific Resource
-----
-
-* **get** *(secured)*: Get violating files for a resource.
-
-### /2.0/dlp/violatingfilesascsv
-Working with Violating Files in CSV Format
-----
-
-* **get** *(secured)*: Display the violating files and the regulations each file violated in
-CSV format.
-
-### /2.0/dlp/violatingfilesascsv/{contextID}
-Working With Violating Files in CSV Format for a Specific Resource
-----
-
-* **get** *(secured)*: Get violated regulations and violating files for the resource in
-CSV format.
-
 ## eventControl
 Working with Data Collection for Activity Monitoring
 ===========
@@ -2661,6 +2497,25 @@ Working with Solution Activation Status
 Working with Distributed Firewall
 =================================
 
+### /4.0/firewall/globalroot-0/defaultconfig
+Default Firewall Configuration
+-----
+
+* **get** *(secured)*: Retrieve the default firewall configuration.
+
+The output of this method can be used to restore the firewall config
+back to default. For example, to replace the layer 2 or layer 3
+default section, use the relevant default section from the `GET
+/api/4.0/firewall/globalroot-0/defaultconfig` response body to create
+the request body of `PUT
+/api/4.0/firewall/globalroot-0/config/layer2sections|layer3sections/{sectionId}`.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
 ### /4.0/firewall/globalroot-0/config
 Distributed Firewall Rules Configuration
 ---
@@ -2722,10 +2577,9 @@ When updating the firewall configuration:
   exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
   originating from all IPs other than 1.1.1.1.
 
-* **delete** *(secured)*: Restore default configuration.
-
-Restores a configuration with one defaultLayer3 section with default
-allow rule and one defaultLayer2Section with default allow rule.
+* **delete** *(secured)*: Restores default configuration, which means one defaultLayer3 section
+with three default allow rules and one defaultLayer2Section with one
+default allow rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections
 Working With Layer 3 Sections in Distributed Firewall
@@ -2807,6 +2661,17 @@ must synchronize firewall rules from Service Composer using the `GET
 /api/2.0/services/policy/serviceprovider/firewall` API.
 
 * **delete** *(secured)*: Delete the specified layer 3 distributed firewall section.
+
+If the default layer 3 firewall section is selected, the request is
+rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
+for information on restoring the default firewall config or
+section.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules
 Working With Distributed Firewall Rules in a Layer 3 Section
@@ -2961,7 +2826,18 @@ firewall sections using Distributed Firewall REST APIs. If you do, you
 must synchronize firewall rules from Service Composer using the `GET
 /api/2.0/services/policy/serviceprovider/firewall` API.
 
-* **delete** *(secured)*: Deletes a L2 section and its content by ID.
+* **delete** *(secured)*: Delete the specified layer 2 section and its contents.
+
+If the default layer 2 firewall section is selected, the request is
+rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
+for information on restoring the default firewall config or
+section.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
 
 ### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules
 Working With Distributed Firewall Rules in a Layer 2 Section
@@ -3684,6 +3560,7 @@ Working with the NSX Edge Routing Configuration
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 
 * **put** *(secured)*: Configure globalConfig, staticRouting, OSPG, and BGP.
 
@@ -3692,6 +3569,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 
 * **delete** *(secured)*: Delete the routing config stored in the NSX Manager database and the
 default routes from the specified NSX Edge appliance.
@@ -3724,6 +3602,7 @@ Working With OSPF Routing for NSX Edge
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 
 * **put** *(secured)*: Configure OSPF.
 
@@ -3732,6 +3611,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 
 * **delete** *(secured)*: Delete OSPF routing.
 
@@ -3746,6 +3626,7 @@ Working with BGP Routes for NSX Edge
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 
 * **put** *(secured)*: Configure BGP.
 
@@ -3754,6 +3635,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 
 * **delete** *(secured)*: Delete BGP Routing
 

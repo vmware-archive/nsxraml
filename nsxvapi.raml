@@ -5,12 +5,12 @@ documentation:
  - title: Introduction
    content: !include documentation/introduction.md
  - title: part-number
-   content: EN-001545-07
+   content: EN-002339-00
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
     description: Hostname or IP address of the NSX Manager.
-version: 6.2.4
+version: 6.3.0
 securedBy: [basic]
 schemas:
   - advancedConfigUpdate: !include schemas/advancedConfigUpdate.xsd
@@ -4699,361 +4699,6 @@ securitySchemes:
       get:
         displayName: serviceDetailsRead
         description: Retrieve detailed information about the service
-/2.0/dlp:
-  displayName: dataSecurityConfiguration
-  description: |
-    Working with Data Security
-    =======
-  /regulation:
-    displayName: dlpRegulation
-    description: |
-      Data Loss Prevention Regulation
-      ----
-    get:
-      displayName: dlpRegulationRead
-      description: Retrieve the list of available regulations for a policy.
-  /policy/regulations:
-    displayName: dlpPolicyRegulations
-    description: |
-      Working with Regulations
-      ----
-    put:
-      displayName: dlpPolicyRegulationsUpdate
-      description: |
-        Enable one or more regulations by putting the regulation IDs into the
-        policy. You can get the IDs from the output of the dlpRegulation GET
-        call
-      body:
-        application/xml:
-          example: |
-            <set>
-              <long></long>
-            </set>
-          schema: dlpPolicyRegulationsUpdate
-  /classificationvalue:
-    displayName: dlpClassificationValue
-    description: |
-      Working with Classification Values
-      ----
-    get:
-      displayName: dlpClassificationValueRead
-      description: Get all classification values.
-  /policy/classificationvalues:
-    displayName: dlpRegexClassificationValue
-    description: |
-      Working with Regular Expressions as a Classification Value
-      ----
-    put:
-      displayName: dlpRegexClassificationValueUpdate
-      description: Configure a customized regex as a classification value.
-      body:
-        application/xml:
-          example: |
-            <set>
-              <ClassificationValue>
-                <id></id>
-                <classification>
-                  <id></id>
-                  <name></name>
-                  <providerName></providerName>
-                  <description></description>
-                  <customizable></customizable>
-                </classification>
-                <value></value>
-              </ClassificationValue>
-            </set>
-          schema: dlpRegexClassificationValueUpdate
-  /excludableareas:
-    displayName: dlpExcludableAreas
-    description: |
-      Working with Excludable Areas
-      ----
-    get:
-      displayName: dlpExcludableAreasList
-      description: |
-        Retrieve list of datacenters, clusters, and resource pools that are
-        excludable from policy inspection.
-  /policy/excludedareas:
-    displayName: dlpExcludeArea
-    description: |
-      Excluding Areas from Policies
-      ----
-    put:
-      displayName: dlpExcludeAreaUpdate
-      description: |
-        (DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
-        Exclude areas from policy inspection.
-      body:
-        application/xml:
-          example: |
-            <set>
-              <string></string>
-            </set>
-          schema: dlpExcludeAreaUpdate
-  /policy/includedsecuritygroups:
-    displayName: dlpIncludeSecGroup
-    description: |
-      Working With Included Security Groups
-      ----
-    get:
-      displayName: dlpIncludeSecGroupRead
-      description: |
-        Retrieve security groups that have been included in data security
-        scans.
-    put:
-      displayName: dlpIncludeSecGroupUpdate
-      description: Include security groups in data security scan.
-      body:
-        application/xml:
-          example: |
-            <set>
-              <string></string>
-              <string></string>
-            </set>
-          schema: dlpIncludeSecGroupUpdate
-  /policy/excludedsecuritygroups:
-    displayName: dlpExcludeSecGroup
-    description: |
-      Working With Excluded Security Groups
-      ----
-    get:
-      displayName: dlpExcludeSecGroupRead
-      description: |
-        Retrieve security groups that have been excluded from data security
-        scans.
-    put:
-      displayName: dlpExcludeSecGroupUpdate
-      description: Exclude security groups in data security scan.
-      body:
-        application/xml:
-          example: |
-            <set>
-              <string></string>
-              <string></string>
-              </set>
-          schema: dlpExcludeSecGroupUpdate
-  /policy/FileFilters:
-    displayName: dlpFileFilters
-    description: |
-      Working with File Filters
-      ----
-    put:
-      displayName: dlpFileFiltersUpdate
-      description: Configure file filters for scanning.
-      body:
-        application/xml:
-          example: |
-            <FileFilters>
-              <scanAllFiles></scanAllFiles>
-              <lastModifiedAfter></lastModifiedAfter>
-              <extensionsIncluded></extensionsIncluded>
-              <extensions></extensions>
-            </FileFilters>
-          schema: dlpFileFiltersUpdate
-  /policy/saved:
-    displayName: dlpPolicySaved
-    description: |
-      Working With Saved Policies
-      ---
-    get:
-      displayName: dlpPolicySavedList
-      description: Retrieve saved policy.
-  /policy/published:
-    displayName: dlpPolicyPublished
-    description: |
-      Working with Published Policies
-      ----
-    get:
-      displayName: dlpPolicyPublishedList
-      description: Retrieve currently published policy.
-  /policy/publish:
-    displayName: dlpPolicyPublish
-    description: |
-      Publishing Policies
-      ----
-    put:
-      displayName: dlpPolicyPublishExecute
-      description: |
-        After updating a policy with added regulations, excluded areas, or
-        customized regex values, publish an updated policy to enforce new
-        parameters.
-  /scanop:
-    displayName: dlpScanning
-    description: |
-      Working with Scanning
-      ----
-    put:
-      displayName: dlpScanningUpdate
-      description: Start, pause, resume, or stop a data security scan.
-      body:
-        application/xml:
-          example: |
-            <ScanOp></ScanOp>
-          schema: dlpScanningUpdate
-  /scanstatus:
-    displayName: dlpScanStatus
-    description: |
-      Working With Scan Status
-      ----
-    get:
-      displayName: dlpScanStatusList
-      description: Retrieve the status of a scan operation.
-  /scan/current/vms/{ID}:
-    displayName: dlpScanVMs
-    description: |
-      Working with a Specific Scan
-      ----
-    uriParameters:
-      ID:
-        displayName: ID
-        description: |
-          Limit filter results by VC MOID of datacenter, cluster, or resource
-          pool.
-    get:
-      displayName: dlpScanVMsRead
-      description: Retrieve information about the VMs being scanned.
-      queryParameters:
-        scanstatus:
-          displayName: scanstatus
-          description: |
-            Specify scan status of VMs to be retrieved:
-            all, notstarted, started, completed
-        pagesize:
-          displayName: pagesize
-          description: !include documentation/reuse/pagesize-1024
-          default: 256
-        startindex:
-          displayName: startindex
-          description: !include documentation/reuse/startindex
-  /completedscansummaries:
-    displayName: dlpScanSummaries
-    description: |
-      Working with Scan Summaries
-      ----
-    get:
-      displayName: dlpScanSummariesRead
-      description: |
-        Retrieve start and end time, total number of VMs scanned, and total
-        number of violations for the last five completed data security scans.
-  /scan/{scanID}/detailsascsv:
-    displayName: dlpPreviousScan
-    description: |
-      Working with Scans in CSV Format
-      ----
-    uriParameters:
-      scanID:
-        required: true
-        displayName: scanID
-        description: Specified scan ID
-    get:
-      displayName: dlpPreviousScanRead
-      description: |
-        Retrieve ID, Name, Scan status, and Violation counts for VM's scanned
-        during the specified scan.
-  /scan/{scanID}/policyasxml:
-    displayName: dlpPolicyAsXML
-    description: |
-      Working with Scans in XML Format
-      ----
-    uriParameters:
-      scanID:
-        required: true
-        displayName: scanID
-        description: Specified previous scan.
-    get:
-      displayName: dlpPolicyAsXMLList
-      description: |
-        Retrieve XML representation of the policy used in the previous scan.
-  /violations:
-    displayName: dlpViolations
-    description: |
-      Working With Violations
-      ----
-    get:
-      displayName: dlpViolationsRead
-      description: |
-        Retrieve the regulations that have been violated in scans.
-    /{contextID}:
-      displayName: dlpViolation
-      description: |
-        Working with Violations for a Specific Resource
-        ----
-      uriParameters:
-        contextID:
-          required: true
-          displayName: contextID
-          description: |
-            Specified resource (moid of datacenter, cluster, folder, resource
-            pool, or VM).
-      get:
-        displayName: dlpViolationRead
-        description: Get violation count for specific resource.
-  /violatingfiles:
-    displayName: dlpViolatingFiles
-    description: |
-      Working with Violating Files
-      ----
-    get:
-      displayName: dlpViolatingFilesRead
-      description: Get violating files and the regulations each file violated
-      queryParameters:
-        pagesize:
-          displayName: pagesize
-          description: !include documentation/reuse/pagesize
-          required: true
-        startindex:
-          displayName: startindex
-          description: Page number from which the results will be returned.
-          required: true
-    /{contextID}:
-      displayName: dlpViolatingFilesContext
-      description: |
-        Working with Violating Files for a Specific Resource
-        ----
-      uriParameters:
-        contextID:
-         required: true
-         displayName: contextID
-         description: |
-          Specified resource (moid of datacenter, cluster, folder, resource
-          pool, or VM).
-      get:
-        displayName: dlpViolatingFilesContext
-        description: Get violating files for a resource.
-        queryParameters:
-          pagesize:
-            displayName: pagesize
-            description: !include documentation/reuse/pagesize
-          startindex:
-            displayName: startindex
-            description: Page number from which the results will be returned.
-  /violatingfilesascsv:
-    displayName: dlpViolatingFilesCSV
-    description: |
-      Working with Violating Files in CSV Format
-      ----
-    get:
-      displayName: dlpViolatingFilesCSVList
-      description: |
-        Display the violating files and the regulations each file violated in
-        CSV format.
-    /{contextID}:
-      displayName: dlpViolatingFilesContextCSV
-      description: |
-        Working With Violating Files in CSV Format for a Specific Resource
-        ----
-      uriParameters:
-        contextID:
-         required: true
-         displayName: contextID
-         description: |
-          Specified resource (moid of datacenter, cluster, folder, resource
-          pool, or VM).
-      get:
-        displayName: dlpViolatingFilesContextCSVList
-        description: |
-          Get violated regulations and violating files for the resource in
-          CSV format.
 /1.0/eventcontrol:
   displayName: eventControl
   description: |
@@ -6584,6 +6229,28 @@ securitySchemes:
   description: |
     Working with Distributed Firewall
     =================================
+  /globalroot-0/defaultconfig:
+    displayName: dfwConfigDefault
+    description: | 
+      Default Firewall Configuration
+      -----
+    get:
+      displayName: dfwConfigDefaultRead
+      description: | 
+        Retrieve the default firewall configuration.
+
+        The output of this method can be used to restore the firewall config
+        back to default. For example, to replace the layer 2 or layer 3
+        default section, use the relevant default section from the `GET
+        /api/4.0/firewall/globalroot-0/defaultconfig` response body to create
+        the request body of `PUT
+        /api/4.0/firewall/globalroot-0/config/layer2sections|layer3sections/{sectionId}`.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method introduced.
   /globalroot-0/config:
     displayName: dfwConfig
     description: |
@@ -6806,10 +6473,9 @@ securitySchemes:
     delete:
       displayName: dfwConfigDelete
       description: |
-        Restore default configuration.
-        
-        Restores a configuration with one defaultLayer3 section with default
-        allow rule and one defaultLayer2Section with default allow rule.
+        Restores default configuration, which means one defaultLayer3 section
+        with three default allow rules and one defaultLayer2Section with one
+        default allow rule.
     /layer3sections:
       displayName: dfwL3Section
       description: !include documentation/reuse/firewall/dfwL3Section
@@ -7287,7 +6953,19 @@ securitySchemes:
                 </section>
         delete:
           displayName: dfwL3SectionIdDelete
-          description: Delete the specified layer 3 distributed firewall section.
+          description: |
+            Delete the specified layer 3 distributed firewall section.
+
+            If the default layer 3 firewall section is selected, the request is
+            rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
+            for information on restoring the default firewall config or
+            section.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
         /rules:
           displayName: dfwL3Rules
           description: |
@@ -7555,7 +7233,19 @@ securitySchemes:
                 </section>
         delete:
           displayName: dfwL2SectionIdDelete
-          description: Deletes a L2 section and its content by ID.
+          description: |
+            Delete the specified layer 2 section and its contents.
+
+            If the default layer 2 firewall section is selected, the request is
+            rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
+            for information on restoring the default firewall config or
+            section.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
         /rules:
           displayName: dfwL2Rules
           description: |
@@ -9810,6 +9500,7 @@ securitySchemes:
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+          6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
       put:
         displayName: routingConfigUpdate
         description: |
@@ -9820,6 +9511,7 @@ securitySchemes:
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+          6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
         body:
           application/xml:
             example: |
@@ -9857,7 +9549,6 @@ securitySchemes:
                 </staticRouting>
                 <ospf>
                   <enabled></enabled>
-                  <defaultOriginate></defaultOriginate>
                   <gracefulRestart></gracefulRestart>
                   <protocolAddress></protocolAddress>
                   <forwardingAddress></forwardingAddress>
@@ -10025,6 +9716,7 @@ securitySchemes:
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
         put:
           displayName: routingOSPFUpdate
           description: |
@@ -10035,6 +9727,7 @@ securitySchemes:
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
           body:
             application/xml:
               example: |
@@ -10087,7 +9780,7 @@ securitySchemes:
           ---
         get:
           displayName: routingBGPRead
-          description: | 
+          description: |
             Retrieve BGP configuration.
 
             **Method history:**
@@ -10095,6 +9788,7 @@ securitySchemes:
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
         put:
           displayName: routingBGPUpdate
           description: |
@@ -10105,6 +9799,7 @@ securitySchemes:
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
           body:
             application/xml:
               example: |

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>VMware NSX for vSphere Documentation | 6.2.4</title>
+  <title>VMware NSX for vSphere Documentation | 6.3.0</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
 
 
 <div id="fleece-content" class="fleece-content">
-  <h1 class="main-heading">VMware NSX for vSphere 6.2.4 API Guide</h1>
+  <h1 class="main-heading">VMware NSX for vSphere 6.3.0 API Guide</h1>
   
         <section class="documentation">
 <h1 class="anchor" id="documentation-introduction">
@@ -133,7 +133,7 @@ virtual machines by vCenter MOID and hostname. e.g. <em>vm-216 (web-01a)</em>.</
     part-number
   </a>
 </h1>
-<div class="content"><p>EN-001545-07</p>
+<div class="content"><p>EN-002339-00</p>
 </div>
 </section>
     <section class="security-schemes">
@@ -2191,711 +2191,6 @@ Line Interface Reference</em>.</p>
   </dd>
 </dl>
     </div>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h1 id="working-with-data-security">Working with Data Security</h1>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-classification-values">Working with Classification Values</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/classificationvalue"
-    href="#GET/2.0/dlp/classificationvalue"
-  ><h2>GET /2.0/dlp/classificationvalue</h2></a>
-  <div class="content">
-    <p><p>Get all classification values.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-scan-summaries">Working with Scan Summaries</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/completedscansummaries"
-    href="#GET/2.0/dlp/completedscansummaries"
-  ><h2>GET /2.0/dlp/completedscansummaries</h2></a>
-  <div class="content">
-    <p><p>Retrieve start and end time, total number of VMs scanned, and total
-number of violations for the last five completed data security scans.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-excludable-areas">Working with Excludable Areas</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/excludableareas"
-    href="#GET/2.0/dlp/excludableareas"
-  ><h2>GET /2.0/dlp/excludableareas</h2></a>
-  <div class="content">
-    <p><p>Retrieve list of datacenters, clusters, and resource pools that are
-excludable from policy inspection.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-file-filters">Working with File Filters</h2>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/policy/FileFilters"
-    href="#PUT/2.0/dlp/policy/FileFilters"
-  ><h2>PUT /2.0/dlp/policy/FileFilters</h2></a>
-  <div class="content">
-    <p><p>Configure file filters for scanning.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="FileFilters"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="scanAllFiles"/&gt;
-        &lt;xs:element type="xs:string" name="lastModifiedAfter"/&gt;
-        &lt;xs:element type="xs:string" name="extensionsIncluded"/&gt;
-        &lt;xs:element type="xs:string" name="extensions"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FileFilters</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">scanAllFiles</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">scanAllFiles</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">lastModifiedAfter</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">lastModifiedAfter</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">extensionsIncluded</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extensionsIncluded</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">extensions</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extensions</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">FileFilters</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-regular-expressions-as-a-classification-value">Working with Regular Expressions as a Classification Value</h2>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/policy/classificationvalues"
-    href="#PUT/2.0/dlp/policy/classificationvalues"
-  ><h2>PUT /2.0/dlp/policy/classificationvalues</h2></a>
-  <div class="content">
-    <p><p>Configure a customized regex as a classification value.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="set"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element name="ClassificationValue"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="id"/&gt;
-              &lt;xs:element name="classification"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element type="xs:string" name="id"/&gt;
-                    &lt;xs:element type="xs:string" name="name"/&gt;
-                    &lt;xs:element type="xs:string" name="providerName"/&gt;
-                    &lt;xs:element type="xs:string" name="description"/&gt;
-                    &lt;xs:element type="xs:string" name="customizable"/&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-              &lt;xs:element type="xs:string" name="value"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">set</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ClassificationValue</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">classification</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">providerName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">providerName</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">customizable</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">customizable</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">classification</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">ClassificationValue</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">set</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="excluding-areas-from-policies">Excluding Areas from Policies</h2>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/policy/excludedareas"
-    href="#PUT/2.0/dlp/policy/excludedareas"
-  ><h2>PUT /2.0/dlp/policy/excludedareas</h2></a>
-  <div class="content">
-    <p><p>(DEPRECATED; use PUT /2.0/dlp/policy/excludedsecuritygroups instead)
-Exclude areas from policy inspection.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="set"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="string"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">set</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">set</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-excluded-security-groups">Working With Excluded Security Groups</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/policy/excludedsecuritygroups"
-    href="#GET/2.0/dlp/policy/excludedsecuritygroups"
-  ><h2>GET /2.0/dlp/policy/excludedsecuritygroups</h2></a>
-  <div class="content">
-    <p><p>Retrieve security groups that have been excluded from data security
-scans.</p>
-</p>
-  </div>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/policy/excludedsecuritygroups"
-    href="#PUT/2.0/dlp/policy/excludedsecuritygroups"
-  ><h2>PUT /2.0/dlp/policy/excludedsecuritygroups</h2></a>
-  <div class="content">
-    <p><p>Exclude security groups in data security scan.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="set"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="string" maxOccurs="unbounded" minOccurs="0"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">set</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">set</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-included-security-groups">Working With Included Security Groups</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/policy/includedsecuritygroups"
-    href="#GET/2.0/dlp/policy/includedsecuritygroups"
-  ><h2>GET /2.0/dlp/policy/includedsecuritygroups</h2></a>
-  <div class="content">
-    <p><p>Retrieve security groups that have been included in data security
-scans.</p>
-</p>
-  </div>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/policy/includedsecuritygroups"
-    href="#PUT/2.0/dlp/policy/includedsecuritygroups"
-  ><h2>PUT /2.0/dlp/policy/includedsecuritygroups</h2></a>
-  <div class="content">
-    <p><p>Include security groups in data security scan.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="set"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="string" maxOccurs="unbounded" minOccurs="0"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">set</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">set</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="publishing-policies">Publishing Policies</h2>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/policy/publish"
-    href="#PUT/2.0/dlp/policy/publish"
-  ><h2>PUT /2.0/dlp/policy/publish</h2></a>
-  <div class="content">
-    <p><p>After updating a policy with added regulations, excluded areas, or
-customized regex values, publish an updated policy to enforce new
-parameters.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-published-policies">Working with Published Policies</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/policy/published"
-    href="#GET/2.0/dlp/policy/published"
-  ><h2>GET /2.0/dlp/policy/published</h2></a>
-  <div class="content">
-    <p><p>Retrieve currently published policy.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-regulations">Working with Regulations</h2>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/policy/regulations"
-    href="#PUT/2.0/dlp/policy/regulations"
-  ><h2>PUT /2.0/dlp/policy/regulations</h2></a>
-  <div class="content">
-    <p><p>Enable one or more regulations by putting the regulation IDs into the
-policy. You can get the IDs from the output of the dlpRegulation GET
-call</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="set"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="long"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">set</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">long</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">long</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">set</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-saved-policies">Working With Saved Policies</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/policy/saved"
-    href="#GET/2.0/dlp/policy/saved"
-  ><h2>GET /2.0/dlp/policy/saved</h2></a>
-  <div class="content">
-    <p><p>Retrieve saved policy.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="data-loss-prevention-regulation">Data Loss Prevention Regulation</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/regulation"
-    href="#GET/2.0/dlp/regulation"
-  ><h2>GET /2.0/dlp/regulation</h2></a>
-  <div class="content">
-    <p><p>Retrieve the list of available regulations for a policy.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-a-specific-scan">Working with a Specific Scan</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">ID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Limit filter results by VC MOID of datacenter, cluster, or resource
-pool.</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/scan/current/vms/{ID}"
-    href="#GET/2.0/dlp/scan/current/vms/{ID}"
-  ><h2>GET /2.0/dlp/scan/current/vms/{ID}</h2></a>
-  <div class="content">
-    <p><p>Retrieve information about the VMs being scanned.</p>
-</p>
-    <div class="params">
-      <h3>Query Parameters</h3>
-        <dl>
-  <dt>
-    <span class="param">scanstatus</span>
-    <span class="badge">string</span>
-    
-  </dt>
-  <dd>
-      <p>Specify scan status of VMs to be retrieved:
-all, notstarted, started, completed</p>
-
-  </dd>
-  <dt>
-    <span class="param">pagesize</span>
-    <span class="badge">string</span>
-    
-  </dt>
-  <dd>
-      <p>The number of results to return. Range is 1-1024.</p>
-
-  </dd>
-  <dt>
-    <span class="param">startindex</span>
-    <span class="badge">string</span>
-    
-  </dt>
-  <dd>
-      <p>The starting point for returning results.</p>
-
-  </dd>
-</dl>
-    </div>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-scans-in-csv-format">Working with Scans in CSV Format</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">scanID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Specified scan ID</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/scan/{scanID}/detailsascsv"
-    href="#GET/2.0/dlp/scan/{scanID}/detailsascsv"
-  ><h2>GET /2.0/dlp/scan/{scanID}/detailsascsv</h2></a>
-  <div class="content">
-    <p><p>Retrieve ID, Name, Scan status, and Violation counts for VM&#39;s scanned
-during the specified scan.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-scans-in-xml-format">Working with Scans in XML Format</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">scanID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Specified previous scan.</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/scan/{scanID}/policyasxml"
-    href="#GET/2.0/dlp/scan/{scanID}/policyasxml"
-  ><h2>GET /2.0/dlp/scan/{scanID}/policyasxml</h2></a>
-  <div class="content">
-    <p><p>Retrieve XML representation of the policy used in the previous scan.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-scanning">Working with Scanning</h2>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/2.0/dlp/scanop"
-    href="#PUT/2.0/dlp/scanop"
-  ><h2>PUT /2.0/dlp/scanop</h2></a>
-  <div class="content">
-    <p><p>Start, pause, resume, or stop a data security scan.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="ScanOp" type="xs:string"/&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ScanOp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ScanOp</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-scan-status">Working With Scan Status</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/scanstatus"
-    href="#GET/2.0/dlp/scanstatus"
-  ><h2>GET /2.0/dlp/scanstatus</h2></a>
-  <div class="content">
-    <p><p>Retrieve the status of a scan operation.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-violating-files">Working with Violating Files</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/violatingfiles"
-    href="#GET/2.0/dlp/violatingfiles"
-  ><h2>GET /2.0/dlp/violatingfiles</h2></a>
-  <div class="content">
-    <p><p>Get violating files and the regulations each file violated</p>
-</p>
-    <div class="params">
-      <h3>Query Parameters</h3>
-        <dl>
-  <dt>
-    <span class="param">pagesize</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>The number of results to return.</p>
-
-  </dd>
-  <dt>
-    <span class="param">startindex</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Page number from which the results will be returned.</p>
-
-  </dd>
-</dl>
-    </div>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-violating-files-for-a-specific-resource">Working with Violating Files for a Specific Resource</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">contextID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Specified resource (moid of datacenter, cluster, folder, resource
-pool, or VM).</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/violatingfiles/{contextID}"
-    href="#GET/2.0/dlp/violatingfiles/{contextID}"
-  ><h2>GET /2.0/dlp/violatingfiles/{contextID}</h2></a>
-  <div class="content">
-    <p><p>Get violating files for a resource.</p>
-</p>
-    <div class="params">
-      <h3>Query Parameters</h3>
-        <dl>
-  <dt>
-    <span class="param">pagesize</span>
-    <span class="badge">string</span>
-    
-  </dt>
-  <dd>
-      <p>The number of results to return.</p>
-
-  </dd>
-  <dt>
-    <span class="param">startindex</span>
-    <span class="badge">string</span>
-    
-  </dt>
-  <dd>
-      <p>Page number from which the results will be returned.</p>
-
-  </dd>
-</dl>
-    </div>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-violating-files-in-csv-format">Working with Violating Files in CSV Format</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/violatingfilesascsv"
-    href="#GET/2.0/dlp/violatingfilesascsv"
-  ><h2>GET /2.0/dlp/violatingfilesascsv</h2></a>
-  <div class="content">
-    <p><p>Display the violating files and the regulations each file violated in
-CSV format.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-violating-files-in-csv-format-for-a-specific-resource">Working With Violating Files in CSV Format for a Specific Resource</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">contextID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Specified resource (moid of datacenter, cluster, folder, resource
-pool, or VM).</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/violatingfilesascsv/{contextID}"
-    href="#GET/2.0/dlp/violatingfilesascsv/{contextID}"
-  ><h2>GET /2.0/dlp/violatingfilesascsv/{contextID}</h2></a>
-  <div class="content">
-    <p><p>Get violated regulations and violating files for the resource in
-CSV format.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-violations">Working With Violations</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/violations"
-    href="#GET/2.0/dlp/violations"
-  ><h2>GET /2.0/dlp/violations</h2></a>
-  <div class="content">
-    <p><p>Retrieve the regulations that have been violated in scans.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-violations-for-a-specific-resource">Working with Violations for a Specific Resource</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">contextID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Specified resource (moid of datacenter, cluster, folder, resource
-pool, or VM).</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/2.0/dlp/violations/{contextID}"
-    href="#GET/2.0/dlp/violations/{contextID}"
-  ><h2>GET /2.0/dlp/violations/{contextID}</h2></a>
-  <div class="content">
-    <p><p>Get violation count for specific resource.</p>
-</p>
   </div>
 </div>
 </section>
@@ -20351,6 +19646,10 @@ displays an error.</p>
 <td>6.2.3</td>
 <td>Method updated. <code>isis</code> configuration section removed. <code>isis</code> parameter removed from route redistributions rule sections.</td>
 </tr>
+<tr>
+<td>6.3.0</td>
+<td>Parameter <code>defaultOriginate</code> removed for logical router NSX Edges.</td>
+</tr>
 </tbody></table></p>
   </div>
 </div>
@@ -20370,6 +19669,10 @@ displays an error.</p>
 </thead><tbody><tr>
 <td>6.2.3</td>
 <td>Method updated. <code>isis</code> configuration section removed. <code>isis</code> parameter removed from route redistributions rule sections.</td>
+</tr>
+<tr>
+<td>6.3.0</td>
+<td>Parameter <code>defaultOriginate</code> removed for logical router NSX Edges.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -20444,7 +19747,6 @@ displays an error.</p>
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
               &lt;xs:element type="xs:string" name="enabled"/&gt;
-              &lt;xs:element type="xs:string" name="defaultOriginate"/&gt;
               &lt;xs:element type="xs:string" name="gracefulRestart"/&gt;
               &lt;xs:element type="xs:string" name="protocolAddress"/&gt;
               &lt;xs:element type="xs:string" name="forwardingAddress"/&gt;
@@ -20636,7 +19938,6 @@ displays an error.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">staticRouting</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">defaultOriginate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">defaultOriginate</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">gracefulRestart</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">gracefulRestart</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span>
@@ -20751,6 +20052,10 @@ default routes from the specified NSX Edge appliance.</p>
 <td>6.2.3</td>
 <td>Method updated. <code>isis</code> parameter removed from route redistribution rules configuration.</td>
 </tr>
+<tr>
+<td>6.3.0</td>
+<td>Parameter <code>defaultOriginate</code> removed for logical router NSX Edges.</td>
+</tr>
 </tbody></table></p>
   </div>
 </div>
@@ -20770,6 +20075,10 @@ default routes from the specified NSX Edge appliance.</p>
 </thead><tbody><tr>
 <td>6.2.3</td>
 <td>Method updated. <code>isis</code> parameter removed from route redistribution rules configuration.</td>
+</tr>
+<tr>
+<td>6.3.0</td>
+<td>Parameter <code>defaultOriginate</code> removed for logical router NSX Edges.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -21001,6 +20310,10 @@ settings, static route configurations).</p>
 <td>6.2.3</td>
 <td>Method updated. <code>isis</code> parameter removed from route redistribution rules configuration.</td>
 </tr>
+<tr>
+<td>6.3.0</td>
+<td>Parameter <code>defaultOriginate</code> removed for logical router NSX Edges.</td>
+</tr>
 </tbody></table></p>
   </div>
 </div>
@@ -21020,6 +20333,10 @@ settings, static route configurations).</p>
 </thead><tbody><tr>
 <td>6.2.3</td>
 <td>Method updated. <code>isis</code> parameter removed from route redistribution rules configuration.</td>
+</tr>
+<tr>
+<td>6.3.0</td>
+<td>Parameter <code>defaultOriginate</code> removed for logical router NSX Edges.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -23924,9 +23241,9 @@ configuration you want to modify.</p>
     href="#DELETE/4.0/firewall/globalroot-0/config"
   ><h2>DELETE /4.0/firewall/globalroot-0/config</h2></a>
   <div class="content">
-    <p><p>Restore default configuration.</p>
-<p>Restores a configuration with one defaultLayer3 section with default
-allow rule and one defaultLayer2Section with default allow rule.</p>
+    <p><p>Restores default configuration, which means one defaultLayer3 section
+with three default allow rules and one defaultLayer2Section with one
+default allow rule.</p>
 </p>
   </div>
 </div>
@@ -24346,8 +23663,21 @@ configuration you want to modify.</p>
     href="#DELETE/4.0/firewall/globalroot-0/config/layer2sections/{sectionId}"
   ><h2>DELETE /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}</h2></a>
   <div class="content">
-    <p><p>Deletes a L2 section and its content by ID.</p>
-</p>
+    <p><p>Delete the specified layer 2 section and its contents.</p>
+<p>If the default layer 2 firewall section is selected, the request is
+rejected. See <code>GET /api/4.0/firewall/globalroot-0/defaultconfig</code>
+for information on restoring the default firewall config or
+section.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message <code>Cannot delete default section &lt;sectionId&gt;</code>.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>
@@ -25769,7 +25099,20 @@ configuration you want to modify.</p>
   ><h2>DELETE /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}</h2></a>
   <div class="content">
     <p><p>Delete the specified layer 3 distributed firewall section.</p>
-</p>
+<p>If the default layer 3 firewall section is selected, the request is
+rejected. See <code>GET /api/4.0/firewall/globalroot-0/defaultconfig</code>
+for information on restoring the default firewall config or
+section.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message <code>Cannot delete default section &lt;sectionId&gt;</code>.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>
@@ -26062,6 +25405,36 @@ configuration you want to modify.</p>
   </dd>
 </dl>
     </div>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="default-firewall-configuration">Default Firewall Configuration</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/firewall/globalroot-0/defaultconfig"
+    href="#GET/4.0/firewall/globalroot-0/defaultconfig"
+  ><h2>GET /4.0/firewall/globalroot-0/defaultconfig</h2></a>
+  <div class="content">
+    <p><p>Retrieve the default firewall configuration.</p>
+<p>The output of this method can be used to restore the firewall config
+back to default. For example, to replace the layer 2 or layer 3
+default section, use the relevant default section from the <code>GET
+/api/4.0/firewall/globalroot-0/defaultconfig</code> response body to create
+the request body of <code>PUT
+/api/4.0/firewall/globalroot-0/config/layer2sections|layer3sections/{sectionId}</code>.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>

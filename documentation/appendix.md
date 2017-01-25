@@ -1,5 +1,19 @@
 # Appendix
 
+## Removed Methods
+
+### Removed in NSX 6.3.0
+
+vCloud Networking and Security methods removed:
+* PUT /api/2.0/si/service/service-ID/servicedeploymentspec/deploymentscope
+* GET /api/2.0/si/service/service-ID/servicedeploymentspec
+* all /api/3.0/edges/ methods
+
+All ISIS methods removed from NSX Edge routing.
+* GET /4.0/edges/{edge-id}/routing/config/isis
+* PUT /4.0/edges/{edge-id}/routing/config/isis
+* DELETE /4.0/edges/{edge-id}/routing/config/isis
+
 ## Error Message Schema
 
 This schema details error messages.
