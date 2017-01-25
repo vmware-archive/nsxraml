@@ -3678,6 +3678,13 @@ Working with the NSX Edge Routing Configuration
 ----
 
 * **get** *(secured)*: Retrieve routes.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+
 * **put** *(secured)*: Configure globalConfig, staticRouting, OSPG, and BGP.
 
 **Method history:**
