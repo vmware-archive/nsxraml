@@ -2545,69 +2545,89 @@ securitySchemes:
                   <feature>vxlan</feature>
                 </featureCapacityUsageInfo>
               </featureCapacityUsageList>
-/2.0/services/securitytags/tag:
-  displayName: securityTag
+/2.0/services/securitytags:
+  displayName: securitytags
   description: |
     Working with Security Tags
     =====
-  post:
-    displayName: securityTagCreate
-    description: Create a new security tag.
-    body:
-      application/xml:
-        example: |
-          <securityTag>
-            <objectTypeName></objectTypeName>
-            <type>
-              <typeName></typeName>
-            </type>
-            <name></name>
-            <description></description>
-            <extendedAttributes></extendedAttributes>
-          </securityTag>
-        schema: securityTagCreate
-  get:
-    displayName: securityTagRead
-    description: Retrieve security tags.
-  /{tagId}:
-    displayName: securityTagDelete
+  /tag:
+    displayName: securitytagsTag
     description: |
-      Delete a Security Tag
-      ----
-    uriParameters:
-      tagId:
-        description: Specified security tag.
-        displayName: tagId
-        required: true
-    delete:
+      Managing Security Tags
+      -----
+    post:
+      displayName: securityTagCreate
+      description: Create a new security tag.
+      body:
+        application/xml:
+          example: |
+            <securityTag>
+              <objectTypeName></objectTypeName>
+              <type>
+                <typeName></typeName>
+              </type>
+              <name></name>
+              <description></description>
+              <extendedAttributes></extendedAttributes>
+            </securityTag>
+          schema: securityTagCreate
+    get:
+      displayName: securityTagRead
+      description: Retrieve security tags.
+    /{tagId}:
       displayName: securityTagDelete
-      description: Delete the specified security tag.
-    /vm:
-      displayName: securityTagVMsList
       description: |
-        Working with Security Tags on Virtual Machines
+        Delete a Security Tag
         ----
-      get:
+      uriParameters:
+        tagId:
+          description: Specified security tag.
+          displayName: tagId
+          required: true
+      delete:
+        displayName: securityTagDelete
+        description: Delete the specified security tag.
+      /vm:
         displayName: securityTagVMsList
         description: |
-          Retrieve the list of VMs that have the specified tag attached to
-          them.
-      /{vmMoid}:
-        displayName: securityTagVM
-        description: |
-          Manage a Security Tag on a Virtual Machine
+          Working with Security Tags on Virtual Machines
           ----
-        uriParameters:
-          vmMoid:
-            description: ID of VM
-            displayName: vmMoid
-            required: true
-        put:
-          displayName: securityTagVMAttach
-          description: Apply a security tag to virtual machine.
-        delete:
-          displayName: securityTagVMDetach
-          description: Detach a security tag from a virtual machine.
+        get:
+          displayName: securityTagVMsList
+          description: |
+            Retrieve the list of VMs that have the specified tag attached to
+            them.
+        /{vmMoid}:
+          displayName: securityTagVM
+          description: |
+            Manage a Security Tag on a Virtual Machine
+            ----
+          uriParameters:
+            vmMoid:
+              description: ID of VM
+              displayName: vmMoid
+              required: true
+          put:
+            displayName: securityTagVMAttach
+            description: Apply a security tag to virtual machine.
+          delete:
+            displayName: securityTagVMDetach
+            description: Detach a security tag from a virtual machine.
+  /vm:
+    displayName: securitytagsVm
+    description: |
+      Working with Virtual Machines and Security Tags
+      -----
+    /{vmMoid}:
+      displayName: securitytagVmMoid
+      description: |
+        Manage Security Tags on a Specific Virtual Machine
+        -----
+      get:
+        displayName: securitytagVmMoidList
+        description: |
+          Retrieve all security tags associated with the specified virtual
+          machine.
 /2.0/services/ssoconfig:
   displayName: ssoConfig
   description: |

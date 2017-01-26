@@ -799,11 +799,13 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-## securityTag
+## securitytags
 Working with Security Tags
 =====
 
 ### /2.0/services/securitytags/tag
+Managing Security Tags
+-----
 
 * **post** *(secured)*: Create a new security tag.
 * **get** *(secured)*: Retrieve security tags.
@@ -827,6 +829,17 @@ Manage a Security Tag on a Virtual Machine
 
 * **put** *(secured)*: Apply a security tag to virtual machine.
 * **delete** *(secured)*: Detach a security tag from a virtual machine.
+
+### /2.0/services/securitytags/vm
+Working with Virtual Machines and Security Tags
+-----
+
+### /2.0/services/securitytags/vm/{vmMoid}
+Manage Security Tags on a Specific Virtual Machine
+-----
+
+* **get** *(secured)*: Retrieve all security tags associated with the specified virtual
+machine.
 
 ## ssoConfig
 Working with NSX Manager SSO Registration
