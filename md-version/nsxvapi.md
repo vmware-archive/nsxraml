@@ -3221,6 +3221,7 @@ configuration.
 
 * **get** *(secured)*: Retrieve performance configuration for distributed firewall.
 * **put** *(secured)*: Update the distributed firewall performance configuration.
+
 **Method history:**
 
 Release | Modification
@@ -4348,7 +4349,8 @@ Working with NSX Edge Configuration Publishing
 =========
 
 ### /4.0/edgePublish/tuningConfiguration
-Working with NSX Edge tuning configuration.
+Working With NSX Edge Tuning Configuration
+------
 
 Starting in 6.2.3 you can configure default values for NSX Edge
 configuration parameters, including publishing and health check
@@ -4397,22 +4399,26 @@ Working with Certificates
 =============
 
 ### /2.0/services/truststore/certificate
-Certificates and certificate chains
+Working with Certificates and Certificate Chains
+------
 
-* **post** *(secured)*: Create certificate for CSR
+* **post** *(secured)*: Create certificate for CSR.
 
 ### /2.0/services/truststore/certificate/scope/{scopeId}
-Certificates for a scope
+Working With Certificates on a Specific Scope
+----
 
 * **get** *(secured)*: Query all certificates for a scope
 
 ### /2.0/services/truststore/certificate/{scopeId}
-Working with vShield Edge self-signed certificates
+Working With NSX Edge Self-Signed Certificates
+------
 
 * **post** *(secured)*: Create a single certificate
 
 ### /2.0/services/truststore/certificate/{certificateId}
-Certificate specified by ID
+Working With a Specific Certificate
+-----
 
 * **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies
 a chain, multiple certificate objects are retrieved.
@@ -4420,25 +4426,30 @@ a chain, multiple certificate objects are retrieved.
 * **delete** *(secured)*: Delete the specified certificate
 
 ### /2.0/services/truststore/csr/{scopeId}
-Create Certificate Signing Requests (CSRs)
+Working with Certificate Signing Requests (CSRs)
 
-* **post** *(secured)*: Create a CSR
+* **post** *(secured)*: Create a certificate signing request (CSR).
 
 ### /2.0/services/truststore/csr/{csrId}
-Self signed certificate for CSR
+Working With Self-Signed Certificate for CSR
+-----
 
-* **put** *(secured)*: Create a self signed certificate for CSR
-* **get** *(secured)*: Retrieve specific CSR
+* **put** *(secured)*: Create a self-signed certificate for a certificate signing request
+(CSR).
+
+* **get** *(secured)*: Retrieve the specified certificate signing request (CSR).
 
 ### /2.0/services/truststore/csr/scope/{scopeId}
-CSRs for specific scope
+Working With Certificate Signing Requests on a Specific Scope
+----
 
-* **get** *(secured)*: Query CSRs for specific scope
+* **get** *(secured)*: Retrieve certificate signing requests (CSR) on the specified scope.
 
 ### /2.0/services/truststore/crl/{scopeId}
-Create Certificate Revocation Lists (CRLs) on a specified scope
+Working With Certificate Revocation Lists on a Specific Scope
+-----
 
-* **post** *(secured)*: Create CRL on the specified scope.
+* **post** *(secured)*: Create a certificate revocation list (CRL) on the specified scope.
 
 ### /2.0/services/truststore/crl/scope/{scopeId}
 Working with CRL Certificates in a Specific Scope
@@ -4450,8 +4461,10 @@ Working with CRL Certificates in a Specific Scope
 Working with a Specific CRL Certificate
 ----
 
-* **get** *(secured)*: Retrieve certificate object for the specified CRL.
-* **delete** *(secured)*: Delete the specified CRL.
+* **get** *(secured)*: Retrieve certificate object for the specified certificate revocation
+list (CRL).
+
+* **delete** *(secured)*: Delete the specified certificate revocation list (CRL).
 
 ## policy
 Working with Security Policies and Actions

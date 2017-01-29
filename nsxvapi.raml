@@ -1017,7 +1017,7 @@ securitySchemes:
         required: true
         displayName: scopeId
         description: |
-          A valid tranzport zone ID (vdnScope objectId).
+          A valid transport zone ID (vdnScope objectId).
   get:
     displayName: logicalSwitchList
     description: |
@@ -8233,6 +8233,7 @@ securitySchemes:
       displayName: dfwPerformanceUpdate
       description: |
         Update the distributed firewall performance configuration.
+
         **Method history:**
 
         Release | Modification
@@ -12197,7 +12198,8 @@ securitySchemes:
   /tuningConfiguration:
     displayName: nsxEdgePublishTuning
     description: |
-      Working with NSX Edge tuning configuration.
+      Working With NSX Edge Tuning Configuration
+      ------
       
       Starting in 6.2.3 you can configure default values for NSX Edge
       configuration parameters, including publishing and health check
@@ -12281,10 +12283,12 @@ securitySchemes:
     =============
   /certificate:
     displayName: certificate
-    description: Certificates and certificate chains
+    description: |
+      Working with Certificates and Certificate Chains
+      ------
     post:
       displayName: certificateCreate
-      description: Create certificate for CSR
+      description: Create certificate for CSR.
       body:
         application/xml:
           example: |
@@ -12294,7 +12298,9 @@ securitySchemes:
           schema: certificateCreate
     /scope/{scopeId}:
       displayName: certificateScope
-      description: Certificates for a scope
+      description: |
+        Working With Certificates on a Specific Scope
+        ----
       uriParameters:
         scopeId:
           required: true
@@ -12305,7 +12311,9 @@ securitySchemes:
         description: Query all certificates for a scope
     /{scopeId}:
       displayName: certificateSelfSigned
-      description: Working with vShield Edge self-signed certificates
+      description: |
+        Working With NSX Edge Self-Signed Certificates
+        ------
       uriParameters:
         scopeId:
           required: true
@@ -12325,7 +12333,9 @@ securitySchemes:
             schema: certificateSelfSignedCreate
     /{certificateId}:
       displayName: certificateId
-      description: Certificate specified by ID
+      description: |
+        Working With a Specific Certificate
+        -----
       uriParameters:
         certificateId:
           required: true
@@ -12341,7 +12351,8 @@ securitySchemes:
         description: Delete the specified certificate
   /csr/{scopeId}:
     displayName: csr
-    description: Create Certificate Signing Requests (CSRs)
+    description: |
+      Working with Certificate Signing Requests (CSRs)
     uriParameters:
       scopeId:
         required: true
@@ -12349,7 +12360,7 @@ securitySchemes:
         description: Specified scope ID
     post:
       displayName: csrCreate
-      description: Create a CSR
+      description: Create a certificate signing request (CSR).
       body:
         application/xml:
           example: |
@@ -12366,7 +12377,9 @@ securitySchemes:
           schema: csrCreate
   /csr/{csrId}:
     displayName: csrSelfSigned
-    description: Self signed certificate for CSR
+    description: |
+      Working With Self-Signed Certificate for CSR
+      -----
     uriParameters:
       csrId:
         required: true
@@ -12374,17 +12387,22 @@ securitySchemes:
         description: CSR ID
     put:
       displayName: csrSelfSignedUpdate
-      description: Create a self signed certificate for CSR
+      description: |
+        Create a self-signed certificate for a certificate signing request
+        (CSR).
       queryParameters:
         noOfDays:
           displayName: noOfDays
           required: true
     get:
       displayName: csrSelfSignedRead
-      description: Retrieve specific CSR
+      description: |
+        Retrieve the specified certificate signing request (CSR).
   /csr/scope/{scopeId}:
     displayName: csrScope
-    description: CSRs for specific scope
+    description: |
+      Working With Certificate Signing Requests on a Specific Scope
+      ----
     uriParameters:
       scopeId:
         displayName: scopeId
@@ -12392,10 +12410,12 @@ securitySchemes:
         required: true
     get:
       displayName: csrScopeRead
-      description: Query CSRs for specific scope
+      description: Retrieve certificate signing requests (CSR) on the specified scope.
   /crl/{scopeId}:
     displayName: crl
-    description: Create Certificate Revocation Lists (CRLs) on a specified scope
+    description: |
+      Working With Certificate Revocation Lists on a Specific Scope
+      -----
     uriParameters:
       scopeId:
         required: true
@@ -12403,7 +12423,7 @@ securitySchemes:
         description: Specified scope.
     post:
       displayName: crlCreate
-      description: Create CRL on the specified scope.
+      description: Create a certificate revocation list (CRL) on the specified scope.
       body:
         application/xml:
           example: |
@@ -12436,10 +12456,12 @@ securitySchemes:
         description: CRL ID
     get:
       displayName: crlIDRead
-      description: Retrieve certificate object for the specified CRL.
+      description: |
+        Retrieve certificate object for the specified certificate revocation
+        list (CRL).
     delete:
       displayName: crlIDDelete
-      description: Delete the specified CRL.
+      description: Delete the specified certificate revocation list (CRL).
 /2.0/services/policy:
   displayName: policy
   description: |
