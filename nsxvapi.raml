@@ -1591,7 +1591,7 @@ securitySchemes:
     /conn-check/p2p:
       displayName: logicalSwitchPing
       description: |
-        Test Point-to-Point Connectivity
+        Testing Point-to-Point Connectivity
         ----
       post:
         displayName: logicalSwitchPing
@@ -1868,7 +1868,7 @@ securitySchemes:
   /upgrade-available:
     displayName: nsxControllerUpgradeAvailability
     description: |
-      Retrieve Controller Upgrade Availability
+      Working With Controller Upgrade Availability
       ----
     get:
       displayName: nsxControllerUpgradeAvailability
@@ -1876,7 +1876,7 @@ securitySchemes:
   /progress/{jobId}:
     displayName: nsxControllerJob
     description: |
-      Status of Controller Job
+      Working With of Controller Job Status
       -----
     uriParameters:
       jobId:
@@ -1924,7 +1924,7 @@ securitySchemes:
     delete:
       displayName: nsxControllerDelete
       description: |
-        Deletes the NSX controller.
+        Delete the NSX controller.
       queryParameters:
         forceRemoval:
           type: boolean
@@ -1941,9 +1941,10 @@ securitySchemes:
       get:
         displayName: nsxControllerLogsRead
         description: |
-          Retrieves controller logs. Response content type is
+          Retrieve controller logs. Response content type is
           application/octet-stream and response header is filename. This
           streams a fairly large bundle back (possibly hundreds of MB).
+  # need to specify different Accept header?
     /syslog:
       displayName: nsxControllerSyslog
       description: |
@@ -2037,7 +2038,7 @@ securitySchemes:
 /2.0/services/application:
   displayName: servicesApps
   description: |
-    Working with Services
+    Working with Services Grouping Objects
     =============
   /scope/{scopeId}:
     displayName: servicesAppsScopeScope
@@ -2133,7 +2134,7 @@ securitySchemes:
 /2.0/services/applicationgroup:
   displayName: applicationgroup
   description: |
-    Working with Service Groups
+    Working with Service Groups Grouping Objects
     ============
   /scope/{scopeId}:
     displayName: serviceGroups
@@ -2267,7 +2268,7 @@ securitySchemes:
 /2.0/services/ipam/pools:
   displayName: ipPools
   description: |
-    Working with IP Pools
+    Working with IP Pool Grouping Objects
     ========
   /scope/{scopeId}:
     displayName: ipPoolScope
@@ -2781,7 +2782,7 @@ securitySchemes:
 /2.0/services/securitygroup:
   displayName: secGroup
   description: |
-    Working with Security Groups
+    Working with Security Group Grouping Objects
     ===========
   /bulk/{scopeId}:
     displayName: secGroupBulk
@@ -3115,7 +3116,7 @@ securitySchemes:
 /2.0/services/ipset:
   displayName: ipsets
   description: |
-    Working with IP Sets
+    Working with IP Set Grouping Objects
     =======
   /scope/{scopeMoref}:
     displayName: ipsetList
@@ -3372,7 +3373,7 @@ securitySchemes:
   /status:
     displayName: universalSyncStatus
     description: |
-      Working wiht Universal Sync Status
+      Working With Universal Sync Status
       -----
     get:
       displayName: universalSyncStatusRead
@@ -3605,10 +3606,20 @@ securitySchemes:
     description: |
       Working with Components
       ----
+
+      The NSX Manager appliance has the following components:
+
+      Component | Description |
+      ------|--------
+      NSX | NSX Manager
+      NSXREPLICATOR | Universal Synchronization Service
+      RABBITMQ | RabbitMQ - Messaging service
+      SSH | SSH Service
+      VPOSTGRES | vPostgres - Database service
     get:
       displayName: componentsManagementRead
       description: Retrieve all appliance manager components.
-    /{componentID}:
+    /component/{componentID}:
       displayName: componentManagement
       description: |
         Working with a Specific Component
@@ -3641,9 +3652,30 @@ securitySchemes:
         displayName: componentStatus
         description: |
           Working with Component Status
+          ----
         get:
           displayName: componentStatusRead
           description: Retrieve current status for specified component.
+      /toggleStatus/{command}:
+        displayName: componentManagementToggle
+        description: | 
+          Toggle Component Status
+          -----
+        uriParameters:
+          command:
+            displayName: command
+            description: Use **command** parameter *start* or *stop*.
+        post:
+          displayName: componentManagementToggleAction
+          description: Start or stop a component.
+    /component/APPMGMT/restart:
+      displayName: componentRestart
+      description: |
+        Working With the Appliance Management Web Application
+        -----
+      post:
+        displayName: componentRestartAction
+        description: Restart the appliance management web application.
   /backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
     description: |
@@ -6088,7 +6120,7 @@ securitySchemes:
 /2.0/services/macset:
   displayName: macsets
   description: |
-    Working with MAC Address Sets
+    Working with MAC Address Set Grouping Objects
     =============
     You can create a MAC address set on the specified scope. On success, the API
     returns a string identifier for the new MAC address set.
@@ -8434,7 +8466,6 @@ securitySchemes:
   /{policyID}:
     displayName: SpoofGuardPolicyIP
     description: |
-
       Perform SpoofGuard Operations on IP Addresses in a Specific Policy
       ---
     uriParameters:

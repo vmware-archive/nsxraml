@@ -513,7 +513,7 @@ If you set **packetSizeMode** to *2*, you must specify the size using
 the **packetSize** parameter.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/p2p
-Test Point-to-Point Connectivity
+Testing Point-to-Point Connectivity
 ----
 
 * **post** *(secured)*: Test point-to-point connectivity.
@@ -663,13 +663,13 @@ can be one of the following:
   invocation.
 
 ### /2.0/vdn/controller/upgrade-available
-Retrieve Controller Upgrade Availability
+Working With Controller Upgrade Availability
 ----
 
 * **get** *(secured)*: Retrieve controller upgrade availability.
 
 ### /2.0/vdn/controller/progress/{jobId}
-Status of Controller Job
+Working With of Controller Job Status
 -----
 
 * **get** *(secured)*: Retrieves status of controller creation or removal. The progress gives
@@ -679,13 +679,13 @@ a percentage indication of current deploy / remove procedure.
 Working with a Specific Controller
 -----
 
-* **delete** *(secured)*: Deletes the NSX controller.
+* **delete** *(secured)*: Delete the NSX controller.
 
 ### /2.0/vdn/controller/{controllerId}/techsupportlogs
 Working with Controller Tech Support Logs
 -----
 
-* **get** *(secured)*: Retrieves controller logs. Response content type is
+* **get** *(secured)*: Retrieve controller logs. Response content type is
 application/octet-stream and response header is filename. This
 streams a fairly large bundle back (possibly hundreds of MB).
 
@@ -720,7 +720,7 @@ Working with the NSX Controller Password
 * **put** *(secured)*: Change the NSX controller password.
 
 ## servicesApps
-Working with Services
+Working with Services Grouping Objects
 =============
 
 ### /2.0/services/application/scope/{scopeId}
@@ -746,7 +746,7 @@ service.
 * **delete** *(secured)*: Delete the specified service.
 
 ## applicationgroup
-Working with Service Groups
+Working with Service Groups Grouping Objects
 ============
 
 ### /2.0/services/applicationgroup/scope/{scopeId}
@@ -786,7 +786,7 @@ possible valid elements that can be added to the
 service.
 
 ## ipPools
-Working with IP Pools
+Working with IP Pool Grouping Objects
 ========
 
 ### /2.0/services/ipam/pools/scope/{scopeId}
@@ -953,7 +953,7 @@ Working With Scoping Objects
 scope.
 
 ## secGroup
-Working with Security Groups
+Working with Security Group Grouping Objects
 ===========
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
@@ -1043,7 +1043,7 @@ Working with Internal Security Groups
 users.
 
 ## ipsets
-Working with IP Sets
+Working with IP Set Grouping Objects
 =======
 
 ### /2.0/services/ipset/scope/{scopeMoref}
@@ -1143,7 +1143,7 @@ Working with Universal Sync Entities
 * **get** *(secured)*: Retrieve the status of a universal sync entity.
 
 ### /2.0/universalsync/status
-Working wiht Universal Sync Status
+Working With Universal Sync Status
 -----
 
 * **get** *(secured)*: Retrieve the universal sync status.
@@ -1273,30 +1273,53 @@ Working with Syslog Servers
 Working with Components
 ----
 
+The NSX Manager appliance has the following components:
+
+Component | Description |
+------|--------
+NSX | NSX Manager
+NSXREPLICATOR | Universal Synchronization Service
+RABBITMQ | RabbitMQ - Messaging service
+SSH | SSH Service
+VPOSTGRES | vPostgres - Database service
+
 * **get** *(secured)*: Retrieve all appliance manager components.
 
-### /1.0/appliance-management/components/{componentID}
+### /1.0/appliance-management/components/component/{componentID}
 Working with a Specific Component
 ----
 
 * **get** *(secured)*: Retrieve details for specified component.
 
-### /1.0/appliance-management/components/{componentID}/dependencies
+### /1.0/appliance-management/components/component/{componentID}/dependencies
 Working with Component Dependencies
 ----
 
 * **get** *(secured)*: Retrieve dependency details for specified component.
 
-### /1.0/appliance-management/components/{componentID}/dependents
+### /1.0/appliance-management/components/component/{componentID}/dependents
 Working with Component Dependents
 ----
 
 * **get** *(secured)*: Retrieve dependents for the specified component.
 
-### /1.0/appliance-management/components/{componentID}/status
+### /1.0/appliance-management/components/component/{componentID}/status
 Working with Component Status
+----
 
 * **get** *(secured)*: Retrieve current status for specified component.
+
+### /1.0/appliance-management/components/component/{componentID}/toggleStatus/{command}
+Toggle Component Status
+-----
+
+* **post** *(secured)*: Start or stop a component.
+
+### /1.0/appliance-management/components/component/APPMGMT/restart
+Working With the Appliance Management Web Application
+-----
+
+* **post** *(secured)*: Restart the appliance management web application.
 
 ### /1.0/appliance-management/backuprestore/backupsettings
 NSX Manager Appliance Backup Settings
@@ -2530,7 +2553,7 @@ EAM agencies.
 ```
 
 ## macsets
-Working with MAC Address Sets
+Working with MAC Address Set Grouping Objects
 =============
 You can create a MAC address set on the specified scope. On success, the API
 returns a string identifier for the new MAC address set.
@@ -3355,7 +3378,6 @@ Working With a Specific SpoofGuard Policy
 * **delete** *(secured)*: Delete the specified SpoofGuard policy.
 
 ### /4.0/services/spoofguard/{policyID}
-
 Perform SpoofGuard Operations on IP Addresses in a Specific Policy
 ---
 
