@@ -3315,7 +3315,7 @@ Firewall to a flow collector.
 Working With SpoofGuard
 ==========
 After synchronizing with the vCenter Server, NSX Manager collects the IP
-addresses of all vCenter guest virtual machines If a virtual machine has
+addresses of all vCenter guest virtual machines. If a virtual machine has
 been compromised, the IP address can be spoofed and malicious
 transmissions can bypass firewall policies.
 
@@ -3343,7 +3343,7 @@ use
 
 * **post** *(secured)*: Create a SpoofGuard policy to specify the operation mode for networks.
 
-* **get** *(secured)*: Retrieve informationa about all SpoofGuard policies.
+* **get** *(secured)*: Retrieve information about all SpoofGuard policies.
 
 ### /4.0/services/spoofguard/policies/{policyID}
 Working With a Specific SpoofGuard Policy
@@ -3370,7 +3370,7 @@ Working with Flow Monitoring
 Working With Flow Monitoring Statistics 
 ----
 
-* **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+* **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC.
 
 Response values for flow statistics:
 * **blocked** - indicates whether traffic is blocked:
@@ -3594,8 +3594,8 @@ Working With a Specific NSX Edge
 * **post** *(secured)*: Manage NSX Edge.
 * **get** *(secured)*: Retrieve Edge details.
 * **put** *(secured)*: Update the NSX Edge configuration.
-* **delete** *(secured)*: Delete specified Edge from database. Associated appliances are also
-deleted.
+* **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
+also deleted.
 
 ### /4.0/edges/{edgeId}/dnsclient
 Working with DNS Client Configuration
@@ -3612,9 +3612,8 @@ Working with AESNI
 ### /4.0/edges/{edgeId}/coredump
 Working With Core Dumps
 -----
-Enabling core-dump feature results in deployment of inbuilt extra disk
-to save core-dump files. 1 GB for compact edge and 8 GB for other types.
-Disabling detaches the disk
+Enabling core-dump feature results in deployment of built-in extra disk
+to save core-dump files. Disabling detaches the disk.
 
 * **post** *(secured)*: Modify core dump setting.
 
