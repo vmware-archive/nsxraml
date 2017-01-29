@@ -110,7 +110,6 @@ schemas:
     routingConfigUpdate: !include schemas/routingConfigUpdate.xsd
     routingConfigStaticUpdate: !include schemas/routingConfigStaticUpdate.xsd
     routingGlobalConfigUpdate: !include schemas/routingGlobalConfigUpdate.xsd
-    routingISISUpdate: !include schemas/routingISISUpdate.xsd
     routingOSPFUpdate: !include schemas/routingOSPFUpdate.xsd
     rulesCreate: !include schemas/rulesCreate.xsd
     ruleUpdate: !include schemas/ruleUpdate.xsd
@@ -1326,102 +1325,104 @@ securitySchemes:
         displayName: pageSize
         description: !include documentation/reuse/pagesize-1024
         default: 20
-    body:
-      application/xml:
-        example: |
-          <virtualWires>
-            <dataPage>
-              <pagingInfo>
-                <pageSize>20</pageSize>
-                <startIndex>0</startIndex>
-                <totalCount>13</totalCount>
-                <sortOrderAscending>true</sortOrderAscending>
-              </pagingInfo>
-              <virtualWire>
-                <objectId>virtualwire-1</objectId>
-                <objectTypeName>VirtualWire</objectTypeName>
-                <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                <revision>3</revision>
-                <type>
-                  <typeName>VirtualWire</typeName>
-                </type>
-                <name>Transit-Network-01</name>
-                <description></description>
-                <clientHandle></clientHandle>
-                <extendedAttributes/>
-                <isUniversal>false</isUniversal>
-                <universalRevision>0</universalRevision>
-                <tenantId>virtual wire tenant</tenantId>
-                <vdnScopeId>vdnscope-1</vdnScopeId>
-                <vdsContextWithBacking>
-                  <switch>
-                    <objectId>dvs-47</objectId>
-                    <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <virtualWires>
+                <dataPage>
+                  <pagingInfo>
+                    <pageSize>20</pageSize>
+                    <startIndex>0</startIndex>
+                    <totalCount>13</totalCount>
+                    <sortOrderAscending>true</sortOrderAscending>
+                  </pagingInfo>
+                  <virtualWire>
+                    <objectId>virtualwire-1</objectId>
+                    <objectTypeName>VirtualWire</objectTypeName>
                     <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
                     <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                    <revision>29</revision>
+                    <revision>3</revision>
                     <type>
-                      <typeName>VmwareDistributedVirtualSwitch</typeName>
+                      <typeName>VirtualWire</typeName>
                     </type>
-                    <name>vds-mgt-edge</name>
-                    <scope>
-                      <id>datacenter-21</id>
-                      <objectTypeName>Datacenter</objectTypeName>
-                      <name>Datacenter Site A</name>
-                    </scope>
+                    <name>Transit-Network-01</name>
+                    <description></description>
                     <clientHandle></clientHandle>
                     <extendedAttributes/>
                     <isUniversal>false</isUniversal>
                     <universalRevision>0</universalRevision>
-                  </switch>
-                  <mtu>1600</mtu>
-                  <promiscuousMode>false</promiscuousMode>
-                  <backingType>portgroup</backingType>
-                  <backingValue>dvportgroup-355</backingValue>
-                  <missingOnVc>false</missingOnVc>
-                </vdsContextWithBacking>
-                <vdsContextWithBacking>
-                  <switch>
-                    <objectId>dvs-35</objectId>
-                    <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                    <tenantId>virtual wire tenant</tenantId>
+                    <vdnScopeId>vdnscope-1</vdnScopeId>
+                    <vdsContextWithBacking>
+                      <switch>
+                        <objectId>dvs-47</objectId>
+                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>29</revision>
+                        <type>
+                          <typeName>VmwareDistributedVirtualSwitch</typeName>
+                        </type>
+                        <name>vds-mgt-edge</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>Datacenter Site A</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                      </switch>
+                      <mtu>1600</mtu>
+                      <promiscuousMode>false</promiscuousMode>
+                      <backingType>portgroup</backingType>
+                      <backingValue>dvportgroup-355</backingValue>
+                      <missingOnVc>false</missingOnVc>
+                    </vdsContextWithBacking>
+                    <vdsContextWithBacking>
+                      <switch>
+                        <objectId>dvs-35</objectId>
+                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                        ...
+                      </switch>
+                      <mtu>1600</mtu>
+                      <promiscuousMode>false</promiscuousMode>
+                      <backingType>portgroup</backingType>
+                      <backingValue>dvportgroup-354</backingValue>
+                      <missingOnVc>false</missingOnVc>
+                    </vdsContextWithBacking>
+                    <vdnId>5000</vdnId>
+                    <guestVlanAllowed>false</guestVlanAllowed>
+                    <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                    <ctrlLsUuid>7ad8bc71-5857-475c-af2a-a9e5337b0944</ctrlLsUuid>
+                    <macLearningEnabled>false</macLearningEnabled>
+                  </virtualWire>
+                  <virtualWire>
+                    <objectId>virtualwire-2</objectId>
                     ...
-                  </switch>
-                  <mtu>1600</mtu>
-                  <promiscuousMode>false</promiscuousMode>
-                  <backingType>portgroup</backingType>
-                  <backingValue>dvportgroup-354</backingValue>
-                  <missingOnVc>false</missingOnVc>
-                </vdsContextWithBacking>
-                <vdnId>5000</vdnId>
-                <guestVlanAllowed>false</guestVlanAllowed>
-                <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
-                <ctrlLsUuid>7ad8bc71-5857-475c-af2a-a9e5337b0944</ctrlLsUuid>
-                <macLearningEnabled>false</macLearningEnabled>
-              </virtualWire>
-              <virtualWire>
-                <objectId>virtualwire-2</objectId>
-                ...
-              </virtualWire>
-              <virtualWire>
-                <objectId>virtualwire-3</objectId>
-                ...
-              </virtualWire>
-              <virtualWire>
-                <objectId>virtualwire-4</objectId>
-                ...
-              </virtualWire>
-              <virtualWire>
-                <objectId>universalwire-1</objectId>
-                ...
-              </virtualWire>
-              ...
-              <virtualWire>
-                <objectId>virtualwire-9</objectId>
-                ...
-              </virtualWire>
-            </dataPage>
-          </virtualWires>
+                  </virtualWire>
+                  <virtualWire>
+                    <objectId>virtualwire-3</objectId>
+                    ...
+                  </virtualWire>
+                  <virtualWire>
+                    <objectId>virtualwire-4</objectId>
+                    ...
+                  </virtualWire>
+                  <virtualWire>
+                    <objectId>universalwire-1</objectId>
+                    ...
+                  </virtualWire>
+                  ...
+                  <virtualWire>
+                    <objectId>virtualwire-9</objectId>
+                    ...
+                  </virtualWire>
+                </dataPage>
+              </virtualWires>
   /vm/vnic:
     displayName: logicalSwitchVmAttach
     description: |
@@ -1472,61 +1473,63 @@ securitySchemes:
         
         If the switch is a universal logical switch the **isUniversal**
         parameter is set to true in the response body.
-      body:
-        application/xml:
-          example: |
-            <virtualWire>
-              <objectId>universalwire-2</objectId>
-              <objectTypeName>VirtualWire</objectTypeName>
-              <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-              <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-              <revision>3</revision>
-              <type>
-                <typeName>VirtualWire</typeName>
-              </type>
-              <name>ULS-Web-Tier-02</name>
-              <clientHandle></clientHandle>
-              <extendedAttributes/>
-              <isUniversal>true</isUniversal>
-              <universalRevision>2</universalRevision>
-              <tenantId>ULS-Tenant</tenantId>
-              <vdnScopeId>universalvdnscope</vdnScopeId>
-              <vdsContextWithBacking>
-                <switch>
-                  <objectId>dvs-35</objectId>
-                  <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <virtualWire>
+                  <objectId>universalwire-2</objectId>
+                  <objectTypeName>VirtualWire</objectTypeName>
                   <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
                   <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                  <revision>29</revision>
+                  <revision>3</revision>
                   <type>
-                    <typeName>VmwareDistributedVirtualSwitch</typeName>
+                    <typeName>VirtualWire</typeName>
                   </type>
-                  <name>vds-site-a</name>
-                  <scope>
-                    <id>datacenter-21</id>
-                    <objectTypeName>Datacenter</objectTypeName>
-                    <name>Datacenter Site A</name>
-                  </scope>
+                  <name>ULS-Web-Tier-02</name>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
-                  <isUniversal>false</isUniversal>
-                  <universalRevision>0</universalRevision>
-                </switch>
-                <mtu>1600</mtu>
-                <promiscuousMode>false</promiscuousMode>
-                <backingType>portgroup</backingType>
-                <backingValue>dvportgroup-397</backingValue>
-                <missingOnVc>false</missingOnVc>
-              </vdsContextWithBacking>
-              <vdsContextWithBacking>
-                ...
-              </vdsContextWithBacking>
-              <vdnId>200001</vdnId>
-              <guestVlanAllowed>false</guestVlanAllowed>
-              <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
-              <ctrlLsUuid>f360d6e5-c709-4aca-b8d1-37de500a867a</ctrlLsUuid>
-              <macLearningEnabled>false</macLearningEnabled>
-            </virtualWire>
+                  <isUniversal>true</isUniversal>
+                  <universalRevision>2</universalRevision>
+                  <tenantId>ULS-Tenant</tenantId>
+                  <vdnScopeId>universalvdnscope</vdnScopeId>
+                  <vdsContextWithBacking>
+                    <switch>
+                      <objectId>dvs-35</objectId>
+                      <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>29</revision>
+                      <type>
+                        <typeName>VmwareDistributedVirtualSwitch</typeName>
+                      </type>
+                      <name>vds-site-a</name>
+                      <scope>
+                        <id>datacenter-21</id>
+                        <objectTypeName>Datacenter</objectTypeName>
+                        <name>Datacenter Site A</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </switch>
+                    <mtu>1600</mtu>
+                    <promiscuousMode>false</promiscuousMode>
+                    <backingType>portgroup</backingType>
+                    <backingValue>dvportgroup-397</backingValue>
+                    <missingOnVc>false</missingOnVc>
+                  </vdsContextWithBacking>
+                  <vdsContextWithBacking>
+                    ...
+                  </vdsContextWithBacking>
+                  <vdnId>200001</vdnId>
+                  <guestVlanAllowed>false</guestVlanAllowed>
+                  <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                  <ctrlLsUuid>f360d6e5-c709-4aca-b8d1-37de500a867a</ctrlLsUuid>
+                  <macLearningEnabled>false</macLearningEnabled>
+                </virtualWire>
     put:
       displayName: logicalSwitchUpdate
       description: |
@@ -2542,69 +2545,89 @@ securitySchemes:
                   <feature>vxlan</feature>
                 </featureCapacityUsageInfo>
               </featureCapacityUsageList>
-/2.0/services/securitytags/tag:
-  displayName: securityTag
+/2.0/services/securitytags:
+  displayName: securitytags
   description: |
     Working with Security Tags
     =====
-  post:
-    displayName: securityTagCreate
-    description: Create a new security tag.
-    body:
-      application/xml:
-        example: |
-          <securityTag>
-            <objectTypeName></objectTypeName>
-            <type>
-              <typeName></typeName>
-            </type>
-            <name></name>
-            <description></description>
-            <extendedAttributes></extendedAttributes>
-          </securityTag>
-        schema: securityTagCreate
-  get:
-    displayName: securityTagRead
-    description: Retrieve security tags.
-  /{tagId}:
-    displayName: securityTagDelete
+  /tag:
+    displayName: securitytagsTag
     description: |
-      Delete a Security Tag
-      ----
-    uriParameters:
-      tagId:
-        description: Specified security tag.
-        displayName: tagId
-        required: true
-    delete:
+      Managing Security Tags
+      -----
+    post:
+      displayName: securityTagCreate
+      description: Create a new security tag.
+      body:
+        application/xml:
+          example: |
+            <securityTag>
+              <objectTypeName></objectTypeName>
+              <type>
+                <typeName></typeName>
+              </type>
+              <name></name>
+              <description></description>
+              <extendedAttributes></extendedAttributes>
+            </securityTag>
+          schema: securityTagCreate
+    get:
+      displayName: securityTagRead
+      description: Retrieve security tags.
+    /{tagId}:
       displayName: securityTagDelete
-      description: Delete the specified security tag.
-    /vm:
-      displayName: securityTagVMsList
       description: |
-        Working with Security Tags on Virtual Machines
+        Delete a Security Tag
         ----
-      get:
+      uriParameters:
+        tagId:
+          description: Specified security tag.
+          displayName: tagId
+          required: true
+      delete:
+        displayName: securityTagDelete
+        description: Delete the specified security tag.
+      /vm:
         displayName: securityTagVMsList
         description: |
-          Retrieve the list of VMs that have the specified tag attached to
-          them.
-      /{vmMoid}:
-        displayName: securityTagVM
-        description: |
-          Manage a Security Tag on a Virtual Machine
+          Working with Security Tags on Virtual Machines
           ----
-        uriParameters:
-          vmMoid:
-            description: ID of VM
-            displayName: vmMoid
-            required: true
-        put:
-          displayName: securityTagVMAttach
-          description: Apply a security tag to virtual machine.
-        delete:
-          displayName: securityTagVMDetach
-          description: Detach a security tag from a virtual machine.
+        get:
+          displayName: securityTagVMsList
+          description: |
+            Retrieve the list of VMs that have the specified tag attached to
+            them.
+        /{vmMoid}:
+          displayName: securityTagVM
+          description: |
+            Manage a Security Tag on a Virtual Machine
+            ----
+          uriParameters:
+            vmMoid:
+              description: ID of VM
+              displayName: vmMoid
+              required: true
+          put:
+            displayName: securityTagVMAttach
+            description: Apply a security tag to virtual machine.
+          delete:
+            displayName: securityTagVMDetach
+            description: Detach a security tag from a virtual machine.
+  /vm:
+    displayName: securitytagsVm
+    description: |
+      Working with Virtual Machines and Security Tags
+      -----
+    /{vmMoid}:
+      displayName: securitytagVmMoid
+      description: |
+        Manage Security Tags on a Specific Virtual Machine
+        -----
+      get:
+        displayName: securitytagVmMoidList
+        description: |
+          Retrieve all security tags associated with the specified virtual
+          machine.
 /2.0/services/ssoconfig:
   displayName: ssoConfig
   description: |
@@ -8531,64 +8554,66 @@ securitySchemes:
           description: !include documentation/reuse/pagesize-1024
           required: false
           default: 256
-      body:
-        application/xml:
-          example: |
-            <FlowStatsPage>
-              <pagingInfo>
-                <contextId>datacenter-2538</contextId>
-                <flowType>TCP_UDP</flowType>
-                <startTime>1327405883000</startTime>
-                <endTime>1327482600000</endTime>
-                <totalCount>817</totalCount>
-                <startIndex>0</startIndex>
-                <pageSize>2</pageSize>
-              </pagingInfo>
-              <flowStatsTcpUdp>
-                <startTime>1327405883000</startTime>
-                <endTime>1327446000000</endTime>
-                <ruleId>1001</ruleId>
-                <blocked>0</blocked>
-                <protocol>5</protocol>
-                <direction>1</direction>
-                <sessions>1449</sessions>
-                <sourcePackets>1449</sourcePackets>
-                <destinationPackets>0</destinationPackets>
-                <sourceBytes>227493</sourceBytes>
-                <destinationBytes>0</destinationBytes>
-                <networkId>network-2553</networkId>
-                <sourceIp>10.112.199.174</sourceIp>
-                <destinationIp>255.255.255.255</destinationIp>
-                <destinationPort>17500</destinationPort>
-                <controlProtocol></controlProtocol>
-                <controlSourceIp>0.0.0.0</controlSourceIp>
-                <controlDestinationIp>0.0.0.0</controlDestinationIp>
-                <controlDestinationPort>0</controlDestinationPort>
-                <controlDirection>0</controlDirection>
-              </flowStatsTcpUdp>
-              <flowStatsTcpUdp>
-                <startTime>1327405883000</startTime>
-                <endTime>1327446000000</endTime>
-                <ruleId>1001</ruleId>
-                <blocked>0</blocked>
-                <protocol>5</protocol>
-                <direction>1</direction>
-                <sessions>69</sessions>
-                <sourcePackets>69</sourcePackets>
-                <destinationPackets>0</destinationPackets>
-                <sourceBytes>17832</sourceBytes>
-                <destinationBytes>0</destinationBytes>
-                <networkId>network-2553</networkId>
-                <sourceIp>10.112.199.13</sourceIp>
-                <destinationIp>10.112.199.255</destinationIp>
-                <destinationPort>138</destinationPort>
-                <controlProtocol></controlProtocol>
-                <controlSourceIp>0.0.0.0</controlSourceIp>
-                <controlDestinationIp>0.0.0.0</controlDestinationIp>
-                <controlDestinationPort>0</controlDestinationPort>
-                <controlDirection>0</controlDirection>
-              </flowStatsTcpUdp>
-            </FlowStatsPage>
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <FlowStatsPage>
+                  <pagingInfo>
+                    <contextId>datacenter-2538</contextId>
+                    <flowType>TCP_UDP</flowType>
+                    <startTime>1327405883000</startTime>
+                    <endTime>1327482600000</endTime>
+                    <totalCount>817</totalCount>
+                    <startIndex>0</startIndex>
+                    <pageSize>2</pageSize>
+                  </pagingInfo>
+                  <flowStatsTcpUdp>
+                    <startTime>1327405883000</startTime>
+                    <endTime>1327446000000</endTime>
+                    <ruleId>1001</ruleId>
+                    <blocked>0</blocked>
+                    <protocol>5</protocol>
+                    <direction>1</direction>
+                    <sessions>1449</sessions>
+                    <sourcePackets>1449</sourcePackets>
+                    <destinationPackets>0</destinationPackets>
+                    <sourceBytes>227493</sourceBytes>
+                    <destinationBytes>0</destinationBytes>
+                    <networkId>network-2553</networkId>
+                    <sourceIp>10.112.199.174</sourceIp>
+                    <destinationIp>255.255.255.255</destinationIp>
+                    <destinationPort>17500</destinationPort>
+                    <controlProtocol></controlProtocol>
+                    <controlSourceIp>0.0.0.0</controlSourceIp>
+                    <controlDestinationIp>0.0.0.0</controlDestinationIp>
+                    <controlDestinationPort>0</controlDestinationPort>
+                    <controlDirection>0</controlDirection>
+                  </flowStatsTcpUdp>
+                  <flowStatsTcpUdp>
+                    <startTime>1327405883000</startTime>
+                    <endTime>1327446000000</endTime>
+                    <ruleId>1001</ruleId>
+                    <blocked>0</blocked>
+                    <protocol>5</protocol>
+                    <direction>1</direction>
+                    <sessions>69</sessions>
+                    <sourcePackets>69</sourcePackets>
+                    <destinationPackets>0</destinationPackets>
+                    <sourceBytes>17832</sourceBytes>
+                    <destinationBytes>0</destinationBytes>
+                    <networkId>network-2553</networkId>
+                    <sourceIp>10.112.199.13</sourceIp>
+                    <destinationIp>10.112.199.255</destinationIp>
+                    <destinationPort>138</destinationPort>
+                    <controlProtocol></controlProtocol>
+                    <controlSourceIp>0.0.0.0</controlSourceIp>
+                    <controlDestinationIp>0.0.0.0</controlDestinationIp>
+                    <controlDestinationPort>0</controlDestinationPort>
+                    <controlDirection>0</controlDirection>
+                  </flowStatsTcpUdp>
+                </FlowStatsPage>
     /info:
       displayName: flowStatsInfo
       description: |
@@ -8603,26 +8628,28 @@ securitySchemes:
           * minimum start time
           * maximum end time
           * total flow count
-        body:
-          application/xml:
-            example: |
-              <FlowStatsInfo>
-                <flowStatsInfoTcpUdp>
-                  <minimumStartTime>1327405883000</minimumStartTime>
-                  <maximumEndTime>1327482600000</maximumEndTime>
-                  <totalCount>817</totalCount>
-                </flowStatsInfoTcpUdp>
-                <flowStatsInfoLayer3>
-                  <minimumStartTime>1327405883000</minimumStartTime>
-                  <maximumEndTime>1327482600000</maximumEndTime>
-                  <totalCount>21</totalCount>
-                </flowStatsInfoLayer3>
-                <flowStatsInfoLayer2>
-                <minimumStartTime>1327405883000</minimumStartTime>
-                <maximumEndTime>1327482600000</maximumEndTime>
-                <totalCount>531</totalCount>
-                </flowStatsInfoLayer2>
-              </FlowStatsInfo>
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <FlowStatsInfo>
+                    <flowStatsInfoTcpUdp>
+                      <minimumStartTime>1327405883000</minimumStartTime>
+                      <maximumEndTime>1327482600000</maximumEndTime>
+                      <totalCount>817</totalCount>
+                    </flowStatsInfoTcpUdp>
+                    <flowStatsInfoLayer3>
+                      <minimumStartTime>1327405883000</minimumStartTime>
+                      <maximumEndTime>1327482600000</maximumEndTime>
+                      <totalCount>21</totalCount>
+                    </flowStatsInfoLayer3>
+                    <flowStatsInfoLayer2>
+                    <minimumStartTime>1327405883000</minimumStartTime>
+                    <maximumEndTime>1327482600000</maximumEndTime>
+                    <totalCount>531</totalCount>
+                    </flowStatsInfoLayer2>
+                  </FlowStatsInfo>
   /config:
     displayName: flowConfig
     description: |
@@ -8652,41 +8679,43 @@ securitySchemes:
     get:
       displayName: flowConfigRead
       description: Retrieve flow monitoring configuration.
-      body:
-        application/xml:
-          example: |
-            <FlowConfiguration>
-              <collectFlows>true</collectFlows>
-              <ignoreBlockedFlows>false</ignoreBlockedFlows>
-              <ignoreLayer2Flows>false</ignoreLayer2Flows>
-              <sourceIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</sourceIPs>
-              <sourceContainer>
-                <name>vm1 - Network adapter 1</name>
-                <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
-                <type>Vnic</type>
-              </sourceContainer>
-              <sourceContainer>
-                <name>Large XP-1</name>
-                <id>vm-126</id>
-                <type>VirtualMachine</type>
-              </sourceContainer>
-              <destinationIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</destinationIPs>
-              <destinationContainer>
-                <name>vm2 - Network adapter 2</name>
-                <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
-                <type>Vnic</type>
-              </destinationContainer>
-              <destinationContainer>
-                <name>Small XP-2</name>
-                <id>vm-226</id>
-                <type>VirtualMachine</type>
-              </destinationContainer>
-              <destinationPorts>22, 40-50, 60</destinationPorts>
-              <service>
-                <name>VMware-VDM2.x-Ephemeral</name>
-                <id>application-161</id>
-              </service>
-            </FlowConfiguration>
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <FlowConfiguration>
+                  <collectFlows>true</collectFlows>
+                  <ignoreBlockedFlows>false</ignoreBlockedFlows>
+                  <ignoreLayer2Flows>false</ignoreLayer2Flows>
+                  <sourceIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</sourceIPs>
+                  <sourceContainer>
+                    <name>vm1 - Network adapter 1</name>
+                    <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
+                    <type>Vnic</type>
+                  </sourceContainer>
+                  <sourceContainer>
+                    <name>Large XP-1</name>
+                    <id>vm-126</id>
+                    <type>VirtualMachine</type>
+                  </sourceContainer>
+                  <destinationIPs>10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24</destinationIPs>
+                  <destinationContainer>
+                    <name>vm2 - Network adapter 2</name>
+                    <id>5013bcd8-c666-1e28-c7a9-600da945954f.000</id>
+                    <type>Vnic</type>
+                  </destinationContainer>
+                  <destinationContainer>
+                    <name>Small XP-2</name>
+                    <id>vm-226</id>
+                    <type>VirtualMachine</type>
+                  </destinationContainer>
+                  <destinationPorts>22, 40-50, 60</destinationPorts>
+                  <service>
+                    <name>VMware-VDM2.x-Ephemeral</name>
+                    <id>application-161</id>
+                  </service>
+                </FlowConfiguration>
     put:
       displayName: flowsConfigCreate
       description: Update flow monitoring configuration.
@@ -9794,10 +9823,24 @@ securitySchemes:
         ----
       get:
         displayName: routingConfigRead
-        description: Retrieve routes.
+        description: |
+          Retrieve routes.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
       put:
         displayName: routingConfigUpdate
-        description: Configure globalConfig, staticRouting, OSPG, and BGP.
+        description: |
+          Configure globalConfig, staticRouting, OSPG, and BGP.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
         body:
           application/xml:
             example: |
@@ -9995,10 +10038,24 @@ securitySchemes:
           ----
         get:
           displayName: routingOSPFRead
-          description: Retrieve OSPF configuration.
+          description: |
+            Retrieve OSPF configuration.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
         put:
           displayName: routingOSPFUpdate
-          description: Configure OSPF.
+          description: |
+            Configure OSPF.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
           body:
             application/xml:
               example: |
@@ -10030,7 +10087,6 @@ securitySchemes:
                       <rule>
                         <prefixName></prefixName>
                         <from>
-                          <isis></isis>
                           <ospf></ospf>
                           <bgp></bgp>
                           <static></static>
@@ -10052,10 +10108,24 @@ securitySchemes:
           ---
         get:
           displayName: routingBGPRead
-          description: Retrieve BGP configuration.
+          description: | 
+            Retrieve BGP configuration.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
         put:
           displayName: routingBGPUpdate
-          description: Configure BGP.
+          description: |
+            Configure BGP.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
           body:
             application/xml:
               example: |
@@ -10087,7 +10157,6 @@ securitySchemes:
                       <rule>
                         <prefixName></prefixName>
                         <from>
-                          <isis></isis>
                           <ospf></ospf>
                           <bgp></bgp>
                           <static></static>
@@ -10697,9 +10766,9 @@ securitySchemes:
         **dhcpOptions > option150**<br>(staticBinding and ipPool) | IP address of TFTP server.
         **dhcpOptions > option150 > server**<br>(staticBinding and ipPool) | Use to specify more than one TFTP server by IP address for this IP Pool.
         **dhcpOptions > option26**<br>(staticBinding and ipPool) | MTU.
-        **dhcpOptions > other**<br>(staticBinding and ipPool) | Opaque options.
-        **dhcpOptions > other > code**<br>(staticBinding and ipPool) | 
-        **dhcpOptions > other > value**<br>(staticBinding and ipPool) | 
+        **dhcpOptions > other**<br>(staticBinding and ipPool) | Add DHCP options other than 26, 66, 67, 121, 150.
+        **dhcpOptions > other > code**<br>(staticBinding and ipPool) | Use the DHCP option number only. For example, to specify dhcp option 80, enter *80*.
+        **dhcpOptions > other > value**<br>(staticBinding and ipPool) | The DHCP option value, in hex. For example, *2F766172*.
         **logging** | Optional. Logging is disabled by default.
         **logging > enable** |  Optional, default is *false*.
         **logging > logLevel** | Optional, default is *info*.
