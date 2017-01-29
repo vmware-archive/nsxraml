@@ -4034,9 +4034,9 @@ Parameter Name | Parameter Information
 **dhcpOptions > option150**<br>(staticBinding and ipPool) | IP address of TFTP server.
 **dhcpOptions > option150 > server**<br>(staticBinding and ipPool) | Use to specify more than one TFTP server by IP address for this IP Pool.
 **dhcpOptions > option26**<br>(staticBinding and ipPool) | MTU.
-**dhcpOptions > other**<br>(staticBinding and ipPool) | Opaque options.
-**dhcpOptions > other > code**<br>(staticBinding and ipPool) | 
-**dhcpOptions > other > value**<br>(staticBinding and ipPool) | 
+**dhcpOptions > other**<br>(staticBinding and ipPool) | Add DHCP options other than 26, 66, 67, 121, 150.
+**dhcpOptions > other > code**<br>(staticBinding and ipPool) | Use the DHCP option number only. For example, to specify dhcp option 80, enter *80*.
+**dhcpOptions > other > value**<br>(staticBinding and ipPool) | The DHCP option value, in hex. For example, *2F766172*.
 **logging** | Optional. Logging is disabled by default.
 **logging > enable** |  Optional, default is *false*.
 **logging > logLevel** | Optional, default is *info*.
