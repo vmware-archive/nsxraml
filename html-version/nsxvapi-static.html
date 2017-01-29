@@ -27,32 +27,73 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
     Introduction
   </a>
 </h1>
-<div class="content"><p>This manual, the NSX for vSphere API Guide, describes how to install, configure, monitor, and maintain the VMware® NSX system by using REST API requests.</p>
+<div class="content"><p>This manual, the NSX for vSphere API Guide, describes how to install,
+configure, monitor, and maintain the VMware® NSX system by using REST API
+requests.</p>
 <h2 id="intended-audience">Intended Audience</h2>
-<p>This manual is intended for anyone who wants to use REST API to programmatically control NSX in a VMware vSphere environment. The information in this manual is written for experienced developers who are familiar with virtual machine technology, virtualized datacenter operations, and REST APIs. This manual also assumes familiarity with NSX for vSphere.</p>
+<p>This manual is intended for anyone who wants to use REST API to
+programmatically control NSX in a VMware vSphere environment. The information
+in this manual is written for experienced developers who are familiar with
+virtual machine technology, virtualized datacenter operations, and REST APIs.
+This manual also assumes familiarity with NSX for vSphere.</p>
 <h2 id="vmware-technical-publications-glossary">VMware Technical Publications Glossary</h2>
-<p>VMware Technical Publications provides a glossary of terms that might be unfamiliar to you. For definitions of terms as they are used in VMware technical documentation go to <a href="http://www.vmware.com/support/pubs">http://www.vmware.com/support/pubs</a>.</p>
-<h2 id="document-feedback">Document Feedback</h2>
-<p>VMware welcomes your suggestions for improving our documentation. If you have comments, send your feedback to docfeedback@vmware.com.</p>
-<h2 id="nsx-documentation">NSX Documentation</h2>
-<p>The following documents comprise the NSX documentation set:</p>
+<p>VMware Technical Publications provides a glossary of terms that might be
+unfamiliar to you. For definitions of terms as they are used in VMware
+technical documentation go to <a href="http://www.vmware.com/support/pubs">http://www.vmware.com/support/pubs</a>.</p>
+<h2 id="technical-documentation-and-product-updates">Technical Documentation and Product Updates</h2>
+<p>You can find the most up-to-date technical documentation on the VMware Web site at:
+<a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
+<p>The VMware Web site also provides the latest product updates.</p>
+<p>If you have comments about this documentation, submit your feedback to:
+<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#x6f;&#x63;&#102;&#101;&#x65;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#114;&#101;&#46;&#99;&#111;&#109;">&#100;&#x6f;&#x63;&#102;&#101;&#x65;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#114;&#101;&#46;&#99;&#111;&#109;</a>.</p>
+<h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
+<p>To use the NSX REST API, you must configure a REST client, verify the required
+ports are open between your REST client and the NSX Manager, and understand
+the general RESTful workflow.</p>
+<h3 id="configuring-rest-clients-for-the-nsx-rest-api">Configuring REST Clients for the NSX REST API</h3>
+<p>Some browser-based clients include the Chrome app, Postman, or the Firefox
+add-on, RESTClient. Curl is a command-line tool that can function as a REST
+client. The details of REST client configuration will vary from client to
+client, but this general information should help you configure your REST client
+correctly.</p>
 <ul>
-<li><em>NSX for vSphere Administration Guide</em></li>
-<li><em>NSX for vSphere Installation and Upgrade</em></li>
-<li><em>NSX API Programming Guide</em></li>
+<li><p><strong>The NSX REST API uses basic authentication.</strong><br>You must configure your REST client to send the NSX Manager authentication
+credentials using basic authentication.</p>
+</li>
+<li><p><strong>You must use https to send API requests to the NSX Manager.</strong><br>You might need to import the certificate from the NSX Manager to your REST
+client to allow it to connect to the NSX Manager.</p>
+</li>
+<li><p><strong>When you submit an API request with an XML request body, you must include the<br><code>Content-Type: application/xml</code> header.</strong><br>Some requests require additional headers, for example, firewall configuration
+changes require the <code>If-Match</code> header. This is noted on each method
+description.</p>
+</li>
+<li><p><strong>To ensure you always receive XML response bodies, set the <code>Accept:  
+application/xml</code> header.</strong><br>Some API methods respond with JSON output, which is an experimental feature.
+Setting the Accept header ensures you always get XML output.  <strong>Note:</strong> some
+methods, for example, the central CLI method, <code>POST /1.0/nsx/cli</code>, might
+require a different Accept header.</p>
+</li>
 </ul>
-<h2 id="technical-support-and-education-resources">Technical Support and Education Resources</h2>
-<p>The following sections describe the technical support resources available to you. To access the current version of this book and other books, go to <a href="http://www.vmware.com/support/pubs">http://www.vmware.com/support/pubs</a>.</p>
-<h3 id="online-and-telephone-support">Online and Telephone Support</h3>
-<p>To use online support to submit technical support requests, view your product and contract information, and register your products, go to <a href="http://www.vmware.com/support">http://www.vmware.com/support</a>.</p>
-<p>Customers with appropriate support contracts should use telephone support for the fastest response on priority 1 issues. Go to <a href="http://www.vmware.com/support/phone_support">http://www.vmware.com/support/phone_support</a>.</p>
-<h3 id="support-offerings">Support Offerings</h3>
-<p>To find out how VMware support offerings can help meet your business needs, go to <a href="http://www.vmware.com/support/services">http://www.vmware.com/support/services</a>.</p>
-<h3 id="vmware-professional-services">VMware Professional Services</h3>
-<p>VMware Education Services courses offer extensive hands-on labs, case study examples, and course materials designed to be used as on-the-job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
-<a href="http://www.vmware.com/services">http://www.vmware.com/services</a>.</p>
-<h2 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h2>
+<p>The following API method will return a response on a newly deployed NSX
+Manager appliance, even if you have not made any configuration changes. You
+can use this as a test to verify that your REST client is configured correctly
+to communicate with the NSX Manager API.</p>
+<p><code>GET /api/2.0/services/usermgmt/user/admin</code></p>
+<h3 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h3>
 <p>The NSX Manager requires port 443/TCP for REST API requests.</p>
+<h3 id="restful-workflow-patterns">RESTful Workflow Patterns</h3>
+<p>All RESTful workflows fall into a pattern that includes only two fundamental
+operations, which you repeat in this order for as long as necessary.</p>
+<ul>
+<li><strong>Make an HTTP request (GET, PUT, POST, or DELETE).</strong><br>The target of this request is either a well-known URL (such as NSX Manager) or
+a link obtained from the response to a previous request. For example, a GET
+request to an Org URL returns links to vDC objects contained by the Org.</li>
+<li><strong>Examine the response, which can be an XML document or an HTTP response code.</strong><br>If the response is an XML document, it might contain links or other
+information about the state of an object. If the response is an HTTP response
+code, it indicates whether the request succeeded or failed, and might be
+accompanied by a URL that points to a location from which additional
+information can be retrieved.</li>
+</ul>
 <h2 id="finding-vcenter-object-ids">Finding vCenter Object IDs</h2>
 <p>Many API methods reference vCenter object IDs in URI parameters, query
 parameters, request bodies, and response bodies. You can find vCenter object
