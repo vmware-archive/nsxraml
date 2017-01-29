@@ -95,70 +95,75 @@ Many API methods reference vCenter object IDs in URI parameters, query
 parameters, request bodies, and response bodies. You can find vCenter object
 IDs via the vCenter Managed Object Browser.
 
-### Find Datacenter ID
+### Find Datacenter MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find the **childEntity** in the Name column, and the corresponding
-  Value column entry is the datacenter MOID. e.g. *datacenter-21*.
+  Value column entry is the datacenter MOID. For example, *datacenter-21*.
 
-### Find Host ID
+### Find Host MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find *host* in the Name column. The corresponding Value column
-   lists the hosts in that cluster by vCenter MOID and hostname. e.g.
+   lists the hosts in that cluster by vCenter MOID and hostname. For example,
    *host-32 (esx-02a.corp.local)*.
 
-### Find Portgroup ID
+### Find Portgroup MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **network** in the Name column. The corresponding Value column lists
-   the port groups on that host, e.g. *dvportgroup-388*.
+   the port groups on that host, For example, *dvportgroup-388*.
 
-### Find VMID
+### Find VM MOID or VM Instance UUID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **vm** in the Name column. The corresponding Value column lists the
-   virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
+   virtual machines by vCenter MOID and hostname. For example, *vm-216 (web-01a)*.
+6. To find the instance UUID of a VM, click the VM MOID link located in the
+   previous step. Click the config link in the Value column.
+6. Find **instanceUuid** in the Name column. The corresponding Value column
+   lists the VM instance UUID. For example,
+   *502e71fa-1a00-759b-e40f-ce778e915f16*.

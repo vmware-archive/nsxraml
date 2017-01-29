@@ -98,73 +98,78 @@ Many API methods reference vCenter object IDs in URI parameters, query
 parameters, request bodies, and response bodies. You can find vCenter object
 IDs via the vCenter Managed Object Browser.
 
-### Find Datacenter ID
+### Find Datacenter MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find the **childEntity** in the Name column, and the corresponding
-  Value column entry is the datacenter MOID. e.g. *datacenter-21*.
+  Value column entry is the datacenter MOID. For example, *datacenter-21*.
 
-### Find Host ID
+### Find Host MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find *host* in the Name column. The corresponding Value column
-   lists the hosts in that cluster by vCenter MOID and hostname. e.g.
+   lists the hosts in that cluster by vCenter MOID and hostname. For example,
    *host-32 (esx-02a.corp.local)*.
 
-### Find Portgroup ID
+### Find Portgroup MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **network** in the Name column. The corresponding Value column lists
-   the port groups on that host, e.g. *dvportgroup-388*.
+   the port groups on that host, For example, *dvportgroup-388*.
 
-### Find VMID
+### Find VM MOID or VM Instance UUID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **vm** in the Name column. The corresponding Value column lists the
-   virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
+   virtual machines by vCenter MOID and hostname. For example, *vm-216 (web-01a)*.
+6. To find the instance UUID of a VM, click the VM MOID link located in the
+   previous step. Click the config link in the Value column.
+6. Find **instanceUuid** in the Name column. The corresponding Value column
+   lists the VM instance UUID. For example,
+   *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### part-number
 EN-001545-07
@@ -848,12 +853,17 @@ Release | Modification
 Working with Security Tags
 =====
 
+You can manage security tags and their virtual machine assignments. For
+example, you can create a user defined security tag, assign tags to a
+virtual machine, view tags assigned to virtual machines, and view virtual
+machines that have a specific tag assigned.
+
 ### /2.0/services/securitytags/tag
 Managing Security Tags
 -----
 
 * **post** *(secured)*: Create a new security tag.
-* **get** *(secured)*: Retrieve security tags.
+* **get** *(secured)*: Retrieve all security tags.
 
 ### /2.0/services/securitytags/tag/{tagId}
 Delete a Security Tag
@@ -862,25 +872,21 @@ Delete a Security Tag
 * **delete** *(secured)*: Delete the specified security tag.
 
 ### /2.0/services/securitytags/tag/{tagId}/vm
-Working with Security Tags on Virtual Machines
+Working With Virtual Machines on a Specific Security Tag
 ----
 
 * **get** *(secured)*: Retrieve the list of VMs that have the specified tag attached to
 them.
 
-### /2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}
+### /2.0/services/securitytags/tag/{tagId}/vm/{vmId}
 Manage a Security Tag on a Virtual Machine
 ----
 
-* **put** *(secured)*: Apply a security tag to virtual machine.
-* **delete** *(secured)*: Detach a security tag from a virtual machine.
+* **put** *(secured)*: Apply a security tag to the specified virtual machine.
+* **delete** *(secured)*: Detach a security tag from the specified virtual machine.
 
-### /2.0/services/securitytags/vm
-Working with Virtual Machines and Security Tags
------
-
-### /2.0/services/securitytags/vm/{vmMoid}
-Manage Security Tags on a Specific Virtual Machine
+### /2.0/services/securitytags/vm/{vmId}
+Working With Security Tags on a Specific Virtual Machine
 -----
 
 * **get** *(secured)*: Retrieve all security tags associated with the specified virtual
