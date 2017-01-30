@@ -883,7 +883,22 @@ Manage a Security Tag on a Virtual Machine
 ----
 
 * **put** *(secured)*: Apply a security tag to the specified virtual machine.
+
+You can specify multiple VMs by ID by providing a comma
+separated list. However, there is a URL length limit of 16000
+characters. To optimize performance, tag up to 500 VMs in a
+single call. 
+
+For example: `PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
+
 * **delete** *(secured)*: Detach a security tag from the specified virtual machine.
+
+You can specify multiple VMs by ID by providing a comma
+separated list. However, there is a URL length limit of 16000
+characters. To optimize performance, tag up to 500 VMs in a
+single call. 
+
+For example: `DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
 
 ### /2.0/services/securitytags/vm/{vmId}
 Working With Security Tags on a Specific Virtual Machine
@@ -961,43 +976,47 @@ scope.
 ## secGroup
 Working with Security Group Grouping Objects
 ===========
+A security group is a collection of assets or grouping objects from your
+vSphere inventory.
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
-Create a New Security Group
-----
-Create a new security group on a global scope or universal scope. Use
-either "globalroot-0" or "universalroot-0". Universal security groups are
-read-only when querying a secondary NSX manager.
-
-* **post** *(secured)*: Create a new security group on a scope.
-* **put** *(secured)*: Update a security group.
-
-### /2.0/services/securitygroup/scope/{scopeId}
-Working with Security Groups on a Specific Scope
+Creating New Security Groups With Members
 ----
 
-* **get** *(secured)*: List all the security groups created on a specific scope.
+* **post** *(secured)*: Create a new security group on a global scope or universal scope with
+membership information.
 
-### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
-Working with Security Group Member Types
+Universal security groups are read-only when querying a secondary NSX
+manager.
+
+### /2.0/services/securitygroup/{scopeId}
+Creating New Security Groups Without Members
+-----
+
+* **post** *(secured)*: Create a new security group, with no membership information specified.
+You can add members later with `PUT
+/2.0/services/securitygroup/bulk/{objectId}`
+
+### /2.0/services/securitygroup/bulk/{objectId}
+Updating a Specific Security Group Including Membership
 ----
 
-* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
-group.
-
-### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
-Working with a Specific Security Group Member Type
-----
-
-* **get** *(secured)*: Retrieve members of a specific type in the specified scope.
+* **put** *(secured)*: Update configuration for the specified security group, including membership information.
 
 ### /2.0/services/securitygroup/{objectId}
 Working with a Specific Security Group
 ----
 
 * **get** *(secured)*: Retrieve all members of the specified security group.
-* **put** *(secured)*: Update members of the specified security group.
+* **put** *(secured)*: Update configuration for the specified security group. Members are not
+updated. You must use `PUT
+/2.0/services/securitygroup/bulk/{objectId}` to update a security
+group membership.
+
 * **delete** *(secured)*: Delete an existing security group.
+
+You must remove all members before deleting the security group, or you
+can use *force=true* to force removal.
 
 ### /2.0/services/securitygroup/{objectId}/members/{memberId}
 Working with Members of a Specific Security Group
@@ -1047,6 +1066,25 @@ Working with Internal Security Groups
 * **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used
  internally by the system and should not be created or modified by end
 users.
+
+### /2.0/services/securitygroup/scope/{scopeId}
+Working with Security Groups on a Specific Scope
+----
+
+* **get** *(secured)*: List all the security groups created on a specific scope.
+
+### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
+Working with Security Group Member Types
+----
+
+* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
+group.
+
+### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
+Working with a Specific Security Group Member Type
+----
+
+* **get** *(secured)*: Retrieve members of a specific type in the specified scope.
 
 ## ipsets
 Working with IP Set Grouping Objects

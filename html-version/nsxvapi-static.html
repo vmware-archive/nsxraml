@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#114;&#x65;&#46;&#x63;&#111;&#109;">&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#114;&#x65;&#46;&#x63;&#111;&#109;</a>.</p>
+<a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#100;&#111;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#97;&#114;&#101;&#x2e;&#99;&#111;&#109;">&#100;&#111;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#97;&#114;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -7306,230 +7306,35 @@ Provide request body value of true or false.</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-security-group-grouping-objects">Working with Security Group Grouping Objects</h1>
+<p>A security group is a collection of assets or grouping objects from your
+vSphere inventory.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="create-a-new-security-group">Create a New Security Group</h2>
-<p>Create a new security group on a global scope or universal scope. Use
-either &quot;globalroot-0&quot; or &quot;universalroot-0&quot;. Universal security groups are
-read-only when querying a secondary NSX manager.</p>
+  <div class="description"><h2 id="updating-a-specific-security-group-including-membership">Updating a Specific Security Group Including Membership</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
       <dl>
   <dt>
-    <span class="param">scopeId</span>
+    <span class="param">objectId</span>
     <span class="badge">string</span>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>For the scopeId use globalroot-0 for non-universal security groups and
-universalroot-0 for universal security groups.</p>
+      <p>Security group ID.</p>
 
   </dd>
 </dl>
   </div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/2.0/services/securitygroup/bulk/{scopeId}"
-    href="#POST/2.0/services/securitygroup/bulk/{scopeId}"
-  ><h2>POST /2.0/services/securitygroup/bulk/{scopeId}</h2></a>
-  <div class="content">
-    <p><p>Create a new security group on a scope.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="securitygroup"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="objectId"/&gt;
-        &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
-        &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
-        &lt;xs:element type="xs:string" name="revision"/&gt;
-        &lt;xs:element name="type"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="typeName"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element type="xs:string" name="name"/&gt;
-        &lt;xs:element name="scope"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="id"/&gt;
-              &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
-              &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
-              &lt;xs:element type="xs:string" name="name"/&gt;
-              &lt;xs:element type="xs:string" name="revision"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element type="xs:string" name="clientHandle"/&gt;
-        &lt;xs:element type="xs:string" name="extendedAttributes"/&gt;
-        &lt;xs:element name="member"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="objectId"/&gt;
-              &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
-              &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
-              &lt;xs:element type="xs:string" name="revision"/&gt;
-              &lt;xs:element name="type"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element type="xs:string" name="typeName"/&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-              &lt;xs:element type="xs:string" name="name"/&gt;
-              &lt;xs:element name="scope"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element type="xs:string" name="id"/&gt;
-                    &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
-                    &lt;xs:element type="xs:string" name="name"/&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-              &lt;xs:element type="xs:string" name="clientHandle"/&gt;
-              &lt;xs:element type="xs:string" name="extendedAttributes"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element name="excludeMember"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="objectId"/&gt;
-              &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
-              &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
-              &lt;xs:element type="xs:string" name="revision"/&gt;
-              &lt;xs:element name="type"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element type="xs:string" name="typeName"/&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-              &lt;xs:element type="xs:string" name="name"/&gt;
-              &lt;xs:element name="scope"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element type="xs:string" name="id"/&gt;
-                    &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
-                    &lt;xs:element type="xs:string" name="name"/&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-              &lt;xs:element type="xs:string" name="clientHandle"/&gt;
-              &lt;xs:element type="xs:string" name="extendedAttributes"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element name="dynamicMemberDefinition"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element name="dynamicSet"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element type="xs:string" name="operator"/&gt;
-                    &lt;xs:element name="dynamicCriteria"&gt;
-                      &lt;xs:complexType&gt;
-                        &lt;xs:sequence&gt;
-                          &lt;xs:element type="xs:string" name="operator"/&gt;
-                          &lt;xs:element type="xs:string" name="key"/&gt;
-                          &lt;xs:element type="xs:string" name="criteria"/&gt;
-                          &lt;xs:element type="xs:string" name="value"/&gt;
-                        &lt;/xs:sequence&gt;
-                      &lt;/xs:complexType&gt;
-                    &lt;/xs:element&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securitygroup</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">excludeMember</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">excludeMember</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">dynamicMemberDefinition</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">dynamicSet</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">operator</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">operator</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">dynamicCriteria</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">operator</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">operator</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">criteria</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">criteria</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">dynamicCriteria</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">dynamicSet</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">dynamicMemberDefinition</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">securitygroup</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
 <div class="method put">
   <a
     class="verb put"
-    id="PUT/2.0/services/securitygroup/bulk/{scopeId}"
-    href="#PUT/2.0/services/securitygroup/bulk/{scopeId}"
-  ><h2>PUT /2.0/services/securitygroup/bulk/{scopeId}</h2></a>
+    id="PUT/2.0/services/securitygroup/bulk/{objectId}"
+    href="#PUT/2.0/services/securitygroup/bulk/{objectId}"
+  ><h2>PUT /2.0/services/securitygroup/bulk/{objectId}</h2></a>
   <div class="content">
-    <p><p>Update a security group.</p>
+    <p><p>Update configuration for the specified security group, including membership information.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -7682,6 +7487,221 @@ universalroot-0 for universal security groups.</p>
     <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">excludeMember</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">excludeMember</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dynamicMemberDefinition</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dynamicSet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">operator</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">operator</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dynamicCriteria</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">operator</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">operator</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">criteria</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">criteria</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">dynamicCriteria</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dynamicSet</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dynamicMemberDefinition</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">securitygroup</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="creating-new-security-groups-with-members">Creating New Security Groups With Members</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">scopeId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>For the scopeId use <em>globalroot-0</em> for non-universal security groups
+and <em>universalroot-0</em> for universal security groups.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/services/securitygroup/bulk/{scopeId}"
+    href="#POST/2.0/services/securitygroup/bulk/{scopeId}"
+  ><h2>POST /2.0/services/securitygroup/bulk/{scopeId}</h2></a>
+  <div class="content">
+    <p><p>Create a new security group on a global scope or universal scope with
+membership information.</p>
+<p>Universal security groups are read-only when querying a secondary NSX
+manager.</p>
+</p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="securitygroup"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="objectId"/&gt;
+        &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
+        &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
+        &lt;xs:element type="xs:string" name="revision"/&gt;
+        &lt;xs:element name="type"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="typeName"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element name="scope"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="id"/&gt;
+              &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
+              &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
+              &lt;xs:element type="xs:string" name="name"/&gt;
+              &lt;xs:element type="xs:string" name="revision"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element type="xs:string" name="clientHandle"/&gt;
+        &lt;xs:element type="xs:string" name="extendedAttributes"/&gt;
+        &lt;xs:element name="member"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="objectId"/&gt;
+              &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
+              &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
+              &lt;xs:element type="xs:string" name="revision"/&gt;
+              &lt;xs:element name="type"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="typeName"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="name"/&gt;
+              &lt;xs:element name="scope"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="id"/&gt;
+                    &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
+                    &lt;xs:element type="xs:string" name="name"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="clientHandle"/&gt;
+              &lt;xs:element type="xs:string" name="extendedAttributes"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="excludeMember"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="objectId"/&gt;
+              &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
+              &lt;xs:element type="xs:string" name="vsmUuid"/&gt;
+              &lt;xs:element type="xs:string" name="revision"/&gt;
+              &lt;xs:element name="type"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="typeName"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="name"/&gt;
+              &lt;xs:element name="scope"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="id"/&gt;
+                    &lt;xs:element type="xs:string" name="objectTypeName"/&gt;
+                    &lt;xs:element type="xs:string" name="name"/&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="clientHandle"/&gt;
+              &lt;xs:element type="xs:string" name="extendedAttributes"/&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="dynamicMemberDefinition"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="dynamicSet"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="operator"/&gt;
+                    &lt;xs:element name="dynamicCriteria"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element type="xs:string" name="operator"/&gt;
+                          &lt;xs:element type="xs:string" name="key"/&gt;
+                          &lt;xs:element type="xs:string" name="criteria"/&gt;
+                          &lt;xs:element type="xs:string" name="value"/&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securitygroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">excludeMember</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
@@ -7887,7 +7907,10 @@ group.</p>
     href="#PUT/2.0/services/securitygroup/{objectId}"
   ><h2>PUT /2.0/services/securitygroup/{objectId}</h2></a>
   <div class="content">
-    <p><p>Update members of the specified security group.</p>
+    <p><p>Update configuration for the specified security group. Members are not
+updated. You must use <code>PUT
+/2.0/services/securitygroup/bulk/{objectId}</code> to update a security
+group membership.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -7954,6 +7977,8 @@ group.</p>
   ><h2>DELETE /2.0/services/securitygroup/{objectId}</h2></a>
   <div class="content">
     <p><p>Delete an existing security group.</p>
+<p>You must remove all members before deleting the security group, or you
+can use <em>force=true</em> to force removal.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -7961,9 +7986,12 @@ group.</p>
   <dt>
     <span class="param">force</span>
     <span class="badge">boolean</span>
-    <span class="badge">required</span>
+    
   </dt>
   <dd>
+      <p>Use <em>force=true</em> to force removal of security group that contains
+members.</p>
+
   </dd>
 </dl>
     </div>
@@ -8071,6 +8099,43 @@ group.</p>
   <div class="content">
     <p><p>Retrieve list of vNICs that belong to a specific security group.</p>
 </p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="creating-new-security-groups-without-members">Creating New Security Groups Without Members</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">scopeId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>For the scopeId use <em>globalroot-0</em> for non-universal security groups
+and <em>universalroot-0</em> for universal security groups.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/services/securitygroup/{scopeId}"
+    href="#POST/2.0/services/securitygroup/{scopeId}"
+  ><h2>POST /2.0/services/securitygroup/{scopeId}</h2></a>
+  <div class="content">
+    <p><p>Create a new security group, with no membership information specified.
+You can add members later with <code>PUT
+/2.0/services/securitygroup/bulk/{objectId}</code></p>
+</p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securitygroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">securitygroup</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -8211,6 +8276,11 @@ UUID.</p>
   ><h2>PUT /2.0/services/securitytags/tag/{tagId}/vm/{vmId}</h2></a>
   <div class="content">
     <p><p>Apply a security tag to the specified virtual machine.</p>
+<p>You can specify multiple VMs by ID by providing a comma
+separated list. However, there is a URL length limit of 16000
+characters. To optimize performance, tag up to 500 VMs in a
+single call. </p>
+<p>For example: <code>PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276</code></p>
 </p>
   </div>
 </div>
@@ -8222,6 +8292,11 @@ UUID.</p>
   ><h2>DELETE /2.0/services/securitytags/tag/{tagId}/vm/{vmId}</h2></a>
   <div class="content">
     <p><p>Detach a security tag from the specified virtual machine.</p>
+<p>You can specify multiple VMs by ID by providing a comma
+separated list. However, there is a URL length limit of 16000
+characters. To optimize performance, tag up to 500 VMs in a
+single call. </p>
+<p>For example: <code>DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276</code></p>
 </p>
   </div>
 </div>

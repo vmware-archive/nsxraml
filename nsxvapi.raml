@@ -2617,10 +2617,26 @@ securitySchemes:
               required: true
           put:
             displayName: securityTagVMAttach
-            description: Apply a security tag to the specified virtual machine.
+            description: |
+              Apply a security tag to the specified virtual machine.
+
+              You can specify multiple VMs by ID by providing a comma
+              separated list. However, there is a URL length limit of 16000
+              characters. To optimize performance, tag up to 500 VMs in a
+              single call. 
+
+              For example: `PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
           delete:
             displayName: securityTagVMDetach
-            description: Detach a security tag from the specified virtual machine.
+            description: |
+              Detach a security tag from the specified virtual machine.
+
+              You can specify multiple VMs by ID by providing a comma
+              separated list. However, there is a URL length limit of 16000
+              characters. To optimize performance, tag up to 500 VMs in a
+              single call. 
+
+              For example: `DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
   /vm/{vmId}:
     displayName: securitytagVmMoid
     description: |
@@ -2792,24 +2808,28 @@ securitySchemes:
   description: |
     Working with Security Group Grouping Objects
     ===========
+    A security group is a collection of assets or grouping objects from your
+    vSphere inventory.
   /bulk/{scopeId}:
     displayName: secGroupBulk
     description: |
-      Create a New Security Group
+      Creating New Security Groups With Members
       ----
-      Create a new security group on a global scope or universal scope. Use
-      either "globalroot-0" or "universalroot-0". Universal security groups are
-      read-only when querying a secondary NSX manager.
     uriParameters:
-       scopeId:
-         required: true
-         displayName: scopeId
-         description: |
-          For the scopeId use globalroot-0 for non-universal security groups and
-          universalroot-0 for universal security groups.
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: |
+          For the scopeId use *globalroot-0* for non-universal security groups
+          and *universalroot-0* for universal security groups.
     post:
       displayName: secGroupBulkCreate
-      description: Create a new security group on a scope.
+      description: |
+        Create a new security group on a global scope or universal scope with
+        membership information.
+
+        Universal security groups are read-only when querying a secondary NSX
+        manager.
       body:
         application/xml:
           example: |
@@ -2878,9 +2898,44 @@ securitySchemes:
               </dynamicMemberDefinition>
             </securitygroup>
           schema: secGroupBulkCreate
+  /{scopeId}:
+    displayName: secGroupScopeId
+    description: |
+      Creating New Security Groups Without Members
+      -----
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: |
+          For the scopeId use *globalroot-0* for non-universal security groups
+          and *universalroot-0* for universal security groups.
+    post:
+      displayName: secGroupScopeIdCreate
+      description: |
+        Create a new security group, with no membership information specified.
+        You can add members later with `PUT
+        /2.0/services/securitygroup/bulk/{objectId}`
+      body:
+        application/xml:
+          example: |
+            <securitygroup>
+              <name></name>
+            </securitygroup>
+  /bulk/{objectId}:
+    displayName: secGroupBulkObject
+    description: |
+      Updating a Specific Security Group Including Membership
+      ----
+    uriParameters:
+      objectId:
+        required: true
+        displayName: objectId
+        description: Security group ID.
     put:
-      displayName: secGroupUpdate
-      description: Update a security group.
+      displayName: secGroupBulkObject
+      description: |
+        Update configuration for the specified security group, including membership information.
       body:
         application/xml:
           example: |
@@ -2949,44 +3004,6 @@ securitySchemes:
               </dynamicMemberDefinition>
             </securitygroup>
           schema: secGroupBulkUpdate
-  /scope/{scopeId}:
-    displayName: secGroupScope
-    description: |
-      Working with Security Groups on a Specific Scope
-      ----
-    uriParameters:
-      scopeId:
-        required: true
-        displayName: scopeId
-        description: |
-          scopeId can be "globalroot-0", "universalroot-0" or datacenterID /
-          portgroupID in upgrade use cases
-    get:
-      displayName: secGroupScopeRead
-      description: List all the security groups created on a specific scope.
-    /memberTypes:
-      displayName: secGroupMemberTypes
-      description: |
-        Working with Security Group Member Types
-        ----
-      get:
-        displayName: secGroupScopeMembersRead
-        description: |
-          Retrieve a list of valid elements that can be added to a security
-          group.
-    /members/{memberType}:
-      displayName: secGroupScopeMemberByType
-      description: |
-        Working with a Specific Security Group Member Type
-        ----
-      uriParameters:
-        memberType:
-          required: true
-          displayName: memberType
-          description: Specific member type
-      get:
-        displayName: secGroupScopeMemberTypeRead
-        description: Retrieve members of a specific type in the specified scope.
   /{objectId}:
     displayName: secGroupObject
     description: |
@@ -3002,7 +3019,11 @@ securitySchemes:
       description: Retrieve all members of the specified security group.
     put:
       displayName: secGroupObjectUpdate
-      description: Update members of the specified security group.
+      description: |
+        Update configuration for the specified security group. Members are not
+        updated. You must use `PUT
+        /2.0/services/securitygroup/bulk/{objectId}` to update a security
+        group membership.
       body:
         application/xml:
           example: |
@@ -3027,12 +3048,19 @@ securitySchemes:
           schema: secGroupObjectUpdate
     delete:
       displayName: secGroupObjectDelete
-      description: Delete an existing security group.
+      description: |
+        Delete an existing security group.
+        
+        You must remove all members before deleting the security group, or you
+        can use *force=true* to force removal.
       queryParameters:
         force:
           displayName: force
-          required: true
+          description: |
+            Use *force=true* to force removal of security group that contains
+            members.
           type: boolean
+          required: false
     /members/{memberId}:
       displayName: secGroupMember
       description: |
@@ -3121,6 +3149,44 @@ securitySchemes:
         Retrieve all internal security groups on the NSX Manager. These are used
          internally by the system and should not be created or modified by end
         users.
+  /scope/{scopeId}:
+    displayName: secGroupScope
+    description: |
+      Working with Security Groups on a Specific Scope
+      ----
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: |
+          scopeId can be "globalroot-0", "universalroot-0" or datacenterID /
+          portgroupID in upgrade use cases
+    get:
+      displayName: secGroupScopeRead
+      description: List all the security groups created on a specific scope.
+    /memberTypes:
+      displayName: secGroupMemberTypes
+      description: |
+        Working with Security Group Member Types
+        ----
+      get:
+        displayName: secGroupScopeMembersRead
+        description: |
+          Retrieve a list of valid elements that can be added to a security
+          group.
+    /members/{memberType}:
+      displayName: secGroupScopeMemberByType
+      description: |
+        Working with a Specific Security Group Member Type
+        ----
+      uriParameters:
+        memberType:
+          required: true
+          displayName: memberType
+          description: Specific member type
+      get:
+        displayName: secGroupScopeMemberTypeRead
+        description: Retrieve members of a specific type in the specified scope.
 /2.0/services/ipset:
   displayName: ipsets
   description: |
