@@ -863,7 +863,20 @@ Managing Security Tags
 -----
 
 * **post** *(secured)*: Create a new security tag.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. `isUniversal` parameter can be set to create a universal security tag.
+
 * **get** *(secured)*: Retrieve all security tags.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. Added `isUniversal` query parameter to filter universal security tags.
 
 ### /2.0/services/securitytags/tag/{tagId}
 Delete a Security Tag
@@ -883,7 +896,22 @@ Manage a Security Tag on a Virtual Machine
 ----
 
 * **put** *(secured)*: Apply a security tag to the specified virtual machine.
+
+You can specify multiple VMs by ID by providing a comma
+separated list. However, there is a URL length limit of 16000
+characters. To optimize performance, tag up to 500 VMs in a
+single call. 
+
+For example: `PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
+
 * **delete** *(secured)*: Detach a security tag from the specified virtual machine.
+
+You can specify multiple VMs by ID by providing a comma
+separated list. However, there is a URL length limit of 16000
+characters. To optimize performance, tag up to 500 VMs in a
+single call. 
+
+For example: `DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
 
 ### /2.0/services/securitytags/vm/{vmId}
 Working With Security Tags on a Specific Virtual Machine
@@ -891,6 +919,56 @@ Working With Security Tags on a Specific Virtual Machine
 
 * **get** *(secured)*: Retrieve all security tags associated with the specified virtual
 machine.
+
+* **post** *(secured)*: Update security tags associated with the specified virtual machine.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+### /2.0/services/securitytags/selectioncriteria
+Working with Security Tags Unique ID Selection Criteria
+-------
+In NSX versions before 6.3.0, security tags are local to a NSX Manager,
+and are mapped to VMs using the VM's managed object ID.
+
+In NSX 6.3.0 and later, you can create universal security tags to use in
+all NSX Managers in a cross-vCenter NSX environment.
+
+In an active standby environment, the managed object ID for a given VM
+might not be the same in the active and standby datacenters. NSX 6.3.x
+introduces a Unique ID Selection Criteria on the primary NSX Manager to
+use to identify VMs when attaching them to universal security tags. You
+can use them singly or in combination. The selection criteria is set to
+VM instance UUID by default.
+
+Security Tag Assignment<br>Metadata Parameter | Description
+------|-------
+instance_uuid | VM instance UUID
+bios_uuid | VM BIOS UUID
+vmname | VM name
+
+* **get** *(secured)*: Retrieve unique ID section criteria configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+* **put** *(secured)*: Configure the unique ID section criteria configuration.
+
+If you set the selection criteria and assign security tags to VMs, you
+must remove all security tags from VMs before you can change the
+selection criteria.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
 
 ## ssoConfig
 Working with NSX Manager SSO Registration
@@ -961,43 +1039,47 @@ scope.
 ## secGroup
 Working with Security Group Grouping Objects
 ===========
+A security group is a collection of assets or grouping objects from your
+vSphere inventory.
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
-Create a New Security Group
-----
-Create a new security group on a global scope or universal scope. Use
-either "globalroot-0" or "universalroot-0". Universal security groups are
-read-only when querying a secondary NSX manager.
-
-* **post** *(secured)*: Create a new security group on a scope.
-* **put** *(secured)*: Update a security group.
-
-### /2.0/services/securitygroup/scope/{scopeId}
-Working with Security Groups on a Specific Scope
+Creating New Security Groups With Members
 ----
 
-* **get** *(secured)*: List all the security groups created on a specific scope.
+* **post** *(secured)*: Create a new security group on a global scope or universal scope with
+membership information.
 
-### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
-Working with Security Group Member Types
+Universal security groups are read-only when querying a secondary NSX
+manager.
+
+### /2.0/services/securitygroup/{scopeId}
+Creating New Security Groups Without Members
+-----
+
+* **post** *(secured)*: Create a new security group, with no membership information specified.
+You can add members later with `PUT
+/2.0/services/securitygroup/bulk/{objectId}`
+
+### /2.0/services/securitygroup/bulk/{objectId}
+Updating a Specific Security Group Including Membership
 ----
 
-* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
-group.
-
-### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
-Working with a Specific Security Group Member Type
-----
-
-* **get** *(secured)*: Retrieve members of a specific type in the specified scope.
+* **put** *(secured)*: Update configuration for the specified security group, including membership information.
 
 ### /2.0/services/securitygroup/{objectId}
 Working with a Specific Security Group
 ----
 
 * **get** *(secured)*: Retrieve all members of the specified security group.
-* **put** *(secured)*: Update members of the specified security group.
+* **put** *(secured)*: Update configuration for the specified security group. Members are not
+updated. You must use `PUT
+/2.0/services/securitygroup/bulk/{objectId}` to update a security
+group membership.
+
 * **delete** *(secured)*: Delete an existing security group.
+
+You must remove all members before deleting the security group, or you
+can use *force=true* to force removal.
 
 ### /2.0/services/securitygroup/{objectId}/members/{memberId}
 Working with Members of a Specific Security Group
@@ -1047,6 +1129,25 @@ Working with Internal Security Groups
 * **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used
  internally by the system and should not be created or modified by end
 users.
+
+### /2.0/services/securitygroup/scope/{scopeId}
+Working with Security Groups on a Specific Scope
+----
+
+* **get** *(secured)*: List all the security groups created on a specific scope.
+
+### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
+Working with Security Group Member Types
+----
+
+* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
+group.
+
+### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
+Working with a Specific Security Group Member Type
+----
+
+* **get** *(secured)*: Retrieve members of a specific type in the specified scope.
 
 ## ipsets
 Working with IP Set Grouping Objects
@@ -1707,7 +1808,6 @@ required to provide security to workloads. These elements include:
 Internal components:
 * Guest Introspection Universal Service Virtual Machine
 * Guest Introspection Mux
-* Data Security
 * Logical Firewall
 
 External components:
@@ -2414,6 +2514,68 @@ Working with MAC Address Sets on a Specific Scope
 
 * **post** *(secured)*: Create a MAC address set on the specified scope.
 * **get** *(secured)*: List MAC address sets on the specified scope.
+
+## servicesAlarmsSource
+Working with Alarms from a Specific Source
+=====
+
+Some system alerts will show up as alarms in the NSX dashboard. You can
+view and resolve alarms from a specific source.
+
+### /2.0/services/alarms/{sourceId}
+
+* **get** *(secured)*: Retrive all alarms from the specified source.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.4 | Method introduced.
+
+* **post** *(secured)*: Resolve all alarms for the specified source.
+
+Alarms will resolve automatically when the cause of the alarm is
+resolved.  For example, if an NSX Edge appliance is powered off, this
+will trigger an alarm. If you power the NSX Edge appliance back on, the
+alarm will resolve. If however, you delete the NSX Edge appliance, the
+alarm will persist, because the alarm cause was never resolved. In this
+case, you may want to manually resolve the alarm. Resolving the alarms
+will clear them from the NSX dashboard.
+
+Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
+alarms for the source. Use this response as the request body for the
+`POST` call.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.4 | Method introduced.
+
+## servicesSystemAlarmsId
+Working with a Specific Alarm
+-------
+Some system alerts will show up as alarms in the NSX dashboard. You can
+view and resolve alarms by alarm ID.
+
+### /2.0/services/systemalarms/{alarmId}
+
+* **get** *(secured)*: Retrieve information about the specified alarm.
+* **post** *(secured)*: Resolve the specified alarm.
+
+Alarms will resolve automatically when the cause of the alarm is
+resolved.  For example, if an NSX Edge appliance is powered off, this
+will trigger an alarm. If you power the NSX Edge appliance back on, the
+alarm will resolve. If however, you delete the NSX Edge appliance, the
+alarm will persist, because the alarm cause was never resolved. In this
+case, you may want to manually resolve the alarm. Resolving the alarm 
+will clear it from the NSX dashboard.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
 
 ## taskFramework
 Working with the Task Framework
@@ -4496,9 +4658,8 @@ response of the call has Location header populated with the URI using
 which the created object can be fetched.
 
 Ensure that:
-* the required VMware built in services (such as Distributed Firewall,
-  Data Security, and Endpoint) are installed. See *NSX Installation
-  Guide*.
+* the required VMware built in services (such as Distributed Firewall
+  and Endpoint) are installed. See *NSX Installation Guide*.
 * the required partner services have been registered with NSX Manager.
 * the required security groups have been created.
 
