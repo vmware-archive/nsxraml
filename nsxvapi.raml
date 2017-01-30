@@ -2626,6 +2626,42 @@ securitySchemes:
           description: |
             Retrieve the list of VMs that have the specified tag attached to
             them.
+        post:
+          displayName: securityTagVMsAction
+          description: |
+            Attach or detach a security tag to a virtual machine.
+
+            This operation does not check that the virtual machine exists in
+            the local inventory. This allows you to attach a universal
+            security tag to a virtual machine that is connected to a secondary
+            NSX Manager (and therefore is not connected to the primary NSX
+            Manager where the call is sent).
+
+            Possible keys for the tagParameter are:
+            * instance_uuid
+            * bios_uuid
+            * vmname
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.3.0 | Method introduced.
+          queryParameters:
+            action:
+              displayName: action
+              description: | 
+                Action to perform: *attach* or *detach* specified security tag
+                from the VMs listed in the request body.
+          body:
+            application/xml:
+              example: |
+                <securityTagAssignment>
+                  <tagParameter>
+                   <key>instance_uuid</key>
+                   <value>123e4567-e89b-12d3-a456-426655440000</value>
+                  </tagParameter>
+                </securityTagAssignment>
         /{vmId}:
           displayName: securityTagVM
           description: |
@@ -2649,6 +2685,18 @@ securitySchemes:
               single call. 
 
               For example: `PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
+
+              **Note:** this method can attach a universal security tag to a
+              virtual machine. However, this method checks that the VM exists
+              on the NSX Manager to which the API call is sent. In a
+              cross-vCenter active active environment, the VM might exist on
+              a secondary NSX Manager, and so the call would fail. 
+              
+              You can instead use the `POST
+              /api/2.0/services/securitytags/tag/{tagId}/vm?action=attach`
+              method to attach universal security tags to a VM that is not
+              local to the primary NSX Manager. This method does not check
+              that the VM is local to the NSX Manager.
           delete:
             displayName: securityTagVMDetach
             description: |
@@ -2660,6 +2708,69 @@ securitySchemes:
               single call. 
 
               For example: `DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
+        /vmDetail:
+          displayName: securityTagVMDetail
+          description: |
+            Working with Virtual Machine Details for a Specific Security Tag
+            -----
+          get:
+            displayName: securityTagVMDetailRead
+            description: |
+              Retrieve details about the VMs that are attached to the
+              specified security tag.
+
+              **Method history:**
+
+              Release | Modification
+              --------|-------------
+              6.3.0 | Method introduced.
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                      <attachedVMList>
+                        <attachedVM>
+                          <objectId>vm-17</objectId>
+                          <objectTypeName>VirtualMachine</objectTypeName>
+                          <vsmUuid>564D5E43-1A21-9061-CE62-16E4E64FBC52</vsmUuid>
+                          <revision>1</revision>
+                          <type>
+                            <typeName>VirtualMachine</typeName>
+                          </type>
+                          <name>Ubuntu2</name>
+                          <scope>
+                            <id>domain-c7</id>
+                            <objectTypeName>ClusterComputeResource</objectTypeName>
+                            <name>sp cluster</name>
+                          </scope>
+                          <clientHandle />
+                          <isUniversal>false</isUniversal>
+                          <universalRevision>0</universalRevision>
+                          <instanceUUID>520932b3-b531-7b4a-d3fe-76f0fdd82736</instanceUUID>
+                          <biosUUID>423f7c14-6463-8ebc-d06d-2a284b24cabb</biosUUID>
+                        </attachedVM>
+                        <attachedVM>
+                          <objectId>vm-59</objectId>
+                          <objectTypeName>VirtualMachine</objectTypeName>
+                          <vsmUuid>564D5E43-1A21-9061-CE62-16E4E64FBC52</vsmUuid>
+                          <revision>1</revision>
+                          <type>
+                            <typeName>VirtualMachine</typeName>
+                          </type>
+                          <name>vShield-FW (1)</name>
+                          <scope>
+                            <id>domain-c7</id>
+                            <objectTypeName>ClusterComputeResource</objectTypeName>
+                            <name>sp cluster</name>
+                          </scope>
+                          <clientHandle />
+                          <isUniversal>false</isUniversal>
+                          <universalRevision>0</universalRevision>
+                          <instanceUUID>502777a8-a4b0-6b1e-1af1-6ab43f3417a0</instanceUUID>
+                          <biosUUID>42278ffc-021c-cd1f-1413-978f34079593</biosUUID>
+                        </attachedVM>
+                      </attachedVMList>
   /vm/{vmId}:
     displayName: securitytagVmMoid
     description: |
@@ -2690,7 +2801,7 @@ securitySchemes:
         action:
           displayName: action
           description: |
-            Action to perform. **ASSIGN_TAGS** or **CLEAR_ALL_TAGS*.
+            Action to perform. *ASSIGN_TAGS* or *CLEAR_ALL_TAGS*.
       body:
         application/xml:
           example: |
@@ -2935,6 +3046,37 @@ securitySchemes:
 
         Universal security groups are read-only when querying a secondary NSX
         manager.
+
+        When you create a universal security group (on scope
+        *universalroot-0*) by default **localMembersOnly** is set to *false*
+        which indicates that the universal security group will contain members
+        across the cross-vCenter NSX environment.  This is the case in an
+        active active environment. You can add the following
+        objects to a universal security group with *localMembersOnly=false*
+        (active active):
+        * IP Address Set
+        * MAC Address Set
+        * Universal Security Groups with *localMembersOnly=false*
+
+        When you create a universal security group (on scope
+        *universalroot-0*) you can set the extendedAttribute
+        **localMembersOnly** to *true* to indicate that the universal security
+        group will contain members local to that NSX Manager only.  This is
+        the case in an active standby environment, because only one NSX
+        environment is active at a time, and the same VMs are present in each
+        NSX environment. You can add the following objects to a universal
+        security group with *localMembersOnly=true* (active standby):
+        * Universal Security Tag
+        * IP Address Set
+        * MAC Address Set
+        * Universal Security Groups with *localMembersOnly=true*
+        * Dynamic criteria using VM name
+ 
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Extended attribute **localMembersOnly** introduced.
       body:
         application/xml:
           example: |
@@ -2955,7 +3097,12 @@ securitySchemes:
                 <revision></revision>
               </scope>
               <clientHandle></clientHandle>
-              <extendedAttributes></extendedAttributes>
+              <extendedAttributes>
+                <extendedAttribute>
+                  <name>localMembersOnly</name>
+                  <value>true</value>
+                </extendedAttribute>
+              </extendedAttributes>
               <member>
                 <objectId></objectId>
                 <objectTypeName></objectTypeName>
@@ -3021,11 +3168,48 @@ securitySchemes:
         Create a new security group, with no membership information specified.
         You can add members later with `PUT
         /2.0/services/securitygroup/bulk/{objectId}`
+
+        When you create a universal security group (on scope
+        *universalroot-0*) by default **localMembersOnly** is set to *false*
+        which indicates that the universal security group will contain members
+        across the cross-vCenter NSX environment.  This is the case in an
+        active active environment. You can add the following
+        objects to a universal security group with *localMembersOnly=false*
+        (active active):
+        * IP Address Set
+        * MAC Address Set
+        * Universal Security Groups with *localMembersOnly=false*
+
+        When you create a universal security group (on scope
+        *universalroot-0*) you can set the extendedAttribute
+        **localMembersOnly** to *true* to indicate that the universal security
+        group will contain members local to that NSX Manager only.  This is
+        the case in an active standby environment, because only one NSX
+        environment is active at a time, and the same VMs are present in each
+        NSX environment. You can add the following objects to a universal
+        security group with *localMembersOnly=true* (active standby):
+        * Universal Security Tag
+        * IP Address Set
+        * MAC Address Set
+        * Universal Security Groups with *localMembersOnly=true*
+        * Dynamic criteria using VM name
+ 
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Extended attribute **localMembersOnly** introduced.
       body:
         application/xml:
           example: |
             <securitygroup>
               <name></name>
+              <extendedAttributes>
+                <extendedAttribute>
+                  <name>localMembersOnly</name>
+                  <value>true</value>
+                </extendedAttribute>
+              </extendedAttributes>
             </securitygroup>
   /bulk/{objectId}:
     displayName: secGroupBulkObject
@@ -3844,6 +4028,7 @@ securitySchemes:
           command:
             displayName: command
             description: Use **command** parameter *start* or *stop*.
+            required: true
         post:
           displayName: componentManagementToggleAction
           description: Start or stop a component.
@@ -7412,8 +7597,7 @@ securitySchemes:
 
             If the default layer 3 firewall section is selected, the request is
             rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
-            for information on restoring the default firewall config or
-            section.
+            for information on resetting the default firewall section.
 
             **Method history:**
 
@@ -7692,8 +7876,7 @@ securitySchemes:
 
             If the default layer 2 firewall section is selected, the request is
             rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
-            for information on restoring the default firewall config or
-            section.
+            for information on resetting the default firewall section.
 
             **Method history:**
 

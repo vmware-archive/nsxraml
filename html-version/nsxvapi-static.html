@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x64;&#x6f;&#x63;&#102;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x64;&#x6f;&#x63;&#102;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#114;&#101;&#46;&#99;&#x6f;&#109;">&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#114;&#101;&#46;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -7062,7 +7062,43 @@ and <em>universalroot-0</em> for universal security groups.</p>
 membership information.</p>
 <p>Universal security groups are read-only when querying a secondary NSX
 manager.</p>
-</p>
+<p>When you create a universal security group (on scope
+<em>universalroot-0</em>) by default <strong>localMembersOnly</strong> is set to <em>false</em>
+which indicates that the universal security group will contain members
+across the cross-vCenter NSX environment.  This is the case in an
+active active environment. You can add the following
+objects to a universal security group with <em>localMembersOnly=false</em>
+(active active):</p>
+<ul>
+<li>IP Address Set</li>
+<li>MAC Address Set</li>
+<li>Universal Security Groups with <em>localMembersOnly=false</em></li>
+</ul>
+<p>When you create a universal security group (on scope
+<em>universalroot-0</em>) you can set the extendedAttribute
+<strong>localMembersOnly</strong> to <em>true</em> to indicate that the universal security
+group will contain members local to that NSX Manager only.  This is
+the case in an active standby environment, because only one NSX
+environment is active at a time, and the same VMs are present in each
+NSX environment. You can add the following objects to a universal
+security group with <em>localMembersOnly=true</em> (active standby):</p>
+<ul>
+<li>Universal Security Tag</li>
+<li>IP Address Set</li>
+<li>MAC Address Set</li>
+<li>Universal Security Groups with <em>localMembersOnly=true</em></li>
+<li>Dynamic criteria using VM name</li>
+</ul>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Extended attribute <strong>localMembersOnly</strong> introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="securitygroup"&gt;
@@ -7197,7 +7233,12 @@ manager.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttribute</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>localMembersOnly<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttribute</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
@@ -7642,10 +7683,52 @@ and <em>universalroot-0</em> for universal security groups.</p>
     <p><p>Create a new security group, with no membership information specified.
 You can add members later with <code>PUT
 /2.0/services/securitygroup/bulk/{objectId}</code></p>
-</p>
+<p>When you create a universal security group (on scope
+<em>universalroot-0</em>) by default <strong>localMembersOnly</strong> is set to <em>false</em>
+which indicates that the universal security group will contain members
+across the cross-vCenter NSX environment.  This is the case in an
+active active environment. You can add the following
+objects to a universal security group with <em>localMembersOnly=false</em>
+(active active):</p>
+<ul>
+<li>IP Address Set</li>
+<li>MAC Address Set</li>
+<li>Universal Security Groups with <em>localMembersOnly=false</em></li>
+</ul>
+<p>When you create a universal security group (on scope
+<em>universalroot-0</em>) you can set the extendedAttribute
+<strong>localMembersOnly</strong> to <em>true</em> to indicate that the universal security
+group will contain members local to that NSX Manager only.  This is
+the case in an active standby environment, because only one NSX
+environment is active at a time, and the same VMs are present in each
+NSX environment. You can add the following objects to a universal
+security group with <em>localMembersOnly=true</em> (active standby):</p>
+<ul>
+<li>Universal Security Tag</li>
+<li>IP Address Set</li>
+<li>MAC Address Set</li>
+<li>Universal Security Groups with <em>localMembersOnly=true</em></li>
+<li>Dynamic criteria using VM name</li>
+</ul>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Extended attribute <strong>localMembersOnly</strong> introduced.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securitygroup</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttribute</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>localMembersOnly<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttribute</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">securitygroup</span>&gt;</span>
 </code></pre>
   </div>
@@ -7772,6 +7855,7 @@ selection criteria.</p>
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
         &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element type="xs:boolean" name="isUniversal"/&gt;
         &lt;xs:element type="xs:string" name="description"/&gt;
         &lt;xs:element type="xs:string" name="extendedAttributes"/&gt;
       &lt;/xs:sequence&gt;
@@ -7873,6 +7957,134 @@ them.</p>
 </p>
   </div>
 </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/services/securitytags/tag/{tagId}/vm"
+    href="#POST/2.0/services/securitytags/tag/{tagId}/vm"
+  ><h2>POST /2.0/services/securitytags/tag/{tagId}/vm</h2></a>
+  <div class="content">
+    <p><p>Attach or detach a security tag to a virtual machine.</p>
+<p>This operation does not check that the virtual machine exists in
+the local inventory. This allows you to attach a universal
+security tag to a virtual machine that is connected to a secondary
+NSX Manager (and therefore is not connected to the primary NSX
+Manager where the call is sent).</p>
+<p>Possible keys for the tagParameter are:</p>
+<ul>
+<li>instance_uuid</li>
+<li>bios_uuid</li>
+<li>vmname</li>
+</ul>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Action to perform: <em>attach</em> or <em>detach</em> specified security tag
+from the VMs listed in the request body.</p>
+
+  </dd>
+</dl>
+    </div>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securityTagAssignment</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tagParameter</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>instance_uuid<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>123e4567-e89b-12d3-a456-426655440000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tagParameter</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">securityTagAssignment</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-virtual-machine-details-for-a-specific-security-tag">Working with Virtual Machine Details for a Specific Security Tag</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/securitytags/tag/{tagId}/vm/vmDetail"
+    href="#GET/2.0/services/securitytags/tag/{tagId}/vm/vmDetail"
+  ><h2>GET /2.0/services/securitytags/tag/{tagId}/vm/vmDetail</h2></a>
+  <div class="content">
+    <p><p>Retrieve details about the VMs that are attached to the
+specified security tag.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">attachedVMList</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">attachedVM</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-17<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>564D5E43-1A21-9061-CE62-16E4E64FBC52<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Ubuntu2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c7<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>sp cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">instanceUUID</span>&gt;</span>520932b3-b531-7b4a-d3fe-76f0fdd82736<span class="hljs-tag">&lt;/<span class="hljs-name">instanceUUID</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">biosUUID</span>&gt;</span>423f7c14-6463-8ebc-d06d-2a284b24cabb<span class="hljs-tag">&lt;/<span class="hljs-name">biosUUID</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">attachedVM</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">attachedVM</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-59<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>564D5E43-1A21-9061-CE62-16E4E64FBC52<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vShield-FW (1)<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c7<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>sp cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">instanceUUID</span>&gt;</span>502777a8-a4b0-6b1e-1af1-6ab43f3417a0<span class="hljs-tag">&lt;/<span class="hljs-name">instanceUUID</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">biosUUID</span>&gt;</span>42278ffc-021c-cd1f-1413-978f34079593<span class="hljs-tag">&lt;/<span class="hljs-name">biosUUID</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">attachedVM</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">attachedVMList</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
 </section>
 <section class="resource">
   <div class="description"><h2 id="manage-a-security-tag-on-a-virtual-machine">Manage a Security Tag on a Virtual Machine</h2>
@@ -7905,6 +8117,16 @@ separated list. However, there is a URL length limit of 16000
 characters. To optimize performance, tag up to 500 VMs in a
 single call. </p>
 <p>For example: <code>PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276</code></p>
+<p><strong>Note:</strong> this method can attach a universal security tag to a
+virtual machine. However, this method checks that the VM exists
+on the NSX Manager to which the API call is sent. In a
+cross-vCenter active active environment, the VM might exist on
+a secondary NSX Manager, and so the call would fail. </p>
+<p>You can instead use the <code>POST
+/api/2.0/services/securitytags/tag/{tagId}/vm?action=attach</code>
+method to attach universal security tags to a VM that is not
+local to the primary NSX Manager. This method does not check
+that the VM is local to the NSX Manager.</p>
 </p>
   </div>
 </div>
@@ -7982,7 +8204,7 @@ machine.</p>
     
   </dt>
   <dd>
-      <p>Action to perform. <strong>ASSIGN_TAGS</strong> or <em>*CLEAR_ALL_TAGS</em>.</p>
+      <p>Action to perform. <em>ASSIGN_TAGS</em> or <em>CLEAR_ALL_TAGS</em>.</p>
 
   </dd>
 </dl>
@@ -24345,8 +24567,7 @@ configuration you want to modify.</p>
     <p><p>Delete the specified layer 2 section and its contents.</p>
 <p>If the default layer 2 firewall section is selected, the request is
 rejected. See <code>GET /api/4.0/firewall/globalroot-0/defaultconfig</code>
-for information on restoring the default firewall config or
-section.</p>
+for information on resetting the default firewall section.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -25780,8 +26001,7 @@ configuration you want to modify.</p>
     <p><p>Delete the specified layer 3 distributed firewall section.</p>
 <p>If the default layer 3 firewall section is selected, the request is
 rejected. See <code>GET /api/4.0/firewall/globalroot-0/defaultconfig</code>
-for information on restoring the default firewall config or
-section.</p>
+for information on resetting the default firewall section.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>

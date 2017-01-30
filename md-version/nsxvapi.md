@@ -891,6 +891,25 @@ Working With Virtual Machines on a Specific Security Tag
 * **get** *(secured)*: Retrieve the list of VMs that have the specified tag attached to
 them.
 
+* **post** *(secured)*: Attach or detach a security tag to a virtual machine.
+
+This operation does not check that the virtual machine exists in
+the local inventory. This allows you to attach a universal
+security tag to a virtual machine that is connected to a secondary
+NSX Manager (and therefore is not connected to the primary NSX
+Manager where the call is sent).
+
+Possible keys for the tagParameter are:
+* instance_uuid
+* bios_uuid
+* vmname
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
 ### /2.0/services/securitytags/tag/{tagId}/vm/{vmId}
 Manage a Security Tag on a Virtual Machine
 ----
@@ -904,6 +923,18 @@ single call.
 
 For example: `PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
 
+**Note:** this method can attach a universal security tag to a
+virtual machine. However, this method checks that the VM exists
+on the NSX Manager to which the API call is sent. In a
+cross-vCenter active active environment, the VM might exist on
+a secondary NSX Manager, and so the call would fail. 
+
+You can instead use the `POST
+/api/2.0/services/securitytags/tag/{tagId}/vm?action=attach`
+method to attach universal security tags to a VM that is not
+local to the primary NSX Manager. This method does not check
+that the VM is local to the NSX Manager.
+
 * **delete** *(secured)*: Detach a security tag from the specified virtual machine.
 
 You can specify multiple VMs by ID by providing a comma
@@ -912,6 +943,19 @@ characters. To optimize performance, tag up to 500 VMs in a
 single call. 
 
 For example: `DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
+
+### /2.0/services/securitytags/tag/{tagId}/vm/vmDetail
+Working with Virtual Machine Details for a Specific Security Tag
+-----
+
+* **get** *(secured)*: Retrieve details about the VMs that are attached to the
+specified security tag.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
 
 ### /2.0/services/securitytags/vm/{vmId}
 Working With Security Tags on a Specific Virtual Machine
@@ -1052,6 +1096,37 @@ membership information.
 Universal security groups are read-only when querying a secondary NSX
 manager.
 
+When you create a universal security group (on scope
+*universalroot-0*) by default **localMembersOnly** is set to *false*
+which indicates that the universal security group will contain members
+across the cross-vCenter NSX environment.  This is the case in an
+active active environment. You can add the following
+objects to a universal security group with *localMembersOnly=false*
+(active active):
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=false*
+
+When you create a universal security group (on scope
+*universalroot-0*) you can set the extendedAttribute
+**localMembersOnly** to *true* to indicate that the universal security
+group will contain members local to that NSX Manager only.  This is
+the case in an active standby environment, because only one NSX
+environment is active at a time, and the same VMs are present in each
+NSX environment. You can add the following objects to a universal
+security group with *localMembersOnly=true* (active standby):
+* Universal Security Tag
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=true*
+* Dynamic criteria using VM name
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Extended attribute **localMembersOnly** introduced.
+
 ### /2.0/services/securitygroup/{scopeId}
 Creating New Security Groups Without Members
 -----
@@ -1059,6 +1134,37 @@ Creating New Security Groups Without Members
 * **post** *(secured)*: Create a new security group, with no membership information specified.
 You can add members later with `PUT
 /2.0/services/securitygroup/bulk/{objectId}`
+
+When you create a universal security group (on scope
+*universalroot-0*) by default **localMembersOnly** is set to *false*
+which indicates that the universal security group will contain members
+across the cross-vCenter NSX environment.  This is the case in an
+active active environment. You can add the following
+objects to a universal security group with *localMembersOnly=false*
+(active active):
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=false*
+
+When you create a universal security group (on scope
+*universalroot-0*) you can set the extendedAttribute
+**localMembersOnly** to *true* to indicate that the universal security
+group will contain members local to that NSX Manager only.  This is
+the case in an active standby environment, because only one NSX
+environment is active at a time, and the same VMs are present in each
+NSX environment. You can add the following objects to a universal
+security group with *localMembersOnly=true* (active standby):
+* Universal Security Tag
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=true*
+* Dynamic criteria using VM name
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Extended attribute **localMembersOnly** introduced.
 
 ### /2.0/services/securitygroup/bulk/{objectId}
 Updating a Specific Security Group Including Membership
@@ -2913,8 +3019,7 @@ must synchronize firewall rules from Service Composer using the `GET
 
 If the default layer 3 firewall section is selected, the request is
 rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
-for information on restoring the default firewall config or
-section.
+for information on resetting the default firewall section.
 
 **Method history:**
 
@@ -3079,8 +3184,7 @@ must synchronize firewall rules from Service Composer using the `GET
 
 If the default layer 2 firewall section is selected, the request is
 rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
-for information on restoring the default firewall config or
-section.
+for information on resetting the default firewall section.
 
 **Method history:**
 
