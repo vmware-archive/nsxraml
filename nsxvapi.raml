@@ -1016,7 +1016,7 @@ securitySchemes:
         required: true
         displayName: scopeId
         description: |
-          A valid tranzport zone ID (vdnScope objectId).
+          A valid transport zone ID (vdnScope objectId).
   get:
     displayName: logicalSwitchList
     description: |
@@ -1591,7 +1591,7 @@ securitySchemes:
     /conn-check/p2p:
       displayName: logicalSwitchPing
       description: |
-        Test Point-to-Point Connectivity
+        Testing Point-to-Point Connectivity
         ----
       post:
         displayName: logicalSwitchPing
@@ -1868,7 +1868,7 @@ securitySchemes:
   /upgrade-available:
     displayName: nsxControllerUpgradeAvailability
     description: |
-      Retrieve Controller Upgrade Availability
+      Working With Controller Upgrade Availability
       ----
     get:
       displayName: nsxControllerUpgradeAvailability
@@ -1876,7 +1876,7 @@ securitySchemes:
   /progress/{jobId}:
     displayName: nsxControllerJob
     description: |
-      Status of Controller Job
+      Working With of Controller Job Status
       -----
     uriParameters:
       jobId:
@@ -1924,7 +1924,7 @@ securitySchemes:
     delete:
       displayName: nsxControllerDelete
       description: |
-        Deletes the NSX controller.
+        Delete the NSX controller.
       queryParameters:
         forceRemoval:
           type: boolean
@@ -1941,9 +1941,10 @@ securitySchemes:
       get:
         displayName: nsxControllerLogsRead
         description: |
-          Retrieves controller logs. Response content type is
+          Retrieve controller logs. Response content type is
           application/octet-stream and response header is filename. This
           streams a fairly large bundle back (possibly hundreds of MB).
+  # need to specify different Accept header?
     /syslog:
       displayName: nsxControllerSyslog
       description: |
@@ -2037,7 +2038,7 @@ securitySchemes:
 /2.0/services/application:
   displayName: servicesApps
   description: |
-    Working with Services
+    Working with Services Grouping Objects
     =============
   /scope/{scopeId}:
     displayName: servicesAppsScopeScope
@@ -2133,7 +2134,7 @@ securitySchemes:
 /2.0/services/applicationgroup:
   displayName: applicationgroup
   description: |
-    Working with Service Groups
+    Working with Service Groups Grouping Objects
     ============
   /scope/{scopeId}:
     displayName: serviceGroups
@@ -2267,7 +2268,7 @@ securitySchemes:
 /2.0/services/ipam/pools:
   displayName: ipPools
   description: |
-    Working with IP Pools
+    Working with IP Pool Grouping Objects
     ========
   /scope/{scopeId}:
     displayName: ipPoolScope
@@ -2550,6 +2551,11 @@ securitySchemes:
   description: |
     Working with Security Tags
     =====
+
+    You can manage security tags and their virtual machine assignments. For
+    example, you can create a user defined security tag, assign tags to a
+    virtual machine, view tags assigned to virtual machines, and view virtual
+    machines that have a specific tag assigned.
   /tag:
     displayName: securitytagsTag
     description: |
@@ -2557,23 +2563,46 @@ securitySchemes:
       -----
     post:
       displayName: securityTagCreate
-      description: Create a new security tag.
+      description: | 
+        Create a new security tag.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method updated. `isUniversal` parameter can be set to create a universal security tag.
       body:
         application/xml:
           example: |
             <securityTag>
-              <objectTypeName></objectTypeName>
+              <objectTypeName>SecurityTag</objectTypeName>
               <type>
-                <typeName></typeName>
+                <typeName>SecurityTag</typeName>
               </type>
-              <name></name>
-              <description></description>
+              <name>TAG_NAME</name>
+              <isUniversal>true</isUniversal>
+              <description>description of the tag</description>
               <extendedAttributes></extendedAttributes>
             </securityTag>
           schema: securityTagCreate
     get:
       displayName: securityTagRead
-      description: Retrieve security tags.
+      description: |
+        Retrieve all security tags.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method updated. Added `isUniversal` query parameter to filter universal security tags.
+      queryParameters:
+        isUniversal:
+          displayName: isUniversal
+          description: |
+            Set to *true* to view universal security tags only.  Set to
+            *false* to view security tags local to that NSX Manager only.
+          type: boolean
+          required: false
     /{tagId}:
       displayName: securityTagDelete
       description: |
@@ -2590,44 +2619,129 @@ securitySchemes:
       /vm:
         displayName: securityTagVMsList
         description: |
-          Working with Security Tags on Virtual Machines
+          Working With Virtual Machines on a Specific Security Tag
           ----
         get:
           displayName: securityTagVMsList
           description: |
             Retrieve the list of VMs that have the specified tag attached to
             them.
-        /{vmMoid}:
+        /{vmId}:
           displayName: securityTagVM
           description: |
             Manage a Security Tag on a Virtual Machine
             ----
           uriParameters:
-            vmMoid:
-              description: ID of VM
-              displayName: vmMoid
+            vmId:
+              displayName: vmId
+              description: |
+                Specify VM using VM managed object ID or VM instance
+                UUID.
               required: true
           put:
             displayName: securityTagVMAttach
-            description: Apply a security tag to virtual machine.
+            description: Apply a security tag to the specified virtual machine.
           delete:
             displayName: securityTagVMDetach
-            description: Detach a security tag from a virtual machine.
-  /vm:
-    displayName: securitytagsVm
+            description: Detach a security tag from the specified virtual machine.
+  /vm/{vmId}:
+    displayName: securitytagVmMoid
     description: |
-      Working with Virtual Machines and Security Tags
+      Working With Security Tags on a Specific Virtual Machine
       -----
-    /{vmMoid}:
-      displayName: securitytagVmMoid
-      description: |
-        Manage Security Tags on a Specific Virtual Machine
-        -----
-      get:
-        displayName: securitytagVmMoidList
+    uriParameters:
+      vmId:
+        displayName: vmId
         description: |
-          Retrieve all security tags associated with the specified virtual
-          machine.
+          Specify VM using VM managed object ID or VM instance
+          UUID.
+    get:
+      displayName: securitytagVmIdList
+      description: |
+        Retrieve all security tags associated with the specified virtual
+        machine.
+    post:
+      displayName: securitytagVmMoidAction
+      description: |
+        Update security tags associated with the specified virtual machine.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method introduced.
+      queryParameters:
+        action:
+          displayName: action
+          description: |
+            Action to perform. **ASSIGN_TAGS** or **CLEAR_ALL_TAGS*.
+      body:
+        application/xml:
+          example: |
+            <securityTags>
+              <securityTag>
+                <objectId>securitytag-12</objectId>
+              </securityTag>
+              <securityTag>
+                <objectId>securitytag-13</objectId>
+              </securityTag>
+              <securityTag>
+                <objectId>securitytag-14</objectId>
+              </securityTag>
+            </securityTags>                  
+  /selectioncriteria:
+    displayName: securitytagsCriteria
+    description: |
+      Working with Security Tags Unique ID Selection Criteria
+      -------
+      In NSX versions before 6.3.0, security tags are local to a NSX Manager,
+      and are mapped to VMs using the VM's managed object ID.
+      
+      In NSX 6.3.0 and later, you can create universal security tags to use in
+      all NSX Managers in a cross-vCenter NSX environment.
+      
+      In an active standby environment, the managed object ID for a given VM
+      might not be the same in the active and standby datacenters. NSX 6.3.x
+      introduces a Unique ID Selection Criteria on the primary NSX Manager to
+      use to identify VMs when attaching them to universal security tags. You
+      can use them singly or in combination. The selection criteria is set to
+      VM instance UUID by default.
+
+      Security Tag Assignment<br>Metadata Parameter | Description
+      ------|-------
+      instance_uuid | VM instance UUID
+      bios_uuid | VM BIOS UUID
+      vmname | VM name
+    get:
+      displayName: securitytagsCriteriaRead
+      description: |
+        Retrieve unique ID section criteria configuration.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method introduced.
+    put:
+      displayName: securitytagsCriteriaUpdate
+      description: |
+        Configure the unique ID section criteria configuration.
+
+        If you set the selection criteria and assign security tags to VMs, you
+        must remove all security tags from VMs before you can change the
+        selection criteria.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method introduced.
+      body:
+        application/xml:
+          example: |
+            <securityTagAssignmentMetadata>
+              <metadata>instance_uuid</metadata>
+            </securityTagAssignmentMetadata>
 /2.0/services/ssoconfig:
   displayName: ssoConfig
   description: |
@@ -2781,7 +2895,7 @@ securitySchemes:
 /2.0/services/securitygroup:
   displayName: secGroup
   description: |
-    Working with Security Groups
+    Working with Security Group Grouping Objects
     ===========
   /bulk/{scopeId}:
     displayName: secGroupBulk
@@ -3115,7 +3229,7 @@ securitySchemes:
 /2.0/services/ipset:
   displayName: ipsets
   description: |
-    Working with IP Sets
+    Working with IP Set Grouping Objects
     =======
   /scope/{scopeMoref}:
     displayName: ipsetList
@@ -3372,7 +3486,7 @@ securitySchemes:
   /status:
     displayName: universalSyncStatus
     description: |
-      Working wiht Universal Sync Status
+      Working With Universal Sync Status
       -----
     get:
       displayName: universalSyncStatusRead
@@ -3605,10 +3719,20 @@ securitySchemes:
     description: |
       Working with Components
       ----
+
+      The NSX Manager appliance has the following components:
+
+      Component | Description |
+      ------|--------
+      NSX | NSX Manager
+      NSXREPLICATOR | Universal Synchronization Service
+      RABBITMQ | RabbitMQ - Messaging service
+      SSH | SSH Service
+      VPOSTGRES | vPostgres - Database service
     get:
       displayName: componentsManagementRead
       description: Retrieve all appliance manager components.
-    /{componentID}:
+    /component/{componentID}:
       displayName: componentManagement
       description: |
         Working with a Specific Component
@@ -3641,9 +3765,30 @@ securitySchemes:
         displayName: componentStatus
         description: |
           Working with Component Status
+          ----
         get:
           displayName: componentStatusRead
           description: Retrieve current status for specified component.
+      /toggleStatus/{command}:
+        displayName: componentManagementToggle
+        description: | 
+          Toggle Component Status
+          -----
+        uriParameters:
+          command:
+            displayName: command
+            description: Use **command** parameter *start* or *stop*.
+        post:
+          displayName: componentManagementToggleAction
+          description: Start or stop a component.
+    /component/APPMGMT/restart:
+      displayName: componentRestart
+      description: |
+        Working With the Appliance Management Web Application
+        -----
+      post:
+        displayName: componentRestartAction
+        description: Restart the appliance management web application.
   /backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
     description: |
@@ -4551,7 +4696,6 @@ securitySchemes:
     Internal components:
     * Guest Introspection Universal Service Virtual Machine
     * Guest Introspection Mux
-    * Data Security
     * Logical Firewall
 
     External components:
@@ -5733,7 +5877,7 @@ securitySchemes:
 /2.0/services/macset:
   displayName: macsets
   description: |
-    Working with MAC Address Sets
+    Working with MAC Address Set Grouping Objects
     =============
     You can create a MAC address set on the specified scope. On success, the API
     returns a string identifier for the new MAC address set.
@@ -5900,6 +6044,230 @@ securitySchemes:
                     <value>FF:FF:FF:FF:FF:FF</value>
                   </macset>
                 </list>
+/2.0/services/alarms/{sourceId}:
+  displayName: servicesAlarmsSource
+  description: |
+    Working with Alarms from a Specific Source
+    =====
+
+    Some system alerts will show up as alarms in the NSX dashboard. You can
+    view and resolve alarms from a specific source.
+  uriParameters:
+    sourceId:
+      displayName: sourceId
+      description: |
+        ID of the object for which you want to manage alarms. *sourceId*
+        can be the ID of a cluster, host, resource pool, security group, or
+        edge.
+  get:
+    displayName: servicesAlarmsSourceList
+    description: |
+      Retrive all alarms from the specified source.
+      
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.2.4 | Method introduced.
+  post:
+    displayName: servicesAlarmsSourceUpdate
+    description: |
+      Resolve all alarms for the specified source.
+
+      Alarms will resolve automatically when the cause of the alarm is
+      resolved.  For example, if an NSX Edge appliance is powered off, this
+      will trigger an alarm. If you power the NSX Edge appliance back on, the
+      alarm will resolve. If however, you delete the NSX Edge appliance, the
+      alarm will persist, because the alarm cause was never resolved. In this
+      case, you may want to manually resolve the alarm. Resolving the alarms
+      will clear them from the NSX dashboard.
+
+      Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
+      alarms for the source. Use this response as the request body for the
+      `POST` call.
+
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.2.4 | Method introduced.
+    queryParameters:
+      action:
+        displayName: action
+        description: | 
+          Use *action=resolve* to resolve system alarms.
+    body:
+      application/xml:
+        example: |
+          <systemAlarms>
+              <systemAlarm>
+                  <eventId>79965</eventId>
+                  <timestamp>1485556529744</timestamp>
+                  <severity>High</severity>
+                  <eventSource>edge-3</eventSource>
+                  <eventCode>130027</eventCode>
+                  <message>NSX Edge VM (vmId : vm-430) is powered off. Please use vsphere client to power on Edge VM</message>
+                  <module>NSX Edge Communication Agent</module>
+                  <objectId>edge-3</objectId>
+                  <reporterName>vShield Manager</reporterName>
+                  <reporterType>4</reporterType>
+                  <sourceType>4</sourceType>
+                  <isResourceUniversal>false</isResourceUniversal>
+                  <eventMetadata>
+                      <data>
+                          <key>edgeVmVcUUId</key>
+                          <value>502e05c2-380f-998c-35ec-1f48991fe7e0</value>
+                      </data>
+                  </eventMetadata>
+                  <resolutionAttempted>false</resolutionAttempted>
+                  <resolvable>true</resolvable>
+                  <alarmId>79965</alarmId>
+                  <alarmCode>130027</alarmCode>
+                  <alarmSource>edge-3</alarmSource>
+                  <target>
+                      <objectId>vm-430</objectId>
+                      <objectTypeName>VirtualMachine</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>18</revision>
+                      <type>
+                          <typeName>VirtualMachine</typeName>
+                      </type>
+                      <name>Perimeter-Gateway-01-0</name>
+                      <scope>
+                          <id>domain-c41</id>
+                          <objectTypeName>ClusterComputeResource</objectTypeName>
+                          <name>Management &amp; Edge Cluster</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                  </target>
+                  <alarmBeingResolved>false</alarmBeingResolved>
+                  <alarmMetadata>
+                      <data>
+                          <key>edgeVmVcUUId</key>
+                          <value>502e05c2-380f-998c-35ec-1f48991fe7e0</value>
+                      </data>
+                  </alarmMetadata>
+              </systemAlarm>
+              <systemAlarm>
+                  <eventId>79967</eventId>
+                  <timestamp>1485556529774</timestamp>
+                  <severity>High</severity>
+                  <eventSource>edge-3</eventSource>
+                  <eventCode>130033</eventCode>
+                  <message>NSX Edge VM (vmId : vm-430) is not responding to NSX manager health check. Please check NSX manager logs for details.</message>
+                  <module>NSX Edge Health Check</module>
+                  <objectId>edge-3</objectId>
+                  <reporterName>vShield Manager</reporterName>
+                  <reporterType>4</reporterType>
+                  <sourceType>4</sourceType>
+                  <isResourceUniversal>false</isResourceUniversal>
+                  <eventMetadata>
+                      <data>
+                          <key>edgeVmVcUUId</key>
+                          <value>502e05c2-380f-998c-35ec-1f48991fe7e0</value>
+                      </data>
+                      <data>
+                          <key>edgeId</key>
+                          <value>edge-3</value>
+                      </data>
+                      <data>
+                          <key>edgeVmName</key>
+                          <value>Perimeter-Gateway-01-0</value>
+                      </data>
+                      <data>
+                          <key>edgeVmId</key>
+                          <value>vm-430</value>
+                      </data>
+                  </eventMetadata>
+                  <resolutionAttempted>false</resolutionAttempted>
+                  <resolvable>true</resolvable>
+                  <alarmId>79967</alarmId>
+                  <alarmCode>130033</alarmCode>
+                  <alarmSource>edge-3</alarmSource>
+                  <target>
+                      <objectId>vm-430</objectId>
+                      <objectTypeName>VirtualMachine</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>18</revision>
+                      <type>
+                          <typeName>VirtualMachine</typeName>
+                      </type>
+                      <name>Perimeter-Gateway-01-0</name>
+                      <scope>
+                          <id>domain-c41</id>
+                          <objectTypeName>ClusterComputeResource</objectTypeName>
+                          <name>Management &amp; Edge Cluster</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                  </target>
+                  <alarmBeingResolved>false</alarmBeingResolved>
+                  <alarmMetadata>
+                      <data>
+                          <key>edgeVmVcUUId</key>
+                          <value>502e05c2-380f-998c-35ec-1f48991fe7e0</value>
+                      </data>
+                      <data>
+                          <key>edgeId</key>
+                          <value>edge-3</value>
+                      </data>
+                      <data>
+                          <key>edgeVmName</key>
+                          <value>Perimeter-Gateway-01-0</value>
+                      </data>
+                      <data>
+                          <key>edgeVmId</key>
+                          <value>vm-430</value>
+                      </data>
+                  </alarmMetadata>
+              </systemAlarm>
+          </systemAlarms>
+/2.0/services/systemalarms/{alarmId}:
+  displayName: servicesSystemAlarmsId
+  description: |
+    Working with a Specific Alarm
+    -------
+    Some system alerts will show up as alarms in the NSX dashboard. You can
+    view and resolve alarms by alarm ID.
+  uriParameters:
+    alarmId:
+      displayName: alarmId
+      description: |
+        The alarm ID you want to manage. Find the alarm ID using the
+        `GET /api/2.0/services/alarms/{source-Id}` method.
+  get:
+    displayName: servicesSystemAlarmsIdRead
+    description: Retrieve information about the specified alarm.
+  post:
+    displayName: servicesSystemAlarmsIdAction
+    description: | 
+      Resolve the specified alarm.
+
+      Alarms will resolve automatically when the cause of the alarm is
+      resolved.  For example, if an NSX Edge appliance is powered off, this
+      will trigger an alarm. If you power the NSX Edge appliance back on, the
+      alarm will resolve. If however, you delete the NSX Edge appliance, the
+      alarm will persist, because the alarm cause was never resolved. In this
+      case, you may want to manually resolve the alarm. Resolving the alarm 
+      will clear it from the NSX dashboard.
+
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.3.0 | Method introduced.
+    queryParameters:
+      action:
+        displayName: action
+        description: |
+          Use *action=resolve* to resolve the specified alarm.
 /2.0/services/taskservice/job:
   displayName: taskFramework
   description: |
@@ -6151,7 +6519,7 @@ securitySchemes:
                   <ActivationInfo>
                     <moid>vm-819</moid>
                     <hostMoid>host-9</hostMoid>
-                    <vmName>VMWARE-Data Security-10.24.130.174</vmName>
+                    <vmName>VMWARE-Solution-Name-XXX.XXX.XXX.XXX</vmName>
                     <hostName>10.24.130.174</hostName>
                     <clusterName>Dev</clusterName>
                     <dcName>dev</dcName>
@@ -6187,7 +6555,7 @@ securitySchemes:
                     <ActivationInfo>
                       <moid>vm-819</moid>
                       <hostMoid>host-9</hostMoid>
-                      <vmName>VMWARE-Data Security-10.24.130.174</vmName>
+                      <vmName>VMWARE-Solution-Name-XXX.XXX.XXX.XXX</vmName>
                       <hostName>10.24.130.174</hostName>
                       <clusterName>Dev</clusterName>
                       <dcName>dev</dcName>
@@ -7946,6 +8314,7 @@ securitySchemes:
       displayName: dfwPerformanceUpdate
       description: |
         Update the distributed firewall performance configuration.
+
         **Method history:**
 
         Release | Modification
@@ -8035,7 +8404,7 @@ securitySchemes:
     Working With SpoofGuard
     ==========
     After synchronizing with the vCenter Server, NSX Manager collects the IP
-    addresses of all vCenter guest virtual machines If a virtual machine has
+    addresses of all vCenter guest virtual machines. If a virtual machine has
     been compromised, the IP address can be spoofed and malicious
     transmissions can bypass firewall policies.
     
@@ -8083,7 +8452,7 @@ securitySchemes:
           schema: spoofGuardPoliciesCreate
     get:
       displayName: spoofGuardPoliciesList
-      description: Retrieve informationa about all SpoofGuard policies.
+      description: Retrieve information about all SpoofGuard policies.
 # /4.0/services/spoofguard/policies/{policyID}
     /{policyID}:
       displayName: spoofGuardPolicy
@@ -8123,7 +8492,6 @@ securitySchemes:
   /{policyID}:
     displayName: SpoofGuardPolicyIP
     description: |
-
       Perform SpoofGuard Operations on IP Addresses in a Specific Policy
       ---
     uriParameters:
@@ -8193,7 +8561,7 @@ securitySchemes:
     get:
       displayName: flowStatsRead
       description: |
-        Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+        Retrieve flow statistics for a datacenter, port group, VM, or vNIC.
         
         Response values for flow statistics:
         * **blocked** - indicates whether traffic is blocked:
@@ -8215,7 +8583,7 @@ securitySchemes:
           displayName: contextId
           description: |
             vCenter MOB ID of the datacenter, portgroup, vm, or UUID of the
-            vNIC for which traffic flow is to be retrieved
+            vNIC for which traffic flow is to be retrieved.
         flowType:
           displayName: flowType
           description: |
@@ -8786,7 +9154,7 @@ securitySchemes:
         isUniversal:
           displayName: isUniversal
           description: |
-            Filter read of Edges to display only universal logical routers.
+            Filter output to display only universal logical routers.
           type: boolean
           required: false
     put:
@@ -9001,8 +9369,8 @@ securitySchemes:
     delete:
       displayName: nsxEdgeDelete
       description: |
-        Delete specified Edge from database. Associated appliances are also
-        deleted.
+        Delete specified NSX Edge configuration. Associated appliances are
+        also deleted.
     /dnsclient:
       displayName: edgeDnsClient
       description: |
@@ -9038,9 +9406,8 @@ securitySchemes:
       description: |
         Working With Core Dumps
         -----
-        Enabling core-dump feature results in deployment of inbuilt extra disk
-        to save core-dump files. 1 GB for compact edge and 8 GB for other types.
-        Disabling detaches the disk
+        Enabling core-dump feature results in deployment of built-in extra disk
+        to save core-dump files. Disabling detaches the disk.
       post:
         displayName: coreDumpCreate
         description: Modify core dump setting.
@@ -10460,9 +10827,9 @@ securitySchemes:
         **dhcpOptions > option150**<br>(staticBinding and ipPool) | IP address of TFTP server.
         **dhcpOptions > option150 > server**<br>(staticBinding and ipPool) | Use to specify more than one TFTP server by IP address for this IP Pool.
         **dhcpOptions > option26**<br>(staticBinding and ipPool) | MTU.
-        **dhcpOptions > other**<br>(staticBinding and ipPool) | Opaque options.
-        **dhcpOptions > other > code**<br>(staticBinding and ipPool) | 
-        **dhcpOptions > other > value**<br>(staticBinding and ipPool) | 
+        **dhcpOptions > other**<br>(staticBinding and ipPool) | Add DHCP options other than 26, 66, 67, 121, 150.
+        **dhcpOptions > other > code**<br>(staticBinding and ipPool) | Use the DHCP option number only. For example, to specify dhcp option 80, enter *80*.
+        **dhcpOptions > other > value**<br>(staticBinding and ipPool) | The DHCP option value, in hex. For example, *2F766172*.
         **logging** | Optional. Logging is disabled by default.
         **logging > enable** |  Optional, default is *false*.
         **logging > logLevel** | Optional, default is *info*.
@@ -11961,7 +12328,8 @@ securitySchemes:
   /tuningConfiguration:
     displayName: nsxEdgePublishTuning
     description: |
-      Working with NSX Edge tuning configuration.
+      Working With NSX Edge Tuning Configuration
+      ------
       
       Starting in 6.2.3 you can configure default values for NSX Edge
       configuration parameters, including publishing and health check
@@ -12045,10 +12413,12 @@ securitySchemes:
     =============
   /certificate:
     displayName: certificate
-    description: Certificates and certificate chains
+    description: |
+      Working with Certificates and Certificate Chains
+      ------
     post:
       displayName: certificateCreate
-      description: Create certificate for CSR
+      description: Create certificate for CSR.
       body:
         application/xml:
           example: |
@@ -12058,7 +12428,9 @@ securitySchemes:
           schema: certificateCreate
     /scope/{scopeId}:
       displayName: certificateScope
-      description: Certificates for a scope
+      description: |
+        Working With Certificates on a Specific Scope
+        ----
       uriParameters:
         scopeId:
           required: true
@@ -12069,7 +12441,9 @@ securitySchemes:
         description: Query all certificates for a scope
     /{scopeId}:
       displayName: certificateSelfSigned
-      description: Working with vShield Edge self-signed certificates
+      description: |
+        Working With NSX Edge Self-Signed Certificates
+        ------
       uriParameters:
         scopeId:
           required: true
@@ -12089,7 +12463,9 @@ securitySchemes:
             schema: certificateSelfSignedCreate
     /{certificateId}:
       displayName: certificateId
-      description: Certificate specified by ID
+      description: |
+        Working With a Specific Certificate
+        -----
       uriParameters:
         certificateId:
           required: true
@@ -12105,7 +12481,8 @@ securitySchemes:
         description: Delete the specified certificate
   /csr/{scopeId}:
     displayName: csr
-    description: Create Certificate Signing Requests (CSRs)
+    description: |
+      Working with Certificate Signing Requests (CSRs)
     uriParameters:
       scopeId:
         required: true
@@ -12113,7 +12490,7 @@ securitySchemes:
         description: Specified scope ID
     post:
       displayName: csrCreate
-      description: Create a CSR
+      description: Create a certificate signing request (CSR).
       body:
         application/xml:
           example: |
@@ -12130,7 +12507,9 @@ securitySchemes:
           schema: csrCreate
   /csr/{csrId}:
     displayName: csrSelfSigned
-    description: Self signed certificate for CSR
+    description: |
+      Working With Self-Signed Certificate for CSR
+      -----
     uriParameters:
       csrId:
         required: true
@@ -12138,17 +12517,22 @@ securitySchemes:
         description: CSR ID
     put:
       displayName: csrSelfSignedUpdate
-      description: Create a self signed certificate for CSR
+      description: |
+        Create a self-signed certificate for a certificate signing request
+        (CSR).
       queryParameters:
         noOfDays:
           displayName: noOfDays
           required: true
     get:
       displayName: csrSelfSignedRead
-      description: Retrieve specific CSR
+      description: |
+        Retrieve the specified certificate signing request (CSR).
   /csr/scope/{scopeId}:
     displayName: csrScope
-    description: CSRs for specific scope
+    description: |
+      Working With Certificate Signing Requests on a Specific Scope
+      ----
     uriParameters:
       scopeId:
         displayName: scopeId
@@ -12156,10 +12540,12 @@ securitySchemes:
         required: true
     get:
       displayName: csrScopeRead
-      description: Query CSRs for specific scope
+      description: Retrieve certificate signing requests (CSR) on the specified scope.
   /crl/{scopeId}:
     displayName: crl
-    description: Create Certificate Revocation Lists (CRLs) on a specified scope
+    description: |
+      Working With Certificate Revocation Lists on a Specific Scope
+      -----
     uriParameters:
       scopeId:
         required: true
@@ -12167,7 +12553,7 @@ securitySchemes:
         description: Specified scope.
     post:
       displayName: crlCreate
-      description: Create CRL on the specified scope.
+      description: Create a certificate revocation list (CRL) on the specified scope.
       body:
         application/xml:
           example: |
@@ -12200,10 +12586,12 @@ securitySchemes:
         description: CRL ID
     get:
       displayName: crlIDRead
-      description: Retrieve certificate object for the specified CRL.
+      description: |
+        Retrieve certificate object for the specified certificate revocation
+        list (CRL).
     delete:
       displayName: crlIDDelete
-      description: Delete the specified CRL.
+      description: Delete the specified certificate revocation list (CRL).
 /2.0/services/policy:
   displayName: policy
   description: |
@@ -12230,9 +12618,8 @@ securitySchemes:
         which the created object can be fetched.
         
         Ensure that:
-        * the required VMware built in services (such as Distributed Firewall,
-          Data Security, and Endpoint) are installed. See *NSX Installation
-          Guide*.
+        * the required VMware built in services (such as Distributed Firewall
+          and Endpoint) are installed. See *NSX Installation Guide*.
         * the required partner services have been registered with NSX Manager.
         * the required security groups have been created.
         

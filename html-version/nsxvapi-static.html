@@ -27,103 +27,149 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
     Introduction
   </a>
 </h1>
-<div class="content"><p>This manual, the NSX for vSphere API Guide, describes how to install, configure, monitor, and maintain the VMware® NSX system by using REST API requests.</p>
+<div class="content"><p>This manual, the NSX for vSphere API Guide, describes how to install,
+configure, monitor, and maintain the VMware® NSX system by using REST API
+requests.</p>
 <h2 id="intended-audience">Intended Audience</h2>
-<p>This manual is intended for anyone who wants to use REST API to programmatically control NSX in a VMware vSphere environment. The information in this manual is written for experienced developers who are familiar with virtual machine technology, virtualized datacenter operations, and REST APIs. This manual also assumes familiarity with NSX for vSphere.</p>
+<p>This manual is intended for anyone who wants to use REST API to
+programmatically control NSX in a VMware vSphere environment. The information
+in this manual is written for experienced developers who are familiar with
+virtual machine technology, virtualized datacenter operations, and REST APIs.
+This manual also assumes familiarity with NSX for vSphere.</p>
 <h2 id="vmware-technical-publications-glossary">VMware Technical Publications Glossary</h2>
-<p>VMware Technical Publications provides a glossary of terms that might be unfamiliar to you. For definitions of terms as they are used in VMware technical documentation go to <a href="http://www.vmware.com/support/pubs">http://www.vmware.com/support/pubs</a>.</p>
-<h2 id="document-feedback">Document Feedback</h2>
-<p>VMware welcomes your suggestions for improving our documentation. If you have comments, send your feedback to docfeedback@vmware.com.</p>
-<h2 id="nsx-documentation">NSX Documentation</h2>
-<p>The following documents comprise the NSX documentation set:</p>
+<p>VMware Technical Publications provides a glossary of terms that might be
+unfamiliar to you. For definitions of terms as they are used in VMware
+technical documentation go to <a href="http://www.vmware.com/support/pubs">http://www.vmware.com/support/pubs</a>.</p>
+<h2 id="technical-documentation-and-product-updates">Technical Documentation and Product Updates</h2>
+<p>You can find the most up-to-date technical documentation on the VMware Web site at:
+<a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
+<p>The VMware Web site also provides the latest product updates.</p>
+<p>If you have comments about this documentation, submit your feedback to:
+<a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#114;&#x65;&#46;&#x63;&#111;&#109;">&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#114;&#x65;&#46;&#x63;&#111;&#109;</a>.</p>
+<h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
+<p>To use the NSX REST API, you must configure a REST client, verify the required
+ports are open between your REST client and the NSX Manager, and understand
+the general RESTful workflow.</p>
+<h3 id="configuring-rest-clients-for-the-nsx-rest-api">Configuring REST Clients for the NSX REST API</h3>
+<p>Some browser-based clients include the Chrome app, Postman, or the Firefox
+add-on, RESTClient. Curl is a command-line tool that can function as a REST
+client. The details of REST client configuration will vary from client to
+client, but this general information should help you configure your REST client
+correctly.</p>
 <ul>
-<li><em>NSX for vSphere Administration Guide</em></li>
-<li><em>NSX for vSphere Installation and Upgrade</em></li>
-<li><em>NSX API Programming Guide</em></li>
+<li><p><strong>The NSX REST API uses basic authentication.</strong><br>You must configure your REST client to send the NSX Manager authentication
+credentials using basic authentication.</p>
+</li>
+<li><p><strong>You must use https to send API requests to the NSX Manager.</strong><br>You might need to import the certificate from the NSX Manager to your REST
+client to allow it to connect to the NSX Manager.</p>
+</li>
+<li><p><strong>When you submit an API request with an XML request body, you must include the<br><code>Content-Type: application/xml</code> header.</strong><br>Some requests require additional headers, for example, firewall configuration
+changes require the <code>If-Match</code> header. This is noted on each method
+description.</p>
+</li>
+<li><p><strong>To ensure you always receive XML response bodies, set the <code>Accept:  
+application/xml</code> header.</strong><br>Some API methods respond with JSON output, which is an experimental feature.
+Setting the Accept header ensures you always get XML output.  <strong>Note:</strong> some
+methods, for example, the central CLI method, <code>POST /1.0/nsx/cli</code>, might
+require a different Accept header.</p>
+</li>
 </ul>
-<h2 id="technical-support-and-education-resources">Technical Support and Education Resources</h2>
-<p>The following sections describe the technical support resources available to you. To access the current version of this book and other books, go to <a href="http://www.vmware.com/support/pubs">http://www.vmware.com/support/pubs</a>.</p>
-<h3 id="online-and-telephone-support">Online and Telephone Support</h3>
-<p>To use online support to submit technical support requests, view your product and contract information, and register your products, go to <a href="http://www.vmware.com/support">http://www.vmware.com/support</a>.</p>
-<p>Customers with appropriate support contracts should use telephone support for the fastest response on priority 1 issues. Go to <a href="http://www.vmware.com/support/phone_support">http://www.vmware.com/support/phone_support</a>.</p>
-<h3 id="support-offerings">Support Offerings</h3>
-<p>To find out how VMware support offerings can help meet your business needs, go to <a href="http://www.vmware.com/support/services">http://www.vmware.com/support/services</a>.</p>
-<h3 id="vmware-professional-services">VMware Professional Services</h3>
-<p>VMware Education Services courses offer extensive hands-on labs, case study examples, and course materials designed to be used as on-the-job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
-<a href="http://www.vmware.com/services">http://www.vmware.com/services</a>.</p>
-<h2 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h2>
+<p>The following API method will return a response on a newly deployed NSX
+Manager appliance, even if you have not made any configuration changes. You
+can use this as a test to verify that your REST client is configured correctly
+to communicate with the NSX Manager API.</p>
+<p><code>GET /api/2.0/services/usermgmt/user/admin</code></p>
+<h3 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h3>
 <p>The NSX Manager requires port 443/TCP for REST API requests.</p>
+<h3 id="restful-workflow-patterns">RESTful Workflow Patterns</h3>
+<p>All RESTful workflows fall into a pattern that includes only two fundamental
+operations, which you repeat in this order for as long as necessary.</p>
+<ul>
+<li><strong>Make an HTTP request (GET, PUT, POST, or DELETE).</strong><br>The target of this request is either a well-known URL (such as NSX Manager) or
+a link obtained from the response to a previous request. For example, a GET
+request to an Org URL returns links to vDC objects contained by the Org.</li>
+<li><strong>Examine the response, which can be an XML document or an HTTP response code.</strong><br>If the response is an XML document, it might contain links or other
+information about the state of an object. If the response is an HTTP response
+code, it indicates whether the request succeeded or failed, and might be
+accompanied by a URL that points to a location from which additional
+information can be retrieved.</li>
+</ul>
 <h2 id="finding-vcenter-object-ids">Finding vCenter Object IDs</h2>
 <p>Many API methods reference vCenter object IDs in URI parameters, query
 parameters, request bodies, and response bodies. You can find vCenter object
 IDs via the vCenter Managed Object Browser.</p>
-<h3 id="find-datacenter-id">Find Datacenter ID</h3>
+<h3 id="find-datacenter-moid">Find Datacenter MOID</h3>
 <ol>
 <li>In a web browser, enter the vCenter Managed Object Browser URL:
 <code>http://vCenter-IP-Address/mob</code>.</li>
 <li>Click <strong>content</strong>.</li>
 <li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
-the Value column. e.g. <em>group-d1</em>.</li>
+the Value column. For example, <em>group-d1</em>.</li>
 <li>Find the <strong>childEntity</strong> in the Name column, and the corresponding
-Value column entry is the datacenter MOID. e.g. <em>datacenter-21</em>.</li>
+Value column entry is the datacenter MOID. For example, <em>datacenter-21</em>.</li>
 </ol>
-<h3 id="find-host-id">Find Host ID</h3>
+<h3 id="find-host-moid">Find Host MOID</h3>
 <ol>
 <li>In a web browser, enter the vCenter Managed Object Browser URL:
 <code>http://vCenter-IP-Address/mob</code>.</li>
 <li>Click <strong>content</strong>.</li>
 <li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
-the Value column. e.g. <em>group-d1</em>.</li>
+the Value column. For example, <em>group-d1</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column, and click the corresponding
-link in the Value column. e.g. <em>datacenter-21</em>.</li>
+link in the Value column. For example, <em>datacenter-21</em>.</li>
 <li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
-link in the Value column. e.g. <em>group-h23</em>.</li>
+link in the Value column. For example, <em>group-h23</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
 contains links to host clusters. Click the appropriate host cluster link.
-e.g. <em>domain-c33</em>.</li>
+For example, <em>domain-c33</em>.</li>
 <li>Find <em>host</em> in the Name column. The corresponding Value column
-lists the hosts in that cluster by vCenter MOID and hostname. e.g.
+lists the hosts in that cluster by vCenter MOID and hostname. For example,
 <em>host-32 (esx-02a.corp.local)</em>.</li>
 </ol>
-<h3 id="find-portgroup-id">Find Portgroup ID</h3>
+<h3 id="find-portgroup-moid">Find Portgroup MOID</h3>
 <ol>
 <li>In a web browser, enter the vCenter Managed Object Browser URL:
 <code>http://vCenter-IP-Address/mob</code>.</li>
 <li>Click <strong>content</strong>.</li>
 <li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
-the Value column. e.g. <em>group-d1</em>.</li>
+the Value column. For example, <em>group-d1</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column, and click the corresponding
-link in the Value column. e.g. <em>datacenter-21</em>.</li>
+link in the Value column. For example, <em>datacenter-21</em>.</li>
 <li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
-link in the Value column. e.g. <em>group-h23</em>.</li>
+link in the Value column. For example, <em>group-h23</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
 contains links to host clusters. Click the appropriate host cluster link.
-e.g. <em>domain-c33</em>.</li>
+For example, <em>domain-c33</em>.</li>
 <li>Find <strong>host</strong> in the Name column. The corresponding Value column lists the
 hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-host link, e.g. host-32.</li>
+host link, For example, host-32.</li>
 <li>Find <strong>network</strong> in the Name column. The corresponding Value column lists
-the port groups on that host, e.g. <em>dvportgroup-388</em>.</li>
+the port groups on that host, For example, <em>dvportgroup-388</em>.</li>
 </ol>
-<h3 id="find-vmid">Find VMID</h3>
+<h3 id="find-vm-moid-or-vm-instance-uuid">Find VM MOID or VM Instance UUID</h3>
 <ol>
 <li>In a web browser, enter the vCenter Managed Object Browser URL:
 <code>http://vCenter-IP-Address/mob</code>.</li>
 <li>Click <strong>content</strong>.</li>
 <li>Find <strong>rootFolder</strong> in the Name column, and click the corresponding link in
-the Value column. e.g. <em>group-d1</em>.</li>
+the Value column. For example, <em>group-d1</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column, and click the corresponding
-link in the Value column. e.g. <em>datacenter-21</em>.</li>
+link in the Value column. For example, <em>datacenter-21</em>.</li>
 <li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
-link in the Value column. e.g. <em>group-h23</em>.</li>
+link in the Value column. For example, <em>group-h23</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
 contains links to host clusters. Click the appropriate host cluster link.
-e.g. <em>domain-c33</em>.</li>
+For example, <em>domain-c33</em>.</li>
 <li>Find <strong>host</strong> in the Name column. The corresponding Value column lists the
 hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-host link, e.g. host-32.</li>
+host link, For example, host-32.</li>
 <li>Find <strong>vm</strong> in the Name column. The corresponding Value column lists the
-virtual machines by vCenter MOID and hostname. e.g. <em>vm-216 (web-01a)</em>.</li>
+virtual machines by vCenter MOID and hostname. For example, <em>vm-216 (web-01a)</em>.</li>
+<li>To find the instance UUID of a VM, click the VM MOID link located in the
+previous step. Click the config link in the Value column.</li>
+<li>Find <strong>instanceUuid</strong> in the Name column. The corresponding Value column
+lists the VM instance UUID. For example,
+<em>502e71fa-1a00-759b-e40f-ce778e915f16</em>.</li>
 </ol>
 </div>
 </section>
@@ -486,7 +532,32 @@ certificates received from the CA after signing a CSR.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-components">Working with Components</h2>
-</div>
+<p>The NSX Manager appliance has the following components:</p>
+<table class="table"><thead><tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td>NSX</td>
+<td>NSX Manager</td>
+</tr>
+<tr>
+<td>NSXREPLICATOR</td>
+<td>Universal Synchronization Service</td>
+</tr>
+<tr>
+<td>RABBITMQ</td>
+<td>RabbitMQ - Messaging service</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>SSH Service</td>
+</tr>
+<tr>
+<td>VPOSTGRES</td>
+<td>vPostgres - Database service</td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -495,6 +566,21 @@ certificates received from the CA after signing a CSR.</p>
   ><h2>GET /1.0/appliance-management/components</h2></a>
   <div class="content">
     <p><p>Retrieve all appliance manager components.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-the-appliance-management-web-application">Working With the Appliance Management Web Application</h2>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/appliance-management/components/component/APPMGMT/restart"
+    href="#POST/1.0/appliance-management/components/component/APPMGMT/restart"
+  ><h2>POST /1.0/appliance-management/components/component/APPMGMT/restart</h2></a>
+  <div class="content">
+    <p><p>Restart the appliance management web application.</p>
 </p>
   </div>
 </div>
@@ -519,9 +605,9 @@ certificates received from the CA after signing a CSR.</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/1.0/appliance-management/components/{componentID}"
-    href="#GET/1.0/appliance-management/components/{componentID}"
-  ><h2>GET /1.0/appliance-management/components/{componentID}</h2></a>
+    id="GET/1.0/appliance-management/components/component/{componentID}"
+    href="#GET/1.0/appliance-management/components/component/{componentID}"
+  ><h2>GET /1.0/appliance-management/components/component/{componentID}</h2></a>
   <div class="content">
     <p><p>Retrieve details for specified component.</p>
 </p>
@@ -534,9 +620,9 @@ certificates received from the CA after signing a CSR.</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/1.0/appliance-management/components/{componentID}/dependencies"
-    href="#GET/1.0/appliance-management/components/{componentID}/dependencies"
-  ><h2>GET /1.0/appliance-management/components/{componentID}/dependencies</h2></a>
+    id="GET/1.0/appliance-management/components/component/{componentID}/dependencies"
+    href="#GET/1.0/appliance-management/components/component/{componentID}/dependencies"
+  ><h2>GET /1.0/appliance-management/components/component/{componentID}/dependencies</h2></a>
   <div class="content">
     <p><p>Retrieve dependency details for specified component.</p>
 </p>
@@ -549,9 +635,9 @@ certificates received from the CA after signing a CSR.</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/1.0/appliance-management/components/{componentID}/dependents"
-    href="#GET/1.0/appliance-management/components/{componentID}/dependents"
-  ><h2>GET /1.0/appliance-management/components/{componentID}/dependents</h2></a>
+    id="GET/1.0/appliance-management/components/component/{componentID}/dependents"
+    href="#GET/1.0/appliance-management/components/component/{componentID}/dependents"
+  ><h2>GET /1.0/appliance-management/components/component/{componentID}/dependents</h2></a>
   <div class="content">
     <p><p>Retrieve dependents for the specified component.</p>
 </p>
@@ -559,16 +645,45 @@ certificates received from the CA after signing a CSR.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with Component Status</p>
+  <div class="description"><h2 id="working-with-component-status">Working with Component Status</h2>
 </div>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/1.0/appliance-management/components/{componentID}/status"
-    href="#GET/1.0/appliance-management/components/{componentID}/status"
-  ><h2>GET /1.0/appliance-management/components/{componentID}/status</h2></a>
+    id="GET/1.0/appliance-management/components/component/{componentID}/status"
+    href="#GET/1.0/appliance-management/components/component/{componentID}/status"
+  ><h2>GET /1.0/appliance-management/components/component/{componentID}/status</h2></a>
   <div class="content">
     <p><p>Retrieve current status for specified component.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="toggle-component-status">Toggle Component Status</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">command</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Use <strong>command</strong> parameter <em>start</em> or <em>stop</em>.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/appliance-management/components/component/{componentID}/toggleStatus/{command}"
+    href="#POST/1.0/appliance-management/components/component/{componentID}/toggleStatus/{command}"
+  ><h2>POST /1.0/appliance-management/components/component/{componentID}/toggleStatus/{command}</h2></a>
+  <div class="content">
+    <p><p>Start or stop a component.</p>
 </p>
   </div>
 </div>
@@ -3495,7 +3610,7 @@ vCenter MOID (e.g. domain-c34 for a cluster).</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-services">Working with Services</h1>
+  <div class="description"><h1 id="working-with-services-grouping-objects">Working with Services Grouping Objects</h1>
 </div>
 </section>
 <section class="resource">
@@ -3716,7 +3831,7 @@ unforced (false).</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-service-groups">Working with Service Groups</h1>
+  <div class="description"><h1 id="working-with-service-groups-grouping-objects">Working with Service Groups Grouping Objects</h1>
 </div>
 </section>
 <section class="resource">
@@ -4017,7 +4132,7 @@ is unforced (false).</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-ip-pools">Working with IP Pools</h1>
+  <div class="description"><h1 id="working-with-ip-pool-grouping-objects">Working with IP Pool Grouping Objects</h1>
 </div>
 </section>
 <section class="resource">
@@ -4409,7 +4524,7 @@ reserve in the <strong>ipAddress</strong> fields in the body.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-ip-sets">Working with IP Sets</h1>
+  <div class="description"><h1 id="working-with-ip-set-grouping-objects">Working with IP Set Grouping Objects</h1>
 </div>
 </section>
 <section class="resource">
@@ -4678,7 +4793,7 @@ users for the distributed firewall and VXLAN.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-mac-address-sets">Working with MAC Address Sets</h1>
+  <div class="description"><h1 id="working-with-mac-address-set-grouping-objects">Working with MAC Address Set Grouping Objects</h1>
 <p>You can create a MAC address set on the specified scope. On success, the API
 returns a string identifier for the new MAC address set.</p>
 </div>
@@ -6485,7 +6600,7 @@ Provide request body value of true or false.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-security-groups">Working with Security Groups</h1>
+  <div class="description"><h1 id="working-with-security-group-grouping-objects">Working with Security Group Grouping Objects</h1>
 </div>
 </section>
 <section class="resource">
@@ -7256,6 +7371,10 @@ group.</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-security-tags">Working with Security Tags</h1>
+<p>You can manage security tags and their virtual machine assignments. For
+example, you can create a user defined security tag, assign tags to a
+virtual machine, view tags assigned to virtual machines, and view virtual
+machines that have a specific tag assigned.</p>
 </div>
 </section>
 <section class="resource">
@@ -7311,7 +7430,7 @@ group.</p>
     href="#GET/2.0/services/securitytags/tag"
   ><h2>GET /2.0/services/securitytags/tag</h2></a>
   <div class="content">
-    <p><p>Retrieve security tags.</p>
+    <p><p>Retrieve all security tags.</p>
 </p>
   </div>
 </div>
@@ -7346,7 +7465,7 @@ group.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-security-tags-on-virtual-machines">Working with Security Tags on Virtual Machines</h2>
+  <div class="description"><h2 id="working-with-virtual-machines-on-a-specific-security-tag">Working With Virtual Machines on a Specific Security Tag</h2>
 </div>
 <div class="method get">
   <a
@@ -7368,12 +7487,13 @@ them.</p>
     <h4>URI Parameters</h4>
       <dl>
   <dt>
-    <span class="param">vmMoid</span>
+    <span class="param">vmId</span>
     <span class="badge">string</span>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>ID of VM</p>
+      <p>Specify VM using VM managed object ID or VM instance
+UUID.</p>
 
   </dd>
 </dl>
@@ -7381,51 +7501,50 @@ them.</p>
 <div class="method put">
   <a
     class="verb put"
-    id="PUT/2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}"
-    href="#PUT/2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}"
-  ><h2>PUT /2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}</h2></a>
+    id="PUT/2.0/services/securitytags/tag/{tagId}/vm/{vmId}"
+    href="#PUT/2.0/services/securitytags/tag/{tagId}/vm/{vmId}"
+  ><h2>PUT /2.0/services/securitytags/tag/{tagId}/vm/{vmId}</h2></a>
   <div class="content">
-    <p><p>Apply a security tag to virtual machine.</p>
+    <p><p>Apply a security tag to the specified virtual machine.</p>
 </p>
   </div>
 </div>
 <div class="method delete">
   <a
     class="verb delete"
-    id="DELETE/2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}"
-    href="#DELETE/2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}"
-  ><h2>DELETE /2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}</h2></a>
+    id="DELETE/2.0/services/securitytags/tag/{tagId}/vm/{vmId}"
+    href="#DELETE/2.0/services/securitytags/tag/{tagId}/vm/{vmId}"
+  ><h2>DELETE /2.0/services/securitytags/tag/{tagId}/vm/{vmId}</h2></a>
   <div class="content">
-    <p><p>Detach a security tag from a virtual machine.</p>
+    <p><p>Detach a security tag from the specified virtual machine.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-virtual-machines-and-security-tags">Working with Virtual Machines and Security Tags</h2>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="manage-security-tags-on-a-specific-virtual-machine">Manage Security Tags on a Specific Virtual Machine</h2>
+  <div class="description"><h2 id="working-with-security-tags-on-a-specific-virtual-machine">Working With Security Tags on a Specific Virtual Machine</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
       <dl>
   <dt>
-    <span class="param">vmMoid</span>
+    <span class="param">vmId</span>
     <span class="badge">string</span>
     <span class="badge">required</span>
   </dt>
   <dd>
+      <p>Specify VM using VM managed object ID or VM instance
+UUID.</p>
+
   </dd>
 </dl>
   </div>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/2.0/services/securitytags/vm/{vmMoid}"
-    href="#GET/2.0/services/securitytags/vm/{vmMoid}"
-  ><h2>GET /2.0/services/securitytags/vm/{vmMoid}</h2></a>
+    id="GET/2.0/services/securitytags/vm/{vmId}"
+    href="#GET/2.0/services/securitytags/vm/{vmId}"
+  ><h2>GET /2.0/services/securitytags/vm/{vmId}</h2></a>
   <div class="content">
     <p><p>Retrieve all security tags associated with the specified virtual
 machine.</p>
@@ -7980,7 +8099,7 @@ framework.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Certificates and certificate chains</p>
+  <div class="description"><h2 id="working-with-certificates-and-certificate-chains">Working with Certificates and Certificate Chains</h2>
 </div>
 <div class="method post">
   <a
@@ -7989,7 +8108,7 @@ framework.</p>
     href="#POST/2.0/services/truststore/certificate"
   ><h2>POST /2.0/services/truststore/certificate</h2></a>
   <div class="content">
-    <p><p>Create certificate for CSR</p>
+    <p><p>Create certificate for CSR.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -8011,7 +8130,7 @@ framework.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Certificates for a scope</p>
+  <div class="description"><h2 id="working-with-certificates-on-a-specific-scope">Working With Certificates on a Specific Scope</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8040,7 +8159,7 @@ framework.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Certificate specified by ID</p>
+  <div class="description"><h2 id="working-with-a-specific-certificate">Working With a Specific Certificate</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8081,7 +8200,7 @@ a chain, multiple certificate objects are retrieved.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with vShield Edge self-signed certificates</p>
+  <div class="description"><h2 id="working-with-nsx-edge-self-signed-certificates">Working With NSX Edge Self-Signed Certificates</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8182,7 +8301,8 @@ a chain, multiple certificate objects are retrieved.</p>
     href="#GET/2.0/services/truststore/crl/{crlId}"
   ><h2>GET /2.0/services/truststore/crl/{crlId}</h2></a>
   <div class="content">
-    <p><p>Retrieve certificate object for the specified CRL.</p>
+    <p><p>Retrieve certificate object for the specified certificate revocation
+list (CRL).</p>
 </p>
   </div>
 </div>
@@ -8193,13 +8313,13 @@ a chain, multiple certificate objects are retrieved.</p>
     href="#DELETE/2.0/services/truststore/crl/{crlId}"
   ><h2>DELETE /2.0/services/truststore/crl/{crlId}</h2></a>
   <div class="content">
-    <p><p>Delete the specified CRL.</p>
+    <p><p>Delete the specified certificate revocation list (CRL).</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Create Certificate Revocation Lists (CRLs) on a specified scope</p>
+  <div class="description"><h2 id="working-with-certificate-revocation-lists-on-a-specific-scope">Working With Certificate Revocation Lists on a Specific Scope</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8222,7 +8342,7 @@ a chain, multiple certificate objects are retrieved.</p>
     href="#POST/2.0/services/truststore/crl/{scopeId}"
   ><h2>POST /2.0/services/truststore/crl/{scopeId}</h2></a>
   <div class="content">
-    <p><p>Create CRL on the specified scope.</p>
+    <p><p>Create a certificate revocation list (CRL) on the specified scope.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -8244,7 +8364,7 @@ a chain, multiple certificate objects are retrieved.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>CSRs for specific scope</p>
+  <div class="description"><h2 id="working-with-certificate-signing-requests-on-a-specific-scope">Working With Certificate Signing Requests on a Specific Scope</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8267,13 +8387,13 @@ a chain, multiple certificate objects are retrieved.</p>
     href="#GET/2.0/services/truststore/csr/scope/{scopeId}"
   ><h2>GET /2.0/services/truststore/csr/scope/{scopeId}</h2></a>
   <div class="content">
-    <p><p>Query CSRs for specific scope</p>
+    <p><p>Retrieve certificate signing requests (CSR) on the specified scope.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Self signed certificate for CSR</p>
+  <div class="description"><h2 id="working-with-self-signed-certificate-for-csr">Working With Self-Signed Certificate for CSR</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8296,7 +8416,8 @@ a chain, multiple certificate objects are retrieved.</p>
     href="#PUT/2.0/services/truststore/csr/{csrId}"
   ><h2>PUT /2.0/services/truststore/csr/{csrId}</h2></a>
   <div class="content">
-    <p><p>Create a self signed certificate for CSR</p>
+    <p><p>Create a self-signed certificate for a certificate signing request
+(CSR).</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -8319,13 +8440,13 @@ a chain, multiple certificate objects are retrieved.</p>
     href="#GET/2.0/services/truststore/csr/{csrId}"
   ><h2>GET /2.0/services/truststore/csr/{csrId}</h2></a>
   <div class="content">
-    <p><p>Retrieve specific CSR</p>
+    <p><p>Retrieve the specified certificate signing request (CSR).</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Create Certificate Signing Requests (CSRs)</p>
+  <div class="description"><p>Working with Certificate Signing Requests (CSRs)</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -8348,7 +8469,7 @@ a chain, multiple certificate objects are retrieved.</p>
     href="#POST/2.0/services/truststore/csr/{scopeId}"
   ><h2>POST /2.0/services/truststore/csr/{scopeId}</h2></a>
   <div class="content">
-    <p><p>Create a CSR</p>
+    <p><p>Create a certificate signing request (CSR).</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -9524,7 +9645,7 @@ primary NSX Manager.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-wiht-universal-sync-status">Working wiht Universal Sync Status</h2>
+  <div class="description"><h2 id="working-with-universal-sync-status">Working With Universal Sync Status</h2>
 </div>
 <div class="method get">
   <a
@@ -10299,7 +10420,7 @@ invocation.</li>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="status-of-controller-job">Status of Controller Job</h2>
+  <div class="description"><h2 id="working-with-of-controller-job-status">Working With of Controller Job Status</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -10342,7 +10463,7 @@ a percentage indication of current deploy / remove procedure.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="retrieve-controller-upgrade-availability">Retrieve Controller Upgrade Availability</h2>
+  <div class="description"><h2 id="working-with-controller-upgrade-availability">Working With Controller Upgrade Availability</h2>
 </div>
 <div class="method get">
   <a
@@ -10389,7 +10510,7 @@ IP address.</p>
     href="#DELETE/2.0/vdn/controller/{controllerId}"
   ><h2>DELETE /2.0/vdn/controller/{controllerId}</h2></a>
   <div class="content">
-    <p><p>Deletes the NSX controller.</p>
+    <p><p>Delete the NSX controller.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -10507,7 +10628,7 @@ node.</p>
     href="#GET/2.0/vdn/controller/{controllerId}/techsupportlogs"
   ><h2>GET /2.0/vdn/controller/{controllerId}/techsupportlogs</h2></a>
   <div class="content">
-    <p><p>Retrieves controller logs. Response content type is
+    <p><p>Retrieve controller logs. Response content type is
 application/octet-stream and response header is filename. This
 streams a fairly large bundle back (possibly hundreds of MB).</p>
 </p>
@@ -12057,7 +12178,7 @@ the <strong>packetSize</strong> parameter.</li>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>A valid tranzport zone ID (vdnScope objectId).</p>
+      <p>A valid transport zone ID (vdnScope objectId).</p>
 
   </dd>
 </dl>
@@ -12809,7 +12930,7 @@ the <strong>packetSize</strong> parameter.</li>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="test-point-to-point-connectivity">Test Point-to-Point Connectivity</h2>
+  <div class="description"><h2 id="testing-point-to-point-connectivity">Testing Point-to-Point Connectivity</h2>
 </div>
 <div class="method post">
   <a
@@ -13353,7 +13474,7 @@ configuration applies to all hosts.</p>
     href="#GET/2.1/app/flow/flowstats"
   ><h2>GET /2.1/app/flow/flowstats</h2></a>
   <div class="content">
-    <p><p>Retrieve flow statistics for a datacenter, port group, VM, or vNIC</p>
+    <p><p>Retrieve flow statistics for a datacenter, port group, VM, or vNIC.</p>
 <p>Response values for flow statistics:</p>
 <ul>
 <li><strong>blocked</strong> - indicates whether traffic is blocked:<ul>
@@ -13390,7 +13511,7 @@ configuration applies to all hosts.</p>
   </dt>
   <dd>
       <p>vCenter MOB ID of the datacenter, portgroup, vm, or UUID of the
-vNIC for which traffic flow is to be retrieved</p>
+vNIC for which traffic flow is to be retrieved.</p>
 
   </dd>
   <dt>
@@ -14331,7 +14452,7 @@ activities</li>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with NSX Edge tuning configuration.</p>
+  <div class="description"><h2 id="working-with-nsx-edge-tuning-configuration">Working With NSX Edge Tuning Configuration</h2>
 <p>Starting in 6.2.3 you can configure default values for NSX Edge
 configuration parameters, including publishing and health check
 timeouts, and CPU and memory reservation, which are applicable to all
@@ -15108,7 +15229,7 @@ the resource, and ID of the resource as shown in response body</p>
     
   </dt>
   <dd>
-      <p>Filter read of Edges to display only universal logical routers.</p>
+      <p>Filter output to display only universal logical routers.</p>
 
   </dd>
 </dl>
@@ -15722,8 +15843,8 @@ the resource, and ID of the resource as shown in response body</p>
     href="#DELETE/4.0/edges/{edgeId}"
   ><h2>DELETE /4.0/edges/{edgeId}</h2></a>
   <div class="content">
-    <p><p>Delete specified Edge from database. Associated appliances are also
-deleted.</p>
+    <p><p>Delete specified NSX Edge configuration. Associated appliances are
+also deleted.</p>
 </p>
   </div>
 </div>
@@ -16102,9 +16223,8 @@ required NAT, firewall, routing rules</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-core-dumps">Working With Core Dumps</h2>
-<p>Enabling core-dump feature results in deployment of inbuilt extra disk
-to save core-dump files. 1 GB for compact edge and 8 GB for other types.
-Disabling detaches the disk</p>
+<p>Enabling core-dump feature results in deployment of built-in extra disk
+to save core-dump files. Disabling detaches the disk.</p>
 </div>
 <div class="method post">
   <a
@@ -16254,15 +16374,15 @@ Else, they will be deleted if configured earlier.</li>
 </tr>
 <tr>
 <td><strong>dhcpOptions &gt; other</strong><br>(staticBinding and ipPool)</td>
-<td>Opaque options.</td>
+<td>Add DHCP options other than 26, 66, 67, 121, 150.</td>
 </tr>
 <tr>
 <td><strong>dhcpOptions &gt; other &gt; code</strong><br>(staticBinding and ipPool)</td>
-<td></td>
+<td>Use the DHCP option number only. For example, to specify dhcp option 80, enter <em>80</em>.</td>
 </tr>
 <tr>
 <td><strong>dhcpOptions &gt; other &gt; value</strong><br>(staticBinding and ipPool)</td>
-<td></td>
+<td>The DHCP option value, in hex. For example, <em>2F766172</em>.</td>
 </tr>
 <tr>
 <td><strong>logging</strong></td>
@@ -22807,8 +22927,8 @@ configuration.</p>
     href="#PUT/4.0/firewall/config/globalconfiguration"
   ><h2>PUT /4.0/firewall/config/globalconfiguration</h2></a>
   <div class="content">
-    <p><p>Update the distributed firewall performance configuration.
-<strong>Method history:</strong></p>
+    <p><p>Update the distributed firewall performance configuration.</p>
+<p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
 <th>Modification</th>
@@ -26369,7 +26489,7 @@ Firewall to a flow collector.</p>
 <section class="resource">
   <div class="description"><h1 id="working-with-spoofguard">Working With SpoofGuard</h1>
 <p>After synchronizing with the vCenter Server, NSX Manager collects the IP
-addresses of all vCenter guest virtual machines If a virtual machine has
+addresses of all vCenter guest virtual machines. If a virtual machine has
 been compromised, the IP address can be spoofed and malicious
 transmissions can bypass firewall policies.</p>
 <p>You create a SpoofGuard policy for specific networks that allows you to
@@ -26448,7 +26568,7 @@ use</li>
     href="#GET/4.0/services/spoofguard/policies"
   ><h2>GET /4.0/services/spoofguard/policies</h2></a>
   <div class="content">
-    <p><p>Retrieve informationa about all SpoofGuard policies.</p>
+    <p><p>Retrieve information about all SpoofGuard policies.</p>
 </p>
   </div>
 </div>

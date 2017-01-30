@@ -2,50 +2,95 @@
 https://{nsxmanager}/api
 
 ### Introduction
-This manual, the NSX for vSphere API Guide, describes how to install, configure, monitor, and maintain the VMware® NSX system by using REST API requests.
+This manual, the NSX for vSphere API Guide, describes how to install,
+configure, monitor, and maintain the VMware® NSX system by using REST API
+requests.
 
 ## Intended Audience
 
-This manual is intended for anyone who wants to use REST API to programmatically control NSX in a VMware vSphere environment. The information in this manual is written for experienced developers who are familiar with virtual machine technology, virtualized datacenter operations, and REST APIs. This manual also assumes familiarity with NSX for vSphere.
+This manual is intended for anyone who wants to use REST API to
+programmatically control NSX in a VMware vSphere environment. The information
+in this manual is written for experienced developers who are familiar with
+virtual machine technology, virtualized datacenter operations, and REST APIs.
+This manual also assumes familiarity with NSX for vSphere.
 
 ## VMware Technical Publications Glossary
 
-VMware Technical Publications provides a glossary of terms that might be unfamiliar to you. For definitions of terms as they are used in VMware technical documentation go to http://www.vmware.com/support/pubs.
+VMware Technical Publications provides a glossary of terms that might be
+unfamiliar to you. For definitions of terms as they are used in VMware
+technical documentation go to http://www.vmware.com/support/pubs.
 
-## Document Feedback
+## Technical Documentation and Product Updates
 
-VMware welcomes your suggestions for improving our documentation. If you have comments, send your feedback to docfeedback@vmware.com.
+You can find the most up-to-date technical documentation on the VMware Web site at:
+http://www.vmware.com/support/.
 
-## NSX Documentation
+The VMware Web site also provides the latest product updates.
 
-The following documents comprise the NSX documentation set:
+If you have comments about this documentation, submit your feedback to:
+<docfeedback@vmware.com>.
 
-- *NSX for vSphere Administration Guide*
-- *NSX for vSphere Installation and Upgrade*
-- *NSX API Programming Guide*
+## Using the NSX REST API
 
-## Technical Support and Education Resources
+To use the NSX REST API, you must configure a REST client, verify the required
+ports are open between your REST client and the NSX Manager, and understand
+the general RESTful workflow.
 
-The following sections describe the technical support resources available to you. To access the current version of this book and other books, go to http://www.vmware.com/support/pubs.
+### Configuring REST Clients for the NSX REST API
 
-### Online and Telephone Support
+Some browser-based clients include the Chrome app, Postman, or the Firefox
+add-on, RESTClient. Curl is a command-line tool that can function as a REST
+client. The details of REST client configuration will vary from client to
+client, but this general information should help you configure your REST client
+correctly.
 
-To use online support to submit technical support requests, view your product and contract information, and register your products, go to http://www.vmware.com/support.
+* **The NSX REST API uses basic authentication.**   
+You must configure your REST client to send the NSX Manager authentication
+credentials using basic authentication.
 
-Customers with appropriate support contracts should use telephone support for the fastest response on priority 1 issues. Go to http://www.vmware.com/support/phone_support.
+* **You must use https to send API requests to the NSX Manager.**   
+You might need to import the certificate from the NSX Manager to your REST
+client to allow it to connect to the NSX Manager.
 
-### Support Offerings
+* **When you submit an API request with an XML request body, you must include the  
+`Content-Type: application/xml` header.**   
+Some requests require additional headers, for example, firewall configuration
+changes require the `If-Match` header. This is noted on each method
+description.
 
-To find out how VMware support offerings can help meet your business needs, go to http://www.vmware.com/support/services.
+* **To ensure you always receive XML response bodies, set the `Accept:  
+application/xml` header.**  
+Some API methods respond with JSON output, which is an experimental feature.
+Setting the Accept header ensures you always get XML output.  **Note:** some
+methods, for example, the central CLI method, `POST /1.0/nsx/cli`, might
+require a different Accept header.
 
-### VMware Professional Services
+The following API method will return a response on a newly deployed NSX
+Manager appliance, even if you have not made any configuration changes. You
+can use this as a test to verify that your REST client is configured correctly
+to communicate with the NSX Manager API.
 
-VMware Education Services courses offer extensive hands-on labs, case study examples, and course materials designed to be used as on-the-job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
-http://www.vmware.com/services.
+`GET /api/2.0/services/usermgmt/user/admin`
 
-## Ports Required for the NSX REST API
+### Ports Required for the NSX REST API
 
 The NSX Manager requires port 443/TCP for REST API requests.
+
+### RESTful Workflow Patterns
+
+All RESTful workflows fall into a pattern that includes only two fundamental
+operations, which you repeat in this order for as long as necessary.
+
+* **Make an HTTP request (GET, PUT, POST, or DELETE).**   
+The target of this request is either a well-known URL (such as NSX Manager) or
+a link obtained from the response to a previous request. For example, a GET
+request to an Org URL returns links to vDC objects contained by the Org.
+* **Examine the response, which can be an XML document or an HTTP response code.**   
+If the response is an XML document, it might contain links or other
+information about the state of an object. If the response is an HTTP response
+code, it indicates whether the request succeeded or failed, and might be
+accompanied by a URL that points to a location from which additional
+information can be retrieved.
 
 ## Finding vCenter Object IDs
 
@@ -53,73 +98,78 @@ Many API methods reference vCenter object IDs in URI parameters, query
 parameters, request bodies, and response bodies. You can find vCenter object
 IDs via the vCenter Managed Object Browser.
 
-### Find Datacenter ID
+### Find Datacenter MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find the **childEntity** in the Name column, and the corresponding
-  Value column entry is the datacenter MOID. e.g. *datacenter-21*.
+  Value column entry is the datacenter MOID. For example, *datacenter-21*.
 
-### Find Host ID
+### Find Host MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find *host* in the Name column. The corresponding Value column
-   lists the hosts in that cluster by vCenter MOID and hostname. e.g.
+   lists the hosts in that cluster by vCenter MOID and hostname. For example,
    *host-32 (esx-02a.corp.local)*.
 
-### Find Portgroup ID
+### Find Portgroup MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **network** in the Name column. The corresponding Value column lists
-   the port groups on that host, e.g. *dvportgroup-388*.
+   the port groups on that host, For example, *dvportgroup-388*.
 
-### Find VMID
+### Find VM MOID or VM Instance UUID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **vm** in the Name column. The corresponding Value column lists the
-   virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
+   virtual machines by vCenter MOID and hostname. For example, *vm-216 (web-01a)*.
+6. To find the instance UUID of a VM, click the VM MOID link located in the
+   previous step. Click the config link in the Value column.
+6. Find **instanceUuid** in the Name column. The corresponding Value column
+   lists the VM instance UUID. For example,
+   *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### part-number
 EN-002339-00
@@ -468,7 +518,7 @@ If you set **packetSizeMode** to *2*, you must specify the size using
 the **packetSize** parameter.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/p2p
-Test Point-to-Point Connectivity
+Testing Point-to-Point Connectivity
 ----
 
 * **post** *(secured)*: Test point-to-point connectivity.
@@ -618,13 +668,13 @@ can be one of the following:
   invocation.
 
 ### /2.0/vdn/controller/upgrade-available
-Retrieve Controller Upgrade Availability
+Working With Controller Upgrade Availability
 ----
 
 * **get** *(secured)*: Retrieve controller upgrade availability.
 
 ### /2.0/vdn/controller/progress/{jobId}
-Status of Controller Job
+Working With of Controller Job Status
 -----
 
 * **get** *(secured)*: Retrieves status of controller creation or removal. The progress gives
@@ -634,13 +684,13 @@ a percentage indication of current deploy / remove procedure.
 Working with a Specific Controller
 -----
 
-* **delete** *(secured)*: Deletes the NSX controller.
+* **delete** *(secured)*: Delete the NSX controller.
 
 ### /2.0/vdn/controller/{controllerId}/techsupportlogs
 Working with Controller Tech Support Logs
 -----
 
-* **get** *(secured)*: Retrieves controller logs. Response content type is
+* **get** *(secured)*: Retrieve controller logs. Response content type is
 application/octet-stream and response header is filename. This
 streams a fairly large bundle back (possibly hundreds of MB).
 
@@ -675,7 +725,7 @@ Working with the NSX Controller Password
 * **put** *(secured)*: Change the NSX controller password.
 
 ## servicesApps
-Working with Services
+Working with Services Grouping Objects
 =============
 
 ### /2.0/services/application/scope/{scopeId}
@@ -701,7 +751,7 @@ service.
 * **delete** *(secured)*: Delete the specified service.
 
 ## applicationgroup
-Working with Service Groups
+Working with Service Groups Grouping Objects
 ============
 
 ### /2.0/services/applicationgroup/scope/{scopeId}
@@ -741,7 +791,7 @@ possible valid elements that can be added to the
 service.
 
 ## ipPools
-Working with IP Pools
+Working with IP Pool Grouping Objects
 ========
 
 ### /2.0/services/ipam/pools/scope/{scopeId}
@@ -803,12 +853,17 @@ Release | Modification
 Working with Security Tags
 =====
 
+You can manage security tags and their virtual machine assignments. For
+example, you can create a user defined security tag, assign tags to a
+virtual machine, view tags assigned to virtual machines, and view virtual
+machines that have a specific tag assigned.
+
 ### /2.0/services/securitytags/tag
 Managing Security Tags
 -----
 
 * **post** *(secured)*: Create a new security tag.
-* **get** *(secured)*: Retrieve security tags.
+* **get** *(secured)*: Retrieve all security tags.
 
 ### /2.0/services/securitytags/tag/{tagId}
 Delete a Security Tag
@@ -817,25 +872,21 @@ Delete a Security Tag
 * **delete** *(secured)*: Delete the specified security tag.
 
 ### /2.0/services/securitytags/tag/{tagId}/vm
-Working with Security Tags on Virtual Machines
+Working With Virtual Machines on a Specific Security Tag
 ----
 
 * **get** *(secured)*: Retrieve the list of VMs that have the specified tag attached to
 them.
 
-### /2.0/services/securitytags/tag/{tagId}/vm/{vmMoid}
+### /2.0/services/securitytags/tag/{tagId}/vm/{vmId}
 Manage a Security Tag on a Virtual Machine
 ----
 
-* **put** *(secured)*: Apply a security tag to virtual machine.
-* **delete** *(secured)*: Detach a security tag from a virtual machine.
+* **put** *(secured)*: Apply a security tag to the specified virtual machine.
+* **delete** *(secured)*: Detach a security tag from the specified virtual machine.
 
-### /2.0/services/securitytags/vm
-Working with Virtual Machines and Security Tags
------
-
-### /2.0/services/securitytags/vm/{vmMoid}
-Manage Security Tags on a Specific Virtual Machine
+### /2.0/services/securitytags/vm/{vmId}
+Working With Security Tags on a Specific Virtual Machine
 -----
 
 * **get** *(secured)*: Retrieve all security tags associated with the specified virtual
@@ -908,7 +959,7 @@ Working With Scoping Objects
 scope.
 
 ## secGroup
-Working with Security Groups
+Working with Security Group Grouping Objects
 ===========
 
 ### /2.0/services/securitygroup/bulk/{scopeId}
@@ -998,7 +1049,7 @@ Working with Internal Security Groups
 users.
 
 ## ipsets
-Working with IP Sets
+Working with IP Set Grouping Objects
 =======
 
 ### /2.0/services/ipset/scope/{scopeMoref}
@@ -1098,7 +1149,7 @@ Working with Universal Sync Entities
 * **get** *(secured)*: Retrieve the status of a universal sync entity.
 
 ### /2.0/universalsync/status
-Working wiht Universal Sync Status
+Working With Universal Sync Status
 -----
 
 * **get** *(secured)*: Retrieve the universal sync status.
@@ -1228,30 +1279,53 @@ Working with Syslog Servers
 Working with Components
 ----
 
+The NSX Manager appliance has the following components:
+
+Component | Description |
+------|--------
+NSX | NSX Manager
+NSXREPLICATOR | Universal Synchronization Service
+RABBITMQ | RabbitMQ - Messaging service
+SSH | SSH Service
+VPOSTGRES | vPostgres - Database service
+
 * **get** *(secured)*: Retrieve all appliance manager components.
 
-### /1.0/appliance-management/components/{componentID}
+### /1.0/appliance-management/components/component/{componentID}
 Working with a Specific Component
 ----
 
 * **get** *(secured)*: Retrieve details for specified component.
 
-### /1.0/appliance-management/components/{componentID}/dependencies
+### /1.0/appliance-management/components/component/{componentID}/dependencies
 Working with Component Dependencies
 ----
 
 * **get** *(secured)*: Retrieve dependency details for specified component.
 
-### /1.0/appliance-management/components/{componentID}/dependents
+### /1.0/appliance-management/components/component/{componentID}/dependents
 Working with Component Dependents
 ----
 
 * **get** *(secured)*: Retrieve dependents for the specified component.
 
-### /1.0/appliance-management/components/{componentID}/status
+### /1.0/appliance-management/components/component/{componentID}/status
 Working with Component Status
+----
 
 * **get** *(secured)*: Retrieve current status for specified component.
+
+### /1.0/appliance-management/components/component/{componentID}/toggleStatus/{command}
+Toggle Component Status
+-----
+
+* **post** *(secured)*: Start or stop a component.
+
+### /1.0/appliance-management/components/component/APPMGMT/restart
+Working With the Appliance Management Web Application
+-----
+
+* **post** *(secured)*: Restart the appliance management web application.
 
 ### /1.0/appliance-management/backuprestore/backupsettings
 NSX Manager Appliance Backup Settings
@@ -2321,7 +2395,7 @@ EAM agencies.
 ```
 
 ## macsets
-Working with MAC Address Sets
+Working with MAC Address Set Grouping Objects
 =============
 You can create a MAC address set on the specified scope. On success, the API
 returns a string identifier for the new MAC address set.
@@ -3110,6 +3184,7 @@ configuration.
 
 * **get** *(secured)*: Retrieve performance configuration for distributed firewall.
 * **put** *(secured)*: Update the distributed firewall performance configuration.
+
 **Method history:**
 
 Release | Modification
@@ -3145,7 +3220,7 @@ Firewall to a flow collector.
 Working With SpoofGuard
 ==========
 After synchronizing with the vCenter Server, NSX Manager collects the IP
-addresses of all vCenter guest virtual machines If a virtual machine has
+addresses of all vCenter guest virtual machines. If a virtual machine has
 been compromised, the IP address can be spoofed and malicious
 transmissions can bypass firewall policies.
 
@@ -3173,7 +3248,7 @@ use
 
 * **post** *(secured)*: Create a SpoofGuard policy to specify the operation mode for networks.
 
-* **get** *(secured)*: Retrieve informationa about all SpoofGuard policies.
+* **get** *(secured)*: Retrieve information about all SpoofGuard policies.
 
 ### /4.0/services/spoofguard/policies/{policyID}
 Working With a Specific SpoofGuard Policy
@@ -3185,7 +3260,6 @@ Working With a Specific SpoofGuard Policy
 * **delete** *(secured)*: Delete the specified SpoofGuard policy.
 
 ### /4.0/services/spoofguard/{policyID}
-
 Perform SpoofGuard Operations on IP Addresses in a Specific Policy
 ---
 
@@ -3200,7 +3274,7 @@ Working with Flow Monitoring
 Working With Flow Monitoring Statistics 
 ----
 
-* **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC
+* **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC.
 
 Response values for flow statistics:
 * **blocked** - indicates whether traffic is blocked:
@@ -3424,8 +3498,8 @@ Working With a Specific NSX Edge
 * **post** *(secured)*: Manage NSX Edge.
 * **get** *(secured)*: Retrieve Edge details.
 * **put** *(secured)*: Update the NSX Edge configuration.
-* **delete** *(secured)*: Delete specified Edge from database. Associated appliances are also
-deleted.
+* **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
+also deleted.
 
 ### /4.0/edges/{edgeId}/dnsclient
 Working with DNS Client Configuration
@@ -3442,9 +3516,8 @@ Working with AESNI
 ### /4.0/edges/{edgeId}/coredump
 Working With Core Dumps
 -----
-Enabling core-dump feature results in deployment of inbuilt extra disk
-to save core-dump files. 1 GB for compact edge and 8 GB for other types.
-Disabling detaches the disk
+Enabling core-dump feature results in deployment of built-in extra disk
+to save core-dump files. Disabling detaches the disk.
 
 * **post** *(secured)*: Modify core dump setting.
 
@@ -3871,9 +3944,9 @@ Parameter Name | Parameter Information
 **dhcpOptions > option150**<br>(staticBinding and ipPool) | IP address of TFTP server.
 **dhcpOptions > option150 > server**<br>(staticBinding and ipPool) | Use to specify more than one TFTP server by IP address for this IP Pool.
 **dhcpOptions > option26**<br>(staticBinding and ipPool) | MTU.
-**dhcpOptions > other**<br>(staticBinding and ipPool) | Opaque options.
-**dhcpOptions > other > code**<br>(staticBinding and ipPool) | 
-**dhcpOptions > other > value**<br>(staticBinding and ipPool) | 
+**dhcpOptions > other**<br>(staticBinding and ipPool) | Add DHCP options other than 26, 66, 67, 121, 150.
+**dhcpOptions > other > code**<br>(staticBinding and ipPool) | Use the DHCP option number only. For example, to specify dhcp option 80, enter *80*.
+**dhcpOptions > other > value**<br>(staticBinding and ipPool) | The DHCP option value, in hex. For example, *2F766172*.
 **logging** | Optional. Logging is disabled by default.
 **logging > enable** |  Optional, default is *false*.
 **logging > logLevel** | Optional, default is *info*.
@@ -4285,7 +4358,8 @@ Working with NSX Edge Configuration Publishing
 =========
 
 ### /4.0/edgePublish/tuningConfiguration
-Working with NSX Edge tuning configuration.
+Working With NSX Edge Tuning Configuration
+------
 
 Starting in 6.2.3 you can configure default values for NSX Edge
 configuration parameters, including publishing and health check
@@ -4334,22 +4408,26 @@ Working with Certificates
 =============
 
 ### /2.0/services/truststore/certificate
-Certificates and certificate chains
+Working with Certificates and Certificate Chains
+------
 
-* **post** *(secured)*: Create certificate for CSR
+* **post** *(secured)*: Create certificate for CSR.
 
 ### /2.0/services/truststore/certificate/scope/{scopeId}
-Certificates for a scope
+Working With Certificates on a Specific Scope
+----
 
 * **get** *(secured)*: Query all certificates for a scope
 
 ### /2.0/services/truststore/certificate/{scopeId}
-Working with vShield Edge self-signed certificates
+Working With NSX Edge Self-Signed Certificates
+------
 
 * **post** *(secured)*: Create a single certificate
 
 ### /2.0/services/truststore/certificate/{certificateId}
-Certificate specified by ID
+Working With a Specific Certificate
+-----
 
 * **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies
 a chain, multiple certificate objects are retrieved.
@@ -4357,25 +4435,30 @@ a chain, multiple certificate objects are retrieved.
 * **delete** *(secured)*: Delete the specified certificate
 
 ### /2.0/services/truststore/csr/{scopeId}
-Create Certificate Signing Requests (CSRs)
+Working with Certificate Signing Requests (CSRs)
 
-* **post** *(secured)*: Create a CSR
+* **post** *(secured)*: Create a certificate signing request (CSR).
 
 ### /2.0/services/truststore/csr/{csrId}
-Self signed certificate for CSR
+Working With Self-Signed Certificate for CSR
+-----
 
-* **put** *(secured)*: Create a self signed certificate for CSR
-* **get** *(secured)*: Retrieve specific CSR
+* **put** *(secured)*: Create a self-signed certificate for a certificate signing request
+(CSR).
+
+* **get** *(secured)*: Retrieve the specified certificate signing request (CSR).
 
 ### /2.0/services/truststore/csr/scope/{scopeId}
-CSRs for specific scope
+Working With Certificate Signing Requests on a Specific Scope
+----
 
-* **get** *(secured)*: Query CSRs for specific scope
+* **get** *(secured)*: Retrieve certificate signing requests (CSR) on the specified scope.
 
 ### /2.0/services/truststore/crl/{scopeId}
-Create Certificate Revocation Lists (CRLs) on a specified scope
+Working With Certificate Revocation Lists on a Specific Scope
+-----
 
-* **post** *(secured)*: Create CRL on the specified scope.
+* **post** *(secured)*: Create a certificate revocation list (CRL) on the specified scope.
 
 ### /2.0/services/truststore/crl/scope/{scopeId}
 Working with CRL Certificates in a Specific Scope
@@ -4387,8 +4470,10 @@ Working with CRL Certificates in a Specific Scope
 Working with a Specific CRL Certificate
 ----
 
-* **get** *(secured)*: Retrieve certificate object for the specified CRL.
-* **delete** *(secured)*: Delete the specified CRL.
+* **get** *(secured)*: Retrieve certificate object for the specified certificate revocation
+list (CRL).
+
+* **delete** *(secured)*: Delete the specified certificate revocation list (CRL).
 
 ## policy
 Working with Security Policies and Actions

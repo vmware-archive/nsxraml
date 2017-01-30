@@ -1,47 +1,93 @@
-This manual, the NSX for vSphere API Guide, describes how to install, configure, monitor, and maintain the VMware® NSX system by using REST API requests.
+This manual, the NSX for vSphere API Guide, describes how to install,
+configure, monitor, and maintain the VMware® NSX system by using REST API
+requests.
 
 ## Intended Audience
 
-This manual is intended for anyone who wants to use REST API to programmatically control NSX in a VMware vSphere environment. The information in this manual is written for experienced developers who are familiar with virtual machine technology, virtualized datacenter operations, and REST APIs. This manual also assumes familiarity with NSX for vSphere.
+This manual is intended for anyone who wants to use REST API to
+programmatically control NSX in a VMware vSphere environment. The information
+in this manual is written for experienced developers who are familiar with
+virtual machine technology, virtualized datacenter operations, and REST APIs.
+This manual also assumes familiarity with NSX for vSphere.
 
 ## VMware Technical Publications Glossary
 
-VMware Technical Publications provides a glossary of terms that might be unfamiliar to you. For definitions of terms as they are used in VMware technical documentation go to http://www.vmware.com/support/pubs.
+VMware Technical Publications provides a glossary of terms that might be
+unfamiliar to you. For definitions of terms as they are used in VMware
+technical documentation go to http://www.vmware.com/support/pubs.
 
-## Document Feedback
+## Technical Documentation and Product Updates
 
-VMware welcomes your suggestions for improving our documentation. If you have comments, send your feedback to docfeedback@vmware.com.
+You can find the most up-to-date technical documentation on the VMware Web site at:
+http://www.vmware.com/support/.
 
-## NSX Documentation
+The VMware Web site also provides the latest product updates.
 
-The following documents comprise the NSX documentation set:
+If you have comments about this documentation, submit your feedback to:
+<docfeedback@vmware.com>.
 
-- *NSX for vSphere Administration Guide*
-- *NSX for vSphere Installation and Upgrade*
-- *NSX API Programming Guide*
+## Using the NSX REST API
 
-## Technical Support and Education Resources
+To use the NSX REST API, you must configure a REST client, verify the required
+ports are open between your REST client and the NSX Manager, and understand
+the general RESTful workflow.
 
-The following sections describe the technical support resources available to you. To access the current version of this book and other books, go to http://www.vmware.com/support/pubs.
+### Configuring REST Clients for the NSX REST API
 
-### Online and Telephone Support
+Some browser-based clients include the Chrome app, Postman, or the Firefox
+add-on, RESTClient. Curl is a command-line tool that can function as a REST
+client. The details of REST client configuration will vary from client to
+client, but this general information should help you configure your REST client
+correctly.
 
-To use online support to submit technical support requests, view your product and contract information, and register your products, go to http://www.vmware.com/support.
 
-Customers with appropriate support contracts should use telephone support for the fastest response on priority 1 issues. Go to http://www.vmware.com/support/phone_support.
+* **The NSX REST API uses basic authentication.**   
+You must configure your REST client to send the NSX Manager authentication
+credentials using basic authentication.
 
-### Support Offerings
+* **You must use https to send API requests to the NSX Manager.**   
+You might need to import the certificate from the NSX Manager to your REST
+client to allow it to connect to the NSX Manager.
 
-To find out how VMware support offerings can help meet your business needs, go to http://www.vmware.com/support/services.
+* **When you submit an API request with an XML request body, you must include the  
+`Content-Type: application/xml` header.**   
+Some requests require additional headers, for example, firewall configuration
+changes require the `If-Match` header. This is noted on each method
+description.
 
-### VMware Professional Services
+* **To ensure you always receive XML response bodies, set the `Accept:  
+application/xml` header.**  
+Some API methods respond with JSON output, which is an experimental feature.
+Setting the Accept header ensures you always get XML output.  **Note:** some
+methods, for example, the central CLI method, `POST /1.0/nsx/cli`, might
+require a different Accept header.
 
-VMware Education Services courses offer extensive hands-on labs, case study examples, and course materials designed to be used as on-the-job reference tools. Courses are available onsite, in the classroom, and live online. For onsite pilot programs and implementation best practices, VMware Consulting Services provides offerings to help you assess, plan, build, and manage your virtual environment. To access information about education classes, certification programs, and consulting services, go to
-http://www.vmware.com/services.
+The following API method will return a response on a newly deployed NSX
+Manager appliance, even if you have not made any configuration changes. You
+can use this as a test to verify that your REST client is configured correctly
+to communicate with the NSX Manager API.
 
-## Ports Required for the NSX REST API
+`GET /api/2.0/services/usermgmt/user/admin`
+
+### Ports Required for the NSX REST API
 
 The NSX Manager requires port 443/TCP for REST API requests.
+
+### RESTful Workflow Patterns
+
+All RESTful workflows fall into a pattern that includes only two fundamental
+operations, which you repeat in this order for as long as necessary.
+
+* **Make an HTTP request (GET, PUT, POST, or DELETE).**   
+The target of this request is either a well-known URL (such as NSX Manager) or
+a link obtained from the response to a previous request. For example, a GET
+request to an Org URL returns links to vDC objects contained by the Org.
+* **Examine the response, which can be an XML document or an HTTP response code.**   
+If the response is an XML document, it might contain links or other
+information about the state of an object. If the response is an HTTP response
+code, it indicates whether the request succeeded or failed, and might be
+accompanied by a URL that points to a location from which additional
+information can be retrieved.
 
 ## Finding vCenter Object IDs
 
@@ -49,70 +95,75 @@ Many API methods reference vCenter object IDs in URI parameters, query
 parameters, request bodies, and response bodies. You can find vCenter object
 IDs via the vCenter Managed Object Browser.
 
-### Find Datacenter ID
+### Find Datacenter MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find the **childEntity** in the Name column, and the corresponding
-  Value column entry is the datacenter MOID. e.g. *datacenter-21*.
+  Value column entry is the datacenter MOID. For example, *datacenter-21*.
 
-### Find Host ID
+### Find Host MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find *host* in the Name column. The corresponding Value column
-   lists the hosts in that cluster by vCenter MOID and hostname. e.g.
+   lists the hosts in that cluster by vCenter MOID and hostname. For example,
    *host-32 (esx-02a.corp.local)*.
 
-### Find Portgroup ID
+### Find Portgroup MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **network** in the Name column. The corresponding Value column lists
-   the port groups on that host, e.g. *dvportgroup-388*.
+   the port groups on that host, For example, *dvportgroup-388*.
 
-### Find VMID
+### Find VM MOID or VM Instance UUID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
 2. Click **content**.
 3. Find **rootFolder** in the Name column, and click the corresponding link in
-   the Value column. e.g. *group-d1*.
+   the Value column. For example, *group-d1*.
 4. Find **childEntity** in the Name column, and click the corresponding
-   link in the Value column. e.g. *datacenter-21*.
+   link in the Value column. For example, *datacenter-21*.
 4. Find **hostFolder** in the Name column, and click the corresponding
-   link in the Value column. e.g. *group-h23*.
+   link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
    contains links to host clusters. Click the appropriate host cluster link.
-   e.g. *domain-c33*.
+   For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, e.g. host-32.
+   host link, For example, host-32.
 5. Find **vm** in the Name column. The corresponding Value column lists the
-   virtual machines by vCenter MOID and hostname. e.g. *vm-216 (web-01a)*.
+   virtual machines by vCenter MOID and hostname. For example, *vm-216 (web-01a)*.
+6. To find the instance UUID of a VM, click the VM MOID link located in the
+   previous step. Click the config link in the Value column.
+6. Find **instanceUuid** in the Name column. The corresponding Value column
+   lists the VM instance UUID. For example,
+   *502e71fa-1a00-759b-e40f-ce778e915f16*.
