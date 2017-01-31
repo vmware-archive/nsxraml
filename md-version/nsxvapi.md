@@ -884,21 +884,7 @@ Manage a Security Tag on a Virtual Machine
 
 * **put** *(secured)*: Apply a security tag to the specified virtual machine.
 
-You can specify multiple VMs by ID by providing a comma
-separated list. However, there is a URL length limit of 16000
-characters. To optimize performance, tag up to 500 VMs in a
-single call. 
-
-For example: `PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
-
 * **delete** *(secured)*: Detach a security tag from the specified virtual machine.
-
-You can specify multiple VMs by ID by providing a comma
-separated list. However, there is a URL length limit of 16000
-characters. To optimize performance, tag up to 500 VMs in a
-single call. 
-
-For example: `DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
 
 ### /2.0/services/securitytags/vm/{vmId}
 Working With Security Tags on a Specific Virtual Machine
