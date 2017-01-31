@@ -916,13 +916,6 @@ Manage a Security Tag on a Virtual Machine
 
 * **put** *(secured)*: Apply a security tag to the specified virtual machine.
 
-You can specify multiple VMs by ID by providing a comma
-separated list. However, there is a URL length limit of 16000
-characters. To optimize performance, tag up to 500 VMs in a
-single call. 
-
-For example: `PUT /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
-
 **Note:** this method can attach a universal security tag to a
 virtual machine. However, this method checks that the VM exists
 on the NSX Manager to which the API call is sent. In a
@@ -936,13 +929,6 @@ local to the primary NSX Manager. This method does not check
 that the VM is local to the NSX Manager.
 
 * **delete** *(secured)*: Detach a security tag from the specified virtual machine.
-
-You can specify multiple VMs by ID by providing a comma
-separated list. However, there is a URL length limit of 16000
-characters. To optimize performance, tag up to 500 VMs in a
-single call. 
-
-For example: `DELETE /api/2.0/services/securitytags/tag/securitytag-21/vm/vm-102,vm-134,vm-276`
 
 ### /2.0/services/securitytags/tag/{tagId}/vm/vmDetail
 Working with Virtual Machine Details for a Specific Security Tag
