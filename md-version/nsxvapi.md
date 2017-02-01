@@ -2650,12 +2650,6 @@ Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
 alarms for the source. Use this response as the request body for the
 `POST` call.
 
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.4 | Method introduced.
-
 ## servicesSystemAlarmsId
 Working with a Specific Alarm
 -------
