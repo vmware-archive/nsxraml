@@ -2601,6 +2601,8 @@ securitySchemes:
           description: |
             Set to *true* to view universal security tags only.  Set to
             *false* to view security tags local to that NSX Manager only.
+            To view all tags (tags local to that NSX Manager plus universal
+            tags), omit the action parameter.
           type: boolean
           required: false
     /{tagId}:
@@ -2653,6 +2655,7 @@ securitySchemes:
               description: | 
                 Action to perform: *attach* or *detach* specified security tag
                 from the VMs listed in the request body.
+              required: true
           body:
             application/xml:
               example: |
@@ -2694,69 +2697,69 @@ securitySchemes:
             displayName: securityTagVMDetach
             description: |
               Detach a security tag from the specified virtual machine.
-        /vmDetail:
-          displayName: securityTagVMDetail
+      /vmDetail:
+        displayName: securityTagVMDetail
+        description: |
+          Working with Virtual Machine Details for a Specific Security Tag
+          -----
+        get:
+          displayName: securityTagVMDetailRead
           description: |
-            Working with Virtual Machine Details for a Specific Security Tag
-            -----
-          get:
-            displayName: securityTagVMDetailRead
-            description: |
-              Retrieve details about the VMs that are attached to the
-              specified security tag.
+            Retrieve details about the VMs that are attached to the
+            specified security tag.
 
-              **Method history:**
+            **Method history:**
 
-              Release | Modification
-              --------|-------------
-              6.3.0 | Method introduced.
-            responses:
-              200:
-                body:
-                  application/xml:
-                    example: |
-                      <attachedVMList>
-                        <attachedVM>
-                          <objectId>vm-17</objectId>
-                          <objectTypeName>VirtualMachine</objectTypeName>
-                          <vsmUuid>564D5E43-1A21-9061-CE62-16E4E64FBC52</vsmUuid>
-                          <revision>1</revision>
-                          <type>
-                            <typeName>VirtualMachine</typeName>
-                          </type>
-                          <name>Ubuntu2</name>
-                          <scope>
-                            <id>domain-c7</id>
-                            <objectTypeName>ClusterComputeResource</objectTypeName>
-                            <name>sp cluster</name>
-                          </scope>
-                          <clientHandle />
-                          <isUniversal>false</isUniversal>
-                          <universalRevision>0</universalRevision>
-                          <instanceUUID>520932b3-b531-7b4a-d3fe-76f0fdd82736</instanceUUID>
-                          <biosUUID>423f7c14-6463-8ebc-d06d-2a284b24cabb</biosUUID>
-                        </attachedVM>
-                        <attachedVM>
-                          <objectId>vm-59</objectId>
-                          <objectTypeName>VirtualMachine</objectTypeName>
-                          <vsmUuid>564D5E43-1A21-9061-CE62-16E4E64FBC52</vsmUuid>
-                          <revision>1</revision>
-                          <type>
-                            <typeName>VirtualMachine</typeName>
-                          </type>
-                          <name>vShield-FW (1)</name>
-                          <scope>
-                            <id>domain-c7</id>
-                            <objectTypeName>ClusterComputeResource</objectTypeName>
-                            <name>sp cluster</name>
-                          </scope>
-                          <clientHandle />
-                          <isUniversal>false</isUniversal>
-                          <universalRevision>0</universalRevision>
-                          <instanceUUID>502777a8-a4b0-6b1e-1af1-6ab43f3417a0</instanceUUID>
-                          <biosUUID>42278ffc-021c-cd1f-1413-978f34079593</biosUUID>
-                        </attachedVM>
-                      </attachedVMList>
+            Release | Modification
+            --------|-------------
+            6.3.0 | Method introduced.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <attachedVMList>
+                      <attachedVM>
+                        <objectId>vm-17</objectId>
+                        <objectTypeName>VirtualMachine</objectTypeName>
+                        <vsmUuid>564D5E43-1A21-9061-CE62-16E4E64FBC52</vsmUuid>
+                        <revision>1</revision>
+                        <type>
+                          <typeName>VirtualMachine</typeName>
+                        </type>
+                        <name>Ubuntu2</name>
+                        <scope>
+                          <id>domain-c7</id>
+                          <objectTypeName>ClusterComputeResource</objectTypeName>
+                          <name>sp cluster</name>
+                        </scope>
+                        <clientHandle />
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <instanceUUID>520932b3-b531-7b4a-d3fe-76f0fdd82736</instanceUUID>
+                        <biosUUID>423f7c14-6463-8ebc-d06d-2a284b24cabb</biosUUID>
+                      </attachedVM>
+                      <attachedVM>
+                        <objectId>vm-59</objectId>
+                        <objectTypeName>VirtualMachine</objectTypeName>
+                        <vsmUuid>564D5E43-1A21-9061-CE62-16E4E64FBC52</vsmUuid>
+                        <revision>1</revision>
+                        <type>
+                          <typeName>VirtualMachine</typeName>
+                        </type>
+                        <name>vShield-FW (1)</name>
+                        <scope>
+                          <id>domain-c7</id>
+                          <objectTypeName>ClusterComputeResource</objectTypeName>
+                          <name>sp cluster</name>
+                        </scope>
+                        <clientHandle />
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <instanceUUID>502777a8-a4b0-6b1e-1af1-6ab43f3417a0</instanceUUID>
+                        <biosUUID>42278ffc-021c-cd1f-1413-978f34079593</biosUUID>
+                      </attachedVM>
+                    </attachedVMList>
   /vm/{vmId}:
     displayName: securitytagVmMoid
     description: |
@@ -2778,6 +2781,9 @@ securitySchemes:
       description: |
         Update security tags associated with the specified virtual machine.
 
+        You can assign multiple tags at a time to the specified VM, or clear
+        all assigned tags from the specified VM.
+
         **Method history:**
 
         Release | Modification
@@ -2788,6 +2794,7 @@ securitySchemes:
           displayName: action
           description: |
             Action to perform. *ASSIGN_TAGS* or *CLEAR_ALL_TAGS*.
+          required: true
       body:
         application/xml:
           example: |
@@ -2802,7 +2809,7 @@ securitySchemes:
                 <objectId>securitytag-14</objectId>
               </securityTag>
             </securityTags>                  
-  /selectioncriteria:
+  /selection-criteria:
     displayName: securitytagsCriteria
     description: |
       Working with Security Tags Unique ID Selection Criteria
@@ -2812,19 +2819,25 @@ securitySchemes:
       
       In NSX 6.3.0 and later, you can create universal security tags to use in
       all NSX Managers in a cross-vCenter NSX environment.
-      
+
       In an active standby environment, the managed object ID for a given VM
       might not be the same in the active and standby datacenters. NSX 6.3.x
       introduces a Unique ID Selection Criteria on the primary NSX Manager to
-      use to identify VMs when attaching them to universal security tags. You
-      can use them singly or in combination. The selection criteria is set to
-      VM instance UUID by default.
+      use to identify VMs when attaching them to universal security tags only.
+      You can use them singly or in combination. The VM instance UUID is the
+      recommended selection criteria. See the descriptions for more
+      information.
+
+      The default value for the selection criteria is null and must be set
+      before assigning a universal security tag to a VM. The selection
+      criteria can be set only on the primary NSX manager and is read-only on
+      secondary NSX Managers.
 
       Security Tag Assignment<br>Metadata Parameter | Description
       ------|-------
-      instance_uuid | VM instance UUID
-      bios_uuid | VM BIOS UUID
-      vmname | VM name
+      instance_uuid | The VM instance UUID is generally unique within a vCenter domain, however there are exceptions such as when deployments are made through snapshots. If the VM instance UUID is not unique, you can use the VM BIOS UUID in combination with the VM name.
+      bios_uuid | The BIOS UUID is not guaranteed to be unique within a vCenter domain, but it is always preserved in case of disaster. Use BIOS UUID in combination with VM name to reduce the chance of a duplicate ID.
+      vmname | If all of the VM names in an environment are unique, then VM name can be used to identify a VM across vCenters. Use VM name in combination with VM BIOS UUID to reduce the chance of a duplicate ID.
     get:
       displayName: securitytagsCriteriaRead
       description: |
@@ -3057,6 +3070,9 @@ securitySchemes:
         * MAC Address Set
         * Universal Security Groups with *localMembersOnly=true*
         * Dynamic criteria using VM name
+
+        You can set the **localMembersOnly** attribute only when the universal
+        security group is created, it cannot be modified afterwards.
  
         **Method history:**
 
@@ -3179,6 +3195,9 @@ securitySchemes:
         * MAC Address Set
         * Universal Security Groups with *localMembersOnly=true*
         * Dynamic criteria using VM name
+
+        You can set the **localMembersOnly** attribute only when the universal
+        security group is created, it cannot be modified afterwards.
  
         **Method history:**
 
@@ -6300,12 +6319,6 @@ securitySchemes:
     displayName: servicesAlarmsSourceList
     description: |
       Retrive all alarms from the specified source.
-      
-      **Method history:**
-
-      Release | Modification
-      --------|-------------
-      6.2.4 | Method introduced.
   post:
     displayName: servicesAlarmsSourceUpdate
     description: |

@@ -930,7 +930,7 @@ that the VM is local to the NSX Manager.
 
 * **delete** *(secured)*: Detach a security tag from the specified virtual machine.
 
-### /2.0/services/securitytags/tag/{tagId}/vm/vmDetail
+### /2.0/services/securitytags/tag/{tagId}/vmDetail
 Working with Virtual Machine Details for a Specific Security Tag
 -----
 
@@ -952,13 +952,16 @@ machine.
 
 * **post** *(secured)*: Update security tags associated with the specified virtual machine.
 
+You can assign multiple tags at a time to the specified VM, or clear
+all assigned tags from the specified VM.
+
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.3.0 | Method introduced.
 
-### /2.0/services/securitytags/selectioncriteria
+### /2.0/services/securitytags/selection-criteria
 Working with Security Tags Unique ID Selection Criteria
 -------
 In NSX versions before 6.3.0, security tags are local to a NSX Manager,
@@ -970,15 +973,21 @@ all NSX Managers in a cross-vCenter NSX environment.
 In an active standby environment, the managed object ID for a given VM
 might not be the same in the active and standby datacenters. NSX 6.3.x
 introduces a Unique ID Selection Criteria on the primary NSX Manager to
-use to identify VMs when attaching them to universal security tags. You
-can use them singly or in combination. The selection criteria is set to
-VM instance UUID by default.
+use to identify VMs when attaching them to universal security tags only.
+You can use them singly or in combination. The VM instance UUID is the
+recommended selection criteria. See the descriptions for more
+information.
+
+The default value for the selection criteria is null and must be set
+before assigning a universal security tag to a VM. The selection
+criteria can be set only on the primary NSX manager and is read-only on
+secondary NSX Managers.
 
 Security Tag Assignment<br>Metadata Parameter | Description
 ------|-------
-instance_uuid | VM instance UUID
-bios_uuid | VM BIOS UUID
-vmname | VM name
+instance_uuid | The VM instance UUID is generally unique within a vCenter domain, however there are exceptions such as when deployments are made through snapshots. If the VM instance UUID is not unique, you can use the VM BIOS UUID in combination with the VM name.
+bios_uuid | The BIOS UUID is not guaranteed to be unique within a vCenter domain, but it is always preserved in case of disaster. Use BIOS UUID in combination with VM name to reduce the chance of a duplicate ID.
+vmname | If all of the VM names in an environment are unique, then VM name can be used to identify a VM across vCenters. Use VM name in combination with VM BIOS UUID to reduce the chance of a duplicate ID.
 
 * **get** *(secured)*: Retrieve unique ID section criteria configuration.
 
@@ -1107,6 +1116,9 @@ security group with *localMembersOnly=true* (active standby):
 * Universal Security Groups with *localMembersOnly=true*
 * Dynamic criteria using VM name
 
+You can set the **localMembersOnly** attribute only when the universal
+security group is created, it cannot be modified afterwards.
+
 **Method history:**
 
 Release | Modification
@@ -1145,6 +1157,9 @@ security group with *localMembersOnly=true* (active standby):
 * MAC Address Set
 * Universal Security Groups with *localMembersOnly=true*
 * Dynamic criteria using VM name
+
+You can set the **localMembersOnly** attribute only when the universal
+security group is created, it cannot be modified afterwards.
 
 **Method history:**
 
@@ -2617,12 +2632,6 @@ view and resolve alarms from a specific source.
 ### /2.0/services/alarms/{sourceId}
 
 * **get** *(secured)*: Retrive all alarms from the specified source.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.4 | Method introduced.
 
 * **post** *(secured)*: Resolve all alarms for the specified source.
 
