@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x64;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#99;&#x6f;&#109;">&#x64;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#99;&#x6f;&#109;</a>.</p>
+<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#109;">&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -452,7 +452,7 @@ lists the VM instance UUID. For example,
 </tr>
 </thead><tbody><tr>
 <td>6.2.3</td>
-<td>Method introduced. Replaces <code>PUT /api/1.0/appliance-management/certificatemanager/nsx/csr</code>.</td>
+<td>Method introduced. Replaces <code>PUT /api/1.0/appliance-management/certificatemanager/csr/nsx</code>.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
@@ -7977,8 +7977,10 @@ group membership.</p>
   ><h2>DELETE /2.0/services/securitygroup/{objectId}</h2></a>
   <div class="content">
     <p><p>Delete an existing security group.</p>
-<p>You must remove all members before deleting the security group, or you
-can use <em>force=true</em> to force removal.</p>
+<p>If <em>force=true</em> is specified, the object is deleted even if used in
+other configurations, such as firewall rules. If <em>force=true</em> is not
+specified, the object is deleted only if it is not used by other
+configuration; otherwise the delete fails.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -7989,8 +7991,8 @@ can use <em>force=true</em> to force removal.</p>
     
   </dt>
   <dd>
-      <p>Use <em>force=true</em> to force removal of security group that contains
-members.</p>
+      <p>Use <em>force=true</em> to force removal of security group that is in
+use in other configurations.</p>
 
   </dd>
 </dl>
@@ -8025,6 +8027,37 @@ object ID.</p>
   <div class="content">
     <p><p>Add a new member to the specified security group.</p>
 </p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">failIfExists</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>If failIfExists=false:</p>
+<ul>
+<li>If the member is not already present in the SecurityGroup, the API
+adds the member to the SecurityGroup.</li>
+<li>If the member is already present in the SecurityGroup, the API will
+be a no-op and will return silently.</li>
+</ul>
+<p>If failIfExists=true:</p>
+<ul>
+<li>If the member is not already present in the SecurityGroup, the API
+adds the member to the SecurityGroup.</li>
+<li>If the member is already present in the SecurityGroup, the API call
+fails with the below error:<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">error</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">details</span>&gt;</span>The object vm-1000 is already present in the system.<span class="hljs-tag">&lt;/<span class="hljs-name">details</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>203<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">moduleName</span>&gt;</span>core-services<span class="hljs-tag">&lt;/<span class="hljs-name">moduleName</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">error</span>&gt;</span></code></pre></li>
+</ul>
+
+  </dd>
+</dl>
+    </div>
   </div>
 </div>
 <div class="method delete">

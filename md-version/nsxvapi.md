@@ -1001,14 +1001,17 @@ group membership.
 
 * **delete** *(secured)*: Delete an existing security group.
 
-You must remove all members before deleting the security group, or you
-can use *force=true* to force removal.
+If *force=true* is specified, the object is deleted even if used in
+other configurations, such as firewall rules. If *force=true* is not
+specified, the object is deleted only if it is not used by other
+configuration; otherwise the delete fails.
 
 ### /2.0/services/securitygroup/{objectId}/members/{memberId}
 Working with Members of a Specific Security Group
 ----
 
 * **put** *(secured)*: Add a new member to the specified security group.
+
 * **delete** *(secured)*: Delete member from the specified security group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/virtualmachines
@@ -1473,7 +1476,7 @@ The response header contains the created file location.
 
 Release | Modification
 --------|-------------
-6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/nsx/csr`.
+6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/csr/nsx`.
 
 * **get** *(secured)*: Retrieve generated certificate signing request (CSR).
 

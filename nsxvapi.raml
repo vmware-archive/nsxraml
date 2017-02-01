@@ -3037,14 +3037,16 @@ securitySchemes:
       description: |
         Delete an existing security group.
         
-        You must remove all members before deleting the security group, or you
-        can use *force=true* to force removal.
+        If *force=true* is specified, the object is deleted even if used in
+        other configurations, such as firewall rules. If *force=true* is not
+        specified, the object is deleted only if it is not used by other
+        configuration; otherwise the delete fails.
       queryParameters:
         force:
           displayName: force
           description: |
-            Use *force=true* to force removal of security group that contains
-            members.
+            Use *force=true* to force removal of security group that is in
+            use in other configurations.
           type: boolean
           required: false
     /members/{memberId}:
@@ -3061,7 +3063,32 @@ securitySchemes:
             object ID.
       put:
         displayName: secGroupMemberUpdate
-        description: Add a new member to the specified security group.
+        description: |
+          Add a new member to the specified security group.
+        queryParameters:
+          failIfExists:
+            displayName: failIfExists
+            description: |
+              If failIfExists=false:
+              * If the member is not already present in the SecurityGroup, the API
+              adds the member to the SecurityGroup.
+              * If the member is already present in the SecurityGroup, the API will
+              be a no-op and will return silently.
+
+              If failIfExists=true:
+              * If the member is not already present in the SecurityGroup, the API
+              adds the member to the SecurityGroup.
+              * If the member is already present in the SecurityGroup, the API call
+              fails with the below error:
+              ```
+              <error>
+                <details>The object vm-1000 is already present in the system.</details>
+                <errorCode>203</errorCode>
+                <moduleName>core-services</moduleName>
+              </error>
+              ```
+            type: boolean
+            default: true
       delete:
         displayName: secGroupMemberDelete
         description: Delete member from the specified security group.
@@ -3999,7 +4026,7 @@ securitySchemes:
 
           Release | Modification
           --------|-------------
-          6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/nsx/csr`.
+          6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/csr/nsx`.
         body:
           application/xml:
             example: |
