@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#109;">&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#109;</a>.</p>
+<a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#x6d;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#x6d;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -15394,8 +15394,34 @@ The default values are:</p>
     href="#POST/4.0/edges"
   ><h2>POST /4.0/edges</h2></a>
   <div class="content">
-    <p><p>Install NSX Edge services gateway or logical router, depending on request
-body.</p>
+    <p><p>You can install NSX Edge as a services gateway or as a logical router.</p>
+<p>The services gateway gives you access to all NSX Edge services such as
+firewall, NAT, DHCP, VPN, load balancing, and high availability. You can
+install multiple NSX Edge services gateway virtual appliances in a
+datacenter. Each NSX Edge virtual appliance can have a total of ten
+uplink and internal network interfaces. </p>
+<p>The internal interfaces connect to secured port groups and act as the
+gateway for all protected virtual machines in the port group. The subnet
+assigned to the internal interface can be a publicly routed IP space or
+a NATed/routed RFC 1918 private space. Firewall rules and other NSX Edge
+services are enforced on traffic between network interfaces.</p>
+<p>Uplink interfaces of NSX Edge connect to uplink port groups that have
+access to a shared corporate network or a service that provides access
+layer networking. Multiple external IP addresses can be configured for
+load balancer, site-to-site VPN, and NAT services.</p>
+<p>The logical router provides East-West distributed routing with tenant IP
+address space and data path isolation. Virtual machines or workloads
+that reside on the same host on different subnets can communicate with
+one another without having to traverse a traditional routing interface.
+A logical router can have up to 10 uplink interfaces and up to 990
+internal interfaces.</p>
+<p>The <strong>type</strong> parameter determines which type of NSX Edge is deployed:
+<em>distributedRouter</em> or <em>gatewayServices</em>. If no type is specified, the
+type is <em>gatewayServices</em>.</p>
+<p>Many of other parameters for the <code>POST /api/4.0/edges</code> method will
+differ depending on which type of NSX Edge you are deploying. See the
+examples and parameter tables for more information.</p>
+<h3 id="nsx-edge-service-gateway">NSX Edge: Service Gateway</h3>
 <p>The NSX Edge installation API copies the NSX Edge OVF from the Edge
 Manager to the specified datastore and deploys an NSX Edge on the given
 datacenter. After the NSX Edge is installed, the virtual machine powers
@@ -15409,148 +15435,605 @@ the database. If an appliance is added, the configuration is applied to
 it and it is deployed.</p>
 <p>NOTE: Do not use hidden/system resource pool IDs as they are not
 supported on the UI.</p>
-<p>Request body paramaters:</p>
-<ul>
-<li><strong>name</strong> - Optional. Default is <em>vShield-&lt;edgeId&gt;</em>. Used as a VM name
-on vCenter appended by &quot;-<haIndex>&quot;</li>
-<li><strong>description</strong> - Optional. A text string that describes the object.</li>
-<li><strong>tenant</strong> - Optional. Will be used in syslog messages.</li>
-<li><strong>fqdn</strong> - Optional. Defaut is <em>vshield-&lt;edgeId&gt;</em>. Used to set
-hostanme on the vm. Appended by <em>-&lt;haIndex&gt;</em></li>
-<li><strong>vseLogLevel</strong> - Optional. Default is <em>INFO</em>. Other possible values:<ul>
-<li><em>EMERGENCY</em></li>
-<li><em>ALERT</em></li>
-<li><em>CRITICAL</em></li>
-<li><em>ERROR</em></li>
-<li><em>WARNING</em></li>
-<li><em>NOTICE</em></li>
-<li><em>DEBUG</em></li>
-</ul>
-</li>
-<li><strong>enableAesni</strong> - Optional. Default is true.</li>
-<li><strong>enableFips</strong> - Optional. Default is false.</li>
-<li><strong>appliances</strong> - A maximum 2 appliances can be configured. Until one
-appliance is configured, none of the configured features configured
-will serve the network.</li>
-<li><strong>applianceSize</strong> - Optional. Default is <em>compact</em>. Possible values:<ul>
-<li><em>compact</em></li>
-<li><em>large</em></li>
-<li><em>xlarge</em></li>
-<li><em>quadlarge</em></li>
-</ul>
-</li>
-<li><strong>enableCoreDump</strong> - Optional. Default is false. Enabling core-dump
-will deploy an extra disk for core-dump files, which will consume
-1GB for COMPACT, LARGE, and QUADLARGE, and 8G for XLARGE Edge.</li>
-<li><strong>vnics</strong> - Mamimum 10 interfaces index 0-9 can be configured. Until
-one connected vnic is configured, none of the configured features
-will serve the network.<ul>
-<li><strong>name</strong> - Optional. System has default Names. Format vNic0 ...
-vNic7.</li>
-<li><strong>type</strong> - Optional. Default is internal. Other possible value is
-&quot;uplink&quot;.</li>
-<li><strong>portgroupId* - Possible values here are portgroupIds or
-virtualWire-id. </strong>portgroupId<strong> needs to be defined if
-</strong>isConnected<em>*=</em>true*.</li>
-<li><strong>addressGroups</strong> - Supports one or more addressGroup except on the
-Edge used for the distributed router which can only have a primary
-IP address.<ul>
-<li><strong>addressGroup</strong> - Vnic can be configured to have more than one
-addressGroup/subnets.<ul>
-<li><strong>primaryAddress</strong> - This is mandatory for an <strong>addressGroup</strong>.
-May be either IPv4 of IPv6.</li>
-<li><strong>secondaryAddresses</strong> - Optional. Should be used to add/define
-IPs used for other services, such as NAT, LB, VPN.<ul>
-<li><strong>ipAddress</strong> - Optional. One or more can be provided.
-This way multiple IP Addresses can be assigned to a
-vnic/interface. May be either IPv4 or IPv6.</li>
-</ul>
-</li>
-<li><strong>subnetMask</strong> - Either <strong>subnetMask</strong> or <strong>subnetPrefixLength</strong>
-should be provided. If both then <strong>subnetprefixLength</strong> is
-ignored.</li>
-<li><strong>subnetPrefixLength</strong> - CIDR format style number of bits.
-Possible values are 1 - 32 for IPv4 or 1 - 128 for IPv6.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>macAddress</strong> - Optional. When not specified, <strong>macAddresses</strong>
-will be managed by vCenter.<ul>
-<li><strong>edgeVmHaIndex</strong><ul>
-<li><strong>value</strong> - Optional. User must ensure that <strong>macAddresses</strong>
-provided are unique withing the given layer 2 domain.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>fenceParameter</strong> - Optional<ul>
-<li><strong>key</strong> - Example <em>ethernet0.filter1.param1</em></li>
-<li><strong>value</strong> - Example 1</li>
-</ul>
-</li>
-<li><strong>mtu</strong> - Optional. Default is 1500.</li>
-<li><strong>enableProxyArp</strong> - Optional. Default is false.</li>
-<li><strong>enableSendRedirects</strong> - Optional. Default is true.</li>
-<li><strong>isConnected</strong> - Optional. Default is false.</li>
-<li><strong>inShapingPolicy</strong> - Optional<ul>
-<li><strong>averageBandwidth</strong> - Example 200000000</li>
-<li><strong>peakBandwidth</strong> - Example 200000000</li>
-<li><strong>burstSize&gt;</strong> - Example 0</li>
-<li><strong>enabled</strong> - Value can be <em>true</em> or <em>false</em>.</li>
-<li><strong>inherite</strong> - Value can be <em>true</em> or <em>false</em>.</li>
-</ul>
-</li>
-<li><strong>outShapingPolicy</strong> - Optional<ul>
-<li><strong>averageBandwidth</strong> - Example 400000000</li>
-<li><strong>peakBandwidth</strong> - Example 400000000</li>
-<li><strong>burstSize</strong> - Example 0</li>
-<li><strong>enabled</strong> - Value can be <em>true</em> or <em>false</em>.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>cliSettings</strong> - Optional. Default user/pass is admin/default, and
-  remoteAccess is false (i.e. disabled).<ul>
-<li><strong>userName</strong> - When you change the <strong>userName</strong> you are overwriting
-the current <strong>userName</strong>.</li>
-<li><strong>password</strong> - The password should be at least 12 characters long,
-must be a mix of alphabets, digits and special characters. Must
-contain at-least 1 uppercase, 1 lowercase, 1 special character and
-1 digit. In addition, a character cannot be repeated 3 or more
-times consectively.</li>
-<li><strong>remoteAccess</strong> - The <strong>RemoteAccess</strong> property specifies whether
-the CLI console access via SSH isenabled. Relevant firewall rules
-to allow traffic on port 22 must be opened by user/client. Please
-note that it is advisable to restrict SSH access to Edge CLI to
-only a limited IP addresses - firewall rules must be opened
-cautiously.</li>
-</ul>
-</li>
-<li><strong>autoConfiguration</strong> - Optional.<ul>
-<li><strong>enabled</strong> - Optional. Default is <em>true</em>. If set to <em>false</em>, user
-should add the nat, firewall, routing config to control plane work
-for LB, VPN, etc..</li>
-<li><strong>rulePriority</strong> - Optional. Default is <em>high</em>. Other possible
-value is <em>low</em>.</li>
-</ul>
-</li>
-<li><strong>dnsClient</strong> - Optional. If the primary/secondary are specified and
-the DNS service not, the primary/secondary will to used as the
-default of the DNS service.<ul>
-<li><strong>primaryDns</strong> - The IPv4 address of the primary DNS server.</li>
-<li><strong>secondaryDns</strong> - The IPv4 address of the secondary DNS server.</li>
-<li><strong>domainName</strong> - The domain name used for the DNS resolver.</li>
-</ul>
-</li>
-<li><strong>queryDaemon</strong> - Optional. Defined for the sake of communication
-between SLB VM and edge vm for GSLB feature.<ul>
-<li><strong>enabled</strong> - Default to <em>false</em>.</li>
-<li><strong>port</strong> - Default to 5666.</li>
-</ul>
-</li>
-</ul>
-</p>
+<h4 id="request-body-to-create-edge-services-gateway">Request Body to Create Edge Services Gateway</h4>
+<pre><code class="code-block hljs lang-dts"><span class="hljs-params">&lt;edge&gt;</span>
+  <span class="hljs-params">&lt;datacenterMoid&gt;</span>datacenter<span class="hljs-number">-2</span><span class="hljs-params">&lt;/datacenterMoid&gt;</span>
+  <span class="hljs-params">&lt;name&gt;</span>org1-edge<span class="hljs-params">&lt;/name&gt;</span>
+  <span class="hljs-params">&lt;description&gt;</span>Description for the edge gateway<span class="hljs-params">&lt;/description&gt;</span>
+  <span class="hljs-params">&lt;tenant&gt;</span>org1<span class="hljs-params">&lt;/tenant&gt;</span>
+  <span class="hljs-params">&lt;fqdn&gt;</span>org1edge1<span class="hljs-params">&lt;/fqdn&gt;</span>
+  <span class="hljs-params">&lt;vseLogLevel&gt;</span>info<span class="hljs-params">&lt;/vseLogLevel&gt;</span>
+  <span class="hljs-params">&lt;enableAesni&gt;</span>false<span class="hljs-params">&lt;/enableAesni&gt;</span>
+  <span class="hljs-params">&lt;enableFips&gt;</span>true<span class="hljs-params">&lt;/enableFips&gt;</span>
+  <span class="hljs-params">&lt;appliances&gt;</span>
+    <span class="hljs-params">&lt;applianceSize&gt;</span>compact<span class="hljs-params">&lt;/applianceSize&gt;</span>
+    <span class="hljs-params">&lt;enableCoreDump&gt;</span>true<span class="hljs-params">&lt;/enableCoreDump&gt;</span>
+    <span class="hljs-params">&lt;appliance&gt;</span>
+      <span class="hljs-params">&lt;resourcePoolId&gt;</span>resgroup<span class="hljs-number">-53</span><span class="hljs-params">&lt;/resourcePoolId&gt;</span>
+      <span class="hljs-params">&lt;datastoreId&gt;</span>datastore<span class="hljs-number">-29</span><span class="hljs-params">&lt;/datastoreId&gt;</span>
+      <span class="hljs-params">&lt;hostId&gt;</span>host<span class="hljs-number">-28</span><span class="hljs-params">&lt;/hostId&gt;</span> 
+      <span class="hljs-params">&lt;vmFolderId&gt;</span>group-v38<span class="hljs-params">&lt;/vmFolderId&gt;</span> 
+      <span class="hljs-params">&lt;customField&gt;</span> 
+        <span class="hljs-params">&lt;key&gt;</span>system.service.vmware.vsla.main01<span class="hljs-params">&lt;/key&gt;</span>
+        <span class="hljs-params">&lt;value&gt;</span>string<span class="hljs-params">&lt;/value&gt;</span>
+      <span class="hljs-params">&lt;/customField&gt;</span>
+      <span class="hljs-params">&lt;cpuReservation&gt;</span> 
+        <span class="hljs-params">&lt;limit&gt;</span><span class="hljs-number">2399</span><span class="hljs-params">&lt;/limit&gt;</span>
+        <span class="hljs-params">&lt;reservation&gt;</span><span class="hljs-number">500</span><span class="hljs-params">&lt;/reservation&gt;</span>
+        <span class="hljs-params">&lt;shares&gt;</span><span class="hljs-number">500</span><span class="hljs-params">&lt;/shares&gt;</span>
+      <span class="hljs-params">&lt;/cpuReservation&gt;</span>
+      <span class="hljs-params">&lt;memoryReservation&gt;</span> 
+        <span class="hljs-params">&lt;limit&gt;</span><span class="hljs-number">5000</span><span class="hljs-params">&lt;/limit&gt;</span>
+        <span class="hljs-params">&lt;reservation&gt;</span><span class="hljs-number">500</span><span class="hljs-params">&lt;/reservation&gt;</span>
+        <span class="hljs-params">&lt;shares&gt;</span><span class="hljs-number">20480</span><span class="hljs-params">&lt;/shares&gt;</span>
+      <span class="hljs-params">&lt;/memoryReservation&gt;</span>
+    <span class="hljs-params">&lt;/appliance&gt;</span>
+  <span class="hljs-params">&lt;/appliances&gt;</span>
+  <span class="hljs-params">&lt;vnics&gt;</span>
+    <span class="hljs-params">&lt;vnic&gt;</span>
+      <span class="hljs-params">&lt;index&gt;</span><span class="hljs-number">0</span><span class="hljs-params">&lt;/index&gt;</span>
+      <span class="hljs-params">&lt;name&gt;</span>internal0<span class="hljs-params">&lt;/name&gt;</span>
+      <span class="hljs-params">&lt;type&gt;</span>internal<span class="hljs-params">&lt;/type&gt;</span>
+      <span class="hljs-params">&lt;portgroupId&gt;</span>dvportgroup<span class="hljs-number">-114</span><span class="hljs-params">&lt;/portgroupId&gt;</span>
+      <span class="hljs-params">&lt;addressGroups&gt;</span>
+        <span class="hljs-params">&lt;addressGroup&gt;</span>
+          <span class="hljs-params">&lt;primaryAddress&gt;</span><span class="hljs-number">192.168</span><span class="hljs-number">.3</span><span class="hljs-number">.1</span><span class="hljs-params">&lt;/primaryAddress&gt;</span>
+          <span class="hljs-params">&lt;secondaryAddresses&gt;</span>
+            <span class="hljs-params">&lt;ipAddress&gt;</span><span class="hljs-number">192.168</span><span class="hljs-number">.3</span><span class="hljs-number">.2</span><span class="hljs-params">&lt;/ipAddress&gt;</span>
+            <span class="hljs-params">&lt;ipAddress&gt;</span><span class="hljs-number">192.168</span><span class="hljs-number">.3</span><span class="hljs-number">.3</span><span class="hljs-params">&lt;/ipAddress&gt;</span>
+          <span class="hljs-params">&lt;/secondaryAddresses&gt;</span>
+          <span class="hljs-params">&lt;subnetMask&gt;</span><span class="hljs-number">255.255</span><span class="hljs-number">.255</span><span class="hljs-number">.0</span><span class="hljs-params">&lt;/subnetMask&gt;</span>
+        <span class="hljs-params">&lt;/addressGroup&gt;</span>
+        <span class="hljs-params">&lt;addressGroup&gt;</span>
+          <span class="hljs-params">&lt;primaryAddress&gt;</span><span class="hljs-number">192.168</span><span class="hljs-number">.4</span><span class="hljs-number">.1</span><span class="hljs-params">&lt;/primaryAddress&gt;</span>
+          <span class="hljs-params">&lt;secondaryAddresses&gt;</span>
+            <span class="hljs-params">&lt;ipAddress&gt;</span><span class="hljs-number">192.168</span><span class="hljs-number">.4</span><span class="hljs-number">.2</span><span class="hljs-params">&lt;/ipAddress&gt;</span>
+            <span class="hljs-params">&lt;ipAddress&gt;</span><span class="hljs-number">192.168</span><span class="hljs-number">.4</span><span class="hljs-number">.3</span><span class="hljs-params">&lt;/ipAddress&gt;</span>
+          <span class="hljs-params">&lt;/secondaryAddresses&gt;</span>
+          <span class="hljs-params">&lt;subnetPrefixLength&gt;</span><span class="hljs-number">24</span><span class="hljs-params">&lt;/subnetPrefixLength&gt;</span>
+        <span class="hljs-params">&lt;/addressGroup&gt;</span>
+        <span class="hljs-params">&lt;addressGroup&gt;</span>
+          <span class="hljs-params">&lt;primaryAddress&gt;</span><span class="hljs-symbol">ffff::</span><span class="hljs-number">1</span><span class="hljs-params">&lt;/primaryAddress&gt;</span>
+          <span class="hljs-params">&lt;secondaryAddresses&gt;</span>
+            <span class="hljs-params">&lt;ipAddress&gt;</span><span class="hljs-symbol">ffff::</span><span class="hljs-number">2</span><span class="hljs-params">&lt;/ipAddress&gt;</span>
+          <span class="hljs-params">&lt;/secondaryAddresses&gt;</span>
+          <span class="hljs-params">&lt;subnetPrefixLength&gt;</span><span class="hljs-number">64</span><span class="hljs-params">&lt;/subnetPrefixLength&gt;</span>
+        <span class="hljs-params">&lt;/addressGroup&gt;</span>
+      <span class="hljs-params">&lt;/addressGroups&gt;</span>
+      <span class="hljs-params">&lt;macAddress&gt;</span>
+        <span class="hljs-params">&lt;edgeVmHaIndex&gt;</span><span class="hljs-number">0</span><span class="hljs-params">&lt;/edgeVmHaIndex&gt;</span>
+        <span class="hljs-params">&lt;value&gt;</span><span class="hljs-number">00</span>:<span class="hljs-number">50</span>:<span class="hljs-number">56</span>:<span class="hljs-number">01</span>:<span class="hljs-number">03</span>:<span class="hljs-number">23</span><span class="hljs-params">&lt;/value&gt;</span>
+      <span class="hljs-params">&lt;/macAddress&gt;</span>
+      <span class="hljs-params">&lt;fenceParameter&gt;</span>
+        <span class="hljs-params">&lt;key&gt;</span>ethernet0.filter1.param1<span class="hljs-params">&lt;/key&gt;</span>
+        <span class="hljs-params">&lt;value&gt;</span><span class="hljs-number">1</span><span class="hljs-params">&lt;/value&gt;</span>
+      <span class="hljs-params">&lt;/fenceParameter&gt;</span>
+      <span class="hljs-params">&lt;mtu&gt;</span><span class="hljs-number">1500</span><span class="hljs-params">&lt;/mtu&gt;</span>
+      <span class="hljs-params">&lt;enableProxyArp&gt;</span>false<span class="hljs-params">&lt;/enableProxyArp&gt;</span>
+      <span class="hljs-params">&lt;enableSendRedirects&gt;</span>true<span class="hljs-params">&lt;/enableSendRedirects&gt;</span>
+      <span class="hljs-params">&lt;isConnected&gt;</span>true<span class="hljs-params">&lt;/isConnected&gt;</span>
+      <span class="hljs-params">&lt;inShapingPolicy&gt;</span>
+        <span class="hljs-params">&lt;averageBandwidth&gt;</span><span class="hljs-number">200000000</span><span class="hljs-params">&lt;/averageBandwidth&gt;</span>
+        <span class="hljs-params">&lt;peakBandwidth&gt;</span><span class="hljs-number">200000000</span><span class="hljs-params">&lt;/peakBandwidth&gt;</span>
+        <span class="hljs-params">&lt;burstSize&gt;</span><span class="hljs-number">0</span><span class="hljs-params">&lt;/burstSize&gt;</span>
+        <span class="hljs-params">&lt;enabled&gt;</span>true<span class="hljs-params">&lt;/enabled&gt;</span>
+        <span class="hljs-params">&lt;inherited&gt;</span>false<span class="hljs-params">&lt;/inherited&gt;</span>
+      <span class="hljs-params">&lt;/inShapingPolicy&gt;</span>
+      <span class="hljs-params">&lt;outShapingPolicy&gt;</span>
+        <span class="hljs-params">&lt;averageBandwidth&gt;</span><span class="hljs-number">400000000</span><span class="hljs-params">&lt;/averageBandwidth&gt;</span>
+        <span class="hljs-params">&lt;peakBandwidth&gt;</span><span class="hljs-number">400000000</span><span class="hljs-params">&lt;/peakBandwidth&gt;</span>
+        <span class="hljs-params">&lt;burstSize&gt;</span><span class="hljs-number">0</span><span class="hljs-params">&lt;/burstSize&gt;</span>
+        <span class="hljs-params">&lt;enabled&gt;</span>true<span class="hljs-params">&lt;/enabled&gt;</span>
+        <span class="hljs-params">&lt;inherited&gt;</span>false<span class="hljs-params">&lt;/inherited&gt;</span>
+      <span class="hljs-params">&lt;/outShapingPolicy&gt;</span>
+    <span class="hljs-params">&lt;/vnic&gt;</span>
+  <span class="hljs-params">&lt;/vnics&gt;</span>
+  <span class="hljs-params">&lt;cliSettings&gt;</span>
+    <span class="hljs-params">&lt;userName&gt;</span>test<span class="hljs-params">&lt;/userName&gt;</span>
+    <span class="hljs-params">&lt;password&gt;</span>test123!<span class="hljs-params">&lt;/password&gt;</span>
+    <span class="hljs-params">&lt;remoteAccess&gt;</span>false<span class="hljs-params">&lt;/remoteAccess&gt;</span>
+  <span class="hljs-params">&lt;/cliSettings&gt;</span>
+  <span class="hljs-params">&lt;autoConfiguration&gt;</span>
+    <span class="hljs-params">&lt;enabled&gt;</span>true<span class="hljs-params">&lt;/enabled&gt;</span>
+    <span class="hljs-params">&lt;rulePriority&gt;</span>high<span class="hljs-params">&lt;/rulePriority&gt;</span>
+  <span class="hljs-params">&lt;/autoConfiguration&gt;</span>
+  <span class="hljs-params">&lt;dnsClient&gt;</span>
+    <span class="hljs-params">&lt;primaryDns&gt;</span><span class="hljs-number">10.117</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-params">&lt;/primaryDns&gt;</span>
+    <span class="hljs-params">&lt;secondaryDns&gt;</span><span class="hljs-number">10.117</span><span class="hljs-number">.0</span><span class="hljs-number">.2</span><span class="hljs-params">&lt;/secondaryDns&gt;</span>
+    <span class="hljs-params">&lt;domainName&gt;</span>vmware.com<span class="hljs-params">&lt;/domainName&gt;</span>
+    <span class="hljs-params">&lt;domainName&gt;</span>foo.com<span class="hljs-params">&lt;/domainName&gt;</span>
+  <span class="hljs-params">&lt;/dnsClient&gt;</span>
+  <span class="hljs-params">&lt;queryDaemon&gt;</span>
+    <span class="hljs-params">&lt;enabled&gt;</span>true<span class="hljs-params">&lt;/enabled&gt;</span>
+    <span class="hljs-params">&lt;port&gt;</span><span class="hljs-number">5666</span><span class="hljs-params">&lt;/port&gt;</span>
+  <span class="hljs-params">&lt;/queryDaemon&gt;</span>
+<span class="hljs-params">&lt;/edge&gt;</span></code></pre><h3 id="nsx-edge-logical-distributed-router">NSX Edge: Logical (Distributed) Router</h3>
+<p>Before installing a logical router, you must prepare the hosts on the
+appropriate clusters. </p>
+<p>A logical router can have 10 uplink interfaces and up to 990 internal
+interfaces.  The user specified configuration is stored in the database
+and Edge identifier is returned to the user. This identifier must be
+used for future configurations on the given Edge.  If any appliance(s)
+are specified and at least one connected interface/vnic is specified,
+then the appliance(s) are deployed and configuration is applied to them.</p>
+<p>It is not possible to set the <ecmp>true</ecmp> property upon creation
+of a distributed logicalrouter Edge and a subsequent API call is
+required to enable ECMP.</p>
+<p>DHCP relay settings are not able to be used when creating a distributed
+logical router Edge and a subsequent API call is required to configure
+DHCP relay properties.</p>
+<h4 id="request-body-to-create-logical-distributed-router">Request Body to Create Logical (Distributed) Router</h4>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">edge</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datacenterMoid</span>&gt;</span>datacenter-2<span class="hljs-tag">&lt;/<span class="hljs-name">datacenterMoid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>distributedRouter<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliances</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appliance</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span>resgroup-20<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span>datastore-23<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appliance</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">appliances</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mgmtInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectedToId</span>&gt;</span>dvportgroup-38<span class="hljs-tag">&lt;/<span class="hljs-name">connectedToId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>10.112.196.165<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.252.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
+       <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroups</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">mgmtInterface</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">interfaces</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>uplink<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1500<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isConnected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isConnected</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>192.168.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroups</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">connectedToId</span>&gt;</span>dvportgroup-39<span class="hljs-tag">&lt;/<span class="hljs-name">connectedToId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>internal<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1500<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isConnected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isConnected</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>192.168.20.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroups</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">connectedToId</span>&gt;</span>dvportgroup-40<span class="hljs-tag">&lt;/<span class="hljs-name">connectedToId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">interfaces</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">edge</span>&gt;</span></code></pre><h3 id="request-body-parameters">Request Body Parameters</h3>
+<h4 id="general-request-body-parameters-edge-services-gateway-and-logical-distributed-router">General Request Body Parameters: Edge Services Gateway and Logical (Distributed) Router</h4>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>datacenterMoid</strong></td>
+<td>Specify vCenter Managed Object Identifier of data center on which edge has to be deployed</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Specify which kind of NSX Edge to deploy. Choice of <em>distributedRouter</em> or <em>gatewayServices</em>.</td>
+<td>Optional. Default is <em>gatewayServices</em>.</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Specify a name for the new NSX Edge</td>
+<td>Optional. Default is <em>vShield-&lt;edgeId&gt;</em>. Used as a VM name on vCenter appended by <em>-&lt;haIndex&gt;</em>. </td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>NSX Edge description</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>tenant</strong></td>
+<td>Specify the tenant. Used for syslog messages</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>fqdn</strong></td>
+<td>Fully Qualified Domain Name for the edge.</td>
+<td>Optional. Default is <em>vShield-&lt;edgeId&gt;</em> Used to set hostname on the VM. Appended by <em>-&lt;haIndex&gt;</em></td>
+</tr>
+<tr>
+<td><strong>vseLogLevel</strong></td>
+<td>Defines the log level for log messages captured in the log files</td>
+<td>Optional. Choice of: <em>EMERGENCY</em>, <em>ALERT</em>, <em>CRITICAL</em>, <em>ERROR</em>, <em>WARNING</em>, <em>NOTICE</em>, <em>DEBUG</em>. Default is <em>INFO</em>.</td>
+</tr>
+<tr>
+<td><strong>enableAesni</strong></td>
+<td>Enable support for Advanced Encryption Standard New Instructions on the Edge</td>
+<td>Optional. True/False. Default is <em>true</em>.</td>
+</tr>
+<tr>
+<td><strong>enableFips</strong></td>
+<td>Enable compliance to FIPS Standards</td>
+<td>Optional. True/False. Default is false</td>
+</tr>
+<tr>
+<td><strong>appliances</strong></td>
+<td>Configure the Edge appliances (Edge VM&#39;s) to be deployed</td>
+<td>Required. Can have max 2 &lt;appliance&gt; elements.</td>
+</tr>
+<tr>
+<td><strong>applianceSize</strong></td>
+<td>Edge form factor, it determines the NSX Edge size and capability.</td>
+<td>Required. Choice of: <em>COMPACT</em>, <em>LARGE</em>, <em>QUADLARGE</em>, <em>XLARGE</em>. Default is <em>compact</em>.</td>
+</tr>
+<tr>
+<td><strong>enableCoreDump</strong></td>
+<td>Deploys a new NSX Edge for debug/core-dump purpose</td>
+<td>Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.</td>
+</tr>
+<tr>
+<td><strong>deployAppliances</strong></td>
+<td>Specify if NSX Edge appliances are to be deployed.</td>
+<td>Optional. True/False. Default is <em>true</em>.</td>
+</tr>
+</tbody></table><h4 id="appliances-configuration-edge-services-gateway-and-logical-distributed-router">Appliances Configuration: Edge Services Gateway and Logical (Distributed) Router</h4>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>appliance</strong></td>
+<td>Appliance configuration details</td>
+<td>Required. Can configure a maximum of two appliances. Until one appliance is configured and NSX Edge VM is deployed successfully, none of the configured features will serve the network.</td>
+</tr>
+<tr>
+<td><strong>resourcePoolId</strong></td>
+<td>Details of resource pool on which Edge has to be deployed</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>datastoreId</strong></td>
+<td>Details of datastore on which edge has to be deployed</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>hostId</strong></td>
+<td>ID of the host on which the NSX Edge will be deployed</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>vmFolderId</strong></td>
+<td>The folder in which the NSX Edge should be saved</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>customField</strong></td>
+<td>Custom key-value attributes.</td>
+<td>Optional. Use custom attributes to associate user-specific meta-information with VMs and managed hosts, stored on vCenter Server.</td>
+</tr>
+<tr>
+<td><strong>customField &gt; key</strong></td>
+<td>Meta information Key</td>
+<td>Required if customField is specified. </td>
+</tr>
+<tr>
+<td><strong>customField &gt; value</strong></td>
+<td>Meta information Value</td>
+<td>Required if customField is specified. </td>
+</tr>
+<tr>
+<td><strong>cpuReservation</strong></td>
+<td>Configure virtual CPU reservation values of NSX Edge VM</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>cpuReservation &gt; limit</strong></td>
+<td>Maximum CPU capacity the NSX Edge can use, specified in MHz</td>
+<td>Optional. -1 (unlimited), any positive integer</td>
+</tr>
+<tr>
+<td><strong>cpuReservation &gt; reservation</strong></td>
+<td>CPU capacity reserved for NSX Edge in MHz</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>cpuReservation &gt; shares</strong></td>
+<td>Higher value implies NSX Edge has priority when accessing resources</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>memoryReservation</strong></td>
+<td>Configure memory reservation values of NSX Edge VM</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>memoryReservation &gt; limit</strong></td>
+<td>Maximum memory the NSX Edge can use, specified in MB</td>
+<td>Optional. -1 (unlimited), any positive integer</td>
+</tr>
+<tr>
+<td><strong>memoryReservation &gt; reservation</strong></td>
+<td>Memory capacity reserved for NSX Edge in MB</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>memoryReservation &gt; shares</strong></td>
+<td>Higher value implies NSX Edge has priority when accessing resources</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>cliSettings &gt; userName</strong></td>
+<td>user Name</td>
+<td>Required. length 1-33.</td>
+</tr>
+<tr>
+<td><strong>cliSettings &gt; password</strong></td>
+<td>password</td>
+<td>Required. The password must be at least 12 characters long. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.</td>
+</tr>
+<tr>
+<td><strong>cliSettings &gt; remoteAccess</strong></td>
+<td>Enables or Disables Remote Access through SSH</td>
+<td>Required. Relevant firewall rules to allow traffic on port 22 must be opened by user/client</td>
+</tr>
+<tr>
+<td><strong>autoConfiguration &gt; enabled</strong></td>
+<td>Enable/Disable status of autoConfiguration</td>
+<td>Optional. True/False. Default is true. If set to false, user should add the nat,firewall,routing config to control plane work for LB, VPN, etc</td>
+</tr>
+<tr>
+<td><strong>autoConfiguration &gt; rulePriority</strong></td>
+<td>Defines the priority of internal rules over user rules</td>
+<td>Optional. High, Low. Default is high</td>
+</tr>
+<tr>
+<td><strong>queryDaemon &gt; enabled</strong></td>
+<td>Configure the communication between server load balancer and NSX Edge VM.</td>
+<td>Default is false</td>
+</tr>
+<tr>
+<td><strong>queryDaemon &gt; port</strong></td>
+<td>Defines the port through which the communication happens</td>
+<td>Integer 1-65535. Default is 5666</td>
+</tr>
+</tbody></table><h4 id="vnic-parameters-edge-services-gateway-only">vNIC Parameters: Edge Services Gateway Only</h4>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>vnics</strong></td>
+<td>Configure interfaces of the NSX Edge</td>
+<td>Required. Until one connected vNic is configured, none of the configured features will serve the network.</td>
+</tr>
+<tr>
+<td><strong>vnic</strong></td>
+<td>Configure interface (vNic)</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>index</strong></td>
+<td>Index of vNic to be configured. Value varies from 0-9. 4094 sub-interfaces can be configured in trunk mode.</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Name of the vNic.</td>
+<td>Optional. System provides default names: vnic0...vnic9.</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>Label for the vNic.</td>
+<td>Optional. System provides default labels: vNic_0...vNic_9.</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Type of interface connected to vNic.</td>
+<td>Optional. Choice of: <em>Uplink</em>, <em>Internal</em>, <em>TRUNK</em>. Default is <em>Internal</em>. <em>TRUNK</em> should be specified when sub-interfaces are configured.</td>
+</tr>
+<tr>
+<td><strong>portgroupId</strong></td>
+<td>Connect NSX Edge to the network through this port group.</td>
+<td>Required. Choice of: <em>portgroupId</em> or <em>virtualWireId</em>. <em>portgroupId</em> needs to be defined if <em>isConnected=true</em></td>
+</tr>
+<tr>
+<td><strong>addressGroups</strong></td>
+<td></td>
+<td>Optional. Edge Services Gateway can have one or more addressGroup.</td>
+</tr>
+<tr>
+<td><strong>addressGroup</strong></td>
+<td>Address Group assigned to vNic</td>
+<td>Required. More than one addressGroup/subnets are allowed.</td>
+</tr>
+<tr>
+<td><strong>primaryAddress</strong></td>
+<td>Primary Address of Edge Interface</td>
+<td>Required. IPv4 and IPv6 addresses are supported.</td>
+</tr>
+<tr>
+<td><strong>secondaryAddresses &gt; ipAddress</strong></td>
+<td>IP assigned to interface</td>
+<td>More than one ipAddress parameters are allowed, to enable assigning multiple IP addresses to a vNic, for example, for load balancing, NAT, VPN. At least one is required if <strong>secondaryAddresses</strong> is specified. </td>
+</tr>
+<tr>
+<td><strong>subnetMask</strong> or <strong>subnetPrefixLength</strong></td>
+<td>Subnet mask or prefix value.</td>
+<td>Required. Either <strong>subnetMask</strong> or <strong>subnetPrefixLength</strong> should be provided. When both are provided then <strong>subnetprefixLength</strong> is ignored.</td>
+</tr>
+<tr>
+<td><strong>macAddress</strong></td>
+<td>Option to manually specify the MAC address</td>
+<td>Optional.  Managed by vCenter if not provided.</td>
+</tr>
+<tr>
+<td><strong>macAddress &gt; edgeVmHaIndex</strong></td>
+<td>HA Index of the Edge VM.</td>
+<td>Required. 0 or 1.</td>
+</tr>
+<tr>
+<td><strong>macAddress &gt; value</strong></td>
+<td>value of the MAC Address</td>
+<td>Optional. Ensure that macAddresses provided are unique within the given layer 2 domain.</td>
+</tr>
+<tr>
+<td><strong>fenceParameter</strong></td>
+<td>Fence connection mode settings for vCloud Director fence mode. Do not use for other NSX deployments.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>fenceParameter &gt; key</strong></td>
+<td></td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>fenceParameter &gt; value</strong></td>
+<td></td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>mtu</strong></td>
+<td>The maximum transmission value for the data packets</td>
+<td>Optional. Default is 1500.</td>
+</tr>
+<tr>
+<td><strong>enableProxyArp</strong></td>
+<td>Enables proxy ARP. Do not use this flag unless you want NSX Edge to proxy ARP for all configured subnets.</td>
+<td>Optional.  True/False. Default is false.</td>
+</tr>
+<tr>
+<td><strong>enableSendRedirects</strong></td>
+<td>Enables ICMP Redirect</td>
+<td>Optional. True/False.  Default is true.</td>
+</tr>
+<tr>
+<td><strong>isConnected</strong></td>
+<td>Sets if the interface is connected to the Port Group Network</td>
+<td>Optional. True/False. Default is false. <em>portgroupId</em> needs to be defined if <em>isConnected=true</em>.</td>
+</tr>
+<tr>
+<td><strong>inShapingPolicy</strong></td>
+<td>Configure Incoming Traffic</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>outShapingPolicy</strong></td>
+<td>Configure Outgoing Traffic</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>averageBandwidth</strong><br>(inShapingPolicy or outShapingPolicy)</td>
+<td>Sets average bandwidth for traffic.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>peakBandwidth</strong><br>(inShapingPolicy or outShapingPolicy)</td>
+<td>Sets Peak Bandwidth</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>burstSize</strong><br>(inShapingPolicy or outShapingPolicy)</td>
+<td>Sets the Burst Size of the interface</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>enabled</strong><br>(inShapingPolicy or outShapingPolicy)</td>
+<td>Enable/Disable Status of this traffic policy</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>inherited</strong><br>(inShapingPolicy or outShapingPolicy)</td>
+<td>Sets inherited flag to true which causes the properties to be inherited to the Vnic from the DVS Port Group</td>
+<td>Required. </td>
+</tr>
+</tbody></table><h4 id="ha-management-interfaces-and-interfaces-configuration-logical-distributed-router-only">HA (Management) Interfaces and Interfaces Configuration: Logical (Distributed) Router Only</h4>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>mgmtInterface</strong></td>
+<td>High availability interface configuration.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>interface</strong></td>
+<td>Interface configuration. 0-9 are reserved for uplinks, 10-999 are used for internal interfaces.</td>
+<td>Optional. Can be added later.</td>
+</tr>
+<tr>
+<td><strong>connectedToId</strong><br>(mgmtInterface or interface)</td>
+<td>Logical switch ID or port group ID.</td>
+<td>For example, virtualwire-1 or dvportgroup-50. <em>distributedRouter</em> NSX Edge does not support legacy port groups. </td>
+</tr>
+<tr>
+<td><strong>name</strong><br>(mgmtInterface or interface)</td>
+<td>Name assigned to interface.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>addressGroup</strong><br>(mgmtInterface or interface)</td>
+<td>Address Group assigned to vNic</td>
+<td>Required. Only one addressGroup can be configured for logical router. </td>
+</tr>
+<tr>
+<td><strong>primaryAddress</strong><br>(mgmtInterface or interface)</td>
+<td>Primary Address of Edge Interface</td>
+<td>Required. Secondary Addresses are not supported on logical routers. Address must be IPv4.</td>
+</tr>
+<tr>
+<td><strong>subnetMask</strong> or <strong>subnetPrefixLength</strong><br>(mgmtInterface or interface)</td>
+<td>Subnet mask or prefix value.</td>
+<td>Required. Either <strong>subnetMask</strong> or <strong>subnetPrefixLength</strong> should be provided. When both are provided then <strong>subnetprefixLength</strong> is ignored.</td>
+</tr>
+<tr>
+<td><strong>mtu</strong><br>(mgmtInterface or interface)</td>
+<td>The maximum transmission value for the data packets</td>
+<td>Optional. Default is 1500.</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Type of interface.</td>
+<td>Required. Choice of <em>uplink</em> or <em>internal</em> </td>
+</tr>
+</tbody></table><h4 id="dns-client-edge-services-gateway-only">DNS Client: Edge Services Gateway Only</h4>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>dnsClient</strong></td>
+<td>Configures the DNS settings of Edge</td>
+<td>Optional. If the primary/secondary are specified and the DNS service not, the primary/secondary will be used as the default of the DNS service.</td>
+</tr>
+<tr>
+<td><strong>primaryDns</strong></td>
+<td>Primary DNS IP</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>secondaryDns</strong></td>
+<td>Secondary DNS IP</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>domainName</strong></td>
+<td>Domain Name of Edge</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>domainName</strong></td>
+<td>Secondary Domain Name of Edge</td>
+<td></td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -15560,8 +16043,8 @@ between SLB VM and edge vm for GSLB feature.<ul>
     
   </dt>
   <dd>
-      <p>Set to &quot;true&quot; when creating a universal logical router. Note the</p>
-<p><type> in the request body must be &quot;DISTRIBUTED_ROUTER&quot;.</p>
+      <p>Set to &quot;true&quot; when creating a universal logical router. Note the
+<strong>type</strong> in the request body must be <em>distributedRouter</em>.</p>
 
   </dd>
 </dl>
@@ -20587,7 +21070,359 @@ displays an error.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-the-nsx-edge-routing-configuration">Working with the NSX Edge Routing Configuration</h2>
-</div>
+<p>Configure globalConfig, staticRouting, OSPG, and BGP.</p>
+<h3 id="global-routing-configuration">Global Routing Configuration</h3>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>routerId</strong></td>
+<td>The first uplink IP address of the NSX Edge that pushes routes to the kernel for dynamic routing</td>
+<td>Optional. RouterId is set only when configuring the dynamic routing protocols OSPF and BGP.</td>
+</tr>
+<tr>
+<td><strong>ecmp</strong></td>
+<td>Enables equal-cost multi-path routing (ECMP)</td>
+<td>Optional. Boolean. By default, ecmp is set to false.</td>
+</tr>
+<tr>
+<td><strong>logging</strong></td>
+<td>Logging configuration.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>logging &gt; enable</strong></td>
+<td>Enable/disable status of logging.</td>
+<td>Optional. Default is <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>logging &gt; logLevel</strong></td>
+<td>Sets the log level.</td>
+<td>Default is <em>INFO</em>.</td>
+</tr>
+<tr>
+<td><strong>ipPrefix</strong></td>
+<td>Details for one ipPrefix.</td>
+<td>Optional. Required only if you define redistribution rules in dynamic routing protocols like ospf, bgp.</td>
+</tr>
+<tr>
+<td><strong>ipPrefix &gt; name</strong></td>
+<td>The name of the IP prefix.</td>
+<td>All defined IP prefixes must have unique names.</td>
+</tr>
+<tr>
+<td><strong>ipPrefxi &gt; ipAddress</strong></td>
+<td>IP addresses for the IP prefix.</td>
+<td>Optional. String.</td>
+</tr>
+</tbody></table><h3 id="default-route-configuration">Default Route Configuration</h3>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>description</strong></td>
+<td>A description for the default route.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Specifies whether the static route was created by the system as an auto-generated route or the default route (internal); or whether it is a local (user) route.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>mtu</strong></td>
+<td>The maximum transmission value for the data packets</td>
+<td>Default is 1500. The MTU value cannot be higher than the MTU value set on the NSX Edge interface. By default, mtu is the MTU value of the interface on which the route is configured. </td>
+</tr>
+<tr>
+<td><strong>vnic</strong></td>
+<td>Interface on which the default route is added.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>gatewayAddress</strong></td>
+<td>Default gateway IP used for routing.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>adminDistance</strong></td>
+<td>Admin distance. Used to determine which routing protocol to use if two protocols provide route information for the same destination.</td>
+<td>Optional. Default value is <em>1</em>.</td>
+</tr>
+</tbody></table><h3 id="static-route-configuration">Static Route Configuration</h3>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>vnic</strong></td>
+<td>Interface on which the route is added.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>A description for the static route.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>mtu</strong></td>
+<td>The maximum transmission value for the data packet.</td>
+<td>Default is 1500. By default, mtu is the MTU value of the interface on which the route is configured.</td>
+</tr>
+<tr>
+<td><strong>network</strong></td>
+<td>The network in CIDR notation.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>nextHop</strong></td>
+<td>Next hop IP address.</td>
+<td>The router must be able to directly reach the next hop. When ECMP is enabled, multiple next hops can be displayed.</td>
+</tr>
+<tr>
+<td><strong>adminDistance</strong></td>
+<td>Admin distance. Used to determine which routing protocol to use if two protocols provide route information for the same destination.</td>
+<td>Optional. Default value is <em>1</em>.</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Specifies whether the static route was created by the system as an auto-generated route or the default route (internal); or whether it is a local (user) route.</td>
+<td></td>
+</tr>
+</tbody></table><h3 id="ospf-configuration">OSPF Configuration</h3>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>OSPF enabled status.</td>
+<td>When not specified, it will be treated as false, When false, it will delete the existing config.</td>
+</tr>
+<tr>
+<td><strong>gracefulRestart</strong></td>
+<td>For packet forwarding to be uninterrupted during restart of services.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>defaultOriginate</strong></td>
+<td>Allows the NSX Edge to advertise itself as a default gateway to its peers.</td>
+<td>Optional.  Default is <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>forwardingAddress</strong></td>
+<td>The IP address of one of the uplink interfaces.</td>
+<td>Logical (distributed) router only.</td>
+</tr>
+<tr>
+<td><strong>protocolAddress</strong></td>
+<td>An IP address on the same subnet as the forwarding address.</td>
+<td>Logical (distributed) router only.</td>
+</tr>
+<tr>
+<td><strong>areaId</strong></td>
+<td>The area ID. The NSX Edge supports an area ID in the form of a decimal number. Valid values are 0-4294967295.</td>
+<td>Required. The value for areaId must be a unique number.</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Gives whether the type is <em>normal</em> or <em>nssa</em>.</td>
+<td>Optional. Default type is normal. NSSAs (the not-so-stubby areas feature described in RFC 1587) prevents the flooding of AS-external link-state advertisements (LSAs). They rely on default routing to external destinations. Therefore, NSSAs are placed at the edge of an OSPF routing domain. NSSA can import external routes into the OSPF routing domain, thereby providing transit service to small routing domains that are not part of the OSPF routing domain.</td>
+</tr>
+<tr>
+<td><strong>authentication &gt; type</strong></td>
+<td>Authentication type.</td>
+<td>Choice of <em>none</em>, <em>password</em>, or <em>md5</em>. If authentication information isn&#39;t provided, type is <em>none</em>. Type <em>password</em>: a password is included in the transmitted packet. Type <em>md5</em>: an MD5 checksum is included in the transmitted packet.</td>
+</tr>
+<tr>
+<td><strong>authentication &gt; value</strong></td>
+<td>The password or MD5 key, respectively</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>vnic</strong></td>
+<td>The interface that is mapped to OSPF Area</td>
+<td>Required. The interface specifies the external network that both NSX Edges are connected to.</td>
+</tr>
+<tr>
+<td><strong>areaId</strong></td>
+<td>An area ID. Can be in the form of an IP address or decimal number.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>helloInterval</strong></td>
+<td>The default interval between hello packets that are sent on the interface</td>
+<td>Optional. By default, set to 10 seconds with valid values 1-255.</td>
+</tr>
+<tr>
+<td><strong>deadInterval</strong></td>
+<td>The default interval during which at least one hello packet must be received from a neighbor before the router declares that neighbor down.</td>
+<td>Optional. By default, set to 40 seconds. Valid values are 1-65535.</td>
+</tr>
+<tr>
+<td><strong>priority</strong></td>
+<td>The default priority of the interface. The interface with the highest priority is the designated router.</td>
+<td>Optional. By default, set to 128 with valid values 0-255.</td>
+</tr>
+<tr>
+<td><strong>cost</strong></td>
+<td>The default overhead required to send packets across that interface</td>
+<td>Optional. Integer. The cost of an interface is inversely proportional to the bandwidth of that interface. The larger the bandwidth, the smaller the cost. Valid values are 1-65535.</td>
+</tr>
+<tr>
+<td><strong>mtuIgnore</strong></td>
+<td>Ignore interface MTU setting</td>
+<td><em>true</em> or <em>false</em>.</td>
+</tr>
+</tbody></table><h3 id="bgp-configuration">BGP Configuration</h3>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>BGP routing enable/disable status.</td>
+<td>Optional. By default, enabled is set to false.</td>
+</tr>
+<tr>
+<td><strong>gracefulRestart</strong></td>
+<td>For packet forwarding to be uninterrupted during restart of services.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>defaultOriginate</strong></td>
+<td>Allows the NSX Edge to advertise itself as a default gateway to its peers.</td>
+<td>Optional.  Default is <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>localAS</strong></td>
+<td>Local Autonomous System number that is assigned to the NSX Edge.</td>
+<td>Required. Integer. A value (a globally unique number between 1-65534) for the Local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems. The path of ASs that a route traverses is used as one metric when selecting the best path to a destination.</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; ipAddress</strong></td>
+<td>The IP address of the on-premises border device.</td>
+<td>Required.  String. IPv4 only. IPv6 is not supported. Should not be the same as any of the NSX Edge interfaces&#39;s IPs, forwardingAddress, protocolAddress.</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; forwardingAddress</strong></td>
+<td>The IP address of one of the uplink interfaces.</td>
+<td>Logical (distributed) router only.</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; protocolAddress</strong></td>
+<td>An IP address on the same subnet as the forwarding address.</td>
+<td>Logical (distributed) router only.</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; remoteAS</strong></td>
+<td>The remote AS number of the border device you are creating the connection for. It is assigned by Advanced Networking Services.</td>
+<td>Required. A value (a globally unique number between 1-65534) for the remote AS</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; weight</strong></td>
+<td>Weight for the neighbor connection</td>
+<td>Optional. Integer. By default, weight is set to 60.</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; holdDownTimer</strong></td>
+<td>Interval for the hold down timer</td>
+<td>Optional. Integer. The NSX Edge uses the standard, default values for the keep alive timer (60 seconds) and the hold down timer. The default value for the hold down timer is 3x keepalive or 180 seconds. Once peering between two neighbors is achieved, the NSX Edge  starts a hold down timer. Every keep alive message it receives from the neighbor resets the hold down timer to 0.  When the NSX Edge fails to receive three consecutive keep alive messages, so that the hold down timer reaches 180 seconds, the NSX Edge considers the neighbor down and deletes the routes from this neighbor.</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; keepAliveTimer</strong></td>
+<td>Interval for the keep alive timer.</td>
+<td>Optional. Integer. Default is <em>60</em>. Valid values are 1-65534.</td>
+</tr>
+<tr>
+<td><strong>bgpNeighbour &gt; password</strong></td>
+<td>The authentication password.</td>
+<td>Optional. String. Each segment sent on the connection between the neighbors is verified. MD5 authentication must be configured with the same password on both BGP neighbors, otherwise, the connection between them will not be made.</td>
+</tr>
+<tr>
+<td><strong>bgpFilter &gt; direction</strong></td>
+<td>Indicate whether you are filtering traffic to or from the neighbor</td>
+<td>Optional. Choice of <em>in</em> or <em>out</em>.</td>
+</tr>
+<tr>
+<td><strong>bgpFilter &gt; action</strong></td>
+<td>Permit or deny traffic.</td>
+<td>Optional. Choice of <em>permit</em> or <em>deny</em>.</td>
+</tr>
+<tr>
+<td><strong>bgpFilter &gt; network</strong></td>
+<td>The network that you want to filter to or from the neighbor.</td>
+<td>CIDR format. IPv4 only. IPv6 is not supported.</td>
+</tr>
+<tr>
+<td><strong>bgpFilter &gt; ipPrefixGe</strong></td>
+<td>The IP prefixes that are to be filtered.  Filter prefixes greater than or equal to this value.</td>
+<td>Optional. Integer. Specify valid IPv4 prefixes.</td>
+</tr>
+<tr>
+<td><strong>bgpFilter &gt; ipPrefixLe</strong></td>
+<td>The IP prefixes that are to be filtered. Filter prefixes less than or equal to this value.</td>
+<td>Optional. Integer. Specify valid IPv4 prefixes. </td>
+</tr>
+</tbody></table><h3 id="route-redistribution-configuration-for-ospf-or-bgp">Route Redistribution Configuration for OSPF or BGP</h3>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>Enabled status of route redistribution for the parent protocol (OSFP or BGP).</td>
+<td>Optional. Default is <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>rule</strong></td>
+<td>Route redistribution rule.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>id</strong></td>
+<td>The ID for the rule.</td>
+<td>Required. Number.</td>
+</tr>
+<tr>
+<td><strong>prefixName</strong></td>
+<td>The name for the IP prefix to add for route redistribution</td>
+<td>Optional. String. Default is <em>any</em>. <strong>prefixName</strong> is set using <strong>routingGlobalConfig &gt; ipPrefixes</strong>. By default, the value of prefixName is set to <em>any</em>.</td>
+</tr>
+<tr>
+<td><strong>from &gt; ospf</strong></td>
+<td>Whether OSPF is a learner protocol (it learns routes from other protocols).</td>
+<td>Optional. By default set to false for ospf.</td>
+</tr>
+<tr>
+<td><strong>from &gt; bgp</strong></td>
+<td>Whether BGP is a learner protocol (it learns routes from other protocols).</td>
+<td>Optional. By default set to false for bgp.</td>
+</tr>
+<tr>
+<td><strong>from &gt; static</strong></td>
+<td>Whether routes can be learned from static networks.</td>
+<td>Optional.  By default set to false for static.</td>
+</tr>
+<tr>
+<td><strong>from &gt; connected</strong></td>
+<td>Whether routes can be learned from connected networks.</td>
+<td>Optional. By default set to false for connected.</td>
+</tr>
+<tr>
+<td><strong>action</strong></td>
+<td>Whether to permit or deny redistribution from the selected types of networks.</td>
+<td>Required. Choice of <em>deny</em> or <em>permit</em>.</td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -20858,112 +21693,121 @@ displays an error.</p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">routing</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">routingGlobalConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ecmp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ecmp</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">routerId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">routerId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">routerId</span>&gt;</span>1.1.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">routerId</span>&gt;</span>   
+    <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixes</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefix</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>a<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.10.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefix</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixes</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">routingGlobalConfig</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">staticRouting</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">staticRoutes</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">staticRoutes</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">route</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">nextHop</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">nextHop</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>route1<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span>3.1.1.0/22<span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nextHop</span>&gt;</span>172.16.1.14<span class="hljs-tag">&lt;/<span class="hljs-name">nextHop</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1500<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>   
       <span class="hljs-tag">&lt;/<span class="hljs-name">route</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">staticRoutes</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">defaultRoute</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">gatewayAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">gatewayAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">defaultRoute</span>&gt;</span>   
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>defaultRoute<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">gatewayAddress</span>&gt;</span>172.16.1.12<span class="hljs-tag">&lt;/<span class="hljs-name">gatewayAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1500<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>   
     <span class="hljs-tag">&lt;/<span class="hljs-name">defaultRoute</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">staticRouting</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">defaultOriginate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">defaultOriginate</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">gracefulRestart</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">gracefulRestart</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>    
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>   
+    <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span>192.168.10.2<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span>192.168.10.3<span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ospfAreas</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">ospfArea</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">authentication</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>normal<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">authentication</span>&gt;</span>    
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>password<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>   
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vmware123<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">authentication</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">ospfArea</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ospfAreas</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ospfInterfaces</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">ospfInterface</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">helloInterval</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">helloInterval</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">deadInterval</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">deadInterval</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">priority</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">priority</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">cost</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cost</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">helloInterval</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">helloInterval</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">deadInterval</span>&gt;</span>40<span class="hljs-tag">&lt;/<span class="hljs-name">deadInterval</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">priority</span>&gt;</span>128<span class="hljs-tag">&lt;/<span class="hljs-name">priority</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">cost</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">cost</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">mtuIgnore</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">mtuIgnore</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">ospfInterface</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ospfInterfaces</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">redistribution</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rules</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span>a<span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>   
           <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>       
+            <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>        
+            <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>deny<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span> 
+        <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span>b<span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span> 
+          <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>         
+            <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>           
+            <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>     
+            <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>  
+          <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>permit<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>     
         <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">rules</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">redistribution</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">localAS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">localAS</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span> 
+  <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>      
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>     
+    <span class="hljs-tag">&lt;<span class="hljs-name">localAS</span>&gt;</span>65535<span class="hljs-tag">&lt;/<span class="hljs-name">localAS</span>&gt;</span>          
     <span class="hljs-tag">&lt;<span class="hljs-name">bgpNeighbours</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">bgpNeighbour</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">remoteAS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">remoteAS</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">holdDownTimer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">holdDownTimer</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">keepAliveTimer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">keepAliveTimer</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilters</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.10.10<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span>192.168.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span>   
+        <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span>192.168.1.11<span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>      
+        <span class="hljs-tag">&lt;<span class="hljs-name">remoteAS</span>&gt;</span>65500<span class="hljs-tag">&lt;/<span class="hljs-name">remoteAS</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">holdDownTimer</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">holdDownTimer</span>&gt;</span> 
+        <span class="hljs-tag">&lt;<span class="hljs-name">keepAliveTimer</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">keepAliveTimer</span>&gt;</span>     
+        <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>vmware123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>   
+        <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilters</span>&gt;</span>              
           <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilter</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixGe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixGe</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixLe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixLe</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span>in<span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>  
+            <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>permit<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span>10.0.0.0/8<span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixGe</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixGe</span>&gt;</span>  
+            <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixLe</span>&gt;</span>32<span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixLe</span>&gt;</span> 
           <span class="hljs-tag">&lt;/<span class="hljs-name">bgpFilter</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">bgpFilters</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">bgpNeighbour</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">bgpNeighbours</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">redistribution</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span> 
       <span class="hljs-tag">&lt;<span class="hljs-name">rules</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span> 
           <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>deny<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span> 
         <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">rules</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">redistribution</span>&gt;</span>
@@ -20987,6 +21831,13 @@ default routes from the specified NSX Edge appliance.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-bgp-routes-for-nsx-edge">Working with BGP Routes for NSX Edge</h2>
+<p>Border Gateway Protocol (BGP) makes core routing decisions. It includes a table
+of IP networks or prefixes which designate network reachability among
+autonomous systems. An underlying connection between two BGP speakers is
+established before any routing information is exchanged. Keep alive messages
+are sent out by the BGP speakers in order to keep this relationship alive. Once
+the connection is established, the BGP speakers exchange routes and synchronize
+their tables.</p>
 </div>
 <div class="method get">
   <a
@@ -21237,6 +22088,16 @@ settings, static route configurations).</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-ospf-routing-for-nsx-edge">Working With OSPF Routing for NSX Edge</h2>
+<p>NSX Edge supports OSPF, an interior gateway protocol that routes IP packets
+only within a single routing domain. It gathers link state information from
+available routers and constructs a topology map of the network.  The topology
+determines the routing table presented to the Internet Layer, which makes
+routing decisions based on the destination IP address found in IP packets.</p>
+<p>OSPF routing policies provide a dynamic process of traffic load balancing
+between routes of equal cost. An OSPF network is divided into routing areas to
+optimize traffic. An area is a logical collection of OSPF networks, routers,
+and links that have the same area identification.  </p>
+<p>Areas are identified by an Area ID.</p>
 </div>
 <div class="method get">
   <a
@@ -23380,6 +24241,407 @@ regular output.</p>
   <div class="content">
     <p><p>Retrieve details about the specified Edge.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">edgeSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>edge-3<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>9<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Perimeter-Gateway-01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>edge-3<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">state</span>&gt;</span>deployed<span class="hljs-tag">&lt;/<span class="hljs-name">state</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeType</span>&gt;</span>gatewayServices<span class="hljs-tag">&lt;/<span class="hljs-name">edgeType</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datacenterMoid</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">datacenterMoid</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datacenterName</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">datacenterName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">apiVersion</span>&gt;</span>4.0<span class="hljs-tag">&lt;/<span class="hljs-name">apiVersion</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">recentJobInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">jobId</span>&gt;</span>jobdata-35884<span class="hljs-tag">&lt;/<span class="hljs-name">jobId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>SUCCESS<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">recentJobInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeStatus</span>&gt;</span>GREEN<span class="hljs-tag">&lt;/<span class="hljs-name">edgeStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">numberOfConnectedVnics</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">numberOfConnectedVnics</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliancesSummary</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmVersion</span>&gt;</span>6.2.4<span class="hljs-tag">&lt;/<span class="hljs-name">vmVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmBuildInfo</span>&gt;</span>6.2.4-4259031<span class="hljs-tag">&lt;/<span class="hljs-name">vmBuildInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applianceSize</span>&gt;</span>compact<span class="hljs-tag">&lt;/<span class="hljs-name">applianceSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span>Perimeter-Gateway-01<span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">numberOfDeployedVms</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">numberOfDeployedVms</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">activeVseHaIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">activeVseHaIndex</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmMoidOfActiveVse</span>&gt;</span>vm-391<span class="hljs-tag">&lt;/<span class="hljs-name">vmMoidOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmNameOfActiveVse</span>&gt;</span>Perimeter-Gateway-01-0<span class="hljs-tag">&lt;/<span class="hljs-name">vmNameOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostMoidOfActiveVse</span>&gt;</span>host-203<span class="hljs-tag">&lt;/<span class="hljs-name">hostMoidOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameOfActiveVse</span>&gt;</span>esxmgt-02a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolMoidOfActiveVse</span>&gt;</span>resgroup-42<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolMoidOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolNameOfActiveVse</span>&gt;</span>Resources<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolNameOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dataStoreMoidOfActiveVse</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">dataStoreMoidOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dataStoreNameOfActiveVse</span>&gt;</span>ds-site-a-nfs01<span class="hljs-tag">&lt;/<span class="hljs-name">dataStoreNameOfActiveVse</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">statusFromVseUpdatedOn</span>&gt;</span>1487375637539<span class="hljs-tag">&lt;/<span class="hljs-name">statusFromVseUpdatedOn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">communicationChannel</span>&gt;</span>msgbus<span class="hljs-tag">&lt;/<span class="hljs-name">communicationChannel</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deployAppliances</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">deployAppliances</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">appliancesSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">featureCapabilities</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timestamp</span>&gt;</span>1487375669338<span class="hljs-tag">&lt;/<span class="hljs-name">timestamp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>dhcp<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_POOL_AND_BINDINGS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>syslog<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SERVER_IPS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>bridging<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_BRIDGES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>500<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>nat<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_RULES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>l2vpn<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>ipsec<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_TUNNELS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>64<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_TUNNELS_COMPACT<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>512<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_TUNNELS_LARGE<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_TUNNELS_QUADLARGE<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>4096<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_TUNNELS_XLARGE<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>6000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>systemControl<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>gslb<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_GSLB_SITES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_GSLB_IPS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>32<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_GSLB_POOLs<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>32<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_MEMBERS_PER_POOL<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_GSLB_MONITORS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>128<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_MONITOR_INSTANCES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>320<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>edge<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_APPLIANCES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>firewall<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_RULES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>sslvpn<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SSLVPN_IPPOOLS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SSLVPN_PRIVATE_NETWORK<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SSLVPN_USERS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>1024<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SSLVPN_AUTH_SERVERS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SSLVPN_INSTALLATION_PACKAGES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SSLVPN_WEB_RESOURCE<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SSLVPN_SCRIPTS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>highAvailability<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_MANAGEMENT_IPS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>dns<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SERVER_IPS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_CACHE_SIZE<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>8192<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_VIEWS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_ZONES_PER_VIEW<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_RECORDS_PER_ZONE<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_VALUES_PER_RECORD<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>loadBalancer<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_MEMBERS_IN_POOL<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>32<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_MONITOR_INSTANCES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>320<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_POOLS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>64<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_VIRTUAL_SERVERS<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>64<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>routing<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_ROUTES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>2048<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureCapability</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>vnics<span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isSupported</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isSupported</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">permission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">accessPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">viewPermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">viewPermission</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">managePermission</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managePermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">accessPermission</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isLicensed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isLicensed</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">permission</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">configurationLimit</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>MAX_SUB_INTERFACES<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>200<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">configurationLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapability</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">featureCapabilities</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hypervisorAssist</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">hypervisorAssist</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allowedActions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Change Log Level<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Add Edge Appliance<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Delete Edge Appliance<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Edit Edge Appliance<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Edit CLI Credentials<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Change edge appliance size<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Force Sync<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Redeploy Edge<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Change Edge Appliance Core Dump Configuration<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Enable hypervisorAssist<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Edit Highavailability<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Edit Dns<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Edit Syslog<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Edit Automatic Rule Generation Settings<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Disable SSH<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Download Edge TechSupport Logs<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">allowedActions</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">localEgressEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">localEgressEnabled</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">edgeSummary</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
