@@ -1425,6 +1425,32 @@ NSX Manager Appliance Network Settings
 
 * **get** *(secured)*: Retrieve network information i.e. host name, IP address, DNS settings
 
+### /1.0/appliance-management/system/securitysettings
+Working with Security Settings
+----
+
+* **get** *(secured)*: Retrieve the NSX Manager FIPS and TLS settings.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+* **post** *(secured)*: Update the NSX Manager security settings, including FIPS and TLS.
+
+Do not enable FIPS until you have upgraded all NSX components to NSX
+6.3.0 or later. Enable FIPS on NSX Edges before enabling it on the NSX
+Manager.
+
+Changing the FIPS mode will reboot the NSX Manager appliance.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
 ### /1.0/appliance-management/system/tlssettings
 Working with TLS Settings
 ----
@@ -2656,6 +2682,12 @@ Working with a Specific Alarm
 Some system alerts will show up as alarms in the NSX dashboard. You can
 view and resolve alarms by alarm ID.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
 ### /2.0/services/systemalarms/{alarmId}
 
 * **get** *(secured)*: Retrieve information about the specified alarm.
@@ -3866,7 +3898,7 @@ Parameter |  Description | Comments
 **fqdn** |Fully Qualified Domain Name for the edge. |Optional. Default is *vShield-&lt;edgeId&gt;* Used to set hostname on the VM. Appended by *-&lt;haIndex&gt;*
 **vseLogLevel** |Defines the log level for log messages captured in the log files|Optional. Choice of: *EMERGENCY*, *ALERT*, *CRITICAL*, *ERROR*, *WARNING*, *NOTICE*, *DEBUG*. Default is *INFO*.
 **enableAesni** |Enable support for Advanced Encryption Standard New Instructions on the Edge|Optional. True/False. Default is *true*.
-**enableFips** |Enable compliance to FIPS Standards|Optional. True/False. Default is false
+**enableFips** |Enable compliance to FIPS Standards|Optional.  True/False. Default is false. Changing the FIPS mode will reboot the NSX Edge appliance.
 **appliances** |Configure the Edge appliances (Edge VM's) to be deployed|Required. Can have max 2 &lt;appliance&gt; elements.
 **applianceSize** |Edge form factor, it determines the NSX Edge size and capability. |Required. Choice of: *COMPACT*, *LARGE*, *QUADLARGE*, *XLARGE*. Default is *compact*.
 **enableCoreDump** |Deploys a new NSX Edge for debug/core-dump purpose|Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.
@@ -4008,6 +4040,12 @@ Working With NSX Edge Summary
 ----
 
 * **get** *(secured)*: Retrieve details about the specified Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. **enableFips** parameter added to **appliancesSummary**.
 
 ### /4.0/edges/{edgeId}/status
 Working With Edge Status
@@ -4152,7 +4190,7 @@ Parameter  |   Description  | Comments
 --- | --- | --- 
 **enabled**  | OSPF enabled status. |  When not specified, it will be treated as false, When false, it will delete the existing config.
 **gracefulRestart**  | For packet forwarding to be uninterrupted during restart of services. | Optional.
-**defaultOriginate**  | Allows the NSX Edge to advertise itself as a default gateway to its peers. | Optional.  Default is *false*.
+**defaultOriginate**  | Allows the Edge Services Gateway to advertise itself as a default gateway to its peers. | Optional.  Default is *false*. Not allowed on a logical distributed router.
 **forwardingAddress** | The IP address of one of the uplink interfaces. | Logical (distributed) router only.
 **protocolAddress** | An IP address on the same subnet as the forwarding address. | Logical (distributed) router only.
 **areaId**  | The area ID. The NSX Edge supports an area ID in the form of a decimal number. Valid values are 0-4294967295. | Required. The value for areaId must be a unique number.
@@ -4173,7 +4211,7 @@ Parameter  |   Description  | Comments
 --- | --- | --- 
 **enabled**  | BGP routing enable/disable status. | Optional. By default, enabled is set to false.
 **gracefulRestart**  | For packet forwarding to be uninterrupted during restart of services. | Optional.
-**defaultOriginate**  | Allows the NSX Edge to advertise itself as a default gateway to its peers. | Optional.  Default is *false*.
+**defaultOriginate**  | Allows the Edge Services Gateway to advertise itself as a default gateway to its peers. | Optional.  Default is *false*. Not allowed on a logical distributed router.
 **localAS**  | Local Autonomous System number that is assigned to the NSX Edge. | Required. Integer. A value (a globally unique number between 1-65534) for the Local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems. The path of ASs that a route traverses is used as one metric when selecting the best path to a destination.
 **bgpNeighbour > ipAddress**  | The IP address of the on-premises border device. | Required.  String. IPv4 only. IPv6 is not supported. Should not be the same as any of the NSX Edge interfaces's IPs, forwardingAddress, protocolAddress.
 **bgpNeighbour > forwardingAddress** | The IP address of one of the uplink interfaces. | Logical (distributed) router only.
