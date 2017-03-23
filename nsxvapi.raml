@@ -12823,6 +12823,28 @@ securitySchemes:
             required: true
             displayName: haIndex
             description: Specified appliance HA index
+        post:
+          displayName: applianceCreate
+          description: |
+              Used to send CLI Commands to the Edge Gw. To use CLI commands you also
+              need to add an additional Accept Header with type text\plain, as well as
+              the query parameter action=execute
+          queryParameters:
+            action:
+              required: false
+              displayName: action
+              description: Used to send CLI Commands to the Edge Gw. Use action=execute to send the command
+          headers:
+            Accept:
+              displayName: Accept
+              description: Required for CLI commands, specify *text/plain* when sending CLI Commands to the Edge Gw
+              required: false
+          body:
+            application/xml:
+              example: |
+                <cliCmd>
+                  <cmdStr>show ip ospf neighbours</cmdStr>
+                </cliCmd>
         get:
           displayName: applianceRead
           description: Get configuration of specified appliance
