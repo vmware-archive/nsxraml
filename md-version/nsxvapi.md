@@ -790,7 +790,7 @@ groups as members to be added, this helps you get a list of all
 possible valid elements that can be added to the
 service.
 
-## ipPools
+## ipPoolBaseUri
 Working with IP Pool Grouping Objects
 ========
 
@@ -4767,6 +4767,10 @@ call, then modify the parameters and send as body)
 
 ### /4.0/edges/{edgeId}/appliances/{haIndex}
 Manage a specified appliance using its HA index
+
+* **post** *(secured)*: Used to send CLI Commands to the Edge Gw. To use CLI commands you also
+need to add an additional Accept Header with type text\plain, as well as
+the query parameter action=execute
 
 * **get** *(secured)*: Get configuration of specified appliance
 * **put** *(secured)*: Modify the configuration of the specified appliance

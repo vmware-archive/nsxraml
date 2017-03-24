@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#x6d;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#x6d;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#x6f;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#100;&#111;&#99;&#102;&#101;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;">&#100;&#111;&#99;&#102;&#101;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -3778,16 +3778,6 @@ and a host or cluster.</p>
         <span class="hljs-tag">&lt;<span class="hljs-name">vlanId</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vlanId</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">vmknicCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vmknicCount</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">ipPoolId</span>&gt;</span>IPADDRESSPOOL ID<span class="hljs-tag">&lt;/<span class="hljs-name">ipPoolId</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">configSpec</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"vdsContext"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>DVS MOID<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">teaming</span>&gt;</span>ETHER_CHANNEL<span class="hljs-tag">&lt;/<span class="hljs-name">teaming</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">configSpec</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span> 
@@ -12440,7 +12430,7 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
   <dt>
     <span class="param">hostId</span>
     <span class="badge">string</span>
-    
+    <span class="badge">required</span>
   </dt>
   <dd>
       <p>ID of a host to check. You can provide multiple hosts with
@@ -17231,6 +17221,52 @@ call, then modify the parameters and send as body)</p>
   </dd>
 </dl>
   </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/edges/{edgeId}/appliances/{haIndex}"
+    href="#POST/4.0/edges/{edgeId}/appliances/{haIndex}"
+  ><h2>POST /4.0/edges/{edgeId}/appliances/{haIndex}</h2></a>
+  <div class="content">
+    <p><p>Used to send CLI Commands to the Edge Gw. To use CLI commands you also
+need to add an additional Accept Header with type text\plain, as well as
+the query parameter action=execute</p>
+</p>
+    <div class="params">
+      <h3>Request Headers</h3>
+        <dl>
+  <dt>
+    <span class="param">Accept</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Required for CLI commands, specify <em>text/plain</em> when sending CLI Commands to the Edge Gw</p>
+
+  </dd>
+</dl>
+    </div>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Used to send CLI Commands to the Edge Gw. Use action=execute to send the command</p>
+
+  </dd>
+</dl>
+    </div>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">cliCmd</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cmdStr</span>&gt;</span>show ip ospf neighbours<span class="hljs-tag">&lt;/<span class="hljs-name">cmdStr</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">cliCmd</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
 <div class="method get">
   <a
     class="verb get"
