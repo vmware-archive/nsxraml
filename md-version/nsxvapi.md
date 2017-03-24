@@ -790,7 +790,7 @@ groups as members to be added, this helps you get a list of all
 possible valid elements that can be added to the
 service.
 
-## ipPoolBaseUri
+## ipPoolsObjects
 Working with IP Pool Grouping Objects
 ========
 
