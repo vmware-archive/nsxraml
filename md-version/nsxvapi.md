@@ -4159,7 +4159,7 @@ Parameter  |   Description  | Comments
 **logging > logLevel**  | Sets the log level.  | Default is *INFO*.
 **ipPrefix**  | Details for one ipPrefix. |  Optional. Required only if you define redistribution rules in dynamic routing protocols like ospf, bgp.
 **ipPrefix > name**  | The name of the IP prefix. | All defined IP prefixes must have unique names.
-**ipPrefxi > ipAddress**  | IP addresses for the IP prefix. | Optional. String.
+**ipPrefix > ipAddress**  | IP addresses for the IP prefix. | Optional. String.
 
 ### Default Route Configuration
 
@@ -4194,7 +4194,8 @@ Parameter  |   Description  | Comments
 **forwardingAddress** | The IP address of one of the uplink interfaces. | Logical (distributed) router only.
 **protocolAddress** | An IP address on the same subnet as the forwarding address. | Logical (distributed) router only.
 **areaId**  | The area ID. The NSX Edge supports an area ID in the form of a decimal number. Valid values are 0-4294967295. | Required. The value for areaId must be a unique number.
-**type**  | Gives whether the type is *normal* or *nssa*. | Optional. Default type is normal. NSSAs (the not-so-stubby areas feature described in RFC 1587) prevents the flooding of AS-external link-state advertisements (LSAs). They rely on default routing to external destinations. Therefore, NSSAs are placed at the edge of an OSPF routing domain. NSSA can import external routes into the OSPF routing domain, thereby providing transit service to small routing domains that are not part of the OSPF routing domain.
+**translateType7ToType5** | Configure whether this NSX Edge should be used for translating Type 7 to Type 5 LSAs for this OSPF area. If not set, the router with highest router ID is used for translating. | Valid values:  *true* or *false*. Optional, default is *false*. Only configurable for OSFP areas of type NSSA.
+**type**  | Gives whether the type is *normal* or *nssa*. | Optional.  Default type is normal. NSSAs (the not-so-stubby areas feature described in RFC 3101) prevents the flooding of AS-external link-state advertisements (LSAs). They rely on default routing to external destinations. Therefore, NSSAs are placed at the edge of an OSPF routing domain. NSSA can import external routes into the OSPF routing domain, thereby providing transit service to small routing domains that are not part of the OSPF routing domain.
 **authentication > type**  | Authentication type. | Choice of *none*, *password*, or *md5*. If authentication information isn't provided, type is *none*. Type *password*: a password is included in the transmitted packet. Type *md5*: an MD5 checksum is included in the transmitted packet.
 **authentication > value**  | The password or MD5 key, respectively |
 **vnic**  | The interface that is mapped to OSPF Area | Required. The interface specifies the external network that both NSX Edges are connected to.
@@ -4212,11 +4213,13 @@ Parameter  |   Description  | Comments
 **enabled**  | BGP routing enable/disable status. | Optional. By default, enabled is set to false.
 **gracefulRestart**  | For packet forwarding to be uninterrupted during restart of services. | Optional.
 **defaultOriginate**  | Allows the Edge Services Gateway to advertise itself as a default gateway to its peers. | Optional.  Default is *false*. Not allowed on a logical distributed router.
-**localAS**  | Local Autonomous System number that is assigned to the NSX Edge. | Required. Integer. A value (a globally unique number between 1-65534) for the Local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems. The path of ASs that a route traverses is used as one metric when selecting the best path to a destination.
+**localAS**  | The 2 byte local Autonomous System number that is assigned to the NSX Edge. The path of autonomous systems that a route traverses is used as one metric when selecting the best path to a destination.| Integer. A value (a globally unique number between 1-65535) for the local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems.  Either **localAS** or **localASNumber** is required. You cannot provide both.
+**localASNumber**  | The 2 or 4 byte local Autonomous System number that is assigned to the NSX Edge. The path of autonomous systems that a route traverses is used as one metric when selecting the best path to a destination. | Integer. A value (a globally unique number between 1-4294967295) for the Local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems.  Can be in plain or dotted format (e.g. 2 byte: 65001 or 0.65001, 4 byte: 65545 or 1.9). Either **localAS** or **localASNumber** is required. 
 **bgpNeighbour > ipAddress**  | The IP address of the on-premises border device. | Required.  String. IPv4 only. IPv6 is not supported. Should not be the same as any of the NSX Edge interfaces's IPs, forwardingAddress, protocolAddress.
 **bgpNeighbour > forwardingAddress** | The IP address of one of the uplink interfaces. | Logical (distributed) router only.
 **bgpNeighbour > protocolAddress** | An IP address on the same subnet as the forwarding address. | Logical (distributed) router only.
-**bgpNeighbour > remoteAS**  | The remote AS number of the border device you are creating the connection for. It is assigned by Advanced Networking Services. | Required. A value (a globally unique number between 1-65534) for the remote AS
+**bgpNeighbour > remoteAS**  | The 2 byte remote Autonomous System number that is assigned to the the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-65535) for the remote AS. Either **remoteAS** or **remoteASNumber** is required. You cannot provide both. 
+**bgpNeighbour > remoteASNumber**  | The 2 or 4 byte remote Autonomous System number that is assigned to the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-4294967295) for the remote AS. Can be in plain or dotted format (e.g. 2 byte: 65001 or 0.65001, 4 byte: 65545 or 1.9). Either **remoteAS** or **remoteASNumber** is required. 
 **bgpNeighbour > weight**  | Weight for the neighbor connection | Optional. Integer. By default, weight is set to 60.
 **bgpNeighbour > holdDownTimer**  | Interval for the hold down timer | Optional. Integer. The NSX Edge uses the standard, default values for the keep alive timer (60 seconds) and the hold down timer. The default value for the hold down timer is 3x keepalive or 180 seconds. Once peering between two neighbors is achieved, the NSX Edge  starts a hold down timer. Every keep alive message it receives from the neighbor resets the hold down timer to 0.  When the NSX Edge fails to receive three consecutive keep alive messages, so that the hold down timer reaches 180 seconds, the NSX Edge considers the neighbor down and deletes the routes from this neighbor.
 **bgpNeighbour > keepAliveTimer**  | Interval for the keep alive timer. | Optional. Integer. Default is *60*. Valid values are 1-65534.
@@ -4226,6 +4229,29 @@ Parameter  |   Description  | Comments
 **bgpFilter > network**  | The network that you want to filter to or from the neighbor. | CIDR format. IPv4 only. IPv6 is not supported.
 **bgpFilter > ipPrefixGe**  | The IP prefixes that are to be filtered.  Filter prefixes greater than or equal to this value.  | Optional. Integer. Specify valid IPv4 prefixes.
 **bgpFilter > ipPrefixLe**  | The IP prefixes that are to be filtered. Filter prefixes less than or equal to this value. | Optional. Integer. Specify valid IPv4 prefixes. 
+
+**Note:** New parameters **localASNumber** and **remoteASNumber** have
+been added in NSX 6.3.0 to allow configuration of 4 byte AS numbers.
+The previous parameters, **localAS** and **remoteAS** are still valid.
+
+When you configure BGP, you must provide a local AS number parameter
+(**localAS** or **localASNumber**) and a remote AS number parameter
+(**remoteAS** or **remoteASNumber**). If you provide both forms of
+either local or remote AS number (for example, **localAS** and
+**localASNumber**), the values must be the same.
+
+You can use any combination of remote and local AS parameters, as long
+as the values are valid. For example, **localAS** of *65501* and
+**remoteASNumber** of *70000*.
+
+If you configure a 2 byte number, both forms of the AS number
+parameters are returned with a GET request (for example, **localAS**
+and **localASNumber**). If you configure a 4 byte number, only the 4
+byte parameter is returned (**localASNumber**).  
+
+If both parameters are present (for example **localAS** and
+**localASNumber**), and you update one parameter (**localAS**)
+subsequent GET requests will show both parameters updated.  
 
 ### Route Redistribution Configuration for OSPF or BGP
 
@@ -4249,6 +4275,8 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
+6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
+6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
 
 * **put** *(secured)*: Configure globalConfig, staticRouting, OSPG, and BGP.
 
@@ -4258,6 +4286,8 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
+6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
+6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
 
 * **delete** *(secured)*: Delete the routing config stored in the NSX Manager database and the
 default routes from the specified NSX Edge appliance.
@@ -4303,6 +4333,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
+6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
 
 * **put** *(secured)*: Configure OSPF.
 
@@ -4312,6 +4343,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
+6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
 
 * **delete** *(secured)*: Delete OSPF routing.
 
@@ -4334,6 +4366,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
+6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
 
 * **put** *(secured)*: Configure BGP.
 
@@ -4343,6 +4376,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
+6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
 
 * **delete** *(secured)*: Delete BGP Routing
 
