@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#100;&#98;&#97;&#99;&#107;&#x40;&#118;&#x6d;&#x77;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#109;">&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#100;&#98;&#97;&#99;&#107;&#x40;&#118;&#x6d;&#x77;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#58;&#100;&#111;&#99;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#x63;&#x6f;&#109;">&#100;&#111;&#99;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -15376,20 +15376,14 @@ The default values are:</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-nsx-edge">Working with NSX Edge</h1>
-</div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/4.0/edges"
-    href="#POST/4.0/edges"
-  ><h2>POST /4.0/edges</h2></a>
-  <div class="content">
-    <p><p>You can install NSX Edge as a services gateway or as a logical router.</p>
+<p>There are two types of NSX Edge: Edge services gateway and logical
+(distributed) router.</p>
+<h3 id="edge-services-gateway">Edge Services Gateway</h3>
 <p>The services gateway gives you access to all NSX Edge services such as
 firewall, NAT, DHCP, VPN, load balancing, and high availability. You can
-install multiple NSX Edge services gateway virtual appliances in a
-datacenter. Each NSX Edge virtual appliance can have a total of ten
-uplink and internal network interfaces. </p>
+install multiple Edge services gateway virtual appliances in a
+datacenter. Each Edge service gateway virtual appliance can have a
+total of ten uplink and internal network interfaces. </p>
 <p>The internal interfaces connect to secured port groups and act as the
 gateway for all protected virtual machines in the port group. The subnet
 assigned to the internal interface can be a publicly routed IP space or
@@ -15399,18 +15393,28 @@ services are enforced on traffic between network interfaces.</p>
 access to a shared corporate network or a service that provides access
 layer networking. Multiple external IP addresses can be configured for
 load balancer, site-to-site VPN, and NAT services.</p>
+<h3 id="logical-distributed-router">Logical (Distributed) Router</h3>
 <p>The logical router provides East-West distributed routing with tenant IP
 address space and data path isolation. Virtual machines or workloads
 that reside on the same host on different subnets can communicate with
-one another without having to traverse a traditional routing interface.
-A logical router can have up to 10 uplink interfaces and up to 990
+one another without having to traverse a traditional routing interface.</p>
+<p>A logical router can have up to 9 uplink interfaces and up to 990
 internal interfaces.</p>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/edges"
+    href="#POST/4.0/edges"
+  ><h2>POST /4.0/edges</h2></a>
+  <div class="content">
+    <p><p>You can install NSX Edge as a services gateway or as a logical router.</p>
 <p>The <strong>type</strong> parameter determines which type of NSX Edge is deployed:
 <em>distributedRouter</em> or <em>gatewayServices</em>. If no type is specified, the
 type is <em>gatewayServices</em>.</p>
-<p>Many of other parameters for the <code>POST /api/4.0/edges</code> method will
-differ depending on which type of NSX Edge you are deploying. See the
-examples and parameter tables for more information.</p>
+<p>Other parameters for this method will differ depending on which type of
+NSX Edge you are deploying. See the examples and parameter tables for
+more information.</p>
 <h3 id="nsx-edge-service-gateway">NSX Edge: Service Gateway</h3>
 <p>The NSX Edge installation API copies the NSX Edge OVF from the Edge
 Manager to the specified datastore and deploys an NSX Edge on the given
@@ -15540,8 +15544,7 @@ supported on the UI.</p>
 <span class="hljs-params">&lt;/edge&gt;</span></code></pre><h3 id="nsx-edge-logical-distributed-router">NSX Edge: Logical (Distributed) Router</h3>
 <p>Before installing a logical router, you must prepare the hosts on the
 appropriate clusters. </p>
-<p>A logical router can have 10 uplink interfaces and up to 990 internal
-interfaces.  The user specified configuration is stored in the database
+<p>The user specified configuration is stored in the database
 and Edge identifier is returned to the user. This identifier must be
 used for future configurations on the given Edge.  If any appliance(s)
 are specified and at least one connected interface/vnic is specified,
@@ -15597,7 +15600,7 @@ DHCP relay properties.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">connectedToId</span>&gt;</span>dvportgroup-40<span class="hljs-tag">&lt;/<span class="hljs-name">connectedToId</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">interfaces</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">edge</span>&gt;</span></code></pre><h3 id="request-body-parameters">Request Body Parameters</h3>
+<span class="hljs-tag">&lt;/<span class="hljs-name">edge</span>&gt;</span></code></pre><h3 id="request-and-response-body-parameters-for-nsx-edge">Request and Response Body Parameters for NSX Edge</h3>
 <h4 id="general-request-body-parameters-edge-services-gateway-and-logical-distributed-router">General Request Body Parameters: Edge Services Gateway and Logical (Distributed) Router</h4>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -15616,58 +15619,43 @@ DHCP relay properties.</p>
 </tr>
 <tr>
 <td><strong>name</strong></td>
-<td>Specify a name for the new NSX Edge</td>
-<td>Optional. Default is <em>vShield-&lt;edgeId&gt;</em>. Used as a VM name on vCenter appended by <em>-&lt;haIndex&gt;</em>. </td>
+<td>Specify a name for the new NSX Edge.</td>
+<td>Optional. Default is <em>NSX-&lt;edgeId&gt;</em>. Used as a VM name on vCenter appended by <em>-&lt;haIndex&gt;</em>. </td>
 </tr>
 <tr>
 <td><strong>description</strong></td>
-<td>NSX Edge description</td>
+<td>NSX Edge description.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>tenant</strong></td>
-<td>Specify the tenant. Used for syslog messages</td>
+<td>Specify the tenant. Used for syslog messages.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>fqdn</strong></td>
 <td>Fully Qualified Domain Name for the edge.</td>
-<td>Optional. Default is <em>vShield-&lt;edgeId&gt;</em> Used to set hostname on the VM. Appended by <em>-&lt;haIndex&gt;</em></td>
+<td>Optional. Default is <em>NSX-&lt;edgeId&gt;</em> Used to set hostname on the VM. Appended by <em>-&lt;haIndex&gt;</em></td>
 </tr>
 <tr>
 <td><strong>vseLogLevel</strong></td>
-<td>Defines the log level for log messages captured in the log files</td>
-<td>Optional. Choice of: <em>EMERGENCY</em>, <em>ALERT</em>, <em>CRITICAL</em>, <em>ERROR</em>, <em>WARNING</em>, <em>NOTICE</em>, <em>DEBUG</em>. Default is <em>INFO</em>.</td>
+<td>Defines the log level for log messages captured in the log files.</td>
+<td>Optional. Choice of: <em>emergency</em>, <em>alert</em>, <em>critical</em>, <em>error</em>, <em>warning</em>, <em>notice</em>, <em>debug</em>. Default is <em>info</em>.</td>
 </tr>
 <tr>
 <td><strong>enableAesni</strong></td>
-<td>Enable support for Advanced Encryption Standard New Instructions on the Edge</td>
+<td>Enable support for Advanced Encryption Standard New Instructions on the Edge.</td>
 <td>Optional. True/False. Default is <em>true</em>.</td>
 </tr>
 <tr>
 <td><strong>enableFips</strong></td>
-<td>Enable compliance to FIPS Standards</td>
-<td>Optional. True/False. Default is false</td>
-</tr>
-<tr>
-<td><strong>appliances</strong></td>
-<td>Configure the Edge appliances (Edge VM&#39;s) to be deployed</td>
-<td>Required. Can have max 2 &lt;appliance&gt; elements.</td>
-</tr>
-<tr>
-<td><strong>applianceSize</strong></td>
-<td>Edge form factor, it determines the NSX Edge size and capability.</td>
-<td>Required. Choice of: <em>COMPACT</em>, <em>LARGE</em>, <em>QUADLARGE</em>, <em>XLARGE</em>. Default is <em>compact</em>.</td>
+<td>Enable compliance to FIPS Standards.</td>
+<td>Optional. True/False. Default is <em>false</em>.</td>
 </tr>
 <tr>
 <td><strong>enableCoreDump</strong></td>
-<td>Deploys a new NSX Edge for debug/core-dump purpose</td>
+<td>Deploys a new NSX Edge for debug/core-dump purpose.</td>
 <td>Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.</td>
-</tr>
-<tr>
-<td><strong>deployAppliances</strong></td>
-<td>Specify if NSX Edge appliances are to be deployed.</td>
-<td>Optional. True/False. Default is <em>true</em>.</td>
 </tr>
 </tbody></table><h4 id="appliances-configuration-edge-services-gateway-and-logical-distributed-router">Appliances Configuration: Edge Services Gateway and Logical (Distributed) Router</h4>
 <table class="table"><thead><tr>
@@ -15676,28 +15664,38 @@ DHCP relay properties.</p>
 <th>Comments </th>
 </tr>
 </thead><tbody><tr>
+<td><strong>applianceSize</strong></td>
+<td>Edge form factor, it determines the NSX Edge size and capability.</td>
+<td>Required. Choice of: <em>compact</em>, <em>large</em>, <em>quadlarge</em>, <em>xlarge</em>. Default is <em>compact</em>.</td>
+</tr>
+<tr>
+<td><strong>deployAppliances</strong></td>
+<td>Determine whether to deploy appliances.</td>
+<td>Default is <em>true</em>.</td>
+</tr>
+<tr>
 <td><strong>appliance</strong></td>
-<td>Appliance configuration details</td>
+<td>Appliance configuration details.</td>
 <td>Required. Can configure a maximum of two appliances. Until one appliance is configured and NSX Edge VM is deployed successfully, none of the configured features will serve the network.</td>
 </tr>
 <tr>
 <td><strong>resourcePoolId</strong></td>
-<td>Details of resource pool on which Edge has to be deployed</td>
-<td>Required. </td>
+<td>Details of resource pool on which to deploy NSX Edge.</td>
+<td>Required. Can be resource pool ID, e.g. <em>resgroup-15</em> or cluster ID, e.g. <em>domain-c41</em>.</td>
 </tr>
 <tr>
 <td><strong>datastoreId</strong></td>
-<td>Details of datastore on which edge has to be deployed</td>
+<td>Details of datastore on which to deploy NSX Edge.</td>
 <td>Required. </td>
 </tr>
 <tr>
 <td><strong>hostId</strong></td>
-<td>ID of the host on which the NSX Edge will be deployed</td>
+<td>ID of the host on which to deploy the NSX Edge.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>vmFolderId</strong></td>
-<td>The folder in which the NSX Edge should be saved</td>
+<td>The folder in which to save the NSX Edge.</td>
 <td>Optional. </td>
 </tr>
 <tr>
@@ -15707,88 +15705,78 @@ DHCP relay properties.</p>
 </tr>
 <tr>
 <td><strong>customField &gt; key</strong></td>
-<td>Meta information Key</td>
+<td>Meta information Key.</td>
 <td>Required if customField is specified. </td>
 </tr>
 <tr>
 <td><strong>customField &gt; value</strong></td>
-<td>Meta information Value</td>
+<td>Meta information Value.</td>
 <td>Required if customField is specified. </td>
 </tr>
 <tr>
-<td><strong>cpuReservation</strong></td>
-<td>Configure virtual CPU reservation values of NSX Edge VM</td>
-<td>Optional. </td>
-</tr>
-<tr>
 <td><strong>cpuReservation &gt; limit</strong></td>
-<td>Maximum CPU capacity the NSX Edge can use, specified in MHz</td>
+<td>Maximum CPU capacity the NSX Edge can use, specified in MHz.</td>
 <td>Optional. -1 (unlimited), any positive integer</td>
 </tr>
 <tr>
 <td><strong>cpuReservation &gt; reservation</strong></td>
-<td>CPU capacity reserved for NSX Edge in MHz</td>
+<td>CPU capacity reserved for NSX Edge in MHz.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>cpuReservation &gt; shares</strong></td>
-<td>Higher value implies NSX Edge has priority when accessing resources</td>
-<td>Optional. </td>
-</tr>
-<tr>
-<td><strong>memoryReservation</strong></td>
-<td>Configure memory reservation values of NSX Edge VM</td>
+<td>Higher value implies NSX Edge has priority when accessing resources.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>memoryReservation &gt; limit</strong></td>
-<td>Maximum memory the NSX Edge can use, specified in MB</td>
+<td>Maximum memory the NSX Edge can use, specified in MB.</td>
 <td>Optional. -1 (unlimited), any positive integer</td>
 </tr>
 <tr>
 <td><strong>memoryReservation &gt; reservation</strong></td>
-<td>Memory capacity reserved for NSX Edge in MB</td>
+<td>Memory capacity reserved for NSX Edge in MB.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>memoryReservation &gt; shares</strong></td>
-<td>Higher value implies NSX Edge has priority when accessing resources</td>
+<td>Higher value implies NSX Edge has priority when accessing resources.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>cliSettings &gt; userName</strong></td>
-<td>user Name</td>
+<td>User name.</td>
 <td>Required. length 1-33.</td>
 </tr>
 <tr>
 <td><strong>cliSettings &gt; password</strong></td>
-<td>password</td>
+<td>Password.</td>
 <td>Required. The password must be at least 12 characters long. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.</td>
 </tr>
 <tr>
 <td><strong>cliSettings &gt; remoteAccess</strong></td>
-<td>Enables or Disables Remote Access through SSH</td>
+<td>Enables or disables remote access through SSH.</td>
 <td>Required. Relevant firewall rules to allow traffic on port 22 must be opened by user/client</td>
 </tr>
 <tr>
 <td><strong>autoConfiguration &gt; enabled</strong></td>
 <td>Enable/Disable status of autoConfiguration</td>
-<td>Optional. True/False. Default is true. If set to false, user should add the nat,firewall,routing config to control plane work for LB, VPN, etc</td>
+<td>Optional. True/False. Default is <em>true</em>. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPSec VPN, and <strong>autoConfiguration</strong> is <em>true</em>, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPSec tunnel. If HA is enabled, firewall rules are always created, even if <strong>autoConfiguration</strong> is <em>false</em>, otherwise both HA appliances will become active.</td>
 </tr>
 <tr>
 <td><strong>autoConfiguration &gt; rulePriority</strong></td>
-<td>Defines the priority of internal rules over user rules</td>
-<td>Optional. High, Low. Default is high</td>
+<td>Defines the priority of system-defined rules over user-defined rules.</td>
+<td>Optional. High, Low.  Default is <em>high</em>.</td>
 </tr>
 <tr>
 <td><strong>queryDaemon &gt; enabled</strong></td>
 <td>Configure the communication between server load balancer and NSX Edge VM.</td>
-<td>Default is false</td>
+<td>Default is <em>false</em>.</td>
 </tr>
 <tr>
 <td><strong>queryDaemon &gt; port</strong></td>
-<td>Defines the port through which the communication happens</td>
-<td>Integer 1-65535. Default is 5666</td>
+<td>Defines the port through which the communication happens.</td>
+<td>Integer 1-65535. Default is <em>5666</em>.</td>
 </tr>
 </tbody></table><h4 id="vnic-parameters-edge-services-gateway-only">vNIC Parameters: Edge Services Gateway Only</h4>
 <table class="table"><thead><tr>
@@ -15797,14 +15785,9 @@ DHCP relay properties.</p>
 <th>Comments</th>
 </tr>
 </thead><tbody><tr>
-<td><strong>vnics</strong></td>
-<td>Configure interfaces of the NSX Edge</td>
-<td>Required. Until one connected vNic is configured, none of the configured features will serve the network.</td>
-</tr>
-<tr>
 <td><strong>vnic</strong></td>
-<td>Configure interface (vNic)</td>
-<td>Required. </td>
+<td>Configure interface (vNic).</td>
+<td>Required. Until one connected vNic is configured, none of the configured features will serve the network.</td>
 </tr>
 <tr>
 <td><strong>index</strong></td>
@@ -15832,24 +15815,19 @@ DHCP relay properties.</p>
 <td>Required. Choice of: <em>portgroupId</em> or <em>virtualWireId</em>. <em>portgroupId</em> needs to be defined if <em>isConnected=true</em></td>
 </tr>
 <tr>
-<td><strong>addressGroups</strong></td>
-<td></td>
-<td>Optional. Edge Services Gateway can have one or more addressGroup.</td>
-</tr>
-<tr>
 <td><strong>addressGroup</strong></td>
-<td>Address Group assigned to vNic</td>
-<td>Required. More than one addressGroup/subnets are allowed.</td>
+<td>Address Group assigned to vNic.</td>
+<td>Required. More than one addressGroup/subnets can be assigned to the vNic.</td>
 </tr>
 <tr>
 <td><strong>primaryAddress</strong></td>
-<td>Primary Address of Edge Interface</td>
+<td>Primary Address of Edge Interface.</td>
 <td>Required. IPv4 and IPv6 addresses are supported.</td>
 </tr>
 <tr>
 <td><strong>secondaryAddresses &gt; ipAddress</strong></td>
-<td>IP assigned to interface</td>
-<td>More than one ipAddress parameters are allowed, to enable assigning multiple IP addresses to a vNic, for example, for load balancing, NAT, VPN. At least one is required if <strong>secondaryAddresses</strong> is specified. </td>
+<td>IP assigned to interface.</td>
+<td>Optional. One or more <strong>ipAddress</strong> parameters are allowed, to enable assigning multiple IP addresses to a vNic, for example, for load balancing, NAT, VPN. At least one is required if <strong>secondaryAddresses</strong> is specified. </td>
 </tr>
 <tr>
 <td><strong>subnetMask</strong> or <strong>subnetPrefixLength</strong></td>
@@ -15858,18 +15836,18 @@ DHCP relay properties.</p>
 </tr>
 <tr>
 <td><strong>macAddress</strong></td>
-<td>Option to manually specify the MAC address</td>
+<td>Option to manually specify the MAC address.</td>
 <td>Optional.  Managed by vCenter if not provided.</td>
 </tr>
 <tr>
 <td><strong>macAddress &gt; edgeVmHaIndex</strong></td>
-<td>HA Index of the Edge VM.</td>
+<td>HA index of the Edge VM.</td>
 <td>Required. 0 or 1.</td>
 </tr>
 <tr>
 <td><strong>macAddress &gt; value</strong></td>
-<td>value of the MAC Address</td>
-<td>Optional. Ensure that macAddresses provided are unique within the given layer 2 domain.</td>
+<td>Value of the MAC address.</td>
+<td>Optional. Ensure that MAC addresses provided are unique within the given layer 2 domain.</td>
 </tr>
 <tr>
 <td><strong>fenceParameter</strong></td>
@@ -15878,43 +15856,43 @@ DHCP relay properties.</p>
 </tr>
 <tr>
 <td><strong>fenceParameter &gt; key</strong></td>
-<td></td>
+<td>Fence connection mode setting key.</td>
 <td>Required. </td>
 </tr>
 <tr>
 <td><strong>fenceParameter &gt; value</strong></td>
-<td></td>
+<td>Fence connection mode setting value.</td>
 <td>Required. </td>
 </tr>
 <tr>
-<td><strong>mtu</strong></td>
-<td>The maximum transmission value for the data packets</td>
-<td>Optional. Default is 1500.</td>
+<td><strong>vnic &gt; mtu</strong></td>
+<td>The maximum transmission value for the data packets.</td>
+<td>Optional.  Default is <em>1500</em>.</td>
 </tr>
 <tr>
 <td><strong>enableProxyArp</strong></td>
 <td>Enables proxy ARP. Do not use this flag unless you want NSX Edge to proxy ARP for all configured subnets.</td>
-<td>Optional.  True/False. Default is false.</td>
+<td>Optional.  True/False. Default is <em>false</em>.</td>
 </tr>
 <tr>
 <td><strong>enableSendRedirects</strong></td>
-<td>Enables ICMP Redirect</td>
-<td>Optional. True/False.  Default is true.</td>
+<td>Enables ICMP redirect.</td>
+<td>Optional. True/False.  Default is <em>true</em>.</td>
 </tr>
 <tr>
 <td><strong>isConnected</strong></td>
-<td>Sets if the interface is connected to the Port Group Network</td>
-<td>Optional. True/False. Default is false. <em>portgroupId</em> needs to be defined if <em>isConnected=true</em>.</td>
+<td>Sets if the interface is connected to the port group network.</td>
+<td>Optional. True/False. Default is <em>false</em>. <strong>portgroupId</strong> needs to be defined if <em>isConnected=true</em>.</td>
 </tr>
 <tr>
 <td><strong>inShapingPolicy</strong></td>
-<td>Configure Incoming Traffic</td>
+<td>Configure Incoming Traffic.</td>
 <td>Optional. </td>
 </tr>
 <tr>
 <td><strong>outShapingPolicy</strong></td>
-<td>Configure Outgoing Traffic</td>
-<td>Required. </td>
+<td>Configure Outgoing Traffic.</td>
+<td>Optional. </td>
 </tr>
 <tr>
 <td><strong>averageBandwidth</strong><br>(inShapingPolicy or outShapingPolicy)</td>
@@ -15923,22 +15901,22 @@ DHCP relay properties.</p>
 </tr>
 <tr>
 <td><strong>peakBandwidth</strong><br>(inShapingPolicy or outShapingPolicy)</td>
-<td>Sets Peak Bandwidth</td>
+<td>Sets peak bandwidth for traffic.</td>
 <td>Required. </td>
 </tr>
 <tr>
 <td><strong>burstSize</strong><br>(inShapingPolicy or outShapingPolicy)</td>
-<td>Sets the Burst Size of the interface</td>
+<td>Sets the burst size of the interface.</td>
 <td>Required. </td>
 </tr>
 <tr>
 <td><strong>enabled</strong><br>(inShapingPolicy or outShapingPolicy)</td>
-<td>Enable/Disable Status of this traffic policy</td>
+<td>Enable/disable status of this traffic policy.</td>
 <td>Required. </td>
 </tr>
 <tr>
 <td><strong>inherited</strong><br>(inShapingPolicy or outShapingPolicy)</td>
-<td>Sets inherited flag to true which causes the properties to be inherited to the Vnic from the DVS Port Group</td>
+<td>Determine whether properties should be inherited to the vNic from the port group.</td>
 <td>Required. </td>
 </tr>
 </tbody></table><h4 id="ha-management-interfaces-and-interfaces-configuration-logical-distributed-router-only">HA (Management) Interfaces and Interfaces Configuration: Logical (Distributed) Router Only</h4>
@@ -15949,32 +15927,32 @@ DHCP relay properties.</p>
 </tr>
 </thead><tbody><tr>
 <td><strong>mgmtInterface</strong></td>
-<td>High availability interface configuration.</td>
+<td>High availability interface configuration. Interface index 0 is assigned.</td>
 <td>Required.</td>
 </tr>
 <tr>
 <td><strong>interface</strong></td>
-<td>Interface configuration. 0-9 are reserved for uplinks, 10-999 are used for internal interfaces.</td>
-<td>Optional. Can be added later.</td>
+<td>Interface configuration. 1-9 are reserved for uplinks, 10-999 are used for internal interfaces.</td>
+<td>Optional. Can be added after logical router creation.</td>
 </tr>
 <tr>
 <td><strong>connectedToId</strong><br>(mgmtInterface or interface)</td>
-<td>Logical switch ID or port group ID.</td>
-<td>For example, virtualwire-1 or dvportgroup-50. <em>distributedRouter</em> NSX Edge does not support legacy port groups. </td>
+<td>Managed Object ID of logical switch or port group.</td>
+<td>For example, <em>virtualwire-1</em> or <em>dvportgroup-50</em>. Logical router interfaces do not support legacy port groups. </td>
 </tr>
 <tr>
 <td><strong>name</strong><br>(mgmtInterface or interface)</td>
 <td>Name assigned to interface.</td>
-<td></td>
+<td>Optional.</td>
 </tr>
 <tr>
 <td><strong>addressGroup</strong><br>(mgmtInterface or interface)</td>
-<td>Address Group assigned to vNic</td>
-<td>Required. Only one addressGroup can be configured for logical router. </td>
+<td>Address Group assigned to interface.</td>
+<td>Required. Only one <strong>addressGroup</strong> can be configured on each logical router <strong>mgmtInterface</strong> or <strong>interface</strong>.</td>
 </tr>
 <tr>
 <td><strong>primaryAddress</strong><br>(mgmtInterface or interface)</td>
-<td>Primary Address of Edge Interface</td>
+<td>Primary Address of interface.</td>
 <td>Required. Secondary Addresses are not supported on logical routers. Address must be IPv4.</td>
 </tr>
 <tr>
@@ -15984,13 +15962,13 @@ DHCP relay properties.</p>
 </tr>
 <tr>
 <td><strong>mtu</strong><br>(mgmtInterface or interface)</td>
-<td>The maximum transmission value for the data packets</td>
+<td>The maximum transmission value for the data packets.</td>
 <td>Optional. Default is 1500.</td>
 </tr>
 <tr>
 <td><strong>type</strong></td>
 <td>Type of interface.</td>
-<td>Required. Choice of <em>uplink</em> or <em>internal</em> </td>
+<td>Required. Choice of <em>uplink</em> or <em>internal</em>. </td>
 </tr>
 </tbody></table><h4 id="dns-client-edge-services-gateway-only">DNS Client: Edge Services Gateway Only</h4>
 <table class="table"><thead><tr>
@@ -16000,8 +15978,8 @@ DHCP relay properties.</p>
 </tr>
 </thead><tbody><tr>
 <td><strong>dnsClient</strong></td>
-<td>Configures the DNS settings of Edge</td>
-<td>Optional. If the primary/secondary are specified and the DNS service not, the primary/secondary will be used as the default of the DNS service.</td>
+<td>Configures the DNS settings of the Edge Services Gateway.</td>
+<td>Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.</td>
 </tr>
 <tr>
 <td><strong>primaryDns</strong></td>
@@ -16338,8 +16316,8 @@ DHCP relay properties.</p>
     href="#GET/4.0/edges"
   ><h2>GET /4.0/edges</h2></a>
   <div class="content">
-    <p><p>Retrieve a list of NSX Edges in your inventory or use the query
-parameters to filter results by datacenter or port group.</p>
+    <p><p>Retrieve a list of all NSX Edges in your inventory. You can use the query
+parameters to filter results.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -16494,8 +16472,21 @@ the resource, and ID of the resource as shown in response body</p>
     href="#GET/4.0/edges/{edgeId}"
   ><h2>GET /4.0/edges/{edgeId}</h2></a>
   <div class="content">
-    <p><p>Retrieve Edge details.</p>
-</p>
+    <p><p>Retrieve information about the specified NSX Edge.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td><strong>haAdminState</strong> parameter added.</td>
+</tr>
+<tr>
+<td>6.2.3</td>
+<td><strong>configuredResourcePool</strong>, <strong>configuredDataStore</strong>, <strong>configuredHost</strong>, <strong>configuredVmFolder</strong> parameters added. </td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -16520,7 +16511,16 @@ the resource, and ID of the resource as shown in response body</p>
   ><h2>PUT /4.0/edges/{edgeId}</h2></a>
   <div class="content">
     <p><p>Update the NSX Edge configuration.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td><strong>haAdminState</strong> parameter added.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="edge"&gt;
@@ -16955,6 +16955,7 @@ the resource, and ID of the resource as shown in response body</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">appliances</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">applianceSize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applianceSize</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">appliance</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderId</span>&gt;</span>
@@ -17153,8 +17154,101 @@ also deleted.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with Edge appliances</p>
-</div>
+  <div class="description"><h2 id="working-with-nsx-edge-appliance-configuration">Working With NSX Edge Appliance Configuration</h2>
+<p>See <em>Working with NSX Edge</em> for additional parameters used to configure appliances.</p>
+<p>When you create an NSX Edge, you define parameters that determine how
+the appliance is deployed, including resourcePoolId, dataStoreId,
+hostId, and VmFolderId. After the appliance is deployed, these
+deployment details may change, and the appliance parameters are updated
+to reflect the current, live location.</p>
+<p>You can view the originally configured paramters by using the
+configuredResourcePool, configuredDataStore, configuredHost, and
+configuredVmFolder parameters.</p>
+<p>You can trigger a high availability failover on the active NSX Edge
+appliance by changing the haAdminState value to <em>down</em> as part of
+appliance configuration for an NSX Edge. The haAdminState parameter
+determines whether or not an NSX Edge appliance is participating in
+high availability. Both appliances in an NSX Edge high availability
+configuration normally have an haAdminState of <em>up</em>. When you set the
+haAdminState of the active appliance to be <em>down</em>, it stops
+participating in high availability, and informs the standby appliance
+of its status.  The standby appliance becomes active immediately.  </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>highAvailabilityIndex</strong></td>
+<td>Index number of the appliance</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>haAdminState</strong></td>
+<td>Indicates whether appliance is participating in high availability.</td>
+<td>If the active appliance <strong>haAdminState</strong> is set to <em>down</em>, it stops participating in HA, and informs the standby appliance of its status. The standby appliance becomes active immediately. </td>
+</tr>
+<tr>
+<td><strong>configuredResourcePool &gt; id</strong></td>
+<td>ID of resource pool on which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredResourcePool &gt; name</strong></td>
+<td>Name of resource pool on which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredResourcePool &gt; isValid</strong></td>
+<td>True if resource pool on which NSX Edge was originally deployed currently exists.</td>
+<td>Read only. <em>true</em> or <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>configuredDataStore &gt; id</strong></td>
+<td>ID of data store on which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredDataStore &gt; name</strong></td>
+<td>Name of data store on which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredDataStore &gt; isValid</strong></td>
+<td>True if resource pool on which NSX Edge was originally deployed currently exists.</td>
+<td>Read only. <em>true</em> or <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>configuredHost &gt; id</strong></td>
+<td>ID of host on which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredHost &gt; name</strong></td>
+<td>Name of host on which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredHost &gt; isValid</strong></td>
+<td>True if resource pool on which NSX Edge was originally deployed currently exists.</td>
+<td>Read only. <em>true</em> or <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>configuredVmFolder &gt; id</strong></td>
+<td>ID of folder in which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredVmFolder &gt; name</strong></td>
+<td>Name of folder in which NSX Edge was originally deployed.</td>
+<td>Read only.</td>
+</tr>
+<tr>
+<td><strong>configuredVmFolder &gt; isValid</strong></td>
+<td>True if resource pool on which NSX Edge was originally deployed currently exists.</td>
+<td>Read only. <em>true</em> or <em>false</em>.</td>
+</tr>
+</tbody></table></div>
 <div class="method post">
   <a
     class="verb post"
@@ -17162,7 +17256,7 @@ also deleted.</p>
     href="#POST/4.0/edges/{edgeId}/appliances"
   ><h2>POST /4.0/edges/{edgeId}/appliances</h2></a>
   <div class="content">
-    <p><p>Change the size of both appliances</p>
+    <p><p>Change the size of both appliances.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -17187,8 +17281,116 @@ also deleted.</p>
     href="#GET/4.0/edges/{edgeId}/appliances"
   ><h2>GET /4.0/edges/{edgeId}/appliances</h2></a>
   <div class="content">
-    <p><p>Retrieve appliance configuration</p>
-</p>
+    <p><p>Retrieve appliance configuration.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td><strong>haAdminState</strong> parameter added.</td>
+</tr>
+<tr>
+<td>6.2.3</td>
+<td><strong>configuredResourcePool</strong>, <strong>configuredDataStore</strong>, <strong>configuredHost</strong>, <strong>configuredVmFolder</strong> parameters added. </td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">appliances</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applianceSize</span>&gt;</span>compact<span class="hljs-tag">&lt;/<span class="hljs-name">applianceSize</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliance</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">highAvailabilityIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">highAvailabilityIndex</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vcUuid</span>&gt;</span>502e2dd9-3df7-4820-6925-29832a1c0b79<span class="hljs-tag">&lt;/<span class="hljs-name">vcUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-417<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolName</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datastoreName</span>&gt;</span>ds-site-a-nfs01<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-202<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>esxmgt-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderId</span>&gt;</span>group-v242<span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderName</span>&gt;</span>NSX Edges<span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmHostname</span>&gt;</span>Perimeter-Gateway-02-0<span class="hljs-tag">&lt;/<span class="hljs-name">vmHostname</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmName</span>&gt;</span>Perimeter-Gateway-02-0<span class="hljs-tag">&lt;/<span class="hljs-name">vmName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deployed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">deployed</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cpuReservation</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">cpuReservation</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">memoryReservation</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span>512<span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">memoryReservation</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">edgeId</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">edgeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredResourcePool</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredResourcePool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredDataStore</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ds-site-a-nfs01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredDataStore</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredHost</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>host-202<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>esxmgt-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredHost</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredVmFolder</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>group-v242<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX Edges<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredVmFolder</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">appliance</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">appliance</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">highAvailabilityIndex</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">highAvailabilityIndex</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vcUuid</span>&gt;</span>502e3ebf-02cb-dcd2-9701-91db1e0e3bd8<span class="hljs-tag">&lt;/<span class="hljs-name">vcUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-429<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolName</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datastoreName</span>&gt;</span>ds-site-a-nfs01<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-202<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>esxmgt-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderId</span>&gt;</span>group-v242<span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderName</span>&gt;</span>NSX Edges<span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmHostname</span>&gt;</span>Perimeter-Gateway-02-1<span class="hljs-tag">&lt;/<span class="hljs-name">vmHostname</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmName</span>&gt;</span>Perimeter-Gateway-02-1<span class="hljs-tag">&lt;/<span class="hljs-name">vmName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deployed</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">deployed</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">edgeId</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">edgeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredResourcePool</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredResourcePool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredDataStore</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ds-site-a-nfs01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredDataStore</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredHost</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>host-202<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>esxmgt-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredHost</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuredVmFolder</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>group-v242<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX Edges<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isValid</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isValid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuredVmFolder</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">appliance</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">deployAppliances</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">deployAppliances</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">appliances</span>&gt;</span> 
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -17198,14 +17400,26 @@ also deleted.</p>
     href="#PUT/4.0/edges/{edgeId}/appliances"
   ><h2>PUT /4.0/edges/{edgeId}/appliances</h2></a>
   <div class="content">
-    <p><p>Modify appliance configuration (tip -- retrieve the config using GET
-call, then modify the parameters and send as body)</p>
-</p>
+    <p><p>You can retrieve the configuration of both appliances by using the
+GET call and replace the size, resource pool, datastore, and custom
+parameters of the appliances by using a PUT call. If there were two
+appliances earlier and you PUT only one appliance, the other
+appliance is deleted.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td><strong>haAdminState</strong> parameter added.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Manage a specified appliance using its HA index</p>
+  <div class="description"><p>Working With NSX Edge Appliance Configuration by Index</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -17274,8 +17488,21 @@ the query parameter action=execute</p>
     href="#GET/4.0/edges/{edgeId}/appliances/{haIndex}"
   ><h2>GET /4.0/edges/{edgeId}/appliances/{haIndex}</h2></a>
   <div class="content">
-    <p><p>Get configuration of specified appliance</p>
-</p>
+    <p><p>Retrieve the configuration of the specified appliance.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td><strong>haAdminState</strong> parameter added.</td>
+</tr>
+<tr>
+<td>6.2.3</td>
+<td><strong>configuredResourcePool</strong>, <strong>configuredDataStore</strong>, <strong>configuredHost</strong>, <strong>configuredVmFolder</strong> parameters added. </td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 <div class="method put">
@@ -17285,8 +17512,17 @@ the query parameter action=execute</p>
     href="#PUT/4.0/edges/{edgeId}/appliances/{haIndex}"
   ><h2>PUT /4.0/edges/{edgeId}/appliances/{haIndex}</h2></a>
   <div class="content">
-    <p><p>Modify the configuration of the specified appliance</p>
-</p>
+    <p><p>Update the configuration of the specified appliance.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td><strong>haAdminState</strong> parameter added.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="appliance"&gt;
@@ -17329,24 +17565,20 @@ the query parameter action=execute</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">appliance</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">customField</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">customField</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourcePoolId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">resourcePoolId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datastoreId</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">datastoreId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-203<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vmFolderId</span>&gt;</span>group-v242<span class="hljs-tag">&lt;/<span class="hljs-name">vmFolderId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">cpuReservation</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">shares</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">shares</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span>-1<span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">cpuReservation</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">memoryReservation</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">shares</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">shares</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">limit</span>&gt;</span>-1<span class="hljs-tag">&lt;/<span class="hljs-name">limit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">reservation</span>&gt;</span>512<span class="hljs-tag">&lt;/<span class="hljs-name">reservation</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">memoryReservation</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeId</span>&gt;</span>edge-3<span class="hljs-tag">&lt;/<span class="hljs-name">edgeId</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">appliance</span>&gt;</span>
 </code></pre>
   </div>
@@ -17364,8 +17596,15 @@ the query parameter action=execute</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Auto config is enabled by default. If you disable, you must add
-required NAT, firewall, routing rules</p>
+  <div class="description"><p>If autoConfiguration is enabled, firewall rules are automatically
+created to allow control traffic. Rules to allow data traffic are not
+created.  For example, if you are using IPSec VPN, and
+<strong>autoConfiguration</strong> is <em>true</em>, firewall rules will automatically be
+configured to allow IKE traffic. However, you will need to add
+additional rules to allow the data traffic for the IPSec tunnel. If HA
+is enabled, firewall rules are always created, even if
+<strong>autoConfiguration</strong> is <em>false</em>, otherwise both HA appliances will
+become active.</p>
 </div>
 <div class="method get">
   <a
@@ -17374,7 +17613,7 @@ required NAT, firewall, routing rules</p>
     href="#GET/4.0/edges/{edgeId}/autoconfiguration"
   ><h2>GET /4.0/edges/{edgeId}/autoconfiguration</h2></a>
   <div class="content">
-    <p><p>Retrieve auto config settings for the Edge</p>
+    <p><p>Retrieve the auto configuration settings for the NSX Edge.</p>
 </p>
   </div>
 </div>
@@ -17385,7 +17624,7 @@ required NAT, firewall, routing rules</p>
     href="#PUT/4.0/edges/{edgeId}/autoconfiguration"
   ><h2>PUT /4.0/edges/{edgeId}/autoconfiguration</h2></a>
   <div class="content">
-    <p><p>Change the auto configuration settings for the NSX Edge</p>
+    <p><p>Update the auto configuration settings for the NSX Edge.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -18553,33 +18792,6 @@ name and cache the response from the servers.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-fips-on-nsx-edge">Working with FIPS on NSX Edge</h2>
-</div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/4.0/edges/{edgeId}/fips"
-    href="#POST/4.0/edges/{edgeId}/fips"
-  ><h2>POST /4.0/edges/{edgeId}/fips</h2></a>
-  <div class="content">
-    <p><p>Modify FIPS setting.</p>
-</p>
-    <div class="params">
-      <h3>Query Parameters</h3>
-        <dl>
-  <dt>
-    <span class="param">enable</span>
-    <span class="badge">boolean</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-  </dd>
-</dl>
-    </div>
-  </div>
-</div>
-</section>
-<section class="resource">
   <div class="description"><h2 id="working-with-nsx-edge-firewall-configuration">Working With NSX Edge Firewall Configuration</h2>
 </div>
 <div class="method get">
@@ -19285,7 +19497,7 @@ oneMonth | oneYear.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with all NSX Edge router interfaces</p>
+  <div class="description"><p>Configure interfaces for logical (distributed) router.  See <em>Working with NSX Edge</em> for descriptions of parameters used to configure the logical router interfaces.</p>
 </div>
 <div class="method post">
   <a
@@ -20825,7 +21037,9 @@ server.</p>
     href="#PUT/4.0/edges/{edgeId}/mgmtinterface"
   ><h2>PUT /4.0/edges/{edgeId}/mgmtinterface</h2></a>
   <div class="content">
-    <p><p>Configure management interfaces for NSX Edge router</p>
+    <p><p>Configure high availability (management) interface for logical
+(distributed) router.  See <em>Working with NSX Edge</em> for descriptions
+of parameters used to configure the logical router HA interface.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -21106,7 +21320,15 @@ displays an error.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-the-nsx-edge-routing-configuration">Working with the NSX Edge Routing Configuration</h2>
-<p>Configure globalConfig, staticRouting, OSPG, and BGP.</p>
+<p>You can specify static and dynamic routing for each NSX Edge.</p>
+<p>Dynamic routing provides the necessary forwarding information between
+layer 2 broadcast domains, thereby allowing you to decrease layer 2
+broadcast domains and improve network efficiency and scale. NSX
+extends this intelligence to where the workloads reside for doing
+East‐West routing. This allows more direct virtual machine to virtual
+machine communication without the costly or timely need to extend
+hops. At the same time, NSX also provides North‐South connectivity,
+thereby enabling tenants to access public networks.</p>
 <h3 id="global-routing-configuration">Global Routing Configuration</h3>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -21136,11 +21358,11 @@ displays an error.</p>
 <tr>
 <td><strong>logging &gt; logLevel</strong></td>
 <td>Sets the log level.</td>
-<td>Default is <em>INFO</em>.</td>
+<td>Default is <em>info</em>.  Valid values: <em>emergency</em>, <em>alert</em>, <em>critical</em>, <em>error</em>, <em>warning</em>, <em>notice</em>, <em>info</em>, <em>debug</em>.</td>
 </tr>
 <tr>
 <td><strong>ipPrefix</strong></td>
-<td>Details for one ipPrefix.</td>
+<td>Details for one IP prefix.</td>
 <td>Optional. Required only if you define redistribution rules in dynamic routing protocols like ospf, bgp.</td>
 </tr>
 <tr>
@@ -21149,7 +21371,7 @@ displays an error.</p>
 <td>All defined IP prefixes must have unique names.</td>
 </tr>
 <tr>
-<td><strong>ipPrefxi &gt; ipAddress</strong></td>
+<td><strong>ipPrefix &gt; ipAddress</strong></td>
 <td>IP addresses for the IP prefix.</td>
 <td>Optional. String.</td>
 </tr>
@@ -21486,7 +21708,8 @@ displays an error.</p>
     href="#PUT/4.0/edges/{edgeId}/routing/config"
   ><h2>PUT /4.0/edges/{edgeId}/routing/config</h2></a>
   <div class="content">
-    <p><p>Configure globalConfig, staticRouting, OSPG, and BGP.</p>
+    <p><p>Configure NSX Edge global routing configuration, static routing, and
+dynamic routing (OSPF and BGP).</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -24216,7 +24439,7 @@ oneMonth|oneYear. Default is 60 minutes</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-edge-status">Working With Edge Status</h2>
+  <div class="description"><h2 id="working-with-nsx-edge-status">Working With NSX Edge Status</h2>
 </div>
 <div class="method get">
   <a
@@ -24275,7 +24498,7 @@ regular output.</p>
     href="#GET/4.0/edges/{edgeId}/summary"
   ><h2>GET /4.0/edges/{edgeId}/summary</h2></a>
   <div class="content">
-    <p><p>Retrieve details about the specified Edge.</p>
+    <p><p>Retrieve details about the specified NSX Edge.</p>
 </p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
@@ -24762,8 +24985,9 @@ the syslog servers</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with interfaces. Add up to ten internal/uplink interfaces to
-each Edge. Each Edge must have at least one internal interface</p>
+  <div class="description"><h2 id="working-with-edge-services-gateway-interfaces">Working With Edge Services Gateway Interfaces</h2>
+<p>See <em>Working with NSX Edge</em> for descriptions of parameters used to
+configure Edge Service Gateway interfaces.</p>
 </div>
 <div class="method post">
   <a
@@ -24772,7 +24996,7 @@ each Edge. Each Edge must have at least one internal interface</p>
     href="#POST/4.0/edges/{edgeId}/vnics"
   ><h2>POST /4.0/edges/{edgeId}/vnics</h2></a>
   <div class="content">
-    <p><p>Add an interface or sub interface</p>
+    <p><p>Add an interface or sub interface.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -24783,7 +25007,7 @@ each Edge. Each Edge must have at least one internal interface</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>always set to &quot;patch&quot;</p>
+      <p>Set to <em>patch</em>.</p>
 
   </dd>
 </dl>
@@ -24844,13 +25068,15 @@ each Edge. Each Edge must have at least one internal interface</p>
     href="#GET/4.0/edges/{edgeId}/vnics"
   ><h2>GET /4.0/edges/{edgeId}/vnics</h2></a>
   <div class="content">
-    <p><p>Retrieve all interfaces for Edge</p>
+    <p><p>Retrieve all interfaces for the specified Edge Services Gateway.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specified interface by index</p>
+  <div class="description"><h2 id="working-with-a-specific-edge-services-gateway-interface">Working With a Specific Edge Services Gateway Interface</h2>
+<p>See <em>Working with NSX Edge</em> for descriptions of parameters used to
+configure Edge Service Gateway interfaces.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -24873,7 +25099,7 @@ each Edge. Each Edge must have at least one internal interface</p>
     href="#GET/4.0/edges/{edgeId}/vnics/{index}"
   ><h2>GET /4.0/edges/{edgeId}/vnics/{index}</h2></a>
   <div class="content">
-    <p><p>Retrieve interface</p>
+    <p><p>Retrieve the specified interface.</p>
 </p>
   </div>
 </div>
@@ -24884,7 +25110,7 @@ each Edge. Each Edge must have at least one internal interface</p>
     href="#PUT/4.0/edges/{edgeId}/vnics/{index}"
   ><h2>PUT /4.0/edges/{edgeId}/vnics/{index}</h2></a>
   <div class="content">
-    <p><p>Modify the specified interface</p>
+    <p><p>Update the specified interface.</p>
 </p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vnics</span>&gt;</span>
