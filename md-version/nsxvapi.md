@@ -790,7 +790,7 @@ groups as members to be added, this helps you get a list of all
 possible valid elements that can be added to the
 service.
 
-## ipPools
+## ipPoolsObjects
 Working with IP Pool Grouping Objects
 ========
 
@@ -3645,16 +3645,16 @@ Working with the Exclusion List
 ## nsxEdges
 Working with NSX Edge
 =======
+There are two types of NSX Edge: Edge services gateway and logical
+(distributed) router.
 
-### /4.0/edges
-
-* **post** *(secured)*: You can install NSX Edge as a services gateway or as a logical router.
+### Edge Services Gateway
 
 The services gateway gives you access to all NSX Edge services such as
 firewall, NAT, DHCP, VPN, load balancing, and high availability. You can
-install multiple NSX Edge services gateway virtual appliances in a
-datacenter. Each NSX Edge virtual appliance can have a total of ten
-uplink and internal network interfaces. 
+install multiple Edge services gateway virtual appliances in a
+datacenter. Each Edge service gateway virtual appliance can have a
+total of ten uplink and internal network interfaces. 
 
 The internal interfaces connect to secured port groups and act as the
 gateway for all protected virtual machines in the port group. The subnet
@@ -3667,20 +3667,27 @@ access to a shared corporate network or a service that provides access
 layer networking. Multiple external IP addresses can be configured for
 load balancer, site-to-site VPN, and NAT services.
 
+### Logical (Distributed) Router
+
 The logical router provides East-West distributed routing with tenant IP
 address space and data path isolation. Virtual machines or workloads
 that reside on the same host on different subnets can communicate with
 one another without having to traverse a traditional routing interface.
-A logical router can have up to 10 uplink interfaces and up to 990
+
+A logical router can have up to 9 uplink interfaces and up to 990
 internal interfaces.
+
+### /4.0/edges
+
+* **post** *(secured)*: You can install NSX Edge as a services gateway or as a logical router.
 
 The **type** parameter determines which type of NSX Edge is deployed:
 *distributedRouter* or *gatewayServices*. If no type is specified, the
 type is *gatewayServices*.
 
-Many of other parameters for the `POST /api/4.0/edges` method will
-differ depending on which type of NSX Edge you are deploying. See the
-examples and parameter tables for more information.
+Other parameters for this method will differ depending on which type of
+NSX Edge you are deploying. See the examples and parameter tables for
+more information.
 
 ### NSX Edge: Service Gateway
 
@@ -3821,8 +3828,7 @@ supported on the UI.
 Before installing a logical router, you must prepare the hosts on the
 appropriate clusters. 
 
-A logical router can have 10 uplink interfaces and up to 990 internal
-interfaces.  The user specified configuration is stored in the database
+The user specified configuration is stored in the database
 and Edge identifier is returned to the user. This identifier must be
 used for future configurations on the given Edge.  If any appliance(s)
 are specified and at least one connected interface/vnic is specified,
@@ -3883,8 +3889,7 @@ DHCP relay properties.
         </interface>
       </interfaces>
     </edge>
-
-### Request Body Parameters
+### Request and Response Body Parameters for NSX Edge
 
 #### General Request Body Parameters: Edge Services Gateway and Logical (Distributed) Router
 
@@ -3892,114 +3897,124 @@ Parameter |  Description | Comments
 ---|---|---
 **datacenterMoid** |Specify vCenter Managed Object Identifier of data center on which edge has to be deployed|Required. 
 **type** | Specify which kind of NSX Edge to deploy. Choice of *distributedRouter* or *gatewayServices*. | Optional. Default is *gatewayServices*.
-**name** |Specify a name for the new NSX Edge|Optional. Default is *vShield-&lt;edgeId&gt;*. Used as a VM name on vCenter appended by *-&lt;haIndex&gt;*. 
-**description** |NSX Edge description|Optional. 
-**tenant** |Specify the tenant. Used for syslog messages|Optional. 
-**fqdn** |Fully Qualified Domain Name for the edge. |Optional. Default is *vShield-&lt;edgeId&gt;* Used to set hostname on the VM. Appended by *-&lt;haIndex&gt;*
-**vseLogLevel** |Defines the log level for log messages captured in the log files|Optional. Choice of: *EMERGENCY*, *ALERT*, *CRITICAL*, *ERROR*, *WARNING*, *NOTICE*, *DEBUG*. Default is *INFO*.
-**enableAesni** |Enable support for Advanced Encryption Standard New Instructions on the Edge|Optional. True/False. Default is *true*.
-**enableFips** |Enable compliance to FIPS Standards|Optional.  True/False. Default is false. Changing the FIPS mode will reboot the NSX Edge appliance.
-**appliances** |Configure the Edge appliances (Edge VM's) to be deployed|Required. Can have max 2 &lt;appliance&gt; elements.
-**applianceSize** |Edge form factor, it determines the NSX Edge size and capability. |Required. Choice of: *COMPACT*, *LARGE*, *QUADLARGE*, *XLARGE*. Default is *compact*.
-**enableCoreDump** |Deploys a new NSX Edge for debug/core-dump purpose|Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.
-**deployAppliances** |Specify if NSX Edge appliances are to be deployed.  |Optional. True/False. Default is *true*.
+**name** |Specify a name for the new NSX Edge.|Optional. Default is *NSX-&lt;edgeId&gt;*. Used as a VM name on vCenter appended by *-&lt;haIndex&gt;*. 
+**description** |NSX Edge description.|Optional. 
+**tenant** |Specify the tenant. Used for syslog messages.|Optional. 
+**fqdn** |Fully Qualified Domain Name for the edge.|Optional. Default is *NSX-&lt;edgeId&gt;* Used to set hostname on the VM. Appended by *-&lt;haIndex&gt;*
+**vseLogLevel** |Defines the log level for log messages captured in the log files.|Optional. Choice of: *emergency*, *alert*, *critical*, *error*, *warning*, *notice*, *debug*. Default is *info*.
+**enableAesni** |Enable support for Advanced Encryption Standard New Instructions on the Edge.|Optional. True/False. Default is *true*.
+**enableFips** |Enable compliance to FIPS Standards.|Optional. True/False. Default is *false*.
+**enableCoreDump** |Deploys a new NSX Edge for debug/core-dump purpose.|Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.
 
 #### Appliances Configuration: Edge Services Gateway and Logical (Distributed) Router
 
 Parameter |  Description | Comments 
 ---|---|---
-**appliance** |Appliance configuration details|Required. Can configure a maximum of two appliances. Until one appliance is configured and NSX Edge VM is deployed successfully, none of the configured features will serve the network.
-**resourcePoolId** |Details of resource pool on which Edge has to be deployed|Required. 
-**datastoreId** |Details of datastore on which edge has to be deployed|Required. 
-**hostId** |ID of the host on which the NSX Edge will be deployed|Optional. 
-**vmFolderId** |The folder in which the NSX Edge should be saved|Optional. 
+**applianceSize** |Edge form factor, it determines the NSX Edge size and capability. |Required. Choice of: *compact*, *large*, *quadlarge*, *xlarge*. Default is *compact*.
+**deployAppliances** | Determine whether to deploy appliances. | Default is *true*.
+**appliance** |Appliance configuration details.|Required. Can configure a maximum of two appliances. Until one appliance is configured and NSX Edge VM is deployed successfully, none of the configured features will serve the network.
+**resourcePoolId** |Details of resource pool on which to deploy NSX Edge. |Required. Can be resource pool ID, e.g. *resgroup-15* or cluster ID, e.g. *domain-c41*.
+**datastoreId** |Details of datastore on which to deploy NSX Edge.|Required. 
+**hostId** |ID of the host on which to deploy the NSX Edge.|Optional. 
+**vmFolderId** |The folder in which to save the NSX Edge.|Optional. 
 **customField** |Custom key-value attributes. |Optional. Use custom attributes to associate user-specific meta-information with VMs and managed hosts, stored on vCenter Server.
-**customField > key** |Meta information Key|Required if customField is specified. 
-**customField > value** |Meta information Value|Required if customField is specified. 
-**cpuReservation** |Configure virtual CPU reservation values of NSX Edge VM|Optional. 
-**cpuReservation > limit** |Maximum CPU capacity the NSX Edge can use, specified in MHz|Optional. -1 (unlimited), any positive integer
-**cpuReservation > reservation** |CPU capacity reserved for NSX Edge in MHz|Optional. 
-**cpuReservation > shares** |Higher value implies NSX Edge has priority when accessing resources|Optional. 
-**memoryReservation** |Configure memory reservation values of NSX Edge VM|Optional. 
-**memoryReservation > limit** |Maximum memory the NSX Edge can use, specified in MB|Optional. -1 (unlimited), any positive integer
-**memoryReservation > reservation** |Memory capacity reserved for NSX Edge in MB|Optional. 
-**memoryReservation > shares** |Higher value implies NSX Edge has priority when accessing resources|Optional. 
-**cliSettings > userName** |user Name|Required. length 1-33.
-**cliSettings > password** |password|Required. The password must be at least 12 characters long. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.
-**cliSettings > remoteAccess** |Enables or Disables Remote Access through SSH|Required. Relevant firewall rules to allow traffic on port 22 must be opened by user/client
-**autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is true. If set to false, user should add the nat,firewall,routing config to control plane work for LB, VPN, etc
-**autoConfiguration > rulePriority** |Defines the priority of internal rules over user rules|Optional. High, Low. Default is high
-**queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is false
-**queryDaemon > port** |Defines the port through which the communication happens|Integer 1-65535. Default is 5666
+**customField > key** |Meta information Key.|Required if customField is specified. 
+**customField > value** |Meta information Value.|Required if customField is specified. 
+**cpuReservation > limit** |Maximum CPU capacity the NSX Edge can use, specified in MHz.|Optional. -1 (unlimited), any positive integer
+**cpuReservation > reservation** |CPU capacity reserved for NSX Edge in MHz.|Optional. 
+**cpuReservation > shares** |Higher value implies NSX Edge has priority when accessing resources.|Optional. 
+**memoryReservation > limit** |Maximum memory the NSX Edge can use, specified in MB.|Optional. -1 (unlimited), any positive integer
+**memoryReservation > reservation** |Memory capacity reserved for NSX Edge in MB.|Optional. 
+**memoryReservation > shares** |Higher value implies NSX Edge has priority when accessing resources.|Optional. 
+**cliSettings > userName** |User name.|Required. length 1-33.
+**cliSettings > password** |Password.|Required. The password must be at least 12 characters long. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.
+**cliSettings > remoteAccess** |Enables or disables remote access through SSH. |Required. Relevant firewall rules to allow traffic on port 22 must be opened by user/client
+**autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is *true*. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPSec VPN, and **autoConfiguration** is *true*, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPSec tunnel. If HA is enabled, firewall rules are always created, even if **autoConfiguration** is *false*, otherwise both HA appliances will become active.
+**autoConfiguration > rulePriority** |Defines the priority of system-defined rules over user-defined rules.|Optional. High, Low.  Default is *high*.
+**queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is *false*.
+**queryDaemon > port** |Defines the port through which the communication happens.|Integer 1-65535. Default is *5666*.
 
 #### vNIC Parameters: Edge Services Gateway Only
 
 Parameter |  Description | Comments
 ---|---|---
-**vnics** |Configure interfaces of the NSX Edge|Required. Until one connected vNic is configured, none of the configured features will serve the network.
-**vnic** |Configure interface (vNic) |Required. 
+**vnic** |Configure interface (vNic).|Required. Until one connected vNic is configured, none of the configured features will serve the network.
 **index** |Index of vNic to be configured. Value varies from 0-9. 4094 sub-interfaces can be configured in trunk mode.|Required. 
 **name** |Name of the vNic.|Optional. System provides default names: vnic0...vnic9.
 **label** |Label for the vNic.|Optional. System provides default labels: vNic_0...vNic_9.
 **type** |Type of interface connected to vNic.|Optional. Choice of: *Uplink*, *Internal*, *TRUNK*. Default is *Internal*. *TRUNK* should be specified when sub-interfaces are configured.
 **portgroupId** |Connect NSX Edge to the network through this port group.|Required. Choice of: *portgroupId* or *virtualWireId*. *portgroupId* needs to be defined if *isConnected=true*
-**addressGroups** | |Optional. Edge Services Gateway can have one or more addressGroup.
-**addressGroup** |Address Group assigned to vNic|Required. More than one addressGroup/subnets are allowed.
-**primaryAddress** |Primary Address of Edge Interface|Required. IPv4 and IPv6 addresses are supported.
-**secondaryAddresses > ipAddress** |IP assigned to interface|More than one ipAddress parameters are allowed, to enable assigning multiple IP addresses to a vNic, for example, for load balancing, NAT, VPN. At least one is required if **secondaryAddresses** is specified. 
+**addressGroup** |Address Group assigned to vNic.|Required. More than one addressGroup/subnets can be assigned to the vNic.
+**primaryAddress** |Primary Address of Edge Interface.|Required. IPv4 and IPv6 addresses are supported.
+**secondaryAddresses > ipAddress** |IP assigned to interface.|Optional. One or more **ipAddress** parameters are allowed, to enable assigning multiple IP addresses to a vNic, for example, for load balancing, NAT, VPN. At least one is required if **secondaryAddresses** is specified. 
 **subnetMask** or **subnetPrefixLength** |Subnet mask or prefix value.  |Required. Either **subnetMask** or **subnetPrefixLength** should be provided. When both are provided then **subnetprefixLength** is ignored.
-**macAddress** |Option to manually specify the MAC address|Optional.  Managed by vCenter if not provided.
-**macAddress > edgeVmHaIndex** |HA Index of the Edge VM. |Required. 0 or 1.
-**macAddress > value** |value of the MAC Address|Optional. Ensure that macAddresses provided are unique within the given layer 2 domain.
+**macAddress** |Option to manually specify the MAC address. |Optional.  Managed by vCenter if not provided.
+**macAddress > edgeVmHaIndex** |HA index of the Edge VM. |Required. 0 or 1.
+**macAddress > value** |Value of the MAC address.|Optional. Ensure that MAC addresses provided are unique within the given layer 2 domain.
 **fenceParameter** |Fence connection mode settings for vCloud Director fence mode. Do not use for other NSX deployments. |Optional.
-**fenceParameter > key** ||Required. 
-**fenceParameter > value** ||Required. 
-**mtu** |The maximum transmission value for the data packets|Optional. Default is 1500.
-**enableProxyArp** |Enables proxy ARP. Do not use this flag unless you want NSX Edge to proxy ARP for all configured subnets.  |Optional.  True/False. Default is false.
-**enableSendRedirects** |Enables ICMP Redirect|Optional. True/False.  Default is true.
-**isConnected** |Sets if the interface is connected to the Port Group Network|Optional. True/False. Default is false. *portgroupId* needs to be defined if *isConnected=true*.
-**inShapingPolicy** |Configure Incoming Traffic|Optional. 
-**outShapingPolicy** |Configure Outgoing Traffic|Required. 
+**fenceParameter > key** | Fence connection mode setting key.|Required. 
+**fenceParameter > value** |Fence connection mode setting value. |Required. 
+**vnic > mtu** |The maximum transmission value for the data packets.|Optional.  Default is *1500*.
+**enableProxyArp** |Enables proxy ARP. Do not use this flag unless you want NSX Edge to proxy ARP for all configured subnets.  |Optional.  True/False. Default is *false*.
+**enableSendRedirects** |Enables ICMP redirect. |Optional. True/False.  Default is *true*.
+**isConnected** |Sets if the interface is connected to the port group network. |Optional. True/False. Default is *false*. **portgroupId** needs to be defined if *isConnected=true*.
+**inShapingPolicy** |Configure Incoming Traffic.|Optional. 
+**outShapingPolicy** |Configure Outgoing Traffic.|Optional. 
 **averageBandwidth**<br>(inShapingPolicy or outShapingPolicy) |Sets average bandwidth for traffic.|Optional. 
-**peakBandwidth**<br>(inShapingPolicy or outShapingPolicy) |Sets Peak Bandwidth|Required. 
-**burstSize**<br>(inShapingPolicy or outShapingPolicy) |Sets the Burst Size of the interface|Required. 
-**enabled**<br>(inShapingPolicy or outShapingPolicy) |Enable/Disable Status of this traffic policy|Required. 
-**inherited**<br>(inShapingPolicy or outShapingPolicy) |Sets inherited flag to true which causes the properties to be inherited to the Vnic from the DVS Port Group|Required. 
+**peakBandwidth**<br>(inShapingPolicy or outShapingPolicy) |Sets peak bandwidth for traffic.|Required. 
+**burstSize**<br>(inShapingPolicy or outShapingPolicy) |Sets the burst size of the interface.|Required. 
+**enabled**<br>(inShapingPolicy or outShapingPolicy) |Enable/disable status of this traffic policy.|Required. 
+**inherited**<br>(inShapingPolicy or outShapingPolicy) |Determine whether properties should be inherited to the vNic from the port group.|Required. 
 
 #### HA (Management) Interfaces and Interfaces Configuration: Logical (Distributed) Router Only
 
 Parameter |  Description | Comments 
 ---|---|---
-**mgmtInterface** | High availability interface configuration. | Required.
-**interface** | Interface configuration. 0-9 are reserved for uplinks, 10-999 are used for internal interfaces. | Optional. Can be added later.
-**connectedToId**<br>(mgmtInterface or interface) | Logical switch ID or port group ID. | For example, virtualwire-1 or dvportgroup-50. *distributedRouter* NSX Edge does not support legacy port groups. 
-**name**<br>(mgmtInterface or interface) | Name assigned to interface. |
-**addressGroup**<br>(mgmtInterface or interface) |Address Group assigned to vNic|Required. Only one addressGroup can be configured for logical router. 
-**primaryAddress**<br>(mgmtInterface or interface) |Primary Address of Edge Interface|Required. Secondary Addresses are not supported on logical routers. Address must be IPv4.
+**mgmtInterface** | High availability interface configuration. Interface index 0 is assigned. | Required.
+**interface** | Interface configuration. 1-9 are reserved for uplinks, 10-999 are used for internal interfaces. | Optional. Can be added after logical router creation.
+**connectedToId**<br>(mgmtInterface or interface) | Managed Object ID of logical switch or port group. | For example, *virtualwire-1* or *dvportgroup-50*. Logical router interfaces do not support legacy port groups. 
+**name**<br>(mgmtInterface or interface) | Name assigned to interface. | Optional.
+**addressGroup**<br>(mgmtInterface or interface) |Address Group assigned to interface. |Required. Only one **addressGroup** can be configured on each logical router **mgmtInterface** or **interface**.
+**primaryAddress**<br>(mgmtInterface or interface) |Primary Address of interface. |Required. Secondary Addresses are not supported on logical routers. Address must be IPv4.
 **subnetMask** or **subnetPrefixLength**<br>(mgmtInterface or interface) |Subnet mask or prefix value.  |Required. Either **subnetMask** or **subnetPrefixLength** should be provided. When both are provided then **subnetprefixLength** is ignored.
-**mtu**<br>(mgmtInterface or interface) |The maximum transmission value for the data packets|Optional. Default is 1500.
-**type** | Type of interface. | Required. Choice of *uplink* or *internal* 
+**mtu**<br>(mgmtInterface or interface) |The maximum transmission value for the data packets. |Optional. Default is 1500.
+**type** | Type of interface. | Required. Choice of *uplink* or *internal*. 
 
 #### DNS Client: Edge Services Gateway Only
 
 Parameter |  Description | Comments 
 ---|---|---
-**dnsClient** |Configures the DNS settings of Edge|Optional. If the primary/secondary are specified and the DNS service not, the primary/secondary will be used as the default of the DNS service.
+**dnsClient** |Configures the DNS settings of the Edge Services Gateway.|Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.
 **primaryDns** |Primary DNS IP |
 **secondaryDns** |Secondary DNS IP |
 **domainName** |Domain Name of Edge |
 **domainName** |Secondary Domain Name of Edge |
 
-* **get** *(secured)*: Retrieve a list of NSX Edges in your inventory or use the query
-parameters to filter results by datacenter or port group.
+* **get** *(secured)*: Retrieve a list of all NSX Edges in your inventory. You can use the query
+parameters to filter results.
 
 ### /4.0/edges/{edgeId}
 Working With a Specific NSX Edge
 ------
 
 * **post** *(secured)*: Manage NSX Edge.
-* **get** *(secured)*: Retrieve Edge details.
+* **get** *(secured)*: Retrieve information about the specified NSX Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | **haAdminState** parameter added.
+6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+
 * **put** *(secured)*: Update the NSX Edge configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | **haAdminState** parameter added.
+
 * **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
 also deleted.
 
@@ -4039,7 +4054,7 @@ Working With NSX Edge Logs
 Working With NSX Edge Summary
 ----
 
-* **get** *(secured)*: Retrieve details about the specified Edge.
+* **get** *(secured)*: Retrieve details about the specified NSX Edge.
 
 **Method history:**
 
@@ -4048,7 +4063,7 @@ Release | Modification
 6.3.0 | Method updated. **enableFips** parameter added to **appliancesSummary**.
 
 ### /4.0/edges/{edgeId}/status
-Working With Edge Status
+Working With NSX Edge Status
 ----
 
 * **get** *(secured)*: Retrieve the status of the specified Edge.
@@ -4146,7 +4161,16 @@ Working With a Specific NAT Rule
 ### /4.0/edges/{edgeId}/routing/config
 Working with the NSX Edge Routing Configuration
 ----
-Configure globalConfig, staticRouting, OSPG, and BGP.
+You can specify static and dynamic routing for each NSX Edge.
+
+Dynamic routing provides the necessary forwarding information between
+layer 2 broadcast domains, thereby allowing you to decrease layer 2
+broadcast domains and improve network efficiency and scale. NSX
+extends this intelligence to where the workloads reside for doing
+East‐West routing. This allows more direct virtual machine to virtual
+machine communication without the costly or timely need to extend
+hops. At the same time, NSX also provides North‐South connectivity,
+thereby enabling tenants to access public networks.
 
 ### Global Routing Configuration
 
@@ -4156,8 +4180,8 @@ Parameter  |   Description  | Comments
 **ecmp**  | Enables equal-cost multi-path routing (ECMP) | Optional. Boolean. By default, ecmp is set to false.
 **logging**  | Logging configuration. | Optional. 
 **logging > enable** | Enable/disable status of logging. | Optional. Default is *false*.
-**logging > logLevel**  | Sets the log level.  | Default is *INFO*.
-**ipPrefix**  | Details for one ipPrefix. |  Optional. Required only if you define redistribution rules in dynamic routing protocols like ospf, bgp.
+**logging > logLevel**  | Sets the log level.  | Default is *info*.  Valid values: *emergency*, *alert*, *critical*, *error*, *warning*, *notice*, *info*, *debug*.
+**ipPrefix**  | Details for one IP prefix. |  Optional. Required only if you define redistribution rules in dynamic routing protocols like ospf, bgp.
 **ipPrefix > name**  | The name of the IP prefix. | All defined IP prefixes must have unique names.
 **ipPrefix > ipAddress**  | IP addresses for the IP prefix. | Optional. String.
 
@@ -4278,7 +4302,8 @@ Release | Modification
 6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
 6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
 
-* **put** *(secured)*: Configure globalConfig, staticRouting, OSPG, and BGP.
+* **put** *(secured)*: Configure NSX Edge global routing configuration, static routing, and
+dynamic routing (OSPF and BGP).
 
 **Method history:**
 
@@ -4936,49 +4961,140 @@ IPSec statistics
 * **get** *(secured)*: Retrieve IPSec statistics
 
 ### /4.0/edges/{edgeId}/autoconfiguration
-Auto config is enabled by default. If you disable, you must add
-required NAT, firewall, routing rules
+If autoConfiguration is enabled, firewall rules are automatically
+created to allow control traffic. Rules to allow data traffic are not
+created.  For example, if you are using IPSec VPN, and
+**autoConfiguration** is *true*, firewall rules will automatically be
+configured to allow IKE traffic. However, you will need to add
+additional rules to allow the data traffic for the IPSec tunnel. If HA
+is enabled, firewall rules are always created, even if
+**autoConfiguration** is *false*, otherwise both HA appliances will
+become active.
 
-* **get** *(secured)*: Retrieve auto config settings for the Edge
-* **put** *(secured)*: Change the auto configuration settings for the NSX Edge
+* **get** *(secured)*: Retrieve the auto configuration settings for the NSX Edge.
+
+* **put** *(secured)*: Update the auto configuration settings for the NSX Edge.
 
 ### /4.0/edges/{edgeId}/appliances
-Working with Edge appliances
+Working With NSX Edge Appliance Configuration
+-----
+See *Working with NSX Edge* for additional parameters used to configure appliances.
 
-* **post** *(secured)*: Change the size of both appliances
-* **get** *(secured)*: Retrieve appliance configuration
-* **put** *(secured)*: Modify appliance configuration (tip -- retrieve the config using GET
-call, then modify the parameters and send as body)
+When you create an NSX Edge, you define parameters that determine how
+the appliance is deployed, including resourcePoolId, dataStoreId,
+hostId, and VmFolderId. After the appliance is deployed, these
+deployment details may change, and the appliance parameters are updated
+to reflect the current, live location.
+
+You can view the originally configured paramters by using the
+configuredResourcePool, configuredDataStore, configuredHost, and
+configuredVmFolder parameters.
+
+You can trigger a high availability failover on the active NSX Edge
+appliance by changing the haAdminState value to *down* as part of
+appliance configuration for an NSX Edge. The haAdminState parameter
+determines whether or not an NSX Edge appliance is participating in
+high availability. Both appliances in an NSX Edge high availability
+configuration normally have an haAdminState of *up*. When you set the
+haAdminState of the active appliance to be *down*, it stops
+participating in high availability, and informs the standby appliance
+of its status.  The standby appliance becomes active immediately.  
+
+Parameter | Description | Comments
+--------|-------------|---------
+**highAvailabilityIndex** | Index number of the appliance | Read only.
+**haAdminState** | Indicates whether appliance is participating in high availability. | If the active appliance **haAdminState** is set to *down*, it stops participating in HA, and informs the standby appliance of its status. The standby appliance becomes active immediately. 
+**configuredResourcePool > id** | ID of resource pool on which NSX Edge was originally deployed. | Read only.
+**configuredResourcePool > name** | Name of resource pool on which NSX Edge was originally deployed. | Read only.
+**configuredResourcePool > isValid** | True if resource pool on which NSX Edge was originally deployed currently exists. | Read only. *true* or *false*.
+**configuredDataStore > id** | ID of data store on which NSX Edge was originally deployed. | Read only.
+**configuredDataStore > name** | Name of data store on which NSX Edge was originally deployed. | Read only.
+**configuredDataStore > isValid** | True if resource pool on which NSX Edge was originally deployed currently exists. | Read only. *true* or *false*.
+**configuredHost > id** | ID of host on which NSX Edge was originally deployed. | Read only.
+**configuredHost > name** | Name of host on which NSX Edge was originally deployed. | Read only.
+**configuredHost > isValid** | True if resource pool on which NSX Edge was originally deployed currently exists. | Read only. *true* or *false*.
+**configuredVmFolder > id** | ID of folder in which NSX Edge was originally deployed. | Read only.
+**configuredVmFolder > name** | Name of folder in which NSX Edge was originally deployed. | Read only.
+**configuredVmFolder > isValid** | True if resource pool on which NSX Edge was originally deployed currently exists. | Read only. *true* or *false*.
+
+* **post** *(secured)*: Change the size of both appliances.
+
+* **get** *(secured)*: Retrieve appliance configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | **haAdminState** parameter added.
+6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+
+* **put** *(secured)*: You can retrieve the configuration of both appliances by using the
+GET call and replace the size, resource pool, datastore, and custom
+parameters of the appliances by using a PUT call. If there were two
+appliances earlier and you PUT only one appliance, the other
+appliance is deleted.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | **haAdminState** parameter added.
 
 ### /4.0/edges/{edgeId}/appliances/{haIndex}
-Manage a specified appliance using its HA index
+Working With NSX Edge Appliance Configuration by Index
 
-* **get** *(secured)*: Get configuration of specified appliance
-* **put** *(secured)*: Modify the configuration of the specified appliance
+* **post** *(secured)*: Used to send CLI Commands to the Edge Gw. To use CLI commands you also
+need to add an additional Accept Header with type text\plain, as well as
+the query parameter action=execute
+
+* **get** *(secured)*: Retrieve the configuration of the specified appliance.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | **haAdminState** parameter added.
+6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+
+* **put** *(secured)*: Update the configuration of the specified appliance.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | **haAdminState** parameter added.
+
 * **delete** *(secured)*: Delete the appliance
 
 ### /4.0/edges/{edgeId}/vnics
-Working with interfaces. Add up to ten internal/uplink interfaces to
-each Edge. Each Edge must have at least one internal interface
+Working With Edge Services Gateway Interfaces
+----
+See *Working with NSX Edge* for descriptions of parameters used to
+configure Edge Service Gateway interfaces.
 
-* **post** *(secured)*: Add an interface or sub interface
-* **get** *(secured)*: Retrieve all interfaces for Edge
+* **post** *(secured)*: Add an interface or sub interface.
+* **get** *(secured)*: Retrieve all interfaces for the specified Edge Services Gateway.
 
 ### /4.0/edges/{edgeId}/vnics/{index}
-Specified interface by index
+Working With a Specific Edge Services Gateway Interface
+----
+See *Working with NSX Edge* for descriptions of parameters used to
+configure Edge Service Gateway interfaces.
 
-* **get** *(secured)*: Retrieve interface
-* **put** *(secured)*: Modify the specified interface
+* **get** *(secured)*: Retrieve the specified interface.
+* **put** *(secured)*: Update the specified interface.
 * **delete** *(secured)*: Delete interface
 
 ### /4.0/edges/{edgeId}/mgmtinterface
 Working with management interfaces for an NSX Edge router
 
 * **get** *(secured)*: Retrieve all managedment interfaces to the NSX Edge router
-* **put** *(secured)*: Configure management interfaces for NSX Edge router
+* **put** *(secured)*: Configure high availability (management) interface for logical
+(distributed) router.  See *Working with NSX Edge* for descriptions
+of parameters used to configure the logical router HA interface.
 
 ### /4.0/edges/{edgeId}/interfaces
-Working with all NSX Edge router interfaces
+Configure interfaces for logical (distributed) router.  See *Working with NSX Edge* for descriptions of parameters used to configure the logical router interfaces.
 
 * **post** *(secured)*: Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces
 
