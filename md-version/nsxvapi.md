@@ -3379,7 +3379,8 @@ configured for firewall, after a firewall rule publish their status is
 
 Release | Modification
 --------|-------------
-6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
+6.2.4 | Method updated. Parameter **generationNumberObjects** added. 
+6.2.4 | Method updated. Clusters not configured for firewall are excluded from the status output.
 
 ### /4.0/firewall/globalroot-0/status/layer3sections/{sectionID}
 Working with a Specific Layer 3 Section Status
@@ -3431,6 +3432,77 @@ Import a Firewall Configuration
 -----
 
 * **post** *(secured)*: Import a configuration.
+
+### /4.0/firewall/globalroot-0/timeouts
+Working with Distributed Firewall Session Timers
+=======
+You can configure session timers (session timeouts) for TCP, UDP, and
+ICMP. There is a default configuration, which applies to all VMs protected by
+Distributed Firewall. You can modify the session timers values of the
+default configuration, but not the **appliedTo** values.
+
+You can add additional session timer configurations with different
+**appliedTo** configurations.
+
+Parameter | Description | Comments
+-----|-----|-----
+**appliedTo > value** | The ID of the object on which to apply the timeout settings | Required. For example VM ID *vm-216*.
+**appliedTo > type** | The type of object on which to apply the timeout settings. | Required. Can be *VirtualMachine* or *Vnic*
+**tcpFirstPacket** | The timeout value for the connection after the first packet has been sent. This will be the initial timeout for the connection once a SYN has been sent and the flow is created. | Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *120*. 
+**tcpOpen** | The timeout value for the connection after a second packet has been transferred. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *30*. 
+**tcpEstablished** | The timeout value for the connection once the connection has become fully established. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *43200*. 
+**tcpClosing** | The timeout value for the connection after the first FIN has been sent. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *120*. 
+**tcpFinWait** | The timeout value for the connection after both FINs have been exchanged and the connection is closed. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *45*. 
+**tcpClosed** | The timeout value for the connection after one endpoint sends an RST. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *20*. 
+**udpFirstPacket** | The timeout value for the connection after the first packet. This will be the initial timeout for the new UDP flow. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *60*. 
+**udpSingle** | The timeout value for the connection if the source host sends more than one packet but the destination host has never sent one back. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *30*. 
+**udpMultiple** | The timeout value for the connection if both hosts have sent packets. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *60*. 
+**icmpFirstPacket** | The timeout value for the connection after the first packet. This will be the initial timeout for the new ICMP flow. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *20*. 
+**icmpErrorReply** | The timeout value for the connection after an ICMP error came back in response to an ICMP packet. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *10*. 
+
+* **get** *(secured)*: Retrieve Distributed Firewall session timer configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+* **post** *(secured)*: Create a Distributed Firewall session timer configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+### /4.0/firewall/globalroot-0/timeouts/{configId}
+Working With a Specific Distributed Firewall Session Timer Configuration
+====
+
+* **get** *(secured)*: Retrieve the specified Distributed Firewall session timer configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+* **put** *(secured)*: Update the specified Distributed Firewall session timer configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+* **delete** *(secured)*: Delete the specified Distributed Firewall session timer configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
 
 ### /4.0/firewall/stats/eventthresholds
 Working With Distributed Firewall Thresholds
