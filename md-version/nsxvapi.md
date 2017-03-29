@@ -176,6 +176,1113 @@ EN-002339-00
 
 ---
 
+## vdsManage
+Working with vSphere Distributed Switches
+===========
+
+### /2.0/vdn/switches
+
+* **post** *(secured)*: Prepare a vSphere Distributed Switch.
+
+The MTU is the maximum amount of data that can be transmitted in one
+packet before it is divided into smaller packets. VXLAN frames are slightly
+larger in size because of the traffic encapsulation, so the MTU required
+is higher than the standard MTU. You must set the MTU for each switch to
+1602 or higher.
+
+* **get** *(secured)*: Retrieve information about all vSphere Distributed Switches.
+
+### /2.0/vdn/switches/datacenter/{datacenterID}
+Working with vSphere Distributed Switches in a Datacenter
+------
+
+* **get** *(secured)*: Retrieve information about all vSphere Distributed Switches in the specified datacenter.
+
+### /2.0/vdn/switches/{vdsId}
+Working With a Specific vSphere Distributed Switch
+------
+
+* **get** *(secured)*: Retrieve information about the specified vSphere Distributed Switch.
+
+* **delete** *(secured)*: Delete the specified vSphere Distributed Switch.
+
+## vdnConfig
+Working with Segement ID Pools and Multicast Ranges
+========
+
+### /2.0/vdn/config/segments
+Working With Segment ID Pools
+-------------
+Segment ID pools (also called segment ID ranges) provide virtual network
+identifiers (VNIs) to logical switches.
+
+You must configure a segment ID pool for each NSX Manager. You can have
+more than one segment ID pool. The segment ID pool includes the beginning
+and ending IDs.
+
+You should not configure more than 10,000 VNIs in a single vCenter
+server because vCenter limits the number of dvPortgroups to 10,000.
+
+If any of your transport zones will use multicast or hybrid replication
+mode, you must also configure a multicast address range.
+
+* **post** *(secured)*: Add a segment ID pool.
+
+* **name** - Required property.
+* **desc** - Optional property.
+* **begin** - Required property. Minimum value is *5000*
+* **end** - Required property. Maximum value is *16777216*
+
+* **get** *(secured)*: Retrieve information about all segment ID pools.
+
+### /2.0/vdn/config/segments/{segmentPoolId}
+Working With a Specific Segment ID Pool
+------
+
+* **get** *(secured)*: Retrieve information about the specified segment ID pool.
+
+* **put** *(secured)*: Update the specified segment ID pool.
+
+If the segment ID pool is universal you must send the API request to
+the primary NSX Manager.
+
+* **delete** *(secured)*: Delete the specified segment ID pool.
+
+If the segment ID pool is universal you must send the API request to
+the primary NSX Manager.
+
+### /2.0/vdn/config/multicasts
+Working with Multicast Address Ranges
+------
+If any of your transport zones will use multicast or hybrid replication
+mode, you must add a multicast address range (also called a multicast
+address pool). Specifying a multicast address range helps in spreading
+traffic across your network to avoid overloading a single multicast
+address.
+
+* **post** *(secured)*: Add a multicast address range for logical switches.
+
+The address range includes the beginning and ending addresses.
+
+* **get** *(secured)*: Retrieve information about all configured multicast address ranges.
+
+Universal multicast address ranges have the property isUniversal
+set to *true*.
+
+### /2.0/vdn/config/multicasts/{multicastAddresssRangeId}
+Working With a Specific Multicast Address Range
+--------
+
+* **get** *(secured)*: Retrieve information about the specified multicast address range.
+
+* **put** *(secured)*: Update the specified multicast address range.
+
+If the multicast address range is universal you must send the API
+request to the primary NSX Manager.
+
+* **delete** *(secured)*: Delete the specified multicast address range.
+
+If the multicast address range is universal you must send the API
+request to the primary NSX Manager.
+
+### /2.0/vdn/config/vxlan/udp/port
+Working with the VXLAN Port Configuration
+----------
+
+* **get** *(secured)*: Retrieve the UDP port configured for VXLAN traffic.
+
+### /2.0/vdn/config/vxlan/udp/port/{portNumber}
+Update the VXLAN Port Configuration
+-------
+
+* **put** *(secured)*: Update the VXLAN port configuration to use port *portNumber*.
+
+This method changes the VXLAN port in a three phrase process, avoiding
+disruption of VXLAN traffic. In a cross-vCenter NSX environment,
+change the VXLAN port on the primary NSX Manager to propagate this
+change on all NSX Managers and hosts in the cross-vCenter NSX
+environment.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. Port change is now non-disruptive, and propagates to secondary NSX Managers if performed on the primary NSX Manager. Force parameter added.
+
+### /2.0/vdn/config/vxlan/udp/port/taskStatus
+VXLAN Port Configuration Update Status
+----
+
+* **get** *(secured)*: Retrieve the status of the VXLAN port configuration update.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/config/resources/allocated
+Working with Allocated Resources
+------
+
+* **get** *(secured)*: Retrieve information about allocated segment IDs or multicast
+addresses.
+
+## vdnScopes
+Working with Transport Zones
+==============
+
+### /2.0/vdn/scopes
+
+* **get** *(secured)*: Retrieve information about all transport zones (also known as network
+scopes).
+
+* **post** *(secured)*: Create a transport zone.
+
+Request body parameters:
+
+  * **name** - Required. The name of the transport zone.
+  * **description** - Optional. Description of the transport zone.
+  * **objectId** - Required. The cluster object ID from vSphere. One or more are
+    required.
+  * **controlPlaneMode** - Optional. The control plane mode. It can be
+    one of the following:
+      * *UNICAST_MODE*
+      * *HYBRID_MODE*
+      * *MULTICAST_MODE*
+
+### /2.0/vdn/scopes/{scopeId}
+Working with a Specific Transport Zone
+---------
+
+* **get** *(secured)*: Retrieve information about the specified transport zone.
+
+* **post** *(secured)*: Update the specified transport zone.
+
+You can add a cluster to or delete a cluster from a transport zone.
+
+You can also repair missing portgroups. For every logical switch
+created, NSX creates a corresponding portgroup in vCenter. If the
+portgroup is lost for any reason, the logical switch will stop
+functioning. The repair action recreates any missing portgroups.
+
+* **delete** *(secured)*: Delete the specified transport zone.
+
+### /2.0/vdn/scopes/{scopeId}/attributes
+Working With Transport Zone Attributes
+----
+
+* **put** *(secured)*: Update the attributes of a transport zone.
+
+For example, you can update the name, description, or control plane
+mode. You must include the cluster object IDs for the transport zone
+in the request body.
+
+### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
+Testing Multicast Group Connectivity
+-------
+
+* **post** *(secured)*: Test multicast group connectivity.
+
+Test multicast group connectivity between two hosts connected to the
+specified transport zone.
+
+Parameter **packetSizeMode** has one of the following values:
+* *0* - VXLAN standard packet size
+* *1* - minimum packet size
+* *2* - customized packet size.
+If you set **packetSizeMode** to *2*, you must specify the size using
+the **packetSize** parameter.
+
+## logicalSwitches
+Working with Logical Switches in a Specific Transport Zone
+==================
+
+### /2.0/vdn/scopes/{scopeId}/virtualwires
+
+* **get** *(secured)*: Retrieve information about all logical switches in the specified
+transport zone (network scope).
+
+* **post** *(secured)*: Create a logical switch.
+
+To create a universal logical switch use *universalvdnscope* as the
+scopeId in the URI and send the request to the primary NSX Manager.
+Request body parameters:
+  * **name** - Optional. The name of the logical switch.
+  * **description** - Optional. Description of the logical switch.
+  * **tenantId** - Required.
+  * **controlPlaneMode** - Optional. The control plane mode. If not
+    specified, the **controlPlaneMode** of the transport zone is used. It
+    can be one of the following:
+      * *UNICAST_MODE*
+      * *HYBRID_MODE*
+      * *MULTICAST_MODE*
+  * **guestVlanAllowed** - Optional. Default is *false*.
+
+## traceflows
+Working with Traceflow
+================
+For Traceflow to work as expected, make sure that the controller cluster is
+connected and in healthy state. The Traceflow operation requires active
+communication between vCenter, NSX Manager, controller cluster, and netcpa
+User World Agents (UWA) on the host. Traceflow observes marked packet as it
+traverses overlay network. Each packet is delivered to host VM and
+monitored as it crosses overlay network until it reaches the destination
+VM. The packet is never delivered to the destination guest VM. This means
+that Traceflow packet delivery is successful even when the guest VM is
+powered down. Unknown L2 Packets are always be sent to the bridge.
+Typically, the bridge forwards these packets to a VLAN and reports the
+Traceflow packet as delivered. The packet which is reported as delivered
+need not necessarily mean that the trace packet was delivered to the
+destination specified. You should conclude only after validating the
+observations.vdl2 serves ARP proxy for ARP packets coming from VMs.
+However, traceflow bypasses this process, hence vdl2 may broadcast the
+traceflow packet out.
+
+### /api/2.0/vdn/traceflow
+
+* **post** *(secured)*: Create a traceflow.
+
+### /api/2.0/vdn/traceflow/{traceflowId}
+Working with a Specific Traceflow
+---------
+
+* **get** *(secured)*: Query a specific traceflow by *tracflowId* which is the value returned
+after executing the create Traceflow API call.
+
+### /api/2.0/vdn/traceflow/{traceflowId}/observations
+Traceflow Observations
+-----
+
+* **get** *(secured)*: Retrieve traceflow observations.
+
+## logicalSwitchesGlobal
+Working with Logical Switches in All Transport Zones
+===========
+
+### /2.0/vdn/virtualwires
+
+* **get** *(secured)*: Retrieve information about all logical switches in all transport zones.
+
+### /2.0/vdn/virtualwires/vm/vnic
+Working Virtual Machine Connections to Logical Switches
+-----
+
+* **post** *(secured)*: Attach a VM vNIC to, or detach a VM vNIC from a logical switch.
+
+Specify the logical switch ID in the **portgroupId** parameter. To
+detach a VM vNIC from a logical switch, leave the **portgroupId** parameter
+empty.
+
+To find the ID of a VM vNIC, do the following:
+1. In the vSphere MOB, navigate to the VM you want to connect or disconnect.
+2. Click **config** and take note of the **instanceUuid**.
+3. Click **hardware** and take note of the last three digits of the
+appropriate network interface device.
+
+Use these two values to form the VM vNIC ID.  For example, if the
+**instanceUuid** is *502e71fa-1a00-759b-e40f-ce778e915f16* and the
+appropriate **device** value is *device[4000]*, the **objectId** and
+**vnicUuid** are both *502e71fa-1a00-759b-e40f-ce778e915f16.000*.
+
+### /2.0/vdn/virtualwires/{virtualWireID}
+Working With a Specific Logical Switch
+----
+
+* **get** *(secured)*: Retrieve information about the specified logical switch.
+
+If the switch is a universal logical switch the **isUniversal**
+parameter is set to true in the response body.
+
+* **put** *(secured)*: Update the specified logical switch.
+
+For example, you can update the name, description, or control plane
+mode.
+
+* **delete** *(secured)*: Delete the specified logical switch.
+
+### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/multicast
+Testing Host Connectivity
+-----
+
+* **post** *(secured)*: Test multicast group connectivity.
+
+Test multicast group connectivity between two hosts connected to the
+specified logical switch.
+
+Parameter **packetSizeMode** has one of the following values:
+* *0* - VXLAN standard packet size
+* *1* - minimum packet size
+* *2* - customized packet size.
+If you set **packetSizeMode** to *2*, you must specify the size using
+the **packetSize** parameter.
+
+### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/p2p
+Testing Point-to-Point Connectivity
+----
+
+* **post** *(secured)*: Test point-to-point connectivity.
+
+Test point-to-point connectivity between two hosts connected to the
+specified logical switch.
+
+Parameter **packetSizeMode** has one of the following values:
+* *0* - VXLAN standard packet size
+* *1* - minimum packet size
+* *2* - customized packet size.
+If you set **packetSizeMode** to *2*, you must specify the size using
+the **packetSize** parameter.
+
+### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways
+Working with Hardware Gateway Bindings for a Specific Logical Switch
+-----
+
+* **get** *(secured)*: Retrieve hardware gateway bindings for the specified logical switch.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways/{hardwareGatewayBindingId}
+Working with Connections Between Hardware Gateways and Logical Switches
+-------
+
+* **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
+
+### Attach a hardware gateway to a logical switch and create a new binding with the information provided
+
+`POST /api/2.0/vdn/virtualwires/{virtualwireid}/hardwaregateways`
+
+```
+<hardwareGatewayBinding>
+  <hardwareGatewayId>hardwarewgateway1</hardwareGatewayId>
+  <vlan>v1</vlan>
+  <switchName>s1</switchName>
+  <portName>s1</portName>
+</hardwareGatewayBinding> 
+```
+
+### Attach a hardware gateway to a logical switch, specifying an existing binding by ID
+
+`POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=attach`
+
+```
+<virtualWire>
+  ...
+  <hardwareGatewayBindings>
+    <hardwareGatewayBinding>
+      <id>binding id</id>
+    </hardwareGatewayBinding>
+  </hardwareGatewayBindings>
+</virtualWire>
+```
+
+### Detach a hardware gateway from a logical switch
+
+`POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=detach`
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+## arpMAC
+Working with IP Discovery and MAC Learning for Logical Switches
+==============
+
+You can enable IP discovery (ARP suppression) and MAC learning for logical
+switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
+pair learning table on each vNic.
+
+This table is stored as part of the dvfilter data. During vMotion,
+dvfilter saves/restores the table at the new location. The switch then
+issues RARPs for all the VLAN - MAC entries in the table.
+
+Enabling this feature avoids possible traffic loss during vMotion in the
+following cases:
+
+* the vNic is in VLAN trunk mode
+* the VM is using more  than one unicast MAC address. Since Etherswitch
+supports only one unicast MAC per vNic, RARP is not processed.
+
+When a logical switch is created using the API, IP discovery is enabled,
+and MAC learning is disabled.
+
+In cross-vCenter NSX, the following applies:
+* The MAC learning setting for a universal logical switch is managed
+on the primary NSX Manager. Any changes are synchronized to all secondary
+NSX Managers.
+* The IP discovery setting for a universal logical switch is managed
+separately on each NSX Manager.
+
+**Note:** In NSX 6.2.2 and earlier you cannot disable IP discovery for
+universal logical switches on secondary NSX Managers.
+
+### /2.0/xvs/networks/{ID}/features
+
+* **get** *(secured)*: Retrieve IP discovery and MAC learning information.
+* **put** *(secured)*: Enable or disable IP discovery and MAC learning.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. IP discovery can be disabled on secondary NSX Managers.
+
+## nsxControllers
+Working with NSX Controllers
+==============
+For the unicast or hybrid control plane mode,
+you must add an NSX controller to manage overlay transport and provide
+East-West routing. The controller optimizes virtual machine broadcast (ARP
+only) traffic, and the learning is stored on the host and the controller.
+
+### /2.0/vdn/controller
+
+* **post** *(secured)*: Adds a new NSX controller on the specified given cluster. The *hostId*
+parameter is optional. The *resourcePoolId* can be either the
+*clusterId* or *resourcePoolId*.
+
+The IP address of the controller node will be allocated
+from the specified IP pool. The *deployType* property determines the
+controller node memory size and can be small, medium, or large. However,
+different controller deployment types are not currently supported because
+the OVF overrides it and different OVF types require changes in the
+manager build scripts. Despite not being supported, an arbitrary
+*deployType* size must still be specified or an error will be returned.
+Request without body to upgrade controller cluster.
+
+* **get** *(secured)*: Retrieves details and runtime status for all controllers.  Runtime status
+can be one of the following:
+
+  * **Deploying** - controller is being deployed and the procedure has not
+  completed yet.
+  * **Removing** - controller is being removed and the procedure has not
+  completed yet.
+  * **Running** - controller has been deployed and can respond to API
+  invocation.
+  * **Unknown** - controller has been deployed but fails to respond to API
+  invocation.
+
+### /2.0/vdn/controller/upgrade-available
+Working With Controller Upgrade Availability
+----
+
+* **get** *(secured)*: Retrieve controller upgrade availability.
+
+### /2.0/vdn/controller/progress/{jobId}
+Working With of Controller Job Status
+-----
+
+* **get** *(secured)*: Retrieves status of controller creation or removal. The progress gives
+a percentage indication of current deploy / remove procedure.
+
+### /2.0/vdn/controller/{controllerId}
+Working with a Specific Controller
+-----
+
+* **delete** *(secured)*: Delete the NSX controller.
+
+### /2.0/vdn/controller/{controllerId}/techsupportlogs
+Working with Controller Tech Support Logs
+-----
+
+* **get** *(secured)*: Retrieve controller logs. Response content type is
+application/octet-stream and response header is filename. This
+streams a fairly large bundle back (possibly hundreds of MB).
+
+### /2.0/vdn/controller/{controllerId}/syslog
+Working with Controller Syslog
+-----
+
+* **post** *(secured)*: Add controller syslog exporter on the controller.
+* **get** *(secured)*: Retrieve details about the syslog exporter on the controller.
+
+* **delete** *(secured)*: Deletes syslog exporter on the specified controller node.
+
+### /2.0/vdn/controller/{controllerId}/snapshot
+Working with Controller Cluster Snapshots
+-----
+
+* **get** *(secured)*: Take a snapshot of the control cluster from the specified controller
+node.
+
+### /2.0/vdn/controller/cluster
+Working with the NSX Controller Cluster Configuration
+----
+
+* **get** *(secured)*: Retrieve cluster wide configuration information for controller.
+
+* **put** *(secured)*: Modify cluster wide configuration information for controller.
+
+### /2.0/vdn/controller/credential
+Working with the NSX Controller Password
+------
+
+* **put** *(secured)*: Change the NSX controller password.
+
+## servicesApps
+Working with Services Grouping Objects
+=============
+
+### /2.0/services/application/scope/{scopeId}
+Retrieve Services from a Specific Scope
+----
+
+* **get** *(secured)*: Retrieve services that have been created on the specified scope.
+
+### /2.0/services/application/{scopeId}
+Create a Service on a Specific Scope
+------
+
+* **post** *(secured)*: Create a new service on the specified scope.
+
+### /2.0/services/application/{applicationId}
+Working With a Specified Service
+-------
+
+* **get** *(secured)*: Retrieve details about the specified service.
+* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a
+service.
+
+* **delete** *(secured)*: Delete the specified service.
+
+## applicationgroup
+Working with Service Groups Grouping Objects
+============
+
+### /2.0/services/applicationgroup/scope/{scopeId}
+Working with Service Groups on a Specific Scope
+-------
+
+* **post** *(secured)*: Create a new service group on the specified scope.
+* **get** *(secured)*: Retrieve a list of service groups that have been created on the scope.
+
+### /2.0/services/applicationgroup/{applicationgroupId}
+Working with a Specific Service Group
+----
+
+* **get** *(secured)*: Retrieve details about the specified service group.
+* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of
+the specified service group.
+
+* **delete** *(secured)*: Delete the specified service group from a scope.
+
+### /2.0/services/applicationgroup/{applicationgroupId}/members/{moref}
+Working with a Specific Service Group Member
+-----
+
+* **put** *(secured)*: Add a member to the service group.
+* **delete** *(secured)*: Delete a member from the service group.
+
+### /2.0/services/applicationgroup/scope/{scopeId}/members
+Working with Service Group Members on a Specific Scope
+------
+
+* **get** *(secured)*: Get a list of member elements that can be added to the service groups
+created on a particular scope.
+
+Since service group allows only either services or other service
+groups as members to be added, this helps you get a list of all
+possible valid elements that can be added to the
+service.
+
+## ipPoolsObjects
+Working with IP Pool Grouping Objects
+========
+
+### /2.0/services/ipam/pools/scope/{scopeId}
+Working with IP Pools on a Specific Scope
+-----
+
+* **get** *(secured)*: Retrieves all IP pools on the specified scope where the *scopeID* is the
+reference to the desired scope. An example of the *scopeID* is
+globalroot-0.
+
+* **post** *(secured)*: Create a pool of IP addresses. For *scopeId* use globalroot-0 or
+the *datacenterId* in upgrade use cases.
+
+### /2.0/services/ipam/pools/{poolId}
+Working with a Specific IP Pool
+------
+
+* **get** *(secured)*: Retrieve details about a specific IP pool.
+* **put** *(secured)*: To modify an IP pool, query the IP pool first. Then modify the output and
+send it back as the request body.
+
+* **delete** *(secured)*: Delete an IP pool.
+
+### /2.0/services/ipam/pools/{poolId}/ipaddresses
+Working with IP Pool Address Allocations
+------
+
+* **get** *(secured)*: Retrieves all allocated IP addresses from the specified pool.
+
+* **post** *(secured)*: Allocate an IP Address from the pool. Use *ALLOCATE* in the
+**allocationMode** field in the body to allocate the next available
+IP. To allocate a specific one use *RESERVE* and pass the IP to
+reserve in the **ipAddress** fields in the body.
+
+### /2.0/services/ipam/pools/{poolId}/ipaddresses/{ipAddress}
+Working with Specific IPs Allocated to an IP Pool
+----
+
+* **delete** *(secured)*: Release an IP address allocation in the pool.
+
+## capacityUsage
+Working with Licensing Capacity
+============
+The licensing capacity usage API command reports usage of CPUs, VMs and
+concurrent users for the distributed firewall and VXLAN.
+
+### /2.0/services/licensing/capacityusage
+
+* **get** *(secured)*: Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
+users for the distributed firewall and VXLAN.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+## securitytags
+Working with Security Tags
+=====
+
+You can manage security tags and their virtual machine assignments. For
+example, you can create a user defined security tag, assign tags to a
+virtual machine, view tags assigned to virtual machines, and view virtual
+machines that have a specific tag assigned.
+
+### /2.0/services/securitytags/tag
+Managing Security Tags
+-----
+
+* **post** *(secured)*: Create a new security tag.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. `isUniversal` parameter can be set to create a universal security tag.
+
+* **get** *(secured)*: Retrieve all security tags.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. Added `isUniversal` query parameter to filter universal security tags.
+
+### /2.0/services/securitytags/tag/{tagId}
+Delete a Security Tag
+----
+
+* **delete** *(secured)*: Delete the specified security tag.
+
+### /2.0/services/securitytags/tag/{tagId}/vm
+Working With Virtual Machines on a Specific Security Tag
+----
+
+* **get** *(secured)*: Retrieve the list of VMs that have the specified tag attached to
+them.
+
+* **post** *(secured)*: Attach or detach a security tag to a virtual machine.
+
+This operation does not check that the virtual machine exists in
+the local inventory. This allows you to attach a universal
+security tag to a virtual machine that is connected to a secondary
+NSX Manager (and therefore is not connected to the primary NSX
+Manager where the call is sent).
+
+Possible keys for the tagParameter are:
+* instance_uuid
+* bios_uuid
+* vmname
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+### /2.0/services/securitytags/tag/{tagId}/vm/{vmId}
+Manage a Security Tag on a Virtual Machine
+----
+
+* **put** *(secured)*: Apply a security tag to the specified virtual machine.
+
+**Note:** this method can attach a universal security tag to a
+virtual machine. However, this method checks that the VM exists
+on the NSX Manager to which the API call is sent. In a
+cross-vCenter active active environment, the VM might exist on
+a secondary NSX Manager, and so the call would fail. 
+
+You can instead use the `POST
+/api/2.0/services/securitytags/tag/{tagId}/vm?action=attach`
+method to attach universal security tags to a VM that is not
+local to the primary NSX Manager. This method does not check
+that the VM is local to the NSX Manager.
+
+* **delete** *(secured)*: Detach a security tag from the specified virtual machine.
+
+### /2.0/services/securitytags/tag/{tagId}/vmDetail
+Working with Virtual Machine Details for a Specific Security Tag
+-----
+
+* **get** *(secured)*: Retrieve details about the VMs that are attached to the
+specified security tag.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+### /2.0/services/securitytags/vm/{vmId}
+Working With Security Tags on a Specific Virtual Machine
+-----
+
+* **get** *(secured)*: Retrieve all security tags associated with the specified virtual
+machine.
+
+* **post** *(secured)*: Update security tags associated with the specified virtual machine.
+
+You can assign multiple tags at a time to the specified VM, or clear
+all assigned tags from the specified VM.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+### /2.0/services/securitytags/selection-criteria
+Working with Security Tags Unique ID Selection Criteria
+-------
+In NSX versions before 6.3.0, security tags are local to a NSX Manager,
+and are mapped to VMs using the VM's managed object ID.
+
+In NSX 6.3.0 and later, you can create universal security tags to use in
+all NSX Managers in a cross-vCenter NSX environment.
+
+In an active standby environment, the managed object ID for a given VM
+might not be the same in the active and standby datacenters. NSX 6.3.x
+introduces a Unique ID Selection Criteria on the primary NSX Manager to
+use to identify VMs when attaching them to universal security tags only.
+You can use them singly or in combination. The VM instance UUID is the
+recommended selection criteria. See the descriptions for more
+information.
+
+The default value for the selection criteria is null and must be set
+before assigning a universal security tag to a VM. The selection
+criteria can be set only on the primary NSX manager and is read-only on
+secondary NSX Managers.
+
+Security Tag Assignment<br>Metadata Parameter | Description
+------|-------
+instance_uuid | The VM instance UUID is generally unique within a vCenter domain, however there are exceptions such as when deployments are made through snapshots. If the VM instance UUID is not unique, you can use the VM BIOS UUID in combination with the VM name.
+bios_uuid | The BIOS UUID is not guaranteed to be unique within a vCenter domain, but it is always preserved in case of disaster. Use BIOS UUID in combination with VM name to reduce the chance of a duplicate ID.
+vmname | If all of the VM names in an environment are unique, then VM name can be used to identify a VM across vCenters. Use VM name in combination with VM BIOS UUID to reduce the chance of a duplicate ID.
+
+* **get** *(secured)*: Retrieve unique ID section criteria configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+* **put** *(secured)*: Configure the unique ID section criteria configuration.
+
+If you set the selection criteria and assign security tags to VMs, you
+must remove all security tags from VMs before you can change the
+selection criteria.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+## ssoConfig
+Working with NSX Manager SSO Registration
+============
+
+### /2.0/services/ssoconfig
+
+* **get** *(secured)*: Retrieve SSO Configuration.
+* **post** *(secured)*: Register NSX Manager to SSO Services.
+* **delete** *(secured)*: Deletes the NSX Manager SSO Configuration.
+
+### /2.0/services/ssoconfig/status
+Working with SSO Configuration Status
+-----
+
+* **get** *(secured)*: Retrieve the SSO configuration status of NSX Manager.
+
+## userMgmt
+Working with User Management
+==========
+
+### /2.0/services/usermgmt/user/{userId}
+Manage Users on NSX Manager
+-----
+
+* **get** *(secured)*: Get information about a user.
+* **delete** *(secured)*: Remove the NSX role for a vCenter user.
+
+### /2.0/services/usermgmt/role/{userId}
+Manage NSX Roles for Users
+-----
+
+* **get** *(secured)*: Retrieve a user's role (possible roles are super_user, vshield_admin,
+enterprise_admin, security_admin, and audit).
+
+* **post** *(secured)*: Add role and resources for a user.
+* **put** *(secured)*: Change a user's role.
+* **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role
+is deleted, the user is removed from NSX Manager. You cannot delete the
+role for a local user.
+
+### /2.0/services/usermgmt/enablestate/{value}
+Working with User Account State
+-----
+
+* **put** *(secured)*: Enable or disable a user account.
+
+### /2.0/services/usermgmt/users/vsm
+Working with NSX Manager Role Assignment
+----
+
+* **get** *(secured)*: Get information about users who have been assigned a NSX Manager role
+(local users as well as vCenter users with NSX Manager role).
+
+### /2.0/services/usermgmt/roles
+Working with Available NSX Manager Roles
+----
+
+* **get** *(secured)*: Read all possible roles in NSX Manager
+
+### /2.0/services/usermgmt/scopingobjects
+Working With Scoping Objects
+----
+
+* **get** *(secured)*: Retrieve a list of objects that can be used to define a user's access
+scope.
+
+## secGroup
+Working with Security Group Grouping Objects
+===========
+A security group is a collection of assets or grouping objects from your
+vSphere inventory.
+
+### /2.0/services/securitygroup/bulk/{scopeId}
+Creating New Security Groups With Members
+----
+
+* **post** *(secured)*: Create a new security group on a global scope or universal scope with
+membership information.
+
+Universal security groups are read-only when querying a secondary NSX
+manager.
+
+When you create a universal security group (on scope
+*universalroot-0*) by default **localMembersOnly** is set to *false*
+which indicates that the universal security group will contain members
+across the cross-vCenter NSX environment.  This is the case in an
+active active environment. You can add the following
+objects to a universal security group with *localMembersOnly=false*
+(active active):
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=false*
+
+When you create a universal security group (on scope
+*universalroot-0*) you can set the extendedAttribute
+**localMembersOnly** to *true* to indicate that the universal security
+group will contain members local to that NSX Manager only.  This is
+the case in an active standby environment, because only one NSX
+environment is active at a time, and the same VMs are present in each
+NSX environment. You can add the following objects to a universal
+security group with *localMembersOnly=true* (active standby):
+* Universal Security Tag
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=true*
+* Dynamic criteria using VM name
+
+You can set the **localMembersOnly** attribute only when the universal
+security group is created, it cannot be modified afterwards.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Extended attribute **localMembersOnly** introduced.
+
+### /2.0/services/securitygroup/{scopeId}
+Creating New Security Groups Without Members
+-----
+
+* **post** *(secured)*: Create a new security group, with no membership information specified.
+You can add members later with `PUT
+/2.0/services/securitygroup/bulk/{objectId}`
+
+When you create a universal security group (on scope
+*universalroot-0*) by default **localMembersOnly** is set to *false*
+which indicates that the universal security group will contain members
+across the cross-vCenter NSX environment.  This is the case in an
+active active environment. You can add the following
+objects to a universal security group with *localMembersOnly=false*
+(active active):
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=false*
+
+When you create a universal security group (on scope
+*universalroot-0*) you can set the extendedAttribute
+**localMembersOnly** to *true* to indicate that the universal security
+group will contain members local to that NSX Manager only.  This is
+the case in an active standby environment, because only one NSX
+environment is active at a time, and the same VMs are present in each
+NSX environment. You can add the following objects to a universal
+security group with *localMembersOnly=true* (active standby):
+* Universal Security Tag
+* IP Address Set
+* MAC Address Set
+* Universal Security Groups with *localMembersOnly=true*
+* Dynamic criteria using VM name
+
+You can set the **localMembersOnly** attribute only when the universal
+security group is created, it cannot be modified afterwards.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Extended attribute **localMembersOnly** introduced.
+
+### /2.0/services/securitygroup/bulk/{objectId}
+Updating a Specific Security Group Including Membership
+----
+
+* **put** *(secured)*: Update configuration for the specified security group, including membership information.
+
+### /2.0/services/securitygroup/{objectId}
+Working with a Specific Security Group
+----
+
+* **get** *(secured)*: Retrieve all members of the specified security group.
+* **put** *(secured)*: Update configuration for the specified security group. Members are not
+updated. You must use `PUT
+/2.0/services/securitygroup/bulk/{objectId}` to update a security
+group membership.
+
+* **delete** *(secured)*: Delete an existing security group.
+
+If *force=true* is specified, the object is deleted even if used in
+other configurations, such as firewall rules. If *force=true* is not
+specified, the object is deleted only if it is not used by other
+configuration; otherwise the delete fails.
+
+### /2.0/services/securitygroup/{objectId}/members/{memberId}
+Working with Members of a Specific Security Group
+----
+
+* **put** *(secured)*: Add a new member to the specified security group.
+
+* **delete** *(secured)*: Delete member from the specified security group.
+
+### /2.0/services/securitygroup/{objectId}/translation/virtualmachines
+Working with Virtual Machines in a Security Group
+----
+
+* **get** *(secured)*: Retrieve list of virtual machine entities that belong to a specific security
+group.
+
+### /2.0/services/securitygroup/{objectId}/translation/ipaddresses
+Working with IP Addresses in a Security Group
+-----
+
+* **get** *(secured)*: Retrieve list of IP addresses that belong to a specific security
+group.
+
+### /2.0/services/securitygroup/{objectId}/translation/macaddresses
+Working with MAC Addresses in a Security Group
+-----
+
+* **get** *(secured)*: Retrieve list of MAC addresses that belong to a specific security
+group.
+
+### /2.0/services/securitygroup/{objectId}/translation/vnics
+Working with vNICs in a Security Group
+-----
+
+* **get** *(secured)*: Retrieve list of vNICs that belong to a specific security group.
+
+### /2.0/services/securitygroup/lookup/virtualmachine/{virtualMachineId}
+Working with Virtual Machine Security Group Membership
+------
+
+* **get** *(secured)*: Retrieve list of security groups that the specified virtual machine
+belongs to.
+
+### /2.0/services/securitygroup/internal/scope/{scopeId}
+Working with Internal Security Groups
+----
+
+* **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used
+ internally by the system and should not be created or modified by end
+users.
+
+### /2.0/services/securitygroup/scope/{scopeId}
+Working with Security Groups on a Specific Scope
+----
+
+* **get** *(secured)*: List all the security groups created on a specific scope.
+
+### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
+Working with Security Group Member Types
+----
+
+* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
+group.
+
+### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
+Working with a Specific Security Group Member Type
+----
+
+* **get** *(secured)*: Retrieve members of a specific type in the specified scope.
+
+## ipsets
+Working with IP Set Grouping Objects
+=======
+
+### /2.0/services/ipset/scope/{scopeMoref}
+Working with IP Sets on a Specific Scope
+----
+
+* **get** *(secured)*: Retrieve all configured IPSets
+
+### /2.0/services/ipset/{scopeMoref}
+Creating New IP Sets
+-----
+
+* **post** *(secured)*: Create a new IP set.
+
+### /2.0/services/ipset/{ipsetId}
+Working with a Specific IP Set
+----
+
+* **get** *(secured)*: Retrieve an individual IP set.
+* **put** *(secured)*: Modify an existing IP set.
+* **delete** *(secured)*: Delete an IP set.
+
 ## vCenterConfig
 Configuring NSX Manager with vCenter Server
 =========
@@ -190,6 +1297,73 @@ Connection Status for vCenter Server
 -----
 
 * **get** *(secured)*: Get default vCenter Server connection status
+
+## universalSync
+Working with Universal Sync Configuration in Cross-vCenter NSX
+======
+
+### /2.0/universalsync/configuration/role
+Working with Universal Sync Configuration Roles
+----
+You can set the role of an NSX Manager to primary, secondary, or
+standalone. If you set an NSX Manager’s role to primary, then use it to
+create universal objects, and then set the role to standalone, the role
+will be set as transit. In the transit role, the universal objects will
+still exist, but cannot be modified, other than being deleted.
+
+* **post** *(secured)*: Set the universal sync configuration role.
+* **get** *(secured)*: Retrieve the universal sync configuration role.
+
+### /2.0/universalsync/configuration/nsxmanagers
+Working with Universal Sync Configuration of NSX Managers
+-----
+
+* **post** *(secured)*: Add a secondary NSX manager.
+
+Run this method on the primary NSX Manager, providing details of the
+secondary NSX Manager.
+
+Retrieve the certificate thumbprint of the secondary NSX Manager
+using the `GET
+/api/1.0/appliance-management/certificatemanager/certificates/nsx`
+method. The **sha1Hash** parameter contains the thumbprint.
+
+* **get** *(secured)*: If run on a primary NSX Manager, it will list secondary NSX Managers
+configured on the primary NSX Manager.
+
+If run on a secondary NSX Manager, it will list information about
+the secondary NSX Manager and the primary NSX Manager it is
+associated with.
+
+* **delete** *(secured)*: Delete secondary NSX manager configuration.
+
+### /2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}
+Universal Sync Configuration of a Specific NSX Manager
+----
+
+* **get** *(secured)*: Retrieve information about the specified secondary NSX Manager.
+
+* **delete** *(secured)*: Delete the specified secondary NSX Manager.
+* **put** *(secured)*: Update the the specified secondary NSX manager IP or thumbprint in
+the universal sync configuration.
+
+### /2.0/universalsync/sync
+NSX Manager Synchronization
+----
+
+* **post** *(secured)*: Sync all objects on the NSX Manager.
+
+### /2.0/universalsync/entitystatus
+Working with Universal Sync Entities
+----
+
+* **get** *(secured)*: Retrieve the status of a universal sync entity.
+
+### /2.0/universalsync/status
+Working With Universal Sync Status
+-----
+
+* **get** *(secured)*: Retrieve the universal sync status.
 
 ## applianceManager
 Working with Appliance Manager
@@ -525,88 +1699,21 @@ Working with Certificate Chains
 Input is certificate chain file which is a PEM encoded chain of
 certificates received from the CA after signing a CSR.
 
-## capacityUsage
-Working with Licensing Capacity
-============
-The licensing capacity usage API command reports usage of CPUs, VMs and
-concurrent users for the distributed firewall and VXLAN.
-
-### /2.0/services/licensing/capacityusage
-
-* **get** *(secured)*: Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
-users for the distributed firewall and VXLAN.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-## ssoConfig
-Working with NSX Manager SSO Registration
-============
-
-### /2.0/services/ssoconfig
-
-* **get** *(secured)*: Retrieve SSO Configuration.
-* **post** *(secured)*: Register NSX Manager to SSO Services.
-* **delete** *(secured)*: Deletes the NSX Manager SSO Configuration.
-
-### /2.0/services/ssoconfig/status
-Working with SSO Configuration Status
------
-
-* **get** *(secured)*: Retrieve the SSO configuration status of NSX Manager.
-
-## userMgmt
-Working with User Management
+## systemEvents
+Working with NSX Manager System Events
 ==========
 
-### /2.0/services/usermgmt/user/{userId}
-Manage Users on NSX Manager
------
+### /2.0/systemevent
 
-* **get** *(secured)*: Get information about a user.
-* **delete** *(secured)*: Remove the NSX role for a vCenter user.
+* **get** *(secured)*: Get NSX Manager system events
 
-### /2.0/services/usermgmt/role/{userId}
-Manage NSX Roles for Users
------
+## auditLogs
+Working with NSX Manager Audit Logs
+==========
 
-* **get** *(secured)*: Retrieve a user's role (possible roles are super_user, vshield_admin,
-enterprise_admin, security_admin, and audit).
+### /2.0/auditlog
 
-* **post** *(secured)*: Add role and resources for a user.
-* **put** *(secured)*: Change a user's role.
-* **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role
-is deleted, the user is removed from NSX Manager. You cannot delete the
-role for a local user.
-
-### /2.0/services/usermgmt/enablestate/{value}
-Working with User Account State
------
-
-* **put** *(secured)*: Enable or disable a user account.
-
-### /2.0/services/usermgmt/users/vsm
-Working with NSX Manager Role Assignment
-----
-
-* **get** *(secured)*: Get information about users who have been assigned a NSX Manager role
-(local users as well as vCenter users with NSX Manager role).
-
-### /2.0/services/usermgmt/roles
-Working with Available NSX Manager Roles
-----
-
-* **get** *(secured)*: Read all possible roles in NSX Manager
-
-### /2.0/services/usermgmt/scopingobjects
-Working With Scoping Objects
-----
-
-* **get** *(secured)*: Retrieve a list of objects that can be used to define a user's access
-scope.
+* **get** *(secured)*: Get NSX Manager audit logs
 
 ## nwfabric
 Working with Network Fabric Configuration
@@ -827,742 +1934,1713 @@ Working With Locale ID Configuration for Hosts
 * **put** *(secured)*: Update the locale ID for the specified host.
 * **delete** *(secured)*: Delete the locale ID for the specified host.
 
-## vdsManage
-Working with vSphere Distributed Switches
+## securityFabric
+Working with Security Fabric and Security Services
+======
+The security fabric simplifies and automates deployment of security
+services and provide a platform for configuration of the elements that are
+required to provide security to workloads. These elements include:
+
+Internal components:
+* Guest Introspection Universal Service Virtual Machine
+* Guest Introspection Mux
+* Logical Firewall
+
+External components:
+* Partner OVFs / VIBs
+* Partner vendor policy templates
+
+For partner services, the overall workflow begins with registration of
+services by partner consoles, followed by deployment of the services by
+the administrator.
+
+Subsequent workflow is as follows:
+1. Select the clusters on which to deploy the security fabric (Mux,
+Traffic filter, USVM).
+2. Specify an IP pool to be used with the SVMs (available only if the
+partner registration indicates requirement of static IPs)
+3. Select portgroup (DVPG) to be used for each cluster (a default is
+pre-populated for the user).
+4. Select datastore to be used for each cluster (a default is
+pre-populated for the user).
+5. NSX Manager deploys the components on all hosts of the selected
+clusters.
+
+Once you deploy the security fabric, an agency defines the configuration
+needed to deploy agents (host components and appliances). An agency is
+created per cluster per deployment spec associated with services.  Agents
+are deployed on the selected clusters, and events / hooks for all the
+relevant actions are generated.
+
+**Request parameters**
+
+Parameter | Description 
+-------|---------
+dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
+dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
+ipPool | Optional. If not specified, IP address is assigned through DHCP. 
+startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
+
+### /2.0/si/deploy
+
+* **post** *(secured)*: Deploy security fabric.
+
+* **put** *(secured)*: Upgrade service to recent version.
+
+### /2.0/si/deploy/service/{serviceID}
+Working With a Specified Service
+----
+
+* **get** *(secured)*: Retrieve all clusters on which the service is installed.
+* **delete** *(secured)*: Uninstall specified service from specified clusters.
+
+### /2.0/si/deploy/service/{serviceID}/dependsOn
+Working with Service Dependencies
+----
+
+* **get** *(secured)*: Identify service on which the specified service depends on.
+
+### /2.0/si/deploy/cluster/{clusterID}
+Working With Installed Services on a Cluster
+---
+
+* **get** *(secured)*: Retrieve all services deployed along with their status.
+* **delete** *(secured)*: Uninstall a service. Fails if you try to remove a service that another
+service depends on.
+
+### /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}
+Working with a Specific Service on a Cluster
+-----
+
+* **get** *(secured)*: Retrieve detailed information about the service
+
+## eventControl
+Working with Data Collection for Activity Monitoring
 ===========
+Activity Monitoring provides visibility into your virtual network to
+ensure that security policies at your organization are being enforced
+correctly.
 
-### /2.0/vdn/switches
+A Security policy may mandate who is allowed access to what applications.
+The Cloud administrator can generate Activity Monitoring reports to see if
+the IP based firewall rule that they set is doing the intended work. By
+providing user and application level detail, Activity Monitoring
+translates high level security policies to low level IP address and
+network based implementation.
 
-* **post** *(secured)*: Prepare a vSphere Distributed Switch.
+Once you enable data collection for Activity Monitoring, you can run
+reports to view inbound traffic (such as virtual machines being accessed
+by users) as well as outbound traffic (resource utilization, interaction
+between inventory containers, and AD groups that accessed a server).
 
-The MTU is the maximum amount of data that can be transmitted in one
-packet before it is divided into smaller packets. VXLAN frames are slightly
-larger in size because of the traffic encapsulation, so the MTU required
-is higher than the standard MTU. You must set the MTU for each switch to
-1602 or higher.
+You must enable data collection for one or more virtual machines on a
+vCenter Server before running an Activity Monitoring report. Before
+running a report, ensure that the enabled virtual machines are active and
+are generating network traffic.
 
-* **get** *(secured)*: Retrieve information about all vSphere Distributed Switches.
+You should also register NSX Manager with the AD Domain Controller. See
+"Working with Domains".
 
-### /2.0/vdn/switches/datacenter/{datacenterID}
-Working with vSphere Distributed Switches in a Datacenter
-------
+Note that only active connections are tracked by Activity Monitoring.
+Virtual machine traffic blocked by firewall rules at the vNIC level is not
+reflected in reports.
 
-* **get** *(secured)*: Retrieve information about all vSphere Distributed Switches in the specified datacenter.
+In case of an emergency such as a network overload, you can turn off data
+collection at a global level. This overrides all other data collection
+settings.
 
-### /2.0/vdn/switches/{vdsId}
-Working With a Specific vSphere Distributed Switch
-------
+Some API calls may require the VMID, which is the MOID of the guest
+virtual machine. You can retrieve this by queuing the vCenter mob
+structure (https:VC-IP-Address/mob). The VMID is listed under host
+structure.
 
-* **get** *(secured)*: Retrieve information about the specified vSphere Distributed Switch.
+### /1.0/eventcontrol/vm/{vmID}/request
+Working With Data Collection on a Specific Virtual Machine
+----
+You must enable data collection at least five minutes before running an
+Activity Monitoring report.
 
-* **delete** *(secured)*: Delete the specified vSphere Distributed Switch.
+* **post** *(secured)*: Enable or disable data collection on a virtual machine
 
-## nsxControllers
-Working with NSX Controllers
-==============
-For the unicast or hybrid control plane mode,
-you must add an NSX controller to manage overlay transport and provide
-East-West routing. The controller optimizes virtual machine broadcast (ARP
-only) traffic, and the learning is stored on the host and the controller.
+Set **value** to *enabled* or *disabled*.
 
-### /2.0/vdn/controller
-
-* **post** *(secured)*: Adds a new NSX controller on the specified given cluster. The *hostId*
-parameter is optional. The *resourcePoolId* can be either the
-*clusterId* or *resourcePoolId*.
-
-The IP address of the controller node will be allocated
-from the specified IP pool. The *deployType* property determines the
-controller node memory size and can be small, medium, or large. However,
-different controller deployment types are not currently supported because
-the OVF overrides it and different OVF types require changes in the
-manager build scripts. Despite not being supported, an arbitrary
-*deployType* size must still be specified or an error will be returned.
-Request without body to upgrade controller cluster.
-
-* **get** *(secured)*: Retrieves details and runtime status for all controllers.  Runtime status
-can be one of the following:
-
-  * **Deploying** - controller is being deployed and the procedure has not
-  completed yet.
-  * **Removing** - controller is being removed and the procedure has not
-  completed yet.
-  * **Running** - controller has been deployed and can respond to API
-  invocation.
-  * **Unknown** - controller has been deployed but fails to respond to API
-  invocation.
-
-### /2.0/vdn/controller/upgrade-available
-Working With Controller Upgrade Availability
+### /1.0/eventcontrol/eventcontrol-root/request
+Override Data Collection
 ----
 
-* **get** *(secured)*: Retrieve controller upgrade availability.
+* **post** *(secured)*: Turn data collection on or off at the global level.
 
-### /2.0/vdn/controller/progress/{jobId}
-Working With of Controller Job Status
+In case of an emergency such as a network overload, you can turn off
+data collection at a global level (kill switch). This overrides all
+other data collection settings.
+
+Set **value** to *enabled* or *disabled*.
+
+### /1.0/eventcontrol/config/vm/{vmID}
+Retrieve Data Collection Configuration for a Specific Virtual Machine
 -----
+When reporting per virtual machine configuration, current kill switch
+status is also reported too. The effective configuration of a virtual
+machine is determined by both kill switch config and per virtual machine
+configuration. If kill switch is on, event collection is effectively
+disabled regardless of what its per virtual machine configuration is; if
+kill switch is off, per virtual machine configuration determines whether
+event collection should be performed for this virtual machine.
 
-* **get** *(secured)*: Retrieves status of controller creation or removal. The progress gives
-a percentage indication of current deploy / remove procedure.
+* **get** *(secured)*: Retrieve per VM configuration for data collection.
 
-### /2.0/vdn/controller/{controllerId}
-Working with a Specific Controller
------
+## activityMonitoring
+Working with Activity Monitoring
+======
 
-* **delete** *(secured)*: Delete the NSX controller.
+### /3.0/ai/records
+Working With Aggregated User Activity
+--------------
+Get aggregated user activity (action records) using parameters. Requires
+that NSX Guest Introspection is configured, NSX Manager must be
+registered with Active Directory, and data collection is enabled on one
+or more VMs.
 
-### /2.0/vdn/controller/{controllerId}/techsupportlogs
-Working with Controller Tech Support Logs
------
+* **get** *(secured)*: ### View Outbound Activity
 
-* **get** *(secured)*: Retrieve controller logs. Response content type is
-application/octet-stream and response header is filename. This
-streams a fairly large bundle back (possibly hundreds of MB).
+You can view what applications are being run by a security group or
+desktop pool and then drill down into the report to find out which
+client applications are making outbound connections by a particular
+group of users. You can also discover all user groups and users who are
+accessing a particular application, which can help you determine if you
+need to adjust identity firewall in your environment.
 
-### /2.0/vdn/controller/{controllerId}/syslog
-Working with Controller Syslog
------
+* query=*resource*
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *VIRTUAL_MACHINE*
+    * for app: *SRC_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
-* **post** *(secured)*: Add controller syslog exporter on the controller.
-* **get** *(secured)*: Retrieve details about the syslog exporter on the controller.
+**Example:** View user activities to VM ID 1 originating from application
+ID 1  
+`GET /api/3.0/ai/records?query=resource&interval=60m&param=src:DIRECTORY_GROUP`  
+`&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1`
 
-* **delete** *(secured)*: Deletes syslog exporter on the specified controller node.
+### View Inbound Activity
 
-### /2.0/vdn/controller/{controllerId}/snapshot
-Working with Controller Cluster Snapshots
------
+You can view all inbound activity to a server by desktop pool, security
+group, or AD group.
 
-* **get** *(secured)*: Take a snapshot of the control cluster from the specified controller
-node.
+* query=*sam*
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *VIRTUAL_MACHINE*
+    * for app: *DEST_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
 
-### /2.0/vdn/controller/cluster
-Working with the NSX Controller Cluster Configuration
-----
+**Example:** View user activities to VM ID 1 originating from
+application ID 1  
+`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
+`&param=src:SECURITY_GROUP:1`
 
-* **get** *(secured)*: Retrieve cluster wide configuration information for controller.
+### View Interaction between Inventory Containers
+You can view the traffic passing between defined containers such as AD
+groups, security groups and/or desktop pools. This can help you identify
+and configure access to shared services and to resolve misconfigured
+relationships between Inventory container definitions, desktop pools and
+AD groups.
 
-* **put** *(secured)*: Modify cluster wide configuration information for controller.
+* query=*containers*
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
 
-### /2.0/vdn/controller/credential
-Working with the NSX Controller Password
-------
+**Example:** View interaction between inventory containers  
+`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
+`&param=src:SECURITY_GROUP:1`
 
-* **put** *(secured)*: Change the NSX controller password.
+### View Outbound AD Group Activity
 
-## vdnConfig
-Working with Segement ID Pools and Multicast Ranges
-========
+You can view the traffic between members of defined Active Directory
+groups and can use this data to fine tune your firewall rules.
 
-### /2.0/vdn/config/segments
-Working With Segment ID Pools
--------------
-Segment ID pools (also called segment ID ranges) provide virtual network
-identifiers (VNIs) to logical switches.
+* query=*adg*
+* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *adg*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
+    * for adg: *USER*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default * is *INCLUDE*).
 
-You must configure a segment ID pool for each NSX Manager. You can have
-more than one segment ID pool. The segment ID pool includes the beginning
-and ending IDs.
+**Example:** View outbound AD group activity    
+`GET https://NSX-Manager-IP-Address/api/3.0/ai/records?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
+`&param=src:SECURITY_GROUP:1:EXCLUDE`
 
-You should not configure more than 10,000 VNIs in a single vCenter
-server because vCenter limits the number of dvPortgroups to 10,000.
-
-If any of your transport zones will use multicast or hybrid replication
-mode, you must also configure a multicast address range.
-
-* **post** *(secured)*: Add a segment ID pool.
-
-* **name** - Required property.
-* **desc** - Optional property.
-* **begin** - Required property. Minimum value is *5000*
-* **end** - Required property. Maximum value is *16777216*
-
-* **get** *(secured)*: Retrieve information about all segment ID pools.
-
-### /2.0/vdn/config/segments/{segmentPoolId}
-Working With a Specific Segment ID Pool
-------
-
-* **get** *(secured)*: Retrieve information about the specified segment ID pool.
-
-* **put** *(secured)*: Update the specified segment ID pool.
-
-If the segment ID pool is universal you must send the API request to
-the primary NSX Manager.
-
-* **delete** *(secured)*: Delete the specified segment ID pool.
-
-If the segment ID pool is universal you must send the API request to
-the primary NSX Manager.
-
-### /2.0/vdn/config/multicasts
-Working with Multicast Address Ranges
-------
-If any of your transport zones will use multicast or hybrid replication
-mode, you must add a multicast address range (also called a multicast
-address pool). Specifying a multicast address range helps in spreading
-traffic across your network to avoid overloading a single multicast
-address.
-
-* **post** *(secured)*: Add a multicast address range for logical switches.
-
-The address range includes the beginning and ending addresses.
-
-* **get** *(secured)*: Retrieve information about all configured multicast address ranges.
-
-Universal multicast address ranges have the property isUniversal
-set to *true*.
-
-### /2.0/vdn/config/multicasts/{multicastAddresssRangeId}
-Working With a Specific Multicast Address Range
---------
-
-* **get** *(secured)*: Retrieve information about the specified multicast address range.
-
-* **put** *(secured)*: Update the specified multicast address range.
-
-If the multicast address range is universal you must send the API
-request to the primary NSX Manager.
-
-* **delete** *(secured)*: Delete the specified multicast address range.
-
-If the multicast address range is universal you must send the API
-request to the primary NSX Manager.
-
-### /2.0/vdn/config/vxlan/udp/port
-Working with the VXLAN Port Configuration
-----------
-
-* **get** *(secured)*: Retrieve the UDP port configured for VXLAN traffic.
-
-### /2.0/vdn/config/vxlan/udp/port/{portNumber}
-Update the VXLAN Port Configuration
--------
-
-* **put** *(secured)*: Update the VXLAN port configuration to use port *portNumber*.
-
-This method changes the VXLAN port in a three phrase process, avoiding
-disruption of VXLAN traffic. In a cross-vCenter NSX environment,
-change the VXLAN port on the primary NSX Manager to propagate this
-change on all NSX Managers and hosts in the cross-vCenter NSX
-environment.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method updated. Port change is now non-disruptive, and propagates to secondary NSX Managers if performed on the primary NSX Manager. Force parameter added.
-
-### /2.0/vdn/config/vxlan/udp/port/taskStatus
-VXLAN Port Configuration Update Status
-----
-
-* **get** *(secured)*: Retrieve the status of the VXLAN port configuration update.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/config/resources/allocated
-Working with Allocated Resources
-------
-
-* **get** *(secured)*: Retrieve information about allocated segment IDs or multicast
-addresses.
-
-## vdnScopes
-Working with Transport Zones
-==============
-
-### /2.0/vdn/scopes
-
-* **get** *(secured)*: Retrieve information about all transport zones (also known as network
-scopes).
-
-* **post** *(secured)*: Create a transport zone.
-
-Request body parameters:
-
-  * **name** - Required. The name of the transport zone.
-  * **description** - Optional. Description of the transport zone.
-  * **objectId** - Required. The cluster object ID from vSphere. One or more are
-    required.
-  * **controlPlaneMode** - Optional. The control plane mode. It can be
-    one of the following:
-      * *UNICAST_MODE*
-      * *HYBRID_MODE*
-      * *MULTICAST_MODE*
-
-### /2.0/vdn/scopes/{scopeId}
-Working with a Specific Transport Zone
+### /3.0/ai/userdetails
+Working with User Details
 ---------
 
-* **get** *(secured)*: Retrieve information about the specified transport zone.
+* **get** *(secured)*: ### View Outbound Activity
+You can view what applications are being run by a security group or
+desktop pool and then drill down into the report to find out which
+client applications are making outbound connections by a particular
+group of users. You can also discover all user groups and users who
+are accessing a particular application, which can help you determine
+if you need to adjust identity firewall in your environment.
 
-* **post** *(secured)*: Update the specified transport zone.
+* query=*resource*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *IP* - a valid IP address in dot notation, xx.xx.xx.xx
+    * for app: *SRC_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
-You can add a cluster to or delete a cluster from a transport zone.
+**Example:** View user activities to VM ID 1 originating from application ID 1  
+`GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00`  
+`&param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52`
 
-You can also repair missing portgroups. For every logical switch
-created, NSX creates a corresponding portgroup in vCenter. If the
-portgroup is lost for any reason, the logical switch will stop
-functioning. The repair action recreates any missing portgroups.
+### View Inbound Activity
 
-* **delete** *(secured)*: Delete the specified transport zone.
+You can view all inbound activity to a server by desktop pool, security
+group, or AD group.
 
-### /2.0/vdn/scopes/{scopeId}/attributes
-Working With Transport Zone Attributes
+* query=*sam*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+    * *app* (required)
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *VIRTUAL_MACHINE*
+    * for app: *DEST_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
+
+**Example:** View user activities to VM ID 1 originating from
+application ID 1  
+`GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE`  
+`&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
+
+### View Interaction between Inventory Containers
+You can view the traffic passing between defined containers such as AD
+groups, security groups and/or desktop pools. This can help you identify
+and configure access to shared services and to resolve misconfigured
+relationships between Inventory container definitions, desktop pools and
+AD groups.
+
+* query=*containers*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *dest* (required)
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
+    * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
+
+**Example:** View interaction between inventory containers  
+`GET /api/3.0/ai/userdetails?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
+`&param=src:SECURITY_GROUP:1`
+
+### View Outbound AD Group Activity
+
+You can view the traffic between members of defined Active Directory
+groups and can use this data to fine tune your firewall rules.
+
+* query=*adg*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src* (required)
+    * *adg*
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
+    * for adg: *USER*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
+
+**Example:** View outbound AD group activity    
+`GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
+`&param=src:SECURITY_GROUP:1:EXCLUDE`
+
+### View Virtual Machine Activity Report
+
+* query=*vma*
+* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
+  * &lt;param-name&gt; is one of:
+    * *src*
+    * *dst*
+    * *app*
+    * If no parameters are passed, then this would show all SAM
+    activities
+  * &lt;param-type&gt; is one of:
+    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
+    * for dst: *VIRTUAL_MACHINE*, *VM_UUID*
+    * for app - *SRC_APP* or *DEST_APP*
+  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
+  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
+
+**Example:** View outbound AD group activity    
+`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&param=app:DEST_APP:16`
+
+### /3.0/ai/user/{userID}
+Working With a Specific User
 ----
 
-* **put** *(secured)*: Update the attributes of a transport zone.
+* **get** *(secured)*: Retrieve details for a specific user.
 
-For example, you can update the name, description, or control plane
-mode. You must include the cluster object IDs for the transport zone
-in the request body.
+### /3.0/ai/app
+Working With Applications
+----
 
-### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
-Testing Multicast Group Connectivity
--------
+* **get** *(secured)*: Retrieve app details.
 
-* **post** *(secured)*: Test multicast group connectivity.
+### /3.0/ai/app/{appID}
+Working with a Specific Application
+----
 
-Test multicast group connectivity between two hosts connected to the
-specified transport zone.
+* **get** *(secured)*: Retrieve details for specific app.
 
-Parameter **packetSizeMode** has one of the following values:
-* *0* - VXLAN standard packet size
-* *1* - minimum packet size
-* *2* - customized packet size.
-If you set **packetSizeMode** to *2*, you must specify the size using
-the **packetSize** parameter.
+### /3.0/ai/host
+Working With Discovered Hosts
+----
 
-## logicalSwitchesGlobal
-Working with Logical Switches in All Transport Zones
+* **get** *(secured)*: Retrieve list of all discovered hosts (both by agent introspection and
+LDAP Sync) and their detail.
+
+### /3.0/ai/host/{hostID}
+Working with a Specific Discovered Host
+----
+
+* **get** *(secured)*: Get host details.
+
+### /3.0/ai/desktoppool
+Working With Desktop Pools
+-----
+
+* **get** *(secured)*: Retrieve list of all discovered desktop pools by agent introspection.
+
+### /3.0/ai/desktoppool/{desktoppoolID}
+Working with a Specific Desktop Pool
+----
+
+* **get** *(secured)*: Retrieve specific desktop pool details.
+
+### /3.0/ai/vm
+Working with Virtual Machines
+----
+
+* **get** *(secured)*: Retrieve list of all discovered VMs.
+
+### /3.0/ai/vm/{vmID}
+Working with a Specific Virtual Machine
+----
+
+* **get** *(secured)*: Retrieve details about a specific virtual machine.
+
+### /3.0/ai/directorygroup
+Working with LDAP Directory Groups
+----
+
+* **get** *(secured)*: Retrieve list of all discovered (and configured) LDAP directory
+groups.
+
+### /3.0/ai/directorygroup/{directorygroupID}
+Working with a Specific LDAP Directory Group
+----
+
+* **get** *(secured)*: Retrieve details about a specific directory group.
+
+### /3.0/ai/directorygroup/user/{userID}
+Working with a Specific User's Active Directory Groups
+-----
+
+* **get** *(secured)*: Retrieve Active Directory groups that user belongs to.
+
+### /3.0/ai/securitygroup
+Working with Security Groups
+-----
+
+* **get** *(secured)*: Retrieve list of all observed security groups.
+
+Observed entities are the ones that are reported by the agents. For
+example, if a host activity is reported by an agent and if that host
+belongs to a security group then that security group would reported as
+observed in SAM database.
+
+### /3.0/ai/securitygroup/{secgroupID}
+Working with a Specific Security Group
+----
+
+* **get** *(secured)*: Retrieve details about specific security group.
+
+## domain
+Working with Domains
 ===========
+After you create a domain, you can apply a security policy to it and run
+queries to view the applications and virtual machines being accessed by
+the users of a domain.
 
-### /2.0/vdn/virtualwires
+### /1.0/directory/updateDomain
+Registering Domains
+---------------
+You can a register one or more Windows domains with an NSX Manager and
+associated vCenter server.  NSX Manager gets group and user information
+as well as the relationship between them from each domain that it is
+registered with. NSX Manager also retrieves Active Directory
+credentials.  You can apply security policies on an Active Directory
+domain and run queries to get information on virtual machines and
+applications accessed by users within an Active Directory domain.
 
-* **get** *(secured)*: Retrieve information about all logical switches in all transport zones.
+**Parameter Values for Registering or Updating a Domain**
 
-### /2.0/vdn/virtualwires/vm/vnic
-Working Virtual Machine Connections to Logical Switches
+Parameter Name | Description | Mandatory? 
+----------------|-------------|------------
+ID |  Domain id.  If you want to create a new domain, do not provide this value.  Otherwise, the system will find an existing domain object by this ID and update it. | true if update existing domain 
+name |  Domain name.  This should be domain's full qualified name. In case agent discovered, this will be NetBIOS name, so you need to update it to FQN in order to support LDAP sync and event log reader. | true if creating a new domain. 
+description | Domain description | false 
+type | Domain type. Valid value include: AGENT_DISCOVERED, ActiveDirectory, SPECIAL (Do NOT modify SPECIAL domain). For LDAP sync and event log reader work, this need to be set to ActiveDirectory. | true if creating a new domain 
+netbiosName |  NetBIOS name of domain. This is Domain's NetBIOS name. Check windows domain setting, for value of it. Normally Agent report domain name is NetBIOS name. But confirm from Windows domain setting. | false 
+baseDn | Domain's Base DN (for LDAP sync).  Base DN is REQUIRED for LDAP Sync. If you have a domain like: w2k3.vshield.vmware.com, the base DN is very likely to be: DC=w2k3,DC=vshield,DC=vmware,DC=com. Another example is: domain name is: vs4.net, the base DN should be: DC=vs4,DC=net. You can use a LDAP client and connect to domain controller to find the domain's base DN. |  false 
+rootDn | LDAP Sync root DN.  Specify where should LDAP sync start from LDAP tree. This could be absolute path, for example: OU=Engineer,DC=vs4,DC=net, or relative path (relate to Base DN), for example: OU=Engineer. |  false
+securityId | Domain's Security ID (SID). This should be filled by LDAP sync process, and should not need to be modified. |  false 
+username |  Domain's User name (Used for LDAP Sync and/or Event Log reader) | false 
+password | User password | false
+eventLogUsername | Domain's event log reader username (will use above username if this is NULL) | false
+eventLogPassword | Domain's event log reader password | false
+
+* **post** *(secured)*: Register or update a domain with NSX Manager
+
+### /1.0/directory/listDomains
+Retrieve LDAP Domains
 -----
 
-* **post** *(secured)*: Attach a VM vNIC to, or detach a VM vNIC from a logical switch.
+* **get** *(secured)*: Retrieve all agent discovered (or configured) LDAP domains.
 
-Specify the logical switch ID in the **portgroupId** parameter. To
-detach a VM vNIC from a logical switch, leave the **portgroupId** parameter
-empty.
-
-To find the ID of a VM vNIC, do the following:
-1. In the vSphere MOB, navigate to the VM you want to connect or disconnect.
-2. Click **config** and take note of the **instanceUuid**.
-3. Click **hardware** and take note of the last three digits of the
-appropriate network interface device.
-
-Use these two values to form the VM vNIC ID.  For example, if the
-**instanceUuid** is *502e71fa-1a00-759b-e40f-ce778e915f16* and the
-appropriate **device** value is *device[4000]*, the **objectId** and
-**vnicUuid** are both *502e71fa-1a00-759b-e40f-ce778e915f16.000*.
-
-### /2.0/vdn/virtualwires/{virtualWireID}
-Working With a Specific Logical Switch
+### /1.0/directory/deleteDomain/{ID}
+Delete a Specific Domain
 ----
 
-* **get** *(secured)*: Retrieve information about the specified logical switch.
+* **delete** *(secured)*: Delete domain.
 
-If the switch is a universal logical switch the **isUniversal**
-parameter is set to true in the response body.
+### /1.0/directory/updateLdapServer
+Create LDAP Server
+------------
 
-* **put** *(secured)*: Update the specified logical switch.
+* **post** *(secured)*: Create LDAP server.
 
-For example, you can update the name, description, or control plane
-mode.
-
-* **delete** *(secured)*: Delete the specified logical switch.
-
-### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/multicast
-Testing Host Connectivity
------
-
-* **post** *(secured)*: Test multicast group connectivity.
-
-Test multicast group connectivity between two hosts connected to the
-specified logical switch.
-
-Parameter **packetSizeMode** has one of the following values:
-* *0* - VXLAN standard packet size
-* *1* - minimum packet size
-* *2* - customized packet size.
-If you set **packetSizeMode** to *2*, you must specify the size using
-the **packetSize** parameter.
-
-### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/p2p
-Testing Point-to-Point Connectivity
+### /1.0/directory/listLdapServersForDomain/{domainID}
+Query LDAP Servers for a Domain
 ----
 
-* **post** *(secured)*: Test point-to-point connectivity.
+* **get** *(secured)*: Query LDAP servers for a domain.
 
-Test point-to-point connectivity between two hosts connected to the
-specified logical switch.
-
-Parameter **packetSizeMode** has one of the following values:
-* *0* - VXLAN standard packet size
-* *1* - minimum packet size
-* *2* - customized packet size.
-If you set **packetSizeMode** to *2*, you must specify the size using
-the **packetSize** parameter.
-
-### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways
-Working with Hardware Gateway Bindings for a Specific Logical Switch
------
-
-* **get** *(secured)*: Retrieve hardware gateway bindings for the specified logical switch.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways/{hardwareGatewayBindingId}
-Working with Connections Between Hardware Gateways and Logical Switches
--------
-
-* **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
-
-### Attach a hardware gateway to a logical switch and create a new binding with the information provided
-
-`POST /api/2.0/vdn/virtualwires/{virtualwireid}/hardwaregateways`
-
-```
-<hardwareGatewayBinding>
-  <hardwareGatewayId>hardwarewgateway1</hardwareGatewayId>
-  <vlan>v1</vlan>
-  <switchName>s1</switchName>
-  <portName>s1</portName>
-</hardwareGatewayBinding> 
-```
-
-### Attach a hardware gateway to a logical switch, specifying an existing binding by ID
-
-`POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=attach`
-
-```
-<virtualWire>
-  ...
-  <hardwareGatewayBindings>
-    <hardwareGatewayBinding>
-      <id>binding id</id>
-    </hardwareGatewayBinding>
-  </hardwareGatewayBindings>
-</virtualWire>
-```
-
-### Detach a hardware gateway from a logical switch
-
-`POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=detach`
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-## logicalSwitches
-Working with Logical Switches in a Specific Transport Zone
-==================
-
-### /2.0/vdn/scopes/{scopeId}/virtualwires
-
-* **get** *(secured)*: Retrieve information about all logical switches in the specified
-transport zone (network scope).
-
-* **post** *(secured)*: Create a logical switch.
-
-To create a universal logical switch use *universalvdnscope* as the
-scopeId in the URI and send the request to the primary NSX Manager.
-Request body parameters:
-  * **name** - Optional. The name of the logical switch.
-  * **description** - Optional. Description of the logical switch.
-  * **tenantId** - Required.
-  * **controlPlaneMode** - Optional. The control plane mode. If not
-    specified, the **controlPlaneMode** of the transport zone is used. It
-    can be one of the following:
-      * *UNICAST_MODE*
-      * *HYBRID_MODE*
-      * *MULTICAST_MODE*
-  * **guestVlanAllowed** - Optional. Default is *false*.
-
-## arpMAC
-Working with IP Discovery and MAC Learning for Logical Switches
-==============
-
-You can enable IP discovery (ARP suppression) and MAC learning for logical
-switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
-pair learning table on each vNic.
-
-This table is stored as part of the dvfilter data. During vMotion,
-dvfilter saves/restores the table at the new location. The switch then
-issues RARPs for all the VLAN - MAC entries in the table.
-
-Enabling this feature avoids possible traffic loss during vMotion in the
-following cases:
-
-* the vNic is in VLAN trunk mode
-* the VM is using more  than one unicast MAC address. Since Etherswitch
-supports only one unicast MAC per vNic, RARP is not processed.
-
-When a logical switch is created using the API, IP discovery is enabled,
-and MAC learning is disabled.
-
-In cross-vCenter NSX, the following applies:
-* The MAC learning setting for a universal logical switch is managed
-on the primary NSX Manager. Any changes are synchronized to all secondary
-NSX Managers.
-* The IP discovery setting for a universal logical switch is managed
-separately on each NSX Manager.
-
-**Note:** In NSX 6.2.2 and earlier you cannot disable IP discovery for
-universal logical switches on secondary NSX Managers.
-
-### /2.0/xvs/networks/{ID}/features
-
-* **get** *(secured)*: Retrieve IP discovery and MAC learning information.
-* **put** *(secured)*: Enable or disable IP discovery and MAC learning.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method updated. IP discovery can be disabled on secondary NSX Managers.
-
-## hardwareGateways
-Working with Hardware Gateways
-============
-
-### /2.0/vdn/hardwaregateways
-
-* **post** *(secured)*: Install a hardware gateway.
-
-**bfdEnabled** is true by default.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **get** *(secured)*: Retrieve information about all hardware gateways.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/{hardwareGatewayId}
-Working With a Specific Hardware Gateway
+### /1.0/directory/fullSync/{domainID}
+Start LDAP Full Sync
 ----
 
-* **get** *(secured)*: Retrieve information about the specified hardware gateway.
+* **put** *(secured)*: Start LDAP full sync.
 
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **put** *(secured)*: Update the specified hardware gateway.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **delete** *(secured)*: Delete the specified hardware gateway.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches
-Working With Switches on a Specific Hardware Gateway
+### /1.0/directory/deltaSync/{domainID}
+Start LDAP Delta Sync
 -----
 
-* **get** *(secured)*: Retrieve information about switches on the specified hardware
-gateway.
+* **put** *(secured)*: Start LDAP delta sync.
 
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches/{switchName}
-Working With a Specific Switch on a Specific Hardware Gateway
------
-
-### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches/{switchName}/switchports
-Working With Ports on a Specific Switch on a Specific Hardware Gateway
+### /1.0/directory/deleteLdapServer/{serverID}
+Delete LDAP Server
 ----
 
-* **get** *(secured)*: Retrive information about the hardware gateway switch ports for
-the specified switch and hardware gateway.
+* **delete** *(secured)*: Delete LDAP server.
 
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/replicationcluster
-Working With the Hardware Gateway Replication Cluster
-----
-
-* **put** *(secured)*: Update the hardware gateway replication cluster.
-
-Add or remove hosts on a replication cluster.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **get** *(secured)*: Retrieve information about the hardware gateway replication cluster.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/bindings
-Retrieve Information About Hardware Gateway Bindings
------
-
-* **post** *(secured)*: Create a hardware gateway binding.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **get** *(secured)*: Retrieve information about hardware gateway bindings.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/bindings/{bindingId}
-Working With a Specific Hardware Gateway Binding
------
-
-* **get** *(secured)*: Retrieve information about the specified hardware gateway binding.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **put** *(secured)*: Update the specified hardware gateway binding.
-
-You can update the binding parameters. This API will fail if:
-* the specified *hardwareGatewayId* does not exist.
-* the specified logical switch (*virtualWire*) is not present or there is a software
-  gateway on the binding.
-* the new binding value is a duplicate of an existing binding.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **delete** *(secured)*: Delete the specified hardware gateway binding.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/bindings/{bindingId}/statistic
-Working with Hardware Gateway Binding Statistics
-----
-
-* **get** *(secured)*: Retrieve statistics for the specified hardware gateway binding.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/bindings/manage
-Working With Hardware Gateway Binding Objects
-----
-
-* **post** *(secured)*: Manage hardware gateway binding objects.
-
-Use this API to attach, detach, and update multiple bindings in a
-single API call.  This API accepts three lists for add, update, and
-delete. Each list accepts a hardwareGatewayManageBindingsItem with a
-full description of the new binding with its objectID. This API
-handles a maximum of 100 HardwareGatewayManageBindingsItem objects
-for each of the Add/Update/Delete lists.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/bfd
-Working With Hardware Gateway BFD (Bidirectional Forwarding Detection)
------
-
-### /2.0/vdn/hardwaregateways/bfd/config
-Working With Hardware Gateway BFD Configuration
------
-
-* **put** *(secured)*: Update global hardware gateway BFD configuration.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **get** *(secured)*: Retrieve global hardware gateway BFD configuration.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-### /2.0/vdn/hardwaregateways/bfd/status
-Working With Hardware Gateway BFD Tunnel Status
+### /1.0/directory/updateEventLogServer
+EventLog Server
 ------
 
-* **get** *(secured)*: Retrieve hardware gateway BFD tunnel status for all tunnel
-endpoints, including hosts and hardware gateways.
+* **post** *(secured)*: Create EventLog server.
+
+### /1.0/directory/listEventLogServersForDomain/{domainID}
+Working with EventLog Servers for a Domain
+----
+
+* **get** *(secured)*: Query EventLog servers for a domain.
+
+### /1.0/directory/deleteEventLogServer/{serverID}
+Delete EventLog Server
+-----
+
+* **delete** *(secured)*: Delete EventLog server.
+
+## mappingLists
+Working with Mapping Lists
+=========
+
+### /1.0/identity/userIpMapping
+Working With User to IP Mappings
+---
+
+* **get** *(secured)*: Query user-to-ip mapping list from database.
+
+### /1.0/identity/hostIpMapping
+Working With Host to IP Mappings
+---
+
+* **get** *(secured)*: Query host-to-ip mapping list from database.
+
+### /1.0/identity/ipToUserMapping
+Working With IP to User Mappings
+----
+
+* **get** *(secured)*: Retrieve set of users associated with a given set of IP addresses during
+a specified time period. Since more than one user can be associated
+with a single IP address during the specified time period, each IP
+address can be associated with zero or more (i.e a SET of) users.
+
+### /1.0/identity/directoryGroupsForUser
+Working With User Domain Groups
+----
+
+* **get** *(secured)*: Query set of Windows Domain Groups (AD Groups) to which the specified
+user belongs.
+
+### /1.0/identity/staticUserMapping/{userID}/{IP}
+Working with a Specific Static User Mapping
+----
+
+* **post** *(secured)*: Create static user IP mapping.
+
+### /1.0/identity/staticUserMappings
+Working with Static User Mappings
+----
+
+* **get** *(secured)*: Query static user IP mapping list.
+
+### /1.0/identity/staticUserMappingsbyUser/{userID}
+Working with Static User IP Mappings for a Specific User
+----
+
+* **get** *(secured)*: Query static user IP mapping for specified user.
+* **delete** *(secured)*: Delete static user IP mapping for specified user.
+
+### /1.0/identity/staticUserMappingsbyIP/{IP}
+Working With Static User IP Mappings for a Specific IP
+----
+
+* **get** *(secured)*: Query static user IP mapping for specified IP.
+* **delete** *(secured)*: Delete static user IP mapping for specified IP.
+
+## activityMonitoringSyslog
+Working with Activity Monitoring Syslog Support
+==========
+
+### /1.0/sam/syslog/enable
+Enable Syslog Support
+----
+
+* **post** *(secured)*: Enable syslog support.
+
+### /1.0/sam/syslog/disable
+Disable Syslog Support
+----
+
+* **post** *(secured)*: Disable syslog support.
+
+## solutionIntegration
+Working with Solution Integrations
+=========
+
+### /2.0/si/host/{hostID}/agents
+Working With Agents on a Specific Host
+----
+
+* **get** *(secured)*: Retrieve all agents on the host
+
+### /2.0/si/agent/{agentID}
+Working with a Specific Agent
+----
+
+* **get** *(secured)*: Retrieve agent details.
+
+### /2.0/si/deployment/{deploymentunitID}/agents
+Working with Agents on a Specific Deployment
+----
+
+* **get** *(secured)*: Retrieve all agents for the specified deployment.
+
+### /2.0/si/fabric/sync/conflicts
+Working With Conflicting Agencies
+----
+When the NSX Manager database backup is restored to an older point in
+time, it is possible that deployment units for some EAM Agencies are
+missing. These APIs help the administratoridentify such EAM Agencies and
+take appropriate action.
+
+* **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
+allowed operations on them
+
+* **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete
+conflicting EAM agencies, or delete deployment units for conflicting
+EAM agencies.
+
+### Create deployment units for conflicting EAM agencies
+
+```
+<conflictResolverInfo>
+  <agencyAction>RESTORE</agencyAction>
+</conflictResolverInfo>
+```
+
+### Delete conflicting EAM agencies
+
+```
+<conflictResolverInfo>
+  <agencyAction>DELETE</agencyAction>
+</conflictResolverInfo>
+```
+
+### Delete deployment units for conflicting EAM agencies
+
+```
+<conflictResolverInfo>
+  <deploymentUnitAction>DELETE</deploymentUnitAction>
+</conflictResolverInfo>
+```
+
+## macsets
+Working with MAC Address Set Grouping Objects
+=============
+You can create a MAC address set on the specified scope. On success, the API
+returns a string identifier for the new MAC address set.
+
+### /2.0/services/macset/{macsetId}
+Working With a Specific MAC Address Set
+---------
+
+* **get** *(secured)*: Retrieve details about a MAC address set.
+* **put** *(secured)*: Modify an existing MAC address set.
+* **delete** *(secured)*: Delete a MAC address set.
+
+### /2.0/services/macset/scope/{scopeId}
+Working with MAC Address Sets on a Specific Scope
+----
+
+* **post** *(secured)*: Create a MAC address set on the specified scope.
+* **get** *(secured)*: List MAC address sets on the specified scope.
+
+## servicesAlarmsSource
+Working with Alarms from a Specific Source
+=====
+
+Some system alerts will show up as alarms in the NSX dashboard. You can
+view and resolve alarms from a specific source.
+
+### /2.0/services/alarms/{sourceId}
+
+* **get** *(secured)*: Retrive all alarms from the specified source.
+
+* **post** *(secured)*: Resolve all alarms for the specified source.
+
+Alarms will resolve automatically when the cause of the alarm is
+resolved.  For example, if an NSX Edge appliance is powered off, this
+will trigger an alarm. If you power the NSX Edge appliance back on, the
+alarm will resolve. If however, you delete the NSX Edge appliance, the
+alarm will persist, because the alarm cause was never resolved. In this
+case, you may want to manually resolve the alarm. Resolving the alarms
+will clear them from the NSX dashboard.
+
+Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
+alarms for the source. Use this response as the request body for the
+`POST` call.
+
+## servicesSystemAlarmsId
+Working with a Specific Alarm
+-------
+Some system alerts will show up as alarms in the NSX dashboard. You can
+view and resolve alarms by alarm ID.
 
 **Method history:**
 
 Release | Modification
 --------|-------------
-6.2.3 | Method introduced.
+6.3.0 | Method introduced.
+
+### /2.0/services/systemalarms/{alarmId}
+
+* **get** *(secured)*: Retrieve information about the specified alarm.
+* **post** *(secured)*: Resolve the specified alarm.
+
+Alarms will resolve automatically when the cause of the alarm is
+resolved.  For example, if an NSX Edge appliance is powered off, this
+will trigger an alarm. If you power the NSX Edge appliance back on, the
+alarm will resolve. If however, you delete the NSX Edge appliance, the
+alarm will persist, because the alarm cause was never resolved. In this
+case, you may want to manually resolve the alarm. Resolving the alarm 
+will clear it from the NSX dashboard.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+## taskFramework
+Working with the Task Framework
+======
+Working with filtering criteria and paging information for jobs on the task
+framework.
+
+### /2.0/services/taskservice/job
+
+* **get** *(secured)*: Query job instances by criterion.
+
+### /2.0/services/taskservice/job/{jobId}
+Working With a Specific Job Instance
+------
+
+* **get** *(secured)*: Retrieve all job instances for the specified job ID.
+
+## guestIntrospection
+Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+============
+
+About Guest Introspection and Endpoint Protection Solutions
+----------
+VMware's Guest Introspection Service enables vendors to deliver an
+introspection-based, endpoint protection (anti-virus) solution that uses
+the hypervisor to scan guest virtual machines from the outside, with only
+a thin agent on each guest virtual machine.
+
+Version Compatibility
+-----------
+
+**Note:** The management APIs listed in this section are to be used only
+with partner endpoint protection solutions that were developed with EPSec
+Partner Program 3.0 or earlier (for vShield 5.5 or earlier).  These
+partner solutions are also supported on NSX 6.0 and need the APIs listed
+below.  These APIs should not be used with partner solutions developed
+specifically for NSX 6.0 or later, as these newer solutions automate the
+registration and deployment process by using the new features introduced
+in NSX.  Using these with newer NSX 6.0 based solutions could result in
+loss of features.
+
+Register a Solution
+----------
+
+To register a third-party solution with Guest Introspection, clients can
+use four REST calls to do the following:
+1. Register the vendor.
+2. Register one or more solutions.
+3. Set the solution IP address and port (for all hosts).
+4. Activate registered solutions per host.
+
+**Note:** Steps 1 through 3 need to be performed once per solution. Step 4
+needs to be performed for each host.
+
+Unregister a Solution
+----------
+
+To unregister a solution, clients perform these steps in reverse:
+1. Deactivate solutions per host.
+2. Unset a solution’s IP address and port.
+3. Unregister solutions.
+4. Unregister the vendor.
+
+Updating Registration Information
+-----------
+
+To update registration information for a vendor or solution, clients must:
+1. Unregister the vendor or solution.
+2. Reregister the vendor or solution.
+
+### /2.0/endpointsecurity/registration
+Register a Vendor and Solution with Guest Introspection
+---
+
+* **post** *(secured)*: Register the vendor of an endpoint protection solution. Specify the
+following parameters in the request.
+
+| Name            | Comments |
+|-----------------|------------|
+|**vendorId**     | VMware-assigned ID for the vendor. |
+|**vendorTitle**  | Vendor-specified title. |
+|**vendorDescription** | Vendor-specified description. |
+
+### /2.0/endpointsecurity/registration/vendors
+Working With Registered Guest Introspection Vendors
+----
+
+* **get** *(secured)*: Retrieve the list of all registered Guest Introspection vendors.
+
+### /2.0/endpointsecurity/registration/{vendorID}
+Working With Guest Introspection Vendors and Endpoint Protection Solutions
+-----
+
+* **post** *(secured)*: Register an endpoint protection solution. Specify the following parameters in the request.
+
+| Name            | Comments |
+|-----------------|------------|
+|**solutionAltitude**     | VMware-assigned altitude for the solution. *Altitude* is a number that VMware assigns to uniquely identify the solution. The altitude describes the type of solution and the order in which the solution receives events relative to other solutions on the same host. |
+|**solutionTitle**  | Vendor-specified title for the solution. |
+|**solutionDescription** | Vendor-specified description of the solution. |
+
+* **get** *(secured)*: Retrieve registration information for a Guest Introspection vendor.
+* **delete** *(secured)*: Unregister a Guest Introspection vendor.
+
+### /2.0/endpointsecurity/registration/{vendorID}/solutions
+Information About Registered Endpoint Protection Solutions
+----
+
+* **get** *(secured)*: Get registration information for all endpoint protection solutions for a Guest Introspection vendor.
+
+### /2.0/endpointsecurity/registration/{vendorID}/{altitude}
+Endpoint Protection Solution Registration Information
+----
+
+* **get** *(secured)*: Get registration information for an endpoint protection solution.
+* **delete** *(secured)*: Unregister an endpoint protection solution.
+
+### /2.0/endpointsecurity/registration/{vendorID}/{altitude}/location
+IP Address and Port For an Endpoint Protection Solution
+-----
+To change the location of an endpoint protection solution:
+1. Deactivate all security virtual machines.
+2. Change the location.
+3. Reactivate all security virtual machines.
+
+* **post** *(secured)*: Set the IP address and port on the vNIC host for an endpoint
+protection solution.
+
+* **get** *(secured)*: Get the IP address and port on the vNIC host for an endpoint
+protection solution.
+
+* **delete** *(secured)*: Unset the IP address and port for an endpoint protection
+solution.
+
+### /2.0/endpointsecurity/activation
+Activate an Endpoint Protection Solution
+-------
+You can activate a solution that has been registered and located.
+
+* **get** *(secured)*: Retrieve activation information for all activated security VMs on the
+specified host.
+
+### /2.0/endpointsecurity/activation/{vendorID}/{solutionID}
+Activated Security Virtual Machines
+---
+
+* **get** *(secured)*: Retrieve a list of activated security VMs for an endpoint protection solution.
+
+### /2.0/endpointsecurity/activation/{vendorID}/{altitude}
+Activate a Registered Endpoint Protection Solution
+-----
+
+* **post** *(secured)*: Activate an endpoint protection solution that has been registered
+and located. Specify the following parameter in the request body.
+
+| Name            | Comments |
+|-----------------|------------|
+|**svmMoid**     | Managed object ID of the virtual machine of the activated endpoint protection solution. |
+
+### /2.0/endpointsecurity/activation/{vendorID}/{altitude}/{moid}
+Working with Solution Activation Status
+----
+
+* **get** *(secured)*: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
+* **delete** *(secured)*: Deactivate an endpoint protection solution on a host.
+
+## dfw
+Working with Distributed Firewall
+=================================
+
+### /4.0/firewall/globalroot-0/defaultconfig
+Default Firewall Configuration
+-----
+
+* **get** *(secured)*: Retrieve the default firewall configuration.
+
+The output of this method can be used to restore the firewall config
+back to default. For example, to replace the layer 2 or layer 3
+default section, use the relevant default section from the `GET
+/api/4.0/firewall/globalroot-0/defaultconfig` response body to create
+the request body of `PUT
+/api/4.0/firewall/globalroot-0/config/layer2sections|layer3sections/{sectionId}`.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+### /4.0/firewall/globalroot-0/config
+Distributed Firewall Rules Configuration
+---
+The following table lists the elements that can be used in firewall
+rules.
+
+| Element | Keyword for API | Used in |
+|---|---|---|
+| All Edges | ALL_EDGES | appliedTo |
+| application | Application | service |
+| application group | ApplicationGroup | service |
+| cluster | compute resource | ClusterComputeResource<br>appliedTo |
+| datacenter | Datacenter | source/destination<br>appliedTo |
+| distributed firewall | DISTRIBUTED_FIREWALL | appliedTo |
+| distributed virtual port group | DistributedVirtualPortgroup | source/destination<br>appliedTo |
+| Edge ID | Edge | appliedTo |
+| global root | GlobalRoot | source/destination |
+| host | HostSystem | appliedTo |
+| IP set | IPSet | source/destination |
+| IPv4 addresses | Ipv4Address | source/destination |
+| IPv6 addresses | Ipv6Address | source/destination |
+| logical switch | VirtualWire | source/destination<br>appliedTo |
+| MAC address set | MACSet | source/destination |
+| network | Network | for legacy portgroups, network can be used in source or destination instead of appliedTo |
+| profile | ALL_PROFILE_BINDINGS | |
+| resource pool | ResourcePool | source/destination |
+| security group | SecurityGroup | source/destination |
+| virtual app | VirtualApp | source/destination |
+| virtual machine | VirtualMachine | source/destination<br>appliedTo |
+| vNIC | Vnic | source/destination<br>appliedTo |
+
+* **get** *(secured)*: Retrieve distributed firewall rule configuration.
+
+If no query parameters are used, all rule configuration is retrieved.
+Use the query parameters to filter the rule configuration information.
+
+* **put** *(secured)*: Update the complete firewall configuration in all sections.
+
+* Retrieve the configuration with `GET /api/4.0/firewall/globalroot-0/config`.
+* Retrieve the Etag value from the response headers.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+* IDs for new objects (rule/section) should be removed or set to zero.
+* If new entities (sections/rules) have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+* **delete** *(secured)*: Restores default configuration, which means one defaultLayer3 section
+with three default allow rules and one defaultLayer2Section with one
+default allow rule.
+
+### /4.0/firewall/globalroot-0/config/layer3sections
+Working With Layer 3 Sections in Distributed Firewall
+-----
+
+You can use sections in the firewall table to group logical rules based on
+AppliedTo or for a tenant use case. A firewall section is the smallest unit of
+configuration which can be updated independently. Section types are as
+follows:
+* Layer3Section contains layer3 rules
+* Layer2Section contains layer2 rules
+* Layer3RedirectSection contains traffic redirect rules.
+
+When Distributed Firewall is used with Service Composer, firewall sections
+created by Service Composer contain an additional attribute in the XML called
+managedBy. You should not modify Service Composer firewall sections using
+Distributed Firewall REST APIs.
+
+* **get** *(secured)*: Retrieve rules from the layer 3 section specified by section
+**name**.
+
+* **post** *(secured)*: Create a layer 3 distributed firewall section.
+
+By default, the section is created at the top of the firewall table.
+You can specify a location for the section with the **operation**
+and **anchorId** query parameters.
+
+### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}
+Working With a Specific Layer 3 Distributed Firewall Section
+----
+
+* **get** *(secured)*: Retrieve information about the specified layer 3 section.
+* **post** *(secured)*: Move the specified layer 3 section.
+
+Use the **action**, **operation**, and optionally **achorId**
+query parameters to specify the destination for the section.
+
+`POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007
+?action=revise&operation=insert_before&anchorId=1006`
+
+`If-Match: 1477989118875` 
+
+```
+<section id="1007" name="Web Section" generationNumber="1477989118875" timestamp="1477989118875" type="LAYER3">
+  ...
+</section>
+```
+
+* **put** *(secured)*: Update the specified layer 3 section in distributed firewall.
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+* IDs for new objects (rule/section) should be removed or set to zero.
+* If new entities (sections/rules) have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+When Distributed Firewall is used with Service Composer, firewall
+sections created by Service Composer contain an additional attribute
+in the XML called managedBy. You should not modify Service Composer
+firewall sections using Distributed Firewall REST APIs. If you do, you
+must synchronize firewall rules from Service Composer using the `GET
+/api/2.0/services/policy/serviceprovider/firewall` API.
+
+* **delete** *(secured)*: Delete the specified layer 3 distributed firewall section.
+
+If the default layer 3 firewall section is selected, the request is
+rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
+for information on resetting the default firewall section.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
+
+### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules
+Working With Distributed Firewall Rules in a Layer 3 Section
+----
+
+* **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
+
+You add firewall rules at the global scope. You can then narrow down the scope
+(datacenter, cluster, distributed virtual port group, network, virtual machine,
+vNIC, or logical switch) at which you want to apply the rule. Firewall allows
+you to add multiple objects at the source and destination levels for each rule,
+which helps reduce the total number of firewall rules to be added.  To add a
+identity based firewall rule, first create a security group based on Directory
+Group objects. Then create a firewall rule with the security group as the
+source or destination.  Rules that direct traffic to a third part service are
+referred to as layer3 redirect rules, and are displayed in the layer3 redirect
+tab.
+
+When Distributed Firewall is used with Service Composer, firewall
+rules created by Service Composer contain an additional attribute
+in the XML called managedBy.
+
+Follow this procedure to add a rule:
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+  **Note**: Each section contains its own Etag, generationNumber, and
+  timestamp. When adding a new rule, you must use the Etag value of the
+  firewall section to which you wish to add the rule.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+
+* IDs for new rules should be removed or set to zero.
+* If new rules have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules/{ruleId}
+Working with a Specific Rule in a Specific Layer 3 Section
+----
+
+* **get** *(secured)*: Retrieve information about the specified distributed firewall rule.
+
+* **put** *(secured)*: Update a distributed firewall rule in a layer 3 section.
+
+* Retrieve the configuration for the section that contains the rule you want
+  to modify.
+* Retrieve the Etag value from the response headers.
+  **Note**: This is the Etag value of the firewall section to which you want
+  to add the rule. If you are keeping this rule in the same section, you must
+  keep the same Etag number.
+* Extract and modify the rule configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+* **delete** *(secured)*: Delete the specified distributed firewall rule.
+
+### /4.0/firewall/globalroot-0/config/layer2sections
+Working With Layer 2 Sections in Distributed Firewall
+----
+
+You can use sections in the firewall table to group logical rules based on
+AppliedTo or for a tenant use case. A firewall section is the smallest unit of
+configuration which can be updated independently. Section types are as
+follows:
+* Layer3Section contains layer3 rules
+* Layer2Section contains layer2 rules
+* Layer3RedirectSection contains traffic redirect rules.
+
+When Distributed Firewall is used with Service Composer, firewall sections
+created by Service Composer contain an additional attribute in the XML called
+managedBy. You should not modify Service Composer firewall sections using
+Distributed Firewall REST APIs.
+
+* **get** *(secured)*: Retrieve rules from the layer 2 section specified by section
+**name**.
+
+* **post** *(secured)*: Create a layer 2 distributed firewall section.
+
+By default, the section is created at the top of the firewall table.
+You can specify a location for the section with the **operation**
+and **anchorId** query parameters.
+
+### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}
+Working With a Specific Layer 2 Distributed Firewall Section
+----
+
+* **get** *(secured)*: Retrieve information about the specified layer 2 section.
+* **post** *(secured)*: Move the specified layer 2 section.
+
+Use the **action**, **operation**, and optionally **achorId**
+query parameters to specify the destination for the section.
+
+`POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009
+?action=revise&operation=insert_before&anchorId=1008`
+
+`If-Match: 1478307787160`
+
+```
+<section id="1009" name="Test Section" generationNumber="1478307787160" timestamp="1478307787160" type="LAYER2">
+  ...
+</section>
+```
+
+* **put** *(secured)*: Update the specified layer 2 section in distributed firewall.
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+* IDs for new objects (rule/section) should be removed or set to zero.
+* If new entities (sections/rules) have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+When Distributed Firewall is used with Service Composer, firewall
+sections created by Service Composer contain an additional attribute
+in the XML called managedBy. You should not modify Service Composer
+firewall sections using Distributed Firewall REST APIs. If you do, you
+must synchronize firewall rules from Service Composer using the `GET
+/api/2.0/services/policy/serviceprovider/firewall` API.
+
+* **delete** *(secured)*: Delete the specified layer 2 section and its contents.
+
+If the default layer 2 firewall section is selected, the request is
+rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
+for information on resetting the default firewall section.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
+
+### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules
+Working With Distributed Firewall Rules in a Layer 2 Section
+------
+
+* **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
+
+You add firewall rules at the global scope. You can then narrow down the scope
+(datacenter, cluster, distributed virtual port group, network, virtual machine,
+vNIC, or logical switch) at which you want to apply the rule. Firewall allows
+you to add multiple objects at the source and destination levels for each rule,
+which helps reduce the total number of firewall rules to be added.  To add a
+identity based firewall rule, first create a security group based on Directory
+Group objects. Then create a firewall rule with the security group as the
+source or destination.  Rules that direct traffic to a third part service are
+referred to as layer3 redirect rules, and are displayed in the layer3 redirect
+tab.
+
+When Distributed Firewall is used with Service Composer, firewall
+rules created by Service Composer contain an additional attribute
+in the XML called managedBy.
+
+Follow this procedure to add a rule:
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+  **Note**: Each section contains its own Etag, generationNumber, and
+  timestamp. When adding a new rule, you must use the Etag value of the
+  firewall section to which you wish to add the rule.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+
+* IDs for new rules should be removed or set to zero.
+* If new rules have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
+
+### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules/{ruleId}
+Working With a Specific Rule in a Specific Layer 2 Section
+-----
+
+* **get** *(secured)*: Retrieve the configuration of the specified rule.
+
+* **put** *(secured)*: Update a distributed firewall rule in a layer 2 section.
+
+* Retrieve the configuration for the section that contains the rule you want
+  to modify.
+* Retrieve the Etag value from the response headers.
+  **Note**: This is the Etag value of the firewall section to which you want
+  to add the rule. If you are keeping this rule in the same section, you must
+  keep the same Etag number.
+* Extract and modify the rule configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+* **delete** *(secured)*: Delete the specified distributed firewall rule.
+
+### /4.0/firewall/globalroot-0/config/layer3redirectsections
+Layer 3 Redirect Sections and Rules
+----
+
+* **post** *(secured)*: Add L3 redirect section
+
+### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}
+Layer 3 Redirect Section
+----
+
+* **get** *(secured)*: Get L3 redirect section configuration
+* **put** *(secured)*: Modify layer 3 redirect section. You will need to get the Etag
+value out of the GET first. Then pass the modified version of the
+whole redirect section configuration in the GET body.
+
+* **delete** *(secured)*: Delete specified L3 redirect section
+
+### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules
+Working with Layer 3 Redirect Rules for a Specific Section
+----
+
+* **post** *(secured)*: Add L3 redirect rule
+
+### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules/{ruleID}
+Working With a Specific Layer 3 Redirect Rule for a Specific Section
+----
+
+* **get** *(secured)*: Get L3 redirect rule
+* **put** *(secured)*: Modify L3 redirect rule. You will need Etag value from the
+response header of GET call. Then, pass Etag value as the
+if-match header in PUT call
+
+* **delete** *(secured)*: Delete specified L3 redirect rule
+
+### /4.0/firewall/globalroot-0/config/layer3redirect/profiles
+Service Insertion Profiles and Layer 3 Redirect Rules
+----
+
+* **get** *(secured)*: Retrieve the Service Insertion profiles that can be applied to
+layer3 redirect rules.
+
+### /4.0/firewall/globalroot-0/state
+Enable Distributed Firewall After Upgrade
+-----
+After upgrading NSX Manager, controllers, and network virtualization
+components, check the status of distributed firewall. If it is ready to
+enable, you can enable distributed firewall.
+
+| State | Description |
+|-------|-------------|
+| backwardCompatible | This is the default state after an upgrade from vCloud Networking and Security to NSX, which means that vShield App is being used for protection instead of distributed firewall.|
+| backwardCompatibleReadyForSwitch | Once the clusters are prepared with NSX binaries, this state is enabled. You can enable distributed firewall only after firewall is in this state. |
+| switchingToForward | This is an intermediate state when you change firewall to distributed firewall. |
+| forward | This is the default state for green field deployments or after you have switched from vShield App to distributed firewall. |
+| switchFailed | This state is unlikely, but may be present if NSX Manager failed to switch to distributed firewall. |
+
+* **get** *(secured)*: Retrieve current state of firewall functioning after NSX upgrade.
+
+* **put** *(secured)*: Enable distributed firewall.
+
+### /4.0/firewall/globalroot-0/status
+Working with Distributed Firewall Status
+----
+Retrieve status of last publish action for each cluster in the NSX
+environment.
+
+The status output displays a generation number (**generationNumber**) for
+each rule set, which can be used to verify whether a change in rule sets
+has propagated to a host. In 6.2.4, a generation number for objects
+(**generationNumberObjects**) has been added to the status API. This allows
+you to verify whether a change in objects consumed in firewall rules has
+propagated to a host. Note that the object generation number may change
+frequently and will always be equal to or greater than the ruleset
+generation number.
+
+Starting in NSX 6.2.4, clusters (and hosts inside the cluster) are no
+longer included in the firewall status output if distributed firewall is
+disabled at the cluster level, or if the cluster is not prepared (NSX
+VIBs are not installed). In earlier versions of NSX these clusters and
+hosts are included in the output. However, because they are not
+configured for firewall, after a firewall rule publish their status is
+*inprogress*.
+
+* **get** *(secured)*: Get firewall configuration status
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
+
+### /4.0/firewall/globalroot-0/status/layer3sections/{sectionID}
+Working with a Specific Layer 3 Section Status
+----
+
+* **get** *(secured)*: Retrieve status of the last publish action for the specified layer 3 section.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
+
+### /4.0/firewall/globalroot-0/status/layer2sections/{sectionID}
+Working with a Specific Layer 2 Section Status
+----
+
+* **get** *(secured)*: Retrieve status of the last publish action for the specified layer 2 section.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
+
+### /4.0/firewall/globalroot-0/drafts
+Import and Export Firewall Configurations
+----
+
+* **post** *(secured)*: Save a firewall configuration.
+* **get** *(secured)*: Displays the draft IDs of all saved configurations.
+
+### /4.0/firewall/globalroot-0/drafts/{draftID}
+Working With a Specific Saved Firewall Configuration
+----
+
+* **get** *(secured)*: Get a saved firewall configuration.
+* **put** *(secured)*: Update a saved firewall configuration.
+* **delete** *(secured)*: Delete a configuration.
+
+### /4.0/firewall/globalroot-0/drafts/{draftID}/action/export
+Export a Firewall Configuration
+----
+
+* **get** *(secured)*: Export a configuration.
+
+### /4.0/firewall/globalroot-0/drafts/{draftID}/action/import
+Import a Firewall Configuration
+-----
+
+* **post** *(secured)*: Import a configuration.
+
+### /4.0/firewall/stats/eventthresholds
+Working With Distributed Firewall Thresholds
+----
+Configure memory, CPU, and connections per second (CPS) thresholds for
+distributed firewall.
+
+The firewall module generates system events when the memory and CPU
+usage crosses these thresholds.
+
+* **get** *(secured)*: Retrieve threshold configuration for distributed firewall.
+
+* **put** *(secured)*: Update threshold configuration for distributed firewall.
+
+### /4.0/firewall/config/globalconfiguration
+Working with the Distributed Firewall Global Configuration
+----------------------------------------------------------
+You can use the following parameters to improve firewall performancer:
+
+* **layer3RuleOptimize** and **layer2RuleOptimize** to turn
+on/off rule optimization.
+* **tcpStrictOption** determines whether or not to drop an established
+TCP connection when the firewall does not see the initial three-way
+handshake. If set to true, the connection will be dropped.
+* **autoDraftDisabled** improves performances when making large numbers
+of changes to firewall rules.
+
+You can disable the auto draft feature by setting **autoDraftDisabled** to
+true. Distributed Firewall saves up to 100 configurations, including
+manually saved drafts (**preserve** parameter can be set to true or
+false) and auto saved drafts (**preserve** parameter is set to false).
+Once 100 configurations are saved, older drafts with the **preserve**
+parameter set to false will be deleted in order to save new
+configurations. You might want to disable the auto drafts feature before
+making large numbers of changes to the firewall rules, to improve
+performance, and to prevent previously saved drafts from being
+overwritten.
+
+Note: The **autoDraftDisabled** parameter does not appear in a GET of the global
+configuration.
+
+* **get** *(secured)*: Retrieve performance configuration for distributed firewall.
+* **put** *(secured)*: Update the distributed firewall performance configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. **autoDraftDisabled** parameter added.
+
+### /4.0/firewall/forceSync/{ID}
+Synchronize Firewall
+----
+Synchronize hosts and clusters with the last good configuration in NSX
+Manager database.
+
+* **post** *(secured)*: Force sync host or cluster.
+
+### /4.0/firewall/{domainID}/enable/{truefalse}
+Enable Firewall
+----
+Enable or disable firewall components on a cluster.
+
+* **post** *(secured)*: Enable or disable firewall components on a cluster
+
+### /4.0/firewall/{contextId}/config/ipfix
+Working with IPFIX
+---
+Configuring IPFIX exports specific flows directly from Distributed
+Firewall to a flow collector.
+
+* **get** *(secured)*: Query IPFIX configuration.
+* **put** *(secured)*: Configure IPFIX.
+* **delete** *(secured)*: Deleting IPFIX configuration resets the config to default values
+
+## spoofGuard
+Working With SpoofGuard
+==========
+After synchronizing with the vCenter Server, NSX Manager collects the IP
+addresses of all vCenter guest virtual machines. If a virtual machine has
+been compromised, the IP address can be spoofed and malicious
+transmissions can bypass firewall policies.
+
+You create a SpoofGuard policy for specific networks that allows you to
+authorize the reported IP addresses and alter them if necessary to prevent
+spoofing.  SpoofGuard inherently trusts the MAC addresses of virtual
+machines collected from the VMX files and vSphere SDK. Operating
+separately from Firewall rules, you can use SpoofGuard to block traffic
+determined to be spoofed.
+
+### /4.0/services/spoofguard/policies
+Working with SpoofGuard Policies
+---------
+You can create a SpoofGuard policy to specify the operation mode for
+specific networks. The system generated policy applies to port groups
+and logical switches not covered by existing SpoofGuard policies.
+
+The operationMode for a SpoofGuard policy can be set to one of the
+following:
+
+* **TOFU** - Automatically trust IP assignments on their first use
+* **MANUAL** - Manually inspect and approve all IP assignments before first
+use
+* **DISABLE** - Disable the SpoofGuard policy
+
+* **post** *(secured)*: Create a SpoofGuard policy to specify the operation mode for networks.
+
+* **get** *(secured)*: Retrieve information about all SpoofGuard policies.
+
+### /4.0/services/spoofguard/policies/{policyID}
+Working With a Specific SpoofGuard Policy
+---
+
+* **get** *(secured)*: Retrieve information about the specified SpoofGuard policy.
+
+* **put** *(secured)*: Modify the specified SpoofGuard policy.
+* **delete** *(secured)*: Delete the specified SpoofGuard policy.
+
+### /4.0/services/spoofguard/{policyID}
+Perform SpoofGuard Operations on IP Addresses in a Specific Policy
+---
+
+* **post** *(secured)*: Approve or publish IP addresses.
+* **get** *(secured)*: Retrieve IP addresses for the specified state.
+
+## flowMonitoring
+Working with Flow Monitoring
+========
+
+### /2.1/app/flow/flowstats
+Working With Flow Monitoring Statistics 
+----
+
+* **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC.
+
+Response values for flow statistics:
+* **blocked** - indicates whether traffic is blocked:
+  * 0 - flow allowed
+  * 1 - flow blocked
+  * 2 - flow blocked by SpoofGuard
+* **protocol** - protocol in flow:
+  * 0 - TCP
+  * 1 - UDP
+  * 2 - ICMP
+* **direction** - direction of flow:
+  * 0 - to virtual machine
+  * 1 - from virtual machine
+* **controlDirection** - control direction for dynamic TCP traffic:
+  * 0 - source -> destination
+  * 1 - destination -> source
+
+### /2.1/app/flow/flowstats/info
+Working With Flow Monitoring Meta-Data
+----
+
+* **get** *(secured)*: Retrieve flow statistics meta-data.
+
+This method retrieves the following information for each flow type:
+* minimum start time
+* maximum end time
+* total flow count
+
+### /2.1/app/flow/config
+Working With Flow Monitoring Configuration
+----
+
+Flow records generated on all hosts are sent to NSX Manager, which
+consumes the records and displays aggregated information.  Hosts can
+generate large numbers of flow records.  You can configure flow
+monitoring to exclude certain records from collection.  The flow
+configuration applies to all hosts.
+
+* **collectFlows** - if true, flow collection is enabled.
+* **ignoreBlockedFlows** - if true, ignore blocked flows.
+* **ignoreLayer2Flows** - if true, ignore layer 2 flows.
+* **sourceIPs** - source IPs to exclude. For example: 10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24.
+* **sourceContainer** - source containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
+* **destinationIPs** - destination IPs to exclude.
+* **destinationContainer** - destination containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
+* **destinationPorts** - destination ports to exclude.
+* **serviceContainers** - service containers to exclude. Container can contain application or application group.
+
+Flow exclusion happens at the host. The following flows are discarded by default:
+* Broadcast IP (255.255.255.255)
+* Local multicast group (224.0.0.0/24)
+* Broadcast MAC address (FF:FF:FF:FF:FF:FF)
+
+* **get** *(secured)*: Retrieve flow monitoring configuration.
+* **put** *(secured)*: Update flow monitoring configuration.
+
+### /2.1/app/flow/{contextId}
+Working with Flow Configuration for a Specific Context
+----
+
+* **delete** *(secured)*: Delete flow records for the specified context.
+
+## dfwExclusion
+Exclude Virtual Machines from Firewall Protection
+=========
+
+### /2.1/app/excludelist
+
+* **get** *(secured)*: Retrieve the set of VMs in the exclusion list.
+
+### /2.1/app/excludelist/{memberID}
+Working with the Exclusion List
+---
+
+* **put** *(secured)*: Add a vm to the exclusion list.
+* **delete** *(secured)*: Delete a vm from exclusion list.
 
 ## nsxEdges
 Working with NSX Edge
@@ -3096,704 +5174,77 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-## dfw
-Working with Distributed Firewall
-=================================
-
-### /4.0/firewall/globalroot-0/defaultconfig
-Default Firewall Configuration
------
-
-* **get** *(secured)*: Retrieve the default firewall configuration.
-
-The output of this method can be used to restore the firewall config
-back to default. For example, to replace the layer 2 or layer 3
-default section, use the relevant default section from the `GET
-/api/4.0/firewall/globalroot-0/defaultconfig` response body to create
-the request body of `PUT
-/api/4.0/firewall/globalroot-0/config/layer2sections|layer3sections/{sectionId}`.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-### /4.0/firewall/globalroot-0/config
-Distributed Firewall Rules Configuration
----
-The following table lists the elements that can be used in firewall
-rules.
-
-| Element | Keyword for API | Used in |
-|---|---|---|
-| All Edges | ALL_EDGES | appliedTo |
-| application | Application | service |
-| application group | ApplicationGroup | service |
-| cluster | compute resource | ClusterComputeResource<br>appliedTo |
-| datacenter | Datacenter | source/destination<br>appliedTo |
-| distributed firewall | DISTRIBUTED_FIREWALL | appliedTo |
-| distributed virtual port group | DistributedVirtualPortgroup | source/destination<br>appliedTo |
-| Edge ID | Edge | appliedTo |
-| global root | GlobalRoot | source/destination |
-| host | HostSystem | appliedTo |
-| IP set | IPSet | source/destination |
-| IPv4 addresses | Ipv4Address | source/destination |
-| IPv6 addresses | Ipv6Address | source/destination |
-| logical switch | VirtualWire | source/destination<br>appliedTo |
-| MAC address set | MACSet | source/destination |
-| network | Network | for legacy portgroups, network can be used in source or destination instead of appliedTo |
-| profile | ALL_PROFILE_BINDINGS | |
-| resource pool | ResourcePool | source/destination |
-| security group | SecurityGroup | source/destination |
-| virtual app | VirtualApp | source/destination |
-| virtual machine | VirtualMachine | source/destination<br>appliedTo |
-| vNIC | Vnic | source/destination<br>appliedTo |
-
-* **get** *(secured)*: Retrieve distributed firewall rule configuration.
-
-If no query parameters are used, all rule configuration is retrieved.
-Use the query parameters to filter the rule configuration information.
-
-* **put** *(secured)*: Update the complete firewall configuration in all sections.
-
-* Retrieve the configuration with `GET /api/4.0/firewall/globalroot-0/config`.
-* Retrieve the Etag value from the response headers.
-* Extract and modify the configuration from the response body as needed.
-* Set the If-Match header to the Etag value, and submit the request.
-
-Not all fields are required while sending the request. All the optional fields
-are safe to be ignored while sending the configuration to server. For example,
-if an IP set is referenced in the rule only IPSet and Type is needed in the
-Source/Destination objects and not Name and isValid tags.
-
-When updating the firewall configuration:
-* IDs for new objects (rule/section) should be removed or set to zero.
-* If new entities (sections/rules) have been sent in the request, the response
-  will contain the system-generated IDs, which are assigned to these new
-  entities.
-* **appliedTo** can be any valid firewall rule element.
-* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
-  unaccepted packets; RST packets are sent for TCP connections and ICMP
-  unreachable code packets are sent for UDP, ICMP, and other IP connections
-* source and destination can have an exclude flag. For example, if you add an
-  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
-  originating from all IPs other than 1.1.1.1.
-
-* **delete** *(secured)*: Restores default configuration, which means one defaultLayer3 section
-with three default allow rules and one defaultLayer2Section with one
-default allow rule.
-
-### /4.0/firewall/globalroot-0/config/layer3sections
-Working With Layer 3 Sections in Distributed Firewall
------
-
-You can use sections in the firewall table to group logical rules based on
-AppliedTo or for a tenant use case. A firewall section is the smallest unit of
-configuration which can be updated independently. Section types are as
-follows:
-* Layer3Section contains layer3 rules
-* Layer2Section contains layer2 rules
-* Layer3RedirectSection contains traffic redirect rules.
-
-When Distributed Firewall is used with Service Composer, firewall sections
-created by Service Composer contain an additional attribute in the XML called
-managedBy. You should not modify Service Composer firewall sections using
-Distributed Firewall REST APIs.
-
-* **get** *(secured)*: Retrieve rules from the layer 3 section specified by section
-**name**.
-
-* **post** *(secured)*: Create a layer 3 distributed firewall section.
-
-By default, the section is created at the top of the firewall table.
-You can specify a location for the section with the **operation**
-and **anchorId** query parameters.
-
-### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}
-Working With a Specific Layer 3 Distributed Firewall Section
-----
-
-* **get** *(secured)*: Retrieve information about the specified layer 3 section.
-* **post** *(secured)*: Move the specified layer 3 section.
-
-Use the **action**, **operation**, and optionally **achorId**
-query parameters to specify the destination for the section.
-
-`POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007
-?action=revise&operation=insert_before&anchorId=1006`
-
-`If-Match: 1477989118875` 
-
-```
-<section id="1007" name="Web Section" generationNumber="1477989118875" timestamp="1477989118875" type="LAYER3">
-  ...
-</section>
-```
-
-* **put** *(secured)*: Update the specified layer 3 section in distributed firewall.
-
-* Retrieve the configuration for the specified section.
-* Retrieve the Etag value from the response headers.
-* Extract and modify the configuration from the response body as needed.
-* Set the If-Match header to the Etag value, and submit the request.
-
-Not all fields are required while sending the request. All the optional fields
-are safe to be ignored while sending the configuration to server. For example,
-if an IP set is referenced in the rule only IPSet and Type is needed in the
-Source/Destination objects and not Name and isValid tags.
-
-When updating the firewall configuration:
-* IDs for new objects (rule/section) should be removed or set to zero.
-* If new entities (sections/rules) have been sent in the request, the response
-  will contain the system-generated IDs, which are assigned to these new
-  entities.
-* **appliedTo** can be any valid firewall rule element.
-* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
-  unaccepted packets; RST packets are sent for TCP connections and ICMP
-  unreachable code packets are sent for UDP, ICMP, and other IP connections
-* source and destination can have an exclude flag. For example, if you add an
-  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
-  originating from all IPs other than 1.1.1.1.
-
-When Distributed Firewall is used with Service Composer, firewall
-sections created by Service Composer contain an additional attribute
-in the XML called managedBy. You should not modify Service Composer
-firewall sections using Distributed Firewall REST APIs. If you do, you
-must synchronize firewall rules from Service Composer using the `GET
-/api/2.0/services/policy/serviceprovider/firewall` API.
-
-* **delete** *(secured)*: Delete the specified layer 3 distributed firewall section.
-
-If the default layer 3 firewall section is selected, the request is
-rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
-for information on resetting the default firewall section.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
-
-### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules
-Working With Distributed Firewall Rules in a Layer 3 Section
-----
-
-* **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
-
-You add firewall rules at the global scope. You can then narrow down the scope
-(datacenter, cluster, distributed virtual port group, network, virtual machine,
-vNIC, or logical switch) at which you want to apply the rule. Firewall allows
-you to add multiple objects at the source and destination levels for each rule,
-which helps reduce the total number of firewall rules to be added.  To add a
-identity based firewall rule, first create a security group based on Directory
-Group objects. Then create a firewall rule with the security group as the
-source or destination.  Rules that direct traffic to a third part service are
-referred to as layer3 redirect rules, and are displayed in the layer3 redirect
-tab.
-
-When Distributed Firewall is used with Service Composer, firewall
-rules created by Service Composer contain an additional attribute
-in the XML called managedBy.
-
-Follow this procedure to add a rule:
-
-* Retrieve the configuration for the specified section.
-* Retrieve the Etag value from the response headers.
-  **Note**: Each section contains its own Etag, generationNumber, and
-  timestamp. When adding a new rule, you must use the Etag value of the
-  firewall section to which you wish to add the rule.
-* Extract and modify the configuration from the response body as needed.
-* Set the If-Match header to the section Etag value, and submit the request.
-
-Not all fields are required while sending the request. All the optional fields
-are safe to be ignored while sending the configuration to server. For example,
-if an IP set is referenced in the rule only IPSet and Type is needed in the
-Source/Destination objects and not Name and isValid tags.
-
-When updating the firewall configuration:
-
-* IDs for new rules should be removed or set to zero.
-* If new rules have been sent in the request, the response
-  will contain the system-generated IDs, which are assigned to these new
-  entities.
-* **appliedTo** can be any valid firewall rule element.
-* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
-  unaccepted packets; RST packets are sent for TCP connections and ICMP
-  unreachable code packets are sent for UDP, ICMP, and other IP connections
-* source and destination can have an exclude flag. For example, if you add an
-  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
-  originating from all IPs other than 1.1.1.1.
-
-### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules/{ruleId}
-Working with a Specific Rule in a Specific Layer 3 Section
-----
-
-* **get** *(secured)*: Retrieve information about the specified distributed firewall rule.
-
-* **put** *(secured)*: Update a distributed firewall rule in a layer 3 section.
-
-* Retrieve the configuration for the section that contains the rule you want
-  to modify.
-* Retrieve the Etag value from the response headers.
-  **Note**: This is the Etag value of the firewall section to which you want
-  to add the rule. If you are keeping this rule in the same section, you must
-  keep the same Etag number.
-* Extract and modify the rule configuration from the response body as needed.
-* Set the If-Match header to the section Etag value, and submit the request.
-
-Not all fields are required while sending the request. All the optional fields
-are safe to be ignored while sending the configuration to server. For example,
-if an IP set is referenced in the rule only IPSet and Type is needed in the
-Source/Destination objects and not Name and isValid tags.
-
-* **delete** *(secured)*: Delete the specified distributed firewall rule.
-
-### /4.0/firewall/globalroot-0/config/layer2sections
-Working With Layer 2 Sections in Distributed Firewall
-----
-
-You can use sections in the firewall table to group logical rules based on
-AppliedTo or for a tenant use case. A firewall section is the smallest unit of
-configuration which can be updated independently. Section types are as
-follows:
-* Layer3Section contains layer3 rules
-* Layer2Section contains layer2 rules
-* Layer3RedirectSection contains traffic redirect rules.
-
-When Distributed Firewall is used with Service Composer, firewall sections
-created by Service Composer contain an additional attribute in the XML called
-managedBy. You should not modify Service Composer firewall sections using
-Distributed Firewall REST APIs.
-
-* **get** *(secured)*: Retrieve rules from the layer 2 section specified by section
-**name**.
-
-* **post** *(secured)*: Create a layer 2 distributed firewall section.
-
-By default, the section is created at the top of the firewall table.
-You can specify a location for the section with the **operation**
-and **anchorId** query parameters.
-
-### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}
-Working With a Specific Layer 2 Distributed Firewall Section
-----
-
-* **get** *(secured)*: Retrieve information about the specified layer 2 section.
-* **post** *(secured)*: Move the specified layer 2 section.
-
-Use the **action**, **operation**, and optionally **achorId**
-query parameters to specify the destination for the section.
-
-`POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009
-?action=revise&operation=insert_before&anchorId=1008`
-
-`If-Match: 1478307787160`
-
-```
-<section id="1009" name="Test Section" generationNumber="1478307787160" timestamp="1478307787160" type="LAYER2">
-  ...
-</section>
-```
-
-* **put** *(secured)*: Update the specified layer 2 section in distributed firewall.
-
-* Retrieve the configuration for the specified section.
-* Retrieve the Etag value from the response headers.
-* Extract and modify the configuration from the response body as needed.
-* Set the If-Match header to the Etag value, and submit the request.
-
-Not all fields are required while sending the request. All the optional fields
-are safe to be ignored while sending the configuration to server. For example,
-if an IP set is referenced in the rule only IPSet and Type is needed in the
-Source/Destination objects and not Name and isValid tags.
-
-When updating the firewall configuration:
-* IDs for new objects (rule/section) should be removed or set to zero.
-* If new entities (sections/rules) have been sent in the request, the response
-  will contain the system-generated IDs, which are assigned to these new
-  entities.
-* **appliedTo** can be any valid firewall rule element.
-* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
-  unaccepted packets; RST packets are sent for TCP connections and ICMP
-  unreachable code packets are sent for UDP, ICMP, and other IP connections
-* source and destination can have an exclude flag. For example, if you add an
-  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
-  originating from all IPs other than 1.1.1.1.
-
-When Distributed Firewall is used with Service Composer, firewall
-sections created by Service Composer contain an additional attribute
-in the XML called managedBy. You should not modify Service Composer
-firewall sections using Distributed Firewall REST APIs. If you do, you
-must synchronize firewall rules from Service Composer using the `GET
-/api/2.0/services/policy/serviceprovider/firewall` API.
-
-* **delete** *(secured)*: Delete the specified layer 2 section and its contents.
-
-If the default layer 2 firewall section is selected, the request is
-rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
-for information on resetting the default firewall section.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
-
-### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules
-Working With Distributed Firewall Rules in a Layer 2 Section
+## truststore
+Working with Certificates
+=============
+
+### /2.0/services/truststore/certificate
+Working with Certificates and Certificate Chains
 ------
 
-* **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
+* **post** *(secured)*: Create certificate for CSR.
 
-You add firewall rules at the global scope. You can then narrow down the scope
-(datacenter, cluster, distributed virtual port group, network, virtual machine,
-vNIC, or logical switch) at which you want to apply the rule. Firewall allows
-you to add multiple objects at the source and destination levels for each rule,
-which helps reduce the total number of firewall rules to be added.  To add a
-identity based firewall rule, first create a security group based on Directory
-Group objects. Then create a firewall rule with the security group as the
-source or destination.  Rules that direct traffic to a third part service are
-referred to as layer3 redirect rules, and are displayed in the layer3 redirect
-tab.
+### /2.0/services/truststore/certificate/scope/{scopeId}
+Working With Certificates on a Specific Scope
+----
 
-When Distributed Firewall is used with Service Composer, firewall
-rules created by Service Composer contain an additional attribute
-in the XML called managedBy.
+* **get** *(secured)*: Query all certificates for a scope
 
-Follow this procedure to add a rule:
+### /2.0/services/truststore/certificate/{scopeId}
+Working With NSX Edge Self-Signed Certificates
+------
 
-* Retrieve the configuration for the specified section.
-* Retrieve the Etag value from the response headers.
-  **Note**: Each section contains its own Etag, generationNumber, and
-  timestamp. When adding a new rule, you must use the Etag value of the
-  firewall section to which you wish to add the rule.
-* Extract and modify the configuration from the response body as needed.
-* Set the If-Match header to the section Etag value, and submit the request.
+* **post** *(secured)*: Create a single certificate
 
-Not all fields are required while sending the request. All the optional fields
-are safe to be ignored while sending the configuration to server. For example,
-if an IP set is referenced in the rule only IPSet and Type is needed in the
-Source/Destination objects and not Name and isValid tags.
-
-When updating the firewall configuration:
-
-* IDs for new rules should be removed or set to zero.
-* If new rules have been sent in the request, the response
-  will contain the system-generated IDs, which are assigned to these new
-  entities.
-* **appliedTo** can be any valid firewall rule element.
-* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
-  unaccepted packets; RST packets are sent for TCP connections and ICMP
-  unreachable code packets are sent for UDP, ICMP, and other IP connections
-* source and destination can have an exclude flag. For example, if you add an
-  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
-  originating from all IPs other than 1.1.1.1.
-
-### /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}/rules/{ruleId}
-Working With a Specific Rule in a Specific Layer 2 Section
+### /2.0/services/truststore/certificate/{certificateId}
+Working With a Specific Certificate
 -----
 
-* **get** *(secured)*: Retrieve the configuration of the specified rule.
+* **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies
+a chain, multiple certificate objects are retrieved.
 
-* **put** *(secured)*: Update a distributed firewall rule in a layer 2 section.
+* **delete** *(secured)*: Delete the specified certificate
 
-* Retrieve the configuration for the section that contains the rule you want
-  to modify.
-* Retrieve the Etag value from the response headers.
-  **Note**: This is the Etag value of the firewall section to which you want
-  to add the rule. If you are keeping this rule in the same section, you must
-  keep the same Etag number.
-* Extract and modify the rule configuration from the response body as needed.
-* Set the If-Match header to the section Etag value, and submit the request.
+### /2.0/services/truststore/csr/{scopeId}
+Working with Certificate Signing Requests (CSRs)
 
-Not all fields are required while sending the request. All the optional fields
-are safe to be ignored while sending the configuration to server. For example,
-if an IP set is referenced in the rule only IPSet and Type is needed in the
-Source/Destination objects and not Name and isValid tags.
+* **post** *(secured)*: Create a certificate signing request (CSR).
 
-* **delete** *(secured)*: Delete the specified distributed firewall rule.
-
-### /4.0/firewall/globalroot-0/config/layer3redirectsections
-Layer 3 Redirect Sections and Rules
-----
-
-* **post** *(secured)*: Add L3 redirect section
-
-### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}
-Layer 3 Redirect Section
-----
-
-* **get** *(secured)*: Get L3 redirect section configuration
-* **put** *(secured)*: Modify layer 3 redirect section. You will need to get the Etag
-value out of the GET first. Then pass the modified version of the
-whole redirect section configuration in the GET body.
-
-* **delete** *(secured)*: Delete specified L3 redirect section
-
-### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules
-Working with Layer 3 Redirect Rules for a Specific Section
-----
-
-* **post** *(secured)*: Add L3 redirect rule
-
-### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules/{ruleID}
-Working With a Specific Layer 3 Redirect Rule for a Specific Section
-----
-
-* **get** *(secured)*: Get L3 redirect rule
-* **put** *(secured)*: Modify L3 redirect rule. You will need Etag value from the
-response header of GET call. Then, pass Etag value as the
-if-match header in PUT call
-
-* **delete** *(secured)*: Delete specified L3 redirect rule
-
-### /4.0/firewall/globalroot-0/config/layer3redirect/profiles
-Service Insertion Profiles and Layer 3 Redirect Rules
-----
-
-* **get** *(secured)*: Retrieve the Service Insertion profiles that can be applied to
-layer3 redirect rules.
-
-### /4.0/firewall/globalroot-0/state
-Enable Distributed Firewall After Upgrade
------
-After upgrading NSX Manager, controllers, and network virtualization
-components, check the status of distributed firewall. If it is ready to
-enable, you can enable distributed firewall.
-
-| State | Description |
-|-------|-------------|
-| backwardCompatible | This is the default state after an upgrade from vCloud Networking and Security to NSX, which means that vShield App is being used for protection instead of distributed firewall.|
-| backwardCompatibleReadyForSwitch | Once the clusters are prepared with NSX binaries, this state is enabled. You can enable distributed firewall only after firewall is in this state. |
-| switchingToForward | This is an intermediate state when you change firewall to distributed firewall. |
-| forward | This is the default state for green field deployments or after you have switched from vShield App to distributed firewall. |
-| switchFailed | This state is unlikely, but may be present if NSX Manager failed to switch to distributed firewall. |
-
-* **get** *(secured)*: Retrieve current state of firewall functioning after NSX upgrade.
-
-* **put** *(secured)*: Enable distributed firewall.
-
-### /4.0/firewall/globalroot-0/status
-Working with Distributed Firewall Status
-----
-Retrieve status of last publish action for each cluster in the NSX
-environment.
-
-The status output displays a generation number (**generationNumber**) for
-each rule set, which can be used to verify whether a change in rule sets
-has propagated to a host. In 6.2.4, a generation number for objects
-(**generationNumberObjects**) has been added to the status API. This allows
-you to verify whether a change in objects consumed in firewall rules has
-propagated to a host. Note that the object generation number may change
-frequently and will always be equal to or greater than the ruleset
-generation number.
-
-Starting in NSX 6.2.4, clusters (and hosts inside the cluster) are no
-longer included in the firewall status output if distributed firewall is
-disabled at the cluster level, or if the cluster is not prepared (NSX
-VIBs are not installed). In earlier versions of NSX these clusters and
-hosts are included in the output. However, because they are not
-configured for firewall, after a firewall rule publish their status is
-*inprogress*.
-
-* **get** *(secured)*: Get firewall configuration status
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
-
-### /4.0/firewall/globalroot-0/status/layer3sections/{sectionID}
-Working with a Specific Layer 3 Section Status
-----
-
-* **get** *(secured)*: Retrieve status of the last publish action for the specified layer 3 section.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
-
-### /4.0/firewall/globalroot-0/status/layer2sections/{sectionID}
-Working with a Specific Layer 2 Section Status
-----
-
-* **get** *(secured)*: Retrieve status of the last publish action for the specified layer 2 section.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
-
-### /4.0/firewall/globalroot-0/drafts
-Import and Export Firewall Configurations
-----
-
-* **post** *(secured)*: Save a firewall configuration.
-* **get** *(secured)*: Displays the draft IDs of all saved configurations.
-
-### /4.0/firewall/globalroot-0/drafts/{draftID}
-Working With a Specific Saved Firewall Configuration
-----
-
-* **get** *(secured)*: Get a saved firewall configuration.
-* **put** *(secured)*: Update a saved firewall configuration.
-* **delete** *(secured)*: Delete a configuration.
-
-### /4.0/firewall/globalroot-0/drafts/{draftID}/action/export
-Export a Firewall Configuration
-----
-
-* **get** *(secured)*: Export a configuration.
-
-### /4.0/firewall/globalroot-0/drafts/{draftID}/action/import
-Import a Firewall Configuration
+### /2.0/services/truststore/csr/{csrId}
+Working With Self-Signed Certificate for CSR
 -----
 
-* **post** *(secured)*: Import a configuration.
+* **put** *(secured)*: Create a self-signed certificate for a certificate signing request
+(CSR).
 
-### /4.0/firewall/stats/eventthresholds
-Working With Distributed Firewall Thresholds
+* **get** *(secured)*: Retrieve the specified certificate signing request (CSR).
+
+### /2.0/services/truststore/csr/scope/{scopeId}
+Working With Certificate Signing Requests on a Specific Scope
 ----
-Configure memory, CPU, and connections per second (CPS) thresholds for
-distributed firewall.
 
-The firewall module generates system events when the memory and CPU
-usage crosses these thresholds.
+* **get** *(secured)*: Retrieve certificate signing requests (CSR) on the specified scope.
 
-* **get** *(secured)*: Retrieve threshold configuration for distributed firewall.
+### /2.0/services/truststore/crl/{scopeId}
+Working With Certificate Revocation Lists on a Specific Scope
+-----
 
-* **put** *(secured)*: Update threshold configuration for distributed firewall.
+* **post** *(secured)*: Create a certificate revocation list (CRL) on the specified scope.
 
-### /4.0/firewall/config/globalconfiguration
-Working with the Distributed Firewall Global Configuration
-----------------------------------------------------------
-You can use the following parameters to improve firewall performancer:
-
-* **layer3RuleOptimize** and **layer2RuleOptimize** to turn
-on/off rule optimization.
-* **tcpStrictOption** determines whether or not to drop an established
-TCP connection when the firewall does not see the initial three-way
-handshake. If set to true, the connection will be dropped.
-* **autoDraftDisabled** improves performances when making large numbers
-of changes to firewall rules.
-
-You can disable the auto draft feature by setting **autoDraftDisabled** to
-true. Distributed Firewall saves up to 100 configurations, including
-manually saved drafts (**preserve** parameter can be set to true or
-false) and auto saved drafts (**preserve** parameter is set to false).
-Once 100 configurations are saved, older drafts with the **preserve**
-parameter set to false will be deleted in order to save new
-configurations. You might want to disable the auto drafts feature before
-making large numbers of changes to the firewall rules, to improve
-performance, and to prevent previously saved drafts from being
-overwritten.
-
-Note: The **autoDraftDisabled** parameter does not appear in a GET of the global
-configuration.
-
-* **get** *(secured)*: Retrieve performance configuration for distributed firewall.
-* **put** *(secured)*: Update the distributed firewall performance configuration.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method updated. **autoDraftDisabled** parameter added.
-
-### /4.0/firewall/forceSync/{ID}
-Synchronize Firewall
+### /2.0/services/truststore/crl/scope/{scopeId}
+Working with CRL Certificates in a Specific Scope
 ----
-Synchronize hosts and clusters with the last good configuration in NSX
-Manager database.
 
-* **post** *(secured)*: Force sync host or cluster.
+* **get** *(secured)*: Retrieve all certificates for the specified scope.
 
-### /4.0/firewall/{domainID}/enable/{truefalse}
-Enable Firewall
+### /2.0/services/truststore/crl/{crlId}
+Working with a Specific CRL Certificate
 ----
-Enable or disable firewall components on a cluster.
 
-* **post** *(secured)*: Enable or disable firewall components on a cluster
+* **get** *(secured)*: Retrieve certificate object for the specified certificate revocation
+list (CRL).
 
-### /4.0/firewall/{contextId}/config/ipfix
-Working with IPFIX
----
-Configuring IPFIX exports specific flows directly from Distributed
-Firewall to a flow collector.
-
-* **get** *(secured)*: Query IPFIX configuration.
-* **put** *(secured)*: Configure IPFIX.
-* **delete** *(secured)*: Deleting IPFIX configuration resets the config to default values
-
-## dfwExclusion
-Exclude Virtual Machines from Firewall Protection
-=========
-
-### /2.1/app/excludelist
-
-* **get** *(secured)*: Retrieve the set of VMs in the exclusion list.
-
-### /2.1/app/excludelist/{memberID}
-Working with the Exclusion List
----
-
-* **put** *(secured)*: Add a vm to the exclusion list.
-* **delete** *(secured)*: Delete a vm from exclusion list.
-
-## spoofGuard
-Working With SpoofGuard
-==========
-After synchronizing with the vCenter Server, NSX Manager collects the IP
-addresses of all vCenter guest virtual machines. If a virtual machine has
-been compromised, the IP address can be spoofed and malicious
-transmissions can bypass firewall policies.
-
-You create a SpoofGuard policy for specific networks that allows you to
-authorize the reported IP addresses and alter them if necessary to prevent
-spoofing.  SpoofGuard inherently trusts the MAC addresses of virtual
-machines collected from the VMX files and vSphere SDK. Operating
-separately from Firewall rules, you can use SpoofGuard to block traffic
-determined to be spoofed.
-
-### /4.0/services/spoofguard/policies
-Working with SpoofGuard Policies
----------
-You can create a SpoofGuard policy to specify the operation mode for
-specific networks. The system generated policy applies to port groups
-and logical switches not covered by existing SpoofGuard policies.
-
-The operationMode for a SpoofGuard policy can be set to one of the
-following:
-
-* **TOFU** - Automatically trust IP assignments on their first use
-* **MANUAL** - Manually inspect and approve all IP assignments before first
-use
-* **DISABLE** - Disable the SpoofGuard policy
-
-* **post** *(secured)*: Create a SpoofGuard policy to specify the operation mode for networks.
-
-* **get** *(secured)*: Retrieve information about all SpoofGuard policies.
-
-### /4.0/services/spoofguard/policies/{policyID}
-Working With a Specific SpoofGuard Policy
----
-
-* **get** *(secured)*: Retrieve information about the specified SpoofGuard policy.
-
-* **put** *(secured)*: Modify the specified SpoofGuard policy.
-* **delete** *(secured)*: Delete the specified SpoofGuard policy.
-
-### /4.0/services/spoofguard/{policyID}
-Perform SpoofGuard Operations on IP Addresses in a Specific Policy
----
-
-* **post** *(secured)*: Approve or publish IP addresses.
-* **get** *(secured)*: Retrieve IP addresses for the specified state.
+* **delete** *(secured)*: Delete the specified certificate revocation list (CRL).
 
 ## policy
 Working with Security Policies and Actions
@@ -4120,1288 +5571,6 @@ Working with Security Policies Mapped to a Security Group
 
 * **get** *(secured)*: Retrieve security policies mapped to a security group.
 
-## securitytags
-Working with Security Tags
-=====
-
-You can manage security tags and their virtual machine assignments. For
-example, you can create a user defined security tag, assign tags to a
-virtual machine, view tags assigned to virtual machines, and view virtual
-machines that have a specific tag assigned.
-
-### /2.0/services/securitytags/tag
-Managing Security Tags
------
-
-* **post** *(secured)*: Create a new security tag.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method updated. `isUniversal` parameter can be set to create a universal security tag.
-
-* **get** *(secured)*: Retrieve all security tags.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method updated. Added `isUniversal` query parameter to filter universal security tags.
-
-### /2.0/services/securitytags/tag/{tagId}
-Delete a Security Tag
-----
-
-* **delete** *(secured)*: Delete the specified security tag.
-
-### /2.0/services/securitytags/tag/{tagId}/vm
-Working With Virtual Machines on a Specific Security Tag
-----
-
-* **get** *(secured)*: Retrieve the list of VMs that have the specified tag attached to
-them.
-
-* **post** *(secured)*: Attach or detach a security tag to a virtual machine.
-
-This operation does not check that the virtual machine exists in
-the local inventory. This allows you to attach a universal
-security tag to a virtual machine that is connected to a secondary
-NSX Manager (and therefore is not connected to the primary NSX
-Manager where the call is sent).
-
-Possible keys for the tagParameter are:
-* instance_uuid
-* bios_uuid
-* vmname
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-### /2.0/services/securitytags/tag/{tagId}/vm/{vmId}
-Manage a Security Tag on a Virtual Machine
-----
-
-* **put** *(secured)*: Apply a security tag to the specified virtual machine.
-
-**Note:** this method can attach a universal security tag to a
-virtual machine. However, this method checks that the VM exists
-on the NSX Manager to which the API call is sent. In a
-cross-vCenter active active environment, the VM might exist on
-a secondary NSX Manager, and so the call would fail. 
-
-You can instead use the `POST
-/api/2.0/services/securitytags/tag/{tagId}/vm?action=attach`
-method to attach universal security tags to a VM that is not
-local to the primary NSX Manager. This method does not check
-that the VM is local to the NSX Manager.
-
-* **delete** *(secured)*: Detach a security tag from the specified virtual machine.
-
-### /2.0/services/securitytags/tag/{tagId}/vmDetail
-Working with Virtual Machine Details for a Specific Security Tag
------
-
-* **get** *(secured)*: Retrieve details about the VMs that are attached to the
-specified security tag.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-### /2.0/services/securitytags/vm/{vmId}
-Working With Security Tags on a Specific Virtual Machine
------
-
-* **get** *(secured)*: Retrieve all security tags associated with the specified virtual
-machine.
-
-* **post** *(secured)*: Update security tags associated with the specified virtual machine.
-
-You can assign multiple tags at a time to the specified VM, or clear
-all assigned tags from the specified VM.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-### /2.0/services/securitytags/selection-criteria
-Working with Security Tags Unique ID Selection Criteria
--------
-In NSX versions before 6.3.0, security tags are local to a NSX Manager,
-and are mapped to VMs using the VM's managed object ID.
-
-In NSX 6.3.0 and later, you can create universal security tags to use in
-all NSX Managers in a cross-vCenter NSX environment.
-
-In an active standby environment, the managed object ID for a given VM
-might not be the same in the active and standby datacenters. NSX 6.3.x
-introduces a Unique ID Selection Criteria on the primary NSX Manager to
-use to identify VMs when attaching them to universal security tags only.
-You can use them singly or in combination. The VM instance UUID is the
-recommended selection criteria. See the descriptions for more
-information.
-
-The default value for the selection criteria is null and must be set
-before assigning a universal security tag to a VM. The selection
-criteria can be set only on the primary NSX manager and is read-only on
-secondary NSX Managers.
-
-Security Tag Assignment<br>Metadata Parameter | Description
-------|-------
-instance_uuid | The VM instance UUID is generally unique within a vCenter domain, however there are exceptions such as when deployments are made through snapshots. If the VM instance UUID is not unique, you can use the VM BIOS UUID in combination with the VM name.
-bios_uuid | The BIOS UUID is not guaranteed to be unique within a vCenter domain, but it is always preserved in case of disaster. Use BIOS UUID in combination with VM name to reduce the chance of a duplicate ID.
-vmname | If all of the VM names in an environment are unique, then VM name can be used to identify a VM across vCenters. Use VM name in combination with VM BIOS UUID to reduce the chance of a duplicate ID.
-
-* **get** *(secured)*: Retrieve unique ID section criteria configuration.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-* **put** *(secured)*: Configure the unique ID section criteria configuration.
-
-If you set the selection criteria and assign security tags to VMs, you
-must remove all security tags from VMs before you can change the
-selection criteria.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-## secGroup
-Working with Security Group Grouping Objects
-===========
-A security group is a collection of assets or grouping objects from your
-vSphere inventory.
-
-### /2.0/services/securitygroup/bulk/{scopeId}
-Creating New Security Groups With Members
-----
-
-* **post** *(secured)*: Create a new security group on a global scope or universal scope with
-membership information.
-
-Universal security groups are read-only when querying a secondary NSX
-manager.
-
-When you create a universal security group (on scope
-*universalroot-0*) by default **localMembersOnly** is set to *false*
-which indicates that the universal security group will contain members
-across the cross-vCenter NSX environment.  This is the case in an
-active active environment. You can add the following
-objects to a universal security group with *localMembersOnly=false*
-(active active):
-* IP Address Set
-* MAC Address Set
-* Universal Security Groups with *localMembersOnly=false*
-
-When you create a universal security group (on scope
-*universalroot-0*) you can set the extendedAttribute
-**localMembersOnly** to *true* to indicate that the universal security
-group will contain members local to that NSX Manager only.  This is
-the case in an active standby environment, because only one NSX
-environment is active at a time, and the same VMs are present in each
-NSX environment. You can add the following objects to a universal
-security group with *localMembersOnly=true* (active standby):
-* Universal Security Tag
-* IP Address Set
-* MAC Address Set
-* Universal Security Groups with *localMembersOnly=true*
-* Dynamic criteria using VM name
-
-You can set the **localMembersOnly** attribute only when the universal
-security group is created, it cannot be modified afterwards.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Extended attribute **localMembersOnly** introduced.
-
-### /2.0/services/securitygroup/{scopeId}
-Creating New Security Groups Without Members
------
-
-* **post** *(secured)*: Create a new security group, with no membership information specified.
-You can add members later with `PUT
-/2.0/services/securitygroup/bulk/{objectId}`
-
-When you create a universal security group (on scope
-*universalroot-0*) by default **localMembersOnly** is set to *false*
-which indicates that the universal security group will contain members
-across the cross-vCenter NSX environment.  This is the case in an
-active active environment. You can add the following
-objects to a universal security group with *localMembersOnly=false*
-(active active):
-* IP Address Set
-* MAC Address Set
-* Universal Security Groups with *localMembersOnly=false*
-
-When you create a universal security group (on scope
-*universalroot-0*) you can set the extendedAttribute
-**localMembersOnly** to *true* to indicate that the universal security
-group will contain members local to that NSX Manager only.  This is
-the case in an active standby environment, because only one NSX
-environment is active at a time, and the same VMs are present in each
-NSX environment. You can add the following objects to a universal
-security group with *localMembersOnly=true* (active standby):
-* Universal Security Tag
-* IP Address Set
-* MAC Address Set
-* Universal Security Groups with *localMembersOnly=true*
-* Dynamic criteria using VM name
-
-You can set the **localMembersOnly** attribute only when the universal
-security group is created, it cannot be modified afterwards.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Extended attribute **localMembersOnly** introduced.
-
-### /2.0/services/securitygroup/bulk/{objectId}
-Updating a Specific Security Group Including Membership
-----
-
-* **put** *(secured)*: Update configuration for the specified security group, including membership information.
-
-### /2.0/services/securitygroup/{objectId}
-Working with a Specific Security Group
-----
-
-* **get** *(secured)*: Retrieve all members of the specified security group.
-* **put** *(secured)*: Update configuration for the specified security group. Members are not
-updated. You must use `PUT
-/2.0/services/securitygroup/bulk/{objectId}` to update a security
-group membership.
-
-* **delete** *(secured)*: Delete an existing security group.
-
-If *force=true* is specified, the object is deleted even if used in
-other configurations, such as firewall rules. If *force=true* is not
-specified, the object is deleted only if it is not used by other
-configuration; otherwise the delete fails.
-
-### /2.0/services/securitygroup/{objectId}/members/{memberId}
-Working with Members of a Specific Security Group
-----
-
-* **put** *(secured)*: Add a new member to the specified security group.
-
-* **delete** *(secured)*: Delete member from the specified security group.
-
-### /2.0/services/securitygroup/{objectId}/translation/virtualmachines
-Working with Virtual Machines in a Security Group
-----
-
-* **get** *(secured)*: Retrieve list of virtual machine entities that belong to a specific security
-group.
-
-### /2.0/services/securitygroup/{objectId}/translation/ipaddresses
-Working with IP Addresses in a Security Group
------
-
-* **get** *(secured)*: Retrieve list of IP addresses that belong to a specific security
-group.
-
-### /2.0/services/securitygroup/{objectId}/translation/macaddresses
-Working with MAC Addresses in a Security Group
------
-
-* **get** *(secured)*: Retrieve list of MAC addresses that belong to a specific security
-group.
-
-### /2.0/services/securitygroup/{objectId}/translation/vnics
-Working with vNICs in a Security Group
------
-
-* **get** *(secured)*: Retrieve list of vNICs that belong to a specific security group.
-
-### /2.0/services/securitygroup/lookup/virtualmachine/{virtualMachineId}
-Working with Virtual Machine Security Group Membership
-------
-
-* **get** *(secured)*: Retrieve list of security groups that the specified virtual machine
-belongs to.
-
-### /2.0/services/securitygroup/internal/scope/{scopeId}
-Working with Internal Security Groups
-----
-
-* **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used
- internally by the system and should not be created or modified by end
-users.
-
-### /2.0/services/securitygroup/scope/{scopeId}
-Working with Security Groups on a Specific Scope
-----
-
-* **get** *(secured)*: List all the security groups created on a specific scope.
-
-### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
-Working with Security Group Member Types
-----
-
-* **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
-group.
-
-### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
-Working with a Specific Security Group Member Type
-----
-
-* **get** *(secured)*: Retrieve members of a specific type in the specified scope.
-
-## ipsets
-Working with IP Set Grouping Objects
-=======
-
-### /2.0/services/ipset/scope/{scopeMoref}
-Working with IP Sets on a Specific Scope
-----
-
-* **get** *(secured)*: Retrieve all configured IPSets
-
-### /2.0/services/ipset/{scopeMoref}
-Creating New IP Sets
------
-
-* **post** *(secured)*: Create a new IP set.
-
-### /2.0/services/ipset/{ipsetId}
-Working with a Specific IP Set
-----
-
-* **get** *(secured)*: Retrieve an individual IP set.
-* **put** *(secured)*: Modify an existing IP set.
-* **delete** *(secured)*: Delete an IP set.
-
-## macsets
-Working with MAC Address Set Grouping Objects
-=============
-You can create a MAC address set on the specified scope. On success, the API
-returns a string identifier for the new MAC address set.
-
-### /2.0/services/macset/{macsetId}
-Working With a Specific MAC Address Set
----------
-
-* **get** *(secured)*: Retrieve details about a MAC address set.
-* **put** *(secured)*: Modify an existing MAC address set.
-* **delete** *(secured)*: Delete a MAC address set.
-
-### /2.0/services/macset/scope/{scopeId}
-Working with MAC Address Sets on a Specific Scope
-----
-
-* **post** *(secured)*: Create a MAC address set on the specified scope.
-* **get** *(secured)*: List MAC address sets on the specified scope.
-
-## servicesApps
-Working with Services Grouping Objects
-=============
-
-### /2.0/services/application/scope/{scopeId}
-Retrieve Services from a Specific Scope
-----
-
-* **get** *(secured)*: Retrieve services that have been created on the specified scope.
-
-### /2.0/services/application/{scopeId}
-Create a Service on a Specific Scope
-------
-
-* **post** *(secured)*: Create a new service on the specified scope.
-
-### /2.0/services/application/{applicationId}
-Working With a Specified Service
--------
-
-* **get** *(secured)*: Retrieve details about the specified service.
-* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a
-service.
-
-* **delete** *(secured)*: Delete the specified service.
-
-## applicationgroup
-Working with Service Groups Grouping Objects
-============
-
-### /2.0/services/applicationgroup/scope/{scopeId}
-Working with Service Groups on a Specific Scope
--------
-
-* **post** *(secured)*: Create a new service group on the specified scope.
-* **get** *(secured)*: Retrieve a list of service groups that have been created on the scope.
-
-### /2.0/services/applicationgroup/{applicationgroupId}
-Working with a Specific Service Group
-----
-
-* **get** *(secured)*: Retrieve details about the specified service group.
-* **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of
-the specified service group.
-
-* **delete** *(secured)*: Delete the specified service group from a scope.
-
-### /2.0/services/applicationgroup/{applicationgroupId}/members/{moref}
-Working with a Specific Service Group Member
------
-
-* **put** *(secured)*: Add a member to the service group.
-* **delete** *(secured)*: Delete a member from the service group.
-
-### /2.0/services/applicationgroup/scope/{scopeId}/members
-Working with Service Group Members on a Specific Scope
-------
-
-* **get** *(secured)*: Get a list of member elements that can be added to the service groups
-created on a particular scope.
-
-Since service group allows only either services or other service
-groups as members to be added, this helps you get a list of all
-possible valid elements that can be added to the
-service.
-
-## ipPoolsObjects
-Working with IP Pool Grouping Objects
-========
-
-### /2.0/services/ipam/pools/scope/{scopeId}
-Working with IP Pools on a Specific Scope
------
-
-* **get** *(secured)*: Retrieves all IP pools on the specified scope where the *scopeID* is the
-reference to the desired scope. An example of the *scopeID* is
-globalroot-0.
-
-* **post** *(secured)*: Create a pool of IP addresses. For *scopeId* use globalroot-0 or
-the *datacenterId* in upgrade use cases.
-
-### /2.0/services/ipam/pools/{poolId}
-Working with a Specific IP Pool
-------
-
-* **get** *(secured)*: Retrieve details about a specific IP pool.
-* **put** *(secured)*: To modify an IP pool, query the IP pool first. Then modify the output and
-send it back as the request body.
-
-* **delete** *(secured)*: Delete an IP pool.
-
-### /2.0/services/ipam/pools/{poolId}/ipaddresses
-Working with IP Pool Address Allocations
-------
-
-* **get** *(secured)*: Retrieves all allocated IP addresses from the specified pool.
-
-* **post** *(secured)*: Allocate an IP Address from the pool. Use *ALLOCATE* in the
-**allocationMode** field in the body to allocate the next available
-IP. To allocate a specific one use *RESERVE* and pass the IP to
-reserve in the **ipAddress** fields in the body.
-
-### /2.0/services/ipam/pools/{poolId}/ipaddresses/{ipAddress}
-Working with Specific IPs Allocated to an IP Pool
-----
-
-* **delete** *(secured)*: Release an IP address allocation in the pool.
-
-## guestIntrospection
-Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
-============
-
-About Guest Introspection and Endpoint Protection Solutions
-----------
-VMware's Guest Introspection Service enables vendors to deliver an
-introspection-based, endpoint protection (anti-virus) solution that uses
-the hypervisor to scan guest virtual machines from the outside, with only
-a thin agent on each guest virtual machine.
-
-Version Compatibility
------------
-
-**Note:** The management APIs listed in this section are to be used only
-with partner endpoint protection solutions that were developed with EPSec
-Partner Program 3.0 or earlier (for vShield 5.5 or earlier).  These
-partner solutions are also supported on NSX 6.0 and need the APIs listed
-below.  These APIs should not be used with partner solutions developed
-specifically for NSX 6.0 or later, as these newer solutions automate the
-registration and deployment process by using the new features introduced
-in NSX.  Using these with newer NSX 6.0 based solutions could result in
-loss of features.
-
-Register a Solution
-----------
-
-To register a third-party solution with Guest Introspection, clients can
-use four REST calls to do the following:
-1. Register the vendor.
-2. Register one or more solutions.
-3. Set the solution IP address and port (for all hosts).
-4. Activate registered solutions per host.
-
-**Note:** Steps 1 through 3 need to be performed once per solution. Step 4
-needs to be performed for each host.
-
-Unregister a Solution
-----------
-
-To unregister a solution, clients perform these steps in reverse:
-1. Deactivate solutions per host.
-2. Unset a solution’s IP address and port.
-3. Unregister solutions.
-4. Unregister the vendor.
-
-Updating Registration Information
------------
-
-To update registration information for a vendor or solution, clients must:
-1. Unregister the vendor or solution.
-2. Reregister the vendor or solution.
-
-### /2.0/endpointsecurity/registration
-Register a Vendor and Solution with Guest Introspection
----
-
-* **post** *(secured)*: Register the vendor of an endpoint protection solution. Specify the
-following parameters in the request.
-
-| Name            | Comments |
-|-----------------|------------|
-|**vendorId**     | VMware-assigned ID for the vendor. |
-|**vendorTitle**  | Vendor-specified title. |
-|**vendorDescription** | Vendor-specified description. |
-
-### /2.0/endpointsecurity/registration/vendors
-Working With Registered Guest Introspection Vendors
-----
-
-* **get** *(secured)*: Retrieve the list of all registered Guest Introspection vendors.
-
-### /2.0/endpointsecurity/registration/{vendorID}
-Working With Guest Introspection Vendors and Endpoint Protection Solutions
------
-
-* **post** *(secured)*: Register an endpoint protection solution. Specify the following parameters in the request.
-
-| Name            | Comments |
-|-----------------|------------|
-|**solutionAltitude**     | VMware-assigned altitude for the solution. *Altitude* is a number that VMware assigns to uniquely identify the solution. The altitude describes the type of solution and the order in which the solution receives events relative to other solutions on the same host. |
-|**solutionTitle**  | Vendor-specified title for the solution. |
-|**solutionDescription** | Vendor-specified description of the solution. |
-
-* **get** *(secured)*: Retrieve registration information for a Guest Introspection vendor.
-* **delete** *(secured)*: Unregister a Guest Introspection vendor.
-
-### /2.0/endpointsecurity/registration/{vendorID}/solutions
-Information About Registered Endpoint Protection Solutions
-----
-
-* **get** *(secured)*: Get registration information for all endpoint protection solutions for a Guest Introspection vendor.
-
-### /2.0/endpointsecurity/registration/{vendorID}/{altitude}
-Endpoint Protection Solution Registration Information
-----
-
-* **get** *(secured)*: Get registration information for an endpoint protection solution.
-* **delete** *(secured)*: Unregister an endpoint protection solution.
-
-### /2.0/endpointsecurity/registration/{vendorID}/{altitude}/location
-IP Address and Port For an Endpoint Protection Solution
------
-To change the location of an endpoint protection solution:
-1. Deactivate all security virtual machines.
-2. Change the location.
-3. Reactivate all security virtual machines.
-
-* **post** *(secured)*: Set the IP address and port on the vNIC host for an endpoint
-protection solution.
-
-* **get** *(secured)*: Get the IP address and port on the vNIC host for an endpoint
-protection solution.
-
-* **delete** *(secured)*: Unset the IP address and port for an endpoint protection
-solution.
-
-### /2.0/endpointsecurity/activation
-Activate an Endpoint Protection Solution
--------
-You can activate a solution that has been registered and located.
-
-* **get** *(secured)*: Retrieve activation information for all activated security VMs on the
-specified host.
-
-### /2.0/endpointsecurity/activation/{vendorID}/{solutionID}
-Activated Security Virtual Machines
----
-
-* **get** *(secured)*: Retrieve a list of activated security VMs for an endpoint protection solution.
-
-### /2.0/endpointsecurity/activation/{vendorID}/{altitude}
-Activate a Registered Endpoint Protection Solution
------
-
-* **post** *(secured)*: Activate an endpoint protection solution that has been registered
-and located. Specify the following parameter in the request body.
-
-| Name            | Comments |
-|-----------------|------------|
-|**svmMoid**     | Managed object ID of the virtual machine of the activated endpoint protection solution. |
-
-### /2.0/endpointsecurity/activation/{vendorID}/{altitude}/{moid}
-Working with Solution Activation Status
-----
-
-* **get** *(secured)*: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
-* **delete** *(secured)*: Deactivate an endpoint protection solution on a host.
-
-## solutionIntegration
-Working with Solution Integrations
-=========
-
-### /2.0/si/host/{hostID}/agents
-Working With Agents on a Specific Host
-----
-
-* **get** *(secured)*: Retrieve all agents on the host
-
-### /2.0/si/agent/{agentID}
-Working with a Specific Agent
-----
-
-* **get** *(secured)*: Retrieve agent details.
-
-### /2.0/si/deployment/{deploymentunitID}/agents
-Working with Agents on a Specific Deployment
-----
-
-* **get** *(secured)*: Retrieve all agents for the specified deployment.
-
-### /2.0/si/fabric/sync/conflicts
-Working With Conflicting Agencies
-----
-When the NSX Manager database backup is restored to an older point in
-time, it is possible that deployment units for some EAM Agencies are
-missing. These APIs help the administratoridentify such EAM Agencies and
-take appropriate action.
-
-* **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
-allowed operations on them
-
-* **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete
-conflicting EAM agencies, or delete deployment units for conflicting
-EAM agencies.
-
-### Create deployment units for conflicting EAM agencies
-
-```
-<conflictResolverInfo>
-  <agencyAction>RESTORE</agencyAction>
-</conflictResolverInfo>
-```
-
-### Delete conflicting EAM agencies
-
-```
-<conflictResolverInfo>
-  <agencyAction>DELETE</agencyAction>
-</conflictResolverInfo>
-```
-
-### Delete deployment units for conflicting EAM agencies
-
-```
-<conflictResolverInfo>
-  <deploymentUnitAction>DELETE</deploymentUnitAction>
-</conflictResolverInfo>
-```
-
-## securityFabric
-Working with Security Fabric and Security Services
-======
-The security fabric simplifies and automates deployment of security
-services and provide a platform for configuration of the elements that are
-required to provide security to workloads. These elements include:
-
-Internal components:
-* Guest Introspection Universal Service Virtual Machine
-* Guest Introspection Mux
-* Logical Firewall
-
-External components:
-* Partner OVFs / VIBs
-* Partner vendor policy templates
-
-For partner services, the overall workflow begins with registration of
-services by partner consoles, followed by deployment of the services by
-the administrator.
-
-Subsequent workflow is as follows:
-1. Select the clusters on which to deploy the security fabric (Mux,
-Traffic filter, USVM).
-2. Specify an IP pool to be used with the SVMs (available only if the
-partner registration indicates requirement of static IPs)
-3. Select portgroup (DVPG) to be used for each cluster (a default is
-pre-populated for the user).
-4. Select datastore to be used for each cluster (a default is
-pre-populated for the user).
-5. NSX Manager deploys the components on all hosts of the selected
-clusters.
-
-Once you deploy the security fabric, an agency defines the configuration
-needed to deploy agents (host components and appliances). An agency is
-created per cluster per deployment spec associated with services.  Agents
-are deployed on the selected clusters, and events / hooks for all the
-relevant actions are generated.
-
-**Request parameters**
-
-Parameter | Description 
--------|---------
-dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
-dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
-ipPool | Optional. If not specified, IP address is assigned through DHCP. 
-startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
-
-### /2.0/si/deploy
-
-* **post** *(secured)*: Deploy security fabric.
-
-* **put** *(secured)*: Upgrade service to recent version.
-
-### /2.0/si/deploy/service/{serviceID}
-Working With a Specified Service
-----
-
-* **get** *(secured)*: Retrieve all clusters on which the service is installed.
-* **delete** *(secured)*: Uninstall specified service from specified clusters.
-
-### /2.0/si/deploy/service/{serviceID}/dependsOn
-Working with Service Dependencies
-----
-
-* **get** *(secured)*: Identify service on which the specified service depends on.
-
-### /2.0/si/deploy/cluster/{clusterID}
-Working With Installed Services on a Cluster
----
-
-* **get** *(secured)*: Retrieve all services deployed along with their status.
-* **delete** *(secured)*: Uninstall a service. Fails if you try to remove a service that another
-service depends on.
-
-### /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}
-Working with a Specific Service on a Cluster
------
-
-* **get** *(secured)*: Retrieve detailed information about the service
-
-## traceflows
-Working with Traceflow
-================
-For Traceflow to work as expected, make sure that the controller cluster is
-connected and in healthy state. The Traceflow operation requires active
-communication between vCenter, NSX Manager, controller cluster, and netcpa
-User World Agents (UWA) on the host. Traceflow observes marked packet as it
-traverses overlay network. Each packet is delivered to host VM and
-monitored as it crosses overlay network until it reaches the destination
-VM. The packet is never delivered to the destination guest VM. This means
-that Traceflow packet delivery is successful even when the guest VM is
-powered down. Unknown L2 Packets are always be sent to the bridge.
-Typically, the bridge forwards these packets to a VLAN and reports the
-Traceflow packet as delivered. The packet which is reported as delivered
-need not necessarily mean that the trace packet was delivered to the
-destination specified. You should conclude only after validating the
-observations.vdl2 serves ARP proxy for ARP packets coming from VMs.
-However, traceflow bypasses this process, hence vdl2 may broadcast the
-traceflow packet out.
-
-### /api/2.0/vdn/traceflow
-
-* **post** *(secured)*: Create a traceflow.
-
-### /api/2.0/vdn/traceflow/{traceflowId}
-Working with a Specific Traceflow
----------
-
-* **get** *(secured)*: Query a specific traceflow by *tracflowId* which is the value returned
-after executing the create Traceflow API call.
-
-### /api/2.0/vdn/traceflow/{traceflowId}/observations
-Traceflow Observations
------
-
-* **get** *(secured)*: Retrieve traceflow observations.
-
-## eventControl
-Working with Data Collection for Activity Monitoring
-===========
-Activity Monitoring provides visibility into your virtual network to
-ensure that security policies at your organization are being enforced
-correctly.
-
-A Security policy may mandate who is allowed access to what applications.
-The Cloud administrator can generate Activity Monitoring reports to see if
-the IP based firewall rule that they set is doing the intended work. By
-providing user and application level detail, Activity Monitoring
-translates high level security policies to low level IP address and
-network based implementation.
-
-Once you enable data collection for Activity Monitoring, you can run
-reports to view inbound traffic (such as virtual machines being accessed
-by users) as well as outbound traffic (resource utilization, interaction
-between inventory containers, and AD groups that accessed a server).
-
-You must enable data collection for one or more virtual machines on a
-vCenter Server before running an Activity Monitoring report. Before
-running a report, ensure that the enabled virtual machines are active and
-are generating network traffic.
-
-You should also register NSX Manager with the AD Domain Controller. See
-"Working with Domains".
-
-Note that only active connections are tracked by Activity Monitoring.
-Virtual machine traffic blocked by firewall rules at the vNIC level is not
-reflected in reports.
-
-In case of an emergency such as a network overload, you can turn off data
-collection at a global level. This overrides all other data collection
-settings.
-
-Some API calls may require the VMID, which is the MOID of the guest
-virtual machine. You can retrieve this by queuing the vCenter mob
-structure (https:VC-IP-Address/mob). The VMID is listed under host
-structure.
-
-### /1.0/eventcontrol/vm/{vmID}/request
-Working With Data Collection on a Specific Virtual Machine
-----
-You must enable data collection at least five minutes before running an
-Activity Monitoring report.
-
-* **post** *(secured)*: Enable or disable data collection on a virtual machine
-
-Set **value** to *enabled* or *disabled*.
-
-### /1.0/eventcontrol/eventcontrol-root/request
-Override Data Collection
-----
-
-* **post** *(secured)*: Turn data collection on or off at the global level.
-
-In case of an emergency such as a network overload, you can turn off
-data collection at a global level (kill switch). This overrides all
-other data collection settings.
-
-Set **value** to *enabled* or *disabled*.
-
-### /1.0/eventcontrol/config/vm/{vmID}
-Retrieve Data Collection Configuration for a Specific Virtual Machine
------
-When reporting per virtual machine configuration, current kill switch
-status is also reported too. The effective configuration of a virtual
-machine is determined by both kill switch config and per virtual machine
-configuration. If kill switch is on, event collection is effectively
-disabled regardless of what its per virtual machine configuration is; if
-kill switch is off, per virtual machine configuration determines whether
-event collection should be performed for this virtual machine.
-
-* **get** *(secured)*: Retrieve per VM configuration for data collection.
-
-## activityMonitoring
-Working with Activity Monitoring
-======
-
-### /3.0/ai/records
-Working With Aggregated User Activity
---------------
-Get aggregated user activity (action records) using parameters. Requires
-that NSX Guest Introspection is configured, NSX Manager must be
-registered with Active Directory, and data collection is enabled on one
-or more VMs.
-
-* **get** *(secured)*: ### View Outbound Activity
-
-You can view what applications are being run by a security group or
-desktop pool and then drill down into the report to find out which
-client applications are making outbound connections by a particular
-group of users. You can also discover all user groups and users who are
-accessing a particular application, which can help you determine if you
-need to adjust identity firewall in your environment.
-
-* query=*resource*
-* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *dest* (required)
-    * *app*
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
-    * for dest: *VIRTUAL_MACHINE*
-    * for app: *SRC_APP*
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
-**Example:** View user activities to VM ID 1 originating from application
-ID 1  
-`GET /api/3.0/ai/records?query=resource&interval=60m&param=src:DIRECTORY_GROUP`  
-`&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1`
-
-### View Inbound Activity
-
-You can view all inbound activity to a server by desktop pool, security
-group, or AD group.
-
-* query=*sam*
-* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *dest* (required)
-    * *app*
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
-    * for dest: *VIRTUAL_MACHINE*
-    * for app: *DEST_APP*
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
-
-**Example:** View user activities to VM ID 1 originating from
-application ID 1  
-`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
-`&param=src:SECURITY_GROUP:1`
-
-### View Interaction between Inventory Containers
-You can view the traffic passing between defined containers such as AD
-groups, security groups and/or desktop pools. This can help you identify
-and configure access to shared services and to resolve misconfigured
-relationships between Inventory container definitions, desktop pools and
-AD groups.
-
-* query=*containers*
-* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *dest* (required)
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
-    * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
-
-**Example:** View interaction between inventory containers  
-`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
-`&param=src:SECURITY_GROUP:1`
-
-### View Outbound AD Group Activity
-
-You can view the traffic between members of defined Active Directory
-groups and can use this data to fine tune your firewall rules.
-
-* query=*adg*
-* param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *adg*
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
-    * for adg: *USER*
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default * is *INCLUDE*).
-
-**Example:** View outbound AD group activity    
-`GET https://NSX-Manager-IP-Address/api/3.0/ai/records?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
-`&param=src:SECURITY_GROUP:1:EXCLUDE`
-
-### /3.0/ai/userdetails
-Working with User Details
----------
-
-* **get** *(secured)*: ### View Outbound Activity
-You can view what applications are being run by a security group or
-desktop pool and then drill down into the report to find out which
-client applications are making outbound connections by a particular
-group of users. You can also discover all user groups and users who
-are accessing a particular application, which can help you determine
-if you need to adjust identity firewall in your environment.
-
-* query=*resource*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *dest* (required)
-    * *app*
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
-    * for dest: *IP* - a valid IP address in dot notation, xx.xx.xx.xx
-    * for app: *SRC_APP*
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
-**Example:** View user activities to VM ID 1 originating from application ID 1  
-`GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00`  
-`&param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52`
-
-### View Inbound Activity
-
-You can view all inbound activity to a server by desktop pool, security
-group, or AD group.
-
-* query=*sam*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *dest* (required)
-    * *app* (required)
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
-    * for dest: *VIRTUAL_MACHINE*
-    * for app: *DEST_APP*
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
-
-**Example:** View user activities to VM ID 1 originating from
-application ID 1  
-`GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE`  
-`&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
-
-### View Interaction between Inventory Containers
-You can view the traffic passing between defined containers such as AD
-groups, security groups and/or desktop pools. This can help you identify
-and configure access to shared services and to resolve misconfigured
-relationships between Inventory container definitions, desktop pools and
-AD groups.
-
-* query=*containers*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *dest* (required)
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DIRECTORY_GROUP*, *DESKTOP_POOL*
-    * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
-
-**Example:** View interaction between inventory containers  
-`GET /api/3.0/ai/userdetails?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
-`&param=src:SECURITY_GROUP:1`
-
-### View Outbound AD Group Activity
-
-You can view the traffic between members of defined Active Directory
-groups and can use this data to fine tune your firewall rules.
-
-* query=*adg*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src* (required)
-    * *adg*
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
-    * for adg: *USER*
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
-**Example:** View outbound AD group activity    
-`GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
-`&param=src:SECURITY_GROUP:1:EXCLUDE`
-
-### View Virtual Machine Activity Report
-
-* query=*vma*
-* param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
-  * &lt;param-name&gt; is one of:
-    * *src*
-    * *dst*
-    * *app*
-    * If no parameters are passed, then this would show all SAM
-    activities
-  * &lt;param-type&gt; is one of:
-    * for src: *SECURITY_GROUP*, *DESKTOP_POOL*
-    * for dst: *VIRTUAL_MACHINE*, *VM_UUID*
-    * for app - *SRC_APP* or *DEST_APP*
-  * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
-  * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
-**Example:** View outbound AD group activity    
-`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&param=app:DEST_APP:16`
-
-### /3.0/ai/user/{userID}
-Working With a Specific User
-----
-
-* **get** *(secured)*: Retrieve details for a specific user.
-
-### /3.0/ai/app
-Working With Applications
-----
-
-* **get** *(secured)*: Retrieve app details.
-
-### /3.0/ai/app/{appID}
-Working with a Specific Application
-----
-
-* **get** *(secured)*: Retrieve details for specific app.
-
-### /3.0/ai/host
-Working With Discovered Hosts
-----
-
-* **get** *(secured)*: Retrieve list of all discovered hosts (both by agent introspection and
-LDAP Sync) and their detail.
-
-### /3.0/ai/host/{hostID}
-Working with a Specific Discovered Host
-----
-
-* **get** *(secured)*: Get host details.
-
-### /3.0/ai/desktoppool
-Working With Desktop Pools
------
-
-* **get** *(secured)*: Retrieve list of all discovered desktop pools by agent introspection.
-
-### /3.0/ai/desktoppool/{desktoppoolID}
-Working with a Specific Desktop Pool
-----
-
-* **get** *(secured)*: Retrieve specific desktop pool details.
-
-### /3.0/ai/vm
-Working with Virtual Machines
-----
-
-* **get** *(secured)*: Retrieve list of all discovered VMs.
-
-### /3.0/ai/vm/{vmID}
-Working with a Specific Virtual Machine
-----
-
-* **get** *(secured)*: Retrieve details about a specific virtual machine.
-
-### /3.0/ai/directorygroup
-Working with LDAP Directory Groups
-----
-
-* **get** *(secured)*: Retrieve list of all discovered (and configured) LDAP directory
-groups.
-
-### /3.0/ai/directorygroup/{directorygroupID}
-Working with a Specific LDAP Directory Group
-----
-
-* **get** *(secured)*: Retrieve details about a specific directory group.
-
-### /3.0/ai/directorygroup/user/{userID}
-Working with a Specific User's Active Directory Groups
------
-
-* **get** *(secured)*: Retrieve Active Directory groups that user belongs to.
-
-### /3.0/ai/securitygroup
-Working with Security Groups
------
-
-* **get** *(secured)*: Retrieve list of all observed security groups.
-
-Observed entities are the ones that are reported by the agents. For
-example, if a host activity is reported by an agent and if that host
-belongs to a security group then that security group would reported as
-observed in SAM database.
-
-### /3.0/ai/securitygroup/{secgroupID}
-Working with a Specific Security Group
-----
-
-* **get** *(secured)*: Retrieve details about specific security group.
-
-## activityMonitoringSyslog
-Working with Activity Monitoring Syslog Support
-==========
-
-### /1.0/sam/syslog/enable
-Enable Syslog Support
-----
-
-* **post** *(secured)*: Enable syslog support.
-
-### /1.0/sam/syslog/disable
-Disable Syslog Support
-----
-
-* **post** *(secured)*: Disable syslog support.
-
-## mappingLists
-Working with Mapping Lists
-=========
-
-### /1.0/identity/userIpMapping
-Working With User to IP Mappings
----
-
-* **get** *(secured)*: Query user-to-ip mapping list from database.
-
-### /1.0/identity/hostIpMapping
-Working With Host to IP Mappings
----
-
-* **get** *(secured)*: Query host-to-ip mapping list from database.
-
-### /1.0/identity/ipToUserMapping
-Working With IP to User Mappings
-----
-
-* **get** *(secured)*: Retrieve set of users associated with a given set of IP addresses during
-a specified time period. Since more than one user can be associated
-with a single IP address during the specified time period, each IP
-address can be associated with zero or more (i.e a SET of) users.
-
-### /1.0/identity/directoryGroupsForUser
-Working With User Domain Groups
-----
-
-* **get** *(secured)*: Query set of Windows Domain Groups (AD Groups) to which the specified
-user belongs.
-
-### /1.0/identity/staticUserMapping/{userID}/{IP}
-Working with a Specific Static User Mapping
-----
-
-* **post** *(secured)*: Create static user IP mapping.
-
-### /1.0/identity/staticUserMappings
-Working with Static User Mappings
-----
-
-* **get** *(secured)*: Query static user IP mapping list.
-
-### /1.0/identity/staticUserMappingsbyUser/{userID}
-Working with Static User IP Mappings for a Specific User
-----
-
-* **get** *(secured)*: Query static user IP mapping for specified user.
-* **delete** *(secured)*: Delete static user IP mapping for specified user.
-
-### /1.0/identity/staticUserMappingsbyIP/{IP}
-Working With Static User IP Mappings for a Specific IP
-----
-
-* **get** *(secured)*: Query static user IP mapping for specified IP.
-* **delete** *(secured)*: Delete static user IP mapping for specified IP.
-
 ## snmp
 Working with SNMP
 =================
@@ -5517,392 +5686,20 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-## flowMonitoring
-Working with Flow Monitoring
-========
-
-### /2.1/app/flow/flowstats
-Working With Flow Monitoring Statistics 
-----
-
-* **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC.
-
-Response values for flow statistics:
-* **blocked** - indicates whether traffic is blocked:
-  * 0 - flow allowed
-  * 1 - flow blocked
-  * 2 - flow blocked by SpoofGuard
-* **protocol** - protocol in flow:
-  * 0 - TCP
-  * 1 - UDP
-  * 2 - ICMP
-* **direction** - direction of flow:
-  * 0 - to virtual machine
-  * 1 - from virtual machine
-* **controlDirection** - control direction for dynamic TCP traffic:
-  * 0 - source -> destination
-  * 1 - destination -> source
-
-### /2.1/app/flow/flowstats/info
-Working With Flow Monitoring Meta-Data
-----
-
-* **get** *(secured)*: Retrieve flow statistics meta-data.
-
-This method retrieves the following information for each flow type:
-* minimum start time
-* maximum end time
-* total flow count
-
-### /2.1/app/flow/config
-Working With Flow Monitoring Configuration
-----
-
-Flow records generated on all hosts are sent to NSX Manager, which
-consumes the records and displays aggregated information.  Hosts can
-generate large numbers of flow records.  You can configure flow
-monitoring to exclude certain records from collection.  The flow
-configuration applies to all hosts.
-
-* **collectFlows** - if true, flow collection is enabled.
-* **ignoreBlockedFlows** - if true, ignore blocked flows.
-* **ignoreLayer2Flows** - if true, ignore layer 2 flows.
-* **sourceIPs** - source IPs to exclude. For example: 10.112.3.14, 10.112.3.15-10.112.3.18,192.168.1.1/24.
-* **sourceContainer** - source containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
-* **destinationIPs** - destination IPs to exclude.
-* **destinationContainer** - destination containers to exclude. Containers can contain VM, vNic, IP Set, MAC Set.
-* **destinationPorts** - destination ports to exclude.
-* **serviceContainers** - service containers to exclude. Container can contain application or application group.
-
-Flow exclusion happens at the host. The following flows are discarded by default:
-* Broadcast IP (255.255.255.255)
-* Local multicast group (224.0.0.0/24)
-* Broadcast MAC address (FF:FF:FF:FF:FF:FF)
-
-* **get** *(secured)*: Retrieve flow monitoring configuration.
-* **put** *(secured)*: Update flow monitoring configuration.
-
-### /2.1/app/flow/{contextId}
-Working with Flow Configuration for a Specific Context
-----
-
-* **delete** *(secured)*: Delete flow records for the specified context.
-
-## taskFramework
-Working with the Task Framework
-======
-Working with filtering criteria and paging information for jobs on the task
-framework.
-
-### /2.0/services/taskservice/job
-
-* **get** *(secured)*: Query job instances by criterion.
-
-### /2.0/services/taskservice/job/{jobId}
-Working With a Specific Job Instance
-------
-
-* **get** *(secured)*: Retrieve all job instances for the specified job ID.
-
-## truststore
-Working with Certificates
-=============
-
-### /2.0/services/truststore/certificate
-Working with Certificates and Certificate Chains
-------
-
-* **post** *(secured)*: Create certificate for CSR.
-
-### /2.0/services/truststore/certificate/scope/{scopeId}
-Working With Certificates on a Specific Scope
-----
-
-* **get** *(secured)*: Query all certificates for a scope
-
-### /2.0/services/truststore/certificate/{scopeId}
-Working With NSX Edge Self-Signed Certificates
-------
-
-* **post** *(secured)*: Create a single certificate
-
-### /2.0/services/truststore/certificate/{certificateId}
-Working With a Specific Certificate
------
-
-* **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies
-a chain, multiple certificate objects are retrieved.
-
-* **delete** *(secured)*: Delete the specified certificate
-
-### /2.0/services/truststore/csr/{scopeId}
-Working with Certificate Signing Requests (CSRs)
-
-* **post** *(secured)*: Create a certificate signing request (CSR).
-
-### /2.0/services/truststore/csr/{csrId}
-Working With Self-Signed Certificate for CSR
------
-
-* **put** *(secured)*: Create a self-signed certificate for a certificate signing request
-(CSR).
-
-* **get** *(secured)*: Retrieve the specified certificate signing request (CSR).
-
-### /2.0/services/truststore/csr/scope/{scopeId}
-Working With Certificate Signing Requests on a Specific Scope
-----
-
-* **get** *(secured)*: Retrieve certificate signing requests (CSR) on the specified scope.
-
-### /2.0/services/truststore/crl/{scopeId}
-Working With Certificate Revocation Lists on a Specific Scope
------
-
-* **post** *(secured)*: Create a certificate revocation list (CRL) on the specified scope.
-
-### /2.0/services/truststore/crl/scope/{scopeId}
-Working with CRL Certificates in a Specific Scope
-----
-
-* **get** *(secured)*: Retrieve all certificates for the specified scope.
-
-### /2.0/services/truststore/crl/{crlId}
-Working with a Specific CRL Certificate
-----
-
-* **get** *(secured)*: Retrieve certificate object for the specified certificate revocation
-list (CRL).
-
-* **delete** *(secured)*: Delete the specified certificate revocation list (CRL).
-
-## systemEvents
-Working with NSX Manager System Events
-==========
-
-### /2.0/systemevent
-
-* **get** *(secured)*: Get NSX Manager system events
-
-## domain
-Working with Domains
-===========
-After you create a domain, you can apply a security policy to it and run
-queries to view the applications and virtual machines being accessed by
-the users of a domain.
-
-### /1.0/directory/updateDomain
-Registering Domains
----------------
-You can a register one or more Windows domains with an NSX Manager and
-associated vCenter server.  NSX Manager gets group and user information
-as well as the relationship between them from each domain that it is
-registered with. NSX Manager also retrieves Active Directory
-credentials.  You can apply security policies on an Active Directory
-domain and run queries to get information on virtual machines and
-applications accessed by users within an Active Directory domain.
-
-**Parameter Values for Registering or Updating a Domain**
-
-Parameter Name | Description | Mandatory? 
-----------------|-------------|------------
-ID |  Domain id.  If you want to create a new domain, do not provide this value.  Otherwise, the system will find an existing domain object by this ID and update it. | true if update existing domain 
-name |  Domain name.  This should be domain's full qualified name. In case agent discovered, this will be NetBIOS name, so you need to update it to FQN in order to support LDAP sync and event log reader. | true if creating a new domain. 
-description | Domain description | false 
-type | Domain type. Valid value include: AGENT_DISCOVERED, ActiveDirectory, SPECIAL (Do NOT modify SPECIAL domain). For LDAP sync and event log reader work, this need to be set to ActiveDirectory. | true if creating a new domain 
-netbiosName |  NetBIOS name of domain. This is Domain's NetBIOS name. Check windows domain setting, for value of it. Normally Agent report domain name is NetBIOS name. But confirm from Windows domain setting. | false 
-baseDn | Domain's Base DN (for LDAP sync).  Base DN is REQUIRED for LDAP Sync. If you have a domain like: w2k3.vshield.vmware.com, the base DN is very likely to be: DC=w2k3,DC=vshield,DC=vmware,DC=com. Another example is: domain name is: vs4.net, the base DN should be: DC=vs4,DC=net. You can use a LDAP client and connect to domain controller to find the domain's base DN. |  false 
-rootDn | LDAP Sync root DN.  Specify where should LDAP sync start from LDAP tree. This could be absolute path, for example: OU=Engineer,DC=vs4,DC=net, or relative path (relate to Base DN), for example: OU=Engineer. |  false
-securityId | Domain's Security ID (SID). This should be filled by LDAP sync process, and should not need to be modified. |  false 
-username |  Domain's User name (Used for LDAP Sync and/or Event Log reader) | false 
-password | User password | false
-eventLogUsername | Domain's event log reader username (will use above username if this is NULL) | false
-eventLogPassword | Domain's event log reader password | false
-
-* **post** *(secured)*: Register or update a domain with NSX Manager
-
-### /1.0/directory/listDomains
-Retrieve LDAP Domains
------
-
-* **get** *(secured)*: Retrieve all agent discovered (or configured) LDAP domains.
-
-### /1.0/directory/deleteDomain/{ID}
-Delete a Specific Domain
-----
-
-* **delete** *(secured)*: Delete domain.
-
-### /1.0/directory/updateLdapServer
-Create LDAP Server
-------------
-
-* **post** *(secured)*: Create LDAP server.
-
-### /1.0/directory/listLdapServersForDomain/{domainID}
-Query LDAP Servers for a Domain
-----
-
-* **get** *(secured)*: Query LDAP servers for a domain.
-
-### /1.0/directory/fullSync/{domainID}
-Start LDAP Full Sync
-----
-
-* **put** *(secured)*: Start LDAP full sync.
-
-### /1.0/directory/deltaSync/{domainID}
-Start LDAP Delta Sync
------
-
-* **put** *(secured)*: Start LDAP delta sync.
-
-### /1.0/directory/deleteLdapServer/{serverID}
-Delete LDAP Server
-----
-
-* **delete** *(secured)*: Delete LDAP server.
-
-### /1.0/directory/updateEventLogServer
-EventLog Server
-------
-
-* **post** *(secured)*: Create EventLog server.
-
-### /1.0/directory/listEventLogServersForDomain/{domainID}
-Working with EventLog Servers for a Domain
-----
-
-* **get** *(secured)*: Query EventLog servers for a domain.
-
-### /1.0/directory/deleteEventLogServer/{serverID}
-Delete EventLog Server
------
-
-* **delete** *(secured)*: Delete EventLog server.
-
-## universalSync
-Working with Universal Sync Configuration in Cross-vCenter NSX
-======
-
-### /2.0/universalsync/configuration/role
-Working with Universal Sync Configuration Roles
-----
-You can set the role of an NSX Manager to primary, secondary, or
-standalone. If you set an NSX Manager’s role to primary, then use it to
-create universal objects, and then set the role to standalone, the role
-will be set as transit. In the transit role, the universal objects will
-still exist, but cannot be modified, other than being deleted.
-
-* **post** *(secured)*: Set the universal sync configuration role.
-* **get** *(secured)*: Retrieve the universal sync configuration role.
-
-### /2.0/universalsync/configuration/nsxmanagers
-Working with Universal Sync Configuration of NSX Managers
------
-
-* **post** *(secured)*: Add a secondary NSX manager.
-
-Run this method on the primary NSX Manager, providing details of the
-secondary NSX Manager.
-
-Retrieve the certificate thumbprint of the secondary NSX Manager
-using the `GET
-/api/1.0/appliance-management/certificatemanager/certificates/nsx`
-method. The **sha1Hash** parameter contains the thumbprint.
-
-* **get** *(secured)*: If run on a primary NSX Manager, it will list secondary NSX Managers
-configured on the primary NSX Manager.
-
-If run on a secondary NSX Manager, it will list information about
-the secondary NSX Manager and the primary NSX Manager it is
-associated with.
-
-* **delete** *(secured)*: Delete secondary NSX manager configuration.
-
-### /2.0/universalsync/configuration/nsxmanagers/{nsxManagerID}
-Universal Sync Configuration of a Specific NSX Manager
-----
-
-* **get** *(secured)*: Retrieve information about the specified secondary NSX Manager.
-
-* **delete** *(secured)*: Delete the specified secondary NSX Manager.
-* **put** *(secured)*: Update the the specified secondary NSX manager IP or thumbprint in
-the universal sync configuration.
-
-### /2.0/universalsync/sync
-NSX Manager Synchronization
-----
-
-* **post** *(secured)*: Sync all objects on the NSX Manager.
-
-### /2.0/universalsync/entitystatus
-Working with Universal Sync Entities
-----
-
-* **get** *(secured)*: Retrieve the status of a universal sync entity.
-
-### /2.0/universalsync/status
-Working With Universal Sync Status
------
-
-* **get** *(secured)*: Retrieve the universal sync status.
-
-## servicesAlarmsSource
-Working with Alarms from a Specific Source
-=====
-
-Some system alerts will show up as alarms in the NSX dashboard. You can
-view and resolve alarms from a specific source.
-
-### /2.0/services/alarms/{sourceId}
-
-* **get** *(secured)*: Retrive all alarms from the specified source.
-
-* **post** *(secured)*: Resolve all alarms for the specified source.
-
-Alarms will resolve automatically when the cause of the alarm is
-resolved.  For example, if an NSX Edge appliance is powered off, this
-will trigger an alarm. If you power the NSX Edge appliance back on, the
-alarm will resolve. If however, you delete the NSX Edge appliance, the
-alarm will persist, because the alarm cause was never resolved. In this
-case, you may want to manually resolve the alarm. Resolving the alarms
-will clear them from the NSX dashboard.
-
-Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
-alarms for the source. Use this response as the request body for the
-`POST` call.
-
-## servicesSystemAlarmsId
-Working with a Specific Alarm
--------
-Some system alerts will show up as alarms in the NSX dashboard. You can
-view and resolve alarms by alarm ID.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-### /2.0/services/systemalarms/{alarmId}
-
-* **get** *(secured)*: Retrieve information about the specified alarm.
-* **post** *(secured)*: Resolve the specified alarm.
-
-Alarms will resolve automatically when the cause of the alarm is
-resolved.  For example, if an NSX Edge appliance is powered off, this
-will trigger an alarm. If you power the NSX Edge appliance back on, the
-alarm will resolve. If however, you delete the NSX Edge appliance, the
-alarm will persist, because the alarm cause was never resolved. In this
-case, you may want to manually resolve the alarm. Resolving the alarm 
-will clear it from the NSX dashboard.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
+## nsxCli
+Working with the Central CLI
+=======
+
+### /1.0/nsx/cli
+
+* **post** *(secured)*: The central command-line interface (central CLI) commands are run from the
+NSX Manager command line, and retrieve information from the NSX Manager and other
+devices. These commands can also be executed in the API.
+
+You can insert any valid Central CLI command as the **command**
+parameter. For a complete list of the Central CLI commands executable
+through the API, please see the Central CLI chapter of the *NSX Command
+Line Interface Reference*.
 
 ## inventoryStatus
 Communication Status
@@ -5942,26 +5739,229 @@ Release | Modification
 --------|-------------
 6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
-## auditLogs
-Working with NSX Manager Audit Logs
-==========
+## hardwareGateways
+Working with Hardware Gateways
+============
 
-### /2.0/auditlog
+### /2.0/vdn/hardwaregateways
 
-* **get** *(secured)*: Get NSX Manager audit logs
+* **post** *(secured)*: Install a hardware gateway.
 
-## nsxCli
-Working with the Central CLI
-=======
+**bfdEnabled** is true by default.
 
-### /1.0/nsx/cli
+**Method history:**
 
-* **post** *(secured)*: The central command-line interface (central CLI) commands are run from the
-NSX Manager command line, and retrieve information from the NSX Manager and other
-devices. These commands can also be executed in the API.
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
-You can insert any valid Central CLI command as the **command**
-parameter. For a complete list of the Central CLI commands executable
-through the API, please see the Central CLI chapter of the *NSX Command
-Line Interface Reference*.
+* **get** *(secured)*: Retrieve information about all hardware gateways.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}
+Working With a Specific Hardware Gateway
+----
+
+* **get** *(secured)*: Retrieve information about the specified hardware gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+* **put** *(secured)*: Update the specified hardware gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+* **delete** *(secured)*: Delete the specified hardware gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches
+Working With Switches on a Specific Hardware Gateway
+-----
+
+* **get** *(secured)*: Retrieve information about switches on the specified hardware
+gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches/{switchName}
+Working With a Specific Switch on a Specific Hardware Gateway
+-----
+
+### /2.0/vdn/hardwaregateways/{hardwareGatewayId}/switches/{switchName}/switchports
+Working With Ports on a Specific Switch on a Specific Hardware Gateway
+----
+
+* **get** *(secured)*: Retrive information about the hardware gateway switch ports for
+the specified switch and hardware gateway.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/replicationcluster
+Working With the Hardware Gateway Replication Cluster
+----
+
+* **put** *(secured)*: Update the hardware gateway replication cluster.
+
+Add or remove hosts on a replication cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+* **get** *(secured)*: Retrieve information about the hardware gateway replication cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/bindings
+Retrieve Information About Hardware Gateway Bindings
+-----
+
+* **post** *(secured)*: Create a hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+* **get** *(secured)*: Retrieve information about hardware gateway bindings.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/bindings/{bindingId}
+Working With a Specific Hardware Gateway Binding
+-----
+
+* **get** *(secured)*: Retrieve information about the specified hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+* **put** *(secured)*: Update the specified hardware gateway binding.
+
+You can update the binding parameters. This API will fail if:
+* the specified *hardwareGatewayId* does not exist.
+* the specified logical switch (*virtualWire*) is not present or there is a software
+  gateway on the binding.
+* the new binding value is a duplicate of an existing binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+* **delete** *(secured)*: Delete the specified hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/bindings/{bindingId}/statistic
+Working with Hardware Gateway Binding Statistics
+----
+
+* **get** *(secured)*: Retrieve statistics for the specified hardware gateway binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/bindings/manage
+Working With Hardware Gateway Binding Objects
+----
+
+* **post** *(secured)*: Manage hardware gateway binding objects.
+
+Use this API to attach, detach, and update multiple bindings in a
+single API call.  This API accepts three lists for add, update, and
+delete. Each list accepts a hardwareGatewayManageBindingsItem with a
+full description of the new binding with its objectID. This API
+handles a maximum of 100 HardwareGatewayManageBindingsItem objects
+for each of the Add/Update/Delete lists.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/bfd
+Working With Hardware Gateway BFD (Bidirectional Forwarding Detection)
+-----
+
+### /2.0/vdn/hardwaregateways/bfd/config
+Working With Hardware Gateway BFD Configuration
+-----
+
+* **put** *(secured)*: Update global hardware gateway BFD configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+* **get** *(secured)*: Retrieve global hardware gateway BFD configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/hardwaregateways/bfd/status
+Working With Hardware Gateway BFD Tunnel Status
+------
+
+* **get** *(secured)*: Retrieve hardware gateway BFD tunnel status for all tunnel
+endpoints, including hosts and hardware gateways.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
