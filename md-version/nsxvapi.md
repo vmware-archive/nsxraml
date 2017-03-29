@@ -3435,7 +3435,7 @@ Import a Firewall Configuration
 
 ### /4.0/firewall/globalroot-0/timeouts
 Working with Distributed Firewall Session Timers
-=======
+-------
 You can configure session timers (session timeouts) for TCP, UDP, and
 ICMP. There is a default configuration, which applies to all VMs protected by
 Distributed Firewall. You can modify the session timers values of the
@@ -3478,7 +3478,7 @@ Release | Modification
 
 ### /4.0/firewall/globalroot-0/timeouts/{configId}
 Working With a Specific Distributed Firewall Session Timer Configuration
-====
+----
 
 * **get** *(secured)*: Retrieve the specified Distributed Firewall session timer configuration.
 
