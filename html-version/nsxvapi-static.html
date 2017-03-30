@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#58;&#100;&#111;&#99;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#x63;&#x6f;&#109;">&#100;&#111;&#99;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#x64;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#119;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x64;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#119;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -16604,6 +16604,7 @@ the resource, and ID of the resource as shown in response body</p>
               &lt;xs:element name="appliance"&gt;
                 &lt;xs:complexType&gt;
                   &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="haAdminState"/&gt;
                     &lt;xs:element type="xs:string" name="resourcePoolId"/&gt;
                     &lt;xs:element type="xs:string" name="datastoreId"/&gt;
                     &lt;xs:element type="xs:string" name="vmFolderId"/&gt;
@@ -17528,6 +17529,7 @@ the query parameter action=execute</p>
   &lt;xs:element name="appliance"&gt;
     &lt;xs:complexType&gt;
       &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="haAdminState"/&gt;
         &lt;xs:element type="xs:string" name="resourcePoolId"/&gt;
         &lt;xs:element type="xs:string" name="datastoreId"/&gt;
         &lt;xs:element type="xs:string" name="hostId"/&gt;
@@ -21084,7 +21086,86 @@ of parameters used to configure the logical router HA interface.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-nat-configuration">Working With NAT Configuration</h2>
-</div>
+<p>NSX Edge provides network address translation (NAT) service to protect
+the IP addresses of internal (private) networks from the public
+network.</p>
+<p>You can configure NAT rules to provide access to services running on
+privately addressed virtual machines. There are two types of NAT rules
+that can be configured: SNAT (Source NAT) and DNAT (Destination NAT). </p>
+<p>For the data path to work, you need to add firewall rules to allow the
+required traffic for IP addresses and port per the NAT rules.</p>
+<p><strong>NAT Parameter Table</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Other information</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>Enable rule.</td>
+<td>Boolean. Optional. Default is <em>true</em>.</td>
+</tr>
+<tr>
+<td><strong>loggingEnabled</strong></td>
+<td>Enable logging.</td>
+<td>Boolean. Optional. Default is <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>ruleTag</strong></td>
+<td>Rule tag.</td>
+<td>This can be used to specify user-controlled <strong>ruleId</strong>. If not specified, NSX Manager will generate <strong>ruleId</strong>. Optional. Must be between 65537-131072.</td>
+</tr>
+<tr>
+<td><strong>ruleId</strong></td>
+<td>Identifier for the rule.</td>
+<td>Read-only. Long.</td>
+</tr>
+<tr>
+<td><strong>ruleType</strong></td>
+<td>Rule type.</td>
+<td>Read-only.  Values: <em>user</em>, <em>internal_high</em>.</td>
+</tr>
+<tr>
+<td><strong>action</strong></td>
+<td>Type of NAT.</td>
+<td>Valid values: <em>snat</em> or <em>dnat</em>.</td>
+</tr>
+<tr>
+<td><strong>vnic</strong></td>
+<td>Interface on which the translating is applied.</td>
+<td>String. Optional.</td>
+</tr>
+<tr>
+<td><strong>originalAddress</strong></td>
+<td>Original address or address range. This is the source address for SNAT rules, and the destination address for DNAT rules. For DNAT rules, this address must be configured on the NSX Edge.</td>
+<td>String. Specify <em>any</em>, an IP address (e.g. <em>192.168.10.10</em>), an IP range (e.g. <em>192.168.10.10-192.168.10.19</em>), or a subnet in CIDR notation (e.g. <em>192.168.10.1/24</em>). Default is <em>any</em>. </td>
+</tr>
+<tr>
+<td><strong>translatedAddress</strong></td>
+<td>Translated address or address range. For SNAT rules, this address must be configured on the NSX Edge.</td>
+<td>String. Specify <em>any</em>, an IP address (e.g. <em>192.168.10.10</em>), an IP range (e.g. <em>192.168.10.10-192.168.10.19</em>), or a subnet in CIDR notation (e.g. <em>192.168.10.1/24</em>). Default is <em>any</em>. </td>
+</tr>
+<tr>
+<td><strong>protocol</strong></td>
+<td>Protocol.</td>
+<td>String. Not supported when <strong>action</strong> is <em>snat</em>. Optional. Default is <em>any</em>.</td>
+</tr>
+<tr>
+<td><strong>icmpType</strong></td>
+<td>ICMP type.</td>
+<td>String. Only supported when protocol is <em>icmp</em>. Default is <em>any</em>.</td>
+</tr>
+<tr>
+<td><strong>originalPort</strong></td>
+<td>Original port.</td>
+<td>String. Not supported when <strong>action</strong> is <em>snat</em>. Optional. Specify <em>any</em>, a port (e.g. 1234) or port range (1234-1239). Default is <em>any</em>. </td>
+</tr>
+<tr>
+<td><strong>translatedPort</strong></td>
+<td>Translated port.</td>
+<td>String. Not supported when <strong>action</strong> is <em>snat</em>. Optional. Specify <em>any</em>, a port (e.g. 1234) or port range (1234-1239). Default is <em>any</em>. </td>
+</tr>
+</tbody></table></div>
 <div class="method put">
   <a
     class="verb put"
@@ -21093,6 +21174,9 @@ of parameters used to configure the logical router HA interface.</p>
   ><h2>PUT /4.0/edges/{edgeId}/nat/config</h2></a>
   <div class="content">
     <p><p>Configure SNAT and DNAT rules for an Edge.</p>
+<p>If you use this method to add new NAT rules, you must include all
+existing rules in the request body. Any rules that are omitted will
+be deleted.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -21131,17 +21215,27 @@ of parameters used to configure the logical router HA interface.</p>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nat</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">natRules</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span>65537<span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>dnat<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>my comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>   
+    <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span>65538<span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>snat<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>no comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>   
     <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">natRules</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nat</span>&gt;</span>
@@ -21155,7 +21249,7 @@ of parameters used to configure the logical router HA interface.</p>
     href="#GET/4.0/edges/{edgeId}/nat/config"
   ><h2>GET /4.0/edges/{edgeId}/nat/config</h2></a>
   <div class="content">
-    <p><p>Retrieve SNAT and DNAT rules for an Edge.</p>
+    <p><p>Retrieve SNAT and DNAT rules for the specified NSX Edge.</p>
 </p>
   </div>
 </div>
@@ -21166,7 +21260,7 @@ of parameters used to configure the logical router HA interface.</p>
     href="#DELETE/4.0/edges/{edgeId}/nat/config"
   ><h2>DELETE /4.0/edges/{edgeId}/nat/config</h2></a>
   <div class="content">
-    <p><p>Delete all NAT rules for an Edge.</p>
+    <p><p>Delete all NAT rules for the specified NSX Edge.</p>
 </p>
   </div>
 </div>
@@ -21181,8 +21275,8 @@ of parameters used to configure the logical router HA interface.</p>
     href="#POST/4.0/edges/{edgeId}/nat/config/rules"
   ><h2>POST /4.0/edges/{edgeId}/nat/config/rules</h2></a>
   <div class="content">
-    <p><p>Add a NAT rule above a specific rule in the NAT rules table
-(using <strong>aboveRuleId</strong>) or append NAT rules to the bottom.</p>
+    <p><p>Add a NAT rule above a specific rule in the NAT rules table (using
+<strong>aboveRuleId</strong> query parameter) or append NAT rules to the bottom.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -21193,8 +21287,8 @@ of parameters used to configure the logical router HA interface.</p>
     
   </dt>
   <dd>
-      <p>Specified rule ID. If the ID does not exist, Edge Manager
-displays an error.</p>
+      <p>Specified rule ID. If no NAT rules exist, you can specify rule
+ID <em>0</em>.</p>
 
   </dd>
 </dl>
@@ -21226,20 +21320,18 @@ displays an error.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">natRules</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">natRules</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>dnat<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>my comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -21268,7 +21360,7 @@ displays an error.</p>
     href="#PUT/4.0/edges/{edgeId}/nat/config/rules/{ruleID}"
   ><h2>PUT /4.0/edges/{edgeId}/nat/config/rules/{ruleID}</h2></a>
   <div class="content">
-    <p><p>Modify a NAT rule</p>
+    <p><p>Update the specified NAT rule.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -21292,16 +21384,16 @@ displays an error.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>dnat<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>my comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
 </code></pre>
   </div>
@@ -21313,7 +21405,7 @@ displays an error.</p>
     href="#DELETE/4.0/edges/{edgeId}/nat/config/rules/{ruleID}"
   ><h2>DELETE /4.0/edges/{edgeId}/nat/config/rules/{ruleID}</h2></a>
   <div class="content">
-    <p><p>Delete a NAT rule</p>
+    <p><p>Delete the specified NAT rule.</p>
 </p>
   </div>
 </div>
@@ -21325,9 +21417,9 @@ displays an error.</p>
 layer 2 broadcast domains, thereby allowing you to decrease layer 2
 broadcast domains and improve network efficiency and scale. NSX
 extends this intelligence to where the workloads reside for doing
-East‐West routing. This allows more direct virtual machine to virtual
+East-West routing. This allows more direct virtual machine to virtual
 machine communication without the costly or timely need to extend
-hops. At the same time, NSX also provides North‐South connectivity,
+hops. At the same time, NSX also provides North-South connectivity,
 thereby enabling tenants to access public networks.</p>
 <h3 id="global-routing-configuration">Global Routing Configuration</h3>
 <table class="table"><thead><tr>
