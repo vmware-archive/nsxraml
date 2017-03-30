@@ -10943,6 +10943,39 @@ securitySchemes:
       description: |
         Working With NAT Configuration
         -----
+
+        NSX Edge provides network address translation (NAT) service to protect
+        the IP addresses of internal (private) networks from the public
+        network.
+
+        You can configure NAT rules to provide access to services running on
+        privately addressed virtual machines. There are two types of NAT rules
+        that can be configured: SNAT (Source NAT) and DNAT (Destination NAT).
+
+        For the data path to work, you need to add firewall rules to allow the
+        required traffic for IP addresses and port per the NAT rules.
+
+        **NAT Parameter Table** 
+
+        Parameter |  Description | Other information
+        ---|---
+        **enabled** |Enable rule. | Boolean. Optional. Default is *true*.
+        **loggingEnabled** |Enable logging. | Boolean. Optional. Default is *false*.
+        **ruleTag** | Rule tag. | This can be used to specify user-controlled **ruleId**. If not specified, NSX Manager will generate **ruleId**. Optional. Must be between 65537-131072.
+        **ruleId** |Identifier for the rule. |Read-only. Long.
+        **ruleType** |Rule type. |Read-only.  Values: *user*, *internal_high*.
+        **action** |Type of NAT.| Valid values: *snat* or *dnat*.
+        **vnic** | Interface on which the translating is applied.|String. Optional.
+        **originalAddress** | Original address or address range. This is the source address for SNAT rules, and the destination address for DNAT rules. For DNAT rules, this address must be configured on the NSX Edge.|String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. 
+        **translatedAddress** | Translated address or address range. For SNAT rules, this address must be configured on the NSX Edge. |String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. 
+        **dnatMatchSourceAddress** | Source address to match in DNAT rules. | String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. Not valid for SNAT rules.
+        **snatMatchDestinationAddress** | Destination address to match in SNAT rules. | String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. Not valid for DNAT rules.
+        **protocol** |Protocol. |String. Optional. Default is *any*.
+        **icmpType** |ICMP type. |String. Only supported when protocol is *icmp*. Default is *any*.
+        **originalPort** |Original port. This is the source port for SNAT rules, and the destination port for DNAT rules. |String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. 
+        **translatedPort** |Translated port. |String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. 
+        **dnatMatchSourcePort** | Source port in DNAT rules. | String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. Not valid for SNAT rules.
+        **snatMatchDestinationPort** | Destination port in SNAT rules. | String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. Not valid for DNAT rules.
       put:
         displayName: edgeNatConfig
         description: Configure SNAT and DNAT rules for an Edge.
