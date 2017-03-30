@@ -10943,7 +10943,6 @@ securitySchemes:
       description: |
         Working With NAT Configuration
         -----
-
         NSX Edge provides network address translation (NAT) service to protect
         the IP addresses of internal (private) networks from the public
         network.
@@ -10955,7 +10954,7 @@ securitySchemes:
         For the data path to work, you need to add firewall rules to allow the
         required traffic for IP addresses and port per the NAT rules.
 
-        **NAT Parameter Table** 
+        **NAT Parameter Table**
 
         Parameter |  Description | Other information
         ---|---
@@ -10978,34 +10977,49 @@ securitySchemes:
         **snatMatchDestinationPort** | Destination port in SNAT rules. | String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. Not valid for DNAT rules.
       put:
         displayName: edgeNatConfig
-        description: Configure SNAT and DNAT rules for an Edge.
+        description: | 
+          Configure SNAT and DNAT rules for an Edge.
+
+          If you use this method to add new NAT rules, you must include all
+          existing rules in the request body. Any rules that are omitted will
+          be deleted.
         body:
           application/xml:
             example: |
               <nat>
                 <natRules>
                   <natRule>
-                    <ruleTag></ruleTag>
-                    <action></action>
-                    <vnic></vnic>
-                    <originalAddress></originalAddress>
-                    <translatedAddress></translatedAddress>
-                    <loggingEnabled></loggingEnabled>
-                    <enabled></enabled>
-                    <description></description>
-                    <protocol></protocol>
-                    <translatedPort></translatedPort>
-                    <originalPort></originalPort>
+                    <ruleTag>65537</ruleTag>   
+                    <action>dnat</action>
+                    <vnic>0</vnic> 
+                    <originalAddress>10.112.196.116</originalAddress>
+                    <translatedAddress>172.16.1.10</translatedAddress>
+                    <loggingEnabled>true</loggingEnabled>   
+                    <enabled>true</enabled>   
+                    <description>my comments</description>   
+                    <protocol>tcp</protocol>   
+                    <translatedPort>3389</translatedPort>   
+                    <originalPort>3389</originalPort>   
+                  </natRule>
+                  <natRule>
+                    <ruleTag>65538</ruleTag>   
+                    <action>snat</action>
+                    <vnic>1</vnic> 
+                    <originalAddress>172.16.1.10</originalAddress>
+                    <translatedAddress>10.112.196.116</translatedAddress>
+                    <loggingEnabled>false</loggingEnabled>   
+                    <enabled>true</enabled>   
+                    <description>no comments</description>   
                   </natRule>
                 </natRules>
               </nat>
             schema: edgeNatConfig
       get:
         displayName: edgeNatRead
-        description: Retrieve SNAT and DNAT rules for an Edge.
+        description: Retrieve SNAT and DNAT rules for the specified NSX Edge.
       delete:
         displayName: edgeNatDelete
-        description: Delete all NAT rules for an Edge.
+        description: Delete all NAT rules for the specified NSX Edge.
       /rules:
         displayName: edgeNatRules
         description: |
@@ -11014,31 +11028,30 @@ securitySchemes:
         post:
           displayName: edgeNatRulesCreate
           description: |
-            Add a NAT rule above a specific rule in the NAT rules table
-            (using **aboveRuleId**) or append NAT rules to the bottom.
+            Add a NAT rule above a specific rule in the NAT rules table (using
+            **aboveRuleId** query parameter) or append NAT rules to the bottom.
           queryParameters:
             aboveRuleId:
               displayName: aboveRuleId
               description: |
-                Specified rule ID. If the ID does not exist, Edge Manager
-                displays an error.
+                Specified rule ID. If no NAT rules exist, you can specify rule
+                ID *0*.
+              required: false
           body:
             application/xml:
               example: |
-                <natRules>
-                  <natRule>
-                    <action></action>
-                    <vnic></vnic>
-                    <originalAddress></originalAddress>
-                    <translatedAddress></translatedAddress>
-                    <loggingEnabled></loggingEnabled>
-                    <enabled></enabled>
-                    <description></description>
-                    <protocol></protocol>
-                    <translatedPort></translatedPort>
-                    <originalPort></originalPort>
-                  </natRule>
-                </natRules>
+                <natRule>
+                  <action>dnat</action>
+                  <vnic>0</vnic>
+                  <originalAddress>10.112.196.116</originalAddress>
+                  <translatedAddress>172.16.1.10</translatedAddress>
+                  <loggingEnabled>true</loggingEnabled>
+                  <enabled>true</enabled>
+                  <description>my comments</description>
+                  <protocol>tcp</protocol>
+                  <translatedPort>3389</translatedPort>
+                  <originalPort>3389</originalPort>
+                </natRule>
               schema: edgeNatRulesCreate
         /{ruleID}:
           displayName: edgeNatRule
@@ -11052,26 +11065,26 @@ securitySchemes:
               description: Specified rule ID.
           put:
             displayName: edgeNatRuleUpdate
-            description: Modify a NAT rule
+            description: Update the specified NAT rule.
             body:
               application/xml:
                 example: |
                   <natRule>
-                    <action></action>
-                    <vnic></vnic>
-                    <originalAddress></originalAddress>
-                    <translatedAddress></translatedAddress>
-                    <loggingEnabled></loggingEnabled>
-                    <enabled></enabled>
-                    <description></description>
-                    <protocol></protocol>
-                    <translatedPort></translatedPort>
-                    <originalPort></originalPort>
+                    <action>dnat</action>
+                    <vnic>0</vnic>
+                    <originalAddress>10.112.196.116</originalAddress>
+                    <translatedAddress>172.16.1.10</translatedAddress>
+                    <loggingEnabled>true</loggingEnabled>
+                    <enabled>true</enabled>
+                    <description>my comments</description>
+                    <protocol>tcp</protocol>
+                    <translatedPort>3389</translatedPort>
+                    <originalPort>3389</originalPort>
                   </natRule>
                 schema: edgeNatRuleUpdate
           delete:
             displayName: edgeNatRuleUpdate
-            description: Delete a NAT rule
+            description: Delete the specified NAT rule.
     /routing/config:
       displayName: routingConfig
       description: |
@@ -11083,9 +11096,9 @@ securitySchemes:
         layer 2 broadcast domains, thereby allowing you to decrease layer 2
         broadcast domains and improve network efficiency and scale. NSX
         extends this intelligence to where the workloads reside for doing
-        East‐West routing. This allows more direct virtual machine to virtual
+        East-West routing. This allows more direct virtual machine to virtual
         machine communication without the costly or timely need to extend
-        hops. At the same time, NSX also provides North‐South connectivity,
+        hops. At the same time, NSX also provides North-South connectivity,
         thereby enabling tenants to access public networks.
 
         ### Global Routing Configuration

@@ -4211,7 +4211,6 @@ Working with Statistics for a Specific Firewall Rule
 ### /4.0/edges/{edgeId}/nat/config
 Working With NAT Configuration
 -----
-
 NSX Edge provides network address translation (NAT) service to protect
 the IP addresses of internal (private) networks from the public
 network.
@@ -4223,7 +4222,7 @@ that can be configured: SNAT (Source NAT) and DNAT (Destination NAT).
 For the data path to work, you need to add firewall rules to allow the
 required traffic for IP addresses and port per the NAT rules.
 
-**NAT Parameter Table** 
+**NAT Parameter Table**
 
 Parameter |  Description | Other information
 ---|---
@@ -4246,22 +4245,27 @@ Parameter |  Description | Other information
 **snatMatchDestinationPort** | Destination port in SNAT rules. | String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. Not valid for DNAT rules.
 
 * **put** *(secured)*: Configure SNAT and DNAT rules for an Edge.
-* **get** *(secured)*: Retrieve SNAT and DNAT rules for an Edge.
-* **delete** *(secured)*: Delete all NAT rules for an Edge.
+
+If you use this method to add new NAT rules, you must include all
+existing rules in the request body. Any rules that are omitted will
+be deleted.
+
+* **get** *(secured)*: Retrieve SNAT and DNAT rules for the specified NSX Edge.
+* **delete** *(secured)*: Delete all NAT rules for the specified NSX Edge.
 
 ### /4.0/edges/{edgeId}/nat/config/rules
 Working With NAT Rules
 ----
 
-* **post** *(secured)*: Add a NAT rule above a specific rule in the NAT rules table
-(using **aboveRuleId**) or append NAT rules to the bottom.
+* **post** *(secured)*: Add a NAT rule above a specific rule in the NAT rules table (using
+**aboveRuleId** query parameter) or append NAT rules to the bottom.
 
 ### /4.0/edges/{edgeId}/nat/config/rules/{ruleID}
 Working With a Specific NAT Rule
 -----
 
-* **put** *(secured)*: Modify a NAT rule
-* **delete** *(secured)*: Delete a NAT rule
+* **put** *(secured)*: Update the specified NAT rule.
+* **delete** *(secured)*: Delete the specified NAT rule.
 
 ### /4.0/edges/{edgeId}/routing/config
 Working with the NSX Edge Routing Configuration
@@ -4272,9 +4276,9 @@ Dynamic routing provides the necessary forwarding information between
 layer 2 broadcast domains, thereby allowing you to decrease layer 2
 broadcast domains and improve network efficiency and scale. NSX
 extends this intelligence to where the workloads reside for doing
-East‐West routing. This allows more direct virtual machine to virtual
+East-West routing. This allows more direct virtual machine to virtual
 machine communication without the costly or timely need to extend
-hops. At the same time, NSX also provides North‐South connectivity,
+hops. At the same time, NSX also provides North-South connectivity,
 thereby enabling tenants to access public networks.
 
 ### Global Routing Configuration
