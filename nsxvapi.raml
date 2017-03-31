@@ -9916,6 +9916,7 @@ securitySchemes:
         Release | Modification
         --------|-------------
         6.2.3 | **haAdminState** parameter added.
+        6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
       body:
         application/xml:
           example: |
@@ -10104,15 +10105,17 @@ securitySchemes:
                       <ruleId></ruleId>
                       <ruleTag></ruleTag>
                       <ruleType></ruleType>
-                      <action></action>
+                      <action>dnat</action>
                       <vnic></vnic>
                       <originalAddress></originalAddress>
                       <translatedAddress></translatedAddress>
+                      <dnatMatchSourceAddress></dnatMatchSourceAddress>
                       <loggingEnabled></loggingEnabled>
                       <enabled></enabled>
                       <protocol></protocol>
                       <originalPort></originalPort>
                       <translatedPort></translatedPort>
+                      <dnatMatchSourcePort></dnatMatchSourcePort>
                     </natRule>
                   </natRules>
                 </nat>
@@ -10983,6 +10986,12 @@ securitySchemes:
           If you use this method to add new NAT rules, you must include all
           existing rules in the request body. Any rules that are omitted will
           be deleted.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
         body:
           application/xml:
             example: |
@@ -10994,12 +11003,14 @@ securitySchemes:
                     <vnic>0</vnic> 
                     <originalAddress>10.112.196.116</originalAddress>
                     <translatedAddress>172.16.1.10</translatedAddress>
+                    <dnatMatchSourceAddress>any</dnatMatchSourceAddress>
                     <loggingEnabled>true</loggingEnabled>   
                     <enabled>true</enabled>   
                     <description>my comments</description>   
                     <protocol>tcp</protocol>   
-                    <translatedPort>3389</translatedPort>   
                     <originalPort>3389</originalPort>   
+                    <translatedPort>3389</translatedPort>   
+                    <dnatMatchSourcePort>any</dnatMatchSourcePort>
                   </natRule>
                   <natRule>
                     <ruleTag>65538</ruleTag>   
@@ -11007,16 +11018,25 @@ securitySchemes:
                     <vnic>1</vnic> 
                     <originalAddress>172.16.1.10</originalAddress>
                     <translatedAddress>10.112.196.116</translatedAddress>
+                    <snatMatchDestinationAddress>any</snatMatchDestinationAddress>
                     <loggingEnabled>false</loggingEnabled>   
                     <enabled>true</enabled>   
                     <description>no comments</description>   
+                    <snatMatchDestinationPort>any</snatMatchDestinationPort>
                   </natRule>
                 </natRules>
               </nat>
             schema: edgeNatConfig
       get:
         displayName: edgeNatRead
-        description: Retrieve SNAT and DNAT rules for the specified NSX Edge.
+        description: | 
+          Retrieve SNAT and DNAT rules for the specified NSX Edge.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
       delete:
         displayName: edgeNatDelete
         description: Delete all NAT rules for the specified NSX Edge.
@@ -11030,6 +11050,12 @@ securitySchemes:
           description: |
             Add a NAT rule above a specific rule in the NAT rules table (using
             **aboveRuleId** query parameter) or append NAT rules to the bottom.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
           queryParameters:
             aboveRuleId:
               displayName: aboveRuleId
@@ -11045,12 +11071,14 @@ securitySchemes:
                   <vnic>0</vnic>
                   <originalAddress>10.112.196.116</originalAddress>
                   <translatedAddress>172.16.1.10</translatedAddress>
+                  <dnatMatchSourceAddress>any</dnatMatchSourceAddress>
                   <loggingEnabled>true</loggingEnabled>
                   <enabled>true</enabled>
                   <description>my comments</description>
                   <protocol>tcp</protocol>
                   <translatedPort>3389</translatedPort>
                   <originalPort>3389</originalPort>
+                  <dnatMatchSourcePort>any</dnatMatchSourcePort>
                 </natRule>
               schema: edgeNatRulesCreate
         /{ruleID}:
@@ -11065,7 +11093,14 @@ securitySchemes:
               description: Specified rule ID.
           put:
             displayName: edgeNatRuleUpdate
-            description: Update the specified NAT rule.
+            description: |
+              Update the specified NAT rule.
+
+              **Method history:**
+
+              Release | Modification
+              --------|-------------
+              6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
             body:
               application/xml:
                 example: |
@@ -11074,12 +11109,14 @@ securitySchemes:
                     <vnic>0</vnic>
                     <originalAddress>10.112.196.116</originalAddress>
                     <translatedAddress>172.16.1.10</translatedAddress>
+                    <dnatMatchSourceAddress>any</dnatMatchSourceAddress>
                     <loggingEnabled>true</loggingEnabled>
                     <enabled>true</enabled>
                     <description>my comments</description>
                     <protocol>tcp</protocol>
                     <translatedPort>3389</translatedPort>
                     <originalPort>3389</originalPort>
+                    <dnatMatchSourcePort>any</dnatMatchSourcePort>
                   </natRule>
                 schema: edgeNatRuleUpdate
           delete:

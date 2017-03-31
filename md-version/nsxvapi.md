@@ -4086,6 +4086,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | **haAdminState** parameter added.
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
 also deleted.
@@ -4250,7 +4251,20 @@ If you use this method to add new NAT rules, you must include all
 existing rules in the request body. Any rules that are omitted will
 be deleted.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+
 * **get** *(secured)*: Retrieve SNAT and DNAT rules for the specified NSX Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+
 * **delete** *(secured)*: Delete all NAT rules for the specified NSX Edge.
 
 ### /4.0/edges/{edgeId}/nat/config/rules
@@ -4260,11 +4274,24 @@ Working With NAT Rules
 * **post** *(secured)*: Add a NAT rule above a specific rule in the NAT rules table (using
 **aboveRuleId** query parameter) or append NAT rules to the bottom.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+
 ### /4.0/edges/{edgeId}/nat/config/rules/{ruleID}
 Working With a Specific NAT Rule
 -----
 
 * **put** *(secured)*: Update the specified NAT rule.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+
 * **delete** *(secured)*: Delete the specified NAT rule.
 
 ### /4.0/edges/{edgeId}/routing/config

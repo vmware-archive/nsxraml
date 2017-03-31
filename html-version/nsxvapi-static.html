@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#46;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x64;&#111;&#x63;&#102;&#101;&#101;&#100;&#98;&#x61;&#99;&#107;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x64;&#111;&#x63;&#102;&#101;&#101;&#100;&#98;&#x61;&#99;&#107;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -16590,6 +16590,10 @@ the resource, and ID of the resource as shown in response body</p>
 <td>6.2.3</td>
 <td><strong>haAdminState</strong> parameter added.</td>
 </tr>
+<tr>
+<td>6.3.0</td>
+<td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
+</tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -16947,11 +16951,15 @@ the resource, and ID of the resource as shown in response body</p>
                                 &lt;xs:element type="xs:string" name="vnic"/&gt;
                                 &lt;xs:element type="xs:string" name="originalAddress"/&gt;
                                 &lt;xs:element type="xs:string" name="translatedAddress"/&gt;
+                                &lt;xs:element type="xs:string" name="dnatMatchSourceAddress"/&gt;
+                                &lt;xs:element type="xs:string" name="snatMatchDestinationAddress"/&gt;
                                 &lt;xs:element type="xs:string" name="loggingEnabled"/&gt;
                                 &lt;xs:element type="xs:string" name="enabled"/&gt;
                                 &lt;xs:element type="xs:string" name="protocol"/&gt;
                                 &lt;xs:element type="xs:string" name="originalPort"/&gt;
                                 &lt;xs:element type="xs:string" name="translatedPort"/&gt;
+                                &lt;xs:element type="xs:string" name="dnatMatchSourcePort"/&gt;
+                                &lt;xs:element type="xs:string" name="snatMatchDestinationPort"/&gt;
                               &lt;/xs:sequence&gt;
                             &lt;/xs:complexType&gt;
                           &lt;/xs:element&gt;
@@ -17163,15 +17171,17 @@ the resource, and ID of the resource as shown in response body</p>
           <span class="hljs-tag">&lt;<span class="hljs-name">ruleId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleId</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">ruleType</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleType</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>dnat<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">natRules</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">nat</span>&gt;</span>
@@ -21297,7 +21307,16 @@ required traffic for IP addresses and port per the NAT rules.</p>
 <p>If you use this method to add new NAT rules, you must include all
 existing rules in the request body. Any rules that are omitted will
 be deleted.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="nat"&gt;
@@ -21313,6 +21332,8 @@ be deleted.</p>
                     &lt;xs:element type="xs:string" name="action"/&gt;
                     &lt;xs:element type="xs:string" name="vnic"/&gt;
                     &lt;xs:element type="xs:string" name="originalAddress"/&gt;
+                    &lt;xs:element type="xs:string" name="dnatMatchSourceAddress"/&gt;
+                    &lt;xs:element type="xs:string" name="snatMatchDestinationAddress"/&gt;
                     &lt;xs:element type="xs:string" name="translatedAddress"/&gt;
                     &lt;xs:element type="xs:string" name="loggingEnabled"/&gt;
                     &lt;xs:element type="xs:string" name="enabled"/&gt;
@@ -21320,6 +21341,8 @@ be deleted.</p>
                     &lt;xs:element type="xs:string" name="protocol"/&gt;
                     &lt;xs:element type="xs:string" name="translatedPort"/&gt;
                     &lt;xs:element type="xs:string" name="originalPort"/&gt;
+                    &lt;xs:element type="xs:string" name="dnatMatchSourcePort"/&gt;
+                    &lt;xs:element type="xs:string" name="snatMatchDestinationPort"/&gt;
                   &lt;/xs:sequence&gt;
                 &lt;/xs:complexType&gt;
               &lt;/xs:element&gt;
@@ -21340,12 +21363,14 @@ be deleted.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span> 
       <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>my comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>   
-      <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span>65538<span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>   
@@ -21353,9 +21378,11 @@ be deleted.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span> 
       <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">snatMatchDestinationAddress</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">snatMatchDestinationAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>   
       <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>no comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>   
+      <span class="hljs-tag">&lt;<span class="hljs-name">snatMatchDestinationPort</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">snatMatchDestinationPort</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">natRules</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">nat</span>&gt;</span>
@@ -21370,7 +21397,16 @@ be deleted.</p>
   ><h2>GET /4.0/edges/{edgeId}/nat/config</h2></a>
   <div class="content">
     <p><p>Retrieve SNAT and DNAT rules for the specified NSX Edge.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 <div class="method delete">
@@ -21397,7 +21433,16 @@ be deleted.</p>
   <div class="content">
     <p><p>Add a NAT rule above a specific rule in the NAT rules table (using
 <strong>aboveRuleId</strong> query parameter) or append NAT rules to the bottom.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -21425,12 +21470,16 @@ ID <em>0</em>.</p>
               &lt;xs:element type="xs:string" name="vnic"/&gt;
               &lt;xs:element type="xs:string" name="originalAddress"/&gt;
               &lt;xs:element type="xs:string" name="translatedAddress"/&gt;
+              &lt;xs:element type="xs:string" name="dnatMatchSourceAddress"/&gt;
+              &lt;xs:element type="xs:string" name="snatMatchDestinationAddress"/&gt;
               &lt;xs:element type="xs:string" name="loggingEnabled"/&gt;
               &lt;xs:element type="xs:string" name="enabled"/&gt;
               &lt;xs:element type="xs:string" name="description"/&gt;
               &lt;xs:element type="xs:string" name="protocol"/&gt;
               &lt;xs:element type="xs:string" name="translatedPort"/&gt;
               &lt;xs:element type="xs:string" name="originalPort"/&gt;
+              &lt;xs:element type="xs:string" name="dnatMatchSourcePort"/&gt;
+              &lt;xs:element type="xs:string" name="snatMatchDestinationPort"/&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
@@ -21445,12 +21494,14 @@ ID <em>0</em>.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>my comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
 </code></pre>
   </div>
@@ -21481,7 +21532,16 @@ ID <em>0</em>.</p>
   ><h2>PUT /4.0/edges/{edgeId}/nat/config/rules/{ruleID}</h2></a>
   <div class="content">
     <p><p>Update the specified NAT rule.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="natRule"&gt;
@@ -21491,12 +21551,16 @@ ID <em>0</em>.</p>
         &lt;xs:element type="xs:string" name="vnic"/&gt;
         &lt;xs:element type="xs:string" name="originalAddress"/&gt;
         &lt;xs:element type="xs:string" name="translatedAddress"/&gt;
+        &lt;xs:element type="xs:string" name="dnatMatchSourceAddress"/&gt;
+        &lt;xs:element type="xs:string" name="snatMatchDestinationAddress"/&gt;
         &lt;xs:element type="xs:string" name="loggingEnabled"/&gt;
         &lt;xs:element type="xs:string" name="enabled"/&gt;
         &lt;xs:element type="xs:string" name="description"/&gt;
         &lt;xs:element type="xs:string" name="protocol"/&gt;
         &lt;xs:element type="xs:string" name="translatedPort"/&gt;
         &lt;xs:element type="xs:string" name="originalPort"/&gt;
+        &lt;xs:element type="xs:string" name="dnatMatchSourcePort"/&gt;
+        &lt;xs:element type="xs:string" name="snatMatchDestinationPort"/&gt;
       &lt;/xs:sequence&gt;
     &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
@@ -21508,12 +21572,14 @@ ID <em>0</em>.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourceAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>my comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">dnatMatchSourcePort</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
 </code></pre>
   </div>
