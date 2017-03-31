@@ -3865,8 +3865,7 @@ Working With a Specific NSX Edge
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
-6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
 
 * **put** *(secured)*: Update the NSX Edge configuration.
 
@@ -3874,7 +3873,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
+6.2.3 | Method updated. **haAdminState** parameter added.
 
 * **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
 also deleted.
@@ -4153,7 +4152,7 @@ Parameter  |   Description  | Comments
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+6.2.3 | Method updated. **isis** configuration section removed. 
 
 * **put** *(secured)*: Configure NSX Edge global routing configuration, static routing, and
 dynamic routing (OSPF and BGP).
@@ -4162,7 +4161,7 @@ dynamic routing (OSPF and BGP).
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+6.2.3 | Method updated. **isis** configuration section removed. 
 
 * **delete** *(secured)*: Delete the routing config stored in the NSX Manager database and the
 default routes from the specified NSX Edge appliance.
@@ -4206,7 +4205,7 @@ Areas are identified by an Area ID.
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
 
 * **put** *(secured)*: Configure OSPF.
 
@@ -4214,7 +4213,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
 
 * **delete** *(secured)*: Delete OSPF routing.
 
@@ -4235,7 +4234,7 @@ their tables.
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
 
 * **put** *(secured)*: Configure BGP.
 
@@ -4243,7 +4242,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
 
 * **delete** *(secured)*: Delete BGP Routing
 
@@ -4508,7 +4507,7 @@ Working With DHCP Static Bindings
 * **post** *(secured)*: Append a static-binding to DHCP config. A static-binding ID is
 returned within a Location HTTP header.
 
-Method history:
+**Method history:**
 
 Release | Modification
 --------|-------------
@@ -4867,8 +4866,7 @@ Parameter | Description | Comments
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
-6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
 
 * **put** *(secured)*: You can retrieve the configuration of both appliances by using the
 GET call and replace the size, resource pool, datastore, and custom
@@ -4880,7 +4878,7 @@ appliance is deleted.
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
+6.2.3 | Method updated. **haAdminState** parameter added.
 
 ### /4.0/edges/{edgeId}/appliances/{haIndex}
 Working With NSX Edge Appliance Configuration by Index
@@ -4895,8 +4893,7 @@ the query parameter action=execute
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
-6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
 
 * **put** *(secured)*: Update the configuration of the specified appliance.
 
@@ -4904,7 +4901,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
+6.2.3 | Method updated. **haAdminState** parameter added.
 
 * **delete** *(secured)*: Delete the appliance
 
@@ -5406,7 +5403,7 @@ Provide request body value of true or false.
 
   Release | Modification
   --------|-------------
-  6.2.3 | Method to change auto save draft via **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
+  6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
 
 ### /2.0/services/policy/securitygroup/{ID}/securitypolicies
 Working with Security Policies Mapped to a Security Group
@@ -5570,7 +5567,7 @@ History:
 
 Release | Modification
 --------|-------------
-6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
+6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
 ### /2.0/vdn/inventory/hosts/connection/status
 Communication Status of a List of Hosts
@@ -5580,7 +5577,7 @@ Communication Status of a List of Hosts
 
 Release | Modification
 --------|-------------
-6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
+6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
 ## hardwareGateways
 Working with Hardware Gateways
