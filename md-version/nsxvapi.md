@@ -1767,16 +1767,18 @@ relevant actions are generated.
 
 Parameter | Description 
 -------|---------
-dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
-dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
-ipPool | Optional. If not specified, IP address is assigned through DHCP. 
-startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
+dataStore |Needs to be specified only in POST call. In PUT call, it should be left empty. 
+dvPortGroup |Optional. If not specified, then user will set the Agent using vCenter Server. 
+ipPool |Optional. If not specified, IP address is assigned through DHCP. 
 
 ### /2.0/si/deploy
 
 * **post** *(secured)*: Deploy security fabric.
 
 * **put** *(secured)*: Upgrade service to recent version.
+
+The datastore, dvPortGroup, and ipPool variables should either not be
+specified or have same value as provided at time of deployment.
 
 ### /2.0/si/deploy/service/{serviceID}
 Working With a Specified Service
@@ -1788,8 +1790,17 @@ Working With a Specified Service
 ### /2.0/si/deploy/service/{serviceID}/dependsOn
 Working with Service Dependencies
 ----
+Services installed through the security fabric may be dependent on
+other services. When an internal service is registered, a dependencyMap
+is maintained with the service-id and implementation type of the
+internal service.
 
-* **get** *(secured)*: Identify service on which the specified service depends on.
+When partner registers a new service, the security fabric looks up its
+implementation type in the dependencyMap to identify the service it
+depends on, if any. Accordingly, a new field in Service object called
+dependsOn-service-id is populated.
+
+* **get** *(secured)*: Retrieve service on which the specified service depends.
 
 ### /2.0/si/deploy/cluster/{clusterID}
 Working With Installed Services on a Cluster
@@ -1799,11 +1810,13 @@ Working With Installed Services on a Cluster
 * **delete** *(secured)*: Uninstall a service. Fails if you try to remove a service that another
 service depends on.
 
+In order to uninstall services in any order, set parameter ignoreDependency to true.
+
 ### /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}
 Working with a Specific Service on a Cluster
 -----
 
-* **get** *(secured)*: Retrieve detailed information about the service
+* **get** *(secured)*: Retrieve detailed information about the service.
 
 ## dataSecurityConfiguration
 Working with Data Security
@@ -2532,13 +2545,15 @@ Working with Solution Integrations
 Working With Agents on a Specific Host
 ----
 
-* **get** *(secured)*: Retrieve all agents on the host
+* **get** *(secured)*: Retrieves all agents on the specified host. The response body contains
+agent IDs for each agent, which you can use to retrieve details about
+that agent.
 
 ### /2.0/si/agent/{agentID}
 Working with a Specific Agent
 ----
 
-* **get** *(secured)*: Retrieve agent details.
+* **get** *(secured)*: Retrieve agent (host components and appliances) details.
 
 ### /2.0/si/deployment/{deploymentunitID}/agents
 Working with Agents on a Specific Deployment
@@ -2551,11 +2566,11 @@ Working With Conflicting Agencies
 ----
 When the NSX Manager database backup is restored to an older point in
 time, it is possible that deployment units for some EAM Agencies are
-missing. These APIs help the administratoridentify such EAM Agencies and
-take appropriate action.
+missing. These methods help the administrator identify such EAM Agencies
+and take appropriate action.
 
-* **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
-allowed operations on them
+* **get** *(secured)*: Retrieve conflicting deployment units and EAM agencies, if any, and the
+allowed operations on them.
 
 * **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete
 conflicting EAM agencies, or delete deployment units for conflicting

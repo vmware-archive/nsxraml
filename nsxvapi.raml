@@ -4693,10 +4693,9 @@ securitySchemes:
 
     Parameter | Description 
     -------|---------
-    dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
-    dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
-    ipPool | Optional. If not specified, IP address is assigned through DHCP. 
-    startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
+    dataStore |Needs to be specified only in POST call. In PUT call, it should be left empty. 
+    dvPortGroup |Optional. If not specified, then user will set the Agent using vCenter Server. 
+    ipPool |Optional. If not specified, IP address is assigned through DHCP. 
   post:
     displayName: securityFabricCreate
     description: |
@@ -4725,7 +4724,11 @@ securitySchemes:
         schema: securityFabricCreate
   put:
     displayName: serviceUpgrade
-    description: Upgrade service to recent version.
+    description: |
+      Upgrade service to recent version.
+      
+      The datastore, dvPortGroup, and ipPool variables should either not be
+      specified or have same value as provided at time of deployment.
     queryParameters:
       startTime:
         displayName: startTime
@@ -4781,10 +4784,19 @@ securitySchemes:
       description: |
         Working with Service Dependencies
         ----
+        Services installed through the security fabric may be dependent on
+        other services. When an internal service is registered, a dependencyMap
+        is maintained with the service-id and implementation type of the
+        internal service.
+
+        When partner registers a new service, the security fabric looks up its
+        implementation type in the dependencyMap to identify the service it
+        depends on, if any. Accordingly, a new field in Service object called
+        dependsOn-service-id is populated.
       get:
         displayName: serviceDependencyRead
         description: |
-          Identify service on which the specified service depends on.
+          Retrieve service on which the specified service depends.
   /cluster/{clusterID}:
     displayName: serviceCluster
     description: |
@@ -4798,11 +4810,69 @@ securitySchemes:
     get:
       displayName: serviceRead
       description: Retrieve all services deployed along with their status.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <deployedServices>
+                  <deployedService>
+                    <deploymentUnitId>deploymentunit-1</deploymentUnitId>
+                    <serviceId>service-3</serviceId>
+                    <cluster>
+                      <objectId>domain-c41</objectId>
+                      <objectTypeName>ClusterComputeResource</objectTypeName>
+                      <nsxmgrUuid>42036483-6CF3-4F0F-B356-2EB1E6369C6F</nsxmgrUuid>
+                      <revision>2</revision>
+                      <type>
+                        <typeName>ClusterComputeResource</typeName>
+                      </type>
+                      <name>Cluster-1</name>
+                      <scope>
+                        <id>datacenter-21</id>
+                        <objectTypeName>Datacenter</objectTypeName>
+                        <name>nasingh-dc</name>
+                      </scope>
+                       <extendedAttributes></extendedAttributes>
+                    </cluster>
+                    <serviceName>domain-c41_service-3</serviceName>
+                    <datastore>
+                      <objectId>datastore-29</objectId>
+                      <objectTypeName>Datastore</objectTypeName>
+                      <nsxmgrUuid>42036483-6CF3-4F0F-B356-2EB1E6369C6F</nsxmgrUuid>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>Datastore</typeName>
+                      </type>
+                      <name>datastore1</name>
+                       <extendedAttributes></extendedAttributes>
+                    </datastore>
+                    <dvPortGroup>
+                      <objectId>dvportgroup-45</objectId>
+                      <objectTypeName>DistributedVirtualPortgroup</objectTypeName>
+                      <nsxmgrUuid>42036483-6CF3-4F0F-B356-2EB1E6369C6F</nsxmgrUuid>
+                      <revision>2</revision>
+                      <type>
+                        <typeName>DistributedVirtualPortgroup</typeName>
+                      </type>
+                      <name>dvPortGroup</name>
+                      <scope>
+                        <id>datacenter-21</id>
+                        <objectTypeName>Datacenter</objectTypeName>
+                        <name>nasingh-dc</name>
+                      </scope>
+                       <extendedAttributes></extendedAttributes>
+                    </dvPortGroup>
+                    <serviceStatus>SUCCEEDED</serviceStatus>
+                  </deployedService>
+                </deployedServices>
     delete:
       displayName: serviceDelete
       description: |
         Uninstall a service. Fails if you try to remove a service that another
         service depends on.
+
+        In order to uninstall services in any order, set parameter ignoreDependency to true.
       queryParameters:
         services:
           displayName: services
@@ -4827,7 +4897,7 @@ securitySchemes:
           description: Service ID on cluster
       get:
         displayName: serviceDetailsRead
-        description: Retrieve detailed information about the service
+        description: Retrieve detailed information about the service.
 /2.0/dlp:
   displayName: dataSecurityConfiguration
   description: |
@@ -6117,7 +6187,60 @@ securitySchemes:
         description: Specified host
     get:
       displayName: hostAgentsRead
-      description: Retrieve all agents on the host
+      description: |
+        Retrieves all agents on the specified host. The response body contains
+        agent IDs for each agent, which you can use to retrieve details about
+        that agent.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <fabricAgents>
+                  <agent>
+                    <agentId>nsxmgragent-1</agentId>
+                    <agentName>agent name</agentName>
+                    <serviceId>service-6</serviceId>
+                    <serviceName>EndpointService</serviceName>
+                    <operationalStatus>ENABLED</operationalStatus>
+                    <progressStatus>IN_PROGRESS</progressStatus>
+                    <vmId>vm-92</vmId>
+                    <host>host-10</host>
+                    <allocatedIpAddress>
+                      <id>2</id>
+                      <ipAddress>10.112.5.182</ipAddress>
+                      <gateway>10.112.5.253</gateway>
+                      <prefixLength>23</prefixLength>
+                      <dnsServer1>10.112.0.1</dnsServer1>
+                      <dnsServer2>10.112.0.2</dnsServer2>
+                      <dnsSuffix />
+                      <subnetId>subnet-1</subnetId>
+                    </allocatedIpAddress>
+                    <serviceStatus>
+                      <status>WARNING</status>
+                      <errorId>partner_error</errorId>
+                      <errorDescription>partner_error</errorDescription>
+                    </serviceStatus>
+                    <hostInfo>
+                      <objectId>host-10</objectId>
+                      <objectTypeName>HostSystem</objectTypeName>
+                      <nsxmgrUuid>420369CD-2311-F1F7-D4AA-1158EA688E54</nsxmgrUuid>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>HostSystem</typeName>
+                      </type>
+                      <name>10.112.5.173</name>
+                      <scope>
+                        <id>domain-c7</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>Kaustubh-CL</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                       <extendedAttributes></extendedAttributes>
+                    </hostInfo>
+                    <initialData>partner data if present</initialData>
+                  </agent>
+                </fabricAgents>
   /agent/{agentID}:
     displayName: agentInformation
     description: |
@@ -6130,7 +6253,56 @@ securitySchemes:
         description: Specified agent
     get:
       displayName: agentInformationRead
-      description: Retrieve agent details.
+      description: |
+        Retrieve agent (host components and appliances) details.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <agent>
+                  <agentId>nsxmgragent-1</agentId>
+                  <agentName>agent name</agentName>
+                  <serviceId>service-6</serviceId>
+                  <serviceName>EndpointService</serviceName>
+                  <operationalStatus>ENABLED</operationalStatus>
+                  <progressStatus>IN_PROGRESS</progressStatus>
+                  <vmId>vm-92</vmId>
+                  <host>host-10</host>
+                  <allocatedIpAddress>
+                    <id>2</id>
+                    <ipAddress>10.112.5.182</ipAddress>
+                    <gateway>10.112.5.253</gateway>
+                    <prefixLength>23</prefixLength>
+                    <dnsServer1>10.112.0.1</dnsServer1>
+                    <dnsServer2>10.112.0.2</dnsServer2>
+                    <dnsSuffix></dnsSuffix>
+                    <subnetId>subnet-1</subnetId>
+                  </allocatedIpAddress>
+                  <serviceStatus>
+                    <status>WARNING</status>
+                    <errorId>partner_error</errorId>
+                    <errorDescription>partner_error</errorDescription>
+                  </serviceStatus>
+                  <hostInfo>
+                    <objectId>host-10</objectId>
+                    <objectTypeName>HostSystem</objectTypeName>
+                    <nsxmgrUuid>420369CD-2311-F1F7-D4AA-1158EA688E54</nsxmgrUuid>
+                    <revision>1</revision>
+                    <type>
+                      <typeName>HostSystem</typeName>
+                    </type>
+                    <name>10.112.5.173</name>
+                    <scope>
+                      <id>domain-c7</id>
+                      <objectTypeName>ClusterComputeResource</objectTypeName>
+                      <name>Kaustubh-CL</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                     <extendedAttributes></extendedAttributes>
+                  </hostInfo>
+                  <initialData>partner data if present</initialData>
+                </agent>
   /deployment/{deploymentunitID}/agents:
     displayName: deploymentAgents
     description: |
@@ -6144,6 +6316,56 @@ securitySchemes:
     get:
       displayName: deploymentAgentsRead
       description: Retrieve all agents for the specified deployment.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <fabricAgents>
+                  <agent>
+                    <agentId>nsxmgragent-1</agentId>
+                    <agentName>agent name</agentName>
+                    <serviceId>service-6</serviceId>
+                    <serviceName>EndpointService</serviceName>
+                    <operationalStatus>ENABLED</operationalStatus>
+                    <progressStatus>IN_PROGRESS</progressStatus>
+                    <vmId>vm-92</vmId>
+                    <host>host-10</host>
+                    <allocatedIpAddress>
+                      <id>2</id>
+                      <ipAddress>10.112.5.182</ipAddress>
+                      <gateway>10.112.5.253</gateway>
+                      <prefixLength>23</prefixLength>
+                      <dnsServer1>10.112.0.1</dnsServer1>
+                      <dnsServer2>10.112.0.2</dnsServer2>
+                      <dnsSuffix></dnsSuffix>
+                      <subnetId>subnet-1</subnetId>
+                    </allocatedIpAddress>
+                    <serviceStatus>
+                      <status>WARNING</status>
+                      <errorId>partner_error</errorId>
+                      <errorDescription>partner_error</errorDescription>
+                    </serviceStatus>
+                    <hostInfo>
+                      <objectId>host-10</objectId>
+                      <objectTypeName>HostSystem</objectTypeName>
+                      <nsxmgrUuid>420369CD-2311-F1F7-D4AA-1158EA688E54</nsxmgrUuid>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>HostSystem</typeName>
+                      </type>
+                      <name>10.112.5.173</name>
+                      <scope>
+                        <id>domain-c7</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>Kaustubh-CL</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes></extendedAttributes>
+                    </hostInfo>
+                    <initialData>partner data</initialData>
+                  </agent>
+                </fabricAgents>
   /fabric/sync/conflicts:
     displayName: agentConflicts
     description: |
@@ -6151,13 +6373,33 @@ securitySchemes:
       ----
       When the NSX Manager database backup is restored to an older point in
       time, it is possible that deployment units for some EAM Agencies are
-      missing. These APIs help the administratoridentify such EAM Agencies and
-      take appropriate action.
+      missing. These methods help the administrator identify such EAM Agencies
+      and take appropriate action.
     get:
       displayName: agentConflictsRead
       description: |
-        Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
-        allowed operations on them
+        Retrieve conflicting deployment units and EAM agencies, if any, and the
+        allowed operations on them.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <fabricSyncConflictInfo>
+                  <conflictExist>true</conflictExist>
+                  <agencies>
+                    <agenciesInfo>
+                      <agencyConflictInfo>
+                        <agencyId>agency-150</agencyId>
+                        <agencyName>_VCNS_264_nasingh-cluster1_VMware Endpoint</agencyName>
+                      </agencyConflictInfo>
+                    </agenciesInfo>
+                    <allowedOperations>
+                      <conflictResolverOperation>DELETE</conflictResolverOperation>
+                      <conflictResolverOperation>RESTORE</conflictResolverOperation>
+                    </allowedOperations>
+                  </agencies>
+                </fabricSyncConflictInfo>
     put:
       displayName: agentConflictsUpdate
       description: |
