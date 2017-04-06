@@ -1357,10 +1357,41 @@ Working With the Appliance Management Web Application
 ### /1.0/appliance-management/backuprestore/backupsettings
 NSX Manager Appliance Backup Settings
 -----
+Parameters for the NSX Manager appliance backup:
+
+* **transferProtocol**: *FTP, SFTP*
+* **frequency**: *weekly, daily, hourly*
+* **dayOfWeek**: *SUNDAY, MONDAY, ...., SATURDAY*
+* **hourOfDay**: [*0-24*]
+* **minuteOfHour**: [*0-60*]
+* **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
+The tables specified in the **excludeTables** parameter are not backed up.
 
 * **get** *(secured)*: Retrieve backup settings.
 * **put** *(secured)*: Configure backup on the appliance manager.
 * **delete** *(secured)*: Delete appliance manager backup configuration.
+
+### /1.0/appliance-management/backuprestore/backupsettings/ftpsettings
+NSX Manager Appliance Backup FTP Settings
+---
+See *NSX Manager Appliance Backup Settings* for details.
+
+* **put** *(secured)*: Configure FTP settings.
+
+### /1.0/appliance-management/backuprestore/backupsettings/excludedata
+NSX Manager Appliance Backup Exclusion Settings
+---
+See *NSX Manager Appliance Backup Settings* for details.
+
+* **put** *(secured)*: Specify tables that need not be backed up.
+
+### /1.0/appliance-management/backuprestore/backupsettings/schedule
+NSX Manager Appliance Backup Schedule Settings
+---
+See *NSX Manager Appliance Backup Settings* for details.
+
+* **put** *(secured)*: Set backup schedule.
+* **delete** *(secured)*: Delete backup schedule.
 
 ### /1.0/appliance-management/backuprestore/backup
 NSX Manager Appliance On-Demand Backup

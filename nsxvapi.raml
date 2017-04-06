@@ -3768,6 +3768,15 @@ securitySchemes:
     description: |
       NSX Manager Appliance Backup Settings
       -----
+      Parameters for the NSX Manager appliance backup:
+
+      * **transferProtocol**: *FTP, SFTP*
+      * **frequency**: *weekly, daily, hourly*
+      * **dayOfWeek**: *SUNDAY, MONDAY, ...., SATURDAY*
+      * **hourOfDay**: [*0-24*]
+      * **minuteOfHour**: [*0-60*]
+      * **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
+      The tables specified in the **excludeTables** parameter are not backed up.
     get:
       displayName: applianceMgrBackupSettingsRead
       description: Retrieve backup settings.
@@ -3804,6 +3813,36 @@ securitySchemes:
     delete:
       displayName: applianceMgrBackupSettingsDelete
       description: Delete appliance manager backup configuration.
+    /ftpsettings:
+      displayName: applianceMgrBackupSettingsFtp
+      description: |
+        NSX Manager Appliance Backup FTP Settings
+        ---
+        See *NSX Manager Appliance Backup Settings* for details.
+      put:
+        displayName: applianceMgrBackupSettingsFtpUpdate
+        description: Configure FTP settings.
+    /excludedata:
+      displayName: applianceMgrBackupSettingsExclude
+      description: |
+        NSX Manager Appliance Backup Exclusion Settings
+        ---
+        See *NSX Manager Appliance Backup Settings* for details.
+      put:
+        displayName: applianceMgrBackupSettingsExcludeUpdate
+        description: Specify tables that need not be backed up.
+    /schedule:
+      displayName: applianceMgrBackupSettingsSchedule
+      description: |
+        NSX Manager Appliance Backup Schedule Settings
+        ---
+        See *NSX Manager Appliance Backup Settings* for details.
+      put:
+        displayName: applianceMgrBackupSettingsScheduleUpdate
+        description: Set backup schedule.
+      delete:
+        displayName: applianceMgrBackupSettingsScheduleDelete
+        description: Delete backup schedule.
   /backuprestore/backup:
     displayName: applianceMgrBackup
     description: |
