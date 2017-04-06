@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x64;&#111;&#x63;&#102;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#x6d;">&#x64;&#111;&#x63;&#102;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x64;&#111;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;">&#x64;&#111;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -10486,6 +10486,65 @@ primary NSX Manager.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="resolving-missing-vxlan-vmkernel-adapters">Resolving Missing VXLAN VMKernel Adapters</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">hostId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/vdn/config/host/{hostId}/vxlan/vteps"
+    href="#POST/2.0/vdn/config/host/{hostId}/vxlan/vteps"
+  ><h2>POST /2.0/vdn/config/host/{hostId}/vxlan/vteps</h2></a>
+  <div class="content">
+    <p><p>Resolve missing VXLAN VMKernel adapters.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <ul>
+<li><p><em>remediate</em>: Use the <em>remediate</em> action to recreate the missing VXLAN VMKernel
+adapter on the host. This action removes the adapter using the
+<em>resync</em> action, then recreates the adapter.</p>
+</li>
+<li><p><em>resync</em>: If the VXLAN VMKernel adapter is no longer needed, you can use the
+<em>resync</em> action to remove the missing VXLAN VMKernel adapter from
+the NSX Manager configuration database.  </p>
+</li>
+</ul>
+
+  </dd>
+</dl>
+    </div>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h2 id="working-with-multicast-address-ranges">Working with Multicast Address Ranges</h2>
 <p>If any of your transport zones will use multicast or hybrid replication
 mode, you must add a multicast address range (also called a multicast
@@ -11322,6 +11381,43 @@ true to remove last controller of the controller cluster.</p>
     </div>
   </div>
 </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/vdn/controller/{controllerId}"
+    href="#POST/2.0/vdn/controller/{controllerId}"
+  ><h2>POST /2.0/vdn/controller/{controllerId}</h2></a>
+  <div class="content">
+    <p><p>If you power off or delete a controller from vCenter, NSX Manager
+detects the change in controller status. You can remediate the
+controller, which will power on a powered off controller, or remove the
+controller from the NSX Manager database if the controller is deleted.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Specify <em>remediate</em> to recover from controller shutdown or deletion.</p>
+
+  </dd>
+</dl>
+    </div>
+  </div>
+</div>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-controller-cluster-snapshots">Working with Controller Cluster Snapshots</h2>
@@ -11408,6 +11504,111 @@ node.</p>
   <div class="content">
     <p><p>Deletes syslog exporter on the specified controller node.</p>
 </p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-nsx-controller-system-statistics">Working With NSX Controller System Statistics</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/controller/{controllerId}/systemStats"
+    href="#GET/2.0/vdn/controller/{controllerId}/systemStats"
+  ><h2>GET /2.0/vdn/controller/{controllerId}/systemStats</h2></a>
+  <div class="content">
+    <p><p>Retrieve NSX Controller system statistics.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">controllerNodeStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>controller-2<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.110.32<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">syncTime</span>&gt;</span>1490991545530<span class="hljs-tag">&lt;/<span class="hljs-name">syncTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuCoreCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">cpuCoreCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuLoadInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">averageLoad</span>&gt;</span>0.17<span class="hljs-tag">&lt;/<span class="hljs-name">averageLoad</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cpuLoadInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuLoadInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">averageLoad</span>&gt;</span>0.6<span class="hljs-tag">&lt;/<span class="hljs-name">averageLoad</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cpuLoadInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuLoadInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">averageLoad</span>&gt;</span>0.4<span class="hljs-tag">&lt;/<span class="hljs-name">averageLoad</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cpuLoadInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalMemory</span>&gt;</span>1924280<span class="hljs-tag">&lt;/<span class="hljs-name">totalMemory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedMemory</span>&gt;</span>1542524<span class="hljs-tag">&lt;/<span class="hljs-name">usedMemory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cachedMemory</span>&gt;</span>589196<span class="hljs-tag">&lt;/<span class="hljs-name">cachedMemory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalSwap</span>&gt;</span>4190204<span class="hljs-tag">&lt;/<span class="hljs-name">totalSwap</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedSwap</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">usedSwap</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">systemTime</span>&gt;</span>1490991545521<span class="hljs-tag">&lt;/<span class="hljs-name">systemTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">upTime</span>&gt;</span>433880<span class="hljs-tag">&lt;/<span class="hljs-name">upTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeFailoverReady</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">nodeFailoverReady</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deviceName</span>&gt;</span>sda<span class="hljs-tag">&lt;/<span class="hljs-name">deviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshTime</span>&gt;</span>1490991404000<span class="hljs-tag">&lt;/<span class="hljs-name">refreshTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">latencyType</span>&gt;</span>w_await<span class="hljs-tag">&lt;/<span class="hljs-name">latencyType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastLatency</span>&gt;</span>97.0<span class="hljs-tag">&lt;/<span class="hljs-name">lastLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">avgLatency</span>&gt;</span>28.572<span class="hljs-tag">&lt;/<span class="hljs-name">avgLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">alertEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alertEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deviceName</span>&gt;</span>sda<span class="hljs-tag">&lt;/<span class="hljs-name">deviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshTime</span>&gt;</span>1490991186000<span class="hljs-tag">&lt;/<span class="hljs-name">refreshTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">latencyType</span>&gt;</span>r_await<span class="hljs-tag">&lt;/<span class="hljs-name">latencyType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastLatency</span>&gt;</span>9.18<span class="hljs-tag">&lt;/<span class="hljs-name">lastLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">avgLatency</span>&gt;</span>0.0<span class="hljs-tag">&lt;/<span class="hljs-name">avgLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">alertEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alertEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deviceName</span>&gt;</span>dm-1<span class="hljs-tag">&lt;/<span class="hljs-name">deviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshTime</span>&gt;</span>1490991185000<span class="hljs-tag">&lt;/<span class="hljs-name">refreshTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">latencyType</span>&gt;</span>w_await<span class="hljs-tag">&lt;/<span class="hljs-name">latencyType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastLatency</span>&gt;</span>0.0<span class="hljs-tag">&lt;/<span class="hljs-name">lastLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">avgLatency</span>&gt;</span>0.0<span class="hljs-tag">&lt;/<span class="hljs-name">avgLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">alertEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alertEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deviceName</span>&gt;</span>dm-1<span class="hljs-tag">&lt;/<span class="hljs-name">deviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshTime</span>&gt;</span>1490991185000<span class="hljs-tag">&lt;/<span class="hljs-name">refreshTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">latencyType</span>&gt;</span>r_await<span class="hljs-tag">&lt;/<span class="hljs-name">latencyType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastLatency</span>&gt;</span>51.51<span class="hljs-tag">&lt;/<span class="hljs-name">lastLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">avgLatency</span>&gt;</span>0.0<span class="hljs-tag">&lt;/<span class="hljs-name">avgLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">alertEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alertEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deviceName</span>&gt;</span>dm-0<span class="hljs-tag">&lt;/<span class="hljs-name">deviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshTime</span>&gt;</span>1490991404000<span class="hljs-tag">&lt;/<span class="hljs-name">refreshTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">latencyType</span>&gt;</span>w_await<span class="hljs-tag">&lt;/<span class="hljs-name">latencyType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastLatency</span>&gt;</span>129.33<span class="hljs-tag">&lt;/<span class="hljs-name">lastLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">avgLatency</span>&gt;</span>34.16<span class="hljs-tag">&lt;/<span class="hljs-name">avgLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">alertEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alertEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deviceName</span>&gt;</span>dm-0<span class="hljs-tag">&lt;/<span class="hljs-name">deviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshTime</span>&gt;</span>1490991225000<span class="hljs-tag">&lt;/<span class="hljs-name">refreshTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">latencyType</span>&gt;</span>r_await<span class="hljs-tag">&lt;/<span class="hljs-name">latencyType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastLatency</span>&gt;</span>0.0<span class="hljs-tag">&lt;/<span class="hljs-name">lastLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">avgLatency</span>&gt;</span>12.678<span class="hljs-tag">&lt;/<span class="hljs-name">avgLatency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">alertEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alertEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDiskLatencyStatus</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">controllerNodeStatus</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -13646,6 +13847,57 @@ mode.</p>
   <div class="content">
     <p><p>Delete the specified logical switch.</p>
 </p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="resolving-missing-portgroups-for-a-logical-switch">Resolving Missing Portgroups for a Logical Switch</h2>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/vdn/virtualwires/{virtualWireID}/backing"
+    href="#POST/2.0/vdn/virtualwires/{virtualWireID}/backing"
+  ><h2>POST /2.0/vdn/virtualwires/{virtualWireID}/backing</h2></a>
+  <div class="content">
+    <p><p>For every logical switch created, NSX creates a corresponding port
+group in vCenter. If the port group is missing, the logical switch
+will stop functioning.</p>
+<p>If the port group backing a logical switch is deleted, you can
+recreate a new backing port group for the logical switch.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <ul>
+<li><p><em>remediate</em>: The <em>remediate</em> action performs the <em>resync</em> action and then
+creates a new backing port group for the logical switch. Under
+normal operations, you should need the <em>remediate</em> action only. </p>
+</li>
+<li><p><em>resync</em>: The <em>resync</em> action removes the association between
+the backing port group and the logical switch in the NSX Manager
+configuration. </p>
+</li>
+</ul>
+
+  </dd>
+</dl>
+    </div>
   </div>
 </div>
 </section>

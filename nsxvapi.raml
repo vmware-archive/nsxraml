@@ -688,6 +688,33 @@ securitySchemes:
           displayName: startindex
           description: !include documentation/reuse/startindex
           default: 0
+  /host/{hostId}/vxlan/vteps:
+    displayName: hostVtepResolve
+    description: |
+      Resolving Missing VXLAN VMKernel Adapters
+      ----
+    post:
+      displayName: hostVtepResolveExecute
+      description: | 
+        Resolve missing VXLAN VMKernel adapters.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
+      queryParameters:
+        action:
+          displayName: action
+          description: | 
+            * *remediate*: Use the *remediate* action to recreate the missing VXLAN VMKernel
+            adapter on the host. This action removes the adapter using the
+            *resync* action, then recreates the adapter.
+            
+            * *resync*: If the VXLAN VMKernel adapter is no longer needed, you can use the
+            *resync* action to remove the missing VXLAN VMKernel adapter from
+            the NSX Manager configuration database.  
+          required: true
 /2.0/vdn/scopes:
   displayName: vdnScopes
   description: |
@@ -1550,6 +1577,38 @@ securitySchemes:
     delete:
       displayName: logicalSwitchDelete
       description: Delete the specified logical switch.
+    /backing:
+      displayName: logicalSwitchPortGroupFix
+      description: |
+        Resolving Missing Portgroups for a Logical Switch
+        ----
+      post:
+        displayName: logicalSwitchPortGroupFixExecute
+        description: |
+          For every logical switch created, NSX creates a corresponding port
+          group in vCenter. If the port group is missing, the logical switch
+          will stop functioning.
+
+          If the port group backing a logical switch is deleted, you can
+          recreate a new backing port group for the logical switch.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
+        queryParameters:
+          action:
+            displayName: action
+            description: |
+              * *remediate*: The *remediate* action performs the *resync* action and then
+              creates a new backing port group for the logical switch. Under
+              normal operations, you should need the *remediate* action only. 
+
+              * *resync*: The *resync* action removes the association between
+              the backing port group and the logical switch in the NSX Manager
+              configuration. 
+            required: true
     /conn-check/multicast:
       displayName: logicalSwitchConnCheck
       description: |
@@ -1933,6 +1992,119 @@ securitySchemes:
           description: |
             Specify whether to force removal of controller. Must be set to
             true to remove last controller of the controller cluster.
+    post:
+      displayName: nsxControllerRemediateExecute
+      description: |
+        If you power off or delete a controller from vCenter, NSX Manager
+        detects the change in controller status. You can remediate the
+        controller, which will power on a powered off controller, or remove the
+        controller from the NSX Manager database if the controller is deleted.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
+      queryParameters:
+        action:
+          displayName: action
+          description: |
+            Specify *remediate* to recover from controller shutdown or deletion.
+          required: true
+    /systemStats:
+      displayName: nsxControllerStats
+      description: |
+        Working With NSX Controller System Statistics
+        ----
+      get:
+        displayName: nsxControllerStatsList
+        description: |
+          Retrieve NSX Controller system statistics.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <controllerNodeStatus>
+                    <id>controller-2</id>
+                    <ipAddress>192.168.110.32</ipAddress>
+                    <syncTime>1490991545530</syncTime>
+                    <cpuCoreCount>2</cpuCoreCount>
+                    <cpuLoadInfo>
+                      <interval>1</interval>
+                      <averageLoad>0.17</averageLoad>
+                    </cpuLoadInfo>
+                    <cpuLoadInfo>
+                      <interval>5</interval>
+                      <averageLoad>0.6</averageLoad>
+                    </cpuLoadInfo>
+                    <cpuLoadInfo>
+                      <interval>15</interval>
+                      <averageLoad>0.4</averageLoad>
+                    </cpuLoadInfo>
+                    <totalMemory>1924280</totalMemory>
+                    <usedMemory>1542524</usedMemory>
+                    <cachedMemory>589196</cachedMemory>
+                    <totalSwap>4190204</totalSwap>
+                    <usedSwap>0</usedSwap>
+                    <systemTime>1490991545521</systemTime>
+                    <upTime>433880</upTime>
+                    <nodeFailoverReady>false</nodeFailoverReady>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>sda</deviceName>
+                      <refreshTime>1490991404000</refreshTime>
+                      <latencyType>w_await</latencyType>
+                      <lastLatency>97.0</lastLatency>
+                      <avgLatency>28.572</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>sda</deviceName>
+                      <refreshTime>1490991186000</refreshTime>
+                      <latencyType>r_await</latencyType>
+                      <lastLatency>9.18</lastLatency>
+                      <avgLatency>0.0</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-1</deviceName>
+                      <refreshTime>1490991185000</refreshTime>
+                      <latencyType>w_await</latencyType>
+                      <lastLatency>0.0</lastLatency>
+                      <avgLatency>0.0</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-1</deviceName>
+                      <refreshTime>1490991185000</refreshTime>
+                      <latencyType>r_await</latencyType>
+                      <lastLatency>51.51</lastLatency>
+                      <avgLatency>0.0</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-0</deviceName>
+                      <refreshTime>1490991404000</refreshTime>
+                      <latencyType>w_await</latencyType>
+                      <lastLatency>129.33</lastLatency>
+                      <avgLatency>34.16</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-0</deviceName>
+                      <refreshTime>1490991225000</refreshTime>
+                      <latencyType>r_await</latencyType>
+                      <lastLatency>0.0</lastLatency>
+                      <avgLatency>12.678</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                  </controllerNodeStatus>
     /techsupportlogs:
       displayName: nsxControllerLogs
       description: |

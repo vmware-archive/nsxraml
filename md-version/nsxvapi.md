@@ -328,6 +328,18 @@ Working with Allocated Resources
 * **get** *(secured)*: Retrieve information about allocated segment IDs or multicast
 addresses.
 
+### /2.0/vdn/config/host/{hostId}/vxlan/vteps
+Resolving Missing VXLAN VMKernel Adapters
+----
+
+* **post** *(secured)*: Resolve missing VXLAN VMKernel adapters.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ## vdnScopes
 Working with Transport Zones
 ==============
@@ -500,6 +512,23 @@ For example, you can update the name, description, or control plane
 mode.
 
 * **delete** *(secured)*: Delete the specified logical switch.
+
+### /2.0/vdn/virtualwires/{virtualWireID}/backing
+Resolving Missing Portgroups for a Logical Switch
+----
+
+* **post** *(secured)*: For every logical switch created, NSX creates a corresponding port
+group in vCenter. If the port group is missing, the logical switch
+will stop functioning.
+
+If the port group backing a logical switch is deleted, you can
+recreate a new backing port group for the logical switch.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/multicast
 Testing Host Connectivity
@@ -685,6 +714,29 @@ Working with a Specific Controller
 -----
 
 * **delete** *(secured)*: Delete the NSX controller.
+
+* **post** *(secured)*: If you power off or delete a controller from vCenter, NSX Manager
+detects the change in controller status. You can remediate the
+controller, which will power on a powered off controller, or remove the
+controller from the NSX Manager database if the controller is deleted.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/controller/{controllerId}/systemStats
+Working With NSX Controller System Statistics
+----
+
+* **get** *(secured)*: Retrieve NSX Controller system statistics.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/controller/{controllerId}/techsupportlogs
 Working with Controller Tech Support Logs
