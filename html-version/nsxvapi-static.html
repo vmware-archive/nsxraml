@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x64;&#111;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;">&#x64;&#111;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x64;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#x6f;&#109;">&#x64;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -252,6 +252,15 @@ lists the VM instance UUID. For example,
 </section>
 <section class="resource">
   <div class="description"><h2 id="nsx-manager-appliance-backup-settings">NSX Manager Appliance Backup Settings</h2>
+<p>Parameters for the NSX Manager appliance backup:</p>
+<ul>
+<li><strong>transferProtocol</strong>: <em>FTP, SFTP</em></li>
+<li><strong>frequency</strong>: <em>weekly, daily, hourly</em></li>
+<li><strong>dayOfWeek</strong>: <em>SUNDAY, MONDAY, ...., SATURDAY</em></li>
+<li><strong>hourOfDay</strong>: [<em>0-24</em>]</li>
+<li><strong>minuteOfHour</strong>: [<em>0-60</em>]</li>
+<li><strong>excludeTables</strong>: <em>AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS</em><br>The tables specified in the <strong>excludeTables</strong> parameter are not backed up.</li>
+</ul>
 </div>
 <div class="method get">
   <a
@@ -351,6 +360,65 @@ lists the VM instance UUID. For example,
   ><h2>DELETE /1.0/appliance-management/backuprestore/backupsettings</h2></a>
   <div class="content">
     <p><p>Delete appliance manager backup configuration.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="nsx-manager-appliance-backup-exclusion-settings">NSX Manager Appliance Backup Exclusion Settings</h2>
+<p>See <em>NSX Manager Appliance Backup Settings</em> for details.</p>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/1.0/appliance-management/backuprestore/backupsettings/excludedata"
+    href="#PUT/1.0/appliance-management/backuprestore/backupsettings/excludedata"
+  ><h2>PUT /1.0/appliance-management/backuprestore/backupsettings/excludedata</h2></a>
+  <div class="content">
+    <p><p>Specify tables that need not be backed up.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="nsx-manager-appliance-backup-ftp-settings">NSX Manager Appliance Backup FTP Settings</h2>
+<p>See <em>NSX Manager Appliance Backup Settings</em> for details.</p>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/1.0/appliance-management/backuprestore/backupsettings/ftpsettings"
+    href="#PUT/1.0/appliance-management/backuprestore/backupsettings/ftpsettings"
+  ><h2>PUT /1.0/appliance-management/backuprestore/backupsettings/ftpsettings</h2></a>
+  <div class="content">
+    <p><p>Configure FTP settings.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="nsx-manager-appliance-backup-schedule-settings">NSX Manager Appliance Backup Schedule Settings</h2>
+<p>See <em>NSX Manager Appliance Backup Settings</em> for details.</p>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/1.0/appliance-management/backuprestore/backupsettings/schedule"
+    href="#PUT/1.0/appliance-management/backuprestore/backupsettings/schedule"
+  ><h2>PUT /1.0/appliance-management/backuprestore/backupsettings/schedule</h2></a>
+  <div class="content">
+    <p><p>Set backup schedule.</p>
+</p>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/1.0/appliance-management/backuprestore/backupsettings/schedule"
+    href="#DELETE/1.0/appliance-management/backuprestore/backupsettings/schedule"
+  ><h2>DELETE /1.0/appliance-management/backuprestore/backupsettings/schedule</h2></a>
+  <div class="content">
+    <p><p>Delete backup schedule.</p>
 </p>
   </div>
 </div>
@@ -9666,8 +9734,58 @@ scope.</p>
     href="#GET/2.0/si/agent/{agentID}"
   ><h2>GET /2.0/si/agent/{agentID}</h2></a>
   <div class="content">
-    <p><p>Retrieve agent details.</p>
+    <p><p>Retrieve agent (host components and appliances) details.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">agent</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">agentId</span>&gt;</span>nsxmgragent-1<span class="hljs-tag">&lt;/<span class="hljs-name">agentId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">agentName</span>&gt;</span>agent name<span class="hljs-tag">&lt;/<span class="hljs-name">agentName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">serviceId</span>&gt;</span>service-6<span class="hljs-tag">&lt;/<span class="hljs-name">serviceId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">serviceName</span>&gt;</span>EndpointService<span class="hljs-tag">&lt;/<span class="hljs-name">serviceName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">operationalStatus</span>&gt;</span>ENABLED<span class="hljs-tag">&lt;/<span class="hljs-name">operationalStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">progressStatus</span>&gt;</span>IN_PROGRESS<span class="hljs-tag">&lt;/<span class="hljs-name">progressStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-92<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">host</span>&gt;</span>host-10<span class="hljs-tag">&lt;/<span class="hljs-name">host</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.112.5.182<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>10.112.5.253<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">prefixLength</span>&gt;</span>23<span class="hljs-tag">&lt;/<span class="hljs-name">prefixLength</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.112.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.112.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">subnetId</span>&gt;</span>subnet-1<span class="hljs-tag">&lt;/<span class="hljs-name">subnetId</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">serviceStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">errorId</span>&gt;</span>partner_error<span class="hljs-tag">&lt;/<span class="hljs-name">errorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">errorDescription</span>&gt;</span>partner_error<span class="hljs-tag">&lt;/<span class="hljs-name">errorDescription</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">serviceStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-10<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>420369CD-2311-F1F7-D4AA-1158EA688E54<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>10.112.5.173<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c7<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Kaustubh-CL<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">hostInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">initialData</span>&gt;</span>partner data if present<span class="hljs-tag">&lt;/<span class="hljs-name">initialData</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">agent</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -9725,10 +9843,6 @@ relevant actions are generated.</p>
 <tr>
 <td>ipPool</td>
 <td>Optional. If not specified, IP address is assigned through DHCP. </td>
-</tr>
-<tr>
-<td>startTime</td>
-<td>Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. </td>
 </tr>
 </tbody></table></div>
 <div class="method post">
@@ -9812,6 +9926,8 @@ relevant actions are generated.</p>
   ><h2>PUT /2.0/si/deploy</h2></a>
   <div class="content">
     <p><p>Upgrade service to recent version.</p>
+<p>The datastore, dvPortGroup, and ipPool variables should either not be
+specified or have same value as provided at time of deployment.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -9906,6 +10022,64 @@ relevant actions are generated.</p>
   <div class="content">
     <p><p>Retrieve all services deployed along with their status.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">deployedServices</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">deployedService</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deploymentUnitId</span>&gt;</span>deploymentunit-1<span class="hljs-tag">&lt;/<span class="hljs-name">deploymentUnitId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceId</span>&gt;</span>service-3<span class="hljs-tag">&lt;/<span class="hljs-name">serviceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>42036483-6CF3-4F0F-B356-2EB1E6369C6F<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Cluster-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>nasingh-dc<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceName</span>&gt;</span>domain-c41_service-3<span class="hljs-tag">&lt;/<span class="hljs-name">serviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datastore</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>datastore-29<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datastore<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>42036483-6CF3-4F0F-B356-2EB1E6369C6F<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>Datastore<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>datastore1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">datastore</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dvPortGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvportgroup-45<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>DistributedVirtualPortgroup<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>42036483-6CF3-4F0F-B356-2EB1E6369C6F<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>DistributedVirtualPortgroup<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dvPortGroup<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>nasingh-dc<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dvPortGroup</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceStatus</span>&gt;</span>SUCCEEDED<span class="hljs-tag">&lt;/<span class="hljs-name">serviceStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">deployedService</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">deployedServices</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -9917,6 +10091,7 @@ relevant actions are generated.</p>
   <div class="content">
     <p><p>Uninstall a service. Fails if you try to remove a service that another
 service depends on.</p>
+<p>In order to uninstall services in any order, set parameter ignoreDependency to true.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -9971,7 +10146,7 @@ immediately.</p>
     href="#GET/2.0/si/deploy/cluster/{clusterID}/service/{serviceID}"
   ><h2>GET /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}</h2></a>
   <div class="content">
-    <p><p>Retrieve detailed information about the service</p>
+    <p><p>Retrieve detailed information about the service.</p>
 </p>
   </div>
 </div>
@@ -10043,6 +10218,14 @@ immediately.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-service-dependencies">Working with Service Dependencies</h2>
+<p>Services installed through the security fabric may be dependent on
+other services. When an internal service is registered, a dependencyMap
+is maintained with the service-id and implementation type of the
+internal service.</p>
+<p>When partner registers a new service, the security fabric looks up its
+implementation type in the dependencyMap to identify the service it
+depends on, if any. Accordingly, a new field in Service object called
+dependsOn-service-id is populated.</p>
 </div>
 <div class="method get">
   <a
@@ -10051,7 +10234,7 @@ immediately.</p>
     href="#GET/2.0/si/deploy/service/{serviceID}/dependsOn"
   ><h2>GET /2.0/si/deploy/service/{serviceID}/dependsOn</h2></a>
   <div class="content">
-    <p><p>Identify service on which the specified service depends on.</p>
+    <p><p>Retrieve service on which the specified service depends.</p>
 </p>
   </div>
 </div>
@@ -10082,6 +10265,58 @@ immediately.</p>
   <div class="content">
     <p><p>Retrieve all agents for the specified deployment.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">fabricAgents</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">agent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">agentId</span>&gt;</span>nsxmgragent-1<span class="hljs-tag">&lt;/<span class="hljs-name">agentId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">agentName</span>&gt;</span>agent name<span class="hljs-tag">&lt;/<span class="hljs-name">agentName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceId</span>&gt;</span>service-6<span class="hljs-tag">&lt;/<span class="hljs-name">serviceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceName</span>&gt;</span>EndpointService<span class="hljs-tag">&lt;/<span class="hljs-name">serviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">operationalStatus</span>&gt;</span>ENABLED<span class="hljs-tag">&lt;/<span class="hljs-name">operationalStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">progressStatus</span>&gt;</span>IN_PROGRESS<span class="hljs-tag">&lt;/<span class="hljs-name">progressStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-92<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">host</span>&gt;</span>host-10<span class="hljs-tag">&lt;/<span class="hljs-name">host</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.112.5.182<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>10.112.5.253<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">prefixLength</span>&gt;</span>23<span class="hljs-tag">&lt;/<span class="hljs-name">prefixLength</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.112.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.112.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">subnetId</span>&gt;</span>subnet-1<span class="hljs-tag">&lt;/<span class="hljs-name">subnetId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">errorId</span>&gt;</span>partner_error<span class="hljs-tag">&lt;/<span class="hljs-name">errorId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">errorDescription</span>&gt;</span>partner_error<span class="hljs-tag">&lt;/<span class="hljs-name">errorDescription</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">serviceStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-10<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>420369CD-2311-F1F7-D4AA-1158EA688E54<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>10.112.5.173<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c7<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Kaustubh-CL<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">hostInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">initialData</span>&gt;</span>partner data<span class="hljs-tag">&lt;/<span class="hljs-name">initialData</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">agent</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">fabricAgents</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -10089,8 +10324,8 @@ immediately.</p>
   <div class="description"><h2 id="working-with-conflicting-agencies">Working With Conflicting Agencies</h2>
 <p>When the NSX Manager database backup is restored to an older point in
 time, it is possible that deployment units for some EAM Agencies are
-missing. These APIs help the administratoridentify such EAM Agencies and
-take appropriate action.</p>
+missing. These methods help the administrator identify such EAM Agencies
+and take appropriate action.</p>
 </div>
 <div class="method get">
   <a
@@ -10099,9 +10334,31 @@ take appropriate action.</p>
     href="#GET/2.0/si/fabric/sync/conflicts"
   ><h2>GET /2.0/si/fabric/sync/conflicts</h2></a>
   <div class="content">
-    <p><p>Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
-allowed operations on them</p>
+    <p><p>Retrieve conflicting deployment units and EAM agencies, if any, and the
+allowed operations on them.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">fabricSyncConflictInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">conflictExist</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">conflictExist</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">agencies</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">agenciesInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">agencyConflictInfo</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">agencyId</span>&gt;</span>agency-150<span class="hljs-tag">&lt;/<span class="hljs-name">agencyId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">agencyName</span>&gt;</span>_VCNS_264_nasingh-cluster1_VMware Endpoint<span class="hljs-tag">&lt;/<span class="hljs-name">agencyName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">agencyConflictInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">agenciesInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">allowedOperations</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">conflictResolverOperation</span>&gt;</span>DELETE<span class="hljs-tag">&lt;/<span class="hljs-name">conflictResolverOperation</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">conflictResolverOperation</span>&gt;</span>RESTORE<span class="hljs-tag">&lt;/<span class="hljs-name">conflictResolverOperation</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">allowedOperations</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">agencies</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">fabricSyncConflictInfo</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -10156,8 +10413,62 @@ EAM agencies.</p>
     href="#GET/2.0/si/host/{hostID}/agents"
   ><h2>GET /2.0/si/host/{hostID}/agents</h2></a>
   <div class="content">
-    <p><p>Retrieve all agents on the host</p>
+    <p><p>Retrieves all agents on the specified host. The response body contains
+agent IDs for each agent, which you can use to retrieve details about
+that agent.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">fabricAgents</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">agent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">agentId</span>&gt;</span>nsxmgragent-1<span class="hljs-tag">&lt;/<span class="hljs-name">agentId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">agentName</span>&gt;</span>agent name<span class="hljs-tag">&lt;/<span class="hljs-name">agentName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceId</span>&gt;</span>service-6<span class="hljs-tag">&lt;/<span class="hljs-name">serviceId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceName</span>&gt;</span>EndpointService<span class="hljs-tag">&lt;/<span class="hljs-name">serviceName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">operationalStatus</span>&gt;</span>ENABLED<span class="hljs-tag">&lt;/<span class="hljs-name">operationalStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">progressStatus</span>&gt;</span>IN_PROGRESS<span class="hljs-tag">&lt;/<span class="hljs-name">progressStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-92<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">host</span>&gt;</span>host-10<span class="hljs-tag">&lt;/<span class="hljs-name">host</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.112.5.182<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>10.112.5.253<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">prefixLength</span>&gt;</span>23<span class="hljs-tag">&lt;/<span class="hljs-name">prefixLength</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer1</span>&gt;</span>10.112.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer2</span>&gt;</span>10.112.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">subnetId</span>&gt;</span>subnet-1<span class="hljs-tag">&lt;/<span class="hljs-name">subnetId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">allocatedIpAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">errorId</span>&gt;</span>partner_error<span class="hljs-tag">&lt;/<span class="hljs-name">errorId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">errorDescription</span>&gt;</span>partner_error<span class="hljs-tag">&lt;/<span class="hljs-name">errorDescription</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">serviceStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-10<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nsxmgrUuid</span>&gt;</span>420369CD-2311-F1F7-D4AA-1158EA688E54<span class="hljs-tag">&lt;/<span class="hljs-name">nsxmgrUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>10.112.5.173<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c7<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Kaustubh-CL<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">extendedAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">hostInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">initialData</span>&gt;</span>partner data if present<span class="hljs-tag">&lt;/<span class="hljs-name">initialData</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">agent</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">fabricAgents</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
