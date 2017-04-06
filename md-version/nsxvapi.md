@@ -3446,8 +3446,9 @@ You can add additional session timer configurations with different
 
 Parameter | Description | Comments
 -----|-----|-----
-**appliedTo > value** | The ID of the object on which to apply the timeout settings | Required. For example VM ID *vm-216*.
+**appliedTo > value** | The ID of the object on which to apply the timeout settings. | Required. For example VM ID *vm-216*.
 **appliedTo > type** | The type of object on which to apply the timeout settings. | Required. Can be *VirtualMachine* or *Vnic*
+**generationNumber** | Generation number for the configuration. | When updating session timers, you must ensure the latest generation number is included in the request body. 
 **tcpFirstPacket** | The timeout value for the connection after the first packet has been sent. This will be the initial timeout for the connection once a SYN has been sent and the flow is created. | Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *120*. 
 **tcpOpen** | The timeout value for the connection after a second packet has been transferred. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *30*. 
 **tcpEstablished** | The timeout value for the connection once the connection has become fully established. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *43200*. 
