@@ -328,6 +328,18 @@ Working with Allocated Resources
 * **get** *(secured)*: Retrieve information about allocated segment IDs or multicast
 addresses.
 
+### /2.0/vdn/config/host/{hostId}/vxlan/vteps
+Resolving Missing VXLAN VMKernel Adapters
+----
+
+* **post** *(secured)*: Resolve missing VXLAN VMKernel adapters.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ## vdnScopes
 Working with Transport Zones
 ==============
@@ -500,6 +512,23 @@ For example, you can update the name, description, or control plane
 mode.
 
 * **delete** *(secured)*: Delete the specified logical switch.
+
+### /2.0/vdn/virtualwires/{virtualWireID}/backing
+Resolving Missing Portgroups for a Logical Switch
+----
+
+* **post** *(secured)*: For every logical switch created, NSX creates a corresponding port
+group in vCenter. If the port group is missing, the logical switch
+will stop functioning.
+
+If the port group backing a logical switch is deleted, you can
+recreate a new backing port group for the logical switch.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/conn-check/multicast
 Testing Host Connectivity
@@ -685,6 +714,29 @@ Working with a Specific Controller
 -----
 
 * **delete** *(secured)*: Delete the NSX controller.
+
+* **post** *(secured)*: If you power off or delete a controller from vCenter, NSX Manager
+detects the change in controller status. You can remediate the
+controller, which will power on a powered off controller, or remove the
+controller from the NSX Manager database if the controller is deleted.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
+### /2.0/vdn/controller/{controllerId}/systemStats
+Working With NSX Controller System Statistics
+----
+
+* **get** *(secured)*: Retrieve NSX Controller system statistics.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
 
 ### /2.0/vdn/controller/{controllerId}/techsupportlogs
 Working with Controller Tech Support Logs
@@ -1567,10 +1619,41 @@ Working With the Appliance Management Web Application
 ### /1.0/appliance-management/backuprestore/backupsettings
 NSX Manager Appliance Backup Settings
 -----
+Parameters for the NSX Manager appliance backup:
+
+* **transferProtocol**: *FTP, SFTP*
+* **frequency**: *weekly, daily, hourly*
+* **dayOfWeek**: *SUNDAY, MONDAY, ...., SATURDAY*
+* **hourOfDay**: [*0-24*]
+* **minuteOfHour**: [*0-60*]
+* **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
+The tables specified in the **excludeTables** parameter are not backed up.
 
 * **get** *(secured)*: Retrieve backup settings.
 * **put** *(secured)*: Configure backup on the appliance manager.
 * **delete** *(secured)*: Delete appliance manager backup configuration.
+
+### /1.0/appliance-management/backuprestore/backupsettings/ftpsettings
+NSX Manager Appliance Backup FTP Settings
+---
+See *NSX Manager Appliance Backup Settings* for details.
+
+* **put** *(secured)*: Configure FTP settings.
+
+### /1.0/appliance-management/backuprestore/backupsettings/excludedata
+NSX Manager Appliance Backup Exclusion Settings
+---
+See *NSX Manager Appliance Backup Settings* for details.
+
+* **put** *(secured)*: Specify tables that need not be backed up.
+
+### /1.0/appliance-management/backuprestore/backupsettings/schedule
+NSX Manager Appliance Backup Schedule Settings
+---
+See *NSX Manager Appliance Backup Settings* for details.
+
+* **put** *(secured)*: Set backup schedule.
+* **delete** *(secured)*: Delete backup schedule.
 
 ### /1.0/appliance-management/backuprestore/backup
 NSX Manager Appliance On-Demand Backup
@@ -1976,16 +2059,18 @@ relevant actions are generated.
 
 Parameter | Description 
 -------|---------
-dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
-dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
-ipPool | Optional. If not specified, IP address is assigned through DHCP. 
-startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
+dataStore |Needs to be specified only in POST call. In PUT call, it should be left empty. 
+dvPortGroup |Optional. If not specified, then user will set the Agent using vCenter Server. 
+ipPool |Optional. If not specified, IP address is assigned through DHCP. 
 
 ### /2.0/si/deploy
 
 * **post** *(secured)*: Deploy security fabric.
 
 * **put** *(secured)*: Upgrade service to recent version.
+
+The datastore, dvPortGroup, and ipPool variables should either not be
+specified or have same value as provided at time of deployment.
 
 ### /2.0/si/deploy/service/{serviceID}
 Working With a Specified Service
@@ -1997,8 +2082,17 @@ Working With a Specified Service
 ### /2.0/si/deploy/service/{serviceID}/dependsOn
 Working with Service Dependencies
 ----
+Services installed through the security fabric may be dependent on
+other services. When an internal service is registered, a dependencyMap
+is maintained with the service-id and implementation type of the
+internal service.
 
-* **get** *(secured)*: Identify service on which the specified service depends on.
+When partner registers a new service, the security fabric looks up its
+implementation type in the dependencyMap to identify the service it
+depends on, if any. Accordingly, a new field in Service object called
+dependsOn-service-id is populated.
+
+* **get** *(secured)*: Retrieve service on which the specified service depends.
 
 ### /2.0/si/deploy/cluster/{clusterID}
 Working With Installed Services on a Cluster
@@ -2007,6 +2101,8 @@ Working With Installed Services on a Cluster
 * **get** *(secured)*: Retrieve all services deployed along with their status.
 * **delete** *(secured)*: Uninstall a service. Fails if you try to remove a service that another
 service depends on.
+
+In order to uninstall services in any order, set parameter ignoreDependency to true.
 
 ### /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}
 Working with a Specific Service on a Cluster
@@ -2577,13 +2673,15 @@ Working with Solution Integrations
 Working With Agents on a Specific Host
 ----
 
-* **get** *(secured)*: Retrieve all agents on the host
+* **get** *(secured)*: Retrieves all agents on the specified host. The response body contains
+agent IDs for each agent, which you can use to retrieve details about
+that agent.
 
 ### /2.0/si/agent/{agentID}
 Working with a Specific Agent
 ----
 
-* **get** *(secured)*: Retrieve agent details.
+* **get** *(secured)*: Retrieve agent (host components and appliances) details.
 
 ### /2.0/si/deployment/{deploymentunitID}/agents
 Working with Agents on a Specific Deployment
@@ -2596,11 +2694,11 @@ Working With Conflicting Agencies
 ----
 When the NSX Manager database backup is restored to an older point in
 time, it is possible that deployment units for some EAM Agencies are
-missing. These APIs help the administratoridentify such EAM Agencies and
-take appropriate action.
+missing. These methods help the administrator identify such EAM Agencies
+and take appropriate action.
 
-* **get** *(secured)*: Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
-allowed operations on them
+* **get** *(secured)*: Retrieve conflicting deployment units and EAM agencies, if any, and the
+allowed operations on them.
 
 * **put** *(secured)*: Create deployment units for conflicting EAM Agencies, delete
 conflicting EAM agencies, or delete deployment units for conflicting
@@ -4077,8 +4175,7 @@ Working With a Specific NSX Edge
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
-6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
 
 * **put** *(secured)*: Update the NSX Edge configuration.
 
@@ -4086,7 +4183,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
+6.2.3 | Method updated. **haAdminState** parameter added.
 6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
@@ -4163,9 +4260,75 @@ Working with NSX Edge Remote Access
 ### /4.0/edges/{edgeId}/firewall/config
 Working With NSX Edge Firewall Configuration
 ----
+Configures firewall for an Edge and stores the specified configuration
+in database. If any appliances are associated with this Edge, applies
+the configuration to them. While using this API, you should send the
+globalConfig, defaultPolicy and the rules. If either of them are not
+sent, the previous config if any on those fields will be removed and
+will be changed to the system defaults.  
+
+**ruleId** uniquely identifies a rule and should be specified only for
+rules that are being updated.  If **ruleTag** is specified, the rules
+on Edge are configured using this user input. Otherwise, Edge is
+configured using **ruleIds** generated by NSX Manager.
+
+Parameter | Comments
+----|----
+**tcpPickOngoingConnections**|Boolean, optional, default: *false*.
+**tcpAllowOutOfWindowPackets**|Boolean, optional, default: *false*.
+**tcpSendResetForClosedVsePorts**|Boolean, optional, default: *true*.
+**dropInvalidTraffic**|Boolean, optional, default: *true*.
+**logInvalidTraffic**|Boolean, optional, default: *false*.
+**tcpTimeoutOpen**|Integer, optional, default: *30*.
+**tcpTimeoutEstablished**|Integer, optional, default: *21600*.
+**tcpTimeoutClose**|Integer, optional, default: *30*.
+**udpTimeout**|Integer, optional, default: *60*.
+**icmpTimeout**|Integer, optional, default: *10*.
+**icmp6Timeout**|Integer, optional, default: *10*.
+**ipGenericTimeout**|Integer, optional, default: *120*.
+**enableSynFloodProtection**|Protect against SYN flood attacks by detecting bogus TCP connections and terminating them without consuming firewall state tracking resources. Boolean, optional, default: *false*.
+**defaultPolicy**|Optional. Default is *deny*.
+**action**|String, values: *accept*, *deny*.
+**loggingEnabled**|Boolean, optional, default: *false*.
+**firewallRules**|Optional.
+**action**|String. Valid values: *accept*, *deny*.
+**source  **|Optional.  Default is *any*.
+**destination**|Optional. Default is *any*.
+**exclude**<br>(source or destination)|Boolean. Exclude the specified source or destination.
+**ipAddress**<br>(source or destination)|List of string.   
+**groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. 
+**vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*.
+**application**| optional. When absent its treated as *any*.
+**applicationId**|List of string. Id of service or serviceGroup groupingObject. 
+**service**|List.   
+**protocol**|String.    
+**port**|List of string.    
+**sourcePort**|List of string.    
+**icmpType**|String.    
+**name**|String.    
+**description**|String.   
+**enabled**|Boolean, optional. Default *true*. 
+**loggingEnabled**|Boolean, optional. Default *false*. 
+**matchTranslated**|Boolean.   
+**direction**|String, optional. Possible values *in* or *out*. When absent its treated as *any*.
+**ruleTag**|Long, optional. This can be used to specify user controlled **ruleId**. If not specified, NSX Manager will generate **ruleId**. Valid values: *1-65536*.  
 
 * **get** *(secured)*: Retrieve the NSX Edge firewall configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
+
 * **put** *(secured)*: Configure NSX Edge firewall.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
+
 * **delete** *(secured)*: Delete NSX Edge firewall configuration.
 
 ### /4.0/edges/{edgeId}/firewall/config/rules
@@ -4188,7 +4351,20 @@ Working With the NSX Edge Global Firewall Configuration
 ----
 
 * **get** *(secured)*: Retrieve the firewall default policy for an Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
+
 * **put** *(secured)*: Configure firewall global config for an Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
 
 ### /4.0/edges/{edgeId}/firewall/config/defaultpolicy
 Working With the Default Firewall Policy for an Edge
@@ -4434,7 +4610,8 @@ Parameter  |   Description  | Comments
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+6.2.3 | Method updated. **isis** configuration section removed. 
+6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
 6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
@@ -4446,7 +4623,8 @@ dynamic routing (OSPF and BGP).
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+6.2.3 | Method updated. **isis** configuration section removed. 
+6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
 6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
@@ -4493,7 +4671,8 @@ Areas are identified by an Area ID.
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
+6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
 
@@ -4503,7 +4682,8 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
+6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
 
@@ -4526,7 +4706,8 @@ their tables.
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
+6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
 
@@ -4536,7 +4717,8 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+6.2.3 | Method updated. **isis** configuration section removed. 
+6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
 6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
 6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
 
@@ -4803,7 +4985,7 @@ Working With DHCP Static Bindings
 * **post** *(secured)*: Append a static-binding to DHCP config. A static-binding ID is
 returned within a Location HTTP header.
 
-Method history:
+**Method history:**
 
 Release | Modification
 --------|-------------
@@ -5162,8 +5344,7 @@ Parameter | Description | Comments
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
-6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
 
 * **put** *(secured)*: You can retrieve the configuration of both appliances by using the
 GET call and replace the size, resource pool, datastore, and custom
@@ -5175,7 +5356,7 @@ appliance is deleted.
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
+6.2.3 | Method updated. **haAdminState** parameter added.
 
 ### /4.0/edges/{edgeId}/appliances/{haIndex}
 Working With NSX Edge Appliance Configuration by Index
@@ -5190,8 +5371,7 @@ the query parameter action=execute
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
-6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
 
 * **put** *(secured)*: Update the configuration of the specified appliance.
 
@@ -5199,7 +5379,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.2.3 | **haAdminState** parameter added.
+6.2.3 | Method updated. **haAdminState** parameter added.
 
 * **delete** *(secured)*: Delete the appliance
 
@@ -5700,7 +5880,7 @@ Provide request body value of true or false.
 
   Release | Modification
   --------|-------------
-  6.2.3 | Method to change auto save draft via **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
+  6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
 
 ### /2.0/services/policy/securitygroup/{ID}/securitypolicies
 Working with Security Policies Mapped to a Security Group
@@ -5864,7 +6044,7 @@ History:
 
 Release | Modification
 --------|-------------
-6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
+6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
 ### /2.0/vdn/inventory/hosts/connection/status
 Communication Status of a List of Hosts
@@ -5874,7 +6054,7 @@ Communication Status of a List of Hosts
 
 Release | Modification
 --------|-------------
-6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
+6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
 ## hardwareGateways
 Working with Hardware Gateways

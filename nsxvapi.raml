@@ -688,6 +688,33 @@ securitySchemes:
           displayName: startindex
           description: !include documentation/reuse/startindex
           default: 0
+  /host/{hostId}/vxlan/vteps:
+    displayName: hostVtepResolve
+    description: |
+      Resolving Missing VXLAN VMKernel Adapters
+      ----
+    post:
+      displayName: hostVtepResolveExecute
+      description: | 
+        Resolve missing VXLAN VMKernel adapters.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
+      queryParameters:
+        action:
+          displayName: action
+          description: | 
+            * *remediate*: Use the *remediate* action to recreate the missing VXLAN VMKernel
+            adapter on the host. This action removes the adapter using the
+            *resync* action, then recreates the adapter.
+            
+            * *resync*: If the VXLAN VMKernel adapter is no longer needed, you can use the
+            *resync* action to remove the missing VXLAN VMKernel adapter from
+            the NSX Manager configuration database.  
+          required: true
 /2.0/vdn/scopes:
   displayName: vdnScopes
   description: |
@@ -1550,6 +1577,38 @@ securitySchemes:
     delete:
       displayName: logicalSwitchDelete
       description: Delete the specified logical switch.
+    /backing:
+      displayName: logicalSwitchPortGroupFix
+      description: |
+        Resolving Missing Portgroups for a Logical Switch
+        ----
+      post:
+        displayName: logicalSwitchPortGroupFixExecute
+        description: |
+          For every logical switch created, NSX creates a corresponding port
+          group in vCenter. If the port group is missing, the logical switch
+          will stop functioning.
+
+          If the port group backing a logical switch is deleted, you can
+          recreate a new backing port group for the logical switch.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
+        queryParameters:
+          action:
+            displayName: action
+            description: |
+              * *remediate*: The *remediate* action performs the *resync* action and then
+              creates a new backing port group for the logical switch. Under
+              normal operations, you should need the *remediate* action only. 
+
+              * *resync*: The *resync* action removes the association between
+              the backing port group and the logical switch in the NSX Manager
+              configuration. 
+            required: true
     /conn-check/multicast:
       displayName: logicalSwitchConnCheck
       description: |
@@ -1933,6 +1992,119 @@ securitySchemes:
           description: |
             Specify whether to force removal of controller. Must be set to
             true to remove last controller of the controller cluster.
+    post:
+      displayName: nsxControllerRemediateExecute
+      description: |
+        If you power off or delete a controller from vCenter, NSX Manager
+        detects the change in controller status. You can remediate the
+        controller, which will power on a powered off controller, or remove the
+        controller from the NSX Manager database if the controller is deleted.
+
+        **Method history:**
+
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
+      queryParameters:
+        action:
+          displayName: action
+          description: |
+            Specify *remediate* to recover from controller shutdown or deletion.
+          required: true
+    /systemStats:
+      displayName: nsxControllerStats
+      description: |
+        Working With NSX Controller System Statistics
+        ----
+      get:
+        displayName: nsxControllerStatsList
+        description: |
+          Retrieve NSX Controller system statistics.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <controllerNodeStatus>
+                    <id>controller-2</id>
+                    <ipAddress>192.168.110.32</ipAddress>
+                    <syncTime>1490991545530</syncTime>
+                    <cpuCoreCount>2</cpuCoreCount>
+                    <cpuLoadInfo>
+                      <interval>1</interval>
+                      <averageLoad>0.17</averageLoad>
+                    </cpuLoadInfo>
+                    <cpuLoadInfo>
+                      <interval>5</interval>
+                      <averageLoad>0.6</averageLoad>
+                    </cpuLoadInfo>
+                    <cpuLoadInfo>
+                      <interval>15</interval>
+                      <averageLoad>0.4</averageLoad>
+                    </cpuLoadInfo>
+                    <totalMemory>1924280</totalMemory>
+                    <usedMemory>1542524</usedMemory>
+                    <cachedMemory>589196</cachedMemory>
+                    <totalSwap>4190204</totalSwap>
+                    <usedSwap>0</usedSwap>
+                    <systemTime>1490991545521</systemTime>
+                    <upTime>433880</upTime>
+                    <nodeFailoverReady>false</nodeFailoverReady>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>sda</deviceName>
+                      <refreshTime>1490991404000</refreshTime>
+                      <latencyType>w_await</latencyType>
+                      <lastLatency>97.0</lastLatency>
+                      <avgLatency>28.572</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>sda</deviceName>
+                      <refreshTime>1490991186000</refreshTime>
+                      <latencyType>r_await</latencyType>
+                      <lastLatency>9.18</lastLatency>
+                      <avgLatency>0.0</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-1</deviceName>
+                      <refreshTime>1490991185000</refreshTime>
+                      <latencyType>w_await</latencyType>
+                      <lastLatency>0.0</lastLatency>
+                      <avgLatency>0.0</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-1</deviceName>
+                      <refreshTime>1490991185000</refreshTime>
+                      <latencyType>r_await</latencyType>
+                      <lastLatency>51.51</lastLatency>
+                      <avgLatency>0.0</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-0</deviceName>
+                      <refreshTime>1490991404000</refreshTime>
+                      <latencyType>w_await</latencyType>
+                      <lastLatency>129.33</lastLatency>
+                      <avgLatency>34.16</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                    <nodeDiskLatencyStatus>
+                      <deviceName>dm-0</deviceName>
+                      <refreshTime>1490991225000</refreshTime>
+                      <latencyType>r_await</latencyType>
+                      <lastLatency>0.0</lastLatency>
+                      <avgLatency>12.678</avgLatency>
+                      <alertEnabled>false</alertEnabled>
+                    </nodeDiskLatencyStatus>
+                  </controllerNodeStatus>
     /techsupportlogs:
       displayName: nsxControllerLogs
       description: |
@@ -4130,6 +4302,15 @@ securitySchemes:
     description: |
       NSX Manager Appliance Backup Settings
       -----
+      Parameters for the NSX Manager appliance backup:
+
+      * **transferProtocol**: *FTP, SFTP*
+      * **frequency**: *weekly, daily, hourly*
+      * **dayOfWeek**: *SUNDAY, MONDAY, ...., SATURDAY*
+      * **hourOfDay**: [*0-24*]
+      * **minuteOfHour**: [*0-60*]
+      * **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
+      The tables specified in the **excludeTables** parameter are not backed up.
     get:
       displayName: applianceMgrBackupSettingsRead
       description: Retrieve backup settings.
@@ -4166,6 +4347,36 @@ securitySchemes:
     delete:
       displayName: applianceMgrBackupSettingsDelete
       description: Delete appliance manager backup configuration.
+    /ftpsettings:
+      displayName: applianceMgrBackupSettingsFtp
+      description: |
+        NSX Manager Appliance Backup FTP Settings
+        ---
+        See *NSX Manager Appliance Backup Settings* for details.
+      put:
+        displayName: applianceMgrBackupSettingsFtpUpdate
+        description: Configure FTP settings.
+    /excludedata:
+      displayName: applianceMgrBackupSettingsExclude
+      description: |
+        NSX Manager Appliance Backup Exclusion Settings
+        ---
+        See *NSX Manager Appliance Backup Settings* for details.
+      put:
+        displayName: applianceMgrBackupSettingsExcludeUpdate
+        description: Specify tables that need not be backed up.
+    /schedule:
+      displayName: applianceMgrBackupSettingsSchedule
+      description: |
+        NSX Manager Appliance Backup Schedule Settings
+        ---
+        See *NSX Manager Appliance Backup Settings* for details.
+      put:
+        displayName: applianceMgrBackupSettingsScheduleUpdate
+        description: Set backup schedule.
+      delete:
+        displayName: applianceMgrBackupSettingsScheduleDelete
+        description: Delete backup schedule.
   /backuprestore/backup:
     displayName: applianceMgrBackup
     description: |
@@ -5054,10 +5265,9 @@ securitySchemes:
 
     Parameter | Description 
     -------|---------
-    dataStore | Needs to be specified only in POST call. In PUT call, it should be left empty. 
-    dvPortGroup | Optional. If not specified, then user will set the Agent using vCenter Server. 
-    ipPool | Optional. If not specified, IP address is assigned through DHCP. 
-    startTime | Time when the deployment task(s) are scheduled for. If this is not specified then deployment will happen immediately. 
+    dataStore |Needs to be specified only in POST call. In PUT call, it should be left empty. 
+    dvPortGroup |Optional. If not specified, then user will set the Agent using vCenter Server. 
+    ipPool |Optional. If not specified, IP address is assigned through DHCP. 
   post:
     displayName: securityFabricCreate
     description: |
@@ -5086,7 +5296,11 @@ securitySchemes:
         schema: securityFabricCreate
   put:
     displayName: serviceUpgrade
-    description: Upgrade service to recent version.
+    description: |
+      Upgrade service to recent version.
+      
+      The datastore, dvPortGroup, and ipPool variables should either not be
+      specified or have same value as provided at time of deployment.
     queryParameters:
       startTime:
         displayName: startTime
@@ -5142,10 +5356,19 @@ securitySchemes:
       description: |
         Working with Service Dependencies
         ----
+        Services installed through the security fabric may be dependent on
+        other services. When an internal service is registered, a dependencyMap
+        is maintained with the service-id and implementation type of the
+        internal service.
+
+        When partner registers a new service, the security fabric looks up its
+        implementation type in the dependencyMap to identify the service it
+        depends on, if any. Accordingly, a new field in Service object called
+        dependsOn-service-id is populated.
       get:
         displayName: serviceDependencyRead
         description: |
-          Identify service on which the specified service depends on.
+          Retrieve service on which the specified service depends.
   /cluster/{clusterID}:
     displayName: serviceCluster
     description: |
@@ -5159,11 +5382,69 @@ securitySchemes:
     get:
       displayName: serviceRead
       description: Retrieve all services deployed along with their status.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <deployedServices>
+                  <deployedService>
+                    <deploymentUnitId>deploymentunit-1</deploymentUnitId>
+                    <serviceId>service-3</serviceId>
+                    <cluster>
+                      <objectId>domain-c41</objectId>
+                      <objectTypeName>ClusterComputeResource</objectTypeName>
+                      <nsxmgrUuid>42036483-6CF3-4F0F-B356-2EB1E6369C6F</nsxmgrUuid>
+                      <revision>2</revision>
+                      <type>
+                        <typeName>ClusterComputeResource</typeName>
+                      </type>
+                      <name>Cluster-1</name>
+                      <scope>
+                        <id>datacenter-21</id>
+                        <objectTypeName>Datacenter</objectTypeName>
+                        <name>nasingh-dc</name>
+                      </scope>
+                       <extendedAttributes></extendedAttributes>
+                    </cluster>
+                    <serviceName>domain-c41_service-3</serviceName>
+                    <datastore>
+                      <objectId>datastore-29</objectId>
+                      <objectTypeName>Datastore</objectTypeName>
+                      <nsxmgrUuid>42036483-6CF3-4F0F-B356-2EB1E6369C6F</nsxmgrUuid>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>Datastore</typeName>
+                      </type>
+                      <name>datastore1</name>
+                       <extendedAttributes></extendedAttributes>
+                    </datastore>
+                    <dvPortGroup>
+                      <objectId>dvportgroup-45</objectId>
+                      <objectTypeName>DistributedVirtualPortgroup</objectTypeName>
+                      <nsxmgrUuid>42036483-6CF3-4F0F-B356-2EB1E6369C6F</nsxmgrUuid>
+                      <revision>2</revision>
+                      <type>
+                        <typeName>DistributedVirtualPortgroup</typeName>
+                      </type>
+                      <name>dvPortGroup</name>
+                      <scope>
+                        <id>datacenter-21</id>
+                        <objectTypeName>Datacenter</objectTypeName>
+                        <name>nasingh-dc</name>
+                      </scope>
+                       <extendedAttributes></extendedAttributes>
+                    </dvPortGroup>
+                    <serviceStatus>SUCCEEDED</serviceStatus>
+                  </deployedService>
+                </deployedServices>
     delete:
       displayName: serviceDelete
       description: |
         Uninstall a service. Fails if you try to remove a service that another
         service depends on.
+
+        In order to uninstall services in any order, set parameter ignoreDependency to true.
       queryParameters:
         services:
           displayName: services
@@ -6123,7 +6404,60 @@ securitySchemes:
         description: Specified host
     get:
       displayName: hostAgentsRead
-      description: Retrieve all agents on the host
+      description: |
+        Retrieves all agents on the specified host. The response body contains
+        agent IDs for each agent, which you can use to retrieve details about
+        that agent.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <fabricAgents>
+                  <agent>
+                    <agentId>nsxmgragent-1</agentId>
+                    <agentName>agent name</agentName>
+                    <serviceId>service-6</serviceId>
+                    <serviceName>EndpointService</serviceName>
+                    <operationalStatus>ENABLED</operationalStatus>
+                    <progressStatus>IN_PROGRESS</progressStatus>
+                    <vmId>vm-92</vmId>
+                    <host>host-10</host>
+                    <allocatedIpAddress>
+                      <id>2</id>
+                      <ipAddress>10.112.5.182</ipAddress>
+                      <gateway>10.112.5.253</gateway>
+                      <prefixLength>23</prefixLength>
+                      <dnsServer1>10.112.0.1</dnsServer1>
+                      <dnsServer2>10.112.0.2</dnsServer2>
+                      <dnsSuffix />
+                      <subnetId>subnet-1</subnetId>
+                    </allocatedIpAddress>
+                    <serviceStatus>
+                      <status>WARNING</status>
+                      <errorId>partner_error</errorId>
+                      <errorDescription>partner_error</errorDescription>
+                    </serviceStatus>
+                    <hostInfo>
+                      <objectId>host-10</objectId>
+                      <objectTypeName>HostSystem</objectTypeName>
+                      <nsxmgrUuid>420369CD-2311-F1F7-D4AA-1158EA688E54</nsxmgrUuid>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>HostSystem</typeName>
+                      </type>
+                      <name>10.112.5.173</name>
+                      <scope>
+                        <id>domain-c7</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>Kaustubh-CL</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                       <extendedAttributes></extendedAttributes>
+                    </hostInfo>
+                    <initialData>partner data if present</initialData>
+                  </agent>
+                </fabricAgents>
   /agent/{agentID}:
     displayName: agentInformation
     description: |
@@ -6136,7 +6470,56 @@ securitySchemes:
         description: Specified agent
     get:
       displayName: agentInformationRead
-      description: Retrieve agent details.
+      description: |
+        Retrieve agent (host components and appliances) details.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <agent>
+                  <agentId>nsxmgragent-1</agentId>
+                  <agentName>agent name</agentName>
+                  <serviceId>service-6</serviceId>
+                  <serviceName>EndpointService</serviceName>
+                  <operationalStatus>ENABLED</operationalStatus>
+                  <progressStatus>IN_PROGRESS</progressStatus>
+                  <vmId>vm-92</vmId>
+                  <host>host-10</host>
+                  <allocatedIpAddress>
+                    <id>2</id>
+                    <ipAddress>10.112.5.182</ipAddress>
+                    <gateway>10.112.5.253</gateway>
+                    <prefixLength>23</prefixLength>
+                    <dnsServer1>10.112.0.1</dnsServer1>
+                    <dnsServer2>10.112.0.2</dnsServer2>
+                    <dnsSuffix></dnsSuffix>
+                    <subnetId>subnet-1</subnetId>
+                  </allocatedIpAddress>
+                  <serviceStatus>
+                    <status>WARNING</status>
+                    <errorId>partner_error</errorId>
+                    <errorDescription>partner_error</errorDescription>
+                  </serviceStatus>
+                  <hostInfo>
+                    <objectId>host-10</objectId>
+                    <objectTypeName>HostSystem</objectTypeName>
+                    <nsxmgrUuid>420369CD-2311-F1F7-D4AA-1158EA688E54</nsxmgrUuid>
+                    <revision>1</revision>
+                    <type>
+                      <typeName>HostSystem</typeName>
+                    </type>
+                    <name>10.112.5.173</name>
+                    <scope>
+                      <id>domain-c7</id>
+                      <objectTypeName>ClusterComputeResource</objectTypeName>
+                      <name>Kaustubh-CL</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                     <extendedAttributes></extendedAttributes>
+                  </hostInfo>
+                  <initialData>partner data if present</initialData>
+                </agent>
   /deployment/{deploymentunitID}/agents:
     displayName: deploymentAgents
     description: |
@@ -6150,6 +6533,56 @@ securitySchemes:
     get:
       displayName: deploymentAgentsRead
       description: Retrieve all agents for the specified deployment.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <fabricAgents>
+                  <agent>
+                    <agentId>nsxmgragent-1</agentId>
+                    <agentName>agent name</agentName>
+                    <serviceId>service-6</serviceId>
+                    <serviceName>EndpointService</serviceName>
+                    <operationalStatus>ENABLED</operationalStatus>
+                    <progressStatus>IN_PROGRESS</progressStatus>
+                    <vmId>vm-92</vmId>
+                    <host>host-10</host>
+                    <allocatedIpAddress>
+                      <id>2</id>
+                      <ipAddress>10.112.5.182</ipAddress>
+                      <gateway>10.112.5.253</gateway>
+                      <prefixLength>23</prefixLength>
+                      <dnsServer1>10.112.0.1</dnsServer1>
+                      <dnsServer2>10.112.0.2</dnsServer2>
+                      <dnsSuffix></dnsSuffix>
+                      <subnetId>subnet-1</subnetId>
+                    </allocatedIpAddress>
+                    <serviceStatus>
+                      <status>WARNING</status>
+                      <errorId>partner_error</errorId>
+                      <errorDescription>partner_error</errorDescription>
+                    </serviceStatus>
+                    <hostInfo>
+                      <objectId>host-10</objectId>
+                      <objectTypeName>HostSystem</objectTypeName>
+                      <nsxmgrUuid>420369CD-2311-F1F7-D4AA-1158EA688E54</nsxmgrUuid>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>HostSystem</typeName>
+                      </type>
+                      <name>10.112.5.173</name>
+                      <scope>
+                        <id>domain-c7</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>Kaustubh-CL</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes></extendedAttributes>
+                    </hostInfo>
+                    <initialData>partner data</initialData>
+                  </agent>
+                </fabricAgents>
   /fabric/sync/conflicts:
     displayName: agentConflicts
     description: |
@@ -6157,13 +6590,33 @@ securitySchemes:
       ----
       When the NSX Manager database backup is restored to an older point in
       time, it is possible that deployment units for some EAM Agencies are
-      missing. These APIs help the administratoridentify such EAM Agencies and
-      take appropriate action.
+      missing. These methods help the administrator identify such EAM Agencies
+      and take appropriate action.
     get:
       displayName: agentConflictsRead
       description: |
-        Retrieve conflicting Deployment Units and EAM Agencies, if any, and the
-        allowed operations on them
+        Retrieve conflicting deployment units and EAM agencies, if any, and the
+        allowed operations on them.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <fabricSyncConflictInfo>
+                  <conflictExist>true</conflictExist>
+                  <agencies>
+                    <agenciesInfo>
+                      <agencyConflictInfo>
+                        <agencyId>agency-150</agencyId>
+                        <agencyName>_VCNS_264_nasingh-cluster1_VMware Endpoint</agencyName>
+                      </agencyConflictInfo>
+                    </agenciesInfo>
+                    <allowedOperations>
+                      <conflictResolverOperation>DELETE</conflictResolverOperation>
+                      <conflictResolverOperation>RESTORE</conflictResolverOperation>
+                    </allowedOperations>
+                  </agencies>
+                </fabricSyncConflictInfo>
     put:
       displayName: agentConflictsUpdate
       description: |
@@ -9893,13 +10346,11 @@ securitySchemes:
       description: |
         Retrieve information about the specified NSX Edge.
 
-
         **Method history:**
 
         Release | Modification
         --------|-------------
-        6.2.3 | **haAdminState** parameter added.
-        6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+        6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
       queryParameters:
         isUniversal:
           displayName: isUniversal
@@ -9916,7 +10367,7 @@ securitySchemes:
 
         Release | Modification
         --------|-------------
-        6.2.3 | **haAdminState** parameter added.
+        6.2.3 | Method updated. **haAdminState** parameter added.
         6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
       body:
         application/xml:
@@ -10687,68 +11138,134 @@ securitySchemes:
       description: |
         Working With NSX Edge Firewall Configuration
         ----
+        Configures firewall for an Edge and stores the specified configuration
+        in database. If any appliances are associated with this Edge, applies
+        the configuration to them. While using this API, you should send the
+        globalConfig, defaultPolicy and the rules. If either of them are not
+        sent, the previous config if any on those fields will be removed and
+        will be changed to the system defaults.  
+
+        **ruleId** uniquely identifies a rule and should be specified only for
+        rules that are being updated.  If **ruleTag** is specified, the rules
+        on Edge are configured using this user input. Otherwise, Edge is
+        configured using **ruleIds** generated by NSX Manager.
+
+        Parameter | Comments
+        ----|----
+        **tcpPickOngoingConnections**|Boolean, optional, default: *false*.
+        **tcpAllowOutOfWindowPackets**|Boolean, optional, default: *false*.
+        **tcpSendResetForClosedVsePorts**|Boolean, optional, default: *true*.
+        **dropInvalidTraffic**|Boolean, optional, default: *true*.
+        **logInvalidTraffic**|Boolean, optional, default: *false*.
+        **tcpTimeoutOpen**|Integer, optional, default: *30*.
+        **tcpTimeoutEstablished**|Integer, optional, default: *21600*.
+        **tcpTimeoutClose**|Integer, optional, default: *30*.
+        **udpTimeout**|Integer, optional, default: *60*.
+        **icmpTimeout**|Integer, optional, default: *10*.
+        **icmp6Timeout**|Integer, optional, default: *10*.
+        **ipGenericTimeout**|Integer, optional, default: *120*.
+        **enableSynFloodProtection**|Protect against SYN flood attacks by detecting bogus TCP connections and terminating them without consuming firewall state tracking resources. Boolean, optional, default: *false*.
+        **defaultPolicy**|Optional. Default is *deny*.
+        **action**|String, values: *accept*, *deny*.
+        **loggingEnabled**|Boolean, optional, default: *false*.
+        **firewallRules**|Optional.
+        **action**|String. Valid values: *accept*, *deny*.
+        **source  **|Optional.  Default is *any*.
+        **destination**|Optional. Default is *any*.
+        **exclude**<br>(source or destination)|Boolean. Exclude the specified source or destination.
+        **ipAddress**<br>(source or destination)|List of string.   
+        **groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. 
+        **vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*.
+        **application**| optional. When absent its treated as *any*.
+        **applicationId**|List of string. Id of service or serviceGroup groupingObject. 
+        **service**|List.   
+        **protocol**|String.    
+        **port**|List of string.    
+        **sourcePort**|List of string.    
+        **icmpType**|String.    
+        **name**|String.    
+        **description**|String.   
+        **enabled**|Boolean, optional. Default *true*. 
+        **loggingEnabled**|Boolean, optional. Default *false*. 
+        **matchTranslated**|Boolean.   
+        **direction**|String, optional. Possible values *in* or *out*. When absent its treated as *any*.
+        **ruleTag**|Long, optional. This can be used to specify user controlled **ruleId**. If not specified, NSX Manager will generate **ruleId**. Valid values: *1-65536*.  
       get:
         displayName: nsxEdgeFirewallConfigRead
-        description: Retrieve the NSX Edge firewall configuration.
+        description: |
+          Retrieve the NSX Edge firewall configuration.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
       put:
         displayName: nsxEdgeFirewallConfigUpdate
-        description: Configure NSX Edge firewall.
+        description: |
+          Configure NSX Edge firewall.
+
+          **Method history:**
+
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
         body:
-          application/xml:
-            example: |
-              <firewall>
-                <defaultPolicy>
-                  <action></action>
-                  <loggingEnabled></loggingEnabled>
-                </defaultPolicy>
-                <enabled></enabled>
-                <globalConfig>
-                  <tcpPickOngoingConnections></tcpPickOngoingConnections>
-                  <tcpAllowOutOfWindowPackets></tcpAllowOutOfWindowPackets>
-                  <tcpSendResetForClosedVsePorts></tcpSendResetForClosedVsePorts>
-                  <dropInvalidTraffic></dropInvalidTraffic>
-                  <logInvalidTraffic></logInvalidTraffic>
-                  <tcpTimeoutOpen></tcpTimeoutOpen>
-                  <tcpTimeoutEstablished></tcpTimeoutEstablished>
-                  <tcpTimeoutClose></tcpTimeoutClose>
-                  <udpTimeout></udpTimeout>
-                  <icmpTimeout></icmpTimeout>
-                  <icmp6Timeout></icmp6Timeout>
-                  <ipGenericTimeout></ipGenericTimeout>
-                </globalConfig>
-                <rules>
-                  <rule>
-                    <ruleTag></ruleTag>
-                    <name></name>
-                    <source>
-                      <vnicGroupId></vnicGroupId>
-                      <groupingObjectId></groupingObjectId>
-                      <ipAddress></ipAddress>
-                    </source>
-                    <destination>
-                      <groupingObjectId></groupingObjectId>
-                      <vnicGroupId></vnicGroupId>
-                      <groupingObjectId></groupingObjectId>
-                      <ipAddress></ipAddress>
-                    </destination>
-                    <application>
-                      <applicationId></applicationId>
-                      <service>
-                        <protocol></protocol>
-                        <port></port>
-                        <sourcePort></sourcePort>
-                      </service>
-                    </application>
-                    <matchTranslated></matchTranslated>
-                    <direction></direction>
-                    <action></action>
-                    <enabled></enabled>
-                    <loggingEnabled></loggingEnabled>
-                    <description></description>
-                  </rule>
-                </rules>
-              </firewall>
-            schema: nsxEdgeFirewallConfigUpdate
+         application/xml:
+          example: |
+            <firewall>
+              <defaultPolicy> 
+                <action>deny</action>
+                <loggingEnabled>false</loggingEnabled>  
+              </defaultPolicy>
+              <globalConfig>  
+                <tcpPickOngoingConnections>false</tcpPickOngoingConnections>  
+                <tcpAllowOutOfWindowPackets>false</tcpAllowOutOfWindowPackets>  
+                <tcpSendResetForClosedVsePorts>true</tcpSendResetForClosedVsePorts>  
+                <dropInvalidTraffic>true</dropInvalidTraffic>  
+                <logInvalidTraffic>false</logInvalidTraffic>  
+                <tcpTimeoutOpen>30</tcpTimeoutOpen>  
+                <tcpTimeoutEstablished>21600</tcpTimeoutEstablished>  
+                <tcpTimeoutClose>30</tcpTimeoutClose>  
+                <udpTimeout>60</udpTimeout>  
+                <icmpTimeout>10</icmpTimeout>  
+                <icmp6Timeout>10</icmp6Timeout>  
+                <ipGenericTimeout>120</ipGenericTimeout>  
+                <enableSynFloodProtection>false</enableSynFloodProtection> 
+              </globalConfig>
+              <firewallRules>
+                <firewallRule>
+                  <ruleTag>1</ruleTag>  
+                  <name>rule1</name>  
+                  <source>  
+                    <vnicGroupId>vnic-index-5</vnicGroupId>  
+                    <groupingObjectId>ipset-128</groupingObjectId>  
+                    <ipAddress>1.1.1.1</ipAddress>  
+                  </source>
+                  <destination>  
+                    <groupingObjectId>ipset-126</groupingObjectId>  
+                    <vnicGroupId>vnic-index-5</vnicGroupId>  
+                    <groupingObjectId>ipset-128</groupingObjectId>  
+                    <ipAddress>192.168.10.0/24</ipAddress>  
+                  </destination>
+                  <application>  
+                    <applicationId>application-155</applicationId>  
+                    <service>  
+                      <protocol>tcp</protocol>
+                      <port>80</port>  
+                      <sourcePort>1500</sourcePort>  
+                    </service>
+                  </application>
+                  <matchTranslated>true</matchTranslated>  
+                  <direction>in</direction>  
+                  <action>accept</action>  
+                  <enabled>true</enabled>  
+                  <loggingEnabled>true</loggingEnabled>  
+                  <description>comments</description>  
+                </firewallRule>
+              </firewallRules>
+            </firewall>
+          schema: nsxEdgeFirewallConfigUpdate
       delete:
         displayName: nsxEdgeFirewallConfigDelete
         description: Delete NSX Edge firewall configuration.
@@ -10787,6 +11304,7 @@ securitySchemes:
                     <icmpTimeout></icmpTimeout>
                     <icmp6Timeout></icmp6Timeout>
                     <ipGenericTimeout></ipGenericTimeout>
+                    <enableSynFloodProtection></enableSynFloodProtection> 
                   </globalConfig>
                   <rules>
                     <rule>
@@ -10872,10 +11390,24 @@ securitySchemes:
           ----
         get:
           displayName: globalFirewallConfigRead
-          description: Retrieve the firewall default policy for an Edge.
+          description: |
+            Retrieve the firewall default policy for an Edge.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
         put:
           displayName: globalFirewallConfigUpdate
-          description: Configure firewall global config for an Edge.
+          description: |
+            Configure firewall global config for an Edge.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
           body:
             application/xml:
               example: |
@@ -10892,6 +11424,7 @@ securitySchemes:
                   <icmpTimeout></icmpTimeout>
                   <icmp6Timeout></icmp6Timeout>
                   <ipGenericTimeout></ipGenericTimeout>
+                  <enableSynFloodProtection></enableSynFloodProtection>
                 </globalConfig>
               schema: globalFirewallConfigUpdate
       /defaultpolicy:
@@ -11267,7 +11800,8 @@ securitySchemes:
 
           Release | Modification
           --------|-------------
-          6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+          6.2.3 | Method updated. **isis** configuration section removed. 
+          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
           6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
           6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
           6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
@@ -11281,7 +11815,8 @@ securitySchemes:
 
           Release | Modification
           --------|-------------
-          6.2.3 | Method updated. `isis` configuration section removed. `isis` parameter removed from route redistributions rule sections.
+          6.2.3 | Method updated. **isis** configuration section removed. 
+          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
           6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
           6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
           6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
@@ -11513,7 +12048,8 @@ securitySchemes:
 
             Release | Modification
             --------|-------------
-            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.2.3 | Method updated. **isis** configuration section removed. 
+            6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
             6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
             6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
         put:
@@ -11525,7 +12061,8 @@ securitySchemes:
 
             Release | Modification
             --------|-------------
-            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.2.3 | Method updated. **isis** configuration section removed. 
+            6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
             6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
             6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
           body:
@@ -11595,7 +12132,8 @@ securitySchemes:
 
             Release | Modification
             --------|-------------
-            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.2.3 | Method updated. **isis** configuration section removed. 
+            6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
             6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
             6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
         put:
@@ -11607,7 +12145,8 @@ securitySchemes:
 
             Release | Modification
             --------|-------------
-            6.2.3 | Method updated. `isis` parameter removed from route redistribution rules configuration.
+            6.2.3 | Method updated. **isis** configuration section removed. 
+            6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
             6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
             6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
           body:
@@ -12421,7 +12960,7 @@ securitySchemes:
             Append a static-binding to DHCP config. A static-binding ID is
             returned within a Location HTTP header.
 
-            Method history:
+            **Method history:**
 
             Release | Modification
             --------|-------------
@@ -13511,8 +14050,7 @@ securitySchemes:
 
           Release | Modification
           --------|-------------
-          6.2.3 | **haAdminState** parameter added.
-          6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+          6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
         responses:
           200:
             body:
@@ -13619,7 +14157,7 @@ securitySchemes:
 
           Release | Modification
           --------|-------------
-          6.2.3 | **haAdminState** parameter added.
+          6.2.3 | Method updated. **haAdminState** parameter added.
       /{haIndex}:
         displayName: appliance
         description: | 
@@ -13660,8 +14198,7 @@ securitySchemes:
 
             Release | Modification
             --------|-------------
-            6.2.3 | **haAdminState** parameter added.
-            6.2.3 | **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+            6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
         put:
           displayName: applianceUpdate
           description: |
@@ -13671,7 +14208,7 @@ securitySchemes:
 
             Release | Modification
             --------|-------------
-            6.2.3 | **haAdminState** parameter added.
+            6.2.3 | Method updated. **haAdminState** parameter added.
           body:
             application/xml:
               example: |
@@ -15373,7 +15910,7 @@ securitySchemes:
 
           Release | Modification
           --------|-------------
-          6.2.3 | Method to change auto save draft via **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
+          6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
       body:
         application/xml:
           example: |
@@ -15720,14 +16257,14 @@ securitySchemes:
 
         Release | Modification
         --------|-------------
-        6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
+        6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
       responses:
         200:
           body:
             application/xml:
               example: |
                 <hostConnStatus>
-                  <hostId>host-xx</hostId>
+                  <hostId>host-32</hostId>
                   <nsxMgrToFirewallAgentConn>UP</nsxMgrToFirewallAgentConn>
                   <nsxMgrToControlPlaneAgentConn>UP</nsxMgrToControlPlaneAgentConn>
                   <hostToControllerConn>UP</hostToControllerConn>
@@ -15745,7 +16282,7 @@ securitySchemes:
 
         Release | Modification
         --------|-------------
-        6.2.3 | Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
+        6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
       queryParameters:
         hostId:
