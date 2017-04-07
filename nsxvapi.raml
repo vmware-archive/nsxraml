@@ -9961,8 +9961,8 @@ securitySchemes:
                     <action></action>
                     <loggingEnabled></loggingEnabled>
                   </defaultPolicy>
-                  <rules>
-                    <rule>
+                  <firewallRules>
+                    <firewallRule>
                       <id></id>
                       <ruleTag></ruleTag>
                       <name></name>
@@ -9979,8 +9979,8 @@ securitySchemes:
                       <enabled></enabled>
                       <loggingEnabled></loggingEnabled>
                       <matchTranslated></matchTranslated>
-                    </rule>
-                  </rules>
+                    </firewallRule>
+                  </firewallRules>
                 </firewall>
                 <routing>
                   <staticRouting>
@@ -10672,9 +10672,9 @@ securitySchemes:
         **source  **|Optional.  Default is *any*.
         **destination**|Optional. Default is *any*.
         **exclude**<br>(source or destination)|Boolean. Exclude the specified source or destination.
-        **ipAddress**<br>(source or destination)|List of string.   
-        **groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. 
-        **vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*.
+        **ipAddress**<br>(source or destination)|List of string. Can specify single IP address, range of IP address, or in CIDR format. Can define multiple.
+        **groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. Can defined multiple.
+        **vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*. Can define multiple.
         **application**| optional. When absent its treated as *any*.
         **applicationId**|List of string. Id of service or serviceGroup groupingObject. 
         **service**|List.   
@@ -10785,58 +10785,36 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <firewall>
-                  <defaultPolicy>
+                <firewallRules>
+                  <firewallRule>
+                    <ruleTag></ruleTag>
+                    <name></name>
+                    <source>
+                      <ipAddress></ipAddress>
+                      <groupingObjectId></groupingObjectId>
+                      <vnicGroupId></vnicGroupId>
+                    </source>
+                    <destination>
+                      <ipAddress></ipAddress>
+                      <groupingObjectId></groupingObjectId>
+                      <vnicGroupId></vnicGroupId>
+                    </destination>
+                    <application>
+                      <applicationId></applicationId>
+                      <service>
+                        <protocol></protocol>
+                        <port></port>
+                        <sourcePort></sourcePort>
+                      </service>
+                    </application>
+                    <matchTranslated></matchTranslated>
+                    <direction></direction>
                     <action></action>
+                    <enabled></enabled>
                     <loggingEnabled></loggingEnabled>
-                  </defaultPolicy>
-                  <globalConfig>
-                    <tcpPickOngoingConnections></tcpPickOngoingConnections>
-                    <tcpAllowOutOfWindowPackets></tcpAllowOutOfWindowPackets>
-                    <tcpSendResetForClosedVsePorts></tcpSendResetForClosedVsePorts>
-                    <dropInvalidTraffic></dropInvalidTraffic>
-                    <logInvalidTraffic></logInvalidTraffic>
-                    <tcpTimeoutOpen></tcpTimeoutOpen>
-                    <tcpTimeoutEstablished></tcpTimeoutEstablished>
-                    <tcpTimeoutClose></tcpTimeoutClose>
-                    <udpTimeout></udpTimeout>
-                    <icmpTimeout></icmpTimeout>
-                    <icmp6Timeout></icmp6Timeout>
-                    <ipGenericTimeout></ipGenericTimeout>
-                    <enableSynFloodProtection></enableSynFloodProtection> 
-                  </globalConfig>
-                  <rules>
-                    <rule>
-                      <ruleTag></ruleTag>
-                      <name></name>
-                      <source>
-                        <vnicGroupId></vnicGroupId>
-                        <groupingObjectId></groupingObjectId>
-                        <ipAddress></ipAddress>
-                      </source>
-                      <destination>
-                        <groupingObjectId></groupingObjectId>
-                        <vnicGroupId></vnicGroupId>
-                        <groupingObjectId></groupingObjectId>
-                        <ipAddress></ipAddress>
-                      </destination>
-                      <application>
-                        <applicationId></applicationId>
-                        <service>
-                          <protocol></protocol>
-                          <port></port>
-                          <sourcePort></sourcePort>
-                        </service>
-                      </application>
-                      <matchTranslated></matchTranslated>
-                      <direction></direction>
-                      <action></action>
-                      <enabled></enabled>
-                      <loggingEnabled></loggingEnabled>
-                      <description></description>
-                    </rule>
-                  </rules>
-                </firewall>
+                    <description></description>
+                  </firewallRule>
+                </firewallRules>
               schema: firewallRulesCreate
         /{ruleId}:
           displayName: firewallRule
@@ -10857,19 +10835,26 @@ securitySchemes:
             body:
               application/xml:
                 example: |
-                  <rule>
+                  <firewallRule>
                     <ruleTag></ruleTag>
                     <name></name>
                     <source>
                       <vnicGroupId></vnicGroupId>
                       <groupingObjectId></groupingObjectId>
+                      <ipAddress></ipAddress>
                     </source>
                     <destination>
                       <groupingObjectId></groupingObjectId>
                       <vnicGroupId></vnicGroupId>
+                      <ipAddress></ipAddress>
                     </destination>
                     <application>
                       <applicationId></applicationId>
+                      <service>
+                        <protocol></protocol>
+                        <port></port>
+                        <sourcePort></sourcePort>
+                      </service>
                     </application>
                     <matchTranslated></matchTranslated>
                     <direction></direction>
@@ -10877,7 +10862,7 @@ securitySchemes:
                     <enabled></enabled>
                     <loggingEnabled></loggingEnabled>
                     <description></description>
-                  </rule>
+                  </firewallRule>
                 schema: firewallRuleUpdate
           delete:
             displayName: firewallRuleDelete
@@ -11318,8 +11303,8 @@ securitySchemes:
                           <connected>true</connected>
                         </from>
                         <action>deny</action> 
-                      </rule>
-                      <rule>
+                      </firewallRule>
+                      <firewallRule>
                         <prefixName>b</prefixName> 
                         <from>
                           <ospf>false</ospf>         

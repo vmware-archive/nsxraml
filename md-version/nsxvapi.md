@@ -4070,9 +4070,9 @@ Parameter | Comments
 **source  **|Optional.  Default is *any*.
 **destination**|Optional. Default is *any*.
 **exclude**<br>(source or destination)|Boolean. Exclude the specified source or destination.
-**ipAddress**<br>(source or destination)|List of string.   
-**groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. 
-**vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*.
+**ipAddress**<br>(source or destination)|List of string. Can specify single IP address, range of IP address, or in CIDR format. Can define multiple.
+**groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. Can defined multiple.
+**vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*. Can define multiple.
 **application**| optional. When absent its treated as *any*.
 **applicationId**|List of string. Id of service or serviceGroup groupingObject. 
 **service**|List.   
