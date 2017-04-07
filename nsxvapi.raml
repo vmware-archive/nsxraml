@@ -11166,6 +11166,8 @@ securitySchemes:
         **icmp6Timeout**|Integer, optional, default: *10*.
         **ipGenericTimeout**|Integer, optional, default: *120*.
         **enableSynFloodProtection**|Protect against SYN flood attacks by detecting bogus TCP connections and terminating them without consuming firewall state tracking resources. Boolean, optional, default: *false*.
+        **logIcmpErrors** | Boolean, optional, default *false*.
+        **dropIcmpReplays** | Boolean, optional, default *false*.
         **defaultPolicy**|Optional. Default is *deny*.
         **action**|String, values: *accept*, *deny*.
         **loggingEnabled**|Boolean, optional, default: *false*.
@@ -11201,6 +11203,7 @@ securitySchemes:
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
+          6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
       put:
         displayName: nsxEdgeFirewallConfigUpdate
         description: |
@@ -11211,6 +11214,7 @@ securitySchemes:
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
+          6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
         body:
          application/xml:
           example: |
@@ -11233,6 +11237,8 @@ securitySchemes:
                 <icmp6Timeout>10</icmp6Timeout>  
                 <ipGenericTimeout>120</ipGenericTimeout>  
                 <enableSynFloodProtection>false</enableSynFloodProtection> 
+                <logIcmpErrors>false</logIcmpErrors>
+                <dropIcmpReplays>false</dropIcmpReplays>
               </globalConfig>
               <firewallRules>
                 <firewallRule>
@@ -11399,6 +11405,7 @@ securitySchemes:
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
+            6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
         put:
           displayName: globalFirewallConfigUpdate
           description: |
@@ -11409,6 +11416,7 @@ securitySchemes:
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
+            6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
           body:
             application/xml:
               example: |
@@ -11426,6 +11434,8 @@ securitySchemes:
                   <icmp6Timeout></icmp6Timeout>
                   <ipGenericTimeout></ipGenericTimeout>
                   <enableSynFloodProtection></enableSynFloodProtection>
+                  <logIcmpErrors></logIcmpErrors>
+                  <dropIcmpReplays></dropIcmpReplays>
                 </globalConfig>
               schema: globalFirewallConfigUpdate
       /defaultpolicy:

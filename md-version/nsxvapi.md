@@ -4288,6 +4288,8 @@ Parameter | Comments
 **icmp6Timeout**|Integer, optional, default: *10*.
 **ipGenericTimeout**|Integer, optional, default: *120*.
 **enableSynFloodProtection**|Protect against SYN flood attacks by detecting bogus TCP connections and terminating them without consuming firewall state tracking resources. Boolean, optional, default: *false*.
+**logIcmpErrors** | Boolean, optional, default *false*.
+**dropIcmpReplays** | Boolean, optional, default *false*.
 **defaultPolicy**|Optional. Default is *deny*.
 **action**|String, values: *accept*, *deny*.
 **loggingEnabled**|Boolean, optional, default: *false*.
@@ -4321,6 +4323,7 @@ Parameter | Comments
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
+6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
 
 * **put** *(secured)*: Configure NSX Edge firewall.
 
@@ -4329,6 +4332,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
+6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
 
 * **delete** *(secured)*: Delete NSX Edge firewall configuration.
 
@@ -4358,6 +4362,7 @@ Working With the NSX Edge Global Firewall Configuration
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
+6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
 
 * **put** *(secured)*: Configure firewall global config for an Edge.
 
@@ -4366,6 +4371,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
+6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
 
 ### /4.0/edges/{edgeId}/firewall/config/defaultpolicy
 Working With the Default Firewall Policy for an Edge
