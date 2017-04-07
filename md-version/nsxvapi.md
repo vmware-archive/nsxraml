@@ -2780,15 +2780,16 @@ Working with a Specific Alarm
 Some system alerts will show up as alarms in the NSX dashboard. You can
 view and resolve alarms by alarm ID.
 
+### /2.0/services/systemalarms/{alarmId}
+
+* **get** *(secured)*: Retrieve information about the specified alarm.
+
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.3.0 | Method introduced.
 
-### /2.0/services/systemalarms/{alarmId}
-
-* **get** *(secured)*: Retrieve information about the specified alarm.
 * **post** *(secured)*: Resolve the specified alarm.
 
 Alarms will resolve automatically when the cause of the alarm is

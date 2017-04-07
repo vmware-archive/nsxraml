@@ -2801,7 +2801,7 @@ securitySchemes:
             Retrieve the list of VMs that have the specified tag attached to
             them.
         post:
-          displayName: securityTagVMsAction
+          displayName: securityTagVMsExecute
           description: |
             Attach or detach a security tag to a virtual machine.
 
@@ -2875,7 +2875,7 @@ securitySchemes:
           Working with Virtual Machine Details for a Specific Security Tag
           -----
         get:
-          displayName: securityTagVMDetailRead
+          displayName: securityTagVMDetailList
           description: |
             Retrieve details about the VMs that are attached to the
             specified security tag.
@@ -2949,7 +2949,7 @@ securitySchemes:
         Retrieve all security tags associated with the specified virtual
         machine.
     post:
-      displayName: securitytagVmMoidAction
+      displayName: securitytagVmMoidExecute
       description: |
         Update security tags associated with the specified virtual machine.
 
@@ -4034,7 +4034,7 @@ securitySchemes:
       Working with Security Settings
       ----
     get:
-      displayName: systemSecSettingsList
+      displayName: systemSecSettingsRead
       description: |
         Retrieve the NSX Manager FIPS and TLS settings.
 
@@ -7003,12 +7003,6 @@ securitySchemes:
     -------
     Some system alerts will show up as alarms in the NSX dashboard. You can
     view and resolve alarms by alarm ID.
-
-    **Method history:**
-
-    Release | Modification
-    --------|-------------
-    6.3.0 | Method introduced.
   uriParameters:
     alarmId:
       displayName: alarmId
@@ -7017,7 +7011,14 @@ securitySchemes:
         `GET /api/2.0/services/alarms/{source-Id}` method.
   get:
     displayName: servicesSystemAlarmsIdRead
-    description: Retrieve information about the specified alarm.
+    description: |
+      Retrieve information about the specified alarm.
+
+      **Method history:**
+
+      Release | Modification
+      --------|-------------
+      6.3.0 | Method introduced.
     responses:
       200:
         body:
