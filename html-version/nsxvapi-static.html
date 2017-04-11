@@ -45,11 +45,13 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x64;&#111;&#99;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#46;&#x63;&#111;&#x6d;">&#x64;&#111;&#99;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#46;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x64;&#111;&#99;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;">&#x64;&#111;&#99;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
 the general RESTful workflow.</p>
+<h3 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h3>
+<p>The NSX Manager requires port 443/TCP for REST API requests.</p>
 <h3 id="configuring-rest-clients-for-the-nsx-rest-api">Configuring REST Clients for the NSX REST API</h3>
 <p>Some browser-based clients include the Chrome app, Postman, or the Firefox
 add-on, RESTClient. Curl is a command-line tool that can function as a REST
@@ -79,8 +81,26 @@ Manager appliance, even if you have not made any configuration changes. You
 can use this as a test to verify that your REST client is configured correctly
 to communicate with the NSX Manager API.</p>
 <p><code>GET /api/2.0/services/usermgmt/user/admin</code></p>
-<h3 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h3>
-<p>The NSX Manager requires port 443/TCP for REST API requests.</p>
+<h3 id="uri-and-query-parameters">URI and Query Parameters</h3>
+<p>Some methods have URI or query parameters. URI parameters are values that you
+include in the request URL. You use a question mark (<strong>?</strong>) to join the request
+URL and the query parameters. Multiple query parameters can be combined by
+using ampersands (<strong>&amp;</strong>).</p>
+<p>For example, you can use this method to get a list of logical switches on a transport zone: </p>
+<p><code>GET /api/2.0/vdn/scopes/{scopeId}/virtualwires</code></p>
+<p><strong>scopeId</strong> is a URI parameter that represents a transport zone.</p>
+<p>The <strong>startindex</strong> and <strong>pagesize</strong> query parameters control how this
+information is displayed. <strong>startindex</strong> determines which logical switch to
+begin the list with, and <strong>pagesize</strong> determines how many logical switches to
+list.  </p>
+<p>To view the first 20 logical switches on transport zone vdnscope-1, use the following parameters:</p>
+<ul>
+<li><strong>scopeId</strong> URI parameter set to <em>vdnscope-1</em>.  </li>
+<li><strong>startindex</strong> query parameter set to <em>0</em>.   </li>
+<li><strong>pagesize</strong> query parameter set to <em>20</em>.   </li>
+</ul>
+<p>These parameters are combined to create this request:</p>
+<p><code>GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?startindex=0&amp;pagesize=20</code></p>
 <h3 id="restful-workflow-patterns">RESTful Workflow Patterns</h3>
 <p>All RESTful workflows fall into a pattern that includes only two fundamental
 operations, which you repeat in this order for as long as necessary.</p>
@@ -108,7 +128,7 @@ the Value column. For example, <em>group-d1</em>.</li>
 <li>Find the <strong>childEntity</strong> in the Name column, and the corresponding
 Value column entry is the datacenter MOID. For example, <em>datacenter-21</em>.</li>
 </ol>
-<h3 id="find-host-moid">Find Host MOID</h3>
+<h3 id="find-cluster-or-host-moid">Find Cluster or Host MOID</h3>
 <ol>
 <li>In a web browser, enter the vCenter Managed Object Browser URL:
 <code>http://vCenter-IP-Address/mob</code>.</li>
@@ -120,8 +140,9 @@ link in the Value column. For example, <em>datacenter-21</em>.</li>
 <li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
 link in the Value column. For example, <em>group-h23</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
-contains links to host clusters. Click the appropriate host cluster link.
-For example, <em>domain-c33</em>.</li>
+lists the host clusters. For example, <em>domain-c33</em>.</li>
+<li>To find the MOID of a host in a cluster, click the appropriate host cluster
+link located in the previous step. </li>
 <li>Find <em>host</em> in the Name column. The corresponding Value column
 lists the hosts in that cluster by vCenter MOID and hostname. For example,
 <em>host-32 (esx-02a.corp.local)</em>.</li>
@@ -162,7 +183,7 @@ contains links to host clusters. Click the appropriate host cluster link.
 For example, <em>domain-c33</em>.</li>
 <li>Find <strong>host</strong> in the Name column. The corresponding Value column lists the
 hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-host link, For example, host-32.</li>
+host link, For example, <em>host-32</em>.</li>
 <li>Find <strong>vm</strong> in the Name column. The corresponding Value column lists the
 virtual machines by vCenter MOID and hostname. For example, <em>vm-216 (web-01a)</em>.</li>
 <li>To find the instance UUID of a VM, click the VM MOID link located in the
