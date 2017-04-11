@@ -4435,15 +4435,40 @@ Working With Layer 2 Bridging
 Working With NSX Edge Load Balancer
 ----
 
+The NSX Edge load balancer enables network traffic to follow multiple
+paths to a specific destination. It distributes incoming service
+requests evenly among multiple servers in such a way that the load
+distribution is transparent to users. Load balancing thus helps in
+achieving optimal resource utilization, maximizing throughput,
+minimizing response time, and avoiding overload. NSX Edge provides load
+balancing up to Layer 7.
+
+You map an external, or public, IP address to a set of internal servers
+for load balancing. The load balancer accepts TCP, HTTP, or HTTPS
+requests on the external IP address and decides which internal server
+to use.  Port 8090 is the default listening port for TCP, port 80 is
+the default port for HTTP, and port 443 is the default port for HTTPs.
+
 * **get** *(secured)*: Get load balancer configuration.
 * **put** *(secured)*: Configure load balancer.
+
+The input contains five parts: application profile, virtual server,
+pool, monitor and application rule.
+
+For the data path to work, you need to add firewall rules to allow
+required traffic as per the load balancer configuration.
+
 * **delete** *(secured)*: Delete load balancer configuration.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles
 Working with Application Profiles
 ----
-Application profiles define the behavior of a particular type of
-network traffic.
+You create an application profile to define the behavior of a
+particular type of network traffic. After configuring a profile, you
+associate the profile with a virtual server. The virtual server then
+processes traffic according to the values specified in the profile.
+Using profiles enhances your control over managing network traffic,
+and makes traffic‐management tasks easier and more efficient.
 
 * **post** *(secured)*: Add an application profile.
 * **get** *(secured)*: Retrieve all application profiles on the specified Edge.
@@ -4460,8 +4485,8 @@ Working With a Specific Application Profile
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationrules
 Working With Application Rules
 ----
-Manage application rules that directly manipulate and manage IP
-application traffic.
+You can write an application rule to directly manipulate and manage
+IP application traffic.
 
 * **post** *(secured)*: Add an application rule.
 * **get** *(secured)*: Retrieve all application rules.
@@ -4478,8 +4503,10 @@ Working with a Specific Application Rule
 ### /4.0/edges/{edgeId}/loadbalancer/config/monitors
 Working With Load Balancer Monitors
 ----
-Load balancer monitors define health check parameters for a
-particular type of network traffic.
+You create a service monitor to define health check parameters for a
+particular type of network traffic. When you associate a service
+monitor with a pool, the pool members are monitored according to the
+service monitor parameters.
 
 * **post** *(secured)*: Add a load balancer monitor.
 * **get** *(secured)*: Retrieve all load balancer monitors.
@@ -4502,20 +4529,20 @@ Working With Virtual Servers
 You can add an NSX Edge internal or uplink interface as a virtual
 server.
 
-| Name | Required | Comments |
-|----------------|----------|----------|
-| **name** | yes | |
-| **description** | no | |
-| **enabled** | no | default is true |
-| **ipAddress** | yes | |
-| **protocol** | yes | Possible values are *HTTP*, *HTTPS*, *TCP*, or *UDP*.|
-| **port** | yes | A single port, a comma separate list, a range, or a combination. For example, *443,6000-7000*. |
-| **connectionLimit** | no | Maximum concurrent connections |
-| **connectionRateLimit** | no | Maximum incoming new connection requests per second |
-| **defaultPoolId** | no | The default backend server pool identifier |
-| **applicationProfileId** | no | The application profile identifier |
-| **accelerationEnabled** | no | Use the faster L4 load balancer engine rather than L7 load balancer engine. <br>**Note:**  If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.|
-| **applicationRuleId** | no | The application rule identifier list |
+Parameter |  Description | Comments
+---|---|---
+ **name**      |Name of virtual server.|Required.
+ **description**     |Description of virtual server.|Optional.
+ **enabled**    |Whether the virtual server is enabled.|Optional. Boolean. Options are *true* or *false*. Default is *true*.
+ **ipAddress**      |IP address that the load balancer is listening on. |Required. A valid NSX Edge vNic IP address (IPv4 or IPv6).
+ **protocol**      |Virtual server protocol.|Required. Options are: *HTTP*, *HTTPS*, *TCP*, *UDP*.
+ **port**      |Port number or port range.|Required. Port number such as *80*, port range such as *80,443* or *1234-1238*, or a combination such as *443,6000-7000*.
+ **connectionLimit**      |Maximum concurrent connections.|Optional. Long.
+ **connectionRateLimit**      |Maximum incoming new connection requests per second.|Optional. Long.
+ **defaultPoolId**      |Default backend server pool identifier.|Optional.
+ **applicationProfileId**      |Application profile identifier.|Optional.
+ **accelerationEnabled**      |Use the faster L4 load balancer  engine rather than L7 load  balancer engine.|Optional. Boolean. Options are *true* or *false*. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.
+ **applicationRuleId**      |Application rule identifier list.|Optional. Each item should be a valid **applicationRuleId**.
 
 * **get** *(secured)*: Retrieve all virtual servers.
 * **delete** *(secured)*: Delete all virtual servers.
@@ -4529,15 +4556,38 @@ Specified virtual server.
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools
 Working with Server Pools
 ----
-Server pools manage load balancer distribution methods and have
-monitors attached to them for health check parameters.
+You can add a server pool to manage and share backend servers
+flexibly and efficiently. A pool manages load balancer distribution
+methods and has a service monitor attached to it for health check
+parameters.
+
+Parameter |  Description | Comments
+---|---|---
+**pool > name**   |Name of pool.|Required.
+**description**   |Description of pool.|Optional.
+**algorithm**   |Pool member balancing algorithm.|Optional. Options are: *round-robin*, *ip-hash*, *uri*, *leastconn*, *url*, *httpheader*. Default is *round-robin*.
+**algorithmParameters**   |Algorithm parameters for *httpheader* and *url*. |Optional. Required for *httpheader* and *url* algorithm.
+**transparent**   |Whether client IP addresses are  visible to the backend servers.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+**monitorId**   |Monitor identifier list.|Optional. At the most one monitor is supported.
+**member**   |Pool member list.|Optional.
+**member > name**  |Member name.|Optional. Required, when used in ACL rule.
+**ipAddress**  |Member IP address.|Optional. Required, if **groupingObjectId** is null.
+**groupingObjectId**  |Member grouping object identifier.|Optional. Required, if **ipAddress** is null.
+**groupingObjectName**  |Member grouping object name.|Optional.
+**weight**  |Member weight.|Optional. Default is *1*.
+**monitorPort**  |Monitor port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
+**port**  |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured. 
+**maxConn**  |Maximum number of concurrent connections the member can handle.|Optional. Default is *0* which means unlimited.
+**minConn**  |Minimum number of concurrent connections a member must always accept.|Optional. Default is *0* which means unlimited.
+**condition**  |Whether the member is enabled or disabled.|Optional. Options are: *enabled* or *disabled*. Default is *enabled*.
 
 * **post** *(secured)*: Add a load balancer server pool to the Edge.
 * **get** *(secured)*: Get all server pools on the specified NSX Edge.
 * **delete** *(secured)*: Delete all server pools configured on the specified NSX Edge.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}
-Specific server pool.
+Working With a Specific Server Pool
+----
 
 * **get** *(secured)*: Retrieve information about the specified server pool.
 * **put** *(secured)*: Update the specified server pool.

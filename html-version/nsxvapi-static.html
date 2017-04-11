@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#x76;&#109;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#111;&#x6d;">&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#x76;&#109;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x64;&#111;&#99;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#46;&#x63;&#111;&#x6d;">&#x64;&#111;&#99;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#46;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -20625,6 +20625,18 @@ sent bytes, received bytes etc. for the given Edge</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-nsx-edge-load-balancer">Working With NSX Edge Load Balancer</h2>
+<p>The NSX Edge load balancer enables network traffic to follow multiple
+paths to a specific destination. It distributes incoming service
+requests evenly among multiple servers in such a way that the load
+distribution is transparent to users. Load balancing thus helps in
+achieving optimal resource utilization, maximizing throughput,
+minimizing response time, and avoiding overload. NSX Edge provides load
+balancing up to Layer 7.</p>
+<p>You map an external, or public, IP address to a set of internal servers
+for load balancing. The load balancer accepts TCP, HTTP, or HTTPS
+requests on the external IP address and decides which internal server
+to use.  Port 8090 is the default listening port for TCP, port 80 is
+the default port for HTTP, and port 443 is the default port for HTTPs.</p>
 </div>
 <div class="method get">
   <a
@@ -20645,6 +20657,10 @@ sent bytes, received bytes etc. for the given Edge</p>
   ><h2>PUT /4.0/edges/{edgeId}/loadbalancer/config</h2></a>
   <div class="content">
     <p><p>Configure load balancer.</p>
+<p>The input contains five parts: application profile, virtual server,
+pool, monitor and application rule.</p>
+<p>For the data path to work, you need to add firewall rules to allow
+required traffic as per the load balancer configuration.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -20855,8 +20871,12 @@ sent bytes, received bytes etc. for the given Edge</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-application-profiles">Working with Application Profiles</h2>
-<p>Application profiles define the behavior of a particular type of
-network traffic.</p>
+<p>You create an application profile to define the behavior of a
+particular type of network traffic. After configuring a profile, you
+associate the profile with a virtual server. The virtual server then
+processes traffic according to the values specified in the profile.
+Using profiles enhances your control over managing network traffic,
+and makes traffic‐management tasks easier and more efficient.</p>
 </div>
 <div class="method post">
   <a
@@ -21013,8 +21033,8 @@ network traffic.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-application-rules">Working With Application Rules</h2>
-<p>Manage application rules that directly manipulate and manage IP
-application traffic.</p>
+<p>You can write an application rule to directly manipulate and manage
+IP application traffic.</p>
 </div>
 <div class="method post">
   <a
@@ -21182,8 +21202,10 @@ application traffic.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-load-balancer-monitors">Working With Load Balancer Monitors</h2>
-<p>Load balancer monitors define health check parameters for a
-particular type of network traffic.</p>
+<p>You create a service monitor to define health check parameters for a
+particular type of network traffic. When you associate a service
+monitor with a pool, the pool members are monitored according to the
+service monitor parameters.</p>
 </div>
 <div class="method post">
   <a
@@ -21328,9 +21350,101 @@ particular type of network traffic.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-server-pools">Working with Server Pools</h2>
-<p>Server pools manage load balancer distribution methods and have
-monitors attached to them for health check parameters.</p>
-</div>
+<p>You can add a server pool to manage and share backend servers
+flexibly and efficiently. A pool manages load balancer distribution
+methods and has a service monitor attached to it for health check
+parameters.</p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>pool &gt; name</strong></td>
+<td>Name of pool.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>Description of pool.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>algorithm</strong></td>
+<td>Pool member balancing algorithm.</td>
+<td>Optional. Options are: <em>round-robin</em>, <em>ip-hash</em>, <em>uri</em>, <em>leastconn</em>, <em>url</em>, <em>httpheader</em>. Default is <em>round-robin</em>.</td>
+</tr>
+<tr>
+<td><strong>algorithmParameters</strong></td>
+<td>Algorithm parameters for <em>httpheader</em> and <em>url</em>.</td>
+<td>Optional. Required for <em>httpheader</em> and <em>url</em> algorithm.</td>
+</tr>
+<tr>
+<td><strong>transparent</strong></td>
+<td>Whether client IP addresses are  visible to the backend servers.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td><strong>monitorId</strong></td>
+<td>Monitor identifier list.</td>
+<td>Optional. At the most one monitor is supported.</td>
+</tr>
+<tr>
+<td><strong>member</strong></td>
+<td>Pool member list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>member &gt; name</strong></td>
+<td>Member name.</td>
+<td>Optional. Required, when used in ACL rule.</td>
+</tr>
+<tr>
+<td><strong>ipAddress</strong></td>
+<td>Member IP address.</td>
+<td>Optional. Required, if <strong>groupingObjectId</strong> is null.</td>
+</tr>
+<tr>
+<td><strong>groupingObjectId</strong></td>
+<td>Member grouping object identifier.</td>
+<td>Optional. Required, if <strong>ipAddress</strong> is null.</td>
+</tr>
+<tr>
+<td><strong>groupingObjectName</strong></td>
+<td>Member grouping object name.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>weight</strong></td>
+<td>Member weight.</td>
+<td>Optional. Default is <em>1</em>.</td>
+</tr>
+<tr>
+<td><strong>monitorPort</strong></td>
+<td>Monitor port.</td>
+<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured.</td>
+</tr>
+<tr>
+<td><strong>port</strong></td>
+<td>Member port.</td>
+<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured. </td>
+</tr>
+<tr>
+<td><strong>maxConn</strong></td>
+<td>Maximum number of concurrent connections the member can handle.</td>
+<td>Optional. Default is <em>0</em> which means unlimited.</td>
+</tr>
+<tr>
+<td><strong>minConn</strong></td>
+<td>Minimum number of concurrent connections a member must always accept.</td>
+<td>Optional. Default is <em>0</em> which means unlimited.</td>
+</tr>
+<tr>
+<td><strong>condition</strong></td>
+<td>Whether the member is enabled or disabled.</td>
+<td>Optional. Options are: <em>enabled</em> or <em>disabled</em>. Default is <em>enabled</em>.</td>
+</tr>
+</tbody></table></div>
 <div class="method post">
   <a
     class="verb post"
@@ -21412,7 +21526,7 @@ monitors attached to them for health check parameters.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specific server pool.</p>
+  <div class="description"><h2 id="working-with-a-specific-server-pool">Working With a Specific Server Pool</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -21486,11 +21600,12 @@ monitors attached to them for health check parameters.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
 </code></pre>
@@ -21522,69 +21637,69 @@ monitors attached to them for health check parameters.</p>
 <p>You can add an NSX Edge internal or uplink interface as a virtual
 server.</p>
 <table class="table"><thead><tr>
-<th>Name</th>
-<th>Required</th>
+<th>Parameter</th>
+<th>Description</th>
 <th>Comments</th>
 </tr>
 </thead><tbody><tr>
-<td><strong>name</strong></td>
-<td>yes</td>
-<td></td>
+<td> <strong>name</strong></td>
+<td>Name of virtual server.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>description</strong></td>
-<td>no</td>
-<td></td>
+<td> <strong>description</strong></td>
+<td>Description of virtual server.</td>
+<td>Optional.</td>
 </tr>
 <tr>
-<td><strong>enabled</strong></td>
-<td>no</td>
-<td>default is true</td>
+<td> <strong>enabled</strong></td>
+<td>Whether the virtual server is enabled.</td>
+<td>Optional. Boolean. Options are <em>true</em> or <em>false</em>. Default is <em>true</em>.</td>
 </tr>
 <tr>
-<td><strong>ipAddress</strong></td>
-<td>yes</td>
-<td></td>
+<td> <strong>ipAddress</strong></td>
+<td>IP address that the load balancer is listening on.</td>
+<td>Required. A valid NSX Edge vNic IP address (IPv4 or IPv6).</td>
 </tr>
 <tr>
-<td><strong>protocol</strong></td>
-<td>yes</td>
-<td>Possible values are <em>HTTP</em>, <em>HTTPS</em>, <em>TCP</em>, or <em>UDP</em>.</td>
+<td> <strong>protocol</strong></td>
+<td>Virtual server protocol.</td>
+<td>Required. Options are: <em>HTTP</em>, <em>HTTPS</em>, <em>TCP</em>, <em>UDP</em>.</td>
 </tr>
 <tr>
-<td><strong>port</strong></td>
-<td>yes</td>
-<td>A single port, a comma separate list, a range, or a combination. For example, <em>443,6000-7000</em>.</td>
+<td> <strong>port</strong></td>
+<td>Port number or port range.</td>
+<td>Required. Port number such as <em>80</em>, port range such as <em>80,443</em> or <em>1234-1238</em>, or a combination such as <em>443,6000-7000</em>.</td>
 </tr>
 <tr>
-<td><strong>connectionLimit</strong></td>
-<td>no</td>
-<td>Maximum concurrent connections</td>
+<td> <strong>connectionLimit</strong></td>
+<td>Maximum concurrent connections.</td>
+<td>Optional. Long.</td>
 </tr>
 <tr>
-<td><strong>connectionRateLimit</strong></td>
-<td>no</td>
-<td>Maximum incoming new connection requests per second</td>
+<td> <strong>connectionRateLimit</strong></td>
+<td>Maximum incoming new connection requests per second.</td>
+<td>Optional. Long.</td>
 </tr>
 <tr>
-<td><strong>defaultPoolId</strong></td>
-<td>no</td>
-<td>The default backend server pool identifier</td>
+<td> <strong>defaultPoolId</strong></td>
+<td>Default backend server pool identifier.</td>
+<td>Optional.</td>
 </tr>
 <tr>
-<td><strong>applicationProfileId</strong></td>
-<td>no</td>
-<td>The application profile identifier</td>
+<td> <strong>applicationProfileId</strong></td>
+<td>Application profile identifier.</td>
+<td>Optional.</td>
 </tr>
 <tr>
-<td><strong>accelerationEnabled</strong></td>
-<td>no</td>
-<td>Use the faster L4 load balancer engine rather than L7 load balancer engine. <br><strong>Note:</strong>  If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if <strong>accelerationEnabled</strong> is not set to true.</td>
+<td> <strong>accelerationEnabled</strong></td>
+<td>Use the faster L4 load balancer  engine rather than L7 load  balancer engine.</td>
+<td>Optional. Boolean. Options are <em>true</em> or <em>false</em>. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if <strong>accelerationEnabled</strong> is not set to true.</td>
 </tr>
 <tr>
-<td><strong>applicationRuleId</strong></td>
-<td>no</td>
-<td>The application rule identifier list</td>
+<td> <strong>applicationRuleId</strong></td>
+<td>Application rule identifier list.</td>
+<td>Optional. Each item should be a valid <strong>applicationRuleId</strong>.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
