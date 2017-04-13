@@ -32,6 +32,10 @@ To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
 the general RESTful workflow.
 
+### Ports Required for the NSX REST API
+
+The NSX Manager requires port 443/TCP for REST API requests.
+
 ### Configuring REST Clients for the NSX REST API
 
 Some browser-based clients include the Chrome app, Postman, or the Firefox
@@ -39,7 +43,6 @@ add-on, RESTClient. Curl is a command-line tool that can function as a REST
 client. The details of REST client configuration will vary from client to
 client, but this general information should help you configure your REST client
 correctly.
-
 
 * **The NSX REST API uses basic authentication.**   
 You must configure your REST client to send the NSX Manager authentication
@@ -69,9 +72,33 @@ to communicate with the NSX Manager API.
 
 `GET /api/2.0/services/usermgmt/user/admin`
 
-### Ports Required for the NSX REST API
+### URI and Query Parameters
 
-The NSX Manager requires port 443/TCP for REST API requests.
+Some methods have URI or query parameters. URI parameters are values that you
+include in the request URL. You use a question mark (**?**) to join the request
+URL and the query parameters. Multiple query parameters can be combined by
+using ampersands (**&**).
+
+For example, you can use this method to get a list of logical switches on a transport zone: 
+
+`GET /api/2.0/vdn/scopes/{scopeId}/virtualwires`
+
+**scopeId** is a URI parameter that represents a transport zone.
+
+The **startindex** and **pagesize** query parameters control how this
+information is displayed. **startindex** determines which logical switch to
+begin the list with, and **pagesize** determines how many logical switches to
+list.  
+
+To view the first 20 logical switches on transport zone vdnscope-1, use the following parameters:
+
+* **scopeId** URI parameter set to *vdnscope-1*.  
+* **startindex** query parameter set to *0*.   
+* **pagesize** query parameter set to *20*.   
+
+These parameters are combined to create this request:
+
+`GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?startindex=0&pagesize=20`
 
 ### RESTful Workflow Patterns
 
@@ -89,6 +116,7 @@ code, it indicates whether the request succeeded or failed, and might be
 accompanied by a URL that points to a location from which additional
 information can be retrieved.
 
+
 ## Finding vCenter Object IDs
 
 Many API methods reference vCenter object IDs in URI parameters, query
@@ -105,7 +133,7 @@ IDs via the vCenter Managed Object Browser.
 4. Find the **childEntity** in the Name column, and the corresponding
   Value column entry is the datacenter MOID. For example, *datacenter-21*.
 
-### Find Host MOID
+### Find Cluster or Host MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
@@ -117,8 +145,9 @@ IDs via the vCenter Managed Object Browser.
 4. Find **hostFolder** in the Name column, and click the corresponding
    link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
-   contains links to host clusters. Click the appropriate host cluster link.
-   For example, *domain-c33*.
+   lists the host clusters. For example, *domain-c33*.
+4. To find the MOID of a host in a cluster, click the appropriate host cluster
+   link located in the previous step. 
 4. Find *host* in the Name column. The corresponding Value column
    lists the hosts in that cluster by vCenter MOID and hostname. For example,
    *host-32 (esx-02a.corp.local)*.
@@ -159,7 +188,7 @@ IDs via the vCenter Managed Object Browser.
    For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, For example, host-32.
+   host link, For example, *host-32*.
 5. Find **vm** in the Name column. The corresponding Value column lists the
    virtual machines by vCenter MOID and hostname. For example, *vm-216 (web-01a)*.
 6. To find the instance UUID of a VM, click the VM MOID link located in the

@@ -1,4 +1,4 @@
-# VMware NSX for vSphere API documentation version 6.3.0
+# VMware NSX for vSphere API documentation version 6.3
 https://{nsxmanager}/api
 
 ### Introduction
@@ -36,6 +36,10 @@ To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
 the general RESTful workflow.
 
+### Ports Required for the NSX REST API
+
+The NSX Manager requires port 443/TCP for REST API requests.
+
 ### Configuring REST Clients for the NSX REST API
 
 Some browser-based clients include the Chrome app, Postman, or the Firefox
@@ -72,9 +76,33 @@ to communicate with the NSX Manager API.
 
 `GET /api/2.0/services/usermgmt/user/admin`
 
-### Ports Required for the NSX REST API
+### URI and Query Parameters
 
-The NSX Manager requires port 443/TCP for REST API requests.
+Some methods have URI or query parameters. URI parameters are values that you
+include in the request URL. You use a question mark (**?**) to join the request
+URL and the query parameters. Multiple query parameters can be combined by
+using ampersands (**&**).
+
+For example, you can use this method to get a list of logical switches on a transport zone: 
+
+`GET /api/2.0/vdn/scopes/{scopeId}/virtualwires`
+
+**scopeId** is a URI parameter that represents a transport zone.
+
+The **startindex** and **pagesize** query parameters control how this
+information is displayed. **startindex** determines which logical switch to
+begin the list with, and **pagesize** determines how many logical switches to
+list.  
+
+To view the first 20 logical switches on transport zone vdnscope-1, use the following parameters:
+
+* **scopeId** URI parameter set to *vdnscope-1*.  
+* **startindex** query parameter set to *0*.   
+* **pagesize** query parameter set to *20*.   
+
+These parameters are combined to create this request:
+
+`GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?startindex=0&pagesize=20`
 
 ### RESTful Workflow Patterns
 
@@ -108,7 +136,7 @@ IDs via the vCenter Managed Object Browser.
 4. Find the **childEntity** in the Name column, and the corresponding
   Value column entry is the datacenter MOID. For example, *datacenter-21*.
 
-### Find Host MOID
+### Find Cluster or Host MOID
 
 1. In a web browser, enter the vCenter Managed Object Browser URL:
    `http://vCenter-IP-Address/mob`.
@@ -120,8 +148,9 @@ IDs via the vCenter Managed Object Browser.
 4. Find **hostFolder** in the Name column, and click the corresponding
    link in the Value column. For example, *group-h23*.
 4. Find **childEntity** in the Name column. The corresponding Value column
-   contains links to host clusters. Click the appropriate host cluster link.
-   For example, *domain-c33*.
+   lists the host clusters. For example, *domain-c33*.
+4. To find the MOID of a host in a cluster, click the appropriate host cluster
+   link located in the previous step. 
 4. Find *host* in the Name column. The corresponding Value column
    lists the hosts in that cluster by vCenter MOID and hostname. For example,
    *host-32 (esx-02a.corp.local)*.
@@ -162,7 +191,7 @@ IDs via the vCenter Managed Object Browser.
    For example, *domain-c33*.
 4. Find **host** in the Name column. The corresponding Value column lists the
    hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-   host link, For example, host-32.
+   host link, For example, *host-32*.
 5. Find **vm** in the Name column. The corresponding Value column lists the
    virtual machines by vCenter MOID and hostname. For example, *vm-216 (web-01a)*.
 6. To find the instance UUID of a VM, click the VM MOID link located in the
@@ -172,7 +201,7 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### part-number
-EN-002339-00
+EN-002339-01
 
 ---
 
@@ -4075,7 +4104,6 @@ Parameter |  Description | Comments
 **fqdn** |Fully Qualified Domain Name for the edge.|Optional. Default is *NSX-&lt;edgeId&gt;* Used to set hostname on the VM. Appended by *-&lt;haIndex&gt;*
 **vseLogLevel** |Defines the log level for log messages captured in the log files.|Optional. Choice of: *emergency*, *alert*, *critical*, *error*, *warning*, *notice*, *debug*. Default is *info*.
 **enableAesni** |Enable support for Advanced Encryption Standard New Instructions on the Edge.|Optional. True/False. Default is *true*.
-**enableFips** |Enable compliance to FIPS Standards.|Optional. True/False. Default is *false*.
 **enableCoreDump** |Deploys a new NSX Edge for debug/core-dump purpose.|Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.
 
 #### Appliances Configuration: Edge Services Gateway and Logical (Distributed) Router
@@ -4106,6 +4134,16 @@ Parameter |  Description | Comments
 **queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is *false*.
 **queryDaemon > port** |Defines the port through which the communication happens.|Integer 1-65535. Default is *5666*.
 
+#### DNS Client: Edge Services Gateway and Logical (Distributed) Router 
+
+Parameter |  Description | Comments 
+---|---|---
+**dnsClient** |Configures the DNS settings of the Edge Services Gateway.|Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.
+**primaryDns** |Primary DNS IP |
+**secondaryDns** |Secondary DNS IP |
+**domainName** |Domain Name of Edge |
+**domainName** |Secondary Domain Name of Edge |
+
 #### vNIC Parameters: Edge Services Gateway Only
 
 Parameter |  Description | Comments
@@ -4123,9 +4161,6 @@ Parameter |  Description | Comments
 **macAddress** |Option to manually specify the MAC address. |Optional.  Managed by vCenter if not provided.
 **macAddress > edgeVmHaIndex** |HA index of the Edge VM. |Required. 0 or 1.
 **macAddress > value** |Value of the MAC address.|Optional. Ensure that MAC addresses provided are unique within the given layer 2 domain.
-**fenceParameter** |Fence connection mode settings for vCloud Director fence mode. Do not use for other NSX deployments. |Optional.
-**fenceParameter > key** | Fence connection mode setting key.|Required. 
-**fenceParameter > value** |Fence connection mode setting value. |Required. 
 **vnic > mtu** |The maximum transmission value for the data packets.|Optional.  Default is *1500*.
 **enableProxyArp** |Enables proxy ARP. Do not use this flag unless you want NSX Edge to proxy ARP for all configured subnets.  |Optional.  True/False. Default is *false*.
 **enableSendRedirects** |Enables ICMP redirect. |Optional. True/False.  Default is *true*.
@@ -4151,16 +4186,6 @@ Parameter |  Description | Comments
 **subnetMask** or **subnetPrefixLength**<br>(mgmtInterface or interface) |Subnet mask or prefix value.  |Required. Either **subnetMask** or **subnetPrefixLength** should be provided. When both are provided then **subnetprefixLength** is ignored.
 **mtu**<br>(mgmtInterface or interface) |The maximum transmission value for the data packets. |Optional. Default is 1500.
 **type** | Type of interface. | Required. Choice of *uplink* or *internal*. 
-
-#### DNS Client: Edge Services Gateway Only
-
-Parameter |  Description | Comments 
----|---|---
-**dnsClient** |Configures the DNS settings of the Edge Services Gateway.|Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.
-**primaryDns** |Primary DNS IP |
-**secondaryDns** |Secondary DNS IP |
-**domainName** |Domain Name of Edge |
-**domainName** |Secondary Domain Name of Edge |
 
 * **get** *(secured)*: Retrieve a list of all NSX Edges in your inventory. You can use the query
 parameters to filter results.
@@ -4298,9 +4323,9 @@ Parameter | Comments
 **source  **|Optional.  Default is *any*.
 **destination**|Optional. Default is *any*.
 **exclude**<br>(source or destination)|Boolean. Exclude the specified source or destination.
-**ipAddress**<br>(source or destination)|List of string.   
-**groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. 
-**vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*.
+**ipAddress**<br>(source or destination)|List of string. Can specify single IP address, range of IP address, or in CIDR format. Can define multiple.
+**groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. Can defined multiple.
+**vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*. Can define multiple.
 **application**| optional. When absent its treated as *any*.
 **applicationId**|List of string. Id of service or serviceGroup groupingObject. 
 **service**|List.   
@@ -4729,15 +4754,40 @@ Working With Layer 2 Bridging
 Working With NSX Edge Load Balancer
 ----
 
+The NSX Edge load balancer enables network traffic to follow multiple
+paths to a specific destination. It distributes incoming service
+requests evenly among multiple servers in such a way that the load
+distribution is transparent to users. Load balancing thus helps in
+achieving optimal resource utilization, maximizing throughput,
+minimizing response time, and avoiding overload. NSX Edge provides load
+balancing up to Layer 7.
+
+You map an external, or public, IP address to a set of internal servers
+for load balancing. The load balancer accepts TCP, HTTP, or HTTPS
+requests on the external IP address and decides which internal server
+to use.  Port 8090 is the default listening port for TCP, port 80 is
+the default port for HTTP, and port 443 is the default port for HTTPs.
+
 * **get** *(secured)*: Get load balancer configuration.
 * **put** *(secured)*: Configure load balancer.
+
+The input contains five parts: application profile, virtual server,
+pool, monitor and application rule.
+
+For the data path to work, you need to add firewall rules to allow
+required traffic as per the load balancer configuration.
+
 * **delete** *(secured)*: Delete load balancer configuration.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles
 Working with Application Profiles
 ----
-Application profiles define the behavior of a particular type of
-network traffic.
+You create an application profile to define the behavior of a
+particular type of network traffic. After configuring a profile, you
+associate the profile with a virtual server. The virtual server then
+processes traffic according to the values specified in the profile.
+Using profiles enhances your control over managing network traffic,
+and makes traffic‐management tasks easier and more efficient.
 
 * **post** *(secured)*: Add an application profile.
 * **get** *(secured)*: Retrieve all application profiles on the specified Edge.
@@ -4754,8 +4804,8 @@ Working With a Specific Application Profile
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationrules
 Working With Application Rules
 ----
-Manage application rules that directly manipulate and manage IP
-application traffic.
+You can write an application rule to directly manipulate and manage
+IP application traffic.
 
 * **post** *(secured)*: Add an application rule.
 * **get** *(secured)*: Retrieve all application rules.
@@ -4772,8 +4822,10 @@ Working with a Specific Application Rule
 ### /4.0/edges/{edgeId}/loadbalancer/config/monitors
 Working With Load Balancer Monitors
 ----
-Load balancer monitors define health check parameters for a
-particular type of network traffic.
+You create a service monitor to define health check parameters for a
+particular type of network traffic. When you associate a service
+monitor with a pool, the pool members are monitored according to the
+service monitor parameters.
 
 * **post** *(secured)*: Add a load balancer monitor.
 * **get** *(secured)*: Retrieve all load balancer monitors.
@@ -4796,20 +4848,20 @@ Working With Virtual Servers
 You can add an NSX Edge internal or uplink interface as a virtual
 server.
 
-| Name | Required | Comments |
-|----------------|----------|----------|
-| **name** | yes | |
-| **description** | no | |
-| **enabled** | no | default is true |
-| **ipAddress** | yes | |
-| **protocol** | yes | Possible values are *HTTP*, *HTTPS*, *TCP*, or *UDP*.|
-| **port** | yes | A single port, a comma separate list, a range, or a combination. For example, *443,6000-7000*. |
-| **connectionLimit** | no | Maximum concurrent connections |
-| **connectionRateLimit** | no | Maximum incoming new connection requests per second |
-| **defaultPoolId** | no | The default backend server pool identifier |
-| **applicationProfileId** | no | The application profile identifier |
-| **accelerationEnabled** | no | Use the faster L4 load balancer engine rather than L7 load balancer engine. <br>**Note:**  If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.|
-| **applicationRuleId** | no | The application rule identifier list |
+Parameter |  Description | Comments
+---|---|---
+ **name**      |Name of virtual server.|Required.
+ **description**     |Description of virtual server.|Optional.
+ **enabled**    |Whether the virtual server is enabled.|Optional. Boolean. Options are *true* or *false*. Default is *true*.
+ **ipAddress**      |IP address that the load balancer is listening on. |Required. A valid NSX Edge vNic IP address (IPv4 or IPv6).
+ **protocol**      |Virtual server protocol.|Required. Options are: *HTTP*, *HTTPS*, *TCP*, *UDP*.
+ **port**      |Port number or port range.|Required. Port number such as *80*, port range such as *80,443* or *1234-1238*, or a combination such as *443,6000-7000*.
+ **connectionLimit**      |Maximum concurrent connections.|Optional. Long.
+ **connectionRateLimit**      |Maximum incoming new connection requests per second.|Optional. Long.
+ **defaultPoolId**      |Default backend server pool identifier.|Optional.
+ **applicationProfileId**      |Application profile identifier.|Optional.
+ **accelerationEnabled**      |Use the faster L4 load balancer  engine rather than L7 load  balancer engine.|Optional. Boolean. Options are *true* or *false*. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.
+ **applicationRuleId**      |Application rule identifier list.|Optional. Each item should be a valid **applicationRuleId**.
 
 * **get** *(secured)*: Retrieve all virtual servers.
 * **delete** *(secured)*: Delete all virtual servers.
@@ -4823,15 +4875,38 @@ Specified virtual server.
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools
 Working with Server Pools
 ----
-Server pools manage load balancer distribution methods and have
-monitors attached to them for health check parameters.
+You can add a server pool to manage and share backend servers
+flexibly and efficiently. A pool manages load balancer distribution
+methods and has a service monitor attached to it for health check
+parameters.
+
+Parameter |  Description | Comments
+---|---|---
+**pool > name**   |Name of pool.|Required.
+**description**   |Description of pool.|Optional.
+**algorithm**   |Pool member balancing algorithm.|Optional. Options are: *round-robin*, *ip-hash*, *uri*, *leastconn*, *url*, *httpheader*. Default is *round-robin*.
+**algorithmParameters**   |Algorithm parameters for *httpheader* and *url*. |Optional. Required for *httpheader* and *url* algorithm.
+**transparent**   |Whether client IP addresses are  visible to the backend servers.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+**monitorId**   |Monitor identifier list.|Optional. At the most one monitor is supported.
+**member**   |Pool member list.|Optional.
+**member > name**  |Member name.|Optional. Required, when used in ACL rule.
+**ipAddress**  |Member IP address.|Optional. Required, if **groupingObjectId** is null.
+**groupingObjectId**  |Member grouping object identifier.|Optional. Required, if **ipAddress** is null.
+**groupingObjectName**  |Member grouping object name.|Optional.
+**weight**  |Member weight.|Optional. Default is *1*.
+**monitorPort**  |Monitor port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
+**port**  |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured. 
+**maxConn**  |Maximum number of concurrent connections the member can handle.|Optional. Default is *0* which means unlimited.
+**minConn**  |Minimum number of concurrent connections a member must always accept.|Optional. Default is *0* which means unlimited.
+**condition**  |Whether the member is enabled or disabled.|Optional. Options are: *enabled* or *disabled*. Default is *enabled*.
 
 * **post** *(secured)*: Add a load balancer server pool to the Edge.
 * **get** *(secured)*: Get all server pools on the specified NSX Edge.
 * **delete** *(secured)*: Delete all server pools configured on the specified NSX Edge.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}
-Specific server pool.
+Working With a Specific Server Pool
+----
 
 * **get** *(secured)*: Retrieve information about the specified server pool.
 * **put** *(secured)*: Update the specified server pool.

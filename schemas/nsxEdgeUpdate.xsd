@@ -112,29 +112,50 @@
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
-                    <xs:element name="rules">
+                    <xs:element name="firewallRules">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="rule">
+                          <xs:element name="firewallRule">
                             <xs:complexType>
                               <xs:sequence>
                                 <xs:element type="xs:string" name="id"/>
                                 <xs:element type="xs:string" name="ruleTag"/>
                                 <xs:element type="xs:string" name="name"/>
                                 <xs:element type="xs:string" name="ruleType"/>
+                                
                                 <xs:element name="source">
                                   <xs:complexType>
                                     <xs:sequence>
                                       <xs:element type="xs:string" name="exclude"/>
-                                      <xs:element type="xs:string" name="groupingObjectId"/>
+                                      <xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/>
+                                      <xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/>
+                                      <xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/>
                                     </xs:sequence>
                                   </xs:complexType>
                                 </xs:element>
-                                <xs:element type="xs:string" name="destination"/>
+                                <xs:element name="destination">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="exclude"/>
+                                      <xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/>
+                                      <xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/>
+                                      <xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
                                 <xs:element name="application">
                                   <xs:complexType>
                                     <xs:sequence>
                                       <xs:element type="xs:string" name="applicationId"/>
+                                      <xs:element name="service">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="protocol"/>
+                                            <xs:element type="xs:string" name="port"/>
+                                            <xs:element type="xs:string" name="sourcePort"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
                                     </xs:sequence>
                                   </xs:complexType>
                                 </xs:element>

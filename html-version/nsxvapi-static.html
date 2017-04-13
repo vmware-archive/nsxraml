@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>VMware NSX for vSphere Documentation | 6.3.0</title>
+  <title>VMware NSX for vSphere Documentation | 6.3</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@ body{background-color:#eee}pre{border:0;border-radius:2px;background:#2b2b2b;col
 
 
 <div id="fleece-content" class="fleece-content">
-  <h1 class="main-heading">VMware NSX for vSphere 6.3.0 API Guide</h1>
+  <h1 class="main-heading">VMware NSX for vSphere 6.3 API Guide</h1>
   
         <section class="documentation">
 <h1 class="anchor" id="documentation-introduction">
@@ -45,11 +45,13 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#x63;&#x6f;&#109;">&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;">&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
 the general RESTful workflow.</p>
+<h3 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h3>
+<p>The NSX Manager requires port 443/TCP for REST API requests.</p>
 <h3 id="configuring-rest-clients-for-the-nsx-rest-api">Configuring REST Clients for the NSX REST API</h3>
 <p>Some browser-based clients include the Chrome app, Postman, or the Firefox
 add-on, RESTClient. Curl is a command-line tool that can function as a REST
@@ -79,8 +81,26 @@ Manager appliance, even if you have not made any configuration changes. You
 can use this as a test to verify that your REST client is configured correctly
 to communicate with the NSX Manager API.</p>
 <p><code>GET /api/2.0/services/usermgmt/user/admin</code></p>
-<h3 id="ports-required-for-the-nsx-rest-api">Ports Required for the NSX REST API</h3>
-<p>The NSX Manager requires port 443/TCP for REST API requests.</p>
+<h3 id="uri-and-query-parameters">URI and Query Parameters</h3>
+<p>Some methods have URI or query parameters. URI parameters are values that you
+include in the request URL. You use a question mark (<strong>?</strong>) to join the request
+URL and the query parameters. Multiple query parameters can be combined by
+using ampersands (<strong>&amp;</strong>).</p>
+<p>For example, you can use this method to get a list of logical switches on a transport zone: </p>
+<p><code>GET /api/2.0/vdn/scopes/{scopeId}/virtualwires</code></p>
+<p><strong>scopeId</strong> is a URI parameter that represents a transport zone.</p>
+<p>The <strong>startindex</strong> and <strong>pagesize</strong> query parameters control how this
+information is displayed. <strong>startindex</strong> determines which logical switch to
+begin the list with, and <strong>pagesize</strong> determines how many logical switches to
+list.  </p>
+<p>To view the first 20 logical switches on transport zone vdnscope-1, use the following parameters:</p>
+<ul>
+<li><strong>scopeId</strong> URI parameter set to <em>vdnscope-1</em>.  </li>
+<li><strong>startindex</strong> query parameter set to <em>0</em>.   </li>
+<li><strong>pagesize</strong> query parameter set to <em>20</em>.   </li>
+</ul>
+<p>These parameters are combined to create this request:</p>
+<p><code>GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?startindex=0&amp;pagesize=20</code></p>
 <h3 id="restful-workflow-patterns">RESTful Workflow Patterns</h3>
 <p>All RESTful workflows fall into a pattern that includes only two fundamental
 operations, which you repeat in this order for as long as necessary.</p>
@@ -108,7 +128,7 @@ the Value column. For example, <em>group-d1</em>.</li>
 <li>Find the <strong>childEntity</strong> in the Name column, and the corresponding
 Value column entry is the datacenter MOID. For example, <em>datacenter-21</em>.</li>
 </ol>
-<h3 id="find-host-moid">Find Host MOID</h3>
+<h3 id="find-cluster-or-host-moid">Find Cluster or Host MOID</h3>
 <ol>
 <li>In a web browser, enter the vCenter Managed Object Browser URL:
 <code>http://vCenter-IP-Address/mob</code>.</li>
@@ -120,8 +140,9 @@ link in the Value column. For example, <em>datacenter-21</em>.</li>
 <li>Find <strong>hostFolder</strong> in the Name column, and click the corresponding
 link in the Value column. For example, <em>group-h23</em>.</li>
 <li>Find <strong>childEntity</strong> in the Name column. The corresponding Value column
-contains links to host clusters. Click the appropriate host cluster link.
-For example, <em>domain-c33</em>.</li>
+lists the host clusters. For example, <em>domain-c33</em>.</li>
+<li>To find the MOID of a host in a cluster, click the appropriate host cluster
+link located in the previous step. </li>
 <li>Find <em>host</em> in the Name column. The corresponding Value column
 lists the hosts in that cluster by vCenter MOID and hostname. For example,
 <em>host-32 (esx-02a.corp.local)</em>.</li>
@@ -162,7 +183,7 @@ contains links to host clusters. Click the appropriate host cluster link.
 For example, <em>domain-c33</em>.</li>
 <li>Find <strong>host</strong> in the Name column. The corresponding Value column lists the
 hosts in that cluster by vCenter MOID and hostname. Click the appropriate
-host link, For example, host-32.</li>
+host link, For example, <em>host-32</em>.</li>
 <li>Find <strong>vm</strong> in the Name column. The corresponding Value column lists the
 virtual machines by vCenter MOID and hostname. For example, <em>vm-216 (web-01a)</em>.</li>
 <li>To find the instance UUID of a VM, click the VM MOID link located in the
@@ -179,7 +200,7 @@ lists the VM instance UUID. For example,
     part-number
   </a>
 </h1>
-<div class="content"><p>EN-002339-00</p>
+<div class="content"><p>EN-002339-01</p>
 </div>
 </section>
     <section class="security-schemes">
@@ -13572,7 +13593,7 @@ transport zone (network scope).</p>
       <h3>Query Parameters</h3>
         <dl>
   <dt>
-    <span class="param">startIndex</span>
+    <span class="param">startindex</span>
     <span class="badge">string</span>
     
   </dt>
@@ -13581,7 +13602,7 @@ transport zone (network scope).</p>
 
   </dd>
   <dt>
-    <span class="param">pageSize</span>
+    <span class="param">pagesize</span>
     <span class="badge">string</span>
     
   </dt>
@@ -13924,7 +13945,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
       <h3>Query Parameters</h3>
         <dl>
   <dt>
-    <span class="param">startIndex</span>
+    <span class="param">startindex</span>
     <span class="badge">string</span>
     
   </dt>
@@ -13933,7 +13954,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
 
   </dd>
   <dt>
-    <span class="param">pageSize</span>
+    <span class="param">pagesize</span>
     <span class="badge">string</span>
     
   </dt>
@@ -16281,11 +16302,6 @@ DHCP relay properties.</p>
 <td>Optional. True/False. Default is <em>true</em>.</td>
 </tr>
 <tr>
-<td><strong>enableFips</strong></td>
-<td>Enable compliance to FIPS Standards.</td>
-<td>Optional. True/False. Default is <em>false</em>.</td>
-</tr>
-<tr>
 <td><strong>enableCoreDump</strong></td>
 <td>Deploys a new NSX Edge for debug/core-dump purpose.</td>
 <td>Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.</td>
@@ -16411,6 +16427,37 @@ DHCP relay properties.</p>
 <td>Defines the port through which the communication happens.</td>
 <td>Integer 1-65535. Default is <em>5666</em>.</td>
 </tr>
+</tbody></table><h4 id="dns-client-edge-services-gateway-and-logical-distributed-router">DNS Client: Edge Services Gateway and Logical (Distributed) Router</h4>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>dnsClient</strong></td>
+<td>Configures the DNS settings of the Edge Services Gateway.</td>
+<td>Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.</td>
+</tr>
+<tr>
+<td><strong>primaryDns</strong></td>
+<td>Primary DNS IP</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>secondaryDns</strong></td>
+<td>Secondary DNS IP</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>domainName</strong></td>
+<td>Domain Name of Edge</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>domainName</strong></td>
+<td>Secondary Domain Name of Edge</td>
+<td></td>
+</tr>
 </tbody></table><h4 id="vnic-parameters-edge-services-gateway-only">vNIC Parameters: Edge Services Gateway Only</h4>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -16481,21 +16528,6 @@ DHCP relay properties.</p>
 <td><strong>macAddress &gt; value</strong></td>
 <td>Value of the MAC address.</td>
 <td>Optional. Ensure that MAC addresses provided are unique within the given layer 2 domain.</td>
-</tr>
-<tr>
-<td><strong>fenceParameter</strong></td>
-<td>Fence connection mode settings for vCloud Director fence mode. Do not use for other NSX deployments.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td><strong>fenceParameter &gt; key</strong></td>
-<td>Fence connection mode setting key.</td>
-<td>Required. </td>
-</tr>
-<tr>
-<td><strong>fenceParameter &gt; value</strong></td>
-<td>Fence connection mode setting value.</td>
-<td>Required. </td>
 </tr>
 <tr>
 <td><strong>vnic &gt; mtu</strong></td>
@@ -16602,37 +16634,6 @@ DHCP relay properties.</p>
 <td><strong>type</strong></td>
 <td>Type of interface.</td>
 <td>Required. Choice of <em>uplink</em> or <em>internal</em>. </td>
-</tr>
-</tbody></table><h4 id="dns-client-edge-services-gateway-only">DNS Client: Edge Services Gateway Only</h4>
-<table class="table"><thead><tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Comments </th>
-</tr>
-</thead><tbody><tr>
-<td><strong>dnsClient</strong></td>
-<td>Configures the DNS settings of the Edge Services Gateway.</td>
-<td>Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.</td>
-</tr>
-<tr>
-<td><strong>primaryDns</strong></td>
-<td>Primary DNS IP</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>secondaryDns</strong></td>
-<td>Secondary DNS IP</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>domainName</strong></td>
-<td>Domain Name of Edge</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>domainName</strong></td>
-<td>Secondary Domain Name of Edge</td>
-<td></td>
 </tr>
 </tbody></table></p>
     <div class="params">
@@ -17269,29 +17270,50 @@ the resource, and ID of the resource as shown in response body</p>
                         &lt;/xs:sequence&gt;
                       &lt;/xs:complexType&gt;
                     &lt;/xs:element&gt;
-                    &lt;xs:element name="rules"&gt;
+                    &lt;xs:element name="firewallRules"&gt;
                       &lt;xs:complexType&gt;
                         &lt;xs:sequence&gt;
-                          &lt;xs:element name="rule"&gt;
+                          &lt;xs:element name="firewallRule"&gt;
                             &lt;xs:complexType&gt;
                               &lt;xs:sequence&gt;
                                 &lt;xs:element type="xs:string" name="id"/&gt;
                                 &lt;xs:element type="xs:string" name="ruleTag"/&gt;
                                 &lt;xs:element type="xs:string" name="name"/&gt;
                                 &lt;xs:element type="xs:string" name="ruleType"/&gt;
+                                
                                 &lt;xs:element name="source"&gt;
                                   &lt;xs:complexType&gt;
                                     &lt;xs:sequence&gt;
                                       &lt;xs:element type="xs:string" name="exclude"/&gt;
-                                      &lt;xs:element type="xs:string" name="groupingObjectId"/&gt;
+                                      &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+                                      &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                                      &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
                                     &lt;/xs:sequence&gt;
                                   &lt;/xs:complexType&gt;
                                 &lt;/xs:element&gt;
-                                &lt;xs:element type="xs:string" name="destination"/&gt;
+                                &lt;xs:element name="destination"&gt;
+                                  &lt;xs:complexType&gt;
+                                    &lt;xs:sequence&gt;
+                                      &lt;xs:element type="xs:string" name="exclude"/&gt;
+                                      &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+                                      &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                                      &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                                    &lt;/xs:sequence&gt;
+                                  &lt;/xs:complexType&gt;
+                                &lt;/xs:element&gt;
                                 &lt;xs:element name="application"&gt;
                                   &lt;xs:complexType&gt;
                                     &lt;xs:sequence&gt;
                                       &lt;xs:element type="xs:string" name="applicationId"/&gt;
+                                      &lt;xs:element name="service"&gt;
+                                        &lt;xs:complexType&gt;
+                                          &lt;xs:sequence&gt;
+                                            &lt;xs:element type="xs:string" name="protocol"/&gt;
+                                            &lt;xs:element type="xs:string" name="port"/&gt;
+                                            &lt;xs:element type="xs:string" name="sourcePort"/&gt;
+                                          &lt;/xs:sequence&gt;
+                                        &lt;/xs:complexType&gt;
+                                      &lt;/xs:element&gt;
                                     &lt;/xs:sequence&gt;
                                   &lt;/xs:complexType&gt;
                                 &lt;/xs:element&gt;
@@ -17609,8 +17631,8 @@ the resource, and ID of the resource as shown in response body</p>
         <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">defaultPolicy</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">rules</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">firewallRules</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">firewallRule</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
@@ -17627,8 +17649,8 @@ the resource, and ID of the resource as shown in response body</p>
           <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">matchTranslated</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">matchTranslated</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">rules</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">firewallRule</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">firewallRules</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">firewall</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">routing</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">staticRouting</span>&gt;</span>
@@ -19564,15 +19586,15 @@ configured using <strong>ruleIds</strong> generated by NSX Manager.</p>
 </tr>
 <tr>
 <td><strong>ipAddress</strong><br>(source or destination)</td>
-<td>List of string.   </td>
+<td>List of string. Can specify single IP address, range of IP address, or in CIDR format. Can define multiple.</td>
 </tr>
 <tr>
 <td><strong>groupingObjectId</strong><br>(source or destination)</td>
-<td>List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. </td>
+<td>List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. Can defined multiple.</td>
 </tr>
 <tr>
 <td><strong>vnicGroupId</strong><br>(source or destination)</td>
-<td>List of string. Possible values are <em>vnic-index-[1-9]</em>, <em>vse</em>, <em>external</em> or <em>internal</em>.</td>
+<td>List of string. Possible values are <em>vnic-index-[1-9]</em>, <em>vse</em>, <em>external</em> or <em>internal</em>. Can define multiple.</td>
 </tr>
 <tr>
 <td><strong>application</strong></td>
@@ -19710,10 +19732,10 @@ configured using <strong>ruleIds</strong> generated by NSX Manager.</p>
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
-        &lt;xs:element name="rules"&gt;
+        &lt;xs:element name="firewallRules"&gt;
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
-              &lt;xs:element name="rule"&gt;
+              &lt;xs:element name="firewallRule"&gt;
                 &lt;xs:complexType&gt;
                   &lt;xs:sequence&gt;
                     &lt;xs:element type="xs:string" name="ruleTag"/&gt;
@@ -19721,19 +19743,21 @@ configured using <strong>ruleIds</strong> generated by NSX Manager.</p>
                     &lt;xs:element name="source"&gt;
                       &lt;xs:complexType&gt;
                         &lt;xs:sequence&gt;
-                          &lt;xs:element type="xs:string" name="vnicGroupId"/&gt;
-                          &lt;xs:element type="xs:string" name="groupingObjectId"/&gt;
-                          &lt;xs:element type="xs:string" name="ipAddress"/&gt;
+                          &lt;xs:element type="xs:string" name="exclude"/&gt;
+                          &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+                          &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                          &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
                         &lt;/xs:sequence&gt;
                       &lt;/xs:complexType&gt;
                     &lt;/xs:element&gt;
                     &lt;xs:element name="destination"&gt;
                       &lt;xs:complexType&gt;
-                        &lt;xs:choice maxOccurs="unbounded" minOccurs="0"&gt;
-                          &lt;xs:element type="xs:string" name="groupingObjectId"/&gt;
-                          &lt;xs:element type="xs:string" name="vnicGroupId"/&gt;
-                          &lt;xs:element type="xs:string" name="ipAddress"/&gt;
-                        &lt;/xs:choice&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element type="xs:string" name="exclude"/&gt;
+                          &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+                          &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                          &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                        &lt;/xs:sequence&gt;
                       &lt;/xs:complexType&gt;
                     &lt;/xs:element&gt;
                     &lt;xs:element name="application"&gt;
@@ -20006,87 +20030,57 @@ using the query parameter, indicating the desired ruleID.</p>
     </div>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="firewall"&gt;
+  &lt;xs:element name="firewallRules"&gt;
     &lt;xs:complexType&gt;
       &lt;xs:sequence&gt;
-        &lt;xs:element name="defaultPolicy"&gt;
+        &lt;xs:element name="firewallRule"&gt;
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="action"/&gt;
-              &lt;xs:element type="xs:string" name="loggingEnabled"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element name="globalConfig"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="tcpPickOngoingConnections"/&gt;
-              &lt;xs:element type="xs:string" name="tcpAllowOutOfWindowPackets"/&gt;
-              &lt;xs:element type="xs:string" name="tcpSendResetForClosedVsePorts"/&gt;
-              &lt;xs:element type="xs:string" name="dropInvalidTraffic"/&gt;
-              &lt;xs:element type="xs:string" name="logInvalidTraffic"/&gt;
-              &lt;xs:element type="xs:string" name="tcpTimeoutOpen"/&gt;
-              &lt;xs:element type="xs:string" name="tcpTimeoutEstablished"/&gt;
-              &lt;xs:element type="xs:string" name="tcpTimeoutClose"/&gt;
-              &lt;xs:element type="xs:string" name="udpTimeout"/&gt;
-              &lt;xs:element type="xs:string" name="icmpTimeout"/&gt;
-              &lt;xs:element type="xs:string" name="icmp6Timeout"/&gt;
-              &lt;xs:element type="xs:string" name="ipGenericTimeout"/&gt;
-              &lt;xs:element type="xs:string" name="enableSynFloodProtection"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element name="rules"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element name="rule"&gt;
+              &lt;xs:element type="xs:string" name="ruleTag"/&gt;
+              &lt;xs:element type="xs:string" name="name"/&gt;
+              &lt;xs:element name="source"&gt;
                 &lt;xs:complexType&gt;
                   &lt;xs:sequence&gt;
-                    &lt;xs:element type="xs:string" name="ruleTag"/&gt;
-                    &lt;xs:element type="xs:string" name="name"/&gt;
-                    &lt;xs:element name="source"&gt;
-                      &lt;xs:complexType&gt;
-                        &lt;xs:sequence&gt;
-                          &lt;xs:element type="xs:string" name="vnicGroupId"/&gt;
-                          &lt;xs:element type="xs:string" name="groupingObjectId"/&gt;
-                          &lt;xs:element type="xs:string" name="ipAddress"/&gt;
-                        &lt;/xs:sequence&gt;
-                      &lt;/xs:complexType&gt;
-                    &lt;/xs:element&gt;
-                    &lt;xs:element name="destination"&gt;
-                      &lt;xs:complexType&gt;
-                        &lt;xs:choice maxOccurs="unbounded" minOccurs="0"&gt;
-                          &lt;xs:element type="xs:string" name="groupingObjectId"/&gt;
-                          &lt;xs:element type="xs:string" name="vnicGroupId"/&gt;
-                          &lt;xs:element type="xs:string" name="ipAddress"/&gt;
-                        &lt;/xs:choice&gt;
-                      &lt;/xs:complexType&gt;
-                    &lt;/xs:element&gt;
-                    &lt;xs:element name="application"&gt;
-                      &lt;xs:complexType&gt;
-                        &lt;xs:sequence&gt;
-                          &lt;xs:element type="xs:string" name="applicationId"/&gt;
-                          &lt;xs:element name="service"&gt;
-                            &lt;xs:complexType&gt;
-                              &lt;xs:sequence&gt;
-                                &lt;xs:element type="xs:string" name="protocol"/&gt;
-                                &lt;xs:element type="xs:string" name="port"/&gt;
-                                &lt;xs:element type="xs:string" name="sourcePort"/&gt;
-                              &lt;/xs:sequence&gt;
-                            &lt;/xs:complexType&gt;
-                          &lt;/xs:element&gt;
-                        &lt;/xs:sequence&gt;
-                      &lt;/xs:complexType&gt;
-                    &lt;/xs:element&gt;
-                    &lt;xs:element type="xs:string" name="matchTranslated"/&gt;
-                    &lt;xs:element type="xs:string" name="direction"/&gt;
-                    &lt;xs:element type="xs:string" name="action"/&gt;
-                    &lt;xs:element type="xs:string" name="enabled"/&gt;
-                    &lt;xs:element type="xs:string" name="loggingEnabled"/&gt;
-                    &lt;xs:element type="xs:string" name="description"/&gt;
+                    &lt;xs:element type="xs:string" name="exclude"/&gt;
+                    &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+                    &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                    &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
                   &lt;/xs:sequence&gt;
                 &lt;/xs:complexType&gt;
               &lt;/xs:element&gt;
+              &lt;xs:element name="destination"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="exclude"/&gt;
+                    &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+                    &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                    &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
+                    &lt;/xs:choice&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name="application"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="applicationId"/&gt;
+                    &lt;xs:element name="service"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element type="xs:string" name="protocol"/&gt;
+                          &lt;xs:element type="xs:string" name="port"/&gt;
+                          &lt;xs:element type="xs:string" name="sourcePort"/&gt;
+                        &lt;/xs:sequence&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="matchTranslated"/&gt;
+              &lt;xs:element type="xs:string" name="direction"/&gt;
+              &lt;xs:element type="xs:string" name="action"/&gt;
+              &lt;xs:element type="xs:string" name="enabled"/&gt;
+              &lt;xs:element type="xs:string" name="loggingEnabled"/&gt;
+              &lt;xs:element type="xs:string" name="description"/&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
@@ -20096,58 +20090,36 @@ using the query parameter, indicating the desired ruleID.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewall</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">defaultPolicy</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallRules</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">firewallRule</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnicGroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicGroupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destination</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnicGroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicGroupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">destination</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">applicationId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applicationId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">sourcePort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sourcePort</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">matchTranslated</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">matchTranslated</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">defaultPolicy</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">tcpPickOngoingConnections</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tcpPickOngoingConnections</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">tcpAllowOutOfWindowPackets</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tcpAllowOutOfWindowPackets</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">tcpSendResetForClosedVsePorts</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tcpSendResetForClosedVsePorts</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">dropInvalidTraffic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dropInvalidTraffic</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">logInvalidTraffic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logInvalidTraffic</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">tcpTimeoutOpen</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tcpTimeoutOpen</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">tcpTimeoutEstablished</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tcpTimeoutEstablished</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">tcpTimeoutClose</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tcpTimeoutClose</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">udpTimeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">udpTimeout</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">icmpTimeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">icmpTimeout</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">icmp6Timeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">icmp6Timeout</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipGenericTimeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipGenericTimeout</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enableSynFloodProtection</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableSynFloodProtection</span>&gt;</span> 
-  <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">rules</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">vnicGroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicGroupId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">destination</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">vnicGroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicGroupId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">destination</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">applicationId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applicationId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">sourcePort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sourcePort</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">matchTranslated</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">matchTranslated</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">rules</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">firewall</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">firewallRule</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">firewallRules</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -20191,7 +20163,7 @@ using the query parameter, indicating the desired ruleID.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="rule"&gt;
+  &lt;xs:element name="firewallRule"&gt;
     &lt;xs:complexType&gt;
       &lt;xs:sequence&gt;
         &lt;xs:element type="xs:string" name="ruleTag"/&gt;
@@ -20199,16 +20171,20 @@ using the query parameter, indicating the desired ruleID.</p>
         &lt;xs:element name="source"&gt;
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="vnicGroupId"/&gt;
-              &lt;xs:element type="xs:string" name="groupingObjectId"/&gt;
+              &lt;xs:element type="xs:string" name="exclude"/&gt;
+              &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+              &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+              &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
         &lt;xs:element name="destination"&gt;
           &lt;xs:complexType&gt;
             &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="groupingObjectId"/&gt;
-              &lt;xs:element type="xs:string" name="vnicGroupId"/&gt;
+              &lt;xs:element type="xs:string" name="exclude"/&gt;
+              &lt;xs:element type="xs:string" name="ipAddress" maxOccurs="unbounded" minOccurs="0"/&gt;
+              &lt;xs:element type="xs:string" name="groupingObjectId" maxOccurs="unbounded" minOccurs="0"/&gt;
+              &lt;xs:element type="xs:string" name="vnicGroupId" maxOccurs="unbounded" minOccurs="0"/&gt;
             &lt;/xs:sequence&gt;
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
@@ -20231,19 +20207,26 @@ using the query parameter, indicating the desired ruleID.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallRule</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vnicGroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicGroupId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">destination</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vnicGroupId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicGroupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">destination</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">applicationId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applicationId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">service</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sourcePort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sourcePort</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">service</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">matchTranslated</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">matchTranslated</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
@@ -20251,7 +20234,7 @@ using the query parameter, indicating the desired ruleID.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">firewallRule</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -20804,6 +20787,18 @@ sent bytes, received bytes etc. for the given Edge</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-nsx-edge-load-balancer">Working With NSX Edge Load Balancer</h2>
+<p>The NSX Edge load balancer enables network traffic to follow multiple
+paths to a specific destination. It distributes incoming service
+requests evenly among multiple servers in such a way that the load
+distribution is transparent to users. Load balancing thus helps in
+achieving optimal resource utilization, maximizing throughput,
+minimizing response time, and avoiding overload. NSX Edge provides load
+balancing up to Layer 7.</p>
+<p>You map an external, or public, IP address to a set of internal servers
+for load balancing. The load balancer accepts TCP, HTTP, or HTTPS
+requests on the external IP address and decides which internal server
+to use.  Port 8090 is the default listening port for TCP, port 80 is
+the default port for HTTP, and port 443 is the default port for HTTPs.</p>
 </div>
 <div class="method get">
   <a
@@ -20824,6 +20819,10 @@ sent bytes, received bytes etc. for the given Edge</p>
   ><h2>PUT /4.0/edges/{edgeId}/loadbalancer/config</h2></a>
   <div class="content">
     <p><p>Configure load balancer.</p>
+<p>The input contains five parts: application profile, virtual server,
+pool, monitor and application rule.</p>
+<p>For the data path to work, you need to add firewall rules to allow
+required traffic as per the load balancer configuration.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -21034,8 +21033,12 @@ sent bytes, received bytes etc. for the given Edge</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-application-profiles">Working with Application Profiles</h2>
-<p>Application profiles define the behavior of a particular type of
-network traffic.</p>
+<p>You create an application profile to define the behavior of a
+particular type of network traffic. After configuring a profile, you
+associate the profile with a virtual server. The virtual server then
+processes traffic according to the values specified in the profile.
+Using profiles enhances your control over managing network traffic,
+and makes traffic‐management tasks easier and more efficient.</p>
 </div>
 <div class="method post">
   <a
@@ -21192,8 +21195,8 @@ network traffic.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-application-rules">Working With Application Rules</h2>
-<p>Manage application rules that directly manipulate and manage IP
-application traffic.</p>
+<p>You can write an application rule to directly manipulate and manage
+IP application traffic.</p>
 </div>
 <div class="method post">
   <a
@@ -21361,8 +21364,10 @@ application traffic.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-load-balancer-monitors">Working With Load Balancer Monitors</h2>
-<p>Load balancer monitors define health check parameters for a
-particular type of network traffic.</p>
+<p>You create a service monitor to define health check parameters for a
+particular type of network traffic. When you associate a service
+monitor with a pool, the pool members are monitored according to the
+service monitor parameters.</p>
 </div>
 <div class="method post">
   <a
@@ -21507,9 +21512,101 @@ particular type of network traffic.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-server-pools">Working with Server Pools</h2>
-<p>Server pools manage load balancer distribution methods and have
-monitors attached to them for health check parameters.</p>
-</div>
+<p>You can add a server pool to manage and share backend servers
+flexibly and efficiently. A pool manages load balancer distribution
+methods and has a service monitor attached to it for health check
+parameters.</p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>pool &gt; name</strong></td>
+<td>Name of pool.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>Description of pool.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>algorithm</strong></td>
+<td>Pool member balancing algorithm.</td>
+<td>Optional. Options are: <em>round-robin</em>, <em>ip-hash</em>, <em>uri</em>, <em>leastconn</em>, <em>url</em>, <em>httpheader</em>. Default is <em>round-robin</em>.</td>
+</tr>
+<tr>
+<td><strong>algorithmParameters</strong></td>
+<td>Algorithm parameters for <em>httpheader</em> and <em>url</em>.</td>
+<td>Optional. Required for <em>httpheader</em> and <em>url</em> algorithm.</td>
+</tr>
+<tr>
+<td><strong>transparent</strong></td>
+<td>Whether client IP addresses are  visible to the backend servers.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td><strong>monitorId</strong></td>
+<td>Monitor identifier list.</td>
+<td>Optional. At the most one monitor is supported.</td>
+</tr>
+<tr>
+<td><strong>member</strong></td>
+<td>Pool member list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>member &gt; name</strong></td>
+<td>Member name.</td>
+<td>Optional. Required, when used in ACL rule.</td>
+</tr>
+<tr>
+<td><strong>ipAddress</strong></td>
+<td>Member IP address.</td>
+<td>Optional. Required, if <strong>groupingObjectId</strong> is null.</td>
+</tr>
+<tr>
+<td><strong>groupingObjectId</strong></td>
+<td>Member grouping object identifier.</td>
+<td>Optional. Required, if <strong>ipAddress</strong> is null.</td>
+</tr>
+<tr>
+<td><strong>groupingObjectName</strong></td>
+<td>Member grouping object name.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>weight</strong></td>
+<td>Member weight.</td>
+<td>Optional. Default is <em>1</em>.</td>
+</tr>
+<tr>
+<td><strong>monitorPort</strong></td>
+<td>Monitor port.</td>
+<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured.</td>
+</tr>
+<tr>
+<td><strong>port</strong></td>
+<td>Member port.</td>
+<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured. </td>
+</tr>
+<tr>
+<td><strong>maxConn</strong></td>
+<td>Maximum number of concurrent connections the member can handle.</td>
+<td>Optional. Default is <em>0</em> which means unlimited.</td>
+</tr>
+<tr>
+<td><strong>minConn</strong></td>
+<td>Minimum number of concurrent connections a member must always accept.</td>
+<td>Optional. Default is <em>0</em> which means unlimited.</td>
+</tr>
+<tr>
+<td><strong>condition</strong></td>
+<td>Whether the member is enabled or disabled.</td>
+<td>Optional. Options are: <em>enabled</em> or <em>disabled</em>. Default is <em>enabled</em>.</td>
+</tr>
+</tbody></table></div>
 <div class="method post">
   <a
     class="verb post"
@@ -21591,7 +21688,7 @@ monitors attached to them for health check parameters.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specific server pool.</p>
+  <div class="description"><h2 id="working-with-a-specific-server-pool">Working With a Specific Server Pool</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -21665,11 +21762,12 @@ monitors attached to them for health check parameters.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
 </code></pre>
@@ -21701,69 +21799,69 @@ monitors attached to them for health check parameters.</p>
 <p>You can add an NSX Edge internal or uplink interface as a virtual
 server.</p>
 <table class="table"><thead><tr>
-<th>Name</th>
-<th>Required</th>
+<th>Parameter</th>
+<th>Description</th>
 <th>Comments</th>
 </tr>
 </thead><tbody><tr>
-<td><strong>name</strong></td>
-<td>yes</td>
-<td></td>
+<td> <strong>name</strong></td>
+<td>Name of virtual server.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>description</strong></td>
-<td>no</td>
-<td></td>
+<td> <strong>description</strong></td>
+<td>Description of virtual server.</td>
+<td>Optional.</td>
 </tr>
 <tr>
-<td><strong>enabled</strong></td>
-<td>no</td>
-<td>default is true</td>
+<td> <strong>enabled</strong></td>
+<td>Whether the virtual server is enabled.</td>
+<td>Optional. Boolean. Options are <em>true</em> or <em>false</em>. Default is <em>true</em>.</td>
 </tr>
 <tr>
-<td><strong>ipAddress</strong></td>
-<td>yes</td>
-<td></td>
+<td> <strong>ipAddress</strong></td>
+<td>IP address that the load balancer is listening on.</td>
+<td>Required. A valid NSX Edge vNic IP address (IPv4 or IPv6).</td>
 </tr>
 <tr>
-<td><strong>protocol</strong></td>
-<td>yes</td>
-<td>Possible values are <em>HTTP</em>, <em>HTTPS</em>, <em>TCP</em>, or <em>UDP</em>.</td>
+<td> <strong>protocol</strong></td>
+<td>Virtual server protocol.</td>
+<td>Required. Options are: <em>HTTP</em>, <em>HTTPS</em>, <em>TCP</em>, <em>UDP</em>.</td>
 </tr>
 <tr>
-<td><strong>port</strong></td>
-<td>yes</td>
-<td>A single port, a comma separate list, a range, or a combination. For example, <em>443,6000-7000</em>.</td>
+<td> <strong>port</strong></td>
+<td>Port number or port range.</td>
+<td>Required. Port number such as <em>80</em>, port range such as <em>80,443</em> or <em>1234-1238</em>, or a combination such as <em>443,6000-7000</em>.</td>
 </tr>
 <tr>
-<td><strong>connectionLimit</strong></td>
-<td>no</td>
-<td>Maximum concurrent connections</td>
+<td> <strong>connectionLimit</strong></td>
+<td>Maximum concurrent connections.</td>
+<td>Optional. Long.</td>
 </tr>
 <tr>
-<td><strong>connectionRateLimit</strong></td>
-<td>no</td>
-<td>Maximum incoming new connection requests per second</td>
+<td> <strong>connectionRateLimit</strong></td>
+<td>Maximum incoming new connection requests per second.</td>
+<td>Optional. Long.</td>
 </tr>
 <tr>
-<td><strong>defaultPoolId</strong></td>
-<td>no</td>
-<td>The default backend server pool identifier</td>
+<td> <strong>defaultPoolId</strong></td>
+<td>Default backend server pool identifier.</td>
+<td>Optional.</td>
 </tr>
 <tr>
-<td><strong>applicationProfileId</strong></td>
-<td>no</td>
-<td>The application profile identifier</td>
+<td> <strong>applicationProfileId</strong></td>
+<td>Application profile identifier.</td>
+<td>Optional.</td>
 </tr>
 <tr>
-<td><strong>accelerationEnabled</strong></td>
-<td>no</td>
-<td>Use the faster L4 load balancer engine rather than L7 load balancer engine. <br><strong>Note:</strong>  If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if <strong>accelerationEnabled</strong> is not set to true.</td>
+<td> <strong>accelerationEnabled</strong></td>
+<td>Use the faster L4 load balancer  engine rather than L7 load  balancer engine.</td>
+<td>Optional. Boolean. Options are <em>true</em> or <em>false</em>. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if <strong>accelerationEnabled</strong> is not set to true.</td>
 </tr>
 <tr>
-<td><strong>applicationRuleId</strong></td>
-<td>no</td>
-<td>The application rule identifier list</td>
+<td> <strong>applicationRuleId</strong></td>
+<td>Application rule identifier list.</td>
+<td>Optional. Each item should be a valid <strong>applicationRuleId</strong>.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
