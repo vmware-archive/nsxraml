@@ -920,7 +920,7 @@ Managing Security Tags
 
 Release | Modification
 --------|-------------
-6.3.0 | Method updated. `isUniversal` parameter can be set to create a universal security tag.
+6.3.0 | Method updated. **isUniversal** parameter can be set to create a universal security tag.
 
 * **get** *(secured)*: Retrieve all security tags.
 
@@ -928,7 +928,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.3.0 | Method updated. Added `isUniversal` query parameter to filter universal security tags.
+6.3.0 | Method updated. Added **isUniversal** query parameter to filter universal security tags.
 
 ### /2.0/services/securitytags/tag/{tagId}
 Delete a Security Tag
@@ -4185,7 +4185,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **haAdminState** parameter added.
-6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
 also deleted.
@@ -4439,7 +4439,7 @@ be deleted.
 
 Release | Modification
 --------|-------------
-6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **get** *(secured)*: Retrieve SNAT and DNAT rules for the specified NSX Edge.
 
@@ -4447,7 +4447,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **delete** *(secured)*: Delete all NAT rules for the specified NSX Edge.
 
@@ -4462,7 +4462,7 @@ Working With NAT Rules
 
 Release | Modification
 --------|-------------
-6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 ### /4.0/edges/{edgeId}/nat/config/rules/{ruleID}
 Working With a Specific NAT Rule
@@ -4474,7 +4474,7 @@ Working With a Specific NAT Rule
 
 Release | Modification
 --------|-------------
-6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. **protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **delete** *(secured)*: Delete the specified NAT rule.
 
@@ -4618,10 +4618,7 @@ Parameter  |   Description  | Comments
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
-6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
-6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
-6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
-6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
+6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
 
 * **put** *(secured)*: Configure NSX Edge global routing configuration, static routing, and
 dynamic routing (OSPF and BGP).
@@ -4631,10 +4628,7 @@ dynamic routing (OSPF and BGP).
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
-6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
-6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
-6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
-6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
+6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
 
 * **delete** *(secured)*: Delete the routing config stored in the NSX Manager database and the
 default routes from the specified NSX Edge appliance.
@@ -4679,9 +4673,7 @@ Areas are identified by an Area ID.
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
-6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
-6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
-6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
+6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. 
 
 * **put** *(secured)*: Configure OSPF.
 
@@ -4690,9 +4682,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
-6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
-6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
-6.3.0 | Parameter `translateType7ToType5` added to OSPF section.
+6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. 
 
 * **delete** *(secured)*: Delete OSPF routing.
 
@@ -4714,9 +4704,7 @@ their tables.
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
-6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
-6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
-6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
+6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
 
 * **put** *(secured)*: Configure BGP.
 
@@ -4725,9 +4713,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
-6.3.0 | Method updated. `isis` parameter removed from route redistribution rules configuration.
-6.3.0 | Parameter `defaultOriginate` removed for logical router NSX Edges.
-6.3.0 | Parameters `localASNumber` and `remoteASNumber` added to BGP section.
+6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
 
 * **delete** *(secured)*: Delete BGP Routing
 
