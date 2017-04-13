@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#x62;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#99;&#111;&#109;">&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#x62;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#100;&#x6f;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#x40;&#x76;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#111;&#109;">&#100;&#x6f;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#x40;&#x76;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -16232,11 +16232,6 @@ DHCP relay properties.</p>
 <td>Optional. True/False. Default is <em>true</em>.</td>
 </tr>
 <tr>
-<td><strong>enableFips</strong></td>
-<td>Enable compliance to FIPS Standards.</td>
-<td>Optional. True/False. Default is <em>false</em>.</td>
-</tr>
-<tr>
 <td><strong>enableCoreDump</strong></td>
 <td>Deploys a new NSX Edge for debug/core-dump purpose.</td>
 <td>Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.</td>
@@ -16362,6 +16357,37 @@ DHCP relay properties.</p>
 <td>Defines the port through which the communication happens.</td>
 <td>Integer 1-65535. Default is <em>5666</em>.</td>
 </tr>
+</tbody></table><h4 id="dns-client-edge-services-gateway-and-logical-distributed-router">DNS Client: Edge Services Gateway and Logical (Distributed) Router</h4>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>dnsClient</strong></td>
+<td>Configures the DNS settings of the Edge Services Gateway.</td>
+<td>Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.</td>
+</tr>
+<tr>
+<td><strong>primaryDns</strong></td>
+<td>Primary DNS IP</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>secondaryDns</strong></td>
+<td>Secondary DNS IP</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>domainName</strong></td>
+<td>Domain Name of Edge</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>domainName</strong></td>
+<td>Secondary Domain Name of Edge</td>
+<td></td>
+</tr>
 </tbody></table><h4 id="vnic-parameters-edge-services-gateway-only">vNIC Parameters: Edge Services Gateway Only</h4>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -16432,21 +16458,6 @@ DHCP relay properties.</p>
 <td><strong>macAddress &gt; value</strong></td>
 <td>Value of the MAC address.</td>
 <td>Optional. Ensure that MAC addresses provided are unique within the given layer 2 domain.</td>
-</tr>
-<tr>
-<td><strong>fenceParameter</strong></td>
-<td>Fence connection mode settings for vCloud Director fence mode. Do not use for other NSX deployments.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td><strong>fenceParameter &gt; key</strong></td>
-<td>Fence connection mode setting key.</td>
-<td>Required. </td>
-</tr>
-<tr>
-<td><strong>fenceParameter &gt; value</strong></td>
-<td>Fence connection mode setting value.</td>
-<td>Required. </td>
 </tr>
 <tr>
 <td><strong>vnic &gt; mtu</strong></td>
@@ -16553,37 +16564,6 @@ DHCP relay properties.</p>
 <td><strong>type</strong></td>
 <td>Type of interface.</td>
 <td>Required. Choice of <em>uplink</em> or <em>internal</em>. </td>
-</tr>
-</tbody></table><h4 id="dns-client-edge-services-gateway-only">DNS Client: Edge Services Gateway Only</h4>
-<table class="table"><thead><tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Comments </th>
-</tr>
-</thead><tbody><tr>
-<td><strong>dnsClient</strong></td>
-<td>Configures the DNS settings of the Edge Services Gateway.</td>
-<td>Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.</td>
-</tr>
-<tr>
-<td><strong>primaryDns</strong></td>
-<td>Primary DNS IP</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>secondaryDns</strong></td>
-<td>Secondary DNS IP</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>domainName</strong></td>
-<td>Domain Name of Edge</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>domainName</strong></td>
-<td>Secondary Domain Name of Edge</td>
-<td></td>
 </tr>
 </tbody></table></p>
     <div class="params">

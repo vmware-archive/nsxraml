@@ -9615,7 +9615,6 @@ securitySchemes:
       **fqdn** |Fully Qualified Domain Name for the edge.|Optional. Default is *NSX-&lt;edgeId&gt;* Used to set hostname on the VM. Appended by *-&lt;haIndex&gt;*
       **vseLogLevel** |Defines the log level for log messages captured in the log files.|Optional. Choice of: *emergency*, *alert*, *critical*, *error*, *warning*, *notice*, *debug*. Default is *info*.
       **enableAesni** |Enable support for Advanced Encryption Standard New Instructions on the Edge.|Optional. True/False. Default is *true*.
-      **enableFips** |Enable compliance to FIPS Standards.|Optional. True/False. Default is *false*.
       **enableCoreDump** |Deploys a new NSX Edge for debug/core-dump purpose.|Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.
 
       #### Appliances Configuration: Edge Services Gateway and Logical (Distributed) Router
@@ -9646,6 +9645,16 @@ securitySchemes:
       **queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is *false*.
       **queryDaemon > port** |Defines the port through which the communication happens.|Integer 1-65535. Default is *5666*.
 
+      #### DNS Client: Edge Services Gateway and Logical (Distributed) Router 
+
+      Parameter |  Description | Comments 
+      ---|---|---
+      **dnsClient** |Configures the DNS settings of the Edge Services Gateway.|Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.
+      **primaryDns** |Primary DNS IP |
+      **secondaryDns** |Secondary DNS IP |
+      **domainName** |Domain Name of Edge |
+      **domainName** |Secondary Domain Name of Edge |
+
       #### vNIC Parameters: Edge Services Gateway Only
 
       Parameter |  Description | Comments
@@ -9663,9 +9672,6 @@ securitySchemes:
       **macAddress** |Option to manually specify the MAC address. |Optional.  Managed by vCenter if not provided.
       **macAddress > edgeVmHaIndex** |HA index of the Edge VM. |Required. 0 or 1.
       **macAddress > value** |Value of the MAC address.|Optional. Ensure that MAC addresses provided are unique within the given layer 2 domain.
-      **fenceParameter** |Fence connection mode settings for vCloud Director fence mode. Do not use for other NSX deployments. |Optional.
-      **fenceParameter > key** | Fence connection mode setting key.|Required. 
-      **fenceParameter > value** |Fence connection mode setting value. |Required. 
       **vnic > mtu** |The maximum transmission value for the data packets.|Optional.  Default is *1500*.
       **enableProxyArp** |Enables proxy ARP. Do not use this flag unless you want NSX Edge to proxy ARP for all configured subnets.  |Optional.  True/False. Default is *false*.
       **enableSendRedirects** |Enables ICMP redirect. |Optional. True/False.  Default is *true*.
@@ -9691,16 +9697,6 @@ securitySchemes:
       **subnetMask** or **subnetPrefixLength**<br>(mgmtInterface or interface) |Subnet mask or prefix value.  |Required. Either **subnetMask** or **subnetPrefixLength** should be provided. When both are provided then **subnetprefixLength** is ignored.
       **mtu**<br>(mgmtInterface or interface) |The maximum transmission value for the data packets. |Optional. Default is 1500.
       **type** | Type of interface. | Required. Choice of *uplink* or *internal*. 
-
-      #### DNS Client: Edge Services Gateway Only
-
-      Parameter |  Description | Comments 
-      ---|---|---
-      **dnsClient** |Configures the DNS settings of the Edge Services Gateway.|Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.
-      **primaryDns** |Primary DNS IP |
-      **secondaryDns** |Secondary DNS IP |
-      **domainName** |Domain Name of Edge |
-      **domainName** |Secondary Domain Name of Edge |
     queryParameters:
       isUniversal:
         displayName: isUniversal
