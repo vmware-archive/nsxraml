@@ -4898,9 +4898,16 @@ Parameter |  Description | Comments
 **port**  |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured. 
 **maxConn**  |Maximum number of concurrent connections the member can handle.|Optional. Default is *0* which means unlimited.
 **minConn**  |Minimum number of concurrent connections a member must always accept.|Optional. Default is *0* which means unlimited.
-**condition**  |Whether the member is enabled or disabled.|Optional. Options are: *enabled* or *disabled*. Default is *enabled*.
+**condition**  |Condition of the member.|Optional. Options are: *enabled*, *disabled*, or *drain*. Default is *enabled*.
 
 * **post** *(secured)*: Add a load balancer server pool to the Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. Member **condition** can be set to *drain*.
+
 * **get** *(secured)*: Get all server pools on the specified NSX Edge.
 * **delete** *(secured)*: Delete all server pools configured on the specified NSX Edge.
 
@@ -4910,6 +4917,13 @@ Working With a Specific Server Pool
 
 * **get** *(secured)*: Retrieve information about the specified server pool.
 * **put** *(secured)*: Update the specified server pool.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. Member **condition** can be set to *drain*.
+
 * **delete** *(secured)*: Delete the specified server pool.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/members/{memberID}

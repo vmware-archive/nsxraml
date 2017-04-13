@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;">&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#100;&#x6f;&#x63;&#x66;&#101;&#x65;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#46;&#99;&#111;&#x6d;">&#100;&#x6f;&#x63;&#x66;&#101;&#x65;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#46;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -21603,8 +21603,8 @@ parameters.</p>
 </tr>
 <tr>
 <td><strong>condition</strong></td>
-<td>Whether the member is enabled or disabled.</td>
-<td>Optional. Options are: <em>enabled</em> or <em>disabled</em>. Default is <em>enabled</em>.</td>
+<td>Condition of the member.</td>
+<td>Optional. Options are: <em>enabled</em>, <em>disabled</em>, or <em>drain</em>. Default is <em>enabled</em>.</td>
 </tr>
 </tbody></table></div>
 <div class="method post">
@@ -21615,7 +21615,16 @@ parameters.</p>
   ><h2>POST /4.0/edges/{edgeId}/loadbalancer/config/pools</h2></a>
   <div class="content">
     <p><p>Add a load balancer server pool to the Edge.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. Member <strong>condition</strong> can be set to <em>drain</em>.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="pool"&gt;
@@ -21723,7 +21732,16 @@ parameters.</p>
   ><h2>PUT /4.0/edges/{edgeId}/loadbalancer/config/pools/{poolID}</h2></a>
   <div class="content">
     <p><p>Update the specified server pool.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. Member <strong>condition</strong> can be set to <em>drain</em>.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="pool"&gt;

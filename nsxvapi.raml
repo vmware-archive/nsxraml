@@ -12594,10 +12594,17 @@ securitySchemes:
           **port**  |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured. 
           **maxConn**  |Maximum number of concurrent connections the member can handle.|Optional. Default is *0* which means unlimited.
           **minConn**  |Minimum number of concurrent connections a member must always accept.|Optional. Default is *0* which means unlimited.
-          **condition**  |Whether the member is enabled or disabled.|Optional. Options are: *enabled* or *disabled*. Default is *enabled*.
+          **condition**  |Condition of the member.|Optional. Options are: *enabled*, *disabled*, or *drain*. Default is *enabled*.
         post:
           displayName: poolsCreate
-          description: Add a load balancer server pool to the Edge.
+          description: |
+            Add a load balancer server pool to the Edge.
+
+            **Method history:**
+
+            Release | Modification
+            --------|-------------
+            6.3.0 | Method updated. Member **condition** can be set to *drain*.
           body:
             application/xml:
               example: |
@@ -12640,7 +12647,14 @@ securitySchemes:
             description: Retrieve information about the specified server pool.
           put:
             displayName: poolUpdate
-            description: Update the specified server pool.
+            description: |
+              Update the specified server pool.
+
+              **Method history:**
+
+              Release | Modification
+              --------|-------------
+              6.3.0 | Method updated. Member **condition** can be set to *drain*.
             body:
               application/xml:
                 example: |
