@@ -2430,7 +2430,8 @@ groups and can use this data to fine tune your firewall rules.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
 **Example:** View outbound AD group activity    
-`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&param=app:DEST_APP:16`
+`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1
+&param=app:DEST_APP:16`
 
 ### /3.0/ai/user/{userID}
 Working With a Specific User
@@ -4129,7 +4130,7 @@ Parameter |  Description | Comments
 **cliSettings > userName** |User name.|Required. length 1-33.
 **cliSettings > password** |Password.|Required. The password must be at least 12 characters long. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.
 **cliSettings > remoteAccess** |Enables or disables remote access through SSH. |Required. Relevant firewall rules to allow traffic on port 22 must be opened by user/client
-**autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is *true*. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPSec VPN, and **autoConfiguration** is *true*, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPSec tunnel. If HA is enabled, firewall rules are always created, even if **autoConfiguration** is *false*, otherwise both HA appliances will become active.
+**autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is *true*. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPsec VPN, and **autoConfiguration** is *true*, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPsec tunnel. If HA is enabled, firewall rules are always created, even if **autoConfiguration** is *false*, otherwise both HA appliances will become active.
 **autoConfiguration > rulePriority** |Defines the priority of system-defined rules over user-defined rules.|Optional. High, Low.  Default is *high*.
 **queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is *false*.
 **queryDaemon > port** |Defines the port through which the communication happens.|Integer 1-65535. Default is *5666*.
@@ -4787,7 +4788,7 @@ particular type of network traffic. After configuring a profile, you
 associate the profile with a virtual server. The virtual server then
 processes traffic according to the values specified in the profile.
 Using profiles enhances your control over managing network traffic,
-and makes traffic‐management tasks easier and more efficient.
+and makes traffic-management tasks easier and more efficient.
 
 * **post** *(secured)*: Add an application profile.
 * **get** *(secured)*: Retrieve all application profiles on the specified Edge.
@@ -5101,273 +5102,386 @@ Working with NSX Edge High Availability
 * **delete** *(secured)*: Delete high availability configuration.
 
 ### /4.0/edges/{edgeId}/syslog/config
-Configure one or two remote syslog servers. Edge events and logs
+Working With Remote Syslog Server on NSX Edge
+-----
+You can configure one or two remote syslog servers. Edge events and logs
 related to firewall events that flow from Edge appliances are sent to
 the syslog servers
 
-* **get** *(secured)*: Query syslog servers
-* **put** *(secured)*: Configure syslog servers
-* **delete** *(secured)*: Delete syslog servers
+* **get** *(secured)*: Retrieve syslog servers information.
+
+* **put** *(secured)*: Configure syslog servers.
+
+* **delete** *(secured)*: Delete syslog servers.
 
 ### /4.0/edges/{edgeId}/sslvpn/config
-Manage SSL VPN
+Working With SSL VPN
+----
+With SSL VPN-Plus, remote users can connect securely to private
+networks behind a NSX Edge gateway. Remote users can access servers and
+applications in the private networks.
 
-* **post** *(secured)*: Enable or disable SSL VPN
-* **get** *(secured)*: Retrieve SSL VPN details
-* **put** *(secured)*: Reconfigure the entire SSL VPN
-* **delete** *(secured)*: Delete the SSL VPN configurations on the Edge
+* **post** *(secured)*: Enable or disable SSL VPN on the NSX Edge appliance.
+
+* **get** *(secured)*: Retrieve SSL VPN details.
+* **put** *(secured)*: Update the entire SSL VPN configuration to the specified NSX Edge in a single call.
+
+* **delete** *(secured)*: Delete the SSL VPN configurations on the Edge.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/server
-Configure SSL VPN server on port 443 using the certificate named
-server-cert that is already uploaded on the NSX Edge appliance and
-the specified cipher
+Working With SSL VPN Server
+----
 
-* **get** *(secured)*: Get server settings
-* **put** *(secured)*: Apply server settings
+* **get** *(secured)*: Retrieve server settings.
+* **put** *(secured)*: Update server settings.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks
-Configure a private network to expose to remote users over SSL VPN
-tunnel
+Working With Private Networks
+---
+You can use a private network to expose to remote users over SSL VPN
+tunnel.
 
-* **post** *(secured)*: Add a private network
-* **get** *(secured)*: Get all private network profiles in the SSL VPN instance
+* **post** *(secured)*: Configure a private network.
+* **get** *(secured)*: Retrieve all private network profiles in the SSL VPN instance.
+
 * **put** *(secured)*: Update all private network configs of NSX Edge with the given list
 of private network configs. If the config is present, it is
 updated; otherwise, a new private network config is created.
-Existing configs not included in the call body are deleted
+Existing configs not included in the call body are deleted.
 
-* **delete** *(secured)*: Delete all Private Networks from the SSL VPN instance
+* **delete** *(secured)*: Delete all private networks from the SSL VPN instance.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks/{networkID}
-Specific private network
+Working With a Specific Private Network
+----
 
-* **get** *(secured)*: Get the specified private network in the SSL VPN service
+* **get** *(secured)*: Retrieve the specified private network in the SSL VPN service.
 
-* **put** *(secured)*: Modify specified private network in the SSL VPN service
+* **put** *(secured)*: Update the specified private network in the SSL VPN service.
+
 * **delete** *(secured)*: Delete private network
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools
-IP pools to assign IP addresses to remote users
+Working With IP Pools for SSL VPN
+----
 
-* **post** *(secured)*: Create an IP pool
-* **get** *(secured)*: Get all IP pools configured on SSL VPN
+* **post** *(secured)*: Create an IP pool.
+* **get** *(secured)*: Retrieve all IP pools configured on SSL VPN.
 * **put** *(secured)*: Update all IP pools with the given list of pools. If the pool is
 present, it is updated; otherwise, a new pool is created. Existing
-pools not in the body are deleted
+pools not in the body are deleted.
 
 * **delete** *(secured)*: Delete all IP pools configured on SSL VPN
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}
-Specified IP pool
+Working With a Specific IP Pool for SSL VPN
+----
 
-* **get** *(secured)*: Get details of specified IP pool
-* **put** *(secured)*: Modify specified IP pool
-* **delete** *(secured)*: Delete the specified IP pool
+* **get** *(secured)*: Retrieve details of specified IP pool.
+* **put** *(secured)*: Update specified IP pool.
+* **delete** *(secured)*: Delete the specified IP pool.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/clientconfig
-Advanced parameters for full access client configurations--such as
-whether client should auto-reconnect in case of network failures or
-network unavailability, or whether the client should be uninstalled
-after logout
+Working With Network Extension Client Parameters 
+-----
 
-* **put** *(secured)*: Set parameters for full access client configurations
-* **get** *(secured)*: Get client configuration
+* **put** *(secured)*: Set advanced parameters for full access client configurations,
+such as whether client should auto-reconnect in case of network
+failures or network unavailability, or whether the client should be
+uninstalled after logout.
+
+* **get** *(secured)*: Retrieve client configuration.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages
-Installation packages for SSL VPN clients
+Working With SSL VPN Client Installation Packages
+---
 
-* **post** *(secured)*: Create installers for full access network clients. These setup
-binaries are downloaded by remote clients and installed on their
-systems.
+* **post** *(secured)*: Creates setup executables (installers) for full access network
+clients. These setup binaries are later downloaded by remote
+clients and installed on their systems. The primary parameters
+needed to configure this setup are hostname of the gateway, and
+its port and a profile name which is shown to the user to identify
+this connection. Administrator can also set few other parameters
+such as whether to automatically start the application on windows
+login, hide the system tray icon etc.
 
-* **get** *(secured)*: Get information about all installation packages
+* **get** *(secured)*: Retrieve information about all installation packages.
 * **put** *(secured)*: Update all installation packages with the given list. If the
 package is present, it is updated; otherwise a new installation
 package is created. Existing packages not included in the body are
 deleted.
 
-* **delete** *(secured)*: Delete all client installation packages
+* **delete** *(secured)*: Delete all client installation packages.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}
-Specified installation package
+Working With a Specific SSL VPN Client Installation Package
+---
 
-* **get** *(secured)*: Get information about the specified installation package
+* **get** *(secured)*: Get information about the specified installation package.
 
-* **put** *(secured)*: Modify the specified installation package
-* **delete** *(secured)*: Delete the specified installation package
+* **put** *(secured)*: Modify the specified installation package.
+* **delete** *(secured)*: Delete the specified installation package.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/layout
-Layout configuration
+Working With Portal Layout
+---
 
-* **get** *(secured)*: Query layout configuration
+* **get** *(secured)*: Retrieve layout configuration.
+* **put** *(secured)*: Update the portal layout.
 
-### /4.0/edges/{edgeId}/sslvpn/config/layout/images
+### /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}
+Working With Portal Icons
+---
+You can upload images used by for the SSL VPN web portal.
 
-* **put** *(secured)*: Set the portal layout
+* **post** *(secured)*: Upload icons for use in the SSL VPN web portal.
+
+Provide the image file as form-data. See the table below for the form-data key to use for each image type.
+
+Image Type | form-data key | Image format requirements
+----|------|----
+portallogo | layoutFile | n/a
+phatbanner | banner | bmp
+connecticon | icon | ico
+disconnecticon | icon | ico
+erroricon | icon | ico
+desktopicon | icon | ico
+
+**Example using curl**
+
+```
+/usr/bin/curl -v -k -i -F layoutFile=@/tmp/portalLogo.jpg -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/layout/images/portallogo
+```
 
 ### /4.0/edges/{edgeId}/sslvpn/config/webresources
-Web access server that a remote user can connect to via a web browser
+Working With Web Resources
+-----
+Web resources are servers that a remote user can connect to via a web
+browser.
 
-* **post** *(secured)*: Add portal web resource
-* **get** *(secured)*: Get all web resources on the SSL VPN instance
-* **delete** *(secured)*: Delete all web resources on the SSL VPN instance
+* **post** *(secured)*: Add portal web resource.
+* **get** *(secured)*: Get all web resources on the SSL VPN instance.
+* **delete** *(secured)*: Delete all web resources on the SSL VPN instance.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}
-Specified web access server
+Working With a Specific Web Resource
+-----
 
-* **get** *(secured)*: Get the specified web access server
-* **put** *(secured)*: Modify the specified web access server
+* **get** *(secured)*: Retrieve information about the specified web access server.
+* **put** *(secured)*: Update the specified web access server.
 * **delete** *(secured)*: Delete the specified web access server
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/localserver/users
-Portal users
+Working With Portal Users
+----
 
-* **post** *(secured)*: Add a new portal user
-* **put** *(secured)*: Modify the specified portal user
+* **post** *(secured)*: Add a new portal user.
+* **put** *(secured)*: Modify the portal user specified in the request body.
 * **delete** *(secured)*: Delete all users on the specifed SSL VPN instance
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/localserver/users/{userID}
-Specified user
+Working With a Specific Portal User
+----
 
-* **get** *(secured)*: Get information about a specified user
-* **delete** *(secured)*: Delete specified user
+* **get** *(secured)*: Get information about the specified user.
+* **delete** *(secured)*: Delete the specified user.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/settings
-Authentication settings
+Working With Authentication Settings
+--
 
-* **get** *(secured)*: Get information about authentication server
-* **put** *(secured)*: Set authentication process for remote users. Specify
+* **get** *(secured)*: Retrieve information about authentication settings.
+* **put** *(secured)*: Update authentication settings for remote users. Specify
 username/password authentication, active directory, ldap, radius,
-client certificate based authentication
+client certificate based authentication.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/settings/rsaconfigfile
-RSA authentication server, bound to the SSL gateway
+Working With the RSA Config File 
+----
 
 * **post** *(secured)*: Upload RSA config file (See "Generate the Authentication Manager
 Configuration File" section of the RSA Authentication Manager
 Administrator's guide for instructions on how to configure and
-download the RSA config file from RSA Authentication Manager)
+download the RSA config file from RSA Authentication Manager).
 
 ### /4.0/edges/{edgeId}/sslvpn/config/advancedconfig
-SSL VPN advanced configuration
+SSL VPN Advanced Configuration
+-----
 
-* **get** *(secured)*: Retrieve SSL VPN advanced configuration
-* **put** *(secured)*: Apply advanced configuration
+* **get** *(secured)*: Retrieve SSL VPN advanced configuration.
+* **put** *(secured)*: Update SSL VPN advanced configuration.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script
-Logon and logoff scripts for NSX Edge gateway
+Working with Logon and Logoff Scripts for SSL VPN
+----
 
-* **post** *(secured)*: Configure parameters associated with the uploaded script file
-* **get** *(secured)*: Retrieve all script configurations for the Edge
+* **post** *(secured)*: Configure parameters associated with the uploaded script file.
+
+* **get** *(secured)*: Retrieve all script configurations.
 * **put** *(secured)*: Update all script configurations with the given list of
 configurations. If the config is present, its is updated;
 otherwise, a new config is created. Existing configs not included
-in the body are deleted
+in the body are deleted.
 
 * **delete** *(secured)*: Delete all script configurations
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script/{fileID}
-Specified uploaded script file
+Working With Uploaded Script Files
+----
 
-* **get** *(secured)*: Retrieve parameters associated with the specified script file
+* **get** *(secured)*: Retrieve parameters associated with the specified script file.
 
-* **put** *(secured)*: Modify script parameters
-* **delete** *(secured)*: Delete script parameters
+* **put** *(secured)*: Update parameters associated with the specified script file.
+
+* **delete** *(secured)*: Delete script parameters.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script/file
-Logon and logoff scripts for NSX Edge gateway
+Uploading Script Files for SSL VPN
+----
 
-* **post** *(secured)*: Upload a login/logoff script. Returns a script file ID to
-configure the parameters
+* **post** *(secured)*: You can add multiple login or logoff scripts. For example, you can
+bind a login script for starting Internet Explorer with gmail.com.
+When the remote user logs in to the SSL client, Internet Explorer
+opens up gmail.com. This method returns a *scriptFileId* which
+can be used to update parameters associated with the script file.
+
+Provide the script as form-data, using the key, *file*.
+
+**Example using curl**
+```
+/usr/bin/curl -v -k -i -F file=@/tmp/script.sh -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX=='
+https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/script/file/
+```
 
 ### /4.0/edges/{edgeId}/sslvpn/auth/localusers/users
-All users of NSX Edge
+Working with SSL VPN Users
+---
 
 * **put** *(secured)*: Update all users with the given list of users. If the user is
 present, it is updated. Otherwise, and new user is created. Existing
 users not included in the body are deleted.
 
 ### /4.0/edges/{edgeId}/sslvpn/activesessions
-Working with active clients
+Working With Active Client Sessions
+----
 
-* **get** *(secured)*: Retrieve a list of active clients for the SSL VPN session
+* **get** *(secured)*: Retrieve a list of active clients for the SSL VPN session.
 
 ### /4.0/edges/{edgeId}/sslvpn/activesessions/{sessionID}
-Specified client session
+Working With a Specific Active Client Session
+----
 
-* **delete** *(secured)*: Disconnect an active client
+* **delete** *(secured)*: Disconnect an active client.
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/sslvpn
-SSL VPN statistics on the specified NSX Edge
+Working With SSL VPN Dashboard Statistics
+---
 
-* **get** *(secured)*: Retrieve SSL VPN statistics on the specified NSX Edge
+* **get** *(secured)*: Retrieve SSL VPN statistics on the specified NSX Edge.
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/ipsec
-Tunnel traffic statistics
+Working With Tunnel Traffic Dashboard Statistics
+----
 
 * **get** *(secured)*: Retrieve tunnel traffic statistics for specified time interval.
-Default is 1 hour. Other possible values are 1-60 minutes|oneDay|
-oneWeek|oneMonth|oneYear
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/interface
-Dashboard statistics
+Working With Interface Dashboard Statistics
+----
 
-* **get** *(secured)*: Retrieve dashboard statistics between the specified start and end
-times.
+* **get** *(secured)*: Retrieves dashboard statistics between the specified start and end
+times. When start and end time are not specified, all statistics
+since the Edge deployed are displayed. When no end time is specified,
+the current Edge Manager time is set as endTime. Each record has the
+stats of 5 minutes granularity.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces
-Interface statistics
+Working With Interface Statistics
+----
 
-* **get** *(secured)*: Get interface statistics
+* **get** *(secured)*: Retrieve interface statistics.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces/uplink
-Uplink interface statistics
+Working With Uplink Interface Statistics
+----
 
-* **get** *(secured)*: Get uplink interface statistics
+* **get** *(secured)*: Retrieve uplink interface statistics.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces/internal
-Internal interface statistics
+Working With Internal Interface Statistics
+-----
 
-* **get** *(secured)*: Get internal interface statistics
+* **get** *(secured)*: Retrieve internal interface statistics.
 
 ### /4.0/edges/{edgeId}/l2vpn/config
-L2 VPN allows you to configure a tunnel between two sites. VM's remain
-on the same subnet in spite of being moved between these sites,
+Working with L2 VPN
+----
+L2 VPN allows you to configure a tunnel between two sites. 
+VMs can move between the sites and stay on the same subnet,
 enabling you to extend your datacenter. An NSX Edge at one site can
-provide all services to VM's on the other site.
+provide all services to VMs on the other site.
 
-* **post** *(secured)*: Enable or disable L2 VPN service according to the value of the query
-parameter "enableService"
+* **post** *(secured)*: Enable or disable L2 VPN service.
 
-* **get** *(secured)*: Retrieve the current L2VPN configuration for NSX Edge
-* **put** *(secured)*: Configure L2VPN for server or client
-* **delete** *(secured)*: Delete L2 VPN
+* **get** *(secured)*: Retrieve the current L2VPN configuration for NSX Edge.
+* **put** *(secured)*: Configure L2VPN for server or client.
+
+You first enable the L2 VPN service on the NSX Edge instance and then
+configure a server and a client.
+
+* **delete** *(secured)*: Delete the L2 VPN configuration.
 
 ### /4.0/edges/{edgeId}/l2vpn/config/statistics
-L2 VPN statistics
+Working With L2 VPN Statistics
+---
 
-* **get** *(secured)*: Retrieve L2 VPN stats, which has information such as tunnel status,
-sent bytes, received bytes etc. for the given Edge
+* **get** *(secured)*: Retrieve L2 VPN statistics, which has information such as tunnel status,
+sent bytes, received bytes for the specified Edge.
 
 ### /4.0/edges/{edgeId}/ipsec/config
-Working with IPSEC VPN
+Working With IPsec VPN
+-----
+NSX Edge supports site-to-site IPsec VPN between an NSX Edge instance
+and remote sites. NSX Edge supports certificate authentication,
+preshared key mode, IP unicast traffic, and no dynamic routing protocol
+between the NSX Edge instance and remote VPN routers. Behind each
+remote VPN router, you can configure multiple subnets to connect to the
+internal network behind an NSX Edge through IPsec tunnels. These
+subnets and the internal network behind a NSX Edge must have address
+ranges that do not overlap.  
 
-* **get** *(secured)*: Retrieve IPSec configuration
-* **put** *(secured)*: Configure IPSEC VPN
-* **delete** *(secured)*: Delete the IPSec configuration
+You can deploy an NSX Edge agent behind a NAT device. In this
+deployment, the NAT device translates the VPN address of an NSX Edge
+instance to a publicly accessible address facing the Internet. Remote
+VPN routers use this public address to access the NSX Edge instance.  
+
+You can place remote VPN routers behind a NAT device as well. You must
+provide the VPN native address and the VPN Gateway ID to set up the
+tunnel. On both ends, static one-to-one NAT is required for the VPN
+address.
+
+You can have a maximum of 64 tunnels across a maximum of 10 sites.
+
+* **get** *(secured)*: Retrieve IPsec configuration.
+* **put** *(secured)*: Update IPsec VPN configuration.
+* **delete** *(secured)*: Delete the IPsec configuration.
 
 ### /4.0/edges/{edgeId}/ipsec/statistics
-IPSec statistics
+Working With IPsec Statistics
+---
 
-* **get** *(secured)*: Retrieve IPSec statistics
+* **get** *(secured)*: Retrieve IPsec statistics.
 
 ### /4.0/edges/{edgeId}/autoconfiguration
+Automatic Configuration of Firewall Rules
+----
 If autoConfiguration is enabled, firewall rules are automatically
 created to allow control traffic. Rules to allow data traffic are not
-created.  For example, if you are using IPSec VPN, and
+created.  For example, if you are using IPsec VPN, and
 **autoConfiguration** is *true*, firewall rules will automatically be
 configured to allow IKE traffic. However, you will need to add
-additional rules to allow the data traffic for the IPSec tunnel. If HA
+additional rules to allow the data traffic for the IPsec tunnel. If HA
 is enabled, firewall rules are always created, even if
 **autoConfiguration** is *false*, otherwise both HA appliances will
 become active.
@@ -5442,6 +5556,7 @@ Release | Modification
 
 ### /4.0/edges/{edgeId}/appliances/{haIndex}
 Working With NSX Edge Appliance Configuration by Index
+----
 
 * **post** *(secured)*: Used to send CLI Commands to the Edge Gw. To use CLI commands you also
 need to add an additional Accept Header with type text\plain, as well as
@@ -5485,43 +5600,63 @@ configure Edge Service Gateway interfaces.
 * **delete** *(secured)*: Delete interface
 
 ### /4.0/edges/{edgeId}/mgmtinterface
-Working with management interfaces for an NSX Edge router
+Working with Logical Router HA (Management) Interface
+----
 
-* **get** *(secured)*: Retrieve all managedment interfaces to the NSX Edge router
+* **get** *(secured)*: Retrieve the management interface configuration for the logical
+router.
+
 * **put** *(secured)*: Configure high availability (management) interface for logical
 (distributed) router.  See *Working with NSX Edge* for descriptions
 of parameters used to configure the logical router HA interface.
 
 ### /4.0/edges/{edgeId}/interfaces
-Configure interfaces for logical (distributed) router.  See *Working with NSX Edge* for descriptions of parameters used to configure the logical router interfaces.
+Working With Logical Router Interfaces
+----
+Configure interfaces for logical (distributed) router.  See *Working
+with NSX Edge* for descriptions of parameters used to configure the
+logical router interfaces.
 
-* **post** *(secured)*: Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces
+* **post** *(secured)*: Add interfaces for a logical router. 
 
-* **get** *(secured)*: Retrieve all interfaces for Edge router
-* **delete** *(secured)*: Delete interfaces
+* **get** *(secured)*: Retrieve all interfaces on the logical router.
+* **delete** *(secured)*: Delete all interfaces on the logical router.
 
 ### /4.0/edges/{edgeId}/interfaces/{index}
-Manage a specific NSX Edge router interface
+Working With a Specific Logical Router Interface
+----
 
-* **get** *(secured)*: Retrieve information on specified DLR router interface
-* **delete** *(secured)*: Delete interface configuration and reset to factory default
+* **get** *(secured)*: Retrieve information about the specified logical router interface.
 
-* **put** *(secured)*: Update interface configuration on specified DLR router interface
+* **delete** *(secured)*: Delete interface configuration and reset to factory default.
+
+* **put** *(secured)*: Update interface configuration for the specified logical router
+interface.
 
 ### /4.0/edges/jobs
-NSX Edge async jobs
+Configuring Edge Services in Async Mode
+----
+You can configure NSX Edge to work in async mode. In the async mode, accepted
+commands return an Accepted status and a taskId. To know the status of
+the task, you can check the status of that taskId.  The advantage of the
+async mode is that APIs are returned very fast and actions like vm
+deployment, reboots, publish to NSX Edge appliance, are done behind the
+scene under the taskId .  To configure async mode, ?async=true at the end
+of any 4.0 service configuration URL for POST, PUT, and DELETE calls.
+Without async mode, the location header in HTTP response has the resource
+ID whereas in async mode, location header has the job ID.
 
-* **get** *(secured)*: Query jobs. Assumes Edge is configured in async mode, where ?async=true
-is used at the end of any 4.0 service configuration URI for POST, PUT,
-and DELETE calls.
+The job status response includes the job status (*SUCCESS*, *FAILED*,
+*QUEUED*, *RUNNING*, *ROLLBACK*), URI of the resource, and ID of the
+resource. 
+
+* **get** *(secured)*: Retrieve NSX Edge job status.
 
 ### /4.0/edges/jobs/{jobId}
-Status of Edge async jobs. Assumes Edge is configured in async mode,
-where ?async=true is used at the end of any 4.0 service configuration
-URI for POST, PUT, and DELETE calls.
+Working With a Specific Edge Job Status
+-----
 
-* **get** *(secured)*: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
-the resource, and ID of the resource as shown in response body
+* **get** *(secured)*: Retrieve job status for the specified job.
 
 ## nsxEdgePublish
 Working with NSX Edge Configuration Publishing

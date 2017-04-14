@@ -5869,7 +5869,8 @@ securitySchemes:
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
         **Example:** View outbound AD group activity    
-        `GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&param=app:DEST_APP:16`
+        `GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1
+        &param=app:DEST_APP:16`
       queryParameters:
         query:
           displayName: query
@@ -10115,7 +10116,7 @@ securitySchemes:
       **cliSettings > userName** |User name.|Required. length 1-33.
       **cliSettings > password** |Password.|Required. The password must be at least 12 characters long. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.
       **cliSettings > remoteAccess** |Enables or disables remote access through SSH. |Required. Relevant firewall rules to allow traffic on port 22 must be opened by user/client
-      **autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is *true*. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPSec VPN, and **autoConfiguration** is *true*, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPSec tunnel. If HA is enabled, firewall rules are always created, even if **autoConfiguration** is *false*, otherwise both HA appliances will become active.
+      **autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is *true*. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPsec VPN, and **autoConfiguration** is *true*, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPsec tunnel. If HA is enabled, firewall rules are always created, even if **autoConfiguration** is *false*, otherwise both HA appliances will become active.
       **autoConfiguration > rulePriority** |Defines the priority of system-defined rules over user-defined rules.|Optional. High, Low.  Default is *high*.
       **queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is *false*.
       **queryDaemon > port** |Defines the port through which the communication happens.|Integer 1-65535. Default is *5666*.
@@ -12330,7 +12331,7 @@ securitySchemes:
           associate the profile with a virtual server. The virtual server then
           processes traffic according to the values specified in the profile.
           Using profiles enhances your control over managing network traffic,
-          and makes traffic‐management tasks easier and more efficient.
+          and makes traffic-management tasks easier and more efficient.
         post:
           displayName: applicationProfilesCreate
           description: Add an application profile.
@@ -13140,15 +13141,19 @@ securitySchemes:
     /syslog/config:
       displayName: syslog
       description: |
-        Configure one or two remote syslog servers. Edge events and logs
+        Working With Remote Syslog Server on NSX Edge
+        -----
+        You can configure one or two remote syslog servers. Edge events and logs
         related to firewall events that flow from Edge appliances are sent to
         the syslog servers
       get:
         displayName: syslogRead
-        description: Query syslog servers
+        description: |
+          Retrieve syslog servers information.
       put:
         displayName: syslogUpdate
-        description: Configure syslog servers
+        description: |
+          Configure syslog servers.
         body:
           application/xml:
             example: |
@@ -13161,75 +13166,71 @@ securitySchemes:
             schema: syslogUpdate
       delete:
         displayName: syslogDelete
-        description: Delete syslog servers
+        description: Delete syslog servers.
     /sslvpn/config:
       displayName: sslVPN
-      description: Manage SSL VPN
+      description: | 
+        Working With SSL VPN
+        ----
+        With SSL VPN-Plus, remote users can connect securely to private
+        networks behind a NSX Edge gateway. Remote users can access servers and
+        applications in the private networks.
       post:
         displayName: sslVPNCreate
-        description: Enable or disable SSL VPN
+        description: |
+          Enable or disable SSL VPN on the NSX Edge appliance.
         queryParameters:
           enableService:
             displayName: enableService
             required: true
-            description: Set to true to enable, false to disable
+            description: Set to *true* to enable, *false* to disable.
             type: boolean
       get:
         displayName: sslVPNRead
-        description: Retrieve SSL VPN details
+        description: Retrieve SSL VPN details.
       put:
         displayName: sslVPNUpdate
-        description: Reconfigure the entire SSL VPN
-        body:
-          application/xml:
-            example: |
-              <logonLogoffScript>
-                <logonLogoffScript>
-                  <objectId></objectId>
-                  <scriptFileId></scriptFileId>
-                  <type></type>
-                  <enabled></enabled>
-                  <description></description>
-                </logonLogoffScript>
-              </logonLogoffScript>
-            schema: sslVPNUpdate
+        description: |
+          Update the entire SSL VPN configuration to the specified NSX Edge in a single call.
       delete:
         displayName: sslVPNDelete
-        description: Delete the SSL VPN configurations on the Edge
+        description: Delete the SSL VPN configurations on the Edge.
       /server:
         displayName: serverSettings
         description: |
-          Configure SSL VPN server on port 443 using the certificate named
-          server-cert that is already uploaded on the NSX Edge appliance and
-          the specified cipher
+          Working With SSL VPN Server
+          ----
         get:
           displayName: serverSettingsRead
-          description: Get server settings
+          description: Retrieve server settings.
         put:
           displayName: serverSettingsUpdate
-          description: Apply server settings
+          description: Update server settings.
           body:
             application/xml:
               example: |
                 <serverSettings>
                   <serverAddresses>
-                    <ipAddress></ipAddress>
+                    <ipAddress>10.112.243.109</ipAddress>
                   </serverAddresses>
-                  <port></port>
-                  <certificateId></certificateId>
-                  <sslVersionList>
-                    <version></version>
-                  </sslVersionList>
+                  <port>443</port>
+                  <certificateId>certificate-1</certificateId>
+                  <cipherList>
+                    <cipher>AES128-SHA</cipher>
+                    <cipher>AES256-SHA</cipher>
+                  </cipherList>
                 </serverSettings>
               schema: serverSettingsUpdate
       /client/networkextension/privatenetworks:
         displayName: privateNetworks
         description: |
-          Configure a private network to expose to remote users over SSL VPN
-          tunnel
+          Working With Private Networks
+          ---
+          You can use a private network to expose to remote users over SSL VPN
+          tunnel.
         post:
           displayName: privateNetworksCreate
-          description: Add a private network
+          description: Configure a private network.
           body:
             application/xml:
               example: |
@@ -13245,20 +13246,23 @@ securitySchemes:
               schema: privateNetworksCreate
         get:
           displayName: privateNetworksRead
-          description: Get all private network profiles in the SSL VPN instance
+          description: | 
+            Retrieve all private network profiles in the SSL VPN instance.
         put:
           displayName: privateNetworksUpdate
           description: |
             Update all private network configs of NSX Edge with the given list
             of private network configs. If the config is present, it is
             updated; otherwise, a new private network config is created.
-            Existing configs not included in the call body are deleted
+            Existing configs not included in the call body are deleted.
         delete:
           displayName: privateNetworksDelete
-          description: Delete all Private Networks from the SSL VPN instance
+          description: Delete all private networks from the SSL VPN instance.
         /{networkID}:
           displayName: privateNetwork
-          description: Specific private network
+          description: |
+            Working With a Specific Private Network
+            ----
           uriParameters:
             networkID:
               required: true
@@ -13267,10 +13271,11 @@ securitySchemes:
           get:
             displayName: privateNetworkRead
             description: |
-              Get the specified private network in the SSL VPN service
+              Retrieve the specified private network in the SSL VPN service.
           put:
             displayName: privateNetworkUpdate
-            description: Modify specified private network in the SSL VPN service
+            description: |
+              Update the specified private network in the SSL VPN service.
             body:
               application/xml:
                 example: |
@@ -13289,10 +13294,12 @@ securitySchemes:
             description: Delete private network
       /client/networkextension/ippools:
         displayName: netExtIpPools
-        description: IP pools to assign IP addresses to remote users
+        description: |
+          Working With IP Pools for SSL VPN
+          ----
         post:
           displayName: netExtipPoolsCreate
-          description: Create an IP pool
+          description: Create an IP pool.
           body:
             application/xml:
               example: |
@@ -13310,13 +13317,13 @@ securitySchemes:
               schema: netExtipPoolsCreate
         get:
           displayName: netExtipPoolsRead
-          description: Get all IP pools configured on SSL VPN
+          description: Retrieve all IP pools configured on SSL VPN.
         put:
           displayName: netExtipPoolsUpdate
           description: |
             Update all IP pools with the given list of pools. If the pool is
             present, it is updated; otherwise, a new pool is created. Existing
-            pools not in the body are deleted
+            pools not in the body are deleted.
           body:
             application/xml:
               example: |
@@ -13337,55 +13344,80 @@ securitySchemes:
           description: Delete all IP pools configured on SSL VPN
         /{ippoolID}:
           displayName: netExtipPool
-          description: Specified IP pool
+          description: |
+            Working With a Specific IP Pool for SSL VPN
+            ----
           uriParameters:
             ippoolID:
               required: true
               displayName: ipPoolID
-              description: Specified IP pool ID
+              description: Specified IP pool ID.
           get:
             displayName: netExtipPoolRead
-            description: Get details of specified IP pool
+            description: Retrieve details of specified IP pool.
           put:
             displayName: netExtipPoolUpdate
-            description: Modify specified IP pool
+            description: Update specified IP pool.
+            body:
+              application/xml:
+                example: |
+                  <ipAddressPool>
+                    <description>description</description>
+                    <ipRange>10.112.243.11-10.112.243.57</ipRange>
+                    <netmask>255.0.0.0</netmask>
+                    <gateway>192.168.1.1</gateway>
+                    <primaryDns>192.168.10.1</primaryDns>
+                    <secondaryDns>4.2.2.2</secondaryDns>
+                    <dnsSuffix></dnsSuffix>
+                    <winsServer>10.112.243.201</winsServer>
+                    <enabled>true</enabled>
+                  </ipAddressPool>
           delete:
             displayName: netExtipPoolDelete
-            description: Delete the specified IP pool
+            description: Delete the specified IP pool.
       /client/networkextension/clientconfig:
         displayName: clientConfig
         description: |
-          Advanced parameters for full access client configurations--such as
-          whether client should auto-reconnect in case of network failures or
-          network unavailability, or whether the client should be uninstalled
-          after logout
+          Working With Network Extension Client Parameters 
+          -----
         put:
           displayName: clientConfigUpdate
-          description: Set parameters for full access client configurations
+          description: |
+            Set advanced parameters for full access client configurations,
+            such as whether client should auto-reconnect in case of network
+            failures or network unavailability, or whether the client should be
+            uninstalled after logout.
           body:
             application/xml:
               example: |
                 <clientConfiguration>
-                  <autoReconnect></autoReconnect>
+                  <autoReconnect>true</autoReconnect>
                   <fullTunnel>
-                    <excludeLocalSubnets></excludeLocalSubnets>
-                    <gatewayIp></gatewayIp>
+                    <excludeLocalSubnets>false</excludeLocalSubnets>
+                    <gatewayIp>10.112.243.11</gatewayIp>
                   </fullTunnel>
-                  <upgradeNotification></upgradeNotification>
+                  <upgradeNotification>false</upgradeNotification>
                 </clientConfiguration>
               schema: clientConfigUpdate
         get:
           displayName: clientConfigRead
-          description: Get client configuration
+          description: Retrieve client configuration.
       /client/networkextension/installpackages:
         displayName: installPackages
-        description: Installation packages for SSL VPN clients
+        description: |
+          Working With SSL VPN Client Installation Packages
+          ---
         post:
           displayName: installPackagesCreate
           description: |
-            Create installers for full access network clients. These setup
-            binaries are downloaded by remote clients and installed on their
-            systems.
+            Creates setup executables (installers) for full access network
+            clients. These setup binaries are later downloaded by remote
+            clients and installed on their systems. The primary parameters
+            needed to configure this setup are hostname of the gateway, and
+            its port and a profile name which is shown to the user to identify
+            this connection. Administrator can also set few other parameters
+            such as whether to automatically start the application on windows
+            login, hide the system tray icon etc.
           body:
             application/xml:
               example: |
@@ -13413,7 +13445,7 @@ securitySchemes:
               schema: installPackagesCreate
         get:
           displayName: installPackagesRead
-          description: Get information about all installation packages
+          description: Retrieve information about all installation packages.
         put:
           displayName: installPackagesUpdate
           description: |
@@ -13423,22 +13455,24 @@ securitySchemes:
             deleted.
         delete:
           displayName: installPackagesDelete
-          description: Delete all client installation packages
+          description: Delete all client installation packages.
         /{packageID}:
           displayName: installPackage
-          description: Specified installation package
+          description: |
+            Working With a Specific SSL VPN Client Installation Package
+            ---
           uriParameters:
             packageID:
               required: true
               displayName: packageID
-              description: Specified installation package ID
+              description: Specified installation package ID.
           get:
             displayName: installPackageRead
             description: |
-              Get information about the specified installation package
+              Get information about the specified installation package.
           put:
             displayName: installPackageUpdate
-            description: Modify the specified installation package
+            description: Modify the specified installation package.
             body:
               application/xml:
                 example: |
@@ -13466,39 +13500,77 @@ securitySchemes:
                 schema: installPackageUpdate
           delete:
             displayName: installPackageDelete
-            description: Delete the specified installation package
+            description: Delete the specified installation package.
       /layout:
         displayName: layout
-        description: Layout configuration
+        description: |
+          Working With Portal Layout
+          ---
         get:
           displayName: layoutRead
-          description: Query layout configuration
-        /images:
-          put:
-            displayName: layoutUpdate
-            description: Set the portal layout
-            body:
-              application/xml:
-                example: |
-                  <layout>
-                    <portalTitle></portalTitle>
-                    <companyName></companyName>
-                    <logoBackgroundColor></logoBackgroundColor>
-                    <titleColor></titleColor>
-                    <topFrameColor></topFrameColor>
-                    <menuBarColor></menuBarColor>
-                    <rowAlternativeColor></rowAlternativeColor>
-                    <bodyColor></bodyColor>
-                    <rowColor></rowColor>
-                  </layout>
-                schema: layoutUpdate
+          description: Retrieve layout configuration.
+        put:
+          displayName: layoutUpdate
+          description: Update the portal layout.
+          body:
+            application/xml:
+              example: |
+                <layout>
+                  <portalTitle></portalTitle>
+                  <companyName></companyName>
+                  <logoBackgroundColor></logoBackgroundColor>
+                  <titleColor></titleColor>
+                  <topFrameColor></topFrameColor>
+                  <menuBarColor></menuBarColor>
+                  <rowAlternativeColor></rowAlternativeColor>
+                  <bodyColor></bodyColor>
+                  <rowColor></rowColor>
+                </layout>
+              schema: layoutUpdate
+        /images/{imageType}:
+          displayName: layoutIcons
+          description: |
+            Working With Portal Icons
+            ---
+            You can upload images used by for the SSL VPN web portal.
+          uriParameters:
+            imageType:
+              displayName: imageType
+              description: |
+                Type of image to upload. Choice of *portallogo*, *phatbanner*,
+                *connecticon*, *disconnecticon*, *desktopicon*, or *erroricon*.
+          post:
+            displayName: layoutIconsUpload
+            description: |
+              Upload icons for use in the SSL VPN web portal.
+
+              Provide the image file as form-data. See the table below for the form-data key to use for each image type.
+
+              Image Type | form-data key | Image format requirements
+              ----|------|----
+              portallogo | layoutFile | n/a
+              phatbanner | banner | bmp
+              connecticon | icon | ico
+              disconnecticon | icon | ico
+              erroricon | icon | ico
+              desktopicon | icon | ico
+
+              **Example using curl**
+
+              ```
+              /usr/bin/curl -v -k -i -F layoutFile=@/tmp/portalLogo.jpg -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+              https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/layout/images/portallogo
+              ```
       /webresources:
         displayName: webResources
         description: |
-          Web access server that a remote user can connect to via a web browser
+          Working With Web Resources
+          -----
+          Web resources are servers that a remote user can connect to via a web
+          browser.
         post:
           displayName: webResourcesCreate
-          description: Add portal web resource
+          description: Add portal web resource.
           body:
             application/xml:
               example: |
@@ -13514,13 +13586,15 @@ securitySchemes:
               schema: webResourcesCreate
         get:
           displayName: webResourcesRead
-          description: Get all web resources on the SSL VPN instance
+          description: Get all web resources on the SSL VPN instance.
         delete:
           displayName: webResourcesDelete
-          description: Delete all web resources on the SSL VPN instance
+          description: Delete all web resources on the SSL VPN instance.
         /{id}:
           displayName: webResource
-          description: Specified web access server
+          description: |
+            Working With a Specific Web Resource
+            -----
           uriParameters:
             id:
               displayName: id
@@ -13528,19 +13602,21 @@ securitySchemes:
               required: true
           get:
             displayName: webResourceRead
-            description: Get the specified web access server
+            description: Retrieve information about the specified web access server.
           put:
             displayName: webResourceUpdate
-            description: Modify the specified web access server
+            description: Update the specified web access server.
           delete:
             displayName: webResourceDelete
             description: Delete the specified web access server
       /auth/localserver/users:
         displayName: sslVPNUsers
-        description: Portal users
+        description: |
+          Working With Portal Users
+          ----
         post:
           displayName: usersCreate
-          description: Add a new portal user
+          description: Add a new portal user.
           body:
             application/xml:
               example: |
@@ -13559,7 +13635,7 @@ securitySchemes:
               schema: usersCreate
         put:
           displayName: usersUpdate
-          description: Modify the specified portal user
+          description: Modify the portal user specified in the request body.
           body:
             application/xml:
               example: |
@@ -13581,29 +13657,33 @@ securitySchemes:
           description: Delete all users on the specifed SSL VPN instance
         /{userID}:
           displayName: user
-          description: Specified user
+          description: |
+            Working With a Specific Portal User
+            ----
           uriParameters:
             userID:
               displayName: userID
               description: User ID.
           get:
             displayName: userRead
-            description: Get information about a specified user
+            description: Get information about the specified user.
           delete:
             displayName: userDelete
-            description: Delete specified user
+            description: Delete the specified user.
       /auth/settings:
         displayName: authSettings
-        description: Authentication settings
+        description: |
+          Working With Authentication Settings
+          --
         get:
           displayName: authSettingsRead
-          description: Get information about authentication server
+          description: Retrieve information about authentication settings.
         put:
           displayName: authSettingsUpdate
           description: |
-            Set authentication process for remote users. Specify
+            Update authentication settings for remote users. Specify
             username/password authentication, active directory, ldap, radius,
-            client certificate based authentication
+            client certificate based authentication.
           body:
             application/xml:
               example: |
@@ -13674,23 +13754,27 @@ securitySchemes:
               schema: authSettingsUpdate
         /rsaconfigfile:
           displayName: rsaConfig
-          description: RSA authentication server, bound to the SSL gateway
+          description: |
+            Working With the RSA Config File 
+            ----
           post:
             displayName: rsaConfigCreate
             description: |
               Upload RSA config file (See "Generate the Authentication Manager
               Configuration File" section of the RSA Authentication Manager
               Administrator's guide for instructions on how to configure and
-              download the RSA config file from RSA Authentication Manager)
+              download the RSA config file from RSA Authentication Manager).
       /advancedconfig:
         displayName: advancedConfig
-        description: SSL VPN advanced configuration
+        description: |
+          SSL VPN Advanced Configuration
+          -----
         get:
           displayName: advancedConfigRead
-          description: Retrieve SSL VPN advanced configuration
+          description: Retrieve SSL VPN advanced configuration.
         put:
           displayName: advancedConfigUpdate
-          description: Apply advanced configuration
+          description: Update SSL VPN advanced configuration.
           body:
             application/xml:
               example: |
@@ -13710,10 +13794,13 @@ securitySchemes:
               schema: advancedConfigUpdate
       /script:
         displayName: script
-        description: Logon and logoff scripts for NSX Edge gateway
+        description: |
+          Working with Logon and Logoff Scripts for SSL VPN
+          ----
         post:
           displayName: scriptCreate
-          description: Configure parameters associated with the uploaded script file
+          description: |
+            Configure parameters associated with the uploaded script file.
           body:
             application/xml:
               example: |
@@ -13726,14 +13813,14 @@ securitySchemes:
               schema: scriptCreate
         get:
           displayName: scriptRead
-          description: Retrieve all script configurations for the Edge
+          description: Retrieve all script configurations.
         put:
           displayName: scriptUpdate
           description: |
             Update all script configurations with the given list of
             configurations. If the config is present, its is updated;
             otherwise, a new config is created. Existing configs not included
-            in the body are deleted
+            in the body are deleted.
           body:
             application/xml:
               example: |
@@ -13749,19 +13836,22 @@ securitySchemes:
           description: Delete all script configurations
         /{fileID}:
           displayName: scriptFileID
-          description: Specified uploaded script file
+          description: |
+            Working With Uploaded Script Files
+            ----
           uriParameters:
             fileID:
               required: true
               displayName: fileID
-              description: Specified script file
+              description: Specified script file.
           get:
             displayName: scriptFileIDRead
             description: |
-              Retrieve parameters associated with the specified script file
+              Retrieve parameters associated with the specified script file.
           put:
             displayName: scriptFileIDUpdate
-            description: Modify script parameters
+            description: |
+              Update parameters associated with the specified script file.
             body:
               application/xml:
                 example: |
@@ -13774,18 +13864,33 @@ securitySchemes:
                 schema: scriptFileIDUpdate
           delete:
             displayName: scriptFileIDDelete
-            description: Delete script parameters
-        /file: # PDF pg 238
+            description: Delete script parameters.
+        /file: 
           displayName: scriptFile
-          description: Logon and logoff scripts for NSX Edge gateway
+          description: |
+            Uploading Script Files for SSL VPN
+            ----
           post:
             displayName: scriptFileCreate
             description: |
-              Upload a login/logoff script. Returns a script file ID to
-              configure the parameters
+              You can add multiple login or logoff scripts. For example, you can
+              bind a login script for starting Internet Explorer with gmail.com.
+              When the remote user logs in to the SSL client, Internet Explorer
+              opens up gmail.com. This method returns a *scriptFileId* which
+              can be used to update parameters associated with the script file.
+
+              Provide the script as form-data, using the key, *file*.
+
+              **Example using curl**
+              ```
+              /usr/bin/curl -v -k -i -F file=@/tmp/script.sh -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX=='
+              https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/script/file/
+              ```
     /sslvpn/auth/localusers/users:
       displayName: allUsers
-      description: All users of NSX Edge
+      description: |
+        Working with SSL VPN Users
+        ---
       put:
         displayName: allUsersUpdate
         description: |
@@ -13812,97 +13917,125 @@ securitySchemes:
             schema: allUsersUpdate
     /sslvpn/activesessions:
       displayName: sslVPNActiveClients
-      description: Working with active clients
+      description: |
+        Working With Active Client Sessions
+        ----
       get:
         displayName: sslVPNActiveClientsRead
-        description: Retrieve a list of active clients for the SSL VPN session
+        description: Retrieve a list of active clients for the SSL VPN session.
       /{sessionID}:
         displayName: session
-        description: Specified client session
+        description: |
+          Working With a Specific Active Client Session
+          ----
         uriParameters:
           sessionID:
             required: true
             displayName: sessionID
-            description: Specified client session
+            description: Specified client session.
         delete:
           displayName: sessionDelete
-          description: Disconnect an active client
+          description: Disconnect an active client.
     /statistics/dashboard/sslvpn:
       displayName: sslVPNStats
-      description: SSL VPN statistics on the specified NSX Edge
+      description: |
+        Working With SSL VPN Dashboard Statistics
+        ---
       get:
         displayName: sslVPNStatsRead
-        description: Retrieve SSL VPN statistics on the specified NSX Edge
+        description: Retrieve SSL VPN statistics on the specified NSX Edge.
         queryParameters:
           interval:
             displayName: interval
             description: |
-              Specify a range; can be 1 - 60 minutes, or oneDay|oneWeek|
-              oneMonth|oneYear. Default is 60 minutes
+              Specify a range; can be *1* - *60* minutes, or *oneDay*, *oneWeek*,
+              *oneMonth*, or *oneYear*. Default is *60* minutes.
     /statistics/dashboard/ipsec:
       displayName: ipsecTrafficStats
-      description: Tunnel traffic statistics
+      description: |
+        Working With Tunnel Traffic Dashboard Statistics
+        ----
       get:
         displayName: ipsecTrafficStatsRead
         description: |
           Retrieve tunnel traffic statistics for specified time interval.
-          Default is 1 hour. Other possible values are 1-60 minutes|oneDay|
-          oneWeek|oneMonth|oneYear
+        queryParameters:
+          interval:
+            displayName: interval
+            description: |
+              Specify a range; can be *1* - *60* minutes, or *oneDay*, *oneWeek*,
+              *oneMonth*, or *oneYear*. Default is *60* minutes.
     /statistics/dashboard/interface:
       displayName: vnicDashStats
-      description: Dashboard statistics
+      description: |
+        Working With Interface Dashboard Statistics
+        ----
       get:
         displayName: vnicDashStatsRead
         description: |
-          Retrieve dashboard statistics between the specified start and end
-          times.
+          Retrieves dashboard statistics between the specified start and end
+          times. When start and end time are not specified, all statistics
+          since the Edge deployed are displayed. When no end time is specified,
+          the current Edge Manager time is set as endTime. Each record has the
+          stats of 5 minutes granularity.
         queryParameters:
           interval:
             required: true
             displayName: interval
-            description: Specify a start and end time range in seconds
+            description: Specify a start and end time range in seconds.
     /statistics/interfaces:
       displayName: vnicStats
-      description: Interface statistics
+      description: |
+        Working With Interface Statistics
+        ----
       get:
         displayName: vnicStatsRead
-        description: Get interface statistics
+        description: Retrieve interface statistics.
       /uplink:
         displayName: uplinkVNICStats
-        description: Uplink interface statistics
+        description: |
+          Working With Uplink Interface Statistics
+          ----
         get:
           displayName: uplinkVNICStatsRead
-          description: Get uplink interface statistics
+          description: Retrieve uplink interface statistics.
       /internal:
         displayName: internalVNICStats
-        description: Internal interface statistics
+        description: |
+          Working With Internal Interface Statistics
+          -----
         get:
           displayName: internalVNICStatsRead
-          description: Get internal interface statistics
+          description: Retrieve internal interface statistics.
     /l2vpn/config:
       displayName: l2VPN
       description: |
-        L2 VPN allows you to configure a tunnel between two sites. VM's remain
-        on the same subnet in spite of being moved between these sites,
+        Working with L2 VPN
+        ----
+        L2 VPN allows you to configure a tunnel between two sites. 
+        VMs can move between the sites and stay on the same subnet,
         enabling you to extend your datacenter. An NSX Edge at one site can
-        provide all services to VM's on the other site.
+        provide all services to VMs on the other site.
       post:
         displayName: l2VPNCreate
         description: |
-          Enable or disable L2 VPN service according to the value of the query
-          parameter "enableService"
+          Enable or disable L2 VPN service.
         queryParameters:
           enableService:
             required: true
             displayName: enableService
-            description: Enable or disable L2 VPN
+            description: Enable (*true*) or disable (*false*) L2 VPN.
             type: boolean
       get:
         displayName: l2VPNRead
-        description: Retrieve the current L2VPN configuration for NSX Edge
+        description: Retrieve the current L2VPN configuration for NSX Edge.
       put:
         displayName: l2VPNUpdate
-        description: Configure L2VPN for server or client
+        description: |
+          Configure L2VPN for server or client.
+
+          You first enable the L2 VPN service on the NSX Edge instance and then
+          configure a server and a client.
         body:
           application/xml:
             example: |
@@ -13944,24 +14077,48 @@ securitySchemes:
               </l2Vpn>
       delete:
         displayName: l2VPNDelete
-        description: Delete L2 VPN
+        description: Delete the L2 VPN configuration.
       /statistics:
         displayName: statistics
-        description: L2 VPN statistics
+        description: |
+          Working With L2 VPN Statistics
+          ---
         get:
           displayName: statisticsRead
           description: |
-            Retrieve L2 VPN stats, which has information such as tunnel status,
-            sent bytes, received bytes etc. for the given Edge
+            Retrieve L2 VPN statistics, which has information such as tunnel status,
+            sent bytes, received bytes for the specified Edge.
     /ipsec/config:
       displayName: ipsecConfig
-      description: Working with IPSEC VPN
+      description: |
+        Working With IPsec VPN
+        -----
+        NSX Edge supports site-to-site IPsec VPN between an NSX Edge instance
+        and remote sites. NSX Edge supports certificate authentication,
+        preshared key mode, IP unicast traffic, and no dynamic routing protocol
+        between the NSX Edge instance and remote VPN routers. Behind each
+        remote VPN router, you can configure multiple subnets to connect to the
+        internal network behind an NSX Edge through IPsec tunnels. These
+        subnets and the internal network behind a NSX Edge must have address
+        ranges that do not overlap.  
+        
+        You can deploy an NSX Edge agent behind a NAT device. In this
+        deployment, the NAT device translates the VPN address of an NSX Edge
+        instance to a publicly accessible address facing the Internet. Remote
+        VPN routers use this public address to access the NSX Edge instance.  
+        
+        You can place remote VPN routers behind a NAT device as well. You must
+        provide the VPN native address and the VPN Gateway ID to set up the
+        tunnel. On both ends, static one-to-one NAT is required for the VPN
+        address.
+
+        You can have a maximum of 64 tunnels across a maximum of 10 sites.
       get:
         displayName: ipsecConfigRead
-        description: Retrieve IPSec configuration
+        description: Retrieve IPsec configuration.
       put:
         displayName: ipsecConfigUpdate
-        description: Configure IPSEC VPN
+        description: Update IPsec VPN configuration.
         body:
           application/xml:
             example: |
@@ -14004,22 +14161,26 @@ securitySchemes:
               </ipsec>
       delete:
         displayName: ipsecConfigDelete
-        description: Delete the IPSec configuration
+        description: Delete the IPsec configuration.
     /ipsec/statistics:
       displayName: ipsecStats
-      description: IPSec statistics
+      description: |
+        Working With IPsec Statistics
+        ---
       get:
         displayName: ipsecStatsRead
-        description: Retrieve IPSec statistics
+        description: Retrieve IPsec statistics.
     /autoconfiguration:
       displayName: autoConfig
       description: |
+        Automatic Configuration of Firewall Rules
+        ----
         If autoConfiguration is enabled, firewall rules are automatically
         created to allow control traffic. Rules to allow data traffic are not
-        created.  For example, if you are using IPSec VPN, and
+        created.  For example, if you are using IPsec VPN, and
         **autoConfiguration** is *true*, firewall rules will automatically be
         configured to allow IKE traffic. However, you will need to add
-        additional rules to allow the data traffic for the IPSec tunnel. If HA
+        additional rules to allow the data traffic for the IPsec tunnel. If HA
         is enabled, firewall rules are always created, even if
         **autoConfiguration** is *false*, otherwise both HA appliances will
         become active.
@@ -14212,6 +14373,7 @@ securitySchemes:
         displayName: appliance
         description: | 
           Working With NSX Edge Appliance Configuration by Index
+          ----
         uriParameters:
           haIndex:
             required: true
@@ -14420,10 +14582,14 @@ securitySchemes:
           description: Delete interface
     /mgmtinterface:
       displayName: mgmtInterface
-      description: Working with management interfaces for an NSX Edge router
+      description: |
+        Working with Logical Router HA (Management) Interface
+        ----
       get:
         displayName: mgmtInterfaceRead
-        description: Retrieve all managedment interfaces to the NSX Edge router
+        description: |
+          Retrieve the management interface configuration for the logical
+          router.
       put:
         displayName: mgmtInterfaceUpdate
         description: |
@@ -14446,19 +14612,21 @@ securitySchemes:
             schema: mgmtInterfaceUpdate
     /interfaces:
       displayName: interfaces
-      description: 
+      description: |
+          Working With Logical Router Interfaces
+          ----
           Configure interfaces for logical (distributed) router.  See *Working
           with NSX Edge* for descriptions of parameters used to configure the
           logical router interfaces.
       post:
         displayName: interfacesCreate
         description: |
-          Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces
+          Add interfaces for a logical router. 
         queryParameters:
           action:
             displayName: action
             required: true
-            description: Always set to 'patch'
+            description: Set to *patch*.
         body:
           application/xml:
             example: |
@@ -14480,10 +14648,10 @@ securitySchemes:
             schema: interfacesCreate
       get:
         displayName: interfacesRead
-        description: Retrieve all interfaces for Edge router
+        description: Retrieve all interfaces on the logical router.
       delete:
         displayName: interfacesDelete
-        description: Delete interfaces
+        description: Delete all interfaces on the logical router.
         queryParameters:
           index:
             displayName: index
@@ -14493,42 +14661,82 @@ securitySchemes:
               all interfaces are deleted
       /{index}:
         displayName: interface
-        description: Manage a specific NSX Edge router interface
+        description: |
+          Working With a Specific Logical Router Interface
+          ----
         uriParameters:
           index:
             required: true
             displayName: index
-            description: Specified router interface
+            description: Specified router interface.
         get:
           displayName: interfaceRead
-          description: Retrieve information on specified DLR router interface
+          description: |
+            Retrieve information about the specified logical router interface.
         delete:
           displayName: interfaceDelete
           description: |
-            Delete interface configuration and reset to factory default
+            Delete interface configuration and reset to factory default.
         put:
           displayName: interfaceUpdate
           description: |
-            Update interface configuration on specified DLR router interface
+            Update interface configuration for the specified logical router
+            interface.
   /jobs:
     displayName: nsxEdgeJobs
-    description: NSX Edge async jobs
+    description: |
+      Configuring Edge Services in Async Mode
+      ----
+      You can configure NSX Edge to work in async mode. In the async mode, accepted
+      commands return an Accepted status and a taskId. To know the status of
+      the task, you can check the status of that taskId.  The advantage of the
+      async mode is that APIs are returned very fast and actions like vm
+      deployment, reboots, publish to NSX Edge appliance, are done behind the
+      scene under the taskId .  To configure async mode, ?async=true at the end
+      of any 4.0 service configuration URL for POST, PUT, and DELETE calls.
+      Without async mode, the location header in HTTP response has the resource
+      ID whereas in async mode, location header has the job ID.
+
+      The job status response includes the job status (*SUCCESS*, *FAILED*,
+      *QUEUED*, *RUNNING*, *ROLLBACK*), URI of the resource, and ID of the
+      resource. 
     get:
       displayName: nsxEdgeJobsRead
       description: |
-        Query jobs. Assumes Edge is configured in async mode, where ?async=true
-        is used at the end of any 4.0 service configuration URI for POST, PUT,
-        and DELETE calls.
+        Retrieve NSX Edge job status.
       queryParameters:
         status:
           displayName: status
-          description: status set to "all" or "active"
+          description: |
+            **status** can be *all* or *active*.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <edgeJobs>
+                  <edgeJob>
+                    <jobId>jobdata-917</jobId>
+                    <status>COMPLETED</status>
+                    <result>
+                      <key>edgeId</key>
+                      <value>edge-4</value>
+                    </result>
+                  </edgeJob>
+                  <edgeJob>
+                    <jobId>jobdata-915</jobId>
+                    <status>COMPLETED</status>
+                    <result>
+                      <key>edgeId</key>
+                      <value>edge-4</value>
+                    </result>
+                  </edgeJob>
+                </edgeJobs>
     /{jobId}:
       displayName: nsxEdgeJob
       description: |
-        Status of Edge async jobs. Assumes Edge is configured in async mode,
-        where ?async=true is used at the end of any 4.0 service configuration
-        URI for POST, PUT, and DELETE calls.
+        Working With a Specific Edge Job Status
+        -----
       uriParameters:
         jobId:
           required: true
@@ -14537,8 +14745,25 @@ securitySchemes:
       get:
         displayName: nsxEdgeJobRead
         description: |
-          Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
-          the resource, and ID of the resource as shown in response body
+          Retrieve job status for the specified job.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <edgeJob>
+                    <jobId>jobdata-2128</jobId>
+                    <message>Deploying vShield Edge Virtual Machine TestEdge11-0</message>
+                    <status>RUNNING</status>
+                    <result>
+                      <key>ResultURI</key>
+                      <value>/api/4.0/edges/edge-4</value>
+                    </result>
+                    <result>
+                      <key>edgeId</key>
+                      <value>edge-4</value>
+                    </result>
+                  </edgeJob>
 /4.0/edgePublish:
   displayName: nsxEdgePublish
   description: |
