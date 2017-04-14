@@ -4793,122 +4793,174 @@ Working with NSX Edge High Availability
 * **delete** *(secured)*: Delete high availability configuration.
 
 ### /4.0/edges/{edgeId}/syslog/config
-Configure one or two remote syslog servers. Edge events and logs
+Working With Remote Syslog Server on NSX Edge
+-----
+You can configure one or two remote syslog servers. Edge events and logs
 related to firewall events that flow from Edge appliances are sent to
 the syslog servers
 
-* **get** *(secured)*: Query syslog servers
-* **put** *(secured)*: Configure syslog servers
-* **delete** *(secured)*: Delete syslog servers
+* **get** *(secured)*: Retrieve syslog servers information.
+
+* **put** *(secured)*: Configure syslog servers.
+
+* **delete** *(secured)*: Delete syslog servers.
 
 ### /4.0/edges/{edgeId}/sslvpn/config
-Manage SSL VPN
+Working With SSL VPN
+----
+With SSL VPN-Plus, remote users can connect securely to private
+networks behind a NSX Edge gateway. Remote users can access servers and
+applications in the private networks.
 
-* **post** *(secured)*: Enable or disable SSL VPN
-* **get** *(secured)*: Retrieve SSL VPN details
-* **put** *(secured)*: Reconfigure the entire SSL VPN
-* **delete** *(secured)*: Delete the SSL VPN configurations on the Edge
+* **post** *(secured)*: Enable or disable SSL VPN on the NSX Edge appliance.
+
+* **get** *(secured)*: Retrieve SSL VPN details.
+* **put** *(secured)*: Update the entire SSL VPN configuration to the specified NSX Edge in a single call.
+
+* **delete** *(secured)*: Delete the SSL VPN configurations on the Edge.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/server
-Configure SSL VPN server on port 443 using the certificate named
-server-cert that is already uploaded on the NSX Edge appliance and
-the specified cipher
+Working With SSL VPN Server
+----
 
-* **get** *(secured)*: Get server settings
-* **put** *(secured)*: Apply server settings
+* **get** *(secured)*: Retrieve server settings.
+* **put** *(secured)*: Update server settings.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks
-Configure a private network to expose to remote users over SSL VPN
-tunnel
+Working With Private Networks
+---
+You can use a private network to expose to remote users over SSL VPN
+tunnel.
 
-* **post** *(secured)*: Add a private network
-* **get** *(secured)*: Get all private network profiles in the SSL VPN instance
+* **post** *(secured)*: Configure a private network.
+* **get** *(secured)*: Retrieve all private network profiles in the SSL VPN instance.
+
 * **put** *(secured)*: Update all private network configs of NSX Edge with the given list
 of private network configs. If the config is present, it is
 updated; otherwise, a new private network config is created.
-Existing configs not included in the call body are deleted
+Existing configs not included in the call body are deleted.
 
-* **delete** *(secured)*: Delete all Private Networks from the SSL VPN instance
+* **delete** *(secured)*: Delete all private networks from the SSL VPN instance.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks/{networkID}
-Specific private network
+Working With a Specific Private Network
+----
 
-* **get** *(secured)*: Get the specified private network in the SSL VPN service
+* **get** *(secured)*: Retrieve the specified private network in the SSL VPN service.
 
-* **put** *(secured)*: Modify specified private network in the SSL VPN service
+* **put** *(secured)*: Update the specified private network in the SSL VPN service.
+
 * **delete** *(secured)*: Delete private network
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools
-IP pools to assign IP addresses to remote users
+Working With IP Pools for SSL VPN
+----
 
-* **post** *(secured)*: Create an IP pool
-* **get** *(secured)*: Get all IP pools configured on SSL VPN
+* **post** *(secured)*: Create an IP pool.
+* **get** *(secured)*: Retrieve all IP pools configured on SSL VPN.
 * **put** *(secured)*: Update all IP pools with the given list of pools. If the pool is
 present, it is updated; otherwise, a new pool is created. Existing
-pools not in the body are deleted
+pools not in the body are deleted.
 
 * **delete** *(secured)*: Delete all IP pools configured on SSL VPN
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}
-Specified IP pool
+Working With a Specific IP Pool for SSL VPN
+----
 
-* **get** *(secured)*: Get details of specified IP pool
-* **put** *(secured)*: Modify specified IP pool
-* **delete** *(secured)*: Delete the specified IP pool
+* **get** *(secured)*: Retrieve details of specified IP pool.
+* **put** *(secured)*: Update specified IP pool.
+* **delete** *(secured)*: Delete the specified IP pool.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/clientconfig
-Advanced parameters for full access client configurations--such as
-whether client should auto-reconnect in case of network failures or
-network unavailability, or whether the client should be uninstalled
-after logout
+Working With Network Extension Client Parameters 
+-----
 
-* **put** *(secured)*: Set parameters for full access client configurations
-* **get** *(secured)*: Get client configuration
+* **put** *(secured)*: Set advanced parameters for full access client configurations,
+such as whether client should auto-reconnect in case of network
+failures or network unavailability, or whether the client should be
+uninstalled after logout.
+
+* **get** *(secured)*: Retrieve client configuration.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages
-Installation packages for SSL VPN clients
+Working With SSL VPN Client Installation Packages
+---
 
-* **post** *(secured)*: Create installers for full access network clients. These setup
-binaries are downloaded by remote clients and installed on their
-systems.
+* **post** *(secured)*: Creates setup executables (installers) for full access network
+clients. These setup binaries are later downloaded by remote
+clients and installed on their systems. The primary parameters
+needed to configure this setup are hostname of the gateway, and
+its port and a profile name which is shown to the user to identify
+this connection. Administrator can also set few other parameters
+such as whether to automatically start the application on windows
+login, hide the system tray icon etc.
 
-* **get** *(secured)*: Get information about all installation packages
+* **get** *(secured)*: Retrieve information about all installation packages.
 * **put** *(secured)*: Update all installation packages with the given list. If the
 package is present, it is updated; otherwise a new installation
 package is created. Existing packages not included in the body are
 deleted.
 
-* **delete** *(secured)*: Delete all client installation packages
+* **delete** *(secured)*: Delete all client installation packages.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}
-Specified installation package
+Working With a Specific SSL VPN Client Installation Package
+---
 
-* **get** *(secured)*: Get information about the specified installation package
+* **get** *(secured)*: Get information about the specified installation package.
 
-* **put** *(secured)*: Modify the specified installation package
-* **delete** *(secured)*: Delete the specified installation package
+* **put** *(secured)*: Modify the specified installation package.
+* **delete** *(secured)*: Delete the specified installation package.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/layout
-Layout configuration
+Working With Portal Layout
+---
 
-* **get** *(secured)*: Query layout configuration
+* **get** *(secured)*: Retrieve layout configuration.
+* **put** *(secured)*: Update the portal layout.
 
-### /4.0/edges/{edgeId}/sslvpn/config/layout/images
+### /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}
+Working With Portal Icons
+---
+You can upload images used by for the SSL VPN web portal.
 
-* **put** *(secured)*: Set the portal layout
+* **post** *(secured)*: Upload icons for use in the SSL VPN web portal.
+
+Provide the image file as form-data. See the table below for the form-data key to use for each image type.
+
+Image Type | form-data key | Image format requirements
+----|------|----
+portallogo | layoutFile | n/a
+phatbanner | banner | bmp
+connecticon | icon | ico
+disconnecticon | icon | ico
+erroricon | icon | ico
+desktopicon | icon | ico
+
+**Example using curl**
+
+```
+/usr/bin/curl -v -k -i -F layoutFile=@/tmp/portalLogo.jpg -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/layout/images/portallogo
+```
 
 ### /4.0/edges/{edgeId}/sslvpn/config/webresources
-Web access server that a remote user can connect to via a web browser
+Working With Web Resources
+-----
+Web resources are servers that a remote user can connect to via a web
+browser.
 
-* **post** *(secured)*: Add portal web resource
-* **get** *(secured)*: Get all web resources on the SSL VPN instance
-* **delete** *(secured)*: Delete all web resources on the SSL VPN instance
+* **post** *(secured)*: Add portal web resource.
+* **get** *(secured)*: Get all web resources on the SSL VPN instance.
+* **delete** *(secured)*: Delete all web resources on the SSL VPN instance.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}
-Specified web access server
+Working With a Specific Web Resource
+-----
 
-* **get** *(secured)*: Get the specified web access server
-* **put** *(secured)*: Modify the specified web access server
+* **get** *(secured)*: Retrieve information about the specified web access server.
+* **put** *(secured)*: Update the specified web access server.
 * **delete** *(secured)*: Delete the specified web access server
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/localserver/users

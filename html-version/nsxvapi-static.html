@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#100;&#x6f;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#x40;&#x76;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#111;&#109;">&#100;&#x6f;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#x40;&#x76;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#100;&#111;&#x63;&#102;&#x65;&#101;&#x64;&#x62;&#x61;&#99;&#107;&#x40;&#x76;&#x6d;&#x77;&#x61;&#114;&#101;&#46;&#x63;&#x6f;&#x6d;">&#100;&#111;&#x63;&#102;&#x65;&#101;&#x64;&#x62;&#x61;&#99;&#107;&#x40;&#x76;&#x6d;&#x77;&#x61;&#114;&#101;&#46;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -23682,7 +23682,10 @@ users not included in the body are deleted.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Manage SSL VPN</p>
+  <div class="description"><h2 id="working-with-ssl-vpn">Working With SSL VPN</h2>
+<p>With SSL VPN-Plus, remote users can connect securely to private
+networks behind a NSX Edge gateway. Remote users can access servers and
+applications in the private networks.</p>
 </div>
 <div class="method post">
   <a
@@ -23691,7 +23694,7 @@ users not included in the body are deleted.</p>
     href="#POST/4.0/edges/{edgeId}/sslvpn/config"
   ><h2>POST /4.0/edges/{edgeId}/sslvpn/config</h2></a>
   <div class="content">
-    <p><p>Enable or disable SSL VPN</p>
+    <p><p>Enable or disable SSL VPN on the NSX Edge appliance.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -23702,7 +23705,7 @@ users not included in the body are deleted.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Set to true to enable, false to disable</p>
+      <p>Set to <em>true</em> to enable, <em>false</em> to disable.</p>
 
   </dd>
 </dl>
@@ -23716,7 +23719,7 @@ users not included in the body are deleted.</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config</h2></a>
   <div class="content">
-    <p><p>Retrieve SSL VPN details</p>
+    <p><p>Retrieve SSL VPN details.</p>
 </p>
   </div>
 </div>
@@ -23727,40 +23730,8 @@ users not included in the body are deleted.</p>
     href="#PUT/4.0/edges/{edgeId}/sslvpn/config"
   ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config</h2></a>
   <div class="content">
-    <p><p>Reconfigure the entire SSL VPN</p>
+    <p><p>Update the entire SSL VPN configuration to the specified NSX Edge in a single call.</p>
 </p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="logonLogoffScript"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element name="logonLogoffScript"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="objectId"/&gt;
-              &lt;xs:element type="xs:string" name="scriptFileId"/&gt;
-              &lt;xs:element type="xs:string" name="type"/&gt;
-              &lt;xs:element type="xs:string" name="enabled"/&gt;
-              &lt;xs:element type="xs:string" name="description"/&gt;
-            &lt;/xs:sequence&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">logonLogoffScript</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">logonLogoffScript</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">scriptFileId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">scriptFileId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">logonLogoffScript</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">logonLogoffScript</span>&gt;</span>
-</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -23770,7 +23741,7 @@ users not included in the body are deleted.</p>
     href="#DELETE/4.0/edges/{edgeId}/sslvpn/config"
   ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config</h2></a>
   <div class="content">
-    <p><p>Delete the SSL VPN configurations on the Edge</p>
+    <p><p>Delete the SSL VPN configurations on the Edge.</p>
 </p>
   </div>
 </div>
@@ -24219,10 +24190,7 @@ download the RSA config file from RSA Authentication Manager)</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Advanced parameters for full access client configurations--such as
-whether client should auto-reconnect in case of network failures or
-network unavailability, or whether the client should be uninstalled
-after logout</p>
+  <div class="description"><h2 id="working-with-network-extension-client-parameters-">Working With Network Extension Client Parameters </h2>
 </div>
 <div class="method put">
   <a
@@ -24231,7 +24199,10 @@ after logout</p>
     href="#PUT/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/clientconfig"
   ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/clientconfig</h2></a>
   <div class="content">
-    <p><p>Set parameters for full access client configurations</p>
+    <p><p>Set advanced parameters for full access client configurations,
+such as whether client should auto-reconnect in case of network
+failures or network unavailability, or whether the client should be
+uninstalled after logout.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24255,12 +24226,12 @@ after logout</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">clientConfiguration</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">autoReconnect</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">autoReconnect</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">autoReconnect</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">autoReconnect</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">fullTunnel</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">excludeLocalSubnets</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">excludeLocalSubnets</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">gatewayIp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">gatewayIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeLocalSubnets</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">excludeLocalSubnets</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">gatewayIp</span>&gt;</span>10.112.243.11<span class="hljs-tag">&lt;/<span class="hljs-name">gatewayIp</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">fullTunnel</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">upgradeNotification</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">upgradeNotification</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">upgradeNotification</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">upgradeNotification</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">clientConfiguration</span>&gt;</span>
 </code></pre>
   </div>
@@ -24272,13 +24243,13 @@ after logout</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/clientconfig"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/clientconfig</h2></a>
   <div class="content">
-    <p><p>Get client configuration</p>
+    <p><p>Retrieve client configuration.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Installation packages for SSL VPN clients</p>
+  <div class="description"><h2 id="working-with-ssl-vpn-client-installation-packages">Working With SSL VPN Client Installation Packages</h2>
 </div>
 <div class="method post">
   <a
@@ -24287,9 +24258,14 @@ after logout</p>
     href="#POST/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages"
   ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages</h2></a>
   <div class="content">
-    <p><p>Create installers for full access network clients. These setup
-binaries are downloaded by remote clients and installed on their
-systems.</p>
+    <p><p>Creates setup executables (installers) for full access network
+clients. These setup binaries are later downloaded by remote
+clients and installed on their systems. The primary parameters
+needed to configure this setup are hostname of the gateway, and
+its port and a profile name which is shown to the user to identify
+this connection. Administrator can also set few other parameters
+such as whether to automatically start the application on windows
+login, hide the system tray icon etc.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24360,7 +24336,7 @@ systems.</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages</h2></a>
   <div class="content">
-    <p><p>Get information about all installation packages</p>
+    <p><p>Retrieve information about all installation packages.</p>
 </p>
   </div>
 </div>
@@ -24385,13 +24361,13 @@ deleted.</p>
     href="#DELETE/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages"
   ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages</h2></a>
   <div class="content">
-    <p><p>Delete all client installation packages</p>
+    <p><p>Delete all client installation packages.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specified installation package</p>
+  <div class="description"><h2 id="working-with-a-specific-ssl-vpn-client-installation-package">Working With a Specific SSL VPN Client Installation Package</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -24402,7 +24378,7 @@ deleted.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified installation package ID</p>
+      <p>Specified installation package ID.</p>
 
   </dd>
 </dl>
@@ -24414,7 +24390,7 @@ deleted.</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}</h2></a>
   <div class="content">
-    <p><p>Get information about the specified installation package</p>
+    <p><p>Get information about the specified installation package.</p>
 </p>
   </div>
 </div>
@@ -24425,7 +24401,7 @@ deleted.</p>
     href="#PUT/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}"
   ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}</h2></a>
   <div class="content">
-    <p><p>Modify the specified installation package</p>
+    <p><p>Modify the specified installation package.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24496,13 +24472,13 @@ deleted.</p>
     href="#DELETE/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}"
   ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/{packageID}</h2></a>
   <div class="content">
-    <p><p>Delete the specified installation package</p>
+    <p><p>Delete the specified installation package.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>IP pools to assign IP addresses to remote users</p>
+  <div class="description"><h2 id="working-with-ip-pools-for-ssl-vpn">Working With IP Pools for SSL VPN</h2>
 </div>
 <div class="method post">
   <a
@@ -24511,7 +24487,7 @@ deleted.</p>
     href="#POST/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools"
   ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools</h2></a>
   <div class="content">
-    <p><p>Create an IP pool</p>
+    <p><p>Create an IP pool.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24554,7 +24530,7 @@ deleted.</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools</h2></a>
   <div class="content">
-    <p><p>Get all IP pools configured on SSL VPN</p>
+    <p><p>Retrieve all IP pools configured on SSL VPN.</p>
 </p>
   </div>
 </div>
@@ -24567,7 +24543,7 @@ deleted.</p>
   <div class="content">
     <p><p>Update all IP pools with the given list of pools. If the pool is
 present, it is updated; otherwise, a new pool is created. Existing
-pools not in the body are deleted</p>
+pools not in the body are deleted.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24616,7 +24592,7 @@ pools not in the body are deleted</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specified IP pool</p>
+  <div class="description"><h2 id="working-with-a-specific-ip-pool-for-ssl-vpn">Working With a Specific IP Pool for SSL VPN</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -24627,7 +24603,7 @@ pools not in the body are deleted</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified IP pool ID</p>
+      <p>Specified IP pool ID.</p>
 
   </dd>
 </dl>
@@ -24639,7 +24615,7 @@ pools not in the body are deleted</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}</h2></a>
   <div class="content">
-    <p><p>Get details of specified IP pool</p>
+    <p><p>Retrieve details of specified IP pool.</p>
 </p>
   </div>
 </div>
@@ -24650,8 +24626,21 @@ pools not in the body are deleted</p>
     href="#PUT/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}"
   ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}</h2></a>
   <div class="content">
-    <p><p>Modify specified IP pool</p>
+    <p><p>Update specified IP pool.</p>
 </p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipAddressPool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipRange</span>&gt;</span>10.112.243.11-10.112.243.57<span class="hljs-tag">&lt;/<span class="hljs-name">ipRange</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">netmask</span>&gt;</span>255.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">netmask</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>192.168.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">primaryDns</span>&gt;</span>192.168.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryDns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">secondaryDns</span>&gt;</span>4.2.2.2<span class="hljs-tag">&lt;/<span class="hljs-name">secondaryDns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">winsServer</span>&gt;</span>10.112.243.201<span class="hljs-tag">&lt;/<span class="hljs-name">winsServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddressPool</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -24661,14 +24650,15 @@ pools not in the body are deleted</p>
     href="#DELETE/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}"
   ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/ippools/{ippoolID}</h2></a>
   <div class="content">
-    <p><p>Delete the specified IP pool</p>
+    <p><p>Delete the specified IP pool.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure a private network to expose to remote users over SSL VPN
-tunnel</p>
+  <div class="description"><h2 id="working-with-private-networks">Working With Private Networks</h2>
+<p>You can use a private network to expose to remote users over SSL VPN
+tunnel.</p>
 </div>
 <div class="method post">
   <a
@@ -24677,7 +24667,7 @@ tunnel</p>
     href="#POST/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks"
   ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks</h2></a>
   <div class="content">
-    <p><p>Add a private network</p>
+    <p><p>Configure a private network.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24720,7 +24710,7 @@ tunnel</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks</h2></a>
   <div class="content">
-    <p><p>Get all private network profiles in the SSL VPN instance</p>
+    <p><p>Retrieve all private network profiles in the SSL VPN instance.</p>
 </p>
   </div>
 </div>
@@ -24734,7 +24724,7 @@ tunnel</p>
     <p><p>Update all private network configs of NSX Edge with the given list
 of private network configs. If the config is present, it is
 updated; otherwise, a new private network config is created.
-Existing configs not included in the call body are deleted</p>
+Existing configs not included in the call body are deleted.</p>
 </p>
   </div>
 </div>
@@ -24745,13 +24735,13 @@ Existing configs not included in the call body are deleted</p>
     href="#DELETE/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks"
   ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks</h2></a>
   <div class="content">
-    <p><p>Delete all Private Networks from the SSL VPN instance</p>
+    <p><p>Delete all private networks from the SSL VPN instance.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specific private network</p>
+  <div class="description"><h2 id="working-with-a-specific-private-network">Working With a Specific Private Network</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -24774,7 +24764,7 @@ Existing configs not included in the call body are deleted</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks/{networkID}"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks/{networkID}</h2></a>
   <div class="content">
-    <p><p>Get the specified private network in the SSL VPN service</p>
+    <p><p>Retrieve the specified private network in the SSL VPN service.</p>
 </p>
   </div>
 </div>
@@ -24785,7 +24775,7 @@ Existing configs not included in the call body are deleted</p>
     href="#PUT/4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks/{networkID}"
   ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/privatenetworks/{networkID}</h2></a>
   <div class="content">
-    <p><p>Modify specified private network in the SSL VPN service</p>
+    <p><p>Update the specified private network in the SSL VPN service.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24834,7 +24824,7 @@ Existing configs not included in the call body are deleted</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Layout configuration</p>
+  <div class="description"><h2 id="working-with-portal-layout">Working With Portal Layout</h2>
 </div>
 <div class="method get">
   <a
@@ -24843,20 +24833,18 @@ Existing configs not included in the call body are deleted</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/layout"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/layout</h2></a>
   <div class="content">
-    <p><p>Query layout configuration</p>
+    <p><p>Retrieve layout configuration.</p>
 </p>
   </div>
 </div>
-</section>
-<section class="resource">
 <div class="method put">
   <a
     class="verb put"
-    id="PUT/4.0/edges/{edgeId}/sslvpn/config/layout/images"
-    href="#PUT/4.0/edges/{edgeId}/sslvpn/config/layout/images"
-  ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/layout/images</h2></a>
+    id="PUT/4.0/edges/{edgeId}/sslvpn/config/layout"
+    href="#PUT/4.0/edges/{edgeId}/sslvpn/config/layout"
+  ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/layout</h2></a>
   <div class="content">
-    <p><p>Set the portal layout</p>
+    <p><p>Update the portal layout.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -24890,6 +24878,75 @@ Existing configs not included in the call body are deleted</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">rowColor</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">rowColor</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">layout</span>&gt;</span>
 </code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-portal-icons">Working With Portal Icons</h2>
+<p>You can upload images used by for the SSL VPN web portal.</p>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">imageType</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Type of image to upload. Choice of <em>portallogo</em>, <em>phatbanner</em>,
+<em>connecticon</em>, <em>disconnecticon</em>, <em>desktopicon</em>, or <em>erroricon</em>.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}"
+    href="#POST/4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}"
+  ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}</h2></a>
+  <div class="content">
+    <p><p>Upload icons for use in the SSL VPN web portal.</p>
+<p>Provide the image file as form-data. See the table below for the form-data key to use for each image type.</p>
+<table class="table"><thead><tr>
+<th>Image Type</th>
+<th>form-data key</th>
+<th>Image format requirements</th>
+</tr>
+</thead><tbody><tr>
+<td>portallogo</td>
+<td>layoutFile</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>phatbanner</td>
+<td>banner</td>
+<td>bmp</td>
+</tr>
+<tr>
+<td>connecticon</td>
+<td>icon</td>
+<td>ico</td>
+</tr>
+<tr>
+<td>disconnecticon</td>
+<td>icon</td>
+<td>ico</td>
+</tr>
+<tr>
+<td>erroricon</td>
+<td>icon</td>
+<td>ico</td>
+</tr>
+<tr>
+<td>desktopicon</td>
+<td>icon</td>
+<td>ico</td>
+</tr>
+</tbody></table><p><strong>Example using curl</strong></p>
+<pre><code class="code-block hljs lang-elixir">/usr/bin/curl -v -k -i -F layoutFile=@/tmp/portalLogo.jpg -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span> 
+<span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/192.168.110.42/api</span><span class="hljs-regexp">/4.0/edges</span><span class="hljs-regexp">/edge-3/sslvpn</span><span class="hljs-regexp">/config/layout</span><span class="hljs-regexp">/images/portallogo</span></code></pre></p>
   </div>
 </div>
 </section>
@@ -25078,9 +25135,7 @@ configure the parameters</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure SSL VPN server on port 443 using the certificate named
-server-cert that is already uploaded on the NSX Edge appliance and
-the specified cipher</p>
+  <div class="description"><h2 id="working-with-ssl-vpn-server">Working With SSL VPN Server</h2>
 </div>
 <div class="method get">
   <a
@@ -25089,7 +25144,7 @@ the specified cipher</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/server"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/server</h2></a>
   <div class="content">
-    <p><p>Get server settings</p>
+    <p><p>Retrieve server settings.</p>
 </p>
   </div>
 </div>
@@ -25100,7 +25155,7 @@ the specified cipher</p>
     href="#PUT/4.0/edges/{edgeId}/sslvpn/config/server"
   ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/server</h2></a>
   <div class="content">
-    <p><p>Apply server settings</p>
+    <p><p>Update server settings.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -25131,20 +25186,23 @@ the specified cipher</p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">serverSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">serverAddresses</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.112.243.109<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">serverAddresses</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">certificateId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">certificateId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sslVersionList</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">sslVersionList</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">certificateId</span>&gt;</span>certificate-1<span class="hljs-tag">&lt;/<span class="hljs-name">certificateId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cipherList</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cipher</span>&gt;</span>AES128-SHA<span class="hljs-tag">&lt;/<span class="hljs-name">cipher</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cipher</span>&gt;</span>AES256-SHA<span class="hljs-tag">&lt;/<span class="hljs-name">cipher</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cipherList</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">serverSettings</span>&gt;</span>
 </code></pre>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Web access server that a remote user can connect to via a web browser</p>
+  <div class="description"><h2 id="working-with-web-resources">Working With Web Resources</h2>
+<p>Web resources are servers that a remote user can connect to via a web
+browser.</p>
 </div>
 <div class="method post">
   <a
@@ -25153,7 +25211,7 @@ the specified cipher</p>
     href="#POST/4.0/edges/{edgeId}/sslvpn/config/webresources"
   ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/webresources</h2></a>
   <div class="content">
-    <p><p>Add portal web resource</p>
+    <p><p>Add portal web resource.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -25197,7 +25255,7 @@ the specified cipher</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/webresources"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/webresources</h2></a>
   <div class="content">
-    <p><p>Get all web resources on the SSL VPN instance</p>
+    <p><p>Get all web resources on the SSL VPN instance.</p>
 </p>
   </div>
 </div>
@@ -25208,13 +25266,13 @@ the specified cipher</p>
     href="#DELETE/4.0/edges/{edgeId}/sslvpn/config/webresources"
   ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config/webresources</h2></a>
   <div class="content">
-    <p><p>Delete all web resources on the SSL VPN instance</p>
+    <p><p>Delete all web resources on the SSL VPN instance.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Specified web access server</p>
+  <div class="description"><h2 id="working-with-a-specific-web-resource">Working With a Specific Web Resource</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -25237,7 +25295,7 @@ the specified cipher</p>
     href="#GET/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
   ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}</h2></a>
   <div class="content">
-    <p><p>Get the specified web access server</p>
+    <p><p>Retrieve information about the specified web access server.</p>
 </p>
   </div>
 </div>
@@ -25248,7 +25306,7 @@ the specified cipher</p>
     href="#PUT/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
   ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}</h2></a>
   <div class="content">
-    <p><p>Modify the specified web access server</p>
+    <p><p>Update the specified web access server.</p>
 </p>
   </div>
 </div>
@@ -25853,7 +25911,8 @@ regular output.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure one or two remote syslog servers. Edge events and logs
+  <div class="description"><h2 id="working-with-remote-syslog-server-on-nsx-edge">Working With Remote Syslog Server on NSX Edge</h2>
+<p>You can configure one or two remote syslog servers. Edge events and logs
 related to firewall events that flow from Edge appliances are sent to
 the syslog servers</p>
 </div>
@@ -25864,7 +25923,7 @@ the syslog servers</p>
     href="#GET/4.0/edges/{edgeId}/syslog/config"
   ><h2>GET /4.0/edges/{edgeId}/syslog/config</h2></a>
   <div class="content">
-    <p><p>Query syslog servers</p>
+    <p><p>Retrieve syslog servers information.</p>
 </p>
   </div>
 </div>
@@ -25875,7 +25934,7 @@ the syslog servers</p>
     href="#PUT/4.0/edges/{edgeId}/syslog/config"
   ><h2>PUT /4.0/edges/{edgeId}/syslog/config</h2></a>
   <div class="content">
-    <p><p>Configure syslog servers</p>
+    <p><p>Configure syslog servers.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -25912,7 +25971,7 @@ the syslog servers</p>
     href="#DELETE/4.0/edges/{edgeId}/syslog/config"
   ><h2>DELETE /4.0/edges/{edgeId}/syslog/config</h2></a>
   <div class="content">
-    <p><p>Delete syslog servers</p>
+    <p><p>Delete syslog servers.</p>
 </p>
   </div>
 </div>

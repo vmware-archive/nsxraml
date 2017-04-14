@@ -12532,15 +12532,19 @@ securitySchemes:
     /syslog/config:
       displayName: syslog
       description: |
-        Configure one or two remote syslog servers. Edge events and logs
+        Working With Remote Syslog Server on NSX Edge
+        -----
+        You can configure one or two remote syslog servers. Edge events and logs
         related to firewall events that flow from Edge appliances are sent to
         the syslog servers
       get:
         displayName: syslogRead
-        description: Query syslog servers
+        description: |
+          Retrieve syslog servers information.
       put:
         displayName: syslogUpdate
-        description: Configure syslog servers
+        description: |
+          Configure syslog servers.
         body:
           application/xml:
             example: |
@@ -12553,75 +12557,71 @@ securitySchemes:
             schema: syslogUpdate
       delete:
         displayName: syslogDelete
-        description: Delete syslog servers
+        description: Delete syslog servers.
     /sslvpn/config:
       displayName: sslVPN
-      description: Manage SSL VPN
+      description: | 
+        Working With SSL VPN
+        ----
+        With SSL VPN-Plus, remote users can connect securely to private
+        networks behind a NSX Edge gateway. Remote users can access servers and
+        applications in the private networks.
       post:
         displayName: sslVPNCreate
-        description: Enable or disable SSL VPN
+        description: |
+          Enable or disable SSL VPN on the NSX Edge appliance.
         queryParameters:
           enableService:
             displayName: enableService
             required: true
-            description: Set to true to enable, false to disable
+            description: Set to *true* to enable, *false* to disable.
             type: boolean
       get:
         displayName: sslVPNRead
-        description: Retrieve SSL VPN details
+        description: Retrieve SSL VPN details.
       put:
         displayName: sslVPNUpdate
-        description: Reconfigure the entire SSL VPN
-        body:
-          application/xml:
-            example: |
-              <logonLogoffScript>
-                <logonLogoffScript>
-                  <objectId></objectId>
-                  <scriptFileId></scriptFileId>
-                  <type></type>
-                  <enabled></enabled>
-                  <description></description>
-                </logonLogoffScript>
-              </logonLogoffScript>
-            schema: sslVPNUpdate
+        description: |
+          Update the entire SSL VPN configuration to the specified NSX Edge in a single call.
       delete:
         displayName: sslVPNDelete
-        description: Delete the SSL VPN configurations on the Edge
+        description: Delete the SSL VPN configurations on the Edge.
       /server:
         displayName: serverSettings
         description: |
-          Configure SSL VPN server on port 443 using the certificate named
-          server-cert that is already uploaded on the NSX Edge appliance and
-          the specified cipher
+          Working With SSL VPN Server
+          ----
         get:
           displayName: serverSettingsRead
-          description: Get server settings
+          description: Retrieve server settings.
         put:
           displayName: serverSettingsUpdate
-          description: Apply server settings
+          description: Update server settings.
           body:
             application/xml:
               example: |
                 <serverSettings>
                   <serverAddresses>
-                    <ipAddress></ipAddress>
+                    <ipAddress>10.112.243.109</ipAddress>
                   </serverAddresses>
-                  <port></port>
-                  <certificateId></certificateId>
-                  <sslVersionList>
-                    <version></version>
-                  </sslVersionList>
+                  <port>443</port>
+                  <certificateId>certificate-1</certificateId>
+                  <cipherList>
+                    <cipher>AES128-SHA</cipher>
+                    <cipher>AES256-SHA</cipher>
+                  </cipherList>
                 </serverSettings>
               schema: serverSettingsUpdate
       /client/networkextension/privatenetworks:
         displayName: privateNetworks
         description: |
-          Configure a private network to expose to remote users over SSL VPN
-          tunnel
+          Working With Private Networks
+          ---
+          You can use a private network to expose to remote users over SSL VPN
+          tunnel.
         post:
           displayName: privateNetworksCreate
-          description: Add a private network
+          description: Configure a private network.
           body:
             application/xml:
               example: |
@@ -12637,20 +12637,23 @@ securitySchemes:
               schema: privateNetworksCreate
         get:
           displayName: privateNetworksRead
-          description: Get all private network profiles in the SSL VPN instance
+          description: | 
+            Retrieve all private network profiles in the SSL VPN instance.
         put:
           displayName: privateNetworksUpdate
           description: |
             Update all private network configs of NSX Edge with the given list
             of private network configs. If the config is present, it is
             updated; otherwise, a new private network config is created.
-            Existing configs not included in the call body are deleted
+            Existing configs not included in the call body are deleted.
         delete:
           displayName: privateNetworksDelete
-          description: Delete all Private Networks from the SSL VPN instance
+          description: Delete all private networks from the SSL VPN instance.
         /{networkID}:
           displayName: privateNetwork
-          description: Specific private network
+          description: |
+            Working With a Specific Private Network
+            ----
           uriParameters:
             networkID:
               required: true
@@ -12659,10 +12662,11 @@ securitySchemes:
           get:
             displayName: privateNetworkRead
             description: |
-              Get the specified private network in the SSL VPN service
+              Retrieve the specified private network in the SSL VPN service.
           put:
             displayName: privateNetworkUpdate
-            description: Modify specified private network in the SSL VPN service
+            description: |
+              Update the specified private network in the SSL VPN service.
             body:
               application/xml:
                 example: |
@@ -12681,10 +12685,12 @@ securitySchemes:
             description: Delete private network
       /client/networkextension/ippools:
         displayName: netExtIpPools
-        description: IP pools to assign IP addresses to remote users
+        description: |
+          Working With IP Pools for SSL VPN
+          ----
         post:
           displayName: netExtipPoolsCreate
-          description: Create an IP pool
+          description: Create an IP pool.
           body:
             application/xml:
               example: |
@@ -12702,13 +12708,13 @@ securitySchemes:
               schema: netExtipPoolsCreate
         get:
           displayName: netExtipPoolsRead
-          description: Get all IP pools configured on SSL VPN
+          description: Retrieve all IP pools configured on SSL VPN.
         put:
           displayName: netExtipPoolsUpdate
           description: |
             Update all IP pools with the given list of pools. If the pool is
             present, it is updated; otherwise, a new pool is created. Existing
-            pools not in the body are deleted
+            pools not in the body are deleted.
           body:
             application/xml:
               example: |
@@ -12729,55 +12735,80 @@ securitySchemes:
           description: Delete all IP pools configured on SSL VPN
         /{ippoolID}:
           displayName: netExtipPool
-          description: Specified IP pool
+          description: |
+            Working With a Specific IP Pool for SSL VPN
+            ----
           uriParameters:
             ippoolID:
               required: true
               displayName: ipPoolID
-              description: Specified IP pool ID
+              description: Specified IP pool ID.
           get:
             displayName: netExtipPoolRead
-            description: Get details of specified IP pool
+            description: Retrieve details of specified IP pool.
           put:
             displayName: netExtipPoolUpdate
-            description: Modify specified IP pool
+            description: Update specified IP pool.
+            body:
+              application/xml:
+                example: |
+                  <ipAddressPool>
+                    <description>description</description>
+                    <ipRange>10.112.243.11-10.112.243.57</ipRange>
+                    <netmask>255.0.0.0</netmask>
+                    <gateway>192.168.1.1</gateway>
+                    <primaryDns>192.168.10.1</primaryDns>
+                    <secondaryDns>4.2.2.2</secondaryDns>
+                    <dnsSuffix></dnsSuffix>
+                    <winsServer>10.112.243.201</winsServer>
+                    <enabled>true</enabled>
+                  </ipAddressPool>
           delete:
             displayName: netExtipPoolDelete
-            description: Delete the specified IP pool
+            description: Delete the specified IP pool.
       /client/networkextension/clientconfig:
         displayName: clientConfig
         description: |
-          Advanced parameters for full access client configurations--such as
-          whether client should auto-reconnect in case of network failures or
-          network unavailability, or whether the client should be uninstalled
-          after logout
+          Working With Network Extension Client Parameters 
+          -----
         put:
           displayName: clientConfigUpdate
-          description: Set parameters for full access client configurations
+          description: |
+            Set advanced parameters for full access client configurations,
+            such as whether client should auto-reconnect in case of network
+            failures or network unavailability, or whether the client should be
+            uninstalled after logout.
           body:
             application/xml:
               example: |
                 <clientConfiguration>
-                  <autoReconnect></autoReconnect>
+                  <autoReconnect>true</autoReconnect>
                   <fullTunnel>
-                    <excludeLocalSubnets></excludeLocalSubnets>
-                    <gatewayIp></gatewayIp>
+                    <excludeLocalSubnets>false</excludeLocalSubnets>
+                    <gatewayIp>10.112.243.11</gatewayIp>
                   </fullTunnel>
-                  <upgradeNotification></upgradeNotification>
+                  <upgradeNotification>false</upgradeNotification>
                 </clientConfiguration>
               schema: clientConfigUpdate
         get:
           displayName: clientConfigRead
-          description: Get client configuration
+          description: Retrieve client configuration.
       /client/networkextension/installpackages:
         displayName: installPackages
-        description: Installation packages for SSL VPN clients
+        description: |
+          Working With SSL VPN Client Installation Packages
+          ---
         post:
           displayName: installPackagesCreate
           description: |
-            Create installers for full access network clients. These setup
-            binaries are downloaded by remote clients and installed on their
-            systems.
+            Creates setup executables (installers) for full access network
+            clients. These setup binaries are later downloaded by remote
+            clients and installed on their systems. The primary parameters
+            needed to configure this setup are hostname of the gateway, and
+            its port and a profile name which is shown to the user to identify
+            this connection. Administrator can also set few other parameters
+            such as whether to automatically start the application on windows
+            login, hide the system tray icon etc.
           body:
             application/xml:
               example: |
@@ -12805,7 +12836,7 @@ securitySchemes:
               schema: installPackagesCreate
         get:
           displayName: installPackagesRead
-          description: Get information about all installation packages
+          description: Retrieve information about all installation packages.
         put:
           displayName: installPackagesUpdate
           description: |
@@ -12815,22 +12846,24 @@ securitySchemes:
             deleted.
         delete:
           displayName: installPackagesDelete
-          description: Delete all client installation packages
+          description: Delete all client installation packages.
         /{packageID}:
           displayName: installPackage
-          description: Specified installation package
+          description: |
+            Working With a Specific SSL VPN Client Installation Package
+            ---
           uriParameters:
             packageID:
               required: true
               displayName: packageID
-              description: Specified installation package ID
+              description: Specified installation package ID.
           get:
             displayName: installPackageRead
             description: |
-              Get information about the specified installation package
+              Get information about the specified installation package.
           put:
             displayName: installPackageUpdate
-            description: Modify the specified installation package
+            description: Modify the specified installation package.
             body:
               application/xml:
                 example: |
@@ -12858,39 +12891,77 @@ securitySchemes:
                 schema: installPackageUpdate
           delete:
             displayName: installPackageDelete
-            description: Delete the specified installation package
+            description: Delete the specified installation package.
       /layout:
         displayName: layout
-        description: Layout configuration
+        description: |
+          Working With Portal Layout
+          ---
         get:
           displayName: layoutRead
-          description: Query layout configuration
-        /images:
-          put:
-            displayName: layoutUpdate
-            description: Set the portal layout
-            body:
-              application/xml:
-                example: |
-                  <layout>
-                    <portalTitle></portalTitle>
-                    <companyName></companyName>
-                    <logoBackgroundColor></logoBackgroundColor>
-                    <titleColor></titleColor>
-                    <topFrameColor></topFrameColor>
-                    <menuBarColor></menuBarColor>
-                    <rowAlternativeColor></rowAlternativeColor>
-                    <bodyColor></bodyColor>
-                    <rowColor></rowColor>
-                  </layout>
-                schema: layoutUpdate
+          description: Retrieve layout configuration.
+        put:
+          displayName: layoutUpdate
+          description: Update the portal layout.
+          body:
+            application/xml:
+              example: |
+                <layout>
+                  <portalTitle></portalTitle>
+                  <companyName></companyName>
+                  <logoBackgroundColor></logoBackgroundColor>
+                  <titleColor></titleColor>
+                  <topFrameColor></topFrameColor>
+                  <menuBarColor></menuBarColor>
+                  <rowAlternativeColor></rowAlternativeColor>
+                  <bodyColor></bodyColor>
+                  <rowColor></rowColor>
+                </layout>
+              schema: layoutUpdate
+        /images/{imageType}:
+          displayName: layoutIcons
+          description: |
+            Working With Portal Icons
+            ---
+            You can upload images used by for the SSL VPN web portal.
+          uriParameters:
+            imageType:
+              displayName: imageType
+              description: |
+                Type of image to upload. Choice of *portallogo*, *phatbanner*,
+                *connecticon*, *disconnecticon*, *desktopicon*, or *erroricon*.
+          post:
+            displayName: layoutIconsUpload
+            description: |
+              Upload icons for use in the SSL VPN web portal.
+
+              Provide the image file as form-data. See the table below for the form-data key to use for each image type.
+
+              Image Type | form-data key | Image format requirements
+              ----|------|----
+              portallogo | layoutFile | n/a
+              phatbanner | banner | bmp
+              connecticon | icon | ico
+              disconnecticon | icon | ico
+              erroricon | icon | ico
+              desktopicon | icon | ico
+
+              **Example using curl**
+
+              ```
+              /usr/bin/curl -v -k -i -F layoutFile=@/tmp/portalLogo.jpg -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+              https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/layout/images/portallogo
+              ```
       /webresources:
         displayName: webResources
         description: |
-          Web access server that a remote user can connect to via a web browser
+          Working With Web Resources
+          -----
+          Web resources are servers that a remote user can connect to via a web
+          browser.
         post:
           displayName: webResourcesCreate
-          description: Add portal web resource
+          description: Add portal web resource.
           body:
             application/xml:
               example: |
@@ -12906,13 +12977,15 @@ securitySchemes:
               schema: webResourcesCreate
         get:
           displayName: webResourcesRead
-          description: Get all web resources on the SSL VPN instance
+          description: Get all web resources on the SSL VPN instance.
         delete:
           displayName: webResourcesDelete
-          description: Delete all web resources on the SSL VPN instance
+          description: Delete all web resources on the SSL VPN instance.
         /{id}:
           displayName: webResource
-          description: Specified web access server
+          description: |
+            Working With a Specific Web Resource
+            -----
           uriParameters:
             id:
               displayName: id
@@ -12920,10 +12993,10 @@ securitySchemes:
               required: true
           get:
             displayName: webResourceRead
-            description: Get the specified web access server
+            description: Retrieve information about the specified web access server.
           put:
             displayName: webResourceUpdate
-            description: Modify the specified web access server
+            description: Update the specified web access server.
           delete:
             displayName: webResourceDelete
             description: Delete the specified web access server
