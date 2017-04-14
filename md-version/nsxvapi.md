@@ -4964,115 +4964,146 @@ Working With a Specific Web Resource
 * **delete** *(secured)*: Delete the specified web access server
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/localserver/users
-Portal users
+Working With Portal Users
+----
 
-* **post** *(secured)*: Add a new portal user
-* **put** *(secured)*: Modify the specified portal user
+* **post** *(secured)*: Add a new portal user.
+* **put** *(secured)*: Modify the portal user specified in the request body.
 * **delete** *(secured)*: Delete all users on the specifed SSL VPN instance
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/localserver/users/{userID}
-Specified user
+Working With a Specific Portal User
+----
 
-* **get** *(secured)*: Get information about a specified user
-* **delete** *(secured)*: Delete specified user
+* **get** *(secured)*: Get information about the specified user.
+* **delete** *(secured)*: Delete the specified user.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/settings
-Authentication settings
+Working With Authentication Settings
+--
 
-* **get** *(secured)*: Get information about authentication server
-* **put** *(secured)*: Set authentication process for remote users. Specify
+* **get** *(secured)*: Retrieve information about authentication settings.
+* **put** *(secured)*: Update authentication settings for remote users. Specify
 username/password authentication, active directory, ldap, radius,
-client certificate based authentication
+client certificate based authentication.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/settings/rsaconfigfile
-RSA authentication server, bound to the SSL gateway
+Working With the RSA Config File 
+----
 
 * **post** *(secured)*: Upload RSA config file (See "Generate the Authentication Manager
 Configuration File" section of the RSA Authentication Manager
 Administrator's guide for instructions on how to configure and
-download the RSA config file from RSA Authentication Manager)
+download the RSA config file from RSA Authentication Manager).
 
 ### /4.0/edges/{edgeId}/sslvpn/config/advancedconfig
-SSL VPN advanced configuration
+SSL VPN Advanced Configuration
+-----
 
-* **get** *(secured)*: Retrieve SSL VPN advanced configuration
-* **put** *(secured)*: Apply advanced configuration
+* **get** *(secured)*: Retrieve SSL VPN advanced configuration.
+* **put** *(secured)*: Update SSL VPN advanced configuration.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script
-Logon and logoff scripts for NSX Edge gateway
+Working with Logon and Logoff Scripts for SSL VPN
+----
 
-* **post** *(secured)*: Configure parameters associated with the uploaded script file
-* **get** *(secured)*: Retrieve all script configurations for the Edge
+* **post** *(secured)*: Configure parameters associated with the uploaded script file.
+
+* **get** *(secured)*: Retrieve all script configurations.
 * **put** *(secured)*: Update all script configurations with the given list of
 configurations. If the config is present, its is updated;
 otherwise, a new config is created. Existing configs not included
-in the body are deleted
+in the body are deleted.
 
 * **delete** *(secured)*: Delete all script configurations
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script/{fileID}
-Specified uploaded script file
+Working With Uploaded Script Files
+----
 
-* **get** *(secured)*: Retrieve parameters associated with the specified script file
+* **get** *(secured)*: Retrieve parameters associated with the specified script file.
 
-* **put** *(secured)*: Modify script parameters
-* **delete** *(secured)*: Delete script parameters
+* **put** *(secured)*: Update parameters associated with the specified script file.
+
+* **delete** *(secured)*: Delete script parameters.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script/file
-Logon and logoff scripts for NSX Edge gateway
+Uploading Script Files for SSL VPN
+----
 
-* **post** *(secured)*: Upload a login/logoff script. Returns a script file ID to
-configure the parameters
+* **post** *(secured)*: You can add multiple login or logoff scripts. For example, you can
+bind a login script for starting Internet Explorer with gmail.com.
+When the remote user logs in to the SSL client, Internet Explorer
+opens up gmail.com. This method returns a *scriptFileId* which
+can be used to update parameters associated with the script file.
+
+Provide the script as form-data, using the key, *file*.
+
+**Example using curl**
+```
+/usr/bin/curl -v -k -i -F file=@/tmp/script.sh -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX=='
+https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/script/file/
+```
 
 ### /4.0/edges/{edgeId}/sslvpn/auth/localusers/users
-All users of NSX Edge
+Working with SSL VPN Users
+---
 
 * **put** *(secured)*: Update all users with the given list of users. If the user is
 present, it is updated. Otherwise, and new user is created. Existing
 users not included in the body are deleted.
 
 ### /4.0/edges/{edgeId}/sslvpn/activesessions
-Working with active clients
+Working With Active Client Sessions
+----
 
-* **get** *(secured)*: Retrieve a list of active clients for the SSL VPN session
+* **get** *(secured)*: Retrieve a list of active clients for the SSL VPN session.
 
 ### /4.0/edges/{edgeId}/sslvpn/activesessions/{sessionID}
-Specified client session
+Working With a Specific Active Client Session
+----
 
-* **delete** *(secured)*: Disconnect an active client
+* **delete** *(secured)*: Disconnect an active client.
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/sslvpn
-SSL VPN statistics on the specified NSX Edge
+Working With SSL VPN Dashboard Statistics
+---
 
-* **get** *(secured)*: Retrieve SSL VPN statistics on the specified NSX Edge
+* **get** *(secured)*: Retrieve SSL VPN statistics on the specified NSX Edge.
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/ipsec
-Tunnel traffic statistics
+Working With Tunnel Traffic Dashboard Statistics
+----
 
 * **get** *(secured)*: Retrieve tunnel traffic statistics for specified time interval.
-Default is 1 hour. Other possible values are 1-60 minutes|oneDay|
-oneWeek|oneMonth|oneYear
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/interface
-Dashboard statistics
+Working With Interface Dashboard Statistics
+----
 
-* **get** *(secured)*: Retrieve dashboard statistics between the specified start and end
-times.
+* **get** *(secured)*: Retrieves dashboard statistics between the specified start and end
+times. When start and end time are not specified, all statistics
+since the Edge deployed are displayed. When no end time is specified,
+the current Edge Manager time is set as endTime. Each record has the
+stats of 5 minutes granularity.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces
-Interface statistics
+Working With Interface Statistics
+----
 
-* **get** *(secured)*: Get interface statistics
+* **get** *(secured)*: Retrieve interface statistics.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces/uplink
-Uplink interface statistics
+Working With Uplink Interface Statistics
+----
 
-* **get** *(secured)*: Get uplink interface statistics
+* **get** *(secured)*: Retrieve uplink interface statistics.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces/internal
-Internal interface statistics
+Working With Internal Interface Statistics
+-----
 
-* **get** *(secured)*: Get internal interface statistics
+* **get** *(secured)*: Retrieve internal interface statistics.
 
 ### /4.0/edges/{edgeId}/l2vpn/config
 L2 VPN allows you to configure a tunnel between two sites. VM's remain

@@ -13002,10 +13002,12 @@ securitySchemes:
             description: Delete the specified web access server
       /auth/localserver/users:
         displayName: sslVPNUsers
-        description: Portal users
+        description: |
+          Working With Portal Users
+          ----
         post:
           displayName: usersCreate
-          description: Add a new portal user
+          description: Add a new portal user.
           body:
             application/xml:
               example: |
@@ -13024,7 +13026,7 @@ securitySchemes:
               schema: usersCreate
         put:
           displayName: usersUpdate
-          description: Modify the specified portal user
+          description: Modify the portal user specified in the request body.
           body:
             application/xml:
               example: |
@@ -13046,29 +13048,33 @@ securitySchemes:
           description: Delete all users on the specifed SSL VPN instance
         /{userID}:
           displayName: user
-          description: Specified user
+          description: |
+            Working With a Specific Portal User
+            ----
           uriParameters:
             userID:
               displayName: userID
               description: User ID.
           get:
             displayName: userRead
-            description: Get information about a specified user
+            description: Get information about the specified user.
           delete:
             displayName: userDelete
-            description: Delete specified user
+            description: Delete the specified user.
       /auth/settings:
         displayName: authSettings
-        description: Authentication settings
+        description: |
+          Working With Authentication Settings
+          --
         get:
           displayName: authSettingsRead
-          description: Get information about authentication server
+          description: Retrieve information about authentication settings.
         put:
           displayName: authSettingsUpdate
           description: |
-            Set authentication process for remote users. Specify
+            Update authentication settings for remote users. Specify
             username/password authentication, active directory, ldap, radius,
-            client certificate based authentication
+            client certificate based authentication.
           body:
             application/xml:
               example: |
@@ -13139,23 +13145,27 @@ securitySchemes:
               schema: authSettingsUpdate
         /rsaconfigfile:
           displayName: rsaConfig
-          description: RSA authentication server, bound to the SSL gateway
+          description: |
+            Working With the RSA Config File 
+            ----
           post:
             displayName: rsaConfigCreate
             description: |
               Upload RSA config file (See "Generate the Authentication Manager
               Configuration File" section of the RSA Authentication Manager
               Administrator's guide for instructions on how to configure and
-              download the RSA config file from RSA Authentication Manager)
+              download the RSA config file from RSA Authentication Manager).
       /advancedconfig:
         displayName: advancedConfig
-        description: SSL VPN advanced configuration
+        description: |
+          SSL VPN Advanced Configuration
+          -----
         get:
           displayName: advancedConfigRead
-          description: Retrieve SSL VPN advanced configuration
+          description: Retrieve SSL VPN advanced configuration.
         put:
           displayName: advancedConfigUpdate
-          description: Apply advanced configuration
+          description: Update SSL VPN advanced configuration.
           body:
             application/xml:
               example: |
@@ -13175,10 +13185,13 @@ securitySchemes:
               schema: advancedConfigUpdate
       /script:
         displayName: script
-        description: Logon and logoff scripts for NSX Edge gateway
+        description: |
+          Working with Logon and Logoff Scripts for SSL VPN
+          ----
         post:
           displayName: scriptCreate
-          description: Configure parameters associated with the uploaded script file
+          description: |
+            Configure parameters associated with the uploaded script file.
           body:
             application/xml:
               example: |
@@ -13191,14 +13204,14 @@ securitySchemes:
               schema: scriptCreate
         get:
           displayName: scriptRead
-          description: Retrieve all script configurations for the Edge
+          description: Retrieve all script configurations.
         put:
           displayName: scriptUpdate
           description: |
             Update all script configurations with the given list of
             configurations. If the config is present, its is updated;
             otherwise, a new config is created. Existing configs not included
-            in the body are deleted
+            in the body are deleted.
           body:
             application/xml:
               example: |
@@ -13214,19 +13227,22 @@ securitySchemes:
           description: Delete all script configurations
         /{fileID}:
           displayName: scriptFileID
-          description: Specified uploaded script file
+          description: |
+            Working With Uploaded Script Files
+            ----
           uriParameters:
             fileID:
               required: true
               displayName: fileID
-              description: Specified script file
+              description: Specified script file.
           get:
             displayName: scriptFileIDRead
             description: |
-              Retrieve parameters associated with the specified script file
+              Retrieve parameters associated with the specified script file.
           put:
             displayName: scriptFileIDUpdate
-            description: Modify script parameters
+            description: |
+              Update parameters associated with the specified script file.
             body:
               application/xml:
                 example: |
@@ -13239,18 +13255,33 @@ securitySchemes:
                 schema: scriptFileIDUpdate
           delete:
             displayName: scriptFileIDDelete
-            description: Delete script parameters
-        /file: # PDF pg 238
+            description: Delete script parameters.
+        /file: 
           displayName: scriptFile
-          description: Logon and logoff scripts for NSX Edge gateway
+          description: |
+            Uploading Script Files for SSL VPN
+            ----
           post:
             displayName: scriptFileCreate
             description: |
-              Upload a login/logoff script. Returns a script file ID to
-              configure the parameters
+              You can add multiple login or logoff scripts. For example, you can
+              bind a login script for starting Internet Explorer with gmail.com.
+              When the remote user logs in to the SSL client, Internet Explorer
+              opens up gmail.com. This method returns a *scriptFileId* which
+              can be used to update parameters associated with the script file.
+
+              Provide the script as form-data, using the key, *file*.
+
+              **Example using curl**
+              ```
+              /usr/bin/curl -v -k -i -F file=@/tmp/script.sh -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX=='
+              https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/script/file/
+              ```
     /sslvpn/auth/localusers/users:
       displayName: allUsers
-      description: All users of NSX Edge
+      description: |
+        Working with SSL VPN Users
+        ---
       put:
         displayName: allUsersUpdate
         description: |
@@ -13277,73 +13308,96 @@ securitySchemes:
             schema: allUsersUpdate
     /sslvpn/activesessions:
       displayName: sslVPNActiveClients
-      description: Working with active clients
+      description: |
+        Working With Active Client Sessions
+        ----
       get:
         displayName: sslVPNActiveClientsRead
-        description: Retrieve a list of active clients for the SSL VPN session
+        description: Retrieve a list of active clients for the SSL VPN session.
       /{sessionID}:
         displayName: session
-        description: Specified client session
+        description: |
+          Working With a Specific Active Client Session
+          ----
         uriParameters:
           sessionID:
             required: true
             displayName: sessionID
-            description: Specified client session
+            description: Specified client session.
         delete:
           displayName: sessionDelete
-          description: Disconnect an active client
+          description: Disconnect an active client.
     /statistics/dashboard/sslvpn:
       displayName: sslVPNStats
-      description: SSL VPN statistics on the specified NSX Edge
+      description: |
+        Working With SSL VPN Dashboard Statistics
+        ---
       get:
         displayName: sslVPNStatsRead
-        description: Retrieve SSL VPN statistics on the specified NSX Edge
+        description: Retrieve SSL VPN statistics on the specified NSX Edge.
         queryParameters:
           interval:
             displayName: interval
             description: |
-              Specify a range; can be 1 - 60 minutes, or oneDay|oneWeek|
-              oneMonth|oneYear. Default is 60 minutes
+              Specify a range; can be *1* - *60* minutes, or *oneDay*, *oneWeek*,
+              *oneMonth*, or *oneYear*. Default is *60* minutes.
     /statistics/dashboard/ipsec:
       displayName: ipsecTrafficStats
-      description: Tunnel traffic statistics
+      description: |
+        Working With Tunnel Traffic Dashboard Statistics
+        ----
       get:
         displayName: ipsecTrafficStatsRead
         description: |
           Retrieve tunnel traffic statistics for specified time interval.
-          Default is 1 hour. Other possible values are 1-60 minutes|oneDay|
-          oneWeek|oneMonth|oneYear
+        queryParameters:
+          interval:
+            displayName: interval
+            description: |
+              Specify a range; can be *1* - *60* minutes, or *oneDay*, *oneWeek*,
+              *oneMonth*, or *oneYear*. Default is *60* minutes.
     /statistics/dashboard/interface:
       displayName: vnicDashStats
-      description: Dashboard statistics
+      description: |
+        Working With Interface Dashboard Statistics
+        ----
       get:
         displayName: vnicDashStatsRead
         description: |
-          Retrieve dashboard statistics between the specified start and end
-          times.
+          Retrieves dashboard statistics between the specified start and end
+          times. When start and end time are not specified, all statistics
+          since the Edge deployed are displayed. When no end time is specified,
+          the current Edge Manager time is set as endTime. Each record has the
+          stats of 5 minutes granularity.
         queryParameters:
           interval:
             required: true
             displayName: interval
-            description: Specify a start and end time range in seconds
+            description: Specify a start and end time range in seconds.
     /statistics/interfaces:
       displayName: vnicStats
-      description: Interface statistics
+      description: |
+        Working With Interface Statistics
+        ----
       get:
         displayName: vnicStatsRead
-        description: Get interface statistics
+        description: Retrieve interface statistics.
       /uplink:
         displayName: uplinkVNICStats
-        description: Uplink interface statistics
+        description: |
+          Working With Uplink Interface Statistics
+          ----
         get:
           displayName: uplinkVNICStatsRead
-          description: Get uplink interface statistics
+          description: Retrieve uplink interface statistics.
       /internal:
         displayName: internalVNICStats
-        description: Internal interface statistics
+        description: |
+          Working With Internal Interface Statistics
+          -----
         get:
           displayName: internalVNICStatsRead
-          description: Get internal interface statistics
+          description: Retrieve internal interface statistics.
     /l2vpn/config:
       displayName: l2VPN
       description: |
