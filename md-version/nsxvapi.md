@@ -2385,7 +2385,8 @@ groups and can use this data to fine tune your firewall rules.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
 **Example:** View outbound AD group activity    
-`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&param=app:DEST_APP:16`
+`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1
+&param=app:DEST_APP:16`
 
 ### /3.0/ai/user/{userID}
 Working With a Specific User
@@ -3916,7 +3917,7 @@ Parameter |  Description | Comments
 **cliSettings > userName** |User name.|Required. length 1-33.
 **cliSettings > password** |Password.|Required. The password must be at least 12 characters long. Must contain at-least 1 uppercase, 1 lowercase, 1 special character and 1 digit. In addition, a character cannot be repeated 3 or more times consectively.
 **cliSettings > remoteAccess** |Enables or disables remote access through SSH. |Required. Relevant firewall rules to allow traffic on port 22 must be opened by user/client
-**autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is *true*. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPSec VPN, and **autoConfiguration** is *true*, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPSec tunnel. If HA is enabled, firewall rules are always created, even if **autoConfiguration** is *false*, otherwise both HA appliances will become active.
+**autoConfiguration > enabled** |Enable/Disable status of autoConfiguration|Optional. True/False. Default is *true*. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPsec VPN, and **autoConfiguration** is *true*, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPsec tunnel. If HA is enabled, firewall rules are always created, even if **autoConfiguration** is *false*, otherwise both HA appliances will become active.
 **autoConfiguration > rulePriority** |Defines the priority of system-defined rules over user-defined rules.|Optional. High, Low.  Default is *high*.
 **queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is *false*.
 **queryDaemon > port** |Defines the port through which the communication happens.|Integer 1-65535. Default is *5666*.
@@ -4493,7 +4494,7 @@ particular type of network traffic. After configuring a profile, you
 associate the profile with a virtual server. The virtual server then
 processes traffic according to the values specified in the profile.
 Using profiles enhances your control over managing network traffic,
-and makes traffic‐management tasks easier and more efficient.
+and makes traffic-management tasks easier and more efficient.
 
 * **post** *(secured)*: Add an application profile.
 * **get** *(secured)*: Retrieve all application profiles on the specified Edge.
@@ -5106,43 +5107,73 @@ Working With Internal Interface Statistics
 * **get** *(secured)*: Retrieve internal interface statistics.
 
 ### /4.0/edges/{edgeId}/l2vpn/config
-L2 VPN allows you to configure a tunnel between two sites. VM's remain
-on the same subnet in spite of being moved between these sites,
+Working with L2 VPN
+----
+L2 VPN allows you to configure a tunnel between two sites. 
+VMs can move between the sites and stay on the same subnet,
 enabling you to extend your datacenter. An NSX Edge at one site can
-provide all services to VM's on the other site.
+provide all services to VMs on the other site.
 
-* **post** *(secured)*: Enable or disable L2 VPN service according to the value of the query
-parameter "enableService"
+* **post** *(secured)*: Enable or disable L2 VPN service.
 
-* **get** *(secured)*: Retrieve the current L2VPN configuration for NSX Edge
-* **put** *(secured)*: Configure L2VPN for server or client
-* **delete** *(secured)*: Delete L2 VPN
+* **get** *(secured)*: Retrieve the current L2VPN configuration for NSX Edge.
+* **put** *(secured)*: Configure L2VPN for server or client.
+
+You first enable the L2 VPN service on the NSX Edge instance and then
+configure a server and a client.
+
+* **delete** *(secured)*: Delete the L2 VPN configuration.
 
 ### /4.0/edges/{edgeId}/l2vpn/config/statistics
-L2 VPN statistics
+Working With L2 VPN Statistics
+---
 
-* **get** *(secured)*: Retrieve L2 VPN stats, which has information such as tunnel status,
-sent bytes, received bytes etc. for the given Edge
+* **get** *(secured)*: Retrieve L2 VPN statistics, which has information such as tunnel status,
+sent bytes, received bytes for the specified Edge.
 
 ### /4.0/edges/{edgeId}/ipsec/config
-Working with IPSEC VPN
+Working With IPsec VPN
+-----
+NSX Edge supports site-to-site IPsec VPN between an NSX Edge instance
+and remote sites. NSX Edge supports certificate authentication,
+preshared key mode, IP unicast traffic, and no dynamic routing protocol
+between the NSX Edge instance and remote VPN routers. Behind each
+remote VPN router, you can configure multiple subnets to connect to the
+internal network behind an NSX Edge through IPsec tunnels. These
+subnets and the internal network behind a NSX Edge must have address
+ranges that do not overlap.  
 
-* **get** *(secured)*: Retrieve IPSec configuration
-* **put** *(secured)*: Configure IPSEC VPN
-* **delete** *(secured)*: Delete the IPSec configuration
+You can deploy an NSX Edge agent behind a NAT device. In this
+deployment, the NAT device translates the VPN address of an NSX Edge
+instance to a publicly accessible address facing the Internet. Remote
+VPN routers use this public address to access the NSX Edge instance.  
+
+You can place remote VPN routers behind a NAT device as well. You must
+provide the VPN native address and the VPN Gateway ID to set up the
+tunnel. On both ends, static one-to-one NAT is required for the VPN
+address.
+
+You can have a maximum of 64 tunnels across a maximum of 10 sites.
+
+* **get** *(secured)*: Retrieve IPsec configuration.
+* **put** *(secured)*: Update IPsec VPN configuration.
+* **delete** *(secured)*: Delete the IPsec configuration.
 
 ### /4.0/edges/{edgeId}/ipsec/statistics
-IPSec statistics
+Working With IPsec Statistics
+---
 
-* **get** *(secured)*: Retrieve IPSec statistics
+* **get** *(secured)*: Retrieve IPsec statistics.
 
 ### /4.0/edges/{edgeId}/autoconfiguration
+Automatic Configuration of Firewall Rules
+----
 If autoConfiguration is enabled, firewall rules are automatically
 created to allow control traffic. Rules to allow data traffic are not
-created.  For example, if you are using IPSec VPN, and
+created.  For example, if you are using IPsec VPN, and
 **autoConfiguration** is *true*, firewall rules will automatically be
 configured to allow IKE traffic. However, you will need to add
-additional rules to allow the data traffic for the IPSec tunnel. If HA
+additional rules to allow the data traffic for the IPsec tunnel. If HA
 is enabled, firewall rules are always created, even if
 **autoConfiguration** is *false*, otherwise both HA appliances will
 become active.
@@ -5217,6 +5248,7 @@ Release | Modification
 
 ### /4.0/edges/{edgeId}/appliances/{haIndex}
 Working With NSX Edge Appliance Configuration by Index
+----
 
 * **post** *(secured)*: Used to send CLI Commands to the Edge Gw. To use CLI commands you also
 need to add an additional Accept Header with type text\plain, as well as
@@ -5260,43 +5292,63 @@ configure Edge Service Gateway interfaces.
 * **delete** *(secured)*: Delete interface
 
 ### /4.0/edges/{edgeId}/mgmtinterface
-Working with management interfaces for an NSX Edge router
+Working with Logical Router HA (Management) Interface
+----
 
-* **get** *(secured)*: Retrieve all managedment interfaces to the NSX Edge router
+* **get** *(secured)*: Retrieve the management interface configuration for the logical
+router.
+
 * **put** *(secured)*: Configure high availability (management) interface for logical
 (distributed) router.  See *Working with NSX Edge* for descriptions
 of parameters used to configure the logical router HA interface.
 
 ### /4.0/edges/{edgeId}/interfaces
-Configure interfaces for logical (distributed) router.  See *Working with NSX Edge* for descriptions of parameters used to configure the logical router interfaces.
+Working With Logical Router Interfaces
+----
+Configure interfaces for logical (distributed) router.  See *Working
+with NSX Edge* for descriptions of parameters used to configure the
+logical router interfaces.
 
-* **post** *(secured)*: Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces
+* **post** *(secured)*: Add interfaces for a logical router. 
 
-* **get** *(secured)*: Retrieve all interfaces for Edge router
-* **delete** *(secured)*: Delete interfaces
+* **get** *(secured)*: Retrieve all interfaces on the logical router.
+* **delete** *(secured)*: Delete all interfaces on the logical router.
 
 ### /4.0/edges/{edgeId}/interfaces/{index}
-Manage a specific NSX Edge router interface
+Working With a Specific Logical Router Interface
+----
 
-* **get** *(secured)*: Retrieve information on specified DLR router interface
-* **delete** *(secured)*: Delete interface configuration and reset to factory default
+* **get** *(secured)*: Retrieve information about the specified logical router interface.
 
-* **put** *(secured)*: Update interface configuration on specified DLR router interface
+* **delete** *(secured)*: Delete interface configuration and reset to factory default.
+
+* **put** *(secured)*: Update interface configuration for the specified logical router
+interface.
 
 ### /4.0/edges/jobs
-NSX Edge async jobs
+Configuring Edge Services in Async Mode
+----
+You can configure NSX Edge to work in async mode. In the async mode, accepted
+commands return an Accepted status and a taskId. To know the status of
+the task, you can check the status of that taskId.  The advantage of the
+async mode is that APIs are returned very fast and actions like vm
+deployment, reboots, publish to NSX Edge appliance, are done behind the
+scene under the taskId .  To configure async mode, ?async=true at the end
+of any 4.0 service configuration URL for POST, PUT, and DELETE calls.
+Without async mode, the location header in HTTP response has the resource
+ID whereas in async mode, location header has the job ID.
 
-* **get** *(secured)*: Query jobs. Assumes Edge is configured in async mode, where ?async=true
-is used at the end of any 4.0 service configuration URI for POST, PUT,
-and DELETE calls.
+The job status response includes the job status (*SUCCESS*, *FAILED*,
+*QUEUED*, *RUNNING*, *ROLLBACK*), URI of the resource, and ID of the
+resource. 
+
+* **get** *(secured)*: Retrieve NSX Edge job status.
 
 ### /4.0/edges/jobs/{jobId}
-Status of Edge async jobs. Assumes Edge is configured in async mode,
-where ?async=true is used at the end of any 4.0 service configuration
-URI for POST, PUT, and DELETE calls.
+Working With a Specific Edge Job Status
+-----
 
-* **get** *(secured)*: Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
-the resource, and ID of the resource as shown in response body
+* **get** *(secured)*: Retrieve job status for the specified job.
 
 ## nsxEdgePublish
 Working with NSX Edge Configuration Publishing

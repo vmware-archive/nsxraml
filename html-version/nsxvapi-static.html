@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#100;&#111;&#x63;&#x66;&#x65;&#101;&#100;&#x62;&#x61;&#99;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#100;&#111;&#x63;&#x66;&#x65;&#101;&#100;&#x62;&#x61;&#99;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#97;&#x72;&#101;&#46;&#99;&#111;&#x6d;">&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#97;&#x72;&#101;&#46;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -15698,7 +15698,8 @@ activities</li>
 </ul>
 </li>
 </ul>
-<p><strong>Example:</strong> View outbound AD group activity<br><code>GET /api/3.0/ai/userdetails?query=vma&amp;interval=60m&amp;param=dest:VIRTUAL_MACHINE:1&amp;param=app:DEST_APP:16</code></p>
+<p><strong>Example:</strong> View outbound AD group activity<br><code>GET /api/3.0/ai/userdetails?query=vma&amp;interval=60m&amp;param=dest:VIRTUAL_MACHINE:1
+&amp;param=app:DEST_APP:16</code></p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -16340,7 +16341,7 @@ DHCP relay properties.</p>
 <tr>
 <td><strong>autoConfiguration &gt; enabled</strong></td>
 <td>Enable/Disable status of autoConfiguration</td>
-<td>Optional. True/False. Default is <em>true</em>. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPSec VPN, and <strong>autoConfiguration</strong> is <em>true</em>, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPSec tunnel. If HA is enabled, firewall rules are always created, even if <strong>autoConfiguration</strong> is <em>false</em>, otherwise both HA appliances will become active.</td>
+<td>Optional. True/False. Default is <em>true</em>. If autoConfiguration is enabled, firewall rules are automatically created to allow control traffic. Rules to allow data traffic are not created.  For example, if you are using IPsec VPN, and <strong>autoConfiguration</strong> is <em>true</em>, firewall rules will automatically be configured to allow IKE traffic. However, you will need to add additional rules to allow the data traffic for the IPsec tunnel. If HA is enabled, firewall rules are always created, even if <strong>autoConfiguration</strong> is <em>false</em>, otherwise both HA appliances will become active.</td>
 </tr>
 <tr>
 <td><strong>autoConfiguration &gt; rulePriority</strong></td>
@@ -16920,7 +16921,19 @@ group MoId).</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>NSX Edge async jobs</p>
+  <div class="description"><h2 id="configuring-edge-services-in-async-mode">Configuring Edge Services in Async Mode</h2>
+<p>You can configure NSX Edge to work in async mode. In the async mode, accepted
+commands return an Accepted status and a taskId. To know the status of
+the task, you can check the status of that taskId.  The advantage of the
+async mode is that APIs are returned very fast and actions like vm
+deployment, reboots, publish to NSX Edge appliance, are done behind the
+scene under the taskId .  To configure async mode, ?async=true at the end
+of any 4.0 service configuration URL for POST, PUT, and DELETE calls.
+Without async mode, the location header in HTTP response has the resource
+ID whereas in async mode, location header has the job ID.</p>
+<p>The job status response includes the job status (<em>SUCCESS</em>, <em>FAILED</em>,
+<em>QUEUED</em>, <em>RUNNING</em>, <em>ROLLBACK</em>), URI of the resource, and ID of the
+resource. </p>
 </div>
 <div class="method get">
   <a
@@ -16929,9 +16942,7 @@ group MoId).</p>
     href="#GET/4.0/edges/jobs"
   ><h2>GET /4.0/edges/jobs</h2></a>
   <div class="content">
-    <p><p>Query jobs. Assumes Edge is configured in async mode, where ?async=true
-is used at the end of any 4.0 service configuration URI for POST, PUT,
-and DELETE calls.</p>
+    <p><p>Retrieve NSX Edge job status.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -16942,18 +16953,41 @@ and DELETE calls.</p>
     
   </dt>
   <dd>
-      <p>status set to &quot;all&quot; or &quot;active&quot;</p>
+      <p><strong>status</strong> can be <em>all</em> or <em>active</em>.</p>
 
   </dd>
 </dl>
     </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">edgeJobs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeJob</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">jobId</span>&gt;</span>jobdata-917<span class="hljs-tag">&lt;/<span class="hljs-name">jobId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>edge-4<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">edgeJob</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeJob</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">jobId</span>&gt;</span>jobdata-915<span class="hljs-tag">&lt;/<span class="hljs-name">jobId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>edge-4<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">edgeJob</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">edgeJobs</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Status of Edge async jobs. Assumes Edge is configured in async mode,
-where ?async=true is used at the end of any 4.0 service configuration
-URI for POST, PUT, and DELETE calls.</p>
+  <div class="description"><h2 id="working-with-a-specific-edge-job-status">Working With a Specific Edge Job Status</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -16976,9 +17010,28 @@ URI for POST, PUT, and DELETE calls.</p>
     href="#GET/4.0/edges/jobs/{jobId}"
   ><h2>GET /4.0/edges/jobs/{jobId}</h2></a>
   <div class="content">
-    <p><p>Retrieve job status (SUCCESS/FAILED/QUEUED/RUNNING/ROLLBACK), URI of
-the resource, and ID of the resource as shown in response body</p>
+    <p><p>Retrieve job status for the specified job.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">edgeJob</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">jobId</span>&gt;</span>jobdata-2128<span class="hljs-tag">&lt;/<span class="hljs-name">jobId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>Deploying vShield Edge Virtual Machine TestEdge11-0<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>ResultURI<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>/api/4.0/edges/edge-4<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>edge-4<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">edgeJob</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -17997,7 +18050,7 @@ appliance is deleted.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working With NSX Edge Appliance Configuration by Index</p>
+  <div class="description"><h2 id="working-with-nsx-edge-appliance-configuration-by-index">Working With NSX Edge Appliance Configuration by Index</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -18171,12 +18224,13 @@ the query parameter action=execute</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>If autoConfiguration is enabled, firewall rules are automatically
+  <div class="description"><h2 id="automatic-configuration-of-firewall-rules">Automatic Configuration of Firewall Rules</h2>
+<p>If autoConfiguration is enabled, firewall rules are automatically
 created to allow control traffic. Rules to allow data traffic are not
-created.  For example, if you are using IPSec VPN, and
+created.  For example, if you are using IPsec VPN, and
 <strong>autoConfiguration</strong> is <em>true</em>, firewall rules will automatically be
 configured to allow IKE traffic. However, you will need to add
-additional rules to allow the data traffic for the IPSec tunnel. If HA
+additional rules to allow the data traffic for the IPsec tunnel. If HA
 is enabled, firewall rules are always created, even if
 <strong>autoConfiguration</strong> is <em>false</em>, otherwise both HA appliances will
 become active.</p>
@@ -20240,7 +20294,10 @@ oneMonth | oneYear.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Configure interfaces for logical (distributed) router.  See <em>Working with NSX Edge</em> for descriptions of parameters used to configure the logical router interfaces.</p>
+  <div class="description"><h2 id="working-with-logical-router-interfaces">Working With Logical Router Interfaces</h2>
+<p>Configure interfaces for logical (distributed) router.  See <em>Working
+with NSX Edge</em> for descriptions of parameters used to configure the
+logical router interfaces.</p>
 </div>
 <div class="method post">
   <a
@@ -20249,7 +20306,7 @@ oneMonth | oneYear.</p>
     href="#POST/4.0/edges/{edgeId}/interfaces"
   ><h2>POST /4.0/edges/{edgeId}/interfaces</h2></a>
   <div class="content">
-    <p><p>Add interfaces for NSX Edge router. Can have up to 8 uplink interfaces</p>
+    <p><p>Add interfaces for a logical router. </p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -20260,7 +20317,7 @@ oneMonth | oneYear.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Always set to &#39;patch&#39;</p>
+      <p>Set to <em>patch</em>.</p>
 
   </dd>
 </dl>
@@ -20326,7 +20383,7 @@ oneMonth | oneYear.</p>
     href="#GET/4.0/edges/{edgeId}/interfaces"
   ><h2>GET /4.0/edges/{edgeId}/interfaces</h2></a>
   <div class="content">
-    <p><p>Retrieve all interfaces for Edge router</p>
+    <p><p>Retrieve all interfaces on the logical router.</p>
 </p>
   </div>
 </div>
@@ -20337,7 +20394,7 @@ oneMonth | oneYear.</p>
     href="#DELETE/4.0/edges/{edgeId}/interfaces"
   ><h2>DELETE /4.0/edges/{edgeId}/interfaces</h2></a>
   <div class="content">
-    <p><p>Delete interfaces</p>
+    <p><p>Delete all interfaces on the logical router.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -20359,7 +20416,7 @@ all interfaces are deleted</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Manage a specific NSX Edge router interface</p>
+  <div class="description"><h2 id="working-with-a-specific-logical-router-interface">Working With a Specific Logical Router Interface</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -20370,7 +20427,7 @@ all interfaces are deleted</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Specified router interface</p>
+      <p>Specified router interface.</p>
 
   </dd>
 </dl>
@@ -20382,7 +20439,7 @@ all interfaces are deleted</p>
     href="#GET/4.0/edges/{edgeId}/interfaces/{index}"
   ><h2>GET /4.0/edges/{edgeId}/interfaces/{index}</h2></a>
   <div class="content">
-    <p><p>Retrieve information on specified DLR router interface</p>
+    <p><p>Retrieve information about the specified logical router interface.</p>
 </p>
   </div>
 </div>
@@ -20393,7 +20450,7 @@ all interfaces are deleted</p>
     href="#DELETE/4.0/edges/{edgeId}/interfaces/{index}"
   ><h2>DELETE /4.0/edges/{edgeId}/interfaces/{index}</h2></a>
   <div class="content">
-    <p><p>Delete interface configuration and reset to factory default</p>
+    <p><p>Delete interface configuration and reset to factory default.</p>
 </p>
   </div>
 </div>
@@ -20404,13 +20461,31 @@ all interfaces are deleted</p>
     href="#PUT/4.0/edges/{edgeId}/interfaces/{index}"
   ><h2>PUT /4.0/edges/{edgeId}/interfaces/{index}</h2></a>
   <div class="content">
-    <p><p>Update interface configuration on specified DLR router interface</p>
+    <p><p>Update interface configuration for the specified logical router
+interface.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with IPSEC VPN</p>
+  <div class="description"><h2 id="working-with-ipsec-vpn">Working With IPsec VPN</h2>
+<p>NSX Edge supports site-to-site IPsec VPN between an NSX Edge instance
+and remote sites. NSX Edge supports certificate authentication,
+preshared key mode, IP unicast traffic, and no dynamic routing protocol
+between the NSX Edge instance and remote VPN routers. Behind each
+remote VPN router, you can configure multiple subnets to connect to the
+internal network behind an NSX Edge through IPsec tunnels. These
+subnets and the internal network behind a NSX Edge must have address
+ranges that do not overlap.  </p>
+<p>You can deploy an NSX Edge agent behind a NAT device. In this
+deployment, the NAT device translates the VPN address of an NSX Edge
+instance to a publicly accessible address facing the Internet. Remote
+VPN routers use this public address to access the NSX Edge instance.  </p>
+<p>You can place remote VPN routers behind a NAT device as well. You must
+provide the VPN native address and the VPN Gateway ID to set up the
+tunnel. On both ends, static one-to-one NAT is required for the VPN
+address.</p>
+<p>You can have a maximum of 64 tunnels across a maximum of 10 sites.</p>
 </div>
 <div class="method get">
   <a
@@ -20419,7 +20494,7 @@ all interfaces are deleted</p>
     href="#GET/4.0/edges/{edgeId}/ipsec/config"
   ><h2>GET /4.0/edges/{edgeId}/ipsec/config</h2></a>
   <div class="content">
-    <p><p>Retrieve IPSec configuration</p>
+    <p><p>Retrieve IPsec configuration.</p>
 </p>
   </div>
 </div>
@@ -20430,7 +20505,7 @@ all interfaces are deleted</p>
     href="#PUT/4.0/edges/{edgeId}/ipsec/config"
   ><h2>PUT /4.0/edges/{edgeId}/ipsec/config</h2></a>
   <div class="content">
-    <p><p>Configure IPSEC VPN</p>
+    <p><p>Update IPsec VPN configuration.</p>
 </p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>
@@ -20480,13 +20555,13 @@ all interfaces are deleted</p>
     href="#DELETE/4.0/edges/{edgeId}/ipsec/config"
   ><h2>DELETE /4.0/edges/{edgeId}/ipsec/config</h2></a>
   <div class="content">
-    <p><p>Delete the IPSec configuration</p>
+    <p><p>Delete the IPsec configuration.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>IPSec statistics</p>
+  <div class="description"><h2 id="working-with-ipsec-statistics">Working With IPsec Statistics</h2>
 </div>
 <div class="method get">
   <a
@@ -20495,16 +20570,17 @@ all interfaces are deleted</p>
     href="#GET/4.0/edges/{edgeId}/ipsec/statistics"
   ><h2>GET /4.0/edges/{edgeId}/ipsec/statistics</h2></a>
   <div class="content">
-    <p><p>Retrieve IPSec statistics</p>
+    <p><p>Retrieve IPsec statistics.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>L2 VPN allows you to configure a tunnel between two sites. VM&#39;s remain
-on the same subnet in spite of being moved between these sites,
+  <div class="description"><h2 id="working-with-l2-vpn">Working with L2 VPN</h2>
+<p>L2 VPN allows you to configure a tunnel between two sites. 
+VMs can move between the sites and stay on the same subnet,
 enabling you to extend your datacenter. An NSX Edge at one site can
-provide all services to VM&#39;s on the other site.</p>
+provide all services to VMs on the other site.</p>
 </div>
 <div class="method post">
   <a
@@ -20513,8 +20589,7 @@ provide all services to VM&#39;s on the other site.</p>
     href="#POST/4.0/edges/{edgeId}/l2vpn/config"
   ><h2>POST /4.0/edges/{edgeId}/l2vpn/config</h2></a>
   <div class="content">
-    <p><p>Enable or disable L2 VPN service according to the value of the query
-parameter &quot;enableService&quot;</p>
+    <p><p>Enable or disable L2 VPN service.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -20525,7 +20600,7 @@ parameter &quot;enableService&quot;</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Enable or disable L2 VPN</p>
+      <p>Enable (<em>true</em>) or disable (<em>false</em>) L2 VPN.</p>
 
   </dd>
 </dl>
@@ -20539,7 +20614,7 @@ parameter &quot;enableService&quot;</p>
     href="#GET/4.0/edges/{edgeId}/l2vpn/config"
   ><h2>GET /4.0/edges/{edgeId}/l2vpn/config</h2></a>
   <div class="content">
-    <p><p>Retrieve the current L2VPN configuration for NSX Edge</p>
+    <p><p>Retrieve the current L2VPN configuration for NSX Edge.</p>
 </p>
   </div>
 </div>
@@ -20550,7 +20625,9 @@ parameter &quot;enableService&quot;</p>
     href="#PUT/4.0/edges/{edgeId}/l2vpn/config"
   ><h2>PUT /4.0/edges/{edgeId}/l2vpn/config</h2></a>
   <div class="content">
-    <p><p>Configure L2VPN for server or client</p>
+    <p><p>Configure L2VPN for server or client.</p>
+<p>You first enable the L2 VPN service on the NSX Edge instance and then
+configure a server and a client.</p>
 </p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">l2Vpn</span>&gt;</span>
@@ -20599,13 +20676,13 @@ parameter &quot;enableService&quot;</p>
     href="#DELETE/4.0/edges/{edgeId}/l2vpn/config"
   ><h2>DELETE /4.0/edges/{edgeId}/l2vpn/config</h2></a>
   <div class="content">
-    <p><p>Delete L2 VPN</p>
+    <p><p>Delete the L2 VPN configuration.</p>
 </p>
   </div>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>L2 VPN statistics</p>
+  <div class="description"><h2 id="working-with-l2-vpn-statistics">Working With L2 VPN Statistics</h2>
 </div>
 <div class="method get">
   <a
@@ -20614,8 +20691,8 @@ parameter &quot;enableService&quot;</p>
     href="#GET/4.0/edges/{edgeId}/l2vpn/config/statistics"
   ><h2>GET /4.0/edges/{edgeId}/l2vpn/config/statistics</h2></a>
   <div class="content">
-    <p><p>Retrieve L2 VPN stats, which has information such as tunnel status,
-sent bytes, received bytes etc. for the given Edge</p>
+    <p><p>Retrieve L2 VPN statistics, which has information such as tunnel status,
+sent bytes, received bytes for the specified Edge.</p>
 </p>
   </div>
 </div>
@@ -20900,7 +20977,7 @@ particular type of network traffic. After configuring a profile, you
 associate the profile with a virtual server. The virtual server then
 processes traffic according to the values specified in the profile.
 Using profiles enhances your control over managing network traffic,
-and makes traffic‐management tasks easier and more efficient.</p>
+and makes traffic-management tasks easier and more efficient.</p>
 </div>
 <div class="method post">
   <a
@@ -21875,7 +21952,7 @@ server.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><p>Working with management interfaces for an NSX Edge router</p>
+  <div class="description"><h2 id="working-with-logical-router-ha-management-interface">Working with Logical Router HA (Management) Interface</h2>
 </div>
 <div class="method get">
   <a
@@ -21884,7 +21961,8 @@ server.</p>
     href="#GET/4.0/edges/{edgeId}/mgmtinterface"
   ><h2>GET /4.0/edges/{edgeId}/mgmtinterface</h2></a>
   <div class="content">
-    <p><p>Retrieve all managedment interfaces to the NSX Edge router</p>
+    <p><p>Retrieve the management interface configuration for the logical
+router.</p>
 </p>
   </div>
 </div>
