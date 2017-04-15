@@ -4583,12 +4583,12 @@ Parameter  |   Description  | Comments
 **enabled**  | BGP routing enable/disable status. | Optional. By default, enabled is set to false.
 **gracefulRestart**  | For packet forwarding to be uninterrupted during restart of services. | Optional.
 **defaultOriginate**  | Allows the Edge Services Gateway to advertise itself as a default gateway to its peers. | Optional.  Default is *false*. Not allowed on a logical distributed router.
-**localAS**  | The 2 byte local Autonomous System number that is assigned to the NSX Edge. The path of autonomous systems that a route traverses is used as one metric when selecting the best path to a destination.| Integer. A value (a globally unique number between 1-65535) for the local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems.  Either **localAS** or **localASNumber** is required. You cannot provide both.
+**localAS**  | The 2 byte local Autonomous System number that is assigned to the NSX Edge. The path of autonomous systems that a route traverses is used as one metric when selecting the best path to a destination.| Integer. A value (a globally unique number between 1-65535) for the local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems.  Either **localAS** or **localASNumber** is required. 
 **localASNumber**  | The 2 or 4 byte local Autonomous System number that is assigned to the NSX Edge. The path of autonomous systems that a route traverses is used as one metric when selecting the best path to a destination. | Integer. A value (a globally unique number between 1-4294967295) for the Local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems.  Can be in plain or dotted format (e.g. 2 byte: 65001 or 0.65001, 4 byte: 65545 or 1.9). Either **localAS** or **localASNumber** is required. 
 **bgpNeighbour > ipAddress**  | The IP address of the on-premises border device. | Required.  String. IPv4 only. IPv6 is not supported. Should not be the same as any of the NSX Edge interfaces's IPs, forwardingAddress, protocolAddress.
 **bgpNeighbour > forwardingAddress** | The IP address of one of the uplink interfaces. | Logical (distributed) router only.
 **bgpNeighbour > protocolAddress** | An IP address on the same subnet as the forwarding address. | Logical (distributed) router only.
-**bgpNeighbour > remoteAS**  | The 2 byte remote Autonomous System number that is assigned to the the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-65535) for the remote AS. Either **remoteAS** or **remoteASNumber** is required. You cannot provide both. 
+**bgpNeighbour > remoteAS**  | The 2 byte remote Autonomous System number that is assigned to the the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-65535) for the remote AS. Either **remoteAS** or **remoteASNumber** is required. 
 **bgpNeighbour > remoteASNumber**  | The 2 or 4 byte remote Autonomous System number that is assigned to the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-4294967295) for the remote AS. Can be in plain or dotted format (e.g. 2 byte: 65001 or 0.65001, 4 byte: 65545 or 1.9). Either **remoteAS** or **remoteASNumber** is required. 
 **bgpNeighbour > weight**  | Weight for the neighbor connection | Optional. Integer. By default, weight is set to 60.
 **bgpNeighbour > holdDownTimer**  | Interval for the hold down timer | Optional. Integer. The NSX Edge uses the standard, default values for the keep alive timer (60 seconds) and the hold down timer. The default value for the hold down timer is 3x keepalive or 180 seconds. Once peering between two neighbors is achieved, the NSX Edge  starts a hold down timer. Every keep alive message it receives from the neighbor resets the hold down timer to 0.  When the NSX Edge fails to receive three consecutive keep alive messages, so that the hold down timer reaches 180 seconds, the NSX Edge considers the neighbor down and deletes the routes from this neighbor.
@@ -5253,24 +5253,6 @@ desktopicon | icon | ico
 /usr/bin/curl -v -k -i -F layoutFile=@/tmp/portalLogo.jpg -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
 https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/layout/images/portallogo
 ```
-
-### /4.0/edges/{edgeId}/sslvpn/config/webresources
-Working With Web Resources
------
-Web resources are servers that a remote user can connect to via a web
-browser.
-
-* **post** *(secured)*: Add portal web resource.
-* **get** *(secured)*: Get all web resources on the SSL VPN instance.
-* **delete** *(secured)*: Delete all web resources on the SSL VPN instance.
-
-### /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}
-Working With a Specific Web Resource
------
-
-* **get** *(secured)*: Retrieve information about the specified web access server.
-* **put** *(secured)*: Update the specified web access server.
-* **delete** *(secured)*: Delete the specified web access server
 
 ### /4.0/edges/{edgeId}/sslvpn/config/auth/localserver/users
 Working With Portal Users

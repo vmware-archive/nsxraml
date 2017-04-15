@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x64;&#x6f;&#x63;&#102;&#101;&#101;&#x64;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#x65;&#46;&#99;&#111;&#109;">&#x64;&#x6f;&#x63;&#102;&#101;&#101;&#x64;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#x65;&#46;&#99;&#111;&#109;</a>.</p>
+<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#99;&#x6f;&#109;">&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -22825,7 +22825,7 @@ thereby enabling tenants to access public networks.</p>
 <tr>
 <td><strong>localAS</strong></td>
 <td>The 2 byte local Autonomous System number that is assigned to the NSX Edge. The path of autonomous systems that a route traverses is used as one metric when selecting the best path to a destination.</td>
-<td>Integer. A value (a globally unique number between 1-65535) for the local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems.  Either <strong>localAS</strong> or <strong>localASNumber</strong> is required. You cannot provide both.</td>
+<td>Integer. A value (a globally unique number between 1-65535) for the local AS. This local AS is advertised when the NSX Edge peers with routers in other autonomous systems.  Either <strong>localAS</strong> or <strong>localASNumber</strong> is required. </td>
 </tr>
 <tr>
 <td><strong>localASNumber</strong></td>
@@ -22850,7 +22850,7 @@ thereby enabling tenants to access public networks.</p>
 <tr>
 <td><strong>bgpNeighbour &gt; remoteAS</strong></td>
 <td>The 2 byte remote Autonomous System number that is assigned to the the border device you are creating the connection for.</td>
-<td>Integer. A value (a globally unique number between 1-65535) for the remote AS. Either <strong>remoteAS</strong> or <strong>remoteASNumber</strong> is required. You cannot provide both. </td>
+<td>Integer. A value (a globally unique number between 1-65535) for the remote AS. Either <strong>remoteAS</strong> or <strong>remoteASNumber</strong> is required. </td>
 </tr>
 <tr>
 <td><strong>bgpNeighbour &gt; remoteASNumber</strong></td>
@@ -24164,7 +24164,6 @@ applications in the private networks.</p>
           &lt;/xs:complexType&gt;
         &lt;/xs:element&gt;
         &lt;xs:element type="xs:string" name="clientNotification"/&gt;
-        &lt;xs:element type="xs:string" name="enablePublicUrlAccess"/&gt;
         &lt;xs:element type="xs:string" name="enableLogging"/&gt;
       &lt;/xs:sequence&gt;
     &lt;/xs:complexType&gt;
@@ -24182,7 +24181,6 @@ applications in the private networks.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">sessionIdleTimeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sessionIdleTimeout</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">clientNotification</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientNotification</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enablePublicUrlAccess</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enablePublicUrlAccess</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enableLogging</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableLogging</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">advancedConfig</span>&gt;</span>
 </code></pre>
@@ -25579,129 +25577,6 @@ can be used to update parameters associated with the script file.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">cipherList</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">serverSettings</span>&gt;</span>
 </code></pre>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-web-resources">Working With Web Resources</h2>
-<p>Web resources are servers that a remote user can connect to via a web
-browser.</p>
-</div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/4.0/edges/{edgeId}/sslvpn/config/webresources"
-    href="#POST/4.0/edges/{edgeId}/sslvpn/config/webresources"
-  ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/webresources</h2></a>
-  <div class="content">
-    <p><p>Add portal web resource.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="webResource"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="name"/&gt;
-        &lt;xs:element type="xs:string" name="url"/&gt;
-        &lt;xs:element name="method"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="data"/&gt;
-            &lt;/xs:sequence&gt;
-            &lt;xs:attribute type="xs:string" name="name"/&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-        &lt;xs:element type="xs:string" name="description"/&gt;
-        &lt;xs:element type="xs:string" name="enabled"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">webResource</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">webResource</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/4.0/edges/{edgeId}/sslvpn/config/webresources"
-    href="#GET/4.0/edges/{edgeId}/sslvpn/config/webresources"
-  ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/webresources</h2></a>
-  <div class="content">
-    <p><p>Get all web resources on the SSL VPN instance.</p>
-</p>
-  </div>
-</div>
-<div class="method delete">
-  <a
-    class="verb delete"
-    id="DELETE/4.0/edges/{edgeId}/sslvpn/config/webresources"
-    href="#DELETE/4.0/edges/{edgeId}/sslvpn/config/webresources"
-  ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config/webresources</h2></a>
-  <div class="content">
-    <p><p>Delete all web resources on the SSL VPN instance.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="working-with-a-specific-web-resource">Working With a Specific Web Resource</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">id</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>ID of specified web access server</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
-    href="#GET/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
-  ><h2>GET /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}</h2></a>
-  <div class="content">
-    <p><p>Retrieve information about the specified web access server.</p>
-</p>
-  </div>
-</div>
-<div class="method put">
-  <a
-    class="verb put"
-    id="PUT/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
-    href="#PUT/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
-  ><h2>PUT /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}</h2></a>
-  <div class="content">
-    <p><p>Update the specified web access server.</p>
-</p>
-  </div>
-</div>
-<div class="method delete">
-  <a
-    class="verb delete"
-    id="DELETE/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
-    href="#DELETE/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}"
-  ><h2>DELETE /4.0/edges/{edgeId}/sslvpn/config/webresources/{id}</h2></a>
-  <div class="content">
-    <p><p>Delete the specified web access server</p>
-</p>
   </div>
 </div>
 </section>
