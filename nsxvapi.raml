@@ -351,6 +351,7 @@ securitySchemes:
   description: |
     Working with Segement ID Pools and Multicast Ranges
     ========
+
   /segments:
     displayName: vdnSegmentPools
     description: |
@@ -622,9 +623,9 @@ securitySchemes:
           change the VXLAN port on the primary NSX Manager to propagate this
           change on all NSX Managers and hosts in the cross-vCenter NSX
           environment.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. Port change is now non-disruptive, and propagates to secondary NSX Managers if performed on the primary NSX Manager. Force parameter added.
@@ -649,9 +650,9 @@ securitySchemes:
         displayName: vdnConfigUDPUpdateStatusRead
         description: |
           Retrieve the status of the VXLAN port configuration update.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -697,9 +698,9 @@ securitySchemes:
       displayName: hostVtepResolveExecute
       description: | 
         Resolve missing VXLAN VMKernel adapters.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -826,9 +827,9 @@ securitySchemes:
     displayName: vdnScopeCreate
     description: |
       Create a transport zone.
-
+      
       Request body parameters:
-
+      
         * **name** - Required. The name of the transport zone.
         * **description** - Optional. Description of the transport zone.
         * **objectId** - Required. The cluster object ID from vSphere. One or more are
@@ -1588,12 +1589,12 @@ securitySchemes:
           For every logical switch created, NSX creates a corresponding port
           group in vCenter. If the port group is missing, the logical switch
           will stop functioning.
-
+          
           If the port group backing a logical switch is deleted, you can
           recreate a new backing port group for the logical switch.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -1604,7 +1605,7 @@ securitySchemes:
               * *remediate*: The *remediate* action performs the *resync* action and then
               creates a new backing port group for the logical switch. Under
               normal operations, you should need the *remediate* action only. 
-
+              
               * *resync*: The *resync* action removes the association between
               the backing port group and the logical switch in the NSX Manager
               configuration. 
@@ -1694,9 +1695,9 @@ securitySchemes:
         displayName: logicalSwitchHardwareGatewayBindingsList
         description: |
           Retrieve hardware gateway bindings for the specified logical switch.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -1738,11 +1739,11 @@ securitySchemes:
           displayName: logicalSwitchHardwareGatewayBindingCreate
           description: |
             Manage the connection between a hardware gateway and a logical switch.
-
+            
             ### Attach a hardware gateway to a logical switch and create a new binding with the information provided
-
+            
             `POST /api/2.0/vdn/virtualwires/{virtualwireid}/hardwaregateways`
-
+            
             ```
             <hardwareGatewayBinding>
               <hardwareGatewayId>hardwarewgateway1</hardwareGatewayId>
@@ -1751,11 +1752,11 @@ securitySchemes:
               <portName>s1</portName>
             </hardwareGatewayBinding> 
             ```
-
+            
             ### Attach a hardware gateway to a logical switch, specifying an existing binding by ID
-
+            
             `POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=attach`
-
+            
             ```
             <virtualWire>
               ...
@@ -1766,13 +1767,13 @@ securitySchemes:
               </hardwareGatewayBindings>
             </virtualWire>
             ```
-
+            
             ### Detach a hardware gateway from a logical switch
-
+            
             `POST /api/2.0/vdn/virtualwires/<virtualwireId>/hardwaregateways/{bindingId}?action=detach`
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method introduced.
@@ -1800,32 +1801,31 @@ securitySchemes:
   description: |
     Working with IP Discovery and MAC Learning for Logical Switches
     ==============
-
     You can enable IP discovery (ARP suppression) and MAC learning for logical
     switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
     pair learning table on each vNic.
-
+    
     This table is stored as part of the dvfilter data. During vMotion,
     dvfilter saves/restores the table at the new location. The switch then
     issues RARPs for all the VLAN - MAC entries in the table.
-
+    
     Enabling this feature avoids possible traffic loss during vMotion in the
     following cases:
-
+    
     * the vNic is in VLAN trunk mode
     * the VM is using more  than one unicast MAC address. Since Etherswitch
     supports only one unicast MAC per vNic, RARP is not processed.
-
+    
     When a logical switch is created using the API, IP discovery is enabled,
     and MAC learning is disabled.
-
+    
     In cross-vCenter NSX, the following applies:
     * The MAC learning setting for a universal logical switch is managed
     on the primary NSX Manager. Any changes are synchronized to all secondary
     NSX Managers.
     * The IP discovery setting for a universal logical switch is managed
     separately on each NSX Manager.
-
+    
     **Note:** In NSX 6.2.2 and earlier you cannot disable IP discovery for
     universal logical switches on secondary NSX Managers.
   uriParameters:
@@ -1839,9 +1839,9 @@ securitySchemes:
     displayName: arpMACUpdate
     description: |
       Enable or disable IP discovery and MAC learning.
-
+      
       **Method history:**
-
+      
       Release | Modification
       --------|-------------
       6.2.3 | Method updated. IP discovery can be disabled on secondary NSX Managers.
@@ -1901,7 +1901,7 @@ securitySchemes:
     description: |
       Retrieves details and runtime status for all controllers.  Runtime status
       can be one of the following:
-
+      
         * **Deploying** - controller is being deployed and the procedure has not
         completed yet.
         * **Removing** - controller is being removed and the procedure has not
@@ -1969,14 +1969,14 @@ securitySchemes:
         displayName: controllerId
         description: |
           Specified controller ID.
-
+          
           To retrieve the controller IDs, log in to the vSphere Web Client.
           Navigate to Networking & Security > Installation > Management, and
           view the **NSX Controller nodes** section. The controller ID is
           listed in the **Controller ID** or **Controller Node** column,
           depending on NSX version. An example controller ID is
           *controller-1*. 
-
+          
           In a cross-vCenter NSX environment, retrieve the controller IDs from
           rows where the NSX Manager column contains the primary NSX Manager
           IP address.
@@ -1999,9 +1999,9 @@ securitySchemes:
         detects the change in controller status. You can remediate the
         controller, which will power on a powered off controller, or remove the
         controller from the NSX Manager database if the controller is deleted.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -2020,9 +2020,9 @@ securitySchemes:
         displayName: nsxControllerStatsList
         description: |
           Retrieve NSX Controller system statistics.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -2212,6 +2212,7 @@ securitySchemes:
   description: |
     Working with Services Grouping Objects
     =============
+
   /scope/{scopeId}:
     displayName: servicesAppsScopeScope
     description: | 
@@ -2308,6 +2309,7 @@ securitySchemes:
   description: |
     Working with Service Groups Grouping Objects
     ============
+
   /scope/{scopeId}:
     displayName: serviceGroups
     description: |
@@ -2417,6 +2419,7 @@ securitySchemes:
       delete:
         displayName: serviceGroupMembersDelete
         description: Delete a member from the service group.
+
   /scope/{scopeId}/members:
     displayName: serviceGroupMembersScope
     description: |
@@ -2442,6 +2445,7 @@ securitySchemes:
   description: |
     Working with IP Pool Grouping Objects
     ========
+
   /scope/{scopeId}:
     displayName: ipPools
     description: |
@@ -2514,6 +2518,7 @@ securitySchemes:
               </ipRanges>
             </ipamAddressPool>
           schema: ipPool
+
   /{poolId}:
     displayName: ipPool
     description: |
@@ -2675,9 +2680,9 @@ securitySchemes:
     description: |
       Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
       users for the distributed firewall and VXLAN.
-
+      
       **Method history:**
-
+      
       Release | Modification
       --------|-------------
       6.2.3 | Method introduced.
@@ -2723,11 +2728,12 @@ securitySchemes:
   description: |
     Working with Security Tags
     =====
-
+    
     You can manage security tags and their virtual machine assignments. For
     example, you can create a user defined security tag, assign tags to a
     virtual machine, view tags assigned to virtual machines, and view virtual
     machines that have a specific tag assigned.
+
   /tag:
     displayName: securitytagsTag
     description: |
@@ -2848,6 +2854,7 @@ securitySchemes:
   description: |
     Working with User Management
     ==========
+
   /user/{userId}:
     displayName: userMgmtUser
     description: |
@@ -2968,6 +2975,7 @@ securitySchemes:
     ===========
     A security group is a collection of assets or grouping objects from your
     vSphere inventory.
+
   /bulk/{scopeId}:
     displayName: secGroupBulk
     description: |
@@ -2985,7 +2993,7 @@ securitySchemes:
       description: |
         Create a new security group on a global scope or universal scope with
         membership information.
-
+        
         Universal security groups are read-only when querying a secondary NSX
         manager.
       body:
@@ -3246,7 +3254,7 @@ securitySchemes:
               adds the member to the SecurityGroup.
               * If the member is already present in the SecurityGroup, the API will
               be a no-op and will return silently.
-
+              
               If failIfExists=true:
               * If the member is not already present in the SecurityGroup, the API
               adds the member to the SecurityGroup.
@@ -3377,6 +3385,7 @@ securitySchemes:
   description: |
     Working with IP Set Grouping Objects
     =======
+
   /scope/{scopeMoref}:
     displayName: ipsetList
     description: |
@@ -3499,6 +3508,7 @@ securitySchemes:
   description: |
     Working with Universal Sync Configuration in Cross-vCenter NSX
     ======
+
   /configuration/role:
     displayName: universalSyncConfigurationRole
     description: |
@@ -3533,10 +3543,10 @@ securitySchemes:
         displayName: universalSyncConfigurationNsxManagersCreate
         description: | 
           Add a secondary NSX manager.
-
+          
           Run this method on the primary NSX Manager, providing details of the
           secondary NSX Manager.
-
+          
           Retrieve the certificate thumbprint of the secondary NSX Manager
           using the `GET
           /api/1.0/appliance-management/certificatemanager/certificates/nsx`
@@ -3557,7 +3567,7 @@ securitySchemes:
         description: |
           If run on a primary NSX Manager, it will list secondary NSX Managers
           configured on the primary NSX Manager.
-
+          
           If run on a secondary NSX Manager, it will list information about
           the secondary NSX Manager and the primary NSX Manager it is
           associated with.
@@ -3642,6 +3652,7 @@ securitySchemes:
   description: |
     Working with Appliance Manager
     ========
+
   /global/info:
     displayName: globalInfo
     description: |
@@ -3729,9 +3740,9 @@ securitySchemes:
       displayName: tlsSettingsList
       description: |
         Retrieve TLS settings.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -3751,9 +3762,9 @@ securitySchemes:
         
         Include a comma separated list of the TLS versions you want to enable,
         for both server and client.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -3865,9 +3876,9 @@ securitySchemes:
     description: |
       Working with Components
       ----
-
+      
       The NSX Manager appliance has the following components:
-
+      
       Component | Description |
       ------|--------
       NSX | NSX Manager
@@ -3941,7 +3952,7 @@ securitySchemes:
       NSX Manager Appliance Backup Settings
       -----
       Parameters for the NSX Manager appliance backup:
-
+      
       * **transferProtocol**: *FTP, SFTP*
       * **frequency**: *weekly, daily, hourly*
       * **dayOfWeek**: *SUNDAY, MONDAY, ...., SATURDAY*
@@ -4112,15 +4123,15 @@ securitySchemes:
       scope of upgraded objects is maintained, and these objects can be
       edited. For example, you can nest the following security groups within
       an upgraded security group at the datacenter scope:
-
+      
       * security groups created at same datacenter scope (via REST only)
       * security groups created at portgroup scope, which fall under the
       datacenter (via REST only).
-
+      
       Security groups created at the global scope cannot be nested under a
       security group created at a lower scope such as a
       datacenter.
-
+      
       All users and associated roles are carried over to NSX as well.
       In all API calls for upgrading the NSX Manager, the **componentId**
       parameter can be *NSX* or *NSXAPIMGMT*.
@@ -4169,6 +4180,7 @@ securitySchemes:
     description: |
       Working with Certificates on the NSX Manager Appliance
       -------
+
     /pkcs12keystore/nsx:
       displayName: certificatesKeystore
       description: |
@@ -4232,9 +4244,9 @@ securitySchemes:
           Create a certificate signing request (CSR) for NSX Manager.
           
           The response header contains the created file location.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/csr/nsx`.
@@ -4310,6 +4322,7 @@ securitySchemes:
   description: |
     Working with Network Fabric Configuration
     =====
+
   /configure:
     displayName: nwfabricConfig
     description: |
@@ -4327,15 +4340,15 @@ securitySchemes:
       displayName: nwfabricConfigCreate
       description: |
         Install network fabric or VXLAN.
-
+        
         This method can be used to perform the following tasks: 
         * Install Network Virtualization Components
         * Configure VXLAN
         * Configure VXLAN with LACPv2
         * Reset Communication Between NSX Manager and a Host or Cluster
-
+        
         **Parameter Information**
-
+        
         | Name | Comments |
         |------|----------|
         |**resourceId** | vCenter MOB ID of cluster. For example, *domain-7*. A host can be specified when resetting communication. For example, *host-24*. |
@@ -4343,11 +4356,11 @@ securitySchemes:
         |**ipPoolId** | Used for VXLAN installation. If not specified, DHCP is used for VTEP address assignment.|
         |**teaming** | Used for VXLAN installation. Options are *FAILOVER_ORDER*, *ETHER_CHANNEL*, *LACP_ACTIVE*, *LACP_PASSIVE*, *LOADBALANCE_LOADBASED*, *LOADBALANCE_SRCID*, *LOADBALANCE_SRCMAC*, *LACP_V2*|
         |**uplinkPortName** | The *uplinkPortName* as specified in vCenter.|
-
+        
         ### Install Network Virtualization Components
-
+        
         `POST /api/2.0/nwfabric/configure`
-
+        
         ```
         <nwFabricFeatureConfig>
           <resourceConfig>
@@ -4355,11 +4368,11 @@ securitySchemes:
           </resourceConfig>
         </nwFabricFeatureConfig>
         ```
-
+        
         ### Configure VXLAN
-
+        
         `POST /api/2.0/nwfabric/configure`
-
+        
         ```
         <nwFabricFeatureConfig>
           <featureId>com.vmware.vshield.vsm.vxlan</featureId>
@@ -4385,11 +4398,11 @@ securitySchemes:
           </resourceConfig>
         </nwFabricFeatureConfig>
         ```
-
+        
         ### Configure VXLAN with LACPv2
-
+        
         `POST /api/2.0/nwfabric/configure`
-
+        
         ```
         <nwFabricFeatureConfig>
           <featureId>com.vmware.vshield.nsxmgr.vxlan</featureId>
@@ -4416,11 +4429,11 @@ securitySchemes:
           </resourceConfig>
         </nwFabricFeatureConfig>
         ```
-
+        
         ### Reset Communication Between NSX Manager and a Host or Cluster
-
+        
         `POST /api/2.0/nwfabric/configure?action=synchronize`
-
+        
         ``` 
         <nwFabricFeatureConfig>
           <featureId>com.vmware.vshield.vsm.messagingInfra</featureId>
@@ -4487,9 +4500,9 @@ securitySchemes:
         |------|----------|
         |**resourceId** | vCenter MOB ID of cluster. For example, domain-7.|
         |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations.|
-
+        
         ### Remove Network Virtualization Components
-
+        
         ```
         <nwFabricFeatureConfig>
           <resourceConfig>
@@ -4497,9 +4510,9 @@ securitySchemes:
           </resourceConfig>
         </nwFabricFeatureConfig>
         ```
-
+        
         ### Remove VXLAN
-
+        
         ```
         <nwFabricFeatureConfig>
           <featureId>com.vmware.vshield.vsm.vxlan</featureId>
@@ -4508,9 +4521,9 @@ securitySchemes:
            </resourceConfig>
         </nwFabricFeatureConfig>
         ```
-
+        
         ### Remove VXLAN with vDS context
-
+        
         ```
         <nwFabricFeatureConfig>
           <featureId>com.vmware.vshield.vsm.vxlan</featureId>
@@ -4867,21 +4880,21 @@ securitySchemes:
     The security fabric simplifies and automates deployment of security
     services and provide a platform for configuration of the elements that are
     required to provide security to workloads. These elements include:
-
+    
     Internal components:
     * Guest Introspection Universal Service Virtual Machine
     * Guest Introspection Mux
     * Data Security
     * Logical Firewall
-
+    
     External components:
     * Partner OVFs / VIBs
     * Partner vendor policy templates
-
+    
     For partner services, the overall workflow begins with registration of
     services by partner consoles, followed by deployment of the services by
     the administrator.
-
+    
     Subsequent workflow is as follows:
     1. Select the clusters on which to deploy the security fabric (Mux,
     Traffic filter, USVM).
@@ -4893,15 +4906,15 @@ securitySchemes:
     pre-populated for the user).
     5. NSX Manager deploys the components on all hosts of the selected
     clusters.
-
+    
     Once you deploy the security fabric, an agency defines the configuration
     needed to deploy agents (host components and appliances). An agency is
     created per cluster per deployment spec associated with services.  Agents
     are deployed on the selected clusters, and events / hooks for all the
     relevant actions are generated.
-
+    
     **Request parameters**
-
+    
     Parameter | Description 
     -------|---------
     dataStore |Needs to be specified only in POST call. In PUT call, it should be left empty. 
@@ -4999,7 +5012,7 @@ securitySchemes:
         other services. When an internal service is registered, a dependencyMap
         is maintained with the service-id and implementation type of the
         internal service.
-
+        
         When partner registers a new service, the security fabric looks up its
         implementation type in the dependencyMap to identify the service it
         depends on, if any. Accordingly, a new field in Service object called
@@ -5082,7 +5095,7 @@ securitySchemes:
       description: |
         Uninstall a service. Fails if you try to remove a service that another
         service depends on.
-
+        
         In order to uninstall services in any order, set parameter ignoreDependency to true.
       queryParameters:
         services:
@@ -5114,6 +5127,7 @@ securitySchemes:
   description: |
     Working with Data Security
     =======
+
   /regulation:
     displayName: dlpRegulation
     description: |
@@ -5505,6 +5519,7 @@ securitySchemes:
     virtual machine. You can retrieve this by queuing the vCenter mob
     structure (https:VC-IP-Address/mob). The VMID is listed under host
     structure.
+
   /vm/{vmID}/request:
     displayName: dataCollectionVM
     description: |
@@ -5605,6 +5620,7 @@ securitySchemes:
   description: |
     Working with Activity Monitoring
     ======
+
   /records:
     displayName: userActivity
     description: |
@@ -5618,14 +5634,14 @@ securitySchemes:
       displayName: userActivityRead
       description: | 
         ### View Outbound Activity
-
+        
         You can view what applications are being run by a security group or
         desktop pool and then drill down into the report to find out which
         client applications are making outbound connections by a particular
         group of users. You can also discover all user groups and users who are
         accessing a particular application, which can help you determine if you
         need to adjust identity firewall in your environment.
-
+        
         * query=*resource*
         * param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5638,17 +5654,17 @@ securitySchemes:
             * for app: *SRC_APP*
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
+        
         **Example:** View user activities to VM ID 1 originating from application
         ID 1  
         `GET /api/3.0/ai/records?query=resource&interval=60m&param=src:DIRECTORY_GROUP`  
         `&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1`
-
+        
         ### View Inbound Activity
-
+        
         You can view all inbound activity to a server by desktop pool, security
         group, or AD group.
-
+        
         * query=*sam*
         * param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5661,19 +5677,19 @@ securitySchemes:
             * for app: *DEST_APP*
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
-
+        
         **Example:** View user activities to VM ID 1 originating from
         application ID 1  
         `GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
         `&param=src:SECURITY_GROUP:1`
-
+        
         ### View Interaction between Inventory Containers
         You can view the traffic passing between defined containers such as AD
         groups, security groups and/or desktop pools. This can help you identify
         and configure access to shared services and to resolve misconfigured
         relationships between Inventory container definitions, desktop pools and
         AD groups.
-
+        
         * query=*containers*
         * param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5684,16 +5700,16 @@ securitySchemes:
             * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
-
+        
         **Example:** View interaction between inventory containers  
         `GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
         `&param=src:SECURITY_GROUP:1`
-
+        
         ### View Outbound AD Group Activity
-
+        
         You can view the traffic between members of defined Active Directory
         groups and can use this data to fine tune your firewall rules.
-
+        
         * query=*adg*
         * param=&lt;param-name&gt;:&lt;param-type&gt;:&lt;comma-separated-values&gt;:&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5704,7 +5720,7 @@ securitySchemes:
             * for adg: *USER*
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default * is *INCLUDE*).
-
+        
         **Example:** View outbound AD group activity    
         `GET https://NSX-Manager-IP-Address/api/3.0/ai/records?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
         `&param=src:SECURITY_GROUP:1:EXCLUDE`
@@ -5762,7 +5778,7 @@ securitySchemes:
         group of users. You can also discover all user groups and users who
         are accessing a particular application, which can help you determine
         if you need to adjust identity firewall in your environment.
-
+        
         * query=*resource*
         * param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5775,16 +5791,16 @@ securitySchemes:
             * for app: *SRC_APP*
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
+        
         **Example:** View user activities to VM ID 1 originating from application ID 1  
         `GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00`  
         `&param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52`
-
+        
         ### View Inbound Activity
-
+        
         You can view all inbound activity to a server by desktop pool, security
         group, or AD group.
-
+        
         * query=*sam*
         * param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5797,19 +5813,19 @@ securitySchemes:
             * for app: *DEST_APP*
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, *NOT* (default is *INCLUDE*).
-
+        
         **Example:** View user activities to VM ID 1 originating from
         application ID 1  
         `GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE`  
         `&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
-
+        
         ### View Interaction between Inventory Containers
         You can view the traffic passing between defined containers such as AD
         groups, security groups and/or desktop pools. This can help you identify
         and configure access to shared services and to resolve misconfigured
         relationships between Inventory container definitions, desktop pools and
         AD groups.
-
+        
         * query=*containers*
         * param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5820,16 +5836,16 @@ securitySchemes:
             * for dest: *SECURITY_GROUP*, * *DESKTOP_POOL* 
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
-
+        
         **Example:** View interaction between inventory containers  
         `GET /api/3.0/ai/userdetails?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
         `&param=src:SECURITY_GROUP:1`
-
+        
         ### View Outbound AD Group Activity
-
+        
         You can view the traffic between members of defined Active Directory
         groups and can use this data to fine tune your firewall rules.
-
+        
         * query=*adg*
         * param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5840,13 +5856,13 @@ securitySchemes:
             * for adg: *USER*
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
+        
         **Example:** View outbound AD group activity    
         `GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
         `&param=src:SECURITY_GROUP:1:EXCLUDE`
-
+        
         ### View Virtual Machine Activity Report
-
+        
         * query=*vma*
         * param=&lt;param-name&gt;&lt;param-type&gt;&lt;comma-separated-values&gt;&lt;operator&gt;, where:
           * &lt;param-name&gt; is one of:
@@ -5861,7 +5877,7 @@ securitySchemes:
             * for app - *SRC_APP* or *DEST_APP*
           * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
           * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
-
+        
         **Example:** View outbound AD group activity    
         `GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1
         &param=app:DEST_APP:16`
@@ -6070,6 +6086,7 @@ securitySchemes:
     After you create a domain, you can apply a security policy to it and run
     queries to view the applications and virtual machines being accessed by
     the users of a domain.
+
   /updateDomain:
     displayName: domainUpdate
     description: |
@@ -6082,9 +6099,9 @@ securitySchemes:
       credentials.  You can apply security policies on an Active Directory
       domain and run queries to get information on virtual machines and
       applications accessed by users within an Active Directory domain.
-
+      
       **Parameter Values for Registering or Updating a Domain**
-
+      
       Parameter Name | Description | Mandatory? 
       ----------------|-------------|------------
       ID |  Domain id.  If you want to create a new domain, do not provide this value.  Otherwise, the system will find an existing domain object by this ID and update it. | true if update existing domain 
@@ -6266,6 +6283,7 @@ securitySchemes:
   description: |
     Working with Mapping Lists
     =========
+
   /userIpMapping:
     displayName: userIpMapping
     description: |
@@ -6366,6 +6384,7 @@ securitySchemes:
   description: |
     Working with Activity Monitoring Syslog Support
     ==========
+
   /enable:
     displayName: syslogEnable
     description: |
@@ -6387,6 +6406,7 @@ securitySchemes:
   description: |
     Working with Solution Integrations
     =========
+
   /host/{hostID}/agents:
     displayName: hostAgents
     description: |
@@ -6618,25 +6638,25 @@ securitySchemes:
         Create deployment units for conflicting EAM Agencies, delete
         conflicting EAM agencies, or delete deployment units for conflicting
         EAM agencies.
-
+        
         ### Create deployment units for conflicting EAM agencies
-
+        
         ```
         <conflictResolverInfo>
           <agencyAction>RESTORE</agencyAction>
         </conflictResolverInfo>
         ```
-
+        
         ### Delete conflicting EAM agencies
-
+        
         ```
         <conflictResolverInfo>
           <agencyAction>DELETE</agencyAction>
         </conflictResolverInfo>
         ```
-
+        
         ### Delete deployment units for conflicting EAM agencies
-
+        
         ```
         <conflictResolverInfo>
           <deploymentUnitAction>DELETE</deploymentUnitAction>
@@ -6655,6 +6675,7 @@ securitySchemes:
     =============
     You can create a MAC address set on the specified scope. On success, the API
     returns a string identifier for the new MAC address set.
+
   /{macsetId}:
     displayName: macset
     description: |
@@ -6868,17 +6889,17 @@ securitySchemes:
   description: |
     Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
     ============
-
+    
     About Guest Introspection and Endpoint Protection Solutions
     ----------
     VMware's Guest Introspection Service enables vendors to deliver an
     introspection-based, endpoint protection (anti-virus) solution that uses
     the hypervisor to scan guest virtual machines from the outside, with only
     a thin agent on each guest virtual machine.
-
+    
     Version Compatibility
     -----------
-
+    
     **Note:** The management APIs listed in this section are to be used only
     with partner endpoint protection solutions that were developed with EPSec
     Partner Program 3.0 or earlier (for vShield 5.5 or earlier).  These
@@ -6888,35 +6909,36 @@ securitySchemes:
     registration and deployment process by using the new features introduced
     in NSX.  Using these with newer NSX 6.0 based solutions could result in
     loss of features.
-
+    
     Register a Solution
     ----------
-
+    
     To register a third-party solution with Guest Introspection, clients can
     use four REST calls to do the following:
     1. Register the vendor.
     2. Register one or more solutions.
     3. Set the solution IP address and port (for all hosts).
     4. Activate registered solutions per host.
-
+    
     **Note:** Steps 1 through 3 need to be performed once per solution. Step 4
     needs to be performed for each host.
-
+    
     Unregister a Solution
     ----------
-
+    
     To unregister a solution, clients perform these steps in reverse:
     1. Deactivate solutions per host.
     2. Unset a solution’s IP address and port.
     3. Unregister solutions.
     4. Unregister the vendor.
-
+    
     Updating Registration Information
     -----------
-
+    
     To update registration information for a vendor or solution, clients must:
     1. Unregister the vendor or solution.
     2. Reregister the vendor or solution.
+
   /registration:
     displayName: guestIntrospectionRegistration
     description: |
@@ -6927,7 +6949,7 @@ securitySchemes:
       description: |
         Register the vendor of an endpoint protection solution. Specify the
         following parameters in the request.
-
+        
         | Name            | Comments |
         |-----------------|------------|
         |**vendorId**     | VMware-assigned ID for the vendor. |
@@ -6964,7 +6986,7 @@ securitySchemes:
         displayName: guestIntrospectionSolutionCreate
         description: |
           Register an endpoint protection solution. Specify the following parameters in the request.
-
+          
           | Name            | Comments |
           |-----------------|------------|
           |**solutionAltitude**     | VMware-assigned altitude for the solution. *Altitude* is a number that VMware assigns to uniquely identify the solution. The altitude describes the type of solution and the order in which the solution receives events relative to other solutions on the same host. |
@@ -7135,7 +7157,7 @@ securitySchemes:
         description: |
           Activate an endpoint protection solution that has been registered
           and located. Specify the following parameter in the request body.
-
+          
           | Name            | Comments |
           |-----------------|------------|
           |**svmMoid**     | Managed object ID of the virtual machine of the activated endpoint protection solution. |
@@ -7167,6 +7189,7 @@ securitySchemes:
   description: |
     Working with Distributed Firewall
     =================================
+
   /globalroot-0/config:
     displayName: dfwConfig
     description: |
@@ -7174,7 +7197,7 @@ securitySchemes:
       ---
       The following table lists the elements that can be used in firewall
       rules.
-
+      
       | Element | Keyword for API | Used in |
       |---|---|---|
       | All Edges | ALL_EDGES | appliedTo |
@@ -7744,12 +7767,12 @@ securitySchemes:
             
             Use the **action**, **operation**, and optionally **achorId**
             query parameters to specify the destination for the section.
-
+            
             `POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007
             ?action=revise&operation=insert_before&anchorId=1006`
-
+            
             `If-Match: 1477989118875` 
-
+            
             ```
             <section id="1007" name="Web Section" generationNumber="1477989118875" timestamp="1477989118875" type="LAYER3">
               ...
@@ -8051,15 +8074,15 @@ securitySchemes:
           displayName: dfwL2SectionIdRevise
           description: |
             Move the specified layer 2 section.
-
+            
             Use the **action**, **operation**, and optionally **achorId**
             query parameters to specify the destination for the section.
-
+            
             `POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009
             ?action=revise&operation=insert_before&anchorId=1008`
-
+            
             `If-Match: 1478307787160`
-
+            
             ```
             <section id="1009" name="Test Section" generationNumber="1478307787160" timestamp="1478307787160" type="LAYER2">
               ...
@@ -8437,7 +8460,7 @@ securitySchemes:
       ----
       Retrieve status of last publish action for each cluster in the NSX
       environment.
-
+      
       The status output displays a generation number (**generationNumber**) for
       each rule set, which can be used to verify whether a change in rule sets
       has propagated to a host. In 6.2.4, a generation number for objects
@@ -8446,7 +8469,7 @@ securitySchemes:
       propagated to a host. Note that the object generation number may change
       frequently and will always be equal to or greater than the ruleset
       generation number.
-
+      
       Starting in NSX 6.2.4, clusters (and hosts inside the cluster) are no
       longer included in the firewall status output if distributed firewall is
       disabled at the cluster level, or if the cluster is not prepared (NSX
@@ -8458,9 +8481,9 @@ securitySchemes:
       displayName: dfwStatusRead
       description: |
         Get firewall configuration status
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
@@ -8551,9 +8574,9 @@ securitySchemes:
         displayName: L3SectionStatusRead
         description: |
           Retrieve status of the last publish action for the specified layer 3 section.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
@@ -8571,9 +8594,9 @@ securitySchemes:
         displayName: L2SectionStatusRead
         description: |
           Retrieve status of the last publish action for the specified layer 2 section.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
@@ -8780,7 +8803,7 @@ securitySchemes:
       Working with the Distributed Firewall Global Configuration
       ----------------------------------------------------------
       You can use the following parameters to improve firewall performancer:
-
+      
       * **layer3RuleOptimize** and **layer2RuleOptimize** to turn
       on/off rule optimization.
       * **tcpStrictOption** determines whether or not to drop an established
@@ -8788,7 +8811,7 @@ securitySchemes:
       handshake. If set to true, the connection will be dropped.
       * **autoDraftDisabled** improves performances when making large numbers
       of changes to firewall rules.
-
+      
       You can disable the auto draft feature by setting **autoDraftDisabled** to
       true. Distributed Firewall saves up to 100 configurations, including
       manually saved drafts (**preserve** parameter can be set to true or
@@ -8799,7 +8822,7 @@ securitySchemes:
       making large numbers of changes to the firewall rules, to improve
       performance, and to prevent previously saved drafts from being
       overwritten.
-
+      
       Note: The **autoDraftDisabled** parameter does not appear in a GET of the global
       configuration.
     get:
@@ -8819,9 +8842,9 @@ securitySchemes:
       displayName: dfwPerformanceUpdate
       description: |
         Update the distributed firewall performance configuration.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method updated. **autoDraftDisabled** parameter added.
@@ -8928,10 +8951,10 @@ securitySchemes:
       You can create a SpoofGuard policy to specify the operation mode for
       specific networks. The system generated policy applies to port groups
       and logical switches not covered by existing SpoofGuard policies.
-
+      
       The operationMode for a SpoofGuard policy can be set to one of the
       following:
-
+      
       * **TOFU** - Automatically trust IP assignments on their first use
       * **MANUAL** - Manually inspect and approve all IP assignments before first
       use
@@ -9058,6 +9081,7 @@ securitySchemes:
   description: |
     Working with Flow Monitoring
     ========
+
   /flowstats:
     displayName: flowStats
     description: |
@@ -9359,49 +9383,49 @@ securitySchemes:
     =======
     There are two types of NSX Edge: Edge services gateway and logical
     (distributed) router.
-
+    
     ### Edge Services Gateway
-
+    
     The services gateway gives you access to all NSX Edge services such as
     firewall, NAT, DHCP, VPN, load balancing, and high availability. You can
     install multiple Edge services gateway virtual appliances in a
     datacenter. Each Edge service gateway virtual appliance can have a
     total of ten uplink and internal network interfaces. 
-
+    
     The internal interfaces connect to secured port groups and act as the
     gateway for all protected virtual machines in the port group. The subnet
     assigned to the internal interface can be a publicly routed IP space or
     a NATed/routed RFC 1918 private space. Firewall rules and other NSX Edge
     services are enforced on traffic between network interfaces.
-
+    
     Uplink interfaces of NSX Edge connect to uplink port groups that have
     access to a shared corporate network or a service that provides access
     layer networking. Multiple external IP addresses can be configured for
     load balancer, site-to-site VPN, and NAT services.
-
+    
     ### Logical (Distributed) Router
-
+    
     The logical router provides East-West distributed routing with tenant IP
     address space and data path isolation. Virtual machines or workloads
     that reside on the same host on different subnets can communicate with
     one another without having to traverse a traditional routing interface.
-
+    
     A logical router can have up to 9 uplink interfaces and up to 990
     internal interfaces.
-
+    
   post:
     displayName: nsxEdgesCreate
     description: |
       You can install NSX Edge as a services gateway or as a logical router.
-
+      
       The **type** parameter determines which type of NSX Edge is deployed:
       *distributedRouter* or *gatewayServices*. If no type is specified, the
       type is *gatewayServices*.
-
+      
       Other parameters for this method will differ depending on which type of
       NSX Edge you are deploying. See the examples and parameter tables for
       more information.
-
+      
       ### NSX Edge: Service Gateway
       
       The NSX Edge installation API copies the NSX Edge OVF from the Edge
@@ -9420,9 +9444,9 @@ securitySchemes:
       
       NOTE: Do not use hidden/system resource pool IDs as they are not
       supported on the UI.
-
+      
       #### Request Body to Create Edge Services Gateway
-
+      
           <edge>
             <datacenterMoid>datacenter-2</datacenterMoid>
             <name>org1-edge</name>
@@ -9535,18 +9559,18 @@ securitySchemes:
               <port>5666</port>
             </queryDaemon>
           </edge>
-
+      
       ### NSX Edge: Logical (Distributed) Router
-
+      
       Before installing a logical router, you must prepare the hosts on the
       appropriate clusters. 
-
+      
       The user specified configuration is stored in the database
       and Edge identifier is returned to the user. This identifier must be
       used for future configurations on the given Edge.  If any appliance(s)
       are specified and at least one connected interface/vnic is specified,
       then the appliance(s) are deployed and configuration is applied to them.
-
+      
       It is not possible to set the <ecmp>true</ecmp> property upon creation
       of a distributed logicalrouter Edge and a subsequent API call is
       required to enable ECMP.
@@ -9554,9 +9578,9 @@ securitySchemes:
       DHCP relay settings are not able to be used when creating a distributed
       logical router Edge and a subsequent API call is required to configure
       DHCP relay properties.
-
+      
       #### Request Body to Create Logical (Distributed) Router
-
+      
           <edge>
             <datacenterMoid>datacenter-2</datacenterMoid>
             <type>distributedRouter</type>
@@ -9603,9 +9627,9 @@ securitySchemes:
             </interfaces>
           </edge>
       ### Request and Response Body Parameters for NSX Edge
-
+      
       #### General Request Body Parameters: Edge Services Gateway and Logical (Distributed) Router
-
+      
       Parameter |  Description | Comments 
       ---|---|---
       **datacenterMoid** |Specify vCenter Managed Object Identifier of data center on which edge has to be deployed|Required. 
@@ -9617,9 +9641,9 @@ securitySchemes:
       **vseLogLevel** |Defines the log level for log messages captured in the log files.|Optional. Choice of: *emergency*, *alert*, *critical*, *error*, *warning*, *notice*, *debug*. Default is *info*.
       **enableAesni** |Enable support for Advanced Encryption Standard New Instructions on the Edge.|Optional. True/False. Default is *true*.
       **enableCoreDump** |Deploys a new NSX Edge for debug/core-dump purpose.|Optional. Default is false. Enabling core-dump will deploy an extra disk for core-dump files.
-
+      
       #### Appliances Configuration: Edge Services Gateway and Logical (Distributed) Router
-
+      
       Parameter |  Description | Comments 
       ---|---|---
       **applianceSize** |Edge form factor, it determines the NSX Edge size and capability. |Required. Choice of: *compact*, *large*, *quadlarge*, *xlarge*. Default is *compact*.
@@ -9645,9 +9669,9 @@ securitySchemes:
       **autoConfiguration > rulePriority** |Defines the priority of system-defined rules over user-defined rules.|Optional. High, Low.  Default is *high*.
       **queryDaemon > enabled** |Configure the communication between server load balancer and NSX Edge VM.|Default is *false*.
       **queryDaemon > port** |Defines the port through which the communication happens.|Integer 1-65535. Default is *5666*.
-
+      
       #### DNS Client: Edge Services Gateway and Logical (Distributed) Router 
-
+      
       Parameter |  Description | Comments 
       ---|---|---
       **dnsClient** |Configures the DNS settings of the Edge Services Gateway.|Optional. If the primary/secondary are specified and the DNS service is not specified, the primary/secondary will be used as the default of the DNS service.
@@ -9655,9 +9679,9 @@ securitySchemes:
       **secondaryDns** |Secondary DNS IP |
       **domainName** |Domain Name of Edge |
       **domainName** |Secondary Domain Name of Edge |
-
+      
       #### vNIC Parameters: Edge Services Gateway Only
-
+      
       Parameter |  Description | Comments
       ---|---|---
       **vnic** |Configure interface (vNic).|Required. Until one connected vNic is configured, none of the configured features will serve the network.
@@ -9684,9 +9708,9 @@ securitySchemes:
       **burstSize**<br>(inShapingPolicy or outShapingPolicy) |Sets the burst size of the interface.|Required. 
       **enabled**<br>(inShapingPolicy or outShapingPolicy) |Enable/disable status of this traffic policy.|Required. 
       **inherited**<br>(inShapingPolicy or outShapingPolicy) |Determine whether properties should be inherited to the vNic from the port group.|Required. 
-
+      
       #### HA (Management) Interfaces and Interfaces Configuration: Logical (Distributed) Router Only
-
+      
       Parameter |  Description | Comments 
       ---|---|---
       **mgmtInterface** | High availability interface configuration. Interface index 0 is assigned. | Required.
@@ -9868,9 +9892,9 @@ securitySchemes:
       displayName: nsxEdgeRead
       description: |
         Retrieve information about the specified NSX Edge.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
@@ -9885,9 +9909,9 @@ securitySchemes:
       displayName: nsxEdgeUpdate
       description: |
         Update the NSX Edge configuration.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method updated. **haAdminState** parameter added.
@@ -10640,12 +10664,12 @@ securitySchemes:
         globalConfig, defaultPolicy and the rules. If either of them are not
         sent, the previous config if any on those fields will be removed and
         will be changed to the system defaults.  
-
+        
         **ruleId** uniquely identifies a rule and should be specified only for
         rules that are being updated.  If **ruleTag** is specified, the rules
         on Edge are configured using this user input. Otherwise, Edge is
         configured using **ruleIds** generated by NSX Manager.
-
+        
         Parameter | Comments
         ----|----
         **tcpPickOngoingConnections**|Boolean, optional, default: *false*.
@@ -10690,9 +10714,9 @@ securitySchemes:
         displayName: nsxEdgeFirewallConfigRead
         description: |
           Retrieve the NSX Edge firewall configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
@@ -10700,9 +10724,9 @@ securitySchemes:
         displayName: nsxEdgeFirewallConfigUpdate
         description: |
           Configure NSX Edge firewall.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
@@ -10873,9 +10897,9 @@ securitySchemes:
           displayName: globalFirewallConfigRead
           description: |
             Retrieve the firewall default policy for an Edge.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **enableSynFloodProtection** parameter added. 
@@ -10883,9 +10907,9 @@ securitySchemes:
           displayName: globalFirewallConfigUpdate
           description: |
             Configure firewall global config for an Edge.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
@@ -10964,16 +10988,16 @@ securitySchemes:
         NSX Edge provides network address translation (NAT) service to protect
         the IP addresses of internal (private) networks from the public
         network.
-
+        
         You can configure NAT rules to provide access to services running on
         privately addressed virtual machines. There are two types of NAT rules
         that can be configured: SNAT (Source NAT) and DNAT (Destination NAT). 
-
+        
         For the data path to work, you need to add firewall rules to allow the
         required traffic for IP addresses and port per the NAT rules.
-
+        
         **NAT Parameter Table**
-
+        
         Parameter |  Description | Other information
         ---|---
         **enabled** |Enable rule. | Boolean. Optional. Default is *true*.
@@ -10993,7 +11017,7 @@ securitySchemes:
         displayName: edgeNatConfig
         description: | 
           Configure SNAT and DNAT rules for an Edge.
-
+          
           If you use this method to add new NAT rules, you must include all
           existing rules in the request body. Any rules that are omitted will
           be deleted.
@@ -11105,7 +11129,7 @@ securitySchemes:
         Working with the NSX Edge Routing Configuration
         ----
         You can specify static and dynamic routing for each NSX Edge.
-
+        
         Dynamic routing provides the necessary forwarding information between
         layer 2 broadcast domains, thereby allowing you to decrease layer 2
         broadcast domains and improve network efficiency and scale. NSX
@@ -11114,9 +11138,9 @@ securitySchemes:
         machine communication without the costly or timely need to extend
         hops. At the same time, NSX also provides North-South connectivity,
         thereby enabling tenants to access public networks.
-
+        
         ### Global Routing Configuration
-
+        
         Parameter  |   Description  | Comments  
         --- | --- | --- 
         **routerId**  | The first uplink IP address of the NSX Edge that pushes routes to the kernel for dynamic routing | Optional. RouterId is set only when configuring the dynamic routing protocols OSPF and BGP.
@@ -11127,9 +11151,9 @@ securitySchemes:
         **ipPrefix**  | Details for one IP prefix. |  Optional. Required only if you define redistribution rules in dynamic routing protocols like ospf, bgp.
         **ipPrefix > name**  | The name of the IP prefix. | All defined IP prefixes must have unique names.
         **ipPrefix > ipAddress**  | IP addresses for the IP prefix. | Optional. String.
-
+        
         ### Default Route Configuration
-
+        
         Parameter  |   Description  | Comments  
         --- | --- | --- 
         **description**  | A description for the default route. |
@@ -11138,9 +11162,9 @@ securitySchemes:
         **vnic**  | Interface on which the default route is added. |
         **gatewayAddress**  | Default gateway IP used for routing. |
         **adminDistance**  |Admin distance. Used to determine which routing protocol to use if two protocols provide route information for the same destination. | Optional. Default value is *1*.
-
+        
         ### Static Route Configuration
-
+        
         Parameter  |   Description  | Comments  
         --- | --- | --- 
         **vnic**  | Interface on which the route is added. |
@@ -11150,9 +11174,9 @@ securitySchemes:
         **nextHop**  | Next hop IP address. |The router must be able to directly reach the next hop. When ECMP is enabled, multiple next hops can be displayed.
         **adminDistance**  | Admin distance. Used to determine which routing protocol to use if two protocols provide route information for the same destination. | Optional. Default value is *1*.
         **type**  | Specifies whether the static route was created by the system as an auto-generated route or the default route (internal); or whether it is a local (user) route. |
-
+        
         ### OSPF Configuration
-
+        
         Parameter  |   Description  | Comments  
         --- | --- | --- 
         **enabled**  | OSPF enabled status. |  When not specified, it will be treated as false, When false, it will delete the existing config.
@@ -11171,10 +11195,10 @@ securitySchemes:
         **priority**  | The default priority of the interface. The interface with the highest priority is the designated router. | Optional. By default, set to 128 with valid values 0-255.
         **cost**  | The default overhead required to send packets across that interface | Optional. Integer. The cost of an interface is inversely proportional to the bandwidth of that interface. The larger the bandwidth, the smaller the cost. Valid values are 1-65535.
         **mtuIgnore** | Ignore interface MTU setting | *true* or *false*.
-
-
+        
+        
         ### BGP Configuration
-
+        
         Parameter  |   Description  | Comments  
         --- | --- | --- 
         **enabled**  | BGP routing enable/disable status. | Optional. By default, enabled is set to false.
@@ -11194,9 +11218,9 @@ securitySchemes:
         **bgpFilter > network**  | The network that you want to filter to or from the neighbor. | CIDR format. IPv4 only. IPv6 is not supported.
         **bgpFilter > ipPrefixGe**  | The IP prefixes that are to be filtered.  Filter prefixes greater than or equal to this value.  | Optional. Integer. Specify valid IPv4 prefixes.
         **bgpFilter > ipPrefixLe**  | The IP prefixes that are to be filtered. Filter prefixes less than or equal to this value. | Optional. Integer. Specify valid IPv4 prefixes. 
-
+        
         ### Route Redistribution Configuration for OSPF or BGP
-
+        
         Parameter  |   Description  | Comments  
         --- | --- | --- 
         **enabled** | Enabled status of route redistribution for the parent protocol (OSFP or BGP). | Optional. Default is *false*.
@@ -11212,9 +11236,9 @@ securitySchemes:
         displayName: routingConfigRead
         description: |
           Retrieve routes.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **isis** configuration section removed. 
@@ -11223,9 +11247,9 @@ securitySchemes:
         description: |
           Configure NSX Edge global routing configuration, static routing, and
           dynamic routing (OSPF and BGP).
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **isis** configuration section removed. 
@@ -11438,20 +11462,20 @@ securitySchemes:
           available routers and constructs a topology map of the network.  The topology
           determines the routing table presented to the Internet Layer, which makes
           routing decisions based on the destination IP address found in IP packets.
-
+          
           OSPF routing policies provide a dynamic process of traffic load balancing
           between routes of equal cost. An OSPF network is divided into routing areas to
           optimize traffic. An area is a logical collection of OSPF networks, routers,
           and links that have the same area identification.  
-
+          
           Areas are identified by an Area ID.
         get:
           displayName: routingOSPFRead
           description: |
             Retrieve OSPF configuration.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **isis** configuration section removed. 
@@ -11459,9 +11483,9 @@ securitySchemes:
           displayName: routingOSPFUpdate
           description: |
             Configure OSPF.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **isis** configuration section removed. 
@@ -11526,9 +11550,9 @@ securitySchemes:
           displayName: routingBGPRead
           description: | 
             Retrieve BGP configuration.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **isis** configuration section removed. 
@@ -11536,9 +11560,9 @@ securitySchemes:
           displayName: routingBGPUpdate
           description: |
             Configure BGP.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **isis** configuration section removed. 
@@ -11619,7 +11643,7 @@ securitySchemes:
       description: |
         Working With NSX Edge Load Balancer
         ----
-
+        
         The NSX Edge load balancer enables network traffic to follow multiple
         paths to a specific destination. It distributes incoming service
         requests evenly among multiple servers in such a way that the load
@@ -11627,7 +11651,7 @@ securitySchemes:
         achieving optimal resource utilization, maximizing throughput,
         minimizing response time, and avoiding overload. NSX Edge provides load
         balancing up to Layer 7.
-
+        
         You map an external, or public, IP address to a set of internal servers
         for load balancing. The load balancer accepts TCP, HTTP, or HTTPS
         requests on the external IP address and decides which internal server
@@ -11643,7 +11667,7 @@ securitySchemes:
           
           The input contains five parts: application profile, virtual server,
           pool, monitor and application rule.
-
+          
           For the data path to work, you need to add firewall rules to allow
           required traffic as per the load balancer configuration.
         body:
@@ -11982,7 +12006,7 @@ securitySchemes:
           flexibly and efficiently. A pool manages load balancer distribution
           methods and has a service monitor attached to it for health check
           parameters.
-
+          
           Parameter |  Description | Comments
           ---|---|---
           **pool > name**   |Name of pool.|Required.
@@ -12177,14 +12201,14 @@ securitySchemes:
         addresses, helping to prevent MAC spoofing attacks. All virtual
         machines protected by a NSX Edge can obtain IP addresses dynamically
         from the NSX Edge DHCP service.
-
+        
         NSX Edge supports IP address pooling and one-to-one static IP address
         allocation based on the vCenter managed object ID (vmId) and interface
         ID (interfaceId) of the requesting client.
-
+        
         If either bindings or pools are not included in the PUT call, existing
         bindings or pools are deleted.
-
+        
         NSX Edge DHCP service adheres to the following rules:
         * Listens on the NSX Edge internal interface (non-uplink interface)
         for DHCP discovery.
@@ -12205,9 +12229,9 @@ securitySchemes:
         while setting **enable** to *false* stops the service.  
         * Both **staticBinding** and **ipPools** must be part of the PUT request body.
         Else, they will be deleted if configured earlier.
-
+        
         **DHCP Configuration Paramters**
-
+        
         Parameter Name | Parameter Information 
         ------|-----
         **enabled** | Default is true.
@@ -12247,7 +12271,7 @@ securitySchemes:
         displayName: dhcpUpdate
         description: |
           Configure DHCP service.
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. DHCP options added.
@@ -12332,9 +12356,9 @@ securitySchemes:
           description: |
             Add an IP pool to the DHCP configuration. Returns a pool ID within
             a Location HTTP header.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. DHCP options added.
@@ -12402,9 +12426,9 @@ securitySchemes:
           description: |
             Append a static-binding to DHCP config. A static-binding ID is
             returned within a Location HTTP header.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. DHCP options added.
@@ -12935,9 +12959,9 @@ securitySchemes:
             displayName: layoutIconsUpload
             description: |
               Upload icons for use in the SSL VPN web portal.
-
+              
               Provide the image file as form-data. See the table below for the form-data key to use for each image type.
-
+              
               Image Type | form-data key | Image format requirements
               ----|------|----
               portallogo | layoutFile | n/a
@@ -12946,9 +12970,9 @@ securitySchemes:
               disconnecticon | icon | ico
               erroricon | icon | ico
               desktopicon | icon | ico
-
+              
               **Example using curl**
-
+              
               ```
               /usr/bin/curl -v -k -i -F layoutFile=@/tmp/portalLogo.jpg -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
               https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/layout/images/portallogo
@@ -13270,9 +13294,9 @@ securitySchemes:
               When the remote user logs in to the SSL client, Internet Explorer
               opens up gmail.com. This method returns a *scriptFileId* which
               can be used to update parameters associated with the script file.
-
+              
               Provide the script as form-data, using the key, *file*.
-
+              
               **Example using curl**
               ```
               /usr/bin/curl -v -k -i -F file=@/tmp/script.sh -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX=='
@@ -13425,7 +13449,7 @@ securitySchemes:
         displayName: l2VPNUpdate
         description: |
           Configure L2VPN for server or client.
-
+          
           You first enable the L2 VPN service on the NSX Edge instance and then
           configure a server and a client.
         body:
@@ -13503,7 +13527,7 @@ securitySchemes:
         provide the VPN native address and the VPN Gateway ID to set up the
         tunnel. On both ends, static one-to-one NAT is required for the VPN
         address.
-
+        
         You can have a maximum of 64 tunnels across a maximum of 10 sites.
       get:
         displayName: ipsecConfigRead
@@ -13598,17 +13622,17 @@ securitySchemes:
         Working With NSX Edge Appliance Configuration
         -----
         See *Working with NSX Edge* for additional parameters used to configure appliances.
-
+        
         When you create an NSX Edge, you define parameters that determine how
         the appliance is deployed, including resourcePoolId, dataStoreId,
         hostId, and VmFolderId. After the appliance is deployed, these
         deployment details may change, and the appliance parameters are updated
         to reflect the current, live location.
-
+        
         You can view the originally configured paramters by using the
         configuredResourcePool, configuredDataStore, configuredHost, and
         configuredVmFolder parameters.
-
+        
         You can trigger a high availability failover on the active NSX Edge
         appliance by changing the haAdminState value to *down* as part of
         appliance configuration for an NSX Edge. The haAdminState parameter
@@ -13618,7 +13642,7 @@ securitySchemes:
         haAdminState of the active appliance to be *down*, it stops
         participating in high availability, and informs the standby appliance
         of its status.  The standby appliance becomes active immediately.  
-
+        
         Parameter | Description | Comments
         --------|-------------|---------
         **highAvailabilityIndex** | Index number of the appliance | Read only.
@@ -13648,9 +13672,9 @@ securitySchemes:
         displayName: appliancesRead
         description: | 
           Retrieve appliance configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
@@ -13755,9 +13779,9 @@ securitySchemes:
           parameters of the appliances by using a PUT call. If there were two
           appliances earlier and you PUT only one appliance, the other
           appliance is deleted.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method updated. **haAdminState** parameter added.
@@ -13797,9 +13821,9 @@ securitySchemes:
           displayName: applianceRead
           description: |
             Retrieve the configuration of the specified appliance.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
@@ -13807,9 +13831,9 @@ securitySchemes:
           displayName: applianceUpdate
           description: |
             Update the configuration of the specified appliance.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method updated. **haAdminState** parameter added.
@@ -14088,7 +14112,7 @@ securitySchemes:
       of any 4.0 service configuration URL for POST, PUT, and DELETE calls.
       Without async mode, the location header in HTTP response has the resource
       ID whereas in async mode, location header has the job ID.
-
+      
       The job status response includes the job status (*SUCCESS*, *FAILED*,
       *QUEUED*, *RUNNING*, *ROLLBACK*), URI of the resource, and ID of the
       resource. 
@@ -14161,6 +14185,7 @@ securitySchemes:
   description: |
     Working with NSX Edge Configuration Publishing
     =========
+
   /tuningConfiguration:
     displayName: nsxEdgePublishTuning
     description: |
@@ -14196,9 +14221,9 @@ securitySchemes:
       displayName: nsxEdgePublishTuningList
       description: |
         Retrieve the NSX Edge tuning configuration.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -14222,9 +14247,9 @@ securitySchemes:
       displayName: nsxEdgePublishTuningUpdate
       description: |
         Update the NSX Edge tuning configuration.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -14247,6 +14272,7 @@ securitySchemes:
   description: |
     Working with Certificates
     =============
+
   /certificate:
     displayName: certificate
     description: |
@@ -14433,6 +14459,7 @@ securitySchemes:
   description: |
     Working with Security Policies and Actions
     ============================
+
   /securitypolicy:
     displayName: securityPolicy
     description: |
@@ -14640,9 +14667,9 @@ securitySchemes:
           
           The possible return of value for status are: *in_sync*,
           *in_progress*, *out_of_sync*, and *pending*.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -14659,6 +14686,7 @@ securitySchemes:
       description: |
         Working with Security Policy Alarms
         -----------
+
       /all:
         displayName: securityPolicyAlarmsAll
         description: |
@@ -14669,9 +14697,9 @@ securitySchemes:
           description: |
             Retrieve all system alarms that are raised at Service Composer
             level and policy level.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method introduced.
@@ -14742,9 +14770,9 @@ securitySchemes:
         set to apply to the policy's security groups, you have more granular
         control over the firewall rules, but may need multiple security
         policies or firewall rules to get the desired result.
-
+        
         **Applied To Values for Service Composer Firewall Rules**
-
+        
         Value | Description
         ------|----------
         dfw_only | Firewall rules are applied to all clusters on which Distributed Firewall is installed.
@@ -15515,18 +15543,18 @@ securitySchemes:
         must re-synchronize Service Composer rules with firewall rules. If
         Service Composer stays out of sync, firewall configuration may not
         stay enforced as expected.
-
+        
         This GET method can perform the following functions, depending on the
         request body provided. **Note:** Some REST clients do not allow you to
         specify a request body with a GET request.
-
+        
         ### Check if Service Composer firewall and Distributed Firewall are in sync
-
+        
         **Note: Deprecated.** Use `GET /2.0/services/policy/securitypolicy/status` instead. 
-
+        
         * If they are in sync, the response body does not contain any data.  
         * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
-
+        
         ```
         <keyValues>
           <keyValue>
@@ -15534,9 +15562,9 @@ securitySchemes:
           </keyValue>
         </keyValues>
         ```
-
+        
         ### Synchronize Service Composer firewall with Distributed Firewall
-
+        
         ```
         <keyValues>
           <keyValue>
@@ -15544,12 +15572,12 @@ securitySchemes:
           </keyValue>
         </keyValues>
         ```
-
+        
         ### Retrieve the state of the auto save draft property in Service Composer
-
+        
         Retrieve the state of the auto save draft property in Service
         Composer. Response is true or false.
-
+        
         ```
         <keyValues>
           <keyValue>
@@ -15557,14 +15585,14 @@ securitySchemes:
           </keyValue>
         </keyValues>
         ```
-
+        
         ### Change the state of the auto save draft property in Service Composer
-
+        
         **Note: Deprecated.**
-
+        
         Change the state of the auto save draft property in Service Composer.
         Provide request body value of true or false.
-
+        
         ```
         <keyValues>
           <keyValue>
@@ -15573,9 +15601,9 @@ securitySchemes:
           </keyValue>
         </keyValues> 
         ```
-
+        
         **Method history:**
-
+        
           Release | Modification
           --------|-------------
           6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
@@ -15610,13 +15638,14 @@ securitySchemes:
     network fabric, and hypervisors.
     
     You can configure NSX Manager to forward SNMP traps to an SNMP Manager.
+
   /status:
     displayName: snmpStatus
     description: |
       Working with SNMP Status Settings
       -----
       You can configure settings for SNMP on the NSX Manager.
-
+      
       -------------------------
       Parameter | Description
       ----------|------------
@@ -15626,9 +15655,9 @@ securitySchemes:
       displayName: snmpStatusRead
       description: |
         Retrieve SNMP status settings.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -15645,9 +15674,9 @@ securitySchemes:
       displayName: snmpStatusUpdate
       description: |
         Update SNMP status settings.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -15667,9 +15696,9 @@ securitySchemes:
       displayName: snmpManagersList
       description: |
         Retrieve information about SNMP managers.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -15698,9 +15727,9 @@ securitySchemes:
       displayName: snmpManagerCreate
       description: |
         Add an SNMP manager.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -15726,9 +15755,9 @@ securitySchemes:
         displayName: snmpManagerRead
         description: |
           Retrieve information about the specified SNMP manager.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -15748,9 +15777,9 @@ securitySchemes:
         displayName: snmpManagerUpdate
         description: |
           Update an SNMP manager configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -15768,9 +15797,9 @@ securitySchemes:
         displayName: snmpManagerDelete
         description: |
           Delete an SNMP manager configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -15783,9 +15812,9 @@ securitySchemes:
       displayName: snmpTrapsList
       description: |
         Retrieve information about SNMP traps.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -15822,9 +15851,9 @@ securitySchemes:
         displayName: snmpTrapRead
         description: |
           Retrieve information about the specified SNMP trap.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -15843,9 +15872,9 @@ securitySchemes:
         displayName: snmpTrapUpdate
         description: |
           Update the specified SNMP trap.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -15906,6 +15935,7 @@ securitySchemes:
     information is found and the host has been prepared with netcpa version no
     less than 6.2.0, it will return *DOWN*. When a host has been unprepared,
     its heartbeat information will be removed from the NSX Manager memory.
+
   /host/{hostId}/connection/status:
     displayName: inventoryStatusHost
     description: |
@@ -15920,9 +15950,9 @@ securitySchemes:
       displayName: inventoryStatusHostRead
       description: |
         Retrieve the status of the specified host.
-
+        
         History:
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
@@ -15947,11 +15977,11 @@ securitySchemes:
       displayName: inventoryStatusHostsList
       description: |
         Retrieve the status of a list of hosts.
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
-
+        
       queryParameters:
         hostId:
           displayName: hostId
@@ -16004,11 +16034,11 @@ securitySchemes:
     displayName: hardwareGatewayCreate
     description: |
       Install a hardware gateway.
-
+      
       **bfdEnabled** is true by default.
-
+      
       **Method history:**
-
+      
       Release | Modification
       --------|-------------
       6.2.3 | Method introduced.
@@ -16025,9 +16055,9 @@ securitySchemes:
     displayName: hardwareGatewaysList
     description: |
       Retrieve information about all hardware gateways.
-
+      
       **Method history:**
-
+      
       Release | Modification
       --------|-------------
       6.2.3 | Method introduced.
@@ -16082,9 +16112,9 @@ securitySchemes:
       displayName: hardwareGatewayRead
       description: |
         Retrieve information about the specified hardware gateway.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -16112,9 +16142,9 @@ securitySchemes:
       displayName: hardwareGatewayUpdate
       description: |
         Update the specified hardware gateway.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -16131,9 +16161,9 @@ securitySchemes:
       displayName: hardwareGatewayDelete
       description: |
         Delete the specified hardware gateway.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -16147,9 +16177,9 @@ securitySchemes:
         description: |
           Retrieve information about switches on the specified hardware
           gateway.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -16185,9 +16215,9 @@ securitySchemes:
             description: |
               Retrive information about the hardware gateway switch ports for
               the specified switch and hardware gateway.
-
+              
               **Method history:**
-
+              
               Release | Modification
               --------|-------------
               6.2.3 | Method introduced.
@@ -16233,9 +16263,9 @@ securitySchemes:
         Update the hardware gateway replication cluster.
         
         Add or remove hosts on a replication cluster.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -16259,9 +16289,9 @@ securitySchemes:
       displayName: hardwareGatewayReplicationClusterRead
       description: |
         Retrieve information about the hardware gateway replication cluster.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -16343,9 +16373,9 @@ securitySchemes:
       displayName: hardwareGatewayBindingCreate
       description: |
         Create a hardware gateway binding.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -16362,9 +16392,9 @@ securitySchemes:
       displayName: hardwareGatewayBindingsList
       description: |
         Retrieve information about hardware gateway bindings.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced.
@@ -16406,9 +16436,9 @@ securitySchemes:
         displayName: hardwareGatewayBindingRead
         description: |
           Retrieve information about the specified hardware gateway binding.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -16422,9 +16452,9 @@ securitySchemes:
           * the specified logical switch (*virtualWire*) is not present or there is a software
             gateway on the binding.
           * the new binding value is a duplicate of an existing binding.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -16442,9 +16472,9 @@ securitySchemes:
         displayName: hardwareGatewayBindingDelete
         description: |
           Delete the specified hardware gateway binding.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -16457,9 +16487,9 @@ securitySchemes:
           displayName: hardwareGatewayBindingStatisticList
           description: |
             Retrieve statistics for the specified hardware gateway binding.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.2.3 | Method introduced.
@@ -16492,9 +16522,9 @@ securitySchemes:
           full description of the new binding with its objectID. This API
           handles a maximum of 100 HardwareGatewayManageBindingsItem objects
           for each of the Add/Update/Delete lists.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -16534,6 +16564,7 @@ securitySchemes:
     description: |
       Working With Hardware Gateway BFD (Bidirectional Forwarding Detection)
       -----
+
     /config:
       displayName: hardwareGatewayBfdConfig
       description: |
@@ -16543,9 +16574,9 @@ securitySchemes:
         displayName: hardwareGatewayBfdConfigUpdate
         description: |
           Update global hardware gateway BFD configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -16560,9 +16591,9 @@ securitySchemes:
         displayName: hardwareGatewayBfdConfigRead
         description: |
           Retrieve global hardware gateway BFD configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.
@@ -16585,9 +16616,9 @@ securitySchemes:
         description: |
           Retrieve hardware gateway BFD tunnel status for all tunnel
           endpoints, including hosts and hardware gateways.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.2.3 | Method introduced.

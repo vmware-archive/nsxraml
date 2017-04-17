@@ -650,7 +650,6 @@ Release | Modification
 ## arpMAC
 Working with IP Discovery and MAC Learning for Logical Switches
 ==============
-
 You can enable IP discovery (ARP suppression) and MAC learning for logical
 switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
 pair learning table on each vNic.
