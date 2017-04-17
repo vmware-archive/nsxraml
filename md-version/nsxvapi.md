@@ -1262,7 +1262,7 @@ Working With Universal Sync Status
 * **get** *(secured)*: Retrieve the universal sync status.
 
 ## applianceManager
-Working with Appliance Manager
+Working with the Appliance Manager
 ========
 
 ### /1.0/appliance-management/global/info
