@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#107;&#x40;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;">&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#107;&#x40;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#100;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -239,6 +239,15 @@ lists the VM instance UUID. For example,
     </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-the-appliance-manager">Working with the Appliance Manager</h1>
+<p>With the appliance management tool, you can manage:</p>
+<ul>
+<li>System configurations like network configuration, syslog, time settings,
+and certificate management etc.</li>
+<li>Components of appliance such as NSX Manager, Postgres, SSH component,
+Rabbitmq service etc.</li>
+<li>Overall support related features such as tech support logs, backup
+restore, status, and summary reports of appliance health.</li>
+</ul>
 </div>
 </section>
 <section class="resource">
@@ -268,11 +277,29 @@ lists the VM instance UUID. For example,
   <div class="content">
     <p><p>Retrieve list of all backups available at configured backup location.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">list</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">backupFileProperties</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fileName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fileName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fileSize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fileSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">creationTime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">creationTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">backupFileProperties</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
 <section class="resource">
   <div class="description"><h2 id="nsx-manager-appliance-backup-settings">NSX Manager Appliance Backup Settings</h2>
+<p>You can back up and restore your NSX Manager data, which can include
+system configuration, events, and audit log tables. Configuration tables
+are included in every backup. Backups are saved to a remote location that
+must be accessible by the NSX Manager.</p>
 <p>Parameters for the NSX Manager appliance backup:</p>
 <ul>
 <li><strong>transferProtocol</strong>: <em>FTP, SFTP</em></li>
@@ -318,6 +345,7 @@ lists the VM instance UUID. For example,
               &lt;xs:element type="xs:string" name="password"/&gt;
               &lt;xs:element type="xs:string" name="backupDirectory"/&gt;
               &lt;xs:element type="xs:string" name="filenamePrefix"/&gt;
+              &lt;xs:element type="xs:string" name="passPhrase"/&gt;
               &lt;xs:element type="xs:string" name="passiveMode"/&gt;
               &lt;xs:element type="xs:string" name="useEPRT"/&gt;
               &lt;xs:element type="xs:string" name="useEPSV"/&gt;
@@ -349,25 +377,28 @@ lists the VM instance UUID. For example,
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ftpSettings</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">passiveMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">passiveMode</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">useEPRT</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">useEPRT</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">useEPSV</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">useEPSV</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span>SFTP<span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>192.168.110.30<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>22<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>testing123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>/backups<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">passPhrase</span>&gt;</span>testing456<span class="hljs-tag">&lt;/<span class="hljs-name">passPhrase</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">passiveMode</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">passiveMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">useEPRT</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">useEPRT</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">useEPSV</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">useEPSV</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ftpSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">backupFrequency</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">dayOfWeek</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dayOfWeek</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">hourOfDay</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">hourOfDay</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">minuteOfHour</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minuteOfHour</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>WEEKLY<span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dayOfWeek</span>&gt;</span>SUNDAY<span class="hljs-tag">&lt;/<span class="hljs-name">dayOfWeek</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hourOfDay</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">hourOfDay</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minuteOfHour</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">minuteOfHour</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">backupFrequency</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">excludeTables</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>AUDIT_LOGS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>SYSTEM_EVENTS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>FLOW_RECORDS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">excludeTables</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
 </code></pre>
@@ -656,6 +687,90 @@ certificates received from the CA after signing a CSR.</p>
   <div class="content">
     <p><p>Retrieve all appliance manager components.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">components</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>SSH<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>SSH Service<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Secure Shell<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>SYSTEM<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>VPOSTGRES<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vPostgres<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>vPostgres - Database service<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">usedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>COMMON<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>NSXREPLICATOR<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX Replicator<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>NSX Replicator<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uses</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">uses</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>NSXGRP<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">versionInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">majorVersion</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">majorVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>4818383<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">versionInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>RABBITMQ<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RabbitMQ<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>RabbitMQ - Messaging service<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">usedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>COMMON<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX Manager<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>NSX Manager<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uses</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>VPOSTGRES<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>RABBITMQ<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">uses</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSXREPLICATOR<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">usedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>NSXGRP<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">versionInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">majorVersion</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">majorVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>4818372<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">versionInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">components</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -698,8 +813,37 @@ certificates received from the CA after signing a CSR.</p>
     href="#GET/1.0/appliance-management/components/component/{componentID}"
   ><h2>GET /1.0/appliance-management/components/component/{componentID}</h2></a>
   <div class="content">
-    <p><p>Retrieve details for specified component.</p>
+    <p><p>Retrieve details for the specified component.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX Manager<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>NSX Manager<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">uses</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>VPOSTGRES<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>RABBITMQ<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">uses</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSXREPLICATOR<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">usedBy</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>NSXGRP<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">versionInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">majorVersion</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">majorVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>4818372<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">versionInfo</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -713,8 +857,19 @@ certificates received from the CA after signing a CSR.</p>
     href="#GET/1.0/appliance-management/components/component/{componentID}/dependencies"
   ><h2>GET /1.0/appliance-management/components/component/{componentID}/dependencies</h2></a>
   <div class="content">
-    <p><p>Retrieve dependency details for specified component.</p>
+    <p><p>Retrieve dependency details for the specified component.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">list</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>VPOSTGRES<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>RABBITMQ<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -730,6 +885,16 @@ certificates received from the CA after signing a CSR.</p>
   <div class="content">
     <p><p>Retrieve dependents for the specified component.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">list</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSXREPLICATOR<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -743,8 +908,19 @@ certificates received from the CA after signing a CSR.</p>
     href="#GET/1.0/appliance-management/components/component/{componentID}/status"
   ><h2>GET /1.0/appliance-management/components/component/{componentID}/status</h2></a>
   <div class="content">
-    <p><p>Retrieve current status for specified component.</p>
+    <p><p>Retrieve current status for the specified component.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">result</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"status"</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">operationStatus</span>&gt;</span>SUCCESS<span class="hljs-tag">&lt;/<span class="hljs-name">operationStatus</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -797,12 +973,12 @@ current logged in user.</p>
               (<tt>application/xml</tt>)
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">globalInfo</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">currentLoggedInUser</span>&gt;</span>Joe<span class="hljs-tag">&lt;/<span class="hljs-name">currentLoggedInUser</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">currentLoggedInUser</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">currentLoggedInUser</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">versionInfo</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">majorVersion</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">majorVersion</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>1300000000<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>4818372<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">versionInfo</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">globalInfo</span>&gt;</span>
 </code></pre>
@@ -906,6 +1082,107 @@ the system.</p>
   <div class="content">
     <p><p>Retrieve summary of all available components and their status info.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">componentsSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">componentsByGroup</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"tree-map"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">entry</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>COMMON<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">components</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>VPOSTGRES<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>vPostgres<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>vPostgres - Database service<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">usedBy</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>COMMON<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>RABBITMQ<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RabbitMQ<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>RabbitMQ - Messaging service<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">usedBy</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>COMMON<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">components</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">entry</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">entry</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSXGRP<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">components</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>NSXREPLICATOR<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX Replicator<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>NSX Replicator<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">uses</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">uses</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>/&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>NSXGRP<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">versionInfo</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">majorVersion</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">majorVersion</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>4818383<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">versionInfo</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>NSX<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX Manager<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>NSX Manager<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">uses</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>VPOSTGRES<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>RABBITMQ<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">uses</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>NSXREPLICATOR<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">usedBy</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>NSXGRP<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">versionInfo</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">majorVersion</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">majorVersion</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>4818372<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">versionInfo</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">components</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">entry</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">entry</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>SYSTEM<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">components</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">component</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentId</span>&gt;</span>SSH<span class="hljs-tag">&lt;/<span class="hljs-name">componentId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>SSH Service<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Secure Shell<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">showTechSupportLogs</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">showTechSupportLogs</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">usedBy</span>/&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">componentGroup</span>&gt;</span>SYSTEM<span class="hljs-tag">&lt;/<span class="hljs-name">componentGroup</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">components</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">entry</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">componentsByGroup</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">componentsSummary</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -922,6 +1199,46 @@ the system.</p>
     <p><p>Retrieve system summary info such as address, dns name, version, CPU,
 memory and storage.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">systemSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Address</span>&gt;</span>192.168.110.15<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Address</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsName</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">dnsName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applianceName</span>&gt;</span>vShield Virtual Appliance Management<span class="hljs-tag">&lt;/<span class="hljs-name">applianceName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">versionInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">majorVersion</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">majorVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minorVersion</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">minorVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">patchVersion</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">patchVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>4818372<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">versionInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">uptime</span>&gt;</span>25 days, 21 hours, 51 minutes<span class="hljs-tag">&lt;/<span class="hljs-name">uptime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuInfoDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalNoOfCPUs</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">totalNoOfCPUs</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">capacity</span>&gt;</span>2799 MHZ<span class="hljs-tag">&lt;/<span class="hljs-name">capacity</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedCapacity</span>&gt;</span>49 MHZ<span class="hljs-tag">&lt;/<span class="hljs-name">usedCapacity</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">freeCapacity</span>&gt;</span>2750 MHZ<span class="hljs-tag">&lt;/<span class="hljs-name">freeCapacity</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cpuInfoDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">memInfoDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalMemory</span>&gt;</span>16025 MB<span class="hljs-tag">&lt;/<span class="hljs-name">totalMemory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedMemory</span>&gt;</span>5633 MB<span class="hljs-tag">&lt;/<span class="hljs-name">usedMemory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">freeMemory</span>&gt;</span>10392 MB<span class="hljs-tag">&lt;/<span class="hljs-name">freeMemory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>35<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">memInfoDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">storageInfoDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalStorage</span>&gt;</span>86G<span class="hljs-tag">&lt;/<span class="hljs-name">totalStorage</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedStorage</span>&gt;</span>22G<span class="hljs-tag">&lt;/<span class="hljs-name">usedStorage</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">freeStorage</span>&gt;</span>64G<span class="hljs-tag">&lt;/<span class="hljs-name">freeStorage</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>25<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">storageInfoDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">currentSystemDate</span>&gt;</span>Wednesday, 19 April 2017 06:02:32 AM UTC<span class="hljs-tag">&lt;/<span class="hljs-name">currentSystemDate</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">systemSummary</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -937,6 +1254,20 @@ memory and storage.</p>
   <div class="content">
     <p><p>Retrieve NSX Manager CPU information.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">cpuInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalNoOfCPUs</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">totalNoOfCPUs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">capacity</span>&gt;</span>2799 MHZ<span class="hljs-tag">&lt;/<span class="hljs-name">capacity</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedCapacity</span>&gt;</span>47 MHZ<span class="hljs-tag">&lt;/<span class="hljs-name">usedCapacity</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">freeCapacity</span>&gt;</span>2752 MHZ<span class="hljs-tag">&lt;/<span class="hljs-name">freeCapacity</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">cpuInfo</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -952,6 +1283,17 @@ memory and storage.</p>
   <div class="content">
     <p><p>Retrieve locale info.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">locale</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">language</span>&gt;</span>en<span class="hljs-tag">&lt;/<span class="hljs-name">language</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">country</span>&gt;</span>US<span class="hljs-tag">&lt;/<span class="hljs-name">country</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">locale</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -977,8 +1319,8 @@ memory and storage.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">locale</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">language</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">language</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">country</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">country</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">language</span>&gt;</span>ja<span class="hljs-tag">&lt;/<span class="hljs-name">language</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">country</span>&gt;</span>JP<span class="hljs-tag">&lt;/<span class="hljs-name">country</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">locale</span>&gt;</span>
 </code></pre>
   </div>
@@ -996,6 +1338,19 @@ memory and storage.</p>
   <div class="content">
     <p><p>Retrieve NSX Manager memory information.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">memInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalMemory</span>&gt;</span>16025 MB<span class="hljs-tag">&lt;/<span class="hljs-name">totalMemory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedMemory</span>&gt;</span>5633 MB<span class="hljs-tag">&lt;/<span class="hljs-name">usedMemory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">freeMemory</span>&gt;</span>10392 MB<span class="hljs-tag">&lt;/<span class="hljs-name">freeMemory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>35<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">memInfo</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -1009,8 +1364,58 @@ memory and storage.</p>
     href="#GET/1.0/appliance-management/system/network"
   ><h2>GET /1.0/appliance-management/system/network</h2></a>
   <div class="content">
-    <p><p>Retrieve network information i.e. host name, IP address, DNS settings</p>
+    <p><p>Retrieve network information for the NSX Manager appliance. i.e. host name, IP address, DNS settings</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">networkIPv4AddressDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Address</span>&gt;</span>192.168.110.15<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Address</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4NetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4NetMask</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Gateway</span>&gt;</span>192.168.110.1<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">networkIPv4AddressDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dns</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Address</span>&gt;</span>192.168.110.10<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Address</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">domainList</span>&gt;</span>corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">domainList</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dns</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/1.0/appliance-management/system/network"
+    href="#PUT/1.0/appliance-management/system/network"
+  ><h2>PUT /1.0/appliance-management/system/network</h2></a>
+  <div class="content">
+    <p><p>Update network information for the NSX Manager appliance.</p>
+</p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">networkIPv4AddressDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Address</span>&gt;</span>192.168.110.15<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Address</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4NetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4NetMask</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Gateway</span>&gt;</span>192.168.110.1<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">networkIPv4AddressDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">networkIPv6AddressDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv6Address</span>&gt;</span>fdd1:0ebc:b724:d2f1:0000:8a7e:0360:5332<span class="hljs-tag">&lt;/<span class="hljs-name">ipv6Address</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv6PrefixLength</span>&gt;</span>64<span class="hljs-tag">&lt;/<span class="hljs-name">ipv6PrefixLength</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv6Gateway</span>&gt;</span>fdd1:0ebc:b724:d2f1:0000:8a7e:0360:0002<span class="hljs-tag">&lt;/<span class="hljs-name">ipv6Gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">networkIPv6AddressDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dns</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv4Address</span>&gt;</span>192.168.110.10<span class="hljs-tag">&lt;/<span class="hljs-name">ipv4Address</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipv6Address</span>&gt;</span>fdd1:0ebc:b724:d2f1:0000:8a7e:0360:0010<span class="hljs-tag">&lt;/<span class="hljs-name">ipv6Address</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">domainList</span>&gt;</span>corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">domainList</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dns</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -1041,6 +1446,19 @@ memory and storage.</p>
   <div class="content">
     <p><p>Retrieve NSX Manager storage information.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">storageInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">totalStorage</span>&gt;</span>86G<span class="hljs-tag">&lt;/<span class="hljs-name">totalStorage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedStorage</span>&gt;</span>22G<span class="hljs-tag">&lt;/<span class="hljs-name">usedStorage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">freeStorage</span>&gt;</span>64G<span class="hljs-tag">&lt;/<span class="hljs-name">freeStorage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">usedPercentage</span>&gt;</span>25<span class="hljs-tag">&lt;/<span class="hljs-name">usedPercentage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">storageInfo</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -1056,6 +1474,18 @@ memory and storage.</p>
   <div class="content">
     <p><p>Retrieve syslog servers.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">syslogserver</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">syslogServer</span>&gt;</span>192.168.110.20<span class="hljs-tag">&lt;/<span class="hljs-name">syslogServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>514<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>UDP<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">syslogserver</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -1082,9 +1512,9 @@ memory and storage.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">syslogserver</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">syslogServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">syslogServer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">syslogServer</span>&gt;</span>192.168.110.20<span class="hljs-tag">&lt;/<span class="hljs-name">syslogServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>514<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>UDP<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">syslogserver</span>&gt;</span>
 </code></pre>
   </div>
@@ -1103,6 +1533,8 @@ memory and storage.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-time-settings">Working with Time Settings</h2>
+<p>You can either configure time or specify the NTP server to be used for
+time synchronization.</p>
 </div>
 <div class="method get">
   <a
@@ -1114,6 +1546,20 @@ memory and storage.</p>
     <p><p>Retrieve time settings, like timezone or current date and time with
 NTP server, if configured.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">timeSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ntpServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>192.168.110.1<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ntpServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datetime</span>&gt;</span>04/19/2017 06:53:57<span class="hljs-tag">&lt;/<span class="hljs-name">datetime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timezone</span>&gt;</span>UTC<span class="hljs-tag">&lt;/<span class="hljs-name">timezone</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">timeSettings</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -1148,10 +1594,10 @@ synchronization.</p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">timeSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ntpServer</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>192.168.110.1<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ntpServer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">datetime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">datetime</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">timezone</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">timezone</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datetime</span>&gt;</span>04/19/2017 06:53:57<span class="hljs-tag">&lt;/<span class="hljs-name">datetime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timezone</span>&gt;</span>UTC<span class="hljs-tag">&lt;/<span class="hljs-name">timezone</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">timeSettings</span>&gt;</span>
 </code></pre>
   </div>
@@ -1292,7 +1738,8 @@ for both server and client.</p>
   ><h2>GET /1.0/appliance-management/system/uptime</h2></a>
   <div class="content">
     <p><p>Retrieve NSX Manager uptime information.</p>
-</p>
+<p><strong>Example response:</strong></p>
+<pre><code class="code-block hljs lang-basic"><span class="hljs-symbol">25 </span>days, <span class="hljs-number">22</span> hours, <span class="hljs-number">11</span> minutes</code></pre></p>
   </div>
 </div>
 </section>
@@ -9676,6 +10123,18 @@ scope.</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="configuring-nsx-manager-with-vcenter-server">Configuring NSX Manager with vCenter Server</h1>
+<p>You can synchronize NSX Manager with a vCenter Server, which enables the
+Networking and Security tab in the vCenter Web Client to display your VMware
+Infrastructure inventory.</p>
+<p><strong>vCenter Config Parameters</strong></p>
+<p>Parameter | Comments
+ipAddress | FQDN or IP address of vCenter server.
+userName | Required.
+password | Required.
+certificateThumbprint | Required. Must be colon (:) delimited hexadecimal.
+assignRoleToUser | Optional. <em>true</em> or <em>false</em>.
+pluginDownloadServer | Optional.
+pluginDownloadPort | Optional.</p>
 </div>
 <div class="method get">
   <a
@@ -9686,6 +10145,20 @@ scope.</p>
   <div class="content">
     <p><p>Get vCenter Server configuration details on NSX Manager.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vcInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>vcsa-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>administrator@vsphere.local<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">certificateThumbprint</span>&gt;</span>D2:75:61:24:52:CA:B2:8D:D3:25:3F:78:11:2A:8F:94:5A:30:57:0D<span class="hljs-tag">&lt;/<span class="hljs-name">certificateThumbprint</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">assignRoleToUser</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">assignRoleToUser</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vcInventoryLastUpdateTime</span>&gt;</span>1492567224920<span class="hljs-tag">&lt;/<span class="hljs-name">vcInventoryLastUpdateTime</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vcInfo</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -9716,11 +10189,11 @@ scope.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vcInfo</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">certificateThumbprint</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">certificateThumbprint</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">assignRoleToUser</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">assignRoleToUser</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>vc-l-01a.corp.local<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>administrator@vsphere.local<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>VMware123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">certificateThumbprint</span>&gt;</span>D2:75:61:24:52:CA:B2:8D:D3:25:3F:78:11:2A:8F:94:5A:30:57:0D<span class="hljs-tag">&lt;/<span class="hljs-name">certificateThumbprint</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">assignRoleToUser</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">assignRoleToUser</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">pluginDownloadServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">pluginDownloadServer</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">pluginDownloadPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">pluginDownloadPort</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vcInfo</span>&gt;</span>
@@ -9738,8 +10211,19 @@ scope.</p>
     href="#GET/2.0/services/vcconfig/status"
   ><h2>GET /2.0/services/vcconfig/status</h2></a>
   <div class="content">
-    <p><p>Get default vCenter Server connection status</p>
+    <p><p>Get default vCenter Server connection status.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vcConfigStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">lastInventorySyncTime</span>&gt;</span>1492568145678<span class="hljs-tag">&lt;/<span class="hljs-name">lastInventorySyncTime</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vcConfigStatus</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>

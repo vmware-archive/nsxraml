@@ -3476,9 +3476,35 @@ securitySchemes:
   description: |
     Configuring NSX Manager with vCenter Server
     =========
+    You can synchronize NSX Manager with a vCenter Server, which enables the
+    Networking and Security tab in the vCenter Web Client to display your VMware
+    Infrastructure inventory.
+    
+    **vCenter Config Parameters**
+    
+    Parameter | Comments
+    ipAddress | FQDN or IP address of vCenter server.
+    userName | Required.
+    password | Required.
+    certificateThumbprint | Required. Must be colon (:) delimited hexadecimal.
+    assignRoleToUser | Optional. *true* or *false*.
+    pluginDownloadServer | Optional.
+    pluginDownloadPort | Optional.
   get:
     displayName: vCenterConfigRead
     description: Get vCenter Server configuration details on NSX Manager.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <vcInfo>
+                <ipAddress>vcsa-01a.corp.local</ipAddress>
+                <userName>administrator@vsphere.local</userName>
+                <certificateThumbprint>D2:75:61:24:52:CA:B2:8D:D3:25:3F:78:11:2A:8F:94:5A:30:57:0D</certificateThumbprint>
+                <assignRoleToUser>true</assignRoleToUser>
+                <vcInventoryLastUpdateTime>1492567224920</vcInventoryLastUpdateTime>
+              </vcInfo>
   put:
     displayName: vCenterConfigUpdate
     description: Synchronize NSX Manager with vCenter server.
@@ -3486,11 +3512,11 @@ securitySchemes:
       application/xml:
         example: |
           <vcInfo>
-            <ipAddress></ipAddress>
-            <userName></userName>
-            <password></password>
-            <certificateThumbprint></certificateThumbprint>
-            <assignRoleToUser></assignRoleToUser>
+            <ipAddress>vc-l-01a.corp.local</ipAddress>
+            <userName>administrator@vsphere.local</userName>
+            <password>VMware123</password>
+            <certificateThumbprint>D2:75:61:24:52:CA:B2:8D:D3:25:3F:78:11:2A:8F:94:5A:30:57:0D</certificateThumbprint>
+            <assignRoleToUser>true</assignRoleToUser>
             <pluginDownloadServer></pluginDownloadServer>
             <pluginDownloadPort></pluginDownloadPort>
           </vcInfo>
@@ -3502,7 +3528,16 @@ securitySchemes:
       -----
     get:
       displayName: vCenterStatusRead
-      description: Get default vCenter Server connection status
+      description: Get default vCenter Server connection status.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <vcConfigStatus>
+                  <connected>true</connected>
+                  <lastInventorySyncTime>1492568145678</lastInventorySyncTime>
+                </vcConfigStatus>
 /2.0/universalsync:
   displayName: universalSync
   description: |
@@ -3653,6 +3688,13 @@ securitySchemes:
     Working with the Appliance Manager
     ========
 
+    With the appliance management tool, you can manage:
+    * System configurations like network configuration, syslog, time settings,
+      and certificate management etc.
+    * Components of appliance such as NSX Manager, Postgres, SSH component,
+      Rabbitmq service etc.
+    * Overall support related features such as tech support logs, backup
+      restore, status, and summary reports of appliance health.
   /global/info:
     displayName: globalInfo
     description: |
@@ -3669,12 +3711,12 @@ securitySchemes:
             application/xml:
               example: |
                 <globalInfo>
-                  <currentLoggedInUser>Joe</currentLoggedInUser>
+                  <currentLoggedInUser>admin</currentLoggedInUser>
                   <versionInfo>
                     <majorVersion>6</majorVersion>
-                    <minorVersion>0</minorVersion>
-                    <patchVersion>0</patchVersion>
-                    <buildNumber>1300000000</buildNumber>
+                    <minorVersion>2</minorVersion>
+                    <patchVersion>5</patchVersion>
+                    <buildNumber>4818372</buildNumber>
                   </versionInfo>
                 </globalInfo>
   /summary/system:
@@ -3687,6 +3729,44 @@ securitySchemes:
       description: |
         Retrieve system summary info such as address, dns name, version, CPU,
         memory and storage.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <systemSummary>
+                  <ipv4Address>192.168.110.15</ipv4Address>
+                  <dnsName>nsxmgr-01a</dnsName>
+                  <hostName>nsxmgr-01a</hostName>
+                  <applianceName>vShield Virtual Appliance Management</applianceName>
+                  <versionInfo>
+                    <majorVersion>6</majorVersion>
+                    <minorVersion>2</minorVersion>
+                    <patchVersion>5</patchVersion>
+                    <buildNumber>4818372</buildNumber>
+                  </versionInfo>
+                  <uptime>25 days, 21 hours, 51 minutes</uptime>
+                  <cpuInfoDto>
+                    <totalNoOfCPUs>4</totalNoOfCPUs>
+                    <capacity>2799 MHZ</capacity>
+                    <usedCapacity>49 MHZ</usedCapacity>
+                    <freeCapacity>2750 MHZ</freeCapacity>
+                    <usedPercentage>2</usedPercentage>
+                  </cpuInfoDto>
+                  <memInfoDto>
+                    <totalMemory>16025 MB</totalMemory>
+                    <usedMemory>5633 MB</usedMemory>
+                    <freeMemory>10392 MB</freeMemory>
+                    <usedPercentage>35</usedPercentage>
+                  </memInfoDto>
+                  <storageInfoDto>
+                    <totalStorage>86G</totalStorage>
+                    <usedStorage>22G</usedStorage>
+                    <freeStorage>64G</freeStorage>
+                    <usedPercentage>25</usedPercentage>
+                  </storageInfoDto>
+                  <currentSystemDate>Wednesday, 19 April 2017 06:02:32 AM UTC</currentSystemDate>
+                </systemSummary>
   /summary/components:
     displayName: componentInfo
     description: |
@@ -3696,6 +3776,105 @@ securitySchemes:
       displayName: componentInfoRead
       description: |
         Retrieve summary of all available components and their status info.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <componentsSummary>
+                  <componentsByGroup class="tree-map">
+                    <entry>
+                      <string>COMMON</string>
+                      <components>
+                        <component>
+                          <componentId>VPOSTGRES</componentId>
+                          <name>vPostgres</name>
+                          <description>vPostgres - Database service</description>
+                          <status>RUNNING</status>
+                          <enabled>true</enabled>
+                          <showTechSupportLogs>false</showTechSupportLogs>
+                          <usedBy>
+                            <string>NSX</string>
+                          </usedBy>
+                          <componentGroup>COMMON</componentGroup>
+                        </component>
+                        <component>
+                          <componentId>RABBITMQ</componentId>
+                          <name>RabbitMQ</name>
+                          <description>RabbitMQ - Messaging service</description>
+                          <status>RUNNING</status>
+                          <enabled>true</enabled>
+                          <showTechSupportLogs>false</showTechSupportLogs>
+                          <usedBy>
+                            <string>NSX</string>
+                          </usedBy>
+                          <componentGroup>COMMON</componentGroup>
+                        </component>
+                      </components>
+                    </entry>
+                    <entry>
+                      <string>NSXGRP</string>
+                      <components>
+                        <component>
+                          <componentId>NSXREPLICATOR</componentId>
+                          <name>NSX Replicator</name>
+                          <description>NSX Replicator</description>
+                          <status>RUNNING</status>
+                          <enabled>true</enabled>
+                          <showTechSupportLogs>false</showTechSupportLogs>
+                          <uses>
+                            <string>NSX</string>
+                          </uses>
+                          <usedBy/>
+                          <componentGroup>NSXGRP</componentGroup>
+                          <versionInfo>
+                            <majorVersion>6</majorVersion>
+                            <minorVersion>2</minorVersion>
+                            <patchVersion>5</patchVersion>
+                            <buildNumber>4818383</buildNumber>
+                          </versionInfo>
+                        </component>
+                        <component>
+                          <componentId>NSX</componentId>
+                          <name>NSX Manager</name>
+                          <description>NSX Manager</description>
+                          <status>RUNNING</status>
+                          <enabled>true</enabled>
+                          <showTechSupportLogs>true</showTechSupportLogs>
+                          <uses>
+                            <string>VPOSTGRES</string>
+                            <string>RABBITMQ</string>
+                          </uses>
+                          <usedBy>
+                            <string>NSXREPLICATOR</string>
+                          </usedBy>
+                          <componentGroup>NSXGRP</componentGroup>
+                          <versionInfo>
+                            <majorVersion>6</majorVersion>
+                            <minorVersion>2</minorVersion>
+                            <patchVersion>5</patchVersion>
+                            <buildNumber>4818372</buildNumber>
+                          </versionInfo>
+                        </component>
+                      </components>
+                    </entry>
+                    <entry>
+                      <string>SYSTEM</string>
+                      <components>
+                        <component>
+                          <componentId>SSH</componentId>
+                          <name>SSH Service</name>
+                          <description>Secure Shell</description>
+                          <status>RUNNING</status>
+                          <enabled>true</enabled>
+                          <showTechSupportLogs>false</showTechSupportLogs>
+                          <usedBy/>
+                          <componentGroup>SYSTEM</componentGroup>
+                        </component>
+                      </components>
+                    </entry>
+                  </componentsByGroup>
+                </componentsSummary>
   /system/restart:
     displayName: systemReboot
     description: |
@@ -3712,6 +3891,18 @@ securitySchemes:
     get:
       displayName: systemCPUInfo
       description: Retrieve NSX Manager CPU information.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <cpuInfo>
+                  <totalNoOfCPUs>4</totalNoOfCPUs>
+                  <capacity>2799 MHZ</capacity>
+                  <usedCapacity>47 MHZ</usedCapacity>
+                  <freeCapacity>2752 MHZ</freeCapacity>
+                  <usedPercentage>2</usedPercentage>
+                </cpuInfo>
   /system/uptime:
     displayName: systemUptime
     description: |
@@ -3719,7 +3910,13 @@ securitySchemes:
       ----
     get:
       displayName: systemUptime
-      description: Retrieve NSX Manager uptime information.
+      description: |
+        Retrieve NSX Manager uptime information.
+        
+        **Example response:**
+        ```
+        25 days, 22 hours, 11 minutes
+        ```
   /system/meminfo:
     displayName: systemMemoryInfo
     description: |
@@ -3728,6 +3925,17 @@ securitySchemes:
     get:
       displayName: systemMemoryInfo
       description: Retrieve NSX Manager memory information.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <memInfo>
+                  <totalMemory>16025 MB</totalMemory>
+                  <usedMemory>5633 MB</usedMemory>
+                  <freeMemory>10392 MB</freeMemory>
+                  <usedPercentage>35</usedPercentage>
+                </memInfo>
   /system/storageinfo:
     displayName: systemStorageInfo
     description: |
@@ -3736,6 +3944,17 @@ securitySchemes:
     get:
       displayName: systemStorageInfo
       description: Retrieve NSX Manager storage information.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <storageInfo>
+                  <totalStorage>86G</totalStorage>
+                  <usedStorage>22G</usedStorage>
+                  <freeStorage>64G</freeStorage>
+                  <usedPercentage>25</usedPercentage>
+                </storageInfo>
   /system/network:
     displayName: networkSettings
     description: |
@@ -3744,7 +3963,49 @@ securitySchemes:
     get:
       displayName: networkSettingsRead
       description: |
-        Retrieve network information i.e. host name, IP address, DNS settings
+        Retrieve network information for the NSX Manager appliance. i.e. host name, IP address, DNS settings
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <network>
+                  <hostName>nsxmgr-01a</hostName>
+                  <networkIPv4AddressDto>
+                    <ipv4Address>192.168.110.15</ipv4Address>
+                    <ipv4NetMask>255.255.255.0</ipv4NetMask>
+                    <ipv4Gateway>192.168.110.1</ipv4Gateway>
+                  </networkIPv4AddressDto>
+                  <dns>
+                    <ipv4Address>192.168.110.10</ipv4Address>
+                    <domainList>corp.local</domainList>
+                  </dns>
+                </network>
+    put:
+      displayName: networkSettingsUpdate
+      description: |
+        Update network information for the NSX Manager appliance.
+      body:
+        application/xml:
+          example: |
+            <network>
+              <hostName>nsxmgr-01a</hostName>
+              <networkIPv4AddressDto>
+                <ipv4Address>192.168.110.15</ipv4Address>
+                <ipv4NetMask>255.255.255.0</ipv4NetMask>
+                <ipv4Gateway>192.168.110.1</ipv4Gateway>
+              </networkIPv4AddressDto>
+              <networkIPv6AddressDto>
+                <ipv6Address>fdd1:0ebc:b724:d2f1:0000:8a7e:0360:5332</ipv6Address>
+                <ipv6PrefixLength>64</ipv6PrefixLength>
+                <ipv6Gateway>fdd1:0ebc:b724:d2f1:0000:8a7e:0360:0002</ipv6Gateway>
+              </networkIPv6AddressDto>
+              <dns>
+                <ipv4Address>192.168.110.10</ipv4Address>
+                <ipv6Address>fdd1:0ebc:b724:d2f1:0000:8a7e:0360:0010</ipv6Address>
+                <domainList>corp.local</domainList>
+              </dns>
+            </network>
   /system/tlssettings:
     displayName: tlsSettings
     description: |
@@ -3814,11 +4075,25 @@ securitySchemes:
     description: |
       Working with Time Settings
       ------
+      You can either configure time or specify the NTP server to be used for
+      time synchronization.
     get:
       displayName: systemTimeRead
       description: |
         Retrieve time settings, like timezone or current date and time with
         NTP server, if configured.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <timeSettings>
+                  <ntpServer>
+                    <string>192.168.110.1</string>
+                  </ntpServer>
+                  <datetime>04/19/2017 06:53:57</datetime>
+                  <timezone>UTC</timezone>
+                </timeSettings>
     put:
       displayName: systemTimeUpdate
       description: |
@@ -3829,10 +4104,10 @@ securitySchemes:
           example: |
             <timeSettings>
               <ntpServer>
-                <string></string>
+                <string>192.168.110.1</string>
               </ntpServer>
-              <datetime></datetime>
-              <timezone></timezone>
+              <datetime>04/19/2017 06:53:57</datetime>
+              <timezone>UTC</timezone>
             </timeSettings>
           schema: systemTimeUpdate
     /ntp:
@@ -3851,6 +4126,15 @@ securitySchemes:
     get:
       displayName: systemLocaleRead
       description: Retrieve locale info.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <locale>
+                  <language>en</language>
+                  <country>US</country>
+                </locale>
     put:
       displayName: systemLocaleUpdate
       description: Configure locale.
@@ -3858,8 +4142,8 @@ securitySchemes:
         application/xml:
           example: |
             <locale>
-              <language></language>
-              <country></country>
+              <language>ja</language>
+              <country>JP</country>
             </locale>
           schema: systemLocaleUpdate
   /system/syslogserver:
@@ -3870,6 +4154,16 @@ securitySchemes:
     get:
       displayName: systemSyslogServerRead
       description: Retrieve syslog servers.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <syslogserver>
+                  <syslogServer>192.168.110.20</syslogServer>
+                  <port>514</port>
+                  <protocol>UDP</protocol>
+                </syslogserver>
     put:
       displayName: systemSyslogServerUpdate
       description: Configure syslog servers.
@@ -3877,9 +4171,9 @@ securitySchemes:
         application/xml:
           example: |
             <syslogserver>
-              <syslogServer></syslogServer>
-              <port></port>
-              <protocol></protocol>
+              <syslogServer>192.168.110.20</syslogServer>
+              <port>514</port>
+              <protocol>UDP</protocol>
             </syslogserver>
           schema: systemSyslogServerUpdate
     delete:
@@ -3903,6 +4197,88 @@ securitySchemes:
     get:
       displayName: componentsManagementRead
       description: Retrieve all appliance manager components.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <components>
+                  <component>
+                    <componentId>SSH</componentId>
+                    <name>SSH Service</name>
+                    <description>Secure Shell</description>
+                    <status>RUNNING</status>
+                    <enabled>true</enabled>
+                    <showTechSupportLogs>false</showTechSupportLogs>
+                    <usedBy/>
+                    <componentGroup>SYSTEM</componentGroup>
+                  </component>
+                  <component>
+                    <componentId>VPOSTGRES</componentId>
+                    <name>vPostgres</name>
+                    <description>vPostgres - Database service</description>
+                    <status>RUNNING</status>
+                    <enabled>true</enabled>
+                    <showTechSupportLogs>false</showTechSupportLogs>
+                    <usedBy>
+                      <string>NSX</string>
+                    </usedBy>
+                    <componentGroup>COMMON</componentGroup>
+                  </component>
+                  <component>
+                    <componentId>NSXREPLICATOR</componentId>
+                    <name>NSX Replicator</name>
+                    <description>NSX Replicator</description>
+                    <status>RUNNING</status>
+                    <enabled>true</enabled>
+                    <showTechSupportLogs>false</showTechSupportLogs>
+                    <uses>
+                      <string>NSX</string>
+                    </uses>
+                    <usedBy/>
+                    <componentGroup>NSXGRP</componentGroup>
+                    <versionInfo>
+                      <majorVersion>6</majorVersion>
+                      <minorVersion>2</minorVersion>
+                      <patchVersion>5</patchVersion>
+                      <buildNumber>4818383</buildNumber>
+                    </versionInfo>
+                  </component>
+                  <component>
+                    <componentId>RABBITMQ</componentId>
+                    <name>RabbitMQ</name>
+                    <description>RabbitMQ - Messaging service</description>
+                    <status>RUNNING</status>
+                    <enabled>true</enabled>
+                    <showTechSupportLogs>false</showTechSupportLogs>
+                    <usedBy>
+                      <string>NSX</string>
+                    </usedBy>
+                    <componentGroup>COMMON</componentGroup>
+                  </component>
+                  <component>
+                    <componentId>NSX</componentId>
+                    <name>NSX Manager</name>
+                    <description>NSX Manager</description>
+                    <status>RUNNING</status>
+                    <enabled>true</enabled>
+                    <showTechSupportLogs>true</showTechSupportLogs>
+                    <uses>
+                      <string>VPOSTGRES</string>
+                      <string>RABBITMQ</string>
+                    </uses>
+                    <usedBy>
+                      <string>NSXREPLICATOR</string>
+                    </usedBy>
+                    <componentGroup>NSXGRP</componentGroup>
+                    <versionInfo>
+                      <majorVersion>6</majorVersion>
+                      <minorVersion>2</minorVersion>
+                      <patchVersion>5</patchVersion>
+                      <buildNumber>4818372</buildNumber>
+                    </versionInfo>
+                  </component>
+                </components>
     /component/{componentID}:
       displayName: componentManagement
       description: |
@@ -3915,7 +4291,34 @@ securitySchemes:
           description: Specified component ID.
       get:
         displayName: componentManagementRead
-        description: Retrieve details for specified component.
+        description: Retrieve details for the specified component.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <component>
+                    <componentId>NSX</componentId>
+                    <name>NSX Manager</name>
+                    <description>NSX Manager</description>
+                    <status>RUNNING</status>
+                    <enabled>true</enabled>
+                    <showTechSupportLogs>true</showTechSupportLogs>
+                    <uses>
+                      <string>VPOSTGRES</string>
+                      <string>RABBITMQ</string>
+                    </uses>
+                    <usedBy>
+                      <string>NSXREPLICATOR</string>
+                    </usedBy>
+                    <componentGroup>NSXGRP</componentGroup>
+                    <versionInfo>
+                      <majorVersion>6</majorVersion>
+                      <minorVersion>2</minorVersion>
+                      <patchVersion>5</patchVersion>
+                      <buildNumber>4818372</buildNumber>
+                    </versionInfo>
+                  </component>
       /dependencies:
         displayName: componentDependencies
         description: |
@@ -3923,7 +4326,16 @@ securitySchemes:
           ----
         get:
           displayName: componentDependenciesRead
-          description: Retrieve dependency details for specified component.
+          description: Retrieve dependency details for the specified component.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <list>
+                      <string>VPOSTGRES</string>
+                      <string>RABBITMQ</string>
+                    </list>
       /dependents:
         displayName: componentDependents
         description: |
@@ -3932,6 +4344,14 @@ securitySchemes:
         get:
           displayName: componentDependentsRead
           description: Retrieve dependents for the specified component.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <list>
+                      <string>NSXREPLICATOR</string>
+                    </list>
       /status:
         displayName: componentStatus
         description: |
@@ -3939,7 +4359,16 @@ securitySchemes:
           ----
         get:
           displayName: componentStatusRead
-          description: Retrieve current status for specified component.
+          description: Retrieve current status for the specified component.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <result>
+                      <result class="status">RUNNING</result>
+                      <operationStatus>SUCCESS</operationStatus>
+                    </result>
       /toggleStatus/{command}:
         displayName: componentManagementToggle
         description: | 
@@ -3965,6 +4394,11 @@ securitySchemes:
     description: |
       NSX Manager Appliance Backup Settings
       -----
+      You can back up and restore your NSX Manager data, which can include
+      system configuration, events, and audit log tables. Configuration tables
+      are included in every backup. Backups are saved to a remote location that
+      must be accessible by the NSX Manager.
+      
       Parameters for the NSX Manager appliance backup:
       
       * **transferProtocol**: *FTP, SFTP*
@@ -3985,25 +4419,28 @@ securitySchemes:
           example: |
             <backupRestoreSettings>
               <ftpSettings>
-                <transferProtocol></transferProtocol>
-                <hostNameIPAddress></hostNameIPAddress>
-                <port></port>
-                <userName></userName>
-                <password></password>
-                <backupDirectory></backupDirectory>
-                <filenamePrefix></filenamePrefix>
-                <passiveMode></passiveMode>
-                <useEPRT></useEPRT>
-                <useEPSV></useEPSV>
+                <transferProtocol>SFTP</transferProtocol>
+                <hostNameIPAddress>192.168.110.30</hostNameIPAddress>
+                <port>22</port>
+                <userName>admin</userName>
+                <password>testing123</password>
+                <backupDirectory>/backups</backupDirectory>
+                <filenamePrefix>nsxmgr-01a</filenamePrefix>
+                <passPhrase>testing456</passPhrase>
+                <passiveMode>true</passiveMode>
+                <useEPRT>false</useEPRT>
+                <useEPSV>true</useEPSV>
               </ftpSettings>
               <backupFrequency>
-                <frequency></frequency>
-                <dayOfWeek></dayOfWeek>
-                <hourOfDay></hourOfDay>
-                <minuteOfHour></minuteOfHour>
+                <frequency>WEEKLY</frequency>
+                <dayOfWeek>SUNDAY</dayOfWeek>
+                <hourOfDay>2</hourOfDay>
+                <minuteOfHour>15</minuteOfHour>
               </backupFrequency>
               <excludeTables>
-                <excludeTable></excludeTable>
+                <excludeTable>AUDIT_LOGS</excludeTable>
+                <excludeTable>SYSTEM_EVENTS</excludeTable>
+                <excludeTable>FLOW_RECORDS</excludeTable>
               </excludeTables>
             </backupRestoreSettings>
           schema: applianceMgrBackupSettingsUpdate
@@ -4057,6 +4494,18 @@ securitySchemes:
       displayName: applianceMgrBackupsRead
       description: |
         Retrieve list of all backups available at configured backup location.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <list>
+                  <backupFileProperties>
+                    <fileName></fileName>
+                    <fileSize></fileSize>
+                    <creationTime></creationTime>
+                  </backupFileProperties>
+                </list>
   /backuprestore/restore:
     displayName: applianceMgrBackupRestore
     description: |

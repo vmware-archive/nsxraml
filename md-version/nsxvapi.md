@@ -1182,6 +1182,20 @@ Working with a Specific IP Set
 ## vCenterConfig
 Configuring NSX Manager with vCenter Server
 =========
+You can synchronize NSX Manager with a vCenter Server, which enables the
+Networking and Security tab in the vCenter Web Client to display your VMware
+Infrastructure inventory.
+
+**vCenter Config Parameters**
+
+Parameter | Comments
+ipAddress | FQDN or IP address of vCenter server.
+userName | Required.
+password | Required.
+certificateThumbprint | Required. Must be colon (:) delimited hexadecimal.
+assignRoleToUser | Optional. *true* or *false*.
+pluginDownloadServer | Optional.
+pluginDownloadPort | Optional.
 
 ### /2.0/services/vcconfig
 
@@ -1192,7 +1206,7 @@ Configuring NSX Manager with vCenter Server
 Connection Status for vCenter Server
 -----
 
-* **get** *(secured)*: Get default vCenter Server connection status
+* **get** *(secured)*: Get default vCenter Server connection status.
 
 ## universalSync
 Working with Universal Sync Configuration in Cross-vCenter NSX
@@ -1265,6 +1279,14 @@ Working With Universal Sync Status
 Working with the Appliance Manager
 ========
 
+With the appliance management tool, you can manage:
+* System configurations like network configuration, syslog, time settings,
+  and certificate management etc.
+* Components of appliance such as NSX Manager, Postgres, SSH component,
+  Rabbitmq service etc.
+* Overall support related features such as tech support logs, backup
+  restore, status, and summary reports of appliance health.
+
 ### /1.0/appliance-management/global/info
 Global Information for NSX Manager
 ----
@@ -1303,6 +1325,11 @@ NSX Manager Appliance Uptime Information
 
 * **get** *(secured)*: Retrieve NSX Manager uptime information.
 
+**Example response:**
+```
+25 days, 22 hours, 11 minutes
+```
+
 ### /1.0/appliance-management/system/meminfo
 NSX Manager Appliance Memory Information
 -----
@@ -1319,7 +1346,9 @@ NSX Manager Appliance Storage Information
 NSX Manager Appliance Network Settings
 ----
 
-* **get** *(secured)*: Retrieve network information i.e. host name, IP address, DNS settings
+* **get** *(secured)*: Retrieve network information for the NSX Manager appliance. i.e. host name, IP address, DNS settings
+
+* **put** *(secured)*: Update network information for the NSX Manager appliance.
 
 ### /1.0/appliance-management/system/tlssettings
 Working with TLS Settings
@@ -1354,6 +1383,8 @@ Working with DNS Configuration
 ### /1.0/appliance-management/system/timesettings
 Working with Time Settings
 ------
+You can either configure time or specify the NTP server to be used for
+time synchronization.
 
 * **get** *(secured)*: Retrieve time settings, like timezone or current date and time with
 NTP server, if configured.
@@ -1402,13 +1433,13 @@ VPOSTGRES | vPostgres - Database service
 Working with a Specific Component
 ----
 
-* **get** *(secured)*: Retrieve details for specified component.
+* **get** *(secured)*: Retrieve details for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/dependencies
 Working with Component Dependencies
 ----
 
-* **get** *(secured)*: Retrieve dependency details for specified component.
+* **get** *(secured)*: Retrieve dependency details for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/dependents
 Working with Component Dependents
@@ -1420,7 +1451,7 @@ Working with Component Dependents
 Working with Component Status
 ----
 
-* **get** *(secured)*: Retrieve current status for specified component.
+* **get** *(secured)*: Retrieve current status for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/toggleStatus/{command}
 Toggle Component Status
@@ -1437,6 +1468,11 @@ Working With the Appliance Management Web Application
 ### /1.0/appliance-management/backuprestore/backupsettings
 NSX Manager Appliance Backup Settings
 -----
+You can back up and restore your NSX Manager data, which can include
+system configuration, events, and audit log tables. Configuration tables
+are included in every backup. Backups are saved to a remote location that
+must be accessible by the NSX Manager.
+
 Parameters for the NSX Manager appliance backup:
 
 * **transferProtocol**: *FTP, SFTP*
