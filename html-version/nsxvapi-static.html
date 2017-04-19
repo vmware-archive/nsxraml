@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#100;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x64;&#x6f;&#99;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#107;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x64;&#x6f;&#99;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#107;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -260,7 +260,7 @@ restore, status, and summary reports of appliance health.</li>
     href="#POST/1.0/appliance-management/backuprestore/backup"
   ><h2>POST /1.0/appliance-management/backuprestore/backup</h2></a>
   <div class="content">
-    <p><p>Backup NSX data on-demand.</p>
+    <p><p>Start an on-demand NSX backup.</p>
 </p>
   </div>
 </div>
@@ -309,6 +309,10 @@ must be accessible by the NSX Manager.</p>
 <li><strong>minuteOfHour</strong>: [<em>0-60</em>]</li>
 <li><strong>excludeTables</strong>: <em>AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS</em><br>The tables specified in the <strong>excludeTables</strong> parameter are not backed up.</li>
 </ul>
+<p>You must set a <strong>passPhrase</strong> for the backups. The passphrase is used
+to create and read backup files. If you do not set a passphrase, backups
+will fail. If you forget the passphrase set on a backup file, you cannot
+restore that backup file.</p>
 </div>
 <div class="method get">
   <a
@@ -319,6 +323,38 @@ must be accessible by the NSX Manager.</p>
   <div class="content">
     <p><p>Retrieve backup settings.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ftpSettings</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span>SFTP<span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>192.168.110.30<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>22<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>testing123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>/backups<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">passPhrase</span>&gt;</span>testing456<span class="hljs-tag">&lt;/<span class="hljs-name">passPhrase</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">passiveMode</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">passiveMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">useEPRT</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">useEPRT</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">useEPSV</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">useEPSV</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ftpSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">backupFrequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>DAILY<span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hourOfDay</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">hourOfDay</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minuteOfHour</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">minuteOfHour</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">backupFrequency</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">excludeTables</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>AUDIT_LOGS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>SYSTEM_EVENTS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>FLOW_RECORDS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">excludeTables</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -328,7 +364,7 @@ must be accessible by the NSX Manager.</p>
     href="#PUT/1.0/appliance-management/backuprestore/backupsettings"
   ><h2>PUT /1.0/appliance-management/backuprestore/backupsettings</h2></a>
   <div class="content">
-    <p><p>Configure backup on the appliance manager.</p>
+    <p><p>Configure backups on the appliance manager.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -397,8 +433,6 @@ must be accessible by the NSX Manager.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">backupFrequency</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">excludeTables</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>AUDIT_LOGS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>SYSTEM_EVENTS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>FLOW_RECORDS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">excludeTables</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
 </code></pre>
@@ -486,6 +520,7 @@ must be accessible by the NSX Manager.</p>
   ><h2>POST /1.0/appliance-management/backuprestore/restore</h2></a>
   <div class="content">
     <p><p>Restore data from a backup file.</p>
+<p>Retrive a list of restore files using <code>GET /api/1.0/appliance-management/backuprestore/backups</code>.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -1037,35 +1072,6 @@ current logged in user.</p>
   <div class="content">
     <p><p>Acknowledge a notification. The notification is then deleted from
 the system.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="nsx-manager-upgrade-status">NSX Manager Upgrade Status</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">componentID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Component ID.</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/1.0/appliance-management/status/{componentID}"
-    href="#GET/1.0/appliance-management/status/{componentID}"
-  ><h2>GET /1.0/appliance-management/status/{componentID}</h2></a>
-  <div class="content">
-    <p><p>Query upgrade status.</p>
 </p>
   </div>
 </div>
@@ -1804,36 +1810,17 @@ location of the created tech support file. </p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="start-nsx-manager-upgrade">Start NSX Manager Upgrade</h2>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">componentID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Component ID</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/1.0/appliance-management/upgrade/start/{componentID}"
-    href="#GET/1.0/appliance-management/upgrade/start/{componentID}"
-  ><h2>GET /1.0/appliance-management/upgrade/start/{componentID}</h2></a>
-  <div class="content">
-    <p><p>Start upgrade process.</p>
-</p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="upgrading-nsx-manager">Upgrading NSX Manager</h2>
+  <div class="description"><h2 id="upgrading-nsx-manager-appliance">Upgrading NSX Manager Appliance</h2>
+<p>To upgrade NSX Manager, you must do the following:</p>
+<ul>
+<li>upload an upgrade bundle <code>POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}</code></li>
+<li>retrieve the upgrade information<br><code>GET /api/1.0/appliance-management/upgrade/information/{componentID}</code></li>
+<li>edit the <strong>preUpgradeQuestionsAnswers</strong> section of the upgrade
+information response, if needed</li>
+<li>start the upgrade, providing the edited <strong>preUpgradeQuestionsAnswers</strong>
+section as the request body
+<code>POST /api/1.0/appliance-management/upgrade/start/{componentID}</code></li>
+</ul>
 <p>If you are upgrading from vCloud Networking and Security to NSX, all
 grouping objects from vShield Manager 5.5 are carried over to NSX.
 Though new objects in NSX can be created only at a global scope, the
@@ -1852,6 +1839,170 @@ datacenter.</p>
 In all API calls for upgrading the NSX Manager, the <strong>componentId</strong>
 parameter can be <em>NSX</em> or <em>NSXAPIMGMT</em>.</p>
 </div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="prepare-for-nsx-manager-upgrade">Prepare for NSX Manager Upgrade</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">componentID</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/1.0/appliance-management/upgrade/information/{componentID}"
+    href="#GET/1.0/appliance-management/upgrade/information/{componentID}"
+  ><h2>GET /1.0/appliance-management/upgrade/information/{componentID}</h2></a>
+  <div class="content">
+    <p><p>Once you have uploaded an upgrade bundle, you must retrieve
+information about the upgrade. This request contains pre-upgrade
+validation warnings and error messages, along with pre-upgrade
+questions with default answers. Review the information and edit the
+answers in the <strong>preUpgradeQuestionsAnswers</strong> section if needed before
+providing the section as the request body to the <code>POST
+/api/1.0/appliance-management/upgrade/start/{componentID}</code> method.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">upgradeInformation</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">fromVersion</span>&gt;</span>6.2.5<span class="hljs-tag">&lt;/<span class="hljs-name">fromVersion</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">toVersion</span>&gt;</span>6.2.7.5343628<span class="hljs-tag">&lt;/<span class="hljs-name">toVersion</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">upgradeBundleDescription</span>&gt;</span>Upgrade to 6.2.7 5343628<span class="hljs-tag">&lt;/<span class="hljs-name">upgradeBundleDescription</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">preUpgradeQuestionsAnswers</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">questionId</span>&gt;</span>preUpgradeChecks1:Q1<span class="hljs-tag">&lt;/<span class="hljs-name">questionId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">question</span>&gt;</span>Do you want to enable SSH ?<span class="hljs-tag">&lt;/<span class="hljs-name">question</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">questionAnserType</span>&gt;</span>YESNO<span class="hljs-tag">&lt;/<span class="hljs-name">questionAnserType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">defaultSelection</span>&gt;</span>NO<span class="hljs-tag">&lt;/<span class="hljs-name">defaultSelection</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">questionId</span>&gt;</span>preUpgradeChecks1:Q2<span class="hljs-tag">&lt;/<span class="hljs-name">questionId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">question</span>&gt;</span>This product participates in VMware&amp;apos;s Customer Experience Improvement Program (&amp;quot;CEIP&amp;quot;). The CEIP provides VMware with information that enables VMware to improve its products and services, to fix problems, and to advise you on
+        how best to deploy and use our products. As part of the CEIP, VMware collects technical information about your organization&amp;apos;s use of VMware products and services on a regular basis in association with your organization&amp;apos;s VMware license
+        key(s). This information does not personally identify any individual. For additional information regarding the CEIP, please see the Trust and Assurance Center at http://www.vmware.com/trustvmware/ceip.html. You can select your participation
+        preferences below. Do you want to join the VMware Customer Experience Improvement Program ?<span class="hljs-tag">&lt;/<span class="hljs-name">question</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">questionAnserType</span>&gt;</span>YESNO<span class="hljs-tag">&lt;/<span class="hljs-name">questionAnserType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">defaultSelection</span>&gt;</span>YES<span class="hljs-tag">&lt;/<span class="hljs-name">defaultSelection</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">preUpgradeQuestionsAnswers</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">upgradeStepsDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">step</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stepId</span>&gt;</span>ValidationStep<span class="hljs-tag">&lt;/<span class="hljs-name">stepId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stepLabel</span>&gt;</span>Upgrade Bundle Validation<span class="hljs-tag">&lt;/<span class="hljs-name">stepLabel</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Upgrade bundle will be validated before the actual upgrade process.<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">step</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">step</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stepId</span>&gt;</span>UpgradeStep<span class="hljs-tag">&lt;/<span class="hljs-name">stepId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">stepLabel</span>&gt;</span>Upgrade NSX manager<span class="hljs-tag">&lt;/<span class="hljs-name">stepLabel</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Upgrade process for NSX Manager will begin.<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">step</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">upgradeStepsDto</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">upgradeInformation</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="start-the-nsx-manager-upgrade">Start the NSX Manager Upgrade</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">componentID</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Component ID</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/appliance-management/upgrade/start/{componentID}"
+    href="#POST/1.0/appliance-management/upgrade/start/{componentID}"
+  ><h2>POST /1.0/appliance-management/upgrade/start/{componentID}</h2></a>
+  <div class="content">
+    <p><p>Start upgrade process.</p>
+</p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">preUpgradeQuestionsAnswers</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">questionId</span>&gt;</span>preUpgradeChecks1:Q1<span class="hljs-tag">&lt;/<span class="hljs-name">questionId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">question</span>&gt;</span>Do you want to enable SSH ?<span class="hljs-tag">&lt;/<span class="hljs-name">question</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">questionAnserType</span>&gt;</span>YESNO<span class="hljs-tag">&lt;/<span class="hljs-name">questionAnserType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">answer</span>&gt;</span>YES<span class="hljs-tag">&lt;/<span class="hljs-name">answer</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">questionId</span>&gt;</span>preUpgradeChecks1:Q2<span class="hljs-tag">&lt;/<span class="hljs-name">questionId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">question</span>&gt;</span>This product participates in VMware&amp;apos;s Customer Experience Improvement Program (&amp;quot;CEIP&amp;quot;). The CEIP provides VMware with information that enables VMware to improve its products and services, to fix problems, and to advise you on
+      how best to deploy and use our products. As part of the CEIP, VMware collects technical information about your organization&amp;apos;s use of VMware products and services on a regular basis in association with your organization&amp;apos;s VMware license
+      key(s). This information does not personally identify any individual. For additional information regarding the CEIP, please see the Trust and Assurance Center at http://www.vmware.com/trustvmware/ceip.html. You can select your participation
+      preferences below. Do you want to join the VMware Customer Experience Improvement Program ?<span class="hljs-tag">&lt;/<span class="hljs-name">question</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">questionAnserType</span>&gt;</span>YESNO<span class="hljs-tag">&lt;/<span class="hljs-name">questionAnserType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">answer</span>&gt;</span>YES<span class="hljs-tag">&lt;/<span class="hljs-name">answer</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">preUpgradeQuestionAnswer</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">preUpgradeQuestionsAnswers</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="nsx-manager-upgrade-status">NSX Manager Upgrade Status</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">componentID</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Component ID.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/1.0/appliance-management/upgrade/status/{componentID}"
+    href="#GET/1.0/appliance-management/upgrade/status/{componentID}"
+  ><h2>GET /1.0/appliance-management/upgrade/status/{componentID}</h2></a>
+  <div class="content">
+    <p><p>Query upgrade status.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="upload-an-nsx-manager-upgrade-bundle">Upload an NSX Manager Upgrade Bundle</h2>
+<p>You must upload the upgrade bundle using the form-data content-type.
+Consult the documentation for your REST client for instuctions. </p>
+<p>Do not set other Content-type headers in your request, for
+example, <em>Content-type: application/xml</em>.</p>
+<p>When you upload a file as form-data, you must provide a <strong>key</strong>
+and a <strong>value</strong> for the file. The <strong>key</strong> is <em>file</em>, and the <strong>value</strong>
+is the location of the upgrade bundle file.</p>
+<p><strong>Example using curl</strong></p>
+<pre><code class="code-block hljs lang-stylus">/usr/bin/curl -v -k -<span class="hljs-selector-tag">i</span> -F file=@/tmp/VMware-NSX-Manager-upgrade-bundle-<span class="hljs-number">6.2</span>.<span class="hljs-number">7</span>-<span class="hljs-number">5343628</span><span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span> -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span> 
+https:<span class="hljs-comment">//192.168.110.42/api/1.0/appliance-management/upgrade/uploadbundle/NSX</span></code></pre></div>
   <div class="params">
     <h4>URI Parameters</h4>
       <dl>
@@ -1874,19 +2025,6 @@ parameter can be <em>NSX</em> or <em>NSXAPIMGMT</em>.</p>
   ><h2>POST /1.0/appliance-management/upgrade/uploadbundle/{componentID}</h2></a>
   <div class="content">
     <p><p>Upload upgrade bundle.</p>
-</p>
-  </div>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/1.0/appliance-management/upgrade/uploadbundle/{componentID}"
-    href="#GET/1.0/appliance-management/upgrade/uploadbundle/{componentID}"
-  ><h2>GET /1.0/appliance-management/upgrade/uploadbundle/{componentID}</h2></a>
-  <div class="content">
-    <p><p>After the upgrade bundle is uploaded, you can query upgrade details
-such as pre-upgrade validation warning or error messages along with
-pre-upgrade questions.</p>
 </p>
   </div>
 </div>

@@ -1483,8 +1483,13 @@ Parameters for the NSX Manager appliance backup:
 * **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
 The tables specified in the **excludeTables** parameter are not backed up.
 
+You must set a **passPhrase** for the backups. The passphrase is used
+to create and read backup files. If you do not set a passphrase, backups
+will fail. If you forget the passphrase set on a backup file, you cannot
+restore that backup file.
+
 * **get** *(secured)*: Retrieve backup settings.
-* **put** *(secured)*: Configure backup on the appliance manager.
+* **put** *(secured)*: Configure backups on the appliance manager.
 * **delete** *(secured)*: Delete appliance manager backup configuration.
 
 ### /1.0/appliance-management/backuprestore/backupsettings/ftpsettings
@@ -1513,7 +1518,7 @@ See *NSX Manager Appliance Backup Settings* for details.
 NSX Manager Appliance On-Demand Backup
 ----
 
-* **post** *(secured)*: Backup NSX data on-demand.
+* **post** *(secured)*: Start an on-demand NSX backup.
 
 ### /1.0/appliance-management/backuprestore/backups
 Working with NSX Manager Appliance Backup Files
@@ -1526,6 +1531,8 @@ Restoring Data from an NSX Manager Appliance Backup File
 ------
 
 * **post** *(secured)*: Restore data from a backup file.
+
+Retrive a list of restore files using `GET /api/1.0/appliance-management/backuprestore/backups`.
 
 ### /1.0/appliance-management/techsupportlogs/{componentID}
 Working with Tech Support Logs by Component
@@ -1554,9 +1561,20 @@ Acknowledge Notifications
 * **post** *(secured)*: Acknowledge a notification. The notification is then deleted from
 the system.
 
-### /1.0/appliance-management/upgrade/uploadbundle/{componentID}
-Upgrading NSX Manager
+### /1.0/appliance-management/upgrade
+Upgrading NSX Manager Appliance
 ----
+  
+To upgrade NSX Manager, you must do the following:
+  * upload an upgrade bundle `POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}`
+  * retrieve the upgrade information   
+    `GET /api/1.0/appliance-management/upgrade/information/{componentID}`
+  * edit the **preUpgradeQuestionsAnswers** section of the upgrade
+    information response, if needed
+  * start the upgrade, providing the edited **preUpgradeQuestionsAnswers**
+    section as the request body
+    `POST /api/1.0/appliance-management/upgrade/start/{componentID}`
+  
 If you are upgrading from vCloud Networking and Security to NSX, all
 grouping objects from vShield Manager 5.5 are carried over to NSX.
 Though new objects in NSX can be created only at a global scope, the
@@ -1576,18 +1594,46 @@ All users and associated roles are carried over to NSX as well.
 In all API calls for upgrading the NSX Manager, the **componentId**
 parameter can be *NSX* or *NSXAPIMGMT*.
 
+### /1.0/appliance-management/upgrade/uploadbundle/{componentID}
+Upload an NSX Manager Upgrade Bundle
+----
+You must upload the upgrade bundle using the form-data content-type.
+Consult the documentation for your REST client for instuctions. 
+
+Do not set other Content-type headers in your request, for
+example, *Content-type: application/xml*.
+
+When you upload a file as form-data, you must provide a **key**
+and a **value** for the file. The **key** is *file*, and the **value**
+is the location of the upgrade bundle file.
+
+**Example using curl**
+```
+/usr/bin/curl -v -k -i -F file=@/tmp/VMware-NSX-Manager-upgrade-bundle-6.2.7-5343628.tar.gz -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+https://192.168.110.42/api/1.0/appliance-management/upgrade/uploadbundle/NSX
+```
+
 * **post** *(secured)*: Upload upgrade bundle.
-* **get** *(secured)*: After the upgrade bundle is uploaded, you can query upgrade details
-such as pre-upgrade validation warning or error messages along with
-pre-upgrade questions.
+
+### /1.0/appliance-management/upgrade/information/{componentID}
+Prepare for NSX Manager Upgrade
+---
+
+* **get** *(secured)*: Once you have uploaded an upgrade bundle, you must retrieve
+information about the upgrade. This request contains pre-upgrade
+validation warnings and error messages, along with pre-upgrade
+questions with default answers. Review the information and edit the
+answers in the **preUpgradeQuestionsAnswers** section if needed before
+providing the section as the request body to the `POST
+/api/1.0/appliance-management/upgrade/start/{componentID}` method.
 
 ### /1.0/appliance-management/upgrade/start/{componentID}
-Start NSX Manager Upgrade
+Start the NSX Manager Upgrade
 ----
 
-* **get** *(secured)*: Start upgrade process.
+* **post** *(secured)*: Start upgrade process.
 
-### /1.0/appliance-management/status/{componentID}
+### /1.0/appliance-management/upgrade/status/{componentID}
 NSX Manager Upgrade Status
 ----
 

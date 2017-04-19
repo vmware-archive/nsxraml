@@ -4408,12 +4408,47 @@ securitySchemes:
       * **minuteOfHour**: [*0-60*]
       * **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
       The tables specified in the **excludeTables** parameter are not backed up.
+      
+      You must set a **passPhrase** for the backups. The passphrase is used
+      to create and read backup files. If you do not set a passphrase, backups
+      will fail. If you forget the passphrase set on a backup file, you cannot
+      restore that backup file.
     get:
       displayName: applianceMgrBackupSettingsRead
       description: Retrieve backup settings.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <backupRestoreSettings>
+                  <ftpSettings>
+                    <transferProtocol>SFTP</transferProtocol>
+                    <hostNameIPAddress>192.168.110.30</hostNameIPAddress>
+                    <port>22</port>
+                    <userName>admin</userName>
+                    <password>testing123</password>
+                    <backupDirectory>/backups</backupDirectory>
+                    <filenamePrefix>nsxmgr-01a</filenamePrefix>
+                    <passPhrase>testing456</passPhrase>
+                    <passiveMode>true</passiveMode>
+                    <useEPRT>false</useEPRT>
+                    <useEPSV>true</useEPSV>
+                  </ftpSettings>
+                  <backupFrequency>
+                    <frequency>DAILY</frequency>
+                    <hourOfDay>2</hourOfDay>
+                    <minuteOfHour>15</minuteOfHour>
+                  </backupFrequency>
+                  <excludeTables>
+                    <excludeTable>AUDIT_LOGS</excludeTable>
+                    <excludeTable>SYSTEM_EVENTS</excludeTable>
+                    <excludeTable>FLOW_RECORDS</excludeTable>
+                  </excludeTables>
+                </backupRestoreSettings>
     put:
       displayName: applianceMgrBackupSettingsUpdate
-      description: Configure backup on the appliance manager.
+      description: Configure backups on the appliance manager.
       body:
         application/xml:
           example: |
@@ -4439,8 +4474,6 @@ securitySchemes:
               </backupFrequency>
               <excludeTables>
                 <excludeTable>AUDIT_LOGS</excludeTable>
-                <excludeTable>SYSTEM_EVENTS</excludeTable>
-                <excludeTable>FLOW_RECORDS</excludeTable>
               </excludeTables>
             </backupRestoreSettings>
           schema: applianceMgrBackupSettingsUpdate
@@ -4484,7 +4517,7 @@ securitySchemes:
       ----
     post:
       displayName: applianceMgrBackupCreate
-      description: Backup NSX data on-demand.
+      description: Start an on-demand NSX backup.
   /backuprestore/backups:
     displayName: applianceMgrBackups
     description: |
@@ -4513,7 +4546,10 @@ securitySchemes:
       ------
     post:
       displayName: applianceMgrBackupRestoreExecute
-      description: Restore data from a backup file.
+      description: | 
+        Restore data from a backup file.
+        
+        Retrive a list of restore files using `GET /api/1.0/appliance-management/backuprestore/backups`.
       queryParameters:
         restoreFile:
           required: true
@@ -4575,11 +4611,22 @@ securitySchemes:
         description: |
           Acknowledge a notification. The notification is then deleted from
           the system.
-  /upgrade/uploadbundle/{componentID}:
-    displayName: upgrade
+  /upgrade:
+    displayName: nsxManagerUpgrade
     description: |
-      Upgrading NSX Manager
+      Upgrading NSX Manager Appliance
       ----
+        
+      To upgrade NSX Manager, you must do the following:
+        * upload an upgrade bundle `POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}`
+        * retrieve the upgrade information   
+          `GET /api/1.0/appliance-management/upgrade/information/{componentID}`
+        * edit the **preUpgradeQuestionsAnswers** section of the upgrade
+          information response, if needed
+        * start the upgrade, providing the edited **preUpgradeQuestionsAnswers**
+          section as the request body
+          `POST /api/1.0/appliance-management/upgrade/start/{componentID}`
+        
       If you are upgrading from vCloud Networking and Security to NSX, all
       grouping objects from vShield Manager 5.5 are carried over to NSX.
       Though new objects in NSX can be created only at a global scope, the
@@ -4598,46 +4645,135 @@ securitySchemes:
       All users and associated roles are carried over to NSX as well.
       In all API calls for upgrading the NSX Manager, the **componentId**
       parameter can be *NSX* or *NSXAPIMGMT*.
-    uriParameters:
-      componentID:
-        required: true
-        displayName: componentID
-        description: Component ID.
-    post:
-      displayName: upgradeBundleUpload
-      description: Upload upgrade bundle.
-    get:
-      displayName: upgradeBundleDetails
+
+    /uploadbundle/{componentID}:
+      displayName: upgrade
       description: |
-        After the upgrade bundle is uploaded, you can query upgrade details
-        such as pre-upgrade validation warning or error messages along with
-        pre-upgrade questions.
-  /upgrade/start/{componentID}:
-    displayName: upgradeStart
-    description: |
-      Start NSX Manager Upgrade
-      ----
-    uriParameters:
-      componentID:
-        required: true
-        displayName: componentID
-        description: Component ID
-    get:
+        Upload an NSX Manager Upgrade Bundle
+        ----
+        You must upload the upgrade bundle using the form-data content-type.
+        Consult the documentation for your REST client for instuctions. 
+        
+        Do not set other Content-type headers in your request, for
+        example, *Content-type: application/xml*.
+        
+        When you upload a file as form-data, you must provide a **key**
+        and a **value** for the file. The **key** is *file*, and the **value**
+        is the location of the upgrade bundle file.
+        
+        **Example using curl**
+        ```
+        /usr/bin/curl -v -k -i -F file=@/tmp/VMware-NSX-Manager-upgrade-bundle-6.2.7-5343628.tar.gz -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+        https://192.168.110.42/api/1.0/appliance-management/upgrade/uploadbundle/NSX
+        ```
+      uriParameters:
+        componentID:
+          required: true
+          displayName: componentID
+          description: Component ID.
+      post:
+        displayName: upgradeBundleUpload
+        description: Upload upgrade bundle.
+    /information/{componentID}:
+      displayName: upgradeBundleInformation
+      description: |
+        Prepare for NSX Manager Upgrade
+        ---
+      get:
+        displayName: upgradeBundleDetails
+        description: |
+          Once you have uploaded an upgrade bundle, you must retrieve
+          information about the upgrade. This request contains pre-upgrade
+          validation warnings and error messages, along with pre-upgrade
+          questions with default answers. Review the information and edit the
+          answers in the **preUpgradeQuestionsAnswers** section if needed before
+          providing the section as the request body to the `POST
+          /api/1.0/appliance-management/upgrade/start/{componentID}` method.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <upgradeInformation>
+                    <fromVersion>6.2.5</fromVersion>
+                    <toVersion>6.2.7.5343628</toVersion>
+                    <upgradeBundleDescription>Upgrade to 6.2.7 5343628</upgradeBundleDescription>
+                    <preUpgradeQuestionsAnswers>
+                      <preUpgradeQuestionAnswer>
+                        <questionId>preUpgradeChecks1:Q1</questionId>
+                        <question>Do you want to enable SSH ?</question>
+                        <questionAnserType>YESNO</questionAnserType>
+                        <defaultSelection>NO</defaultSelection>
+                      </preUpgradeQuestionAnswer>
+                      <preUpgradeQuestionAnswer>
+                        <questionId>preUpgradeChecks1:Q2</questionId>
+                        <question>This product participates in VMware&apos;s Customer Experience Improvement Program (&quot;CEIP&quot;). The CEIP provides VMware with information that enables VMware to improve its products and services, to fix problems, and to advise you on
+                          how best to deploy and use our products. As part of the CEIP, VMware collects technical information about your organization&apos;s use of VMware products and services on a regular basis in association with your organization&apos;s VMware license
+                          key(s). This information does not personally identify any individual. For additional information regarding the CEIP, please see the Trust and Assurance Center at http://www.vmware.com/trustvmware/ceip.html. You can select your participation
+                          preferences below. Do you want to join the VMware Customer Experience Improvement Program ?</question>
+                        <questionAnserType>YESNO</questionAnserType>
+                        <defaultSelection>YES</defaultSelection>
+                      </preUpgradeQuestionAnswer>
+                    </preUpgradeQuestionsAnswers>
+                    <upgradeStepsDto>
+                      <step>
+                        <stepId>ValidationStep</stepId>
+                        <stepLabel>Upgrade Bundle Validation</stepLabel>
+                        <description>Upgrade bundle will be validated before the actual upgrade process.</description>
+                      </step>
+                      <step>
+                        <stepId>UpgradeStep</stepId>
+                        <stepLabel>Upgrade NSX manager</stepLabel>
+                        <description>Upgrade process for NSX Manager will begin.</description>
+                      </step>
+                    </upgradeStepsDto>
+                  </upgradeInformation>
+    /start/{componentID}:
       displayName: upgradeStart
-      description: Start upgrade process.
-  /status/{componentID}:
-    displayName: upgradeStatus
-    description: |
-      NSX Manager Upgrade Status
-      ----
-    uriParameters:
-      componentID:
-        required: true
-        displayName: componentID
-        description: Component ID.
-    get:
+      description: |
+        Start the NSX Manager Upgrade
+        ----
+      uriParameters:
+        componentID:
+          required: true
+          displayName: componentID
+          description: Component ID
+      post:
+        displayName: upgradeStart
+        description: Start upgrade process.
+        body:
+          application/xml:
+            example: |
+              <preUpgradeQuestionsAnswers>
+                <preUpgradeQuestionAnswer>
+                  <questionId>preUpgradeChecks1:Q1</questionId>
+                  <question>Do you want to enable SSH ?</question>
+                  <questionAnserType>YESNO</questionAnserType>
+                  <answer>YES</answer>
+                </preUpgradeQuestionAnswer>
+                <preUpgradeQuestionAnswer>
+                  <questionId>preUpgradeChecks1:Q2</questionId>
+                  <question>This product participates in VMware&apos;s Customer Experience Improvement Program (&quot;CEIP&quot;). The CEIP provides VMware with information that enables VMware to improve its products and services, to fix problems, and to advise you on
+                    how best to deploy and use our products. As part of the CEIP, VMware collects technical information about your organization&apos;s use of VMware products and services on a regular basis in association with your organization&apos;s VMware license
+                    key(s). This information does not personally identify any individual. For additional information regarding the CEIP, please see the Trust and Assurance Center at http://www.vmware.com/trustvmware/ceip.html. You can select your participation
+                    preferences below. Do you want to join the VMware Customer Experience Improvement Program ?</question>
+                  <questionAnserType>YESNO</questionAnserType>
+                  <answer>YES</answer>
+                </preUpgradeQuestionAnswer>
+              </preUpgradeQuestionsAnswers>
+    /status/{componentID}:
       displayName: upgradeStatus
-      description: Query upgrade status.
+      description: |
+        NSX Manager Upgrade Status
+        ----
+      uriParameters:
+        componentID:
+          required: true
+          displayName: componentID
+          description: Component ID.
+      get:
+        displayName: upgradeStatus
+        description: Query upgrade status.
   /certificatemanager:
     displayName: certificateManager
     description: |
