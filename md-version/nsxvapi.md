@@ -1350,6 +1350,13 @@ NSX Manager Appliance Network Settings
 
 * **put** *(secured)*: Update network information for the NSX Manager appliance.
 
+### /1.0/appliance-management/system/network/dns
+Working with DNS Configuration
+-----
+
+* **put** *(secured)*: Configure DNS.
+* **delete** *(secured)*: Delete DNS server configuration.
+
 ### /1.0/appliance-management/system/tlssettings
 Working with TLS Settings
 ----
@@ -1372,13 +1379,6 @@ for both server and client.
 Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
-
-### /1.0/appliance-management/system/tlssettings/dns
-Working with DNS Configuration
------
-
-* **put** *(secured)*: Configure DNS.
-* **delete** *(secured)*: Delete DNS server configuration.
 
 ### /1.0/appliance-management/system/timesettings
 Working with Time Settings
