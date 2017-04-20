@@ -10,7 +10,7 @@ baseUriParameters:
   nsxmanager:
     displayName: nsxManager
     description: Hostname or IP address of the NSX Manager.
-version: 6.2.4
+version: 6.2
 securedBy: [basic]
 schemas:
   - advancedConfigUpdate: !include schemas/advancedConfigUpdate.xsd
@@ -2746,12 +2746,12 @@ securitySchemes:
         application/xml:
           example: |
             <securityTag>
-              <objectTypeName></objectTypeName>
+              <objectTypeName>SecurityTag</objectTypeName>
               <type>
-                <typeName></typeName>
+                <typeName>SecurityTag</typeName>
               </type>
-              <name></name>
-              <description></description>
+              <name>TAG_NAME</name>
+              <description>description of the tag</description>
               <extendedAttributes></extendedAttributes>
             </securityTag>
           schema: securityTagCreate
@@ -4378,6 +4378,7 @@ securitySchemes:
           command:
             displayName: command
             description: Use **command** parameter *start* or *stop*.
+            required: true
         post:
           displayName: componentManagementToggleAction
           description: Start or stop a component.
@@ -8012,10 +8013,9 @@ securitySchemes:
     delete:
       displayName: dfwConfigDelete
       description: |
-        Restore default configuration.
-        
-        Restores a configuration with one defaultLayer3 section with default
-        allow rule and one defaultLayer2Section with default allow rule.
+        Restores default configuration, which means one defaultLayer3 section
+        with three default allow rules and one defaultLayer2Section with one
+        default allow rule.
     /layer3sections:
       displayName: dfwL3Section
       description: !include documentation/reuse/firewall/dfwL3Section
@@ -11719,7 +11719,7 @@ securitySchemes:
         
         You can configure NAT rules to provide access to services running on
         privately addressed virtual machines. There are two types of NAT rules
-        that can be configured: SNAT (Source NAT) and DNAT (Destination NAT). 
+        that can be configured: SNAT (Source NAT) and DNAT (Destination NAT).
         
         For the data path to work, you need to add firewall rules to allow the
         required traffic for IP addresses and port per the NAT rules.
@@ -12276,7 +12276,7 @@ securitySchemes:
           their tables.
         get:
           displayName: routingBGPRead
-          description: | 
+          description: |
             Retrieve BGP configuration.
             
             **Method history:**

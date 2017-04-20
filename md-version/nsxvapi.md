@@ -1,4 +1,4 @@
-# VMware NSX for vSphere API documentation version 6.2.4
+# VMware NSX for vSphere API documentation version 6.2
 https://{nsxmanager}/api
 
 ### Introduction
@@ -3046,10 +3046,9 @@ When updating the firewall configuration:
   exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
   originating from all IPs other than 1.1.1.1.
 
-* **delete** *(secured)*: Restore default configuration.
-
-Restores a configuration with one defaultLayer3 section with default
-allow rule and one defaultLayer2Section with default allow rule.
+* **delete** *(secured)*: Restores default configuration, which means one defaultLayer3 section
+with three default allow rules and one defaultLayer2Section with one
+default allow rule.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections
 Working With Layer 3 Sections in Distributed Firewall
@@ -4301,7 +4300,7 @@ network.
 
 You can configure NAT rules to provide access to services running on
 privately addressed virtual machines. There are two types of NAT rules
-that can be configured: SNAT (Source NAT) and DNAT (Destination NAT). 
+that can be configured: SNAT (Source NAT) and DNAT (Destination NAT).
 
 For the data path to work, you need to add firewall rules to allow the
 required traffic for IP addresses and port per the NAT rules.
