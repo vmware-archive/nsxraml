@@ -4147,6 +4147,21 @@ Working with NSX Edge Remote Access
 
 * **post** *(secured)*: Change CLI remote access
 
+### /4.0/edges/{edgeId}/systemcontrol/config
+Working with NSX Edge System Control Configuration
+-----
+
+* **put** *(secured)*: Update the NSX Edge system control (sysctl) configuration.
+
+* **get** *(secured)*: Retrieve all NSX Edge system control configuration.
+
+If no system control parameters are configured, the response is empty.
+
+* **delete** *(secured)*: Delete all NSX Edge system control configuration.
+
+Deleting the system control configuration requires a reboot of the
+NSX Edge appliance.
+
 ### /4.0/edges/{edgeId}/firewall/config
 Working With NSX Edge Firewall Configuration
 ----

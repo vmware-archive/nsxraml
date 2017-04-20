@@ -11345,6 +11345,41 @@ securitySchemes:
             type: boolean
             required: true
             displayName: enable
+    /systemcontrol/config:
+      displayName: nsxEdgeSystemControl
+      description: |
+        Working with NSX Edge System Control Configuration
+        -----
+      put:
+        displayName: nsxEdgeSystemControlUpdate
+        description: |
+          Update the NSX Edge system control (sysctl) configuration.
+        body:
+          application/xml:
+            example: |
+              <systemControl>
+                <property></property>
+              </systemControl>
+      get:
+        displayName: nsxEdgeSystemControlRead
+        description: |
+          Retrieve all NSX Edge system control configuration.
+
+          If no system control parameters are configured, the response is empty.
+      delete:
+        displayName: nsxEdgeSystemControlDelete
+        description: |
+          Delete all NSX Edge system control configuration.
+
+          Deleting the system control configuration requires a reboot of the
+          NSX Edge appliance.
+        queryParameters:
+          rebootNow:
+            displayName: rebootNow
+            description: |
+              You must specify the **rebootNow** query parameter to delete the
+              system control configuration. The NSX Edge appliace is rebooted.
+            required: true
     /firewall/config:
       displayName: nsxEdgeFirewallConfig
       description: |
