@@ -11192,26 +11192,119 @@ securitySchemes:
         ----
       get:
         displayName: statusRead
-        description: Retrieve the status of the specified Edge.
+        description: |
+          Retrieve the status of the specified Edge.
+
+          The **edgeStatus** has the following possible states:
+          * *GREEN*: Health checks are successful, status is good.
+          * *YELLOW*: Intermittent health check failure. If health check fails
+            for five consecutive times for all appliances, status will turn
+            *RED*.
+          * *GREY*: unknown status.
+          * *RED*: None of the appliances for this NSX Edge are in a serving state.
         queryParameters:
           getlatest:
             type: boolean
             displayName: getlatest
             description: |
-              true = fetch the status live from NSX Edge, false = fetch the
-              latest available status from database.
+              If *true*: retrieve the status live from NSX Edge.  
+              If *false*: retrieve the latest available status from database.
+            required: false
           detailed:
             type: boolean
             displayName: detailed
             description: |
-              true = fetch detailed status per feature, false = aggregated
-              summary of status per feature.
+              If *true*: retrieve detailed status per feature.   
+              If *false*: retrieve aggregated summary of status per feature.
+            required: false
           preRulesStatus:
             type: boolean
             displayName: preRulesStatus
             description: |
-              true = fetch detailed output for pre rules in addition to the
-              regular output.
+              If *true*: retreive detailed output for pre rules in addition to
+              the regular output.
+            required: false
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <edgeStatus>
+                    <timestamp>1343739873000</timestamp>
+                    <systemStatus>good</systemStatus>
+                    <activeVseHaIndex>0</activeVseHaIndex>
+                    <edgeStatus>GREEN</edgeStatus>
+                    <publishStatus>APPLIED</publishStatus> 
+                    <version>8</version>
+                    <edgeVmStatus>
+                      <edgeVmStatus>
+                        <edgeVMStatus>GREEN</edgeVMStatus>
+                        <haState>active</haState>
+                        <index>0</index>
+                        <id>vm-358</id>
+                        <name>test2-0</name>
+                      </edgeVmStatus>
+                      <edgeVmStatus>
+                        <edgeVMStatus>GREEN</edgeVMStatus>
+                        <haState>active</haState>
+                        <index>1</index>
+                        <id>vm-362</id>
+                        <name>test2-1</name>
+                      </edgeVmStatus>
+                    </edgeVmStatus>
+                    <featureStatuses>
+                      <featureStatus>
+                        <service>loadBalancer</service>
+                        <configured>false</configured>
+                        <serverStatus>down</serverStatus>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>dhcp</service>
+                        <configured>true</configured>
+                        <publishStatus>Applied</publishStatus>
+                        <serverStatus>up</serverStatus>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>sslvpn</service>
+                        <configured>false</configured>
+                        <serverStatus>down</serverStatus>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>syslog</service>
+                        <configured>false</configured>
+                        <serverStatus>up</serverStatus>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>nat</service>
+                        <configured>false</configured>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>dns</service>
+                        <configured>false</configured>
+                        <serverStatus>down</serverStatus>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>ipsec</service>
+                        <configured>false</configured>
+                        <serverStatus>down</serverStatus>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>firewall</service>
+                        <configured>true</configured>
+                        <publishStatus>Applied</publishStatus>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>staticRouting</service>
+                        <configured>false</configured>
+                      </featureStatus>
+                      <featureStatus>
+                        <service>highAvailability</service>
+                        <configured>true</configured>
+                        <publishStatus>Applied</publishStatus>
+                        <serverStatus>up</serverStatus>
+                      </featureStatus>
+                    </featureStatuses>
+                  </edgeStatus>
     /techsupportlogs:
       displayName: techSupportLogs
       description: |

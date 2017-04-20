@@ -4121,6 +4121,14 @@ Working With NSX Edge Status
 
 * **get** *(secured)*: Retrieve the status of the specified Edge.
 
+The **edgeStatus** has the following possible states:
+* *GREEN*: Health checks are successful, status is good.
+* *YELLOW*: Intermittent health check failure. If health check fails
+  for five consecutive times for all appliances, status will turn
+  *RED*.
+* *GREY*: unknown status.
+* *RED*: None of the appliances for this NSX Edge are in a serving state.
+
 ### /4.0/edges/{edgeId}/techsupportlogs
 Working with NSX Edge Tech Support Logs 
 ----
