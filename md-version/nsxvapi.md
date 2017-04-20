@@ -650,7 +650,6 @@ Release | Modification
 ## arpMAC
 Working with IP Discovery and MAC Learning for Logical Switches
 ==============
-
 You can enable IP discovery (ARP suppression) and MAC learning for logical
 switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
 pair learning table on each vNic.
@@ -1367,6 +1366,20 @@ Working with a Specific IP Set
 ## vCenterConfig
 Configuring NSX Manager with vCenter Server
 =========
+You can synchronize NSX Manager with a vCenter Server, which enables the
+Networking and Security tab in the vCenter Web Client to display your VMware
+Infrastructure inventory.
+
+**vCenter Config Parameters**
+
+Parameter | Comments
+ipAddress | FQDN or IP address of vCenter server.
+userName | Required.
+password | Required.
+certificateThumbprint | Required. Must be colon (:) delimited hexadecimal.
+assignRoleToUser | Optional. *true* or *false*.
+pluginDownloadServer | Optional.
+pluginDownloadPort | Optional.
 
 ### /2.0/services/vcconfig
 
@@ -1377,7 +1390,7 @@ Configuring NSX Manager with vCenter Server
 Connection Status for vCenter Server
 -----
 
-* **get** *(secured)*: Get default vCenter Server connection status
+* **get** *(secured)*: Get default vCenter Server connection status.
 
 ## universalSync
 Working with Universal Sync Configuration in Cross-vCenter NSX
@@ -1447,8 +1460,16 @@ Working With Universal Sync Status
 * **get** *(secured)*: Retrieve the universal sync status.
 
 ## applianceManager
-Working with Appliance Manager
+Working with the Appliance Manager
 ========
+
+With the appliance management tool, you can manage:
+* System configurations like network configuration, syslog, time settings,
+  and certificate management etc.
+* Components of appliance such as NSX Manager, Postgres, SSH component,
+  Rabbitmq service etc.
+* Overall support related features such as tech support logs, backup
+  restore, status, and summary reports of appliance health.
 
 ### /1.0/appliance-management/global/info
 Global Information for NSX Manager
@@ -1488,6 +1509,11 @@ NSX Manager Appliance Uptime Information
 
 * **get** *(secured)*: Retrieve NSX Manager uptime information.
 
+**Example response:**
+```
+25 days, 22 hours, 11 minutes
+```
+
 ### /1.0/appliance-management/system/meminfo
 NSX Manager Appliance Memory Information
 -----
@@ -1504,7 +1530,16 @@ NSX Manager Appliance Storage Information
 NSX Manager Appliance Network Settings
 ----
 
-* **get** *(secured)*: Retrieve network information i.e. host name, IP address, DNS settings
+* **get** *(secured)*: Retrieve network information for the NSX Manager appliance. i.e. host name, IP address, DNS settings
+
+* **put** *(secured)*: Update network information for the NSX Manager appliance.
+
+### /1.0/appliance-management/system/network/dns
+Working with DNS Configuration
+-----
+
+* **put** *(secured)*: Configure DNS.
+* **delete** *(secured)*: Delete DNS server configuration.
 
 ### /1.0/appliance-management/system/securitysettings
 Working with Security Settings
@@ -1555,16 +1590,11 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-### /1.0/appliance-management/system/tlssettings/dns
-Working with DNS Configuration
------
-
-* **put** *(secured)*: Configure DNS.
-* **delete** *(secured)*: Delete DNS server configuration.
-
 ### /1.0/appliance-management/system/timesettings
 Working with Time Settings
 ------
+You can either configure time or specify the NTP server to be used for
+time synchronization.
 
 * **get** *(secured)*: Retrieve time settings, like timezone or current date and time with
 NTP server, if configured.
@@ -1613,13 +1643,13 @@ VPOSTGRES | vPostgres - Database service
 Working with a Specific Component
 ----
 
-* **get** *(secured)*: Retrieve details for specified component.
+* **get** *(secured)*: Retrieve details for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/dependencies
 Working with Component Dependencies
 ----
 
-* **get** *(secured)*: Retrieve dependency details for specified component.
+* **get** *(secured)*: Retrieve dependency details for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/dependents
 Working with Component Dependents
@@ -1631,7 +1661,7 @@ Working with Component Dependents
 Working with Component Status
 ----
 
-* **get** *(secured)*: Retrieve current status for specified component.
+* **get** *(secured)*: Retrieve current status for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/toggleStatus/{command}
 Toggle Component Status
@@ -1648,6 +1678,11 @@ Working With the Appliance Management Web Application
 ### /1.0/appliance-management/backuprestore/backupsettings
 NSX Manager Appliance Backup Settings
 -----
+You can back up and restore your NSX Manager data, which can include
+system configuration, events, and audit log tables. Configuration tables
+are included in every backup. Backups are saved to a remote location that
+must be accessible by the NSX Manager.
+
 Parameters for the NSX Manager appliance backup:
 
 * **transferProtocol**: *FTP, SFTP*
@@ -1658,8 +1693,13 @@ Parameters for the NSX Manager appliance backup:
 * **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
 The tables specified in the **excludeTables** parameter are not backed up.
 
+You must set a **passPhrase** for the backups. The passphrase is used
+to create and read backup files. If you do not set a passphrase, backups
+will fail. If you forget the passphrase set on a backup file, you cannot
+restore that backup file.
+
 * **get** *(secured)*: Retrieve backup settings.
-* **put** *(secured)*: Configure backup on the appliance manager.
+* **put** *(secured)*: Configure backups on the appliance manager.
 * **delete** *(secured)*: Delete appliance manager backup configuration.
 
 ### /1.0/appliance-management/backuprestore/backupsettings/ftpsettings
@@ -1688,7 +1728,7 @@ See *NSX Manager Appliance Backup Settings* for details.
 NSX Manager Appliance On-Demand Backup
 ----
 
-* **post** *(secured)*: Backup NSX data on-demand.
+* **post** *(secured)*: Start an on-demand NSX backup.
 
 ### /1.0/appliance-management/backuprestore/backups
 Working with NSX Manager Appliance Backup Files
@@ -1701,6 +1741,8 @@ Restoring Data from an NSX Manager Appliance Backup File
 ------
 
 * **post** *(secured)*: Restore data from a backup file.
+
+Retrive a list of restore files using `GET /api/1.0/appliance-management/backuprestore/backups`.
 
 ### /1.0/appliance-management/techsupportlogs/{componentID}
 Working with Tech Support Logs by Component
@@ -1729,40 +1771,62 @@ Acknowledge Notifications
 * **post** *(secured)*: Acknowledge a notification. The notification is then deleted from
 the system.
 
-### /1.0/appliance-management/upgrade/uploadbundle/{componentID}
-Upgrading NSX Manager
+### /1.0/appliance-management/upgrade
+Upgrading NSX Manager Appliance
 ----
-If you are upgrading from vCloud Networking and Security to NSX, all
-grouping objects from vShield Manager 5.5 are carried over to NSX.
-Though new objects in NSX can be created only at a global scope, the
-scope of upgraded objects is maintained, and these objects can be
-edited. For example, you can nest the following security groups within
-an upgraded security group at the datacenter scope:
+  
+To upgrade NSX Manager, you must do the following:
+  * upload an upgrade bundle   
+    `POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}`
+  * retrieve the upgrade information   
+    `GET /api/1.0/appliance-management/upgrade/information/{componentID}`
+  * edit the **preUpgradeQuestionsAnswers** section of the upgrade
+    information response, if needed
+  * start the upgrade, providing the edited **preUpgradeQuestionsAnswers**
+    section as the request body   
+    `POST /api/1.0/appliance-management/upgrade/start/{componentID}`
+  
 
-* security groups created at same datacenter scope (via REST only)
-* security groups created at portgroup scope, which fall under the
-datacenter (via REST only).
+### /1.0/appliance-management/upgrade/uploadbundle/{componentID}
+Upload an NSX Manager Upgrade Bundle
+----
+You must upload the upgrade bundle using the form-data content-type.
+Consult the documentation for your REST client for instructions. 
 
-Security groups created at the global scope cannot be nested under a
-security group created at a lower scope such as a
-datacenter.
+Do not set other Content-type headers in your request, for
+example, *Content-type: application/xml*.
 
-All users and associated roles are carried over to NSX as well.
-In all API calls for upgrading the NSX Manager, the **componentId**
-parameter can be *NSX* or *NSXAPIMGMT*.
+When you upload a file as form-data, you must provide a **key**
+and a **value** for the file. The **key** is *file*, and the **value**
+is the location of the upgrade bundle file.
+
+**Example using curl**
+```
+/usr/bin/curl -v -k -i -F file=@/tmp/VMware-NSX-Manager-upgrade-bundle-6.2.7-5343628.tar.gz -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+https://192.168.110.42/api/1.0/appliance-management/upgrade/uploadbundle/NSX
+```
 
 * **post** *(secured)*: Upload upgrade bundle.
-* **get** *(secured)*: After the upgrade bundle is uploaded, you can query upgrade details
-such as pre-upgrade validation warning or error messages along with
-pre-upgrade questions.
+
+### /1.0/appliance-management/upgrade/information/{componentID}
+Prepare for NSX Manager Upgrade
+---
+
+* **get** *(secured)*: Once you have uploaded an upgrade bundle, you must retrieve
+information about the upgrade. This request contains pre-upgrade
+validation warnings and error messages, along with pre-upgrade
+questions with default answers. Review the information and edit the
+answers in the **preUpgradeQuestionsAnswers** section if needed before
+providing the section as the request body to the `POST
+/api/1.0/appliance-management/upgrade/start/{componentID}` method.
 
 ### /1.0/appliance-management/upgrade/start/{componentID}
-Start NSX Manager Upgrade
+Start the NSX Manager Upgrade
 ----
 
-* **get** *(secured)*: Start upgrade process.
+* **post** *(secured)*: Start upgrade process.
 
-### /1.0/appliance-management/status/{componentID}
+### /1.0/appliance-management/upgrade/status/{componentID}
 NSX Manager Upgrade Status
 ----
 
@@ -2137,7 +2201,7 @@ In order to uninstall services in any order, set parameter ignoreDependency to t
 Working with a Specific Service on a Cluster
 -----
 
-* **get** *(secured)*: Retrieve detailed information about the service
+* **get** *(secured)*: Retrieve detailed information about the service.
 
 ## eventControl
 Working with Data Collection for Activity Monitoring
@@ -3508,8 +3572,7 @@ configured for firewall, after a firewall rule publish their status is
 
 Release | Modification
 --------|-------------
-6.2.4 | Method updated. Parameter **generationNumberObjects** added. 
-6.2.4 | Method updated. Clusters not configured for firewall are excluded from the status output.
+6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
 
 ### /4.0/firewall/globalroot-0/status/layer3sections/{sectionID}
 Working with a Specific Layer 3 Section Status
@@ -4266,6 +4329,14 @@ Working With NSX Edge Status
 
 * **get** *(secured)*: Retrieve the status of the specified Edge.
 
+The **edgeStatus** has the following possible states:
+* *GREEN*: Health checks are successful, status is good.
+* *YELLOW*: Intermittent health check failure. If health check fails
+  for five consecutive times for all appliances, status will turn
+  *RED*.
+* *GREY*: unknown status.
+* *RED*: None of the appliances for this NSX Edge are in a serving state.
+
 ### /4.0/edges/{edgeId}/techsupportlogs
 Working with NSX Edge Tech Support Logs 
 ----
@@ -4283,6 +4354,21 @@ Working with NSX Edge Remote Access
 ----
 
 * **post** *(secured)*: Change CLI remote access
+
+### /4.0/edges/{edgeId}/systemcontrol/config
+Working with NSX Edge System Control Configuration
+-----
+
+* **put** *(secured)*: Update the NSX Edge system control (sysctl) configuration.
+
+* **get** *(secured)*: Retrieve all NSX Edge system control configuration.
+
+If no system control parameters are configured, the response is empty.
+
+* **delete** *(secured)*: Delete all NSX Edge system control configuration.
+
+Deleting the system control configuration requires a reboot of the
+NSX Edge appliance.
 
 ### /4.0/edges/{edgeId}/firewall/config
 Working With NSX Edge Firewall Configuration
@@ -5230,13 +5316,24 @@ Working With Portal Layout
 * **put** *(secured)*: Update the portal layout.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}
-Working With Portal Icons
+Working With Image Files for SSL VPN
 ---
-You can upload images used by for the SSL VPN web portal.
 
-* **post** *(secured)*: Upload icons for use in the SSL VPN web portal.
+* **post** *(secured)*: Upload images for use with SSL VPN portal and client.
 
-Provide the image file as form-data. See the table below for the form-data key to use for each image type.
+You can upload a logo to use in the SSL VPN portal, and a banner
+and icons to use in the SSL VPN client.
+
+You must upload the image files using the form-data content-type.
+Consult the documentation for your REST client for instructions. 
+
+Do not set other Content-type headers in your request, for
+example, *Content-type: application/xml*.
+
+When you upload a file as form-data, you must provide a **key**
+and a **value** for the file. See the table below for the
+form-data **key** to use for each image type. The **value** is the
+path to the image file.
 
 Image Type | form-data key | Image format requirements
 ----|------|----
@@ -5318,7 +5415,7 @@ Working With Uploaded Script Files
 
 * **delete** *(secured)*: Delete script parameters.
 
-### /4.0/edges/{edgeId}/sslvpn/config/script/file
+### /4.0/edges/{edgeId}/sslvpn/config/script/file/
 Uploading Script Files for SSL VPN
 ----
 
@@ -5328,7 +5425,15 @@ When the remote user logs in to the SSL client, Internet Explorer
 opens up gmail.com. This method returns a *scriptFileId* which
 can be used to update parameters associated with the script file.
 
-Provide the script as form-data, using the key, *file*.
+You must upload the script files using the form-data content-type.
+Consult the documentation for your REST client for instructions.
+
+Do not set other Content-type headers in your request, for
+example, *Content-type: application/xml*.
+
+When you upload a file as form-data, you must provide a **key**
+and a **value** for the file. The **key** is *file*, and the
+**value** is the location of the script file.
 
 **Example using curl**
 ```
@@ -5693,24 +5798,32 @@ Release | Modification
 ## truststore
 Working with Certificates
 =============
+NSX Edge supports self-signed certificates, certificates signed by a
+Certification Authority (CA), and certificates generated and signed by a
+CA.
 
 ### /2.0/services/truststore/certificate
 Working with Certificates and Certificate Chains
 ------
 
-* **post** *(secured)*: Create certificate for CSR.
+* **post** *(secured)*: Import a certificate or a certificate chain against a certificate
+signing request.
 
 ### /2.0/services/truststore/certificate/scope/{scopeId}
 Working With Certificates on a Specific Scope
 ----
 
-* **get** *(secured)*: Query all certificates for a scope
+* **get** *(secured)*: Retrieve all certificates on the specified scope.
 
 ### /2.0/services/truststore/certificate/{scopeId}
-Working With NSX Edge Self-Signed Certificates
+Working With Self-Signed Certificates
 ------
 
 * **post** *(secured)*: Create a single certificate
+
+You can create a certificate for a specific NSX Edge, or if you
+specify a scope of *globalroot-0* you can create a global certificate
+in NSX Manager which is available to all NSX Edges.
 
 ### /2.0/services/truststore/certificate/{certificateId}
 Working With a Specific Certificate
@@ -5719,7 +5832,7 @@ Working With a Specific Certificate
 * **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies
 a chain, multiple certificate objects are retrieved.
 
-* **delete** *(secured)*: Delete the specified certificate
+* **delete** *(secured)*: Delete the specified certificate.
 
 ### /2.0/services/truststore/csr/{scopeId}
 Working with Certificate Signing Requests (CSRs)
@@ -5730,8 +5843,7 @@ Working with Certificate Signing Requests (CSRs)
 Working With Self-Signed Certificate for CSR
 -----
 
-* **put** *(secured)*: Create a self-signed certificate for a certificate signing request
-(CSR).
+* **put** *(secured)*: Create a self-signed certificate for CSR.
 
 * **get** *(secured)*: Retrieve the specified certificate signing request (CSR).
 
