@@ -5484,24 +5484,32 @@ Release | Modification
 ## truststore
 Working with Certificates
 =============
+NSX Edge supports self-signed certificates, certificates signed by a
+Certification Authority (CA), and certificates generated and signed by a
+CA.
 
 ### /2.0/services/truststore/certificate
 Working with Certificates and Certificate Chains
 ------
 
-* **post** *(secured)*: Create certificate for CSR.
+* **post** *(secured)*: Import a certificate or a certificate chain against a certificate
+signing request.
 
 ### /2.0/services/truststore/certificate/scope/{scopeId}
 Working With Certificates on a Specific Scope
 ----
 
-* **get** *(secured)*: Query all certificates for a scope
+* **get** *(secured)*: Retrieve all certificates on the specified scope.
 
 ### /2.0/services/truststore/certificate/{scopeId}
-Working With NSX Edge Self-Signed Certificates
+Working With Self-Signed Certificates
 ------
 
 * **post** *(secured)*: Create a single certificate
+
+You can create a certificate for a specific NSX Edge, or if you
+specify a scope of *globalroot-0* you can create a global certificate
+in NSX Manager which is available to all NSX Edges.
 
 ### /2.0/services/truststore/certificate/{certificateId}
 Working With a Specific Certificate
@@ -5510,7 +5518,7 @@ Working With a Specific Certificate
 * **get** *(secured)*: Retrieve the certificate object specified by ID. If the ID specifies
 a chain, multiple certificate objects are retrieved.
 
-* **delete** *(secured)*: Delete the specified certificate
+* **delete** *(secured)*: Delete the specified certificate.
 
 ### /2.0/services/truststore/csr/{scopeId}
 Working with Certificate Signing Requests (CSRs)
@@ -5521,8 +5529,7 @@ Working with Certificate Signing Requests (CSRs)
 Working With Self-Signed Certificate for CSR
 -----
 
-* **put** *(secured)*: Create a self-signed certificate for a certificate signing request
-(CSR).
+* **put** *(secured)*: Create a self-signed certificate for CSR.
 
 * **get** *(secured)*: Retrieve the specified certificate signing request (CSR).
 

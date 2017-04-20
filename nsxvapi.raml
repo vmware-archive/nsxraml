@@ -14724,6 +14724,7 @@ securitySchemes:
           displayName: status
           description: |
             **status** can be *all* or *active*.
+          required: false
       responses:
         200:
           body:
@@ -14871,6 +14872,9 @@ securitySchemes:
   description: |
     Working with Certificates
     =============
+    NSX Edge supports self-signed certificates, certificates signed by a
+    Certification Authority (CA), and certificates generated and signed by a
+    CA.
 
   /certificate:
     displayName: certificate
@@ -14879,7 +14883,15 @@ securitySchemes:
       ------
     post:
       displayName: certificateCreate
-      description: Create certificate for CSR.
+      description: | 
+        Import a certificate or a certificate chain against a certificate
+        signing request.
+      queryParameters:
+        csrId:
+          displayName: csrId
+          description: |
+            Specify the ID of a CSR.
+          required: true
       body:
         application/xml:
           example: |
@@ -14896,23 +14908,41 @@ securitySchemes:
         scopeId:
           required: true
           displayName: scopeId
-          description: Scope ID
+          description: |
+            Scope ID. Specify the ID of an NSX Edge, e.g. *edge-5*, or
+            *globalroot-0*.
       get:
         displayName: certificateScopeRead
-        description: Query all certificates for a scope
+        description: Retrieve all certificates on the specified scope.
+        responses:  
+          200:
+            body:
+              application/xml:
+                example: |
+                  <csrs>
+                    <csr></csr>
+                    <csr></csr>
+                  </csrs>
     /{scopeId}:
       displayName: certificateSelfSigned
       description: |
-        Working With NSX Edge Self-Signed Certificates
+        Working With Self-Signed Certificates
         ------
       uriParameters:
         scopeId:
           required: true
           displayName: scopeId
-          description: Scope ID
+          description: |
+            Scope ID. Specify the ID of an NSX Edge, e.g. *edge-5*, or
+            *globalroot-0*.
       post:
         displayName: certificateSelfSignedCreate
-        description: Create a single certificate
+        description: |
+          Create a single certificate
+          
+          You can create a certificate for a specific NSX Edge, or if you
+          specify a scope of *globalroot-0* you can create a global certificate
+          in NSX Manager which is available to all NSX Edges.
         body:
           application/xml:
             example: |
@@ -14939,7 +14969,7 @@ securitySchemes:
           a chain, multiple certificate objects are retrieved.
       delete:
         displayName: certificateIdDelete
-        description: Delete the specified certificate
+        description: Delete the specified certificate.
   /csr/{scopeId}:
     displayName: csr
     description: |
@@ -14958,12 +14988,24 @@ securitySchemes:
             <csr>
               <subject>
                 <attribute>
-                  <key></key>
-                  <value></value>
+                  <key>CN</key>
+                  <value>VSM</value>
+                </attribute>
+                <attribute>
+                  <key>O</key>
+                  <value>VMware</value>
+                </attribute>
+                <attribute>
+                  <key>OU</key>
+                  <value>IN</value>
+                </attribute>
+                <attribute>
+                  <key>C</key>
+                  <value>IN</value>
                 </attribute>
               </subject>
-              <algorithm></algorithm>
-              <keySize></keySize>
+              <algorithm>RSA</algorithm>
+              <keySize>1024</keySize>
             </csr>
           schema: csrCreate
   /csr/{csrId}:
@@ -14979,11 +15021,11 @@ securitySchemes:
     put:
       displayName: csrSelfSignedUpdate
       description: |
-        Create a self-signed certificate for a certificate signing request
-        (CSR).
+        Create a self-signed certificate for CSR.
       queryParameters:
         noOfDays:
           displayName: noOfDays
+          description: Number of days the certificate is valid.
           required: true
     get:
       displayName: csrSelfSignedRead
@@ -14997,7 +15039,7 @@ securitySchemes:
     uriParameters:
       scopeId:
         displayName: scopeId
-        description: Specified scope
+        description: Specified scope.
         required: true
     get:
       displayName: csrScopeRead
@@ -15014,7 +15056,8 @@ securitySchemes:
         description: Specified scope.
     post:
       displayName: crlCreate
-      description: Create a certificate revocation list (CRL) on the specified scope.
+      description: |
+        Create a certificate revocation list (CRL) on the specified scope.
       body:
         application/xml:
           example: |
