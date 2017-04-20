@@ -1566,13 +1566,14 @@ Upgrading NSX Manager Appliance
 ----
   
 To upgrade NSX Manager, you must do the following:
-  * upload an upgrade bundle `POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}`
+  * upload an upgrade bundle   
+    `POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}`
   * retrieve the upgrade information   
     `GET /api/1.0/appliance-management/upgrade/information/{componentID}`
   * edit the **preUpgradeQuestionsAnswers** section of the upgrade
     information response, if needed
   * start the upgrade, providing the edited **preUpgradeQuestionsAnswers**
-    section as the request body
+    section as the request body   
     `POST /api/1.0/appliance-management/upgrade/start/{componentID}`
   
 If you are upgrading from vCloud Networking and Security to NSX, all
@@ -1598,7 +1599,7 @@ parameter can be *NSX* or *NSXAPIMGMT*.
 Upload an NSX Manager Upgrade Bundle
 ----
 You must upload the upgrade bundle using the form-data content-type.
-Consult the documentation for your REST client for instuctions. 
+Consult the documentation for your REST client for instructions. 
 
 Do not set other Content-type headers in your request, for
 example, *Content-type: application/xml*.
@@ -5026,13 +5027,24 @@ Working With Portal Layout
 * **put** *(secured)*: Update the portal layout.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}
-Working With Portal Icons
+Working With Image Files for SSL VPN
 ---
-You can upload images used by for the SSL VPN web portal.
 
-* **post** *(secured)*: Upload icons for use in the SSL VPN web portal.
+* **post** *(secured)*: Upload images for use with SSL VPN portal and client.
 
-Provide the image file as form-data. See the table below for the form-data key to use for each image type.
+You can upload a logo to use in the SSL VPN portal, and a banner
+and icons to use in the SSL VPN client.
+
+You must upload the image files using the form-data content-type.
+Consult the documentation for your REST client for instructions. 
+
+Do not set other Content-type headers in your request, for
+example, *Content-type: application/xml*.
+
+When you upload a file as form-data, you must provide a **key**
+and a **value** for the file. See the table below for the
+form-data **key** to use for each image type. The **value** is the
+path to the image file.
 
 Image Type | form-data key | Image format requirements
 ----|------|----
@@ -5132,7 +5144,7 @@ Working With Uploaded Script Files
 
 * **delete** *(secured)*: Delete script parameters.
 
-### /4.0/edges/{edgeId}/sslvpn/config/script/file
+### /4.0/edges/{edgeId}/sslvpn/config/script/file/
 Uploading Script Files for SSL VPN
 ----
 
@@ -5142,7 +5154,15 @@ When the remote user logs in to the SSL client, Internet Explorer
 opens up gmail.com. This method returns a *scriptFileId* which
 can be used to update parameters associated with the script file.
 
-Provide the script as form-data, using the key, *file*.
+You must upload the script files using the form-data content-type.
+Consult the documentation for your REST client for instructions.
+
+Do not set other Content-type headers in your request, for
+example, *Content-type: application/xml*.
+
+When you upload a file as form-data, you must provide a **key**
+and a **value** for the file. The **key** is *file*, and the
+**value** is the location of the script file.
 
 **Example using curl**
 ```

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#100;&#x6f;&#x63;&#102;&#101;&#101;&#100;&#98;&#97;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#x61;&#x72;&#101;&#x2e;&#99;&#111;&#x6d;">&#100;&#x6f;&#x63;&#102;&#101;&#101;&#100;&#98;&#97;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#x61;&#x72;&#101;&#x2e;&#99;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#100;&#111;&#x63;&#102;&#101;&#x65;&#100;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#x6d;">&#100;&#111;&#x63;&#102;&#101;&#x65;&#100;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -1813,13 +1813,12 @@ location of the created tech support file. </p>
   <div class="description"><h2 id="upgrading-nsx-manager-appliance">Upgrading NSX Manager Appliance</h2>
 <p>To upgrade NSX Manager, you must do the following:</p>
 <ul>
-<li>upload an upgrade bundle <code>POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}</code></li>
+<li>upload an upgrade bundle<br><code>POST /api/1.0/appliance-management/upgrade/uploadbundle/{componentID}</code></li>
 <li>retrieve the upgrade information<br><code>GET /api/1.0/appliance-management/upgrade/information/{componentID}</code></li>
 <li>edit the <strong>preUpgradeQuestionsAnswers</strong> section of the upgrade
 information response, if needed</li>
 <li>start the upgrade, providing the edited <strong>preUpgradeQuestionsAnswers</strong>
-section as the request body
-<code>POST /api/1.0/appliance-management/upgrade/start/{componentID}</code></li>
+section as the request body<br><code>POST /api/1.0/appliance-management/upgrade/start/{componentID}</code></li>
 </ul>
 <p>If you are upgrading from vCloud Networking and Security to NSX, all
 grouping objects from vShield Manager 5.5 are carried over to NSX.
@@ -1994,7 +1993,7 @@ providing the section as the request body to the <code>POST
 <section class="resource">
   <div class="description"><h2 id="upload-an-nsx-manager-upgrade-bundle">Upload an NSX Manager Upgrade Bundle</h2>
 <p>You must upload the upgrade bundle using the form-data content-type.
-Consult the documentation for your REST client for instuctions. </p>
+Consult the documentation for your REST client for instructions. </p>
 <p>Do not set other Content-type headers in your request, for
 example, <em>Content-type: application/xml</em>.</p>
 <p>When you upload a file as form-data, you must provide a <strong>key</strong>
@@ -25645,8 +25644,7 @@ Existing configs not included in the call body are deleted.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-portal-icons">Working With Portal Icons</h2>
-<p>You can upload images used by for the SSL VPN web portal.</p>
+  <div class="description"><h2 id="working-with-image-files-for-ssl-vpn">Working With Image Files for SSL VPN</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -25670,8 +25668,17 @@ Existing configs not included in the call body are deleted.</p>
     href="#POST/4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}"
   ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}</h2></a>
   <div class="content">
-    <p><p>Upload icons for use in the SSL VPN web portal.</p>
-<p>Provide the image file as form-data. See the table below for the form-data key to use for each image type.</p>
+    <p><p>Upload images for use with SSL VPN portal and client.</p>
+<p>You can upload a logo to use in the SSL VPN portal, and a banner
+and icons to use in the SSL VPN client.</p>
+<p>You must upload the image files using the form-data content-type.
+Consult the documentation for your REST client for instructions. </p>
+<p>Do not set other Content-type headers in your request, for
+example, <em>Content-type: application/xml</em>.</p>
+<p>When you upload a file as form-data, you must provide a <strong>key</strong>
+and a <strong>value</strong> for the file. See the table below for the
+form-data <strong>key</strong> to use for each image type. The <strong>value</strong> is the
+path to the image file.</p>
 <table class="table"><thead><tr>
 <th>Image Type</th>
 <th>form-data key</th>
@@ -25814,16 +25821,22 @@ in the body are deleted.</p>
 <div class="method post">
   <a
     class="verb post"
-    id="POST/4.0/edges/{edgeId}/sslvpn/config/script/file"
-    href="#POST/4.0/edges/{edgeId}/sslvpn/config/script/file"
-  ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/script/file</h2></a>
+    id="POST/4.0/edges/{edgeId}/sslvpn/config/script/file/"
+    href="#POST/4.0/edges/{edgeId}/sslvpn/config/script/file/"
+  ><h2>POST /4.0/edges/{edgeId}/sslvpn/config/script/file/</h2></a>
   <div class="content">
     <p><p>You can add multiple login or logoff scripts. For example, you can
 bind a login script for starting Internet Explorer with gmail.com.
 When the remote user logs in to the SSL client, Internet Explorer
 opens up gmail.com. This method returns a <em>scriptFileId</em> which
 can be used to update parameters associated with the script file.</p>
-<p>Provide the script as form-data, using the key, <em>file</em>.</p>
+<p>You must upload the script files using the form-data content-type.
+Consult the documentation for your REST client for instructions.</p>
+<p>Do not set other Content-type headers in your request, for
+example, <em>Content-type: application/xml</em>.</p>
+<p>When you upload a file as form-data, you must provide a <strong>key</strong>
+and a <strong>value</strong> for the file. The <strong>key</strong> is <em>file</em>, and the
+<strong>value</strong> is the location of the script file.</p>
 <p><strong>Example using curl</strong></p>
 <pre><code class="code-block hljs lang-elixir">/usr/bin/curl -v -k -i -F file=@/tmp/script.sh -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span>
 <span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/192.168.110.42/api</span><span class="hljs-regexp">/4.0/edges</span><span class="hljs-regexp">/edge-3/sslvpn</span><span class="hljs-regexp">/config/script</span><span class="hljs-regexp">/file/</span></code></pre></p>
