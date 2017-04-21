@@ -1836,7 +1836,7 @@ securitySchemes:
     displayName: arpMACRead
     description: Retrieve IP discovery and MAC learning information.
   put:
-    displayName: arpMACUpdate
+    displayName: arpMACUpdate # existing dupfix arpMAC
     description: |
       Enable or disable IP discovery and MAC learning.
       
@@ -2208,13 +2208,13 @@ securitySchemes:
             </controllerCredential>
           schema: nsxControllerPasswordUpdate
 /2.0/services/application:
-  displayName: servicesApps
+  displayName: servicesApps # existing reorg URI
   description: |
     Working with Services Grouping Objects
     =============
 
   /scope/{scopeId}:
-    displayName: servicesAppsScopeScope
+    displayName: servicesAppsScopeScope # existing reorg/dupfix servicesScope
     description: | 
       Retrieve Services from a Specific Scope
       ----
@@ -2234,7 +2234,7 @@ securitySchemes:
       Create a Service on a Specific Scope
       ------
     post:
-      displayName: servicesAppsScopeCreate
+      displayName: servicesAppsScopeCreate # existing reorg/dupfix servicesScopeCreate
       description: |
         Create a new service on the specified scope.
       body:
@@ -2256,7 +2256,7 @@ securitySchemes:
             </application>
           schema: servicesScopeCreate
   /{applicationId}:
-    displayName: serviceApp
+    displayName: serviceApp # existing reorg/dupfix service
     description: |
       Working With a Specified Service
       -------
@@ -2268,10 +2268,10 @@ securitySchemes:
           Application ID. You can get a list of application IDs from `GET
           /api/2.0/services/application/scope/{scopeId}`.
     get:
-      displayName: serviceAppRead
+      displayName: serviceAppRead # existing reorg/dupfix serviceRead
       description: Retrieve details about the specified service.
     put:
-      displayName: serviceAppUpdate
+      displayName: serviceAppUpdate # existing reorg/dupfix serviceUpdate
       description: |
         Modify the name, description, applicationProtocol, or port value of a
         service.
@@ -2294,7 +2294,7 @@ securitySchemes:
             </application>
           schema: serviceUpdate
     delete:
-      displayName: serviceAppDelete
+      displayName: serviceAppDelete # existing reorg/dupfix serviceDelete
       description: Delete the specified service.
       queryParameters:
         force:
@@ -2421,7 +2421,7 @@ securitySchemes:
         description: Delete a member from the service group.
 
   /scope/{scopeId}/members:
-    displayName: serviceGroupMembersScope
+    displayName: serviceGroupMembersScope # existing dupfix serviceGroupMembersRead
     description: |
       Working with Service Group Members on a Specific Scope
       ------
@@ -2431,7 +2431,7 @@ securitySchemes:
         displayName: scopeId
         description: globalroot-0 or datacenterId in upgrade use cases
     get:
-      displayName: serviceGroupMembersScopeList
+      displayName: serviceGroupMembersScopeList # existing dupfix serviceGroupMembersRead
       description: |
         Get a list of member elements that can be added to the service groups
         created on a particular scope.
@@ -2441,7 +2441,7 @@ securitySchemes:
         possible valid elements that can be added to the
         service.
 /2.0/services/ipam/pools:
-  displayName: ipPoolsObjects
+  displayName: ipPoolsObjects # added for reorg
   description: |
     Working with IP Pool Grouping Objects
     ========
@@ -2735,7 +2735,7 @@ securitySchemes:
     machines that have a specific tag assigned.
 
   /tag:
-    displayName: securitytagsTag
+    displayName: securitytagsTag # existing reorg securityTag
     description: |
       Managing Security Tags
       -----
@@ -2939,7 +2939,7 @@ securitySchemes:
                       </attachedVM>
                     </attachedVMList>
   /vm/{vmId}:
-    displayName: securitytagVmMoid
+    displayName: securitytagVmId # update existing addition securitytagVmMoid
     description: |
       Working With Security Tags on a Specific Virtual Machine
       -----
@@ -3942,7 +3942,7 @@ securitySchemes:
                 Force removal of a secondary NSX manager. Options are true and
                 false.
         put:
-          displayName: universalSyncConfigurationManagersUpdate
+          displayName: universalSyncConfigurationManagersUpdate # existing fix bad URI universalSyncConfigurationNsxManagersThumbprintUpdate
           description: |
             Update the the specified secondary NSX manager IP or thumbprint in
             the universal sync configuration.
@@ -4315,12 +4315,12 @@ securitySchemes:
               </dns>
             </network>
     /dns:
-      displayName: applianceDnsClient
+      displayName: applianceDnsClient # existing dupfix dns
       description: |
         Working with DNS Configuration
         -----
       put:
-        displayName: applianceDnsClientUpdate
+        displayName: applianceDnsClientUpdate # existing dupfix dnsUpdate
         description: Configure DNS.
         body:
           application/xml:
@@ -4332,7 +4332,7 @@ securitySchemes:
               </dns>
             schema: applianceDnsClientUpdate
       delete:
-        displayName: applianceDnsClientDelete
+        displayName: applianceDnsClientDelete # existing dupfix dnsUpdate
         description: Delete DNS server configuration.
   /system/securitysettings:
     displayName: systemSecSettings
@@ -4393,7 +4393,7 @@ securitySchemes:
       Working with TLS Settings
       ----
     get:
-      displayName: tlsSettingsList
+      displayName: tlsSettingsRead # update existing addition tlsSettingsList
       description: |
         Retrieve TLS settings.
         
@@ -4741,15 +4741,15 @@ securitySchemes:
             description: Use **command** parameter *start* or *stop*.
             required: true
         post:
-          displayName: componentManagementToggleAction
+          displayName: componentManagementToggleCommand # update existing additon componentManagementToggleAction
           description: Start or stop a component.
     /component/APPMGMT/restart:
-      displayName: componentRestart
+      displayName: componentAppMgmtRestart # update existing addition componentRestart
       description: |
         Working With the Appliance Management Web Application
         -----
       post:
-        displayName: componentRestartAction
+        displayName: componentAppMgmtRestartExecute # update existing addition componentRestartAction 
         description: Restart the appliance management web application.
   /backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
@@ -4878,7 +4878,7 @@ securitySchemes:
       NSX Manager Appliance On-Demand Backup
       ----
     post:
-      displayName: applianceMgrBackupCreate
+      displayName: applianceMgrBackupCreate # existing dupfix applianceMgrBackup
       description: Start an on-demand NSX backup.
   /backuprestore/backups:
     displayName: applianceMgrBackups
@@ -4907,7 +4907,7 @@ securitySchemes:
       Restoring Data from an NSX Manager Appliance Backup File
       ------
     post:
-      displayName: applianceMgrBackupRestoreExecute
+      displayName: applianceMgrBackupRestoreExecute # existing dupfix applianceMgrBackupRestore
       description: | 
         Restore data from a backup file.
         
@@ -5119,7 +5119,7 @@ securitySchemes:
         displayName: upgradeStatusRead # dupfix upgradeStatus
         description: Query upgrade status.
   /certificatemanager:
-    displayName: certificateManager
+    displayName: certificateManager # URI added for reorg
     description: |
       Working with Certificates on the NSX Manager Appliance
       -------
@@ -5140,7 +5140,7 @@ securitySchemes:
             displayName: password
             description: Password.
     /certificates/nsx:
-      displayName: certificateManagerNsx
+      displayName: certificateManagerNsx # existing reorg certificateManager
       description: |
         NSX Manager Certificate Manager
         --------
@@ -6142,7 +6142,7 @@ securitySchemes:
       Override Data Collection
       ----
     post:
-      displayName: dataCollectionKillSwitchToggle
+      displayName: dataCollectionKillSwitchToggle # existing dupfix dataCollectionKillSwitch
       description: |
         Turn data collection on or off at the global level.
         
@@ -6821,12 +6821,12 @@ securitySchemes:
       displayName: ldapServerDeleteDelete # dupfix ldapServerDelete
       description: Delete LDAP server.
   /updateEventLogServer:
-    displayName: eLogServer
+    displayName: eLogServerCreate # revert existing dupfix eLogServer eLogServerCreate
     description: |
       EventLog Server
       ------
     post:
-      displayName: eLogServerCreate
+      displayName: eLogServerCreateCreate # dupfix eLogServerCreate
       description: Create EventLog server.
       body:
         application/xml:
@@ -7773,12 +7773,12 @@ securitySchemes:
     2. Reregister the vendor or solution.
 
   /registration:
-    displayName: guestIntrospectionRegistration
+    displayName: guestIntrospectionRegistration # existing change vShield
     description: |
       Register a Vendor and Solution with Guest Introspection
       ---
     post:
-      displayName: guestIntrospectionVendorCreate
+      displayName: guestIntrospectionVendorCreate # existing change vShieldVendorCreate
       description: |
         Register the vendor of an endpoint protection solution. Specify the
         following parameters in the request.
@@ -7798,15 +7798,15 @@ securitySchemes:
             </VendorInfo>
           schema: vShieldVendorCreate
     /vendors:
-      displayName: guestIntrospectionVendorsInfo
+      displayName: guestIntrospectionVendorsInfo # existing change
       description: |
         Working With Registered Guest Introspection Vendors
         ----
       get:
-        displayName: vShieldVendorsInfoRead
+        displayName: guestIntrospectionVendorsInfoList # update for consistency vShieldVendorsInfoList
         description: Retrieve the list of all registered Guest Introspection vendors.
     /{vendorID}:
-      displayName: guestIntrospectionSolution
+      displayName: guestIntrospectionSolution # existing change
       description: |
         Working With Guest Introspection Vendors and Endpoint Protection Solutions
         -----
@@ -7816,7 +7816,7 @@ securitySchemes:
           description: VMware-assigned ID for the vendor.
           required: true
       post:
-        displayName: guestIntrospectionSolutionCreate
+        displayName: guestIntrospectionSolutionCreate # existing change
         description: |
           Register an endpoint protection solution. Specify the following parameters in the request.
           
@@ -7835,22 +7835,22 @@ securitySchemes:
               </SolutionInfo>
             schema: vShieldSolutionCreate
       get:
-        displayName: guestIntrospectionVendorInfoRead
+        displayName: guestIntrospectionVendorInfoRead # existing change
         description: Retrieve registration information for a Guest Introspection vendor.
       delete:
-        displayName: guestIntrospectionVendorDelete
+        displayName: guestIntrospectionVendorDelete # existing change
         description: Unregister a Guest Introspection vendor.
       /solutions:
-        displayName: guestIntrospectionSolutionsInfo
+        displayName: guestIntrospectionSolutionsInfo # existing change
         description: |
           Information About Registered Endpoint Protection Solutions
           ----
         get:
-          displayName: guestIntrospectionSolutionsInfoRead
+          displayName: guestIntrospectionSolutionsInfoRead # existing change
           description: |
             Get registration information for all endpoint protection solutions for a Guest Introspection vendor.
       /{altitude}:
-        displayName: guestIntrospectionSolutionInfo
+        displayName: guestIntrospectionSolutionInfo # existing change
         description: |
           Endpoint Protection Solution Registration Information
           ----
@@ -7862,13 +7862,13 @@ securitySchemes:
               the type of solution and the order in which the solution receives
               events relative to other solutions on the same host.
         get:
-          displayName: guestIntrospectionSolutionInfoRead
+          displayName: guestIntrospectionSolutionInfoRead # existing change
           description: Get registration information for an endpoint protection solution.
         delete:
-          displayName: guestIntrospectionSolutionDelete
+          displayName: guestIntrospectionSolutionDelete # existing change
           description: Unregister an endpoint protection solution.
         /location:
-          displayName: guestIntrospectionSolutionIPPort
+          displayName: guestIntrospectionSolutionIPPort # existing change
           description: |
             IP Address and Port For an Endpoint Protection Solution
             -----
@@ -7877,7 +7877,7 @@ securitySchemes:
             2. Change the location.
             3. Reactivate all security virtual machines.
           post:
-            displayName: guestIntrospectionSolutionIPPortSet
+            displayName: guestIntrospectionSolutionIPPortUpdate # update existing change guestIntrospectionSolutionIPPortSet
             description: |
               Set the IP address and port on the vNIC host for an endpoint
               protection solution.
@@ -7890,23 +7890,23 @@ securitySchemes:
                   </LocationInfo>
                 schema: solutionIPPortSet
           get:
-            displayName: guestIntrospectionSolutionIPPortGet
+            displayName: guestIntrospectionSolutionIPPortRead # update addition guestIntrospectionSolutionIPPortGet
             description: |
               Get the IP address and port on the vNIC host for an endpoint
               protection solution.
           delete:
-            displayName: guestIntrospectionSolutionIPPortDelete
+            displayName: guestIntrospectionSolutionIPPortDelete # existing change
             description: |
               Unset the IP address and port for an endpoint protection
               solution.
   /activation:
-    displayName: guestIntrospectionSolutionActivation
+    displayName: guestIntrospectionSolutionActivation # existing change
     description: |
       Activate an Endpoint Protection Solution
       -------
       You can activate a solution that has been registered and located.
     get:
-      displayName: guestIntrospectionSolutionActivationRead
+      displayName: guestIntrospectionSolutionActivationRead # existing change
       description: |
         Retrieve activation information for all activated security VMs on the
         specified host.
@@ -7934,7 +7934,7 @@ securitySchemes:
                   ...
                 </ActivatedSVMs>
     /{vendorID}/{solutionID}:
-      displayName: guestIntrospectionSolutionActivatedVMs
+      displayName: guestIntrospectionSolutionActivatedVMs # existing change
       description: |
         Activated Security Virtual Machines
         ---
@@ -7948,7 +7948,7 @@ securitySchemes:
           description: solution ID for the endpoint protection solution.
           required: true
       get:
-        displayName: guestIntrospectionSolutionActivatedVMsRead
+        displayName: guestIntrospectionSolutionActivatedVMsRead # existing change
         description: |
           Retrieve a list of activated security VMs for an endpoint protection solution.
         responses:
@@ -7970,7 +7970,7 @@ securitySchemes:
                     ...
                   </ActivatedSVMs>
     /{vendorID}/{altitude}:
-      displayName: guestIntrospectionSolutionActivate
+      displayName: guestIntrospectionSolutionActivate # existing change
       description: |
         Activate a Registered Endpoint Protection Solution
         -----
@@ -8614,7 +8614,7 @@ securitySchemes:
                       </rule>
                     </section>
         post:
-          displayName: dfwL3SectionIdRevise
+          displayName: dfwL3SectionIdAction # update existing addtion dfwL3SectionIdRevise
           description: |
             Move the specified layer 3 section.
             
@@ -8935,7 +8935,7 @@ securitySchemes:
           displayName: dfwL2SectionIdRead
           description: Retrieve information about the specified layer 2 section.
         post:
-          displayName: dfwL2SectionIdRevise
+          displayName: dfwL2SectionIdAction # update existing addtion dfwL2SectionIdRevise
           description: |
             Move the specified layer 2 section.
             
@@ -9573,7 +9573,7 @@ securitySchemes:
           Export a Firewall Configuration
           ----
         get:
-          displayName: dfwConfigExportExecute
+          displayName: dfwConfigExportRead # update existing dupfix dfwConfigExportExecute dfwConfigExport
           description: Export a configuration.
           queryParameters:
               getLatestForUniversal:
@@ -9589,7 +9589,7 @@ securitySchemes:
           Import a Firewall Configuration
           -----
         post:
-          displayName: dfwConfigImportExecute
+          displayName: dfwConfigImportCreate # update existing dupfix dfwConfigImportExecute dfwConfigImport
           description: Import a configuration.
           body:
             application/xml:
@@ -9924,10 +9924,10 @@ securitySchemes:
         displayName: ID
         description: Specified host or cluster to synchronize
     post:
-      displayName: dfwSyncExecute
+      displayName: dfwSyncExecute # existing dupfix dfwSync
       description: Force sync host or cluster.
   /{domainID}/enable/{truefalse}:
-    displayName: dfwEnableDisable
+    displayName: dfwEnableDisable # existing dupfix/change dfwEnableDisableAPI
     description: |
       Enable Firewall
       ----
@@ -9942,7 +9942,7 @@ securitySchemes:
         displayName: truefalse
         description: Set parameter to true/false to enable/disable
     post:
-      displayName: dfwEnableDisableToggle
+      displayName: dfwEnableDisableToggle # existing dupfix/change dfwEnableDisableAPI
       description: Enable or disable firewall components on a cluster
   /{contextId}/config/ipfix:
     displayName: dfwIPFix
@@ -10032,7 +10032,7 @@ securitySchemes:
             </spoofguardPolicy>
           schema: spoofGuardPoliciesCreate
     get:
-      displayName: spoofGuardPoliciesList
+      displayName: spoofGuardPoliciesList # existing change spoofGuardPoliciesRead
       description: Retrieve information about all SpoofGuard policies.
 # /4.0/services/spoofguard/policies/{policyID}
     /{policyID}:
@@ -10080,7 +10080,7 @@ securitySchemes:
         displayName: SpoofGuardPolicyID
         description: SpoofGuard policy ID.
     post:
-      displayName: spoofGuardPolicyIPOperations
+      displayName: spoofGuardPolicyIPAction # update existing addition spoofGuardPolicyIPOperations
       description: Approve or publish IP addresses.
       queryParameters:
         vnicId:
@@ -11184,12 +11184,12 @@ securitySchemes:
         Delete specified NSX Edge configuration. Associated appliances are
         also deleted.
     /dnsclient:
-      displayName: edgeDnsClient
+      displayName: edgeDnsClient # existing dupfix dns
       description: |
         Working with DNS Client Configuration
         ----
       put:
-        displayName: edgeDnsClientUpdate
+        displayName: edgeDnsClientUpdate # existing reorg/dupfix nsxEdgeDnsUpdate
         description: Update Edge DNS settings.
         body:
           application/xml:
@@ -15504,7 +15504,7 @@ securitySchemes:
       | edgeMemoryReservationPercentage | integer value [0-100], specifying the memory reservation percentage which will be applied to the NSX Edge appliance. To disable this resource reservation, enter 0. |
       | megaHertzPerVCpu | integer value specifying the megahertz per each vCPU (1000, 1500, 2000) |
     get:
-      displayName: nsxEdgePublishTuningList
+      displayName: nsxEdgePublishTuningRead # update existing addition nsxEdgePublishTuningList
       description: |
         Retrieve the NSX Edge tuning configuration.
         
@@ -15568,7 +15568,7 @@ securitySchemes:
       Working with Certificates and Certificate Chains
       ------
     post:
-      displayName: certificateCreate
+      displayName: certificateCreate # existing change certificateCSRCreate
       description: | 
         Import a certificate or a certificate chain against a certificate
         signing request.
@@ -15639,7 +15639,7 @@ securitySchemes:
               </trustObject>
             schema: certificateSelfSignedCreate
     /{certificateId}:
-      displayName: certificateId
+      displayName: certificateId # existing dupfix certificate
       description: |
         Working With a Specific Certificate
         -----
@@ -15649,15 +15649,15 @@ securitySchemes:
           displayName: certificateId
           description: Certificate ID
       get:
-        displayName: certificateIdRead
+        displayName: certificateIdRead # existing dupfix-related change certificateRead
         description: |
           Retrieve the certificate object specified by ID. If the ID specifies
           a chain, multiple certificate objects are retrieved.
       delete:
-        displayName: certificateIdDelete
+        displayName: certificateIdDelete # existing dupfix-related change certificateDelete
         description: Delete the specified certificate.
   /csr/{scopeId}:
-    displayName: csr
+    displayName: csr # existing dupfix csrCreate
     description: |
       Working with Certificate Signing Requests (CSRs)
     uriParameters:
@@ -15731,7 +15731,7 @@ securitySchemes:
       displayName: csrScopeRead
       description: Retrieve certificate signing requests (CSR) on the specified scope.
   /crl/{scopeId}:
-    displayName: crl
+    displayName: crl # existing dupfix
     description: |
       Working With Certificate Revocation Lists on a Specific Scope
       -----
@@ -15741,7 +15741,7 @@ securitySchemes:
         displayName: scopeId
         description: Specified scope.
     post:
-      displayName: crlCreate
+      displayName: crlCreate # existing dupfix/reorg crlScopeCreate
       description: |
         Create a certificate revocation list (CRL) on the specified scope.
       body:
@@ -15752,7 +15752,7 @@ securitySchemes:
             </trustObject>
           schema: crlCreate
   /crl/scope/{scopeId}:
-    displayName: crlScope
+    displayName: crlScope # existing dupfix/reorg crlScopeRead
     description: |
       Working with CRL Certificates in a Specific Scope
       ----
@@ -16020,7 +16020,7 @@ securitySchemes:
           Working with All Service Composer Alarms
           ------------
         get:
-          displayName: securityPolicyAlarmsAllRead
+          displayName: securityPolicyAlarmsAllList # update existing addition securityPolicyAlarmsAllRead
           description: |
             Retrieve all system alarms that are raised at Service Composer
             level and policy level.
@@ -16859,12 +16859,12 @@ securitySchemes:
       description: |
         Retrieve the security actions applicable on a virtual machine.
   /serviceprovider/firewall:
-    displayName: serviceComposerDFW
+    displayName: serviceComposerDFW # existing change serviceComposerDFWSync
     description: |
       Working with Service Composer Firewall
       --------------
     get:
-      displayName: serviceComposerDFWRead
+      displayName: serviceComposerDFWRead # existing change serviceComposerDFWSyncRead
       description: |
         If Service Composer goes out of sync with Distributed Firewall, you
         must re-synchronize Service Composer rules with firewall rules. If
@@ -17811,7 +17811,7 @@ securitySchemes:
           Working with Hardware Gateway Binding Statistics
           ----
         get:
-          displayName: hardwareGatewayBindingStatisticList
+          displayName: hardwareGatewayBindingStatisticRead # update existing addition hardwareGatewayBindingStatisticList
           description: |
             Retrieve statistics for the specified hardware gateway binding.
             
@@ -17839,7 +17839,7 @@ securitySchemes:
         Working With Hardware Gateway Binding Objects
         ----
       post:
-        displayName: hardwareGatewayBindingsManageUpdate
+        displayName: hardwareGatewayBindingsManageOperations # update existing addition hardwareGatewayBindingsManageUpdate
         description: |
           Manage hardware gateway binding objects.
           
