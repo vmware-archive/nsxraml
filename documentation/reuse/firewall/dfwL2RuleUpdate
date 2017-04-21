@@ -1,0 +1,15 @@
+Update a distributed firewall rule in a layer 2 section.
+
+* Retrieve the configuration for the section that contains the rule you want
+  to modify.
+* Retrieve the Etag value from the response headers.
+  **Note**: This is the Etag value of the firewall section to which you want
+  to add the rule. If you are keeping this rule in the same section, you must
+  keep the same Etag number.
+* Extract and modify the rule configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.

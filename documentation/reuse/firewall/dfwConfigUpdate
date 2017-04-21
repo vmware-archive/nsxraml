@@ -1,0 +1,24 @@
+Update the complete firewall configuration in all sections.
+
+* Retrieve the configuration with `GET /api/4.0/firewall/globalroot-0/config`.
+* Retrieve the Etag value from the response headers.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+* IDs for new objects (rule/section) should be removed or set to zero.
+* If new entities (sections/rules) have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.

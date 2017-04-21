@@ -1,0 +1,45 @@
+Add rules to the specified layer 3 section in distributed firewall.
+
+You add firewall rules at the global scope. You can then narrow down the scope
+(datacenter, cluster, distributed virtual port group, network, virtual machine,
+vNIC, or logical switch) at which you want to apply the rule. Firewall allows
+you to add multiple objects at the source and destination levels for each rule,
+which helps reduce the total number of firewall rules to be added.  To add a
+identity based firewall rule, first create a security group based on Directory
+Group objects. Then create a firewall rule with the security group as the
+source or destination.  Rules that direct traffic to a third part service are
+referred to as layer3 redirect rules, and are displayed in the layer3 redirect
+tab.
+
+When Distributed Firewall is used with Service Composer, firewall
+rules created by Service Composer contain an additional attribute
+in the XML called managedBy.
+
+Follow this procedure to add a rule:
+
+* Retrieve the configuration for the specified section.
+* Retrieve the Etag value from the response headers.
+  **Note**: Each section contains its own Etag, generationNumber, and
+  timestamp. When adding a new rule, you must use the Etag value of the
+  firewall section to which you wish to add the rule.
+* Extract and modify the configuration from the response body as needed.
+* Set the If-Match header to the section Etag value, and submit the request.
+
+Not all fields are required while sending the request. All the optional fields
+are safe to be ignored while sending the configuration to server. For example,
+if an IP set is referenced in the rule only IPSet and Type is needed in the
+Source/Destination objects and not Name and isValid tags.
+
+When updating the firewall configuration:
+
+* IDs for new rules should be removed or set to zero.
+* If new rules have been sent in the request, the response
+  will contain the system-generated IDs, which are assigned to these new
+  entities.
+* **appliedTo** can be any valid firewall rule element.
+* **action** can be *ALLOW*, *BLOCK*, or *REJECT*. REJECT sends reject message for
+  unaccepted packets; RST packets are sent for TCP connections and ICMP
+  unreachable code packets are sent for UDP, ICMP, and other IP connections
+* source and destination can have an exclude flag. For example, if you add an
+  exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
+  originating from all IPs other than 1.1.1.1.
