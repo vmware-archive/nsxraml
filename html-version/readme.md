@@ -4,16 +4,16 @@ This is an automatically generated HTML Version of the NSX for vSphere API RAML 
 
 To view the dynamic HTML Version of the NSX for vSphere RAML spec on-line, follow this link:
 
-https://htmlpreview.github.io/?https://github.com/vmware/nsxraml/blob/develop/html-version/nsxvapi.html
+https://htmlpreview.github.io/?https://github.com/vmware/nsxraml/blob/6.3/html-version/nsxvapi.html
 
 To view the static HTML Version of the NSX for vSphere RAML spec on-line, follow this link:
 
-https://htmlpreview.github.io/?https://github.com/vmware/nsxraml/blob/develop/html-version/nsxvapi-static.html
+https://htmlpreview.github.io/?https://github.com/vmware/nsxraml/blob/6.3/html-version/nsxvapi-static.html
 
 To download the dynamic HTML Version of the NSX for vSphere RAML spec, use the raw github link, right click on it and download:
 
-https://raw.githubusercontent.com/vmware/nsxraml/develop/html-version/nsxvapi.html
+https://raw.githubusercontent.com/vmware/nsxraml/6.3/html-version/nsxvapi.html
 
 To download the static HTML Version of the NSX for vSphere RAML spec, use the raw github link, right click on it and download:
 
-https://raw.githubusercontent.com/vmware/nsxraml/develop/html-version/nsxvapi-static.html
+https://raw.githubusercontent.com/vmware/nsxraml/6.3/html-version/nsxvapi-static.html
