@@ -3249,6 +3249,8 @@ securitySchemes:
           failIfExists:
             displayName: failIfExists
             description: |
+              Default is true.
+              
               If failIfExists=false:
               * If the member is not already present in the SecurityGroup, the API
               adds the member to the SecurityGroup.
@@ -3269,9 +3271,37 @@ securitySchemes:
               ```
             type: boolean
             default: true
+            required: false
       delete:
         displayName: secGroupMemberDelete
         description: Delete member from the specified security group.
+        queryParameters:
+          failIfAbsent:
+            displayName: failIfAbsent
+            description: |
+              Default is true.
+              
+              If failIfAbsent=false:
+              * If the member is present in the SecurityGroup, the API removes
+                the member from the SecurityGroup.
+              * If the member is not present in the SecurityGroup, the API call
+                will be a no-op and will return silently.
+              
+              If failIfExists=true:
+              * If the member is present in the SecurityGroup, the API removes
+                the member from the SecurityGroup.
+              * If the member is not present in the SecurityGroup, the API call
+              fails with the below error:
+              ```
+              <error>
+                <details>The requested object : vm-1000 could not be found. Object identifiers are case sensitive.</details>
+                <errorCode>202</errorCode>
+                <moduleName>core-services</moduleName>
+              </error>
+              ```
+            type: boolean
+            default: true
+            required: false
     /translation/virtualmachines:
       displayName: secGroupVMNodes
       description: |

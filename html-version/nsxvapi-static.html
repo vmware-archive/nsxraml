@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#100;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#x72;&#x65;&#46;&#x63;&#111;&#x6d;">&#100;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#x72;&#x65;&#46;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#109;&#x77;&#97;&#114;&#101;&#46;&#x63;&#111;&#x6d;">&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#109;&#x77;&#97;&#114;&#101;&#46;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -8715,7 +8715,8 @@ object ID.</p>
     
   </dt>
   <dd>
-      <p>If failIfExists=false:</p>
+      <p>Default is true.</p>
+<p>If failIfExists=false:</p>
 <ul>
 <li>If the member is not already present in the SecurityGroup, the API
 adds the member to the SecurityGroup.</li>
@@ -8748,6 +8749,38 @@ fails with the below error:<pre><code class="code-block hljs lang-xml"><span cla
   <div class="content">
     <p><p>Delete member from the specified security group.</p>
 </p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">failIfAbsent</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>Default is true.</p>
+<p>If failIfAbsent=false:</p>
+<ul>
+<li>If the member is present in the SecurityGroup, the API removes
+the member from the SecurityGroup.</li>
+<li>If the member is not present in the SecurityGroup, the API call
+will be a no-op and will return silently.</li>
+</ul>
+<p>If failIfExists=true:</p>
+<ul>
+<li>If the member is present in the SecurityGroup, the API removes
+the member from the SecurityGroup.</li>
+<li>If the member is not present in the SecurityGroup, the API call
+fails with the below error:<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">error</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">details</span>&gt;</span>The requested object : vm-1000 could not be found. Object identifiers are case sensitive.<span class="hljs-tag">&lt;/<span class="hljs-name">details</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>202<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">moduleName</span>&gt;</span>core-services<span class="hljs-tag">&lt;/<span class="hljs-name">moduleName</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">error</span>&gt;</span></code></pre></li>
+</ul>
+
+  </dd>
+</dl>
+    </div>
   </div>
 </div>
 </section>
