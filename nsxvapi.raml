@@ -580,7 +580,7 @@ securitySchemes:
               </multicastRange>
             schema: vdnMulticastUpdate
       delete:
-        displayName: vdnSegmentPoolDelete
+        displayName: vdnMulticastPoolDelete # dupfix vdnSegmentPoolDelete
         description: |
           Delete the specified multicast address range.
           
@@ -614,7 +614,7 @@ securitySchemes:
       put:
       # updated 6.2.3: Port change is no longer disruptive. New force query
       # parameter allows port change using the previous disruptive mechanism.
-        displayName: vdnConfigUDPUpdate
+        displayName: vdnConfigUDPUpdateUpdate # dupfix vdnConfigUDPUpdate
         description: |
           Update the VXLAN port configuration to use port *portNumber*.
           
@@ -975,7 +975,7 @@ securitySchemes:
         Working With Transport Zone Attributes
         ----
       put:
-        displayName: vdnScopeAttribUpdate
+        displayName: vdnScopeAttribUpdateUpdate  # dupfix vdnScopeAttribUpdate
         description: |
           Update the attributes of a transport zone.
           
@@ -1003,7 +1003,7 @@ securitySchemes:
         Testing Multicast Group Connectivity
         -------
       post:
-        displayName: vdnScopeConnCheck
+        displayName: vdnScopeConnCheckExecute # dupfix vdnScopeConnCheck
         description: |
           Test multicast group connectivity.
           
@@ -1457,7 +1457,7 @@ securitySchemes:
       Working Virtual Machine Connections to Logical Switches
       -----
     post:
-      displayName: logicalSwitchVmAttach
+      displayName: logicalSwitchVmAttachCreate # dupfix logicalSwitchVmAttach
       description: |
         Attach a VM vNIC to, or detach a VM vNIC from a logical switch.
         
@@ -1616,7 +1616,7 @@ securitySchemes:
         Testing Host Connectivity
         -----
       post:
-        displayName: logicalSwitchConnCheck
+        displayName: logicalSwitchConnCheckExecute # dupfix logicalSwitchConnCheck
         description: |
           Test multicast group connectivity.
           
@@ -1654,7 +1654,7 @@ securitySchemes:
         Testing Point-to-Point Connectivity
         ----
       post:
-        displayName: logicalSwitchPing
+        displayName: logicalSwitchPingExecute # dupfix logicalSwitchPing
         description: |
           Test point-to-point connectivity.
           
@@ -1930,7 +1930,7 @@ securitySchemes:
       Working With Controller Upgrade Availability
       ----
     get:
-      displayName: nsxControllerUpgradeAvailability
+      displayName: nsxControllerUpgradeAvailabilityRead # dupfix nsxControllerUpgradeAvailability
       description: Retrieve controller upgrade availability.
   /progress/{jobId}:
     displayName: nsxControllerJob
@@ -2160,7 +2160,7 @@ securitySchemes:
         Working with Controller Cluster Snapshots
         -----
       get:
-        displayName: nsxControllerSnapshot
+        displayName: nsxControllerSnapshotRead # dupfix nsxControllerSnapshot
         description: |
           Take a snapshot of the control cluster from the specified controller
           node.
@@ -2459,7 +2459,7 @@ securitySchemes:
           For *scopeID* use globalroot-0 or *datacenterId* in upgrade use
           cases.
     get:
-      displayName: ipPoolRead
+      displayName: ipPoolsList # dupfix ipPoolRead
       description: |
         Retrieves all IP pools on the specified scope where the *scopeID* is the
         reference to the desired scope. An example of the *scopeID* is
@@ -2666,7 +2666,7 @@ securitySchemes:
             description: |
               The IP address to release, e.g. '192.168.10.10'
         delete:
-          displayName: ipAddressRelease
+          displayName: ipAddressReleaseDelete # dupfix ipAddressRelease
           description: Release an IP address allocation in the pool.
 /2.0/services/licensing/capacityusage:
   displayName: capacityUsage
@@ -2794,7 +2794,7 @@ securitySchemes:
           displayName: tagId
           required: true
       delete:
-        displayName: securityTagDelete
+        displayName: securityTagDeleteDelete # dupfix securityTagDelete
         description: Delete the specified security tag.
       /vm:
         displayName: securityTagVMsList
@@ -2802,7 +2802,7 @@ securitySchemes:
           Working With Virtual Machines on a Specific Security Tag
           ----
         get:
-          displayName: securityTagVMsList
+          displayName: securityTagVMsListList # dupfix securityTagVMsList
           description: |
             Retrieve the list of VMs that have the specified tag attached to
             them.
@@ -3185,7 +3185,7 @@ securitySchemes:
       Working with Available NSX Manager Roles
       ----
     get:
-      displayName: userMgmtRoleRead
+      displayName: userMgmtRolesRead # dupfix userMgmtRoleRead
       description: Read all possible roles in NSX Manager
   /scopingobjects:
     displayName: userScopingObjects
@@ -3407,7 +3407,7 @@ securitySchemes:
         displayName: objectId
         description: Security group ID.
     put:
-      displayName: secGroupBulkObject
+      displayName: secGroupBulkObjectUpdate # dupfix secGroupBulkObject
       description: |
         Update configuration for the specified security group, including membership information.
       body:
@@ -3707,7 +3707,7 @@ securitySchemes:
           For scopeMoref use "globalroot-0" for non-universal IP sets and use
           "universalroot-0" for universal IP sets.
     get:
-      displayName: ipsetList
+      displayName: ipsetListList # dupfix ipsetList
       description: Retrieve all configured IPSets
   /{scopeMoref}:
     displayName: ipsetCreate
@@ -3722,7 +3722,7 @@ securitySchemes:
           For scopeMoref use "globalroot-0" for non-universal IP sets and use
           "universalroot-0" for universal IP sets.
     post:
-      displayName: ipsetCreate
+      displayName: ipsetCreateCreate # dupfix ipsetCreate
       description: Create a new IP set.
       body:
         application/xml:
@@ -3961,7 +3961,7 @@ securitySchemes:
       NSX Manager Synchronization
       ----
     post:
-      displayName: universalSyncSync
+      displayName: universalSyncSyncAction # dupfix universalSyncSync
       description: Sync all objects on the NSX Manager.
       queryParameters:
         action:
@@ -4189,7 +4189,7 @@ securitySchemes:
       Reboot NSX Manager
       -----
     post:
-      displayName: systemReboot
+      displayName: systemRebootExecute # dupfix systemReboot
       description: Reboot the NSX Manager appliance.
   /system/cpuinfo:
     displayName: systemCPUInfo
@@ -4197,7 +4197,7 @@ securitySchemes:
       NSX Manager CPU Information
       -----
     get:
-      displayName: systemCPUInfo
+      displayName: systemCPUInfoRead # dupfix systemCPUInfo
       description: Retrieve NSX Manager CPU information.
       responses:
         200:
@@ -4217,7 +4217,7 @@ securitySchemes:
       NSX Manager Appliance Uptime Information
       ----
     get:
-      displayName: systemUptime
+      displayName: systemUptimeRead # dupfix systemUptime
       description: |
         Retrieve NSX Manager uptime information.
         
@@ -4231,7 +4231,7 @@ securitySchemes:
       NSX Manager Appliance Memory Information
       -----
     get:
-      displayName: systemMemoryInfo
+      displayName: systemMemoryInfoRead # dupfix systemMemoryInfo
       description: Retrieve NSX Manager memory information.
       responses:
         200:
@@ -4250,7 +4250,7 @@ securitySchemes:
       NSX Manager Appliance Storage Information
       ----
     get:
-      displayName: systemStorageInfo
+      displayName: systemStorageInfoRead # dupfix systemStorageInfo
       description: Retrieve NSX Manager storage information.
       responses:
         200:
@@ -4945,7 +4945,7 @@ securitySchemes:
         displayName: filename
         description: Name of log file to download.
     get:
-      displayName: techLogsDownload
+      displayName: techLogsDownloadRead # dupfix techLogsDownload
       description: Download tech support logs
   /notifications:
     displayName: notifications
@@ -4969,7 +4969,7 @@ securitySchemes:
           description: Notification ID.
           required: true
       post:
-        displayName: notificationsAcknowledge
+        displayName: notificationsAcknowledgeAck # dupfix notificationsAcknowledge
         description: |
           Acknowledge a notification. The notification is then deleted from
           the system.
@@ -5083,7 +5083,7 @@ securitySchemes:
           displayName: componentID
           description: Component ID
       post:
-        displayName: upgradeStart
+        displayName: upgradeStartExecute # dupfix upgradeStart
         description: Start upgrade process.
         body:
           application/xml:
@@ -5116,7 +5116,7 @@ securitySchemes:
           displayName: componentID
           description: Component ID.
       get:
-        displayName: upgradeStatus
+        displayName: upgradeStatusRead # dupfix upgradeStatus
         description: Query upgrade status.
   /certificatemanager:
     displayName: certificateManager
@@ -5494,7 +5494,7 @@ securitySchemes:
   /features:
     displayName: nwfabricFeatures
     get:
-      displayName: nwfabricFeatures
+      displayName: nwfabricFeaturesList # dupfix nwfabricFeatures
       description: |
         Retrieves all network fabric features available on the cluster. Multiple
         **featureInfo** sections may be returned.
@@ -5516,7 +5516,7 @@ securitySchemes:
       Working With Network Fabric Status
       ----
     get:
-      displayName: nwfabricStatus
+      displayName: nwfabricStatusRead # dupfix nwfabricStatus
       description: |
         Retrieve the network fabric status of the specified resource.
       queryParameters:
@@ -5974,7 +5974,7 @@ securitySchemes:
         displayName: clusterID
         description: Cluster ID
     get:
-      displayName: serviceRead
+      displayName: serviceClusterRead # dupfix serviceRead
       description: Retrieve all services deployed along with their status.
       responses:
         200:
@@ -6033,7 +6033,7 @@ securitySchemes:
                   </deployedService>
                 </deployedServices>
     delete:
-      displayName: serviceDelete
+      displayName: serviceClusterDelete # dupfix serviceDelete
       description: |
         Uninstall a service. Fails if you try to remove a service that another
         service depends on.
@@ -6749,7 +6749,7 @@ securitySchemes:
         displayName: ID
         description: Domain ID.
     delete:
-      displayName: domainDelete
+      displayName: domainDeleteDelete # dupfix domainDelete
       description: Delete domain.
   /updateLdapServer:
     displayName: ldapServerCreate
@@ -6757,7 +6757,7 @@ securitySchemes:
       Create LDAP Server
       ------------
     post:
-      displayName: ldapServerCreate
+      displayName: ldapServerCreateCreate # dupfix ldapServerCreate
       description: Create LDAP server.
       body:
         application/xml:
@@ -6792,7 +6792,7 @@ securitySchemes:
         description: Specified domain.
         required: true
     put:
-      displayName: ldapServerSync
+      displayName: ldapServerSyncExecute # dupfix ldapServerSync
       description: Start LDAP full sync.
   /deltaSync/{domainID}:
     displayName: ldapServerDeltaSync
@@ -6805,7 +6805,7 @@ securitySchemes:
         description: Specified domain.
         required: true
     put:
-      displayName: ldapServerDeltaSync
+      displayName: ldapServerDeltaSyncExecute # dupfix ldapServerDeltaSync
       description: Start LDAP delta sync.
   /deleteLdapServer/{serverID}:
     displayName: ldapServerDelete
@@ -6818,7 +6818,7 @@ securitySchemes:
         displayName: serverID
         description: Specified LDAP server.
     delete:
-      displayName: ldapServerDelete
+      displayName: ldapServerDeleteDelete # dupfix ldapServerDelete
       description: Delete LDAP server.
   /updateEventLogServer:
     displayName: eLogServer
@@ -6849,7 +6849,7 @@ securitySchemes:
         displayName: domainID
         description: Specified domain.
     get:
-      displayName: eLogServerDomainRead
+      displayName: eLogServerDomainReadRead # dupfix eLogServerDomainRead
       description: Query EventLog servers for a domain.
   /deleteEventLogServer/{serverID}:
     displayName: eLogServerDelete
@@ -6862,7 +6862,7 @@ securitySchemes:
         displayName: serverID
         description: Specified EventLog server ID.
     delete:
-      displayName: eLogServerDelete
+      displayName: eLogServerDeleteDelete # dupfix eLogServerDelete
       description: Delete EventLog server.
 /1.0/identity:
   displayName: mappingLists
@@ -6977,7 +6977,7 @@ securitySchemes:
       Enable Syslog Support
       ----
     post:
-      displayName: syslogEnable
+      displayName: syslogEnableSet # dupfix syslogEnable
       description: Enable syslog support.
   /disable:
     displayName: syslogDisable
@@ -6985,7 +6985,7 @@ securitySchemes:
       Disable Syslog Support
       ----
     post:
-      displayName: syslogDisable
+      displayName: syslogDisableSet # dupfix syslogDisable
       description: Disable syslog support.
 /2.0/si:
   displayName: solutionIntegration
@@ -7986,7 +7986,7 @@ securitySchemes:
             type of solution and the order in which the solution receives events
             relative to other solutions on the same host.
       post:
-        displayName: guestIntrospectionSolutionActivate
+        displayName: guestIntrospectionSolutionActivateRegistered # dupfix guestIntrospectionSolutionActivate
         description: |
           Activate an endpoint protection solution that has been registered
           and located. Specify the following parameter in the request body.
@@ -12377,7 +12377,7 @@ securitySchemes:
                   </natRule>
                 schema: edgeNatRuleUpdate
           delete:
-            displayName: edgeNatRuleUpdate
+            displayName: edgeNatRuleDelete # dupfix edgeNatRuleUpdate
             description: Delete the specified NAT rule.
     /routing/config:
       displayName: routingConfig
@@ -13421,7 +13421,7 @@ securitySchemes:
             displayName: memberID
             description: Member ID.
         post:
-          displayName: lbMemberCond
+          displayName: lbMemberCondToggle # dupfix lbMemberCond
           description: Update enabled status of the specified member.
           queryParameters:
             enable:
@@ -13504,7 +13504,7 @@ securitySchemes:
       displayName: edgeDnsStats
       description: Get DNS server statistics
       get:
-        displayName: edgeDnsStats
+        displayName: edgeDnsStatsRead # dupfix edgeDnsStats
         description: Get DNS server statistics
     /dhcp/config:
       displayName: dhcp
@@ -16855,7 +16855,7 @@ securitySchemes:
         displayName: ID
         description: VM ID
     get:
-      displayName: vmApplicableSecurityAction
+      displayName: vmApplicableSecurityActionRead # dupfix vmApplicableSecurityAction
       description: |
         Retrieve the security actions applicable on a virtual machine.
   /serviceprovider/firewall:
