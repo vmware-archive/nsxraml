@@ -3611,8 +3611,14 @@ securitySchemes:
       get:
         displayName: secGroupVMNodesRead
         description: |
-          Retrieve list of virtual machine entities that belong to a specific security
-          group.
+          Retrieve effective membership of a security group in terms of virtual
+          machines. The effective membership is calculated using all the three
+          membership components of a security group - static include, static
+          exclude, and dynamic using the following formula:
+            
+          Effective membership virtual machines = [ (VMs resulting from static include
+          component + VMs resulting from dynamic component) - (VMs resulting from static
+          exclude component) ]
     /translation/ipaddresses:
       displayName: secGroupIPNodes
       description: |
@@ -3655,8 +3661,9 @@ securitySchemes:
     get:
       displayName: secGroupLookupVMRead
       description: |
-        Retrieve list of security groups that the specified virtual machine
-        belongs to.
+        Retrieves the collection of security groups to which a virtual machine
+        is a direct or indirect member. Indirect membership involves nesting of
+        security groups.
   /internal/scope/{scopeId}:
     displayName: secGroupInternal
     description: |
@@ -15808,8 +15815,129 @@ securitySchemes:
 /2.0/services/policy:
   displayName: policy
   description: |
-    Working with Security Policies and Actions
+    Working with Service Composer
     ============================
+    Service Composer helps you provision and assign network and security
+    services to applications in a virtual infrastructure. You map these services
+    to a security group, and the services are applied to the virtual machines in
+    the security group.
+    
+    ## Security Groups
+    
+    You begin by creating a security group to define assets that you want to
+    protect. Security groups may be static (including specific virtual machines)
+    or dynamic where membership may be defined in one or more of the following
+    ways:
+    * vCenter containers (clusters, port groups, or datacenters).
+    * Security tags, IPset, MACset, or even other security groups. For example,
+      you may include a criteria to add all members tagged with the specified
+      security tag (such as AntiVirus.virusFound) to the security group.
+    * Directory Groups (if NSX Manager is registered with Active Directory).
+    * Regular expressions such as virtual machines with name *VM1*.
+    
+    Note that security group membership changes constantly. For example, a
+    virtual machine tagged with the AntiVirus.virusFound tag is moved into the
+    Quarantine security group. When the virus is cleaned and this tag is removed
+    from the virtual machine, it again moves out of the Quarantine security
+    group.
+    
+    ## Security Policies
+    
+    A security policy is a collection of the following service configurations.
+    
+    Service | Description | Applies to
+    ---|---|---
+    Distributed Firewall rules<br>**category**: *firewall* |  Rules that define the traffic to be allowed to, from, or within the security group. | vNIC
+    Guest Introspection service<br>**category**: *endpoint* | Data Security or third party solution provider services such as anti-virus or vulnerability management services. | virtual machines
+    Network Introspection services <br>(NetX or Network Extensibility)<br>**category**: *traffic_steering*| Services that monitor your network such as IPS. | virtual machines
+    
+    ## Applying Security Policies to Security Groups
+    
+    You apply a security policy (say SP1) to a security group (say SG1). The
+    services configured for SP1 are applied to all virtual machines that are
+    members of SG1. If a virtual machine belongs to more than one security
+    group, the services that are applied to the virtual machine depends on the
+    precedence of the security policy mapped to the security groups. Service
+    Composer profiles can be exported and imported as backups or for use in
+    other environments. This approach to managing network and security services
+    helps you with actionable and repeatable security policy management.
+    
+    ## Service Composer Parameters
+    
+    The following parameters are related to Service Composer, security
+    policies, and security groups.
+      
+    ### Common Parameters
+    
+    * **actionType** - Defines the type of action belonging to a given
+    executionOrderCategory
+    * **executionOrderCategory** - Category to which the action belongs to
+    (endpoint, firewall or traffic_steering)
+    * **isActive** - In a security policy hierarchy, an action within a policy
+    may or may not be active based on the
+    precedence of the policy or usage of isActionEnforced flag in that
+    hierarchy
+    * **isActionEnforced** - Enforces an action of a parent policy on its
+    child policies for a given actionType and
+    executionOrderCategory. Note that in a policy hierarchy, for a given
+    actionType and executionOrderCategory, there can be only one action
+    which can be marked as enforced.
+    * **isEnabled** - Indicates whether an action is enabled
+    * **secondarySecurityGroup** - Applicable for actions which need secondary
+    security groups, say a source-destination firewall rule
+    * **securityPolicy** - Parent policy in an action
+    
+    ### Output-only Parameters
+    
+    * **executionOrder** - Defines the sequence in which actions belonging to
+    an executionOrderCategory are executed. Note that this is not an input
+    parameter and its value is implied by the index in the list.
+    
+    ### Firewall Category Parameters
+    
+    * **action** - Allow or block the traffic
+    * **applications** - Applications / application groups on which the rules
+    are to be applied
+    * **direction** - Direction of traffic towards primary security group.
+    Possible values: inbound, outbound, intra
+    * **logged** - Flag to enable logging of the traffic that is hit by this
+    rule
+    * **outsideSecondaryContainer** - Flag to specify outside i.e. outside
+    securitygroup-3
+    
+    ### Endpoint Category Parameters
+    
+    * **serviceId** - ID of the service (as registered with the service
+    insertion module). If this tag is null, the
+    functionality type (as defined in actionType tag) is not applied which
+    will also result in blocking the actions (of given functionality type)
+    that are inherited from the parent security policy. This is true if
+    there is no action of enforce type.
+    * **invalidServiceId** - Flag to indicate that the service that was
+    referenced in this rule is deleted, which make
+    the rule ineffective (or deviate from the original intent that existed
+    while configuring the rule). You must either modify this rule by
+    adding correct Service or delete this rule.
+    * **serviceName** -Name of the service
+    * **serviceProfile** - Profile to be referenced in Endpoint rule.
+    * **invalidServiceProfile** - Flag to indicate that the service profile
+    that was referenced in this rule is deleted, which makes
+    the rule ineffective (or deviate from the original intent that existed
+    while configuring the rule). You must either modify this rule by
+    adding correct Service Profile or delete this rule.
+    
+    The following parameters are deprecated:
+    * **vendorTemplateId**
+    * **invalidVendorTemplateId**
+    * **vendorTemplateName**
+    
+    ### Traffic Steering/NetX Category Parameters
+    
+    * **redirect** - Flag to indicate whether to redirect the traffic or not
+    * **serviceProfile** - Service profile for which redirection is being
+    configured
+    * **logged** - Flag to enable logging of the traffic that is hit by this
+    rule
 
   /securitypolicy:
     displayName: securityPolicy
@@ -15818,6 +15946,9 @@ securitySchemes:
       ------------------------------
       A security policy is a set of Endpoint, firewall, and network
       introspection services that can be applied to a security group.
+      
+      See *Working with Security Groups* for more information about managing
+      security groups.
     post:
       displayName: securityPolicyCreate
       description: |
@@ -15836,72 +15967,6 @@ securitySchemes:
           and Endpoint) are installed. See *NSX Installation Guide*.
         * the required partner services have been registered with NSX Manager.
         * the required security groups have been created.
-        
-        Tags related to Service Composer, security policies, and security
-        groups:
-        Common Tags
-        * **actionType** - Defines the type of action belonging to a given
-        executionOrderCategory
-        * **executionOrderCategory** - Category to which the action belongs to
-        (endpoint, firewall or traffic_steering)
-        * **isActive** - In a security policy hierarchy, an action within a policy
-        may or may not be active based on the
-        precedence of the policy or usage of isActionEnforced flag in that
-        hierarchy
-        * **isActionEnforced** - Enforces an action of a parent policy on its
-        child policies for a given actionType and
-        executionOrderCategory. Note that in a policy hierarchy, for a given
-        actionType and executionOrderCategory, there can be only one action
-        which can be marked as enforced.
-        * **isEnabled** - Indicates whether an action is enabled
-        * **secondarySecurityGroup** - Applicable for actions which need secondary
-        security groups, say a
-        source-destination firewall rule
-        * **securityPolicy** - Parent policy in an action
-        Output only Tags
-        * **executionOrder** - Defines the sequence in which actions belonging to
-        an executionOrderCategory are
-        executed. Note that this is not an input parameter and its value is
-        implied by the index in the list.
-        Firewall Category Tags
-        * **action** - Allow or block the traffic
-        * **applications** - Applications / application groups on which the rules
-        are to be applied
-        * **direction** - Direction of traffic towards primary security group.
-        Possible values: inbound, outbound, intra
-        * **logged** - Flag to enable logging of the traffic that is hit by this
-        rule
-        * **outsideSecondaryContainer** - Flag to specify outside i.e. outside
-        securitygroup-3
-        Endpoint Category Tags
-        * **serviceId** - ID of the service (as registered with the service
-        insertion module). If this tag is null, the
-        functionality type (as defined in actionType tag) is not applied which
-        will also result in blocking the actions (of given functionality type)
-        that are inherited from the parent security policy. This is true if
-        there is no action of enforce type.
-        * **invalidServiceId** - Flag to indicate that the service that was
-        referenced in this rule is deleted, which make
-        the rule ineffective (or deviate from the original intent that existed
-        while configuring the rule). You must either modify this rule by
-        adding correct Service or delete this rule.
-        * **serviceName** -Name of the service
-        * **serviceProfile** - Profile to be referenced in Endpoint rule.
-        * **invalidServiceProfile** - Flag to indicate that the service profile
-        that was referenced in this rule is deleted, which makes
-        the rule ineffective (or deviate from the original intent that existed
-        while configuring the rule). You must either modify this rule by
-        adding correct Service Profile or delete this rule.
-        The following tags are deprecated:
-        * **vendorTemplateId**
-        * **invalidVendorTemplateId**
-        * **vendorTemplateName**
-        Traffic Steering/NetX Category Tags
-        * **redirect** - Flag to indicate whether to redirect the traffic or not
-        * **serviceProfile** - Service profile for which redirection is being
-        configured
-        * **logged** - Flag to enable logging of the traffic that is hit by this
-        rule
       body:
         application/xml:
           example: |
@@ -15916,12 +15981,7 @@ securitySchemes:
                 <objectId></objectId>
               </securityGroupBinding>
               <securityGroupBinding>
-                ...
-              </securityGroupBinding>
-              ...
-              ...
-              <securityGroupBinding>
-                ...
+                <objectId></objectId>
               </securityGroupBinding>
               <actionsByCategory>
                 <category>firewall</category>
@@ -15937,12 +15997,7 @@ securitySchemes:
                     <objectId></objectId>
                   </secondarySecurityGroup>
                   <secondarySecurityGroup>
-                    ...
-                  </secondarySecurityGroup>
-                  ...
-                  ...
-                  <secondarySecurityGroup>
-                    ...
+                    <objectId></objectId>
                   </secondarySecurityGroup>
                   <applications>
                     <application>
@@ -15951,19 +16006,12 @@ securitySchemes:
                     <applicationGroup>
                       <objectId></objectId>
                     </applicationGroup>
-                    ...
-                    ...
                   </applications>
                   <logged></logged>
                   <action></action>
                   <direction></direction>
                   <outsideSecondaryContainer></outsideSecondaryContainer>
                 </action>
-                <action>
-                  ...
-                </action>
-                ...
-                ...
                 <action>
                   ...
                 </action>
@@ -16005,360 +16053,128 @@ securitySchemes:
               </actionsByCategory>
             </securityPolicy>
           schema: securityPolicyCreate
-    /status:
-      displayName: securityPolicyStatus
-      description: |
-        Working with Service Composer Status
-        ------------------------------------
-      get:
-        displayName: securityPolicyStatusRead
-        description: |
-          Retrieve the consolidated status of Service Composer.
-          
-          The possible return of value for status are: *in_sync*,
-          *in_progress*, *out_of_sync*, and *pending*.
-          
-          **Method history:**
-          
-          Release | Modification
-          --------|-------------
-          6.2.3 | Method introduced.
-        responses:
-          200:
-            body:
-              application/xml:
-                example: |
-                  <serviceComposerStatus>
-                    <status>in_sync</status>
-                  </serviceComposerStatus>
-    /alarms:
-      displayName: securityPolicyAlarms
-      description: |
-        Working with Security Policy Alarms
-        -----------
-
-      /all:
-        displayName: securityPolicyAlarmsAll
-        description: |
-          Working with All Service Composer Alarms
-          ------------
-        get:
-          displayName: securityPolicyAlarmsAllList # update existing addition securityPolicyAlarmsAllRead
-          description: |
-            Retrieve all system alarms that are raised at Service Composer
-            level and policy level.
-            
-            **Method history:**
-            
-            Release | Modification
-            --------|-------------
-            6.2.3 | Method introduced.
-          responses:
-            200:
-              body:
-                application/xml:
-                  example: |
-                    <systemAlarms>
-                      <systemAlarm>
-                        <eventId></eventId>
-                        <timestamp></timestamp>
-                        <severity></severity>
-                        <eventSource></eventSource>
-                        <eventCode></eventCode>
-                        <message></message>
-                        <module></module>
-                        <objectId></objectId>
-                        <reporterName></reporterName>
-                        <reporterType></reporterType>
-                        <sourceType></sourceType>
-                        <displayName></displayName>
-                        <eventMetadata>
-                          <data>
-                          <key></key>
-                          <value></value>
-                          </data>
-                          <data>
-                          ...
-                          </data>
-                          ...
-                          <data>
-                          ...
-                          </data>
-                        </eventMetadata>
-                        <resolutionAttempted></resolutionAttempted>
-                        <resolvable></resolvable>
-                        <alarmId></alarmId>
-                        <alarmCode></alarmCode>
-                        <alarmSource></alarmSource>
-                        <alarmBeingResolved></alarmBeingResolved>
-                        <alarmMetadata>
-                          <data>
-                          <key></key>
-                          <value></value>
-                          </data>
-                          <data>
-                          ...
-                          </data>
-                          ...
-                          <data>
-                          ...
-                          </data>
-                        </alarmMetadata>
-                      </systemAlarm>
-                    </systemAlarms>
-    /serviceprovider/firewall:
-      displayName: serviceComposerFirewallAppliedTo
-      description: |
-        Working with Service Composer Firewall Applied To Setting
-        -------------
-        You can set the applied to setting for all firewall rules created
-        though Service Composer to either Distributed Firewall or Policy's
-        Security Groups. By default, the applied to is set to Distributed
-        Firewall. When Service Composer firewall rules have an applied to
-        setting of distributed firewall, the rules are applied to all clusters
-        on which distributed firewall is installed. If the firewall rules are
-        set to apply to the policy's security groups, you have more granular
-        control over the firewall rules, but may need multiple security
-        policies or firewall rules to get the desired result.
-        
-        **Applied To Values for Service Composer Firewall Rules**
-        
-        Value | Description
-        ------|----------
-        dfw_only | Firewall rules are applied to all clusters on which Distributed Firewall is installed.
-        policy_security_group | Firewall rules are applied to security groups on which the security policy is applied.
-      get:
-        displayName: serviceComposerFirewallAppliedToRead
-        description: |
-          Retrieve the Service Composer firewall applied to setting.
-        responses:
-          200:
-            body:
-              application/xml:
-                example: |
-                  <SecurityPolicyFirewallConfig>
-                    <appliedTo>dfw_only</appliedTo>
-                  </SecurityPolicyFirewallConfig>
-      put:
-        displayName: serviceComposerFirewallAppliedToUpdate
-        description: |
-          Update the Service Composer firewall applied to setting.
-        body:
-          application/xml:
-            example: |
-              <SecurityPolicyFirewallConfig>
-                <appliedTo>policy_security_group</appliedTo>
-              </SecurityPolicyFirewallConfig>
     /{ID}:
       displayName: securityPolicyID
       description: |
-        Working with Security Policies
+        Working With a Specific Security Policy
         ------------------
       uriParameters:
         ID:
           required: true
           displayName: ID
           description: |
-            ID of desired security policy (or 'all' to for all security
-            policies).
+            Security policy, for example, *policy-5*.
       get:
         displayName: securityPolicyIDRead
         description: |
-          Retrieve security policy information.
+          Retrieve security policy information. To view all security policies,
+          specify *all* as the security policy ID.
         responses:
           200:
             body:
               application/xml:
                 example: |
                   <securityPolicy>
-                    <securityPolicy>
-                      <name>name</name>
-                      <description>description</description>
-                      <precedence></precedence>
-                      <parent>
-                        <objectId></objectId>
-                      </parent>
-                      <securityGroupBinding>
-                        <objectId></objectId>
-                      </securityGroupBinding>
-                      <securityGroupBinding>
-                        ...
-                      </securityGroupBinding>
-                      ...
-                      ...
-                      <securityGroupBinding>
-                        ...
-                      </securityGroupBinding>
-                      <actionsByCategory>
-                        <category>firewall</category>
-                        <action class="firewallSecurityAction">
-                          <name>name</name>
-                          <description>description</description>
-                          <category></category>
-                          <actionType></actionType>
-                          <isActionEnforced></isActionEnforced>
-                          <isActive></isActive>
-                          <isEnabled></isEnabled>
-                          <secondarySecurityGroup>
-                            <objectId></objectId>
-                          </secondarySecurityGroup>
-                          <secondarySecurityGroup>
-                            ...
-                          </secondarySecurityGroup>
-                          ...
-                          ...
-                          <secondarySecurityGroup>
-                            ...
-                          </secondarySecurityGroup>
-                          <applications>
-                            <application>
-                              <objectId></objectId>
-                            </application>
-                            <applicationGroup>
-                              <objectId></objectId>
-                            </applicationGroup>
-                            ...
-                            ...
-                          </applications>
-                          <logged></logged>
-                          <action></action>
-                          <direction></direction>
-                          <outsideSecondaryContainer></outsideSecondaryContainer>
-                        </action>
-                        <action>
-                          ...
-                        </action>
-                        ...
-                        ...
-                        <action>
-                          ...
-                        </action>
-                      </actionsByCategory>
-                      <actionsByCategory>
-                        <category>endpoint</category>
-                        <action class="endpointSecurityAction">
-                          <name>name</name>
-                          <description>description</description>
-                          <category></category>
-                          <actionType></actionType>
-                          <isActionEnforced></isActionEnforced>
-                          <isActive></isActive>
-                          <isEnabled></isEnabled>
-                          <serviceId></serviceId>
-                          <vendorTemplateId></vendorTemplateId>
-                        </action>
-                      </actionsByCategory>
-                      <actionsByCategory>
-                        <category>traffic_steering</category>
-                        <action class="trafficSteeringSecurityAction">
-                          <name>name</name>
-                          <description>description</description>
-                          <category></category>
-                          <actionType></actionType>
-                          <isActionEnforced></isActionEnforced>
-                          <isActive></isActive>
-                          <isEnabled></isEnabled>
-                          <logged></logged>
-                          <redirect></redirect>
-                          <serviceProfile>
-                            <objectId></objectId>
-                          </serviceProfile>
-                        </action>
-                      </actionsByCategory>
-                    </securityPolicy>
-                    <name></name>
+                    <objectId>policy-5</objectId>
+                    <objectTypeName>Policy</objectTypeName>
+                    <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                    <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                    <revision>10</revision>
+                    <type>
+                      <typeName>Policy</typeName>
+                    </type>
+                    <name>Test Security Policy</name>
                     <description></description>
-                    <precedence></precedence>
-                    <parent>
-                      <objectId></objectId>
-                    </parent>
+                    <scope>
+                      <id>globalroot-0</id>
+                      <objectTypeName>GlobalRoot</objectTypeName>
+                      <name>Global</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes/>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                    <inheritanceAllowed>false</inheritanceAllowed>
+                    <precedence>4300</precedence>
                     <securityGroupBinding>
-                      <objectId></objectId>
-                    </securityGroupBinding>
-                    <securityGroupBinding>
-                      ...
-                    </securityGroupBinding>
-                    ...
-                    ...
-                    <securityGroupBinding>
-                      ...
+                      <objectId>securitygroup-10</objectId>
+                      <objectTypeName>SecurityGroup</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>2</revision>
+                      <type>
+                        <typeName>SecurityGroup</typeName>
+                      </type>
+                      <name>Local_Web_Tier</name>
+                      <description></description>
+                      <scope>
+                        <id>globalroot-0</id>
+                        <objectTypeName>GlobalRoot</objectTypeName>
+                        <name>Global</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
                     </securityGroupBinding>
                     <actionsByCategory>
                       <category>firewall</category>
                       <action class="firewallSecurityAction">
-                        <name>name</name>
-                        <description>description</description>
-                        <category></category>
-                        <actionType></actionType>
-                        <isActionEnforced></isActionEnforced>
-                        <isActive></isActive>
-                        <isEnabled></isEnabled>
+                        <objectId>firewallpolicyaction-1</objectId>
+                        <objectTypeName>FirewallPolicyAction</objectTypeName>
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>7</revision>
+                        <type>
+                          <typeName>FirewallPolicyAction</typeName>
+                        </type>
+                        <name>allow to DB_SG</name>
+                        <scope>
+                          <id>globalroot-0</id>
+                          <objectTypeName>GlobalRoot</objectTypeName>
+                          <name>Global</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <category>firewall</category>
+                        <executionOrder>1</executionOrder>
+                        <isEnabled>true</isEnabled>
+                        <isActionEnforced>false</isActionEnforced>
                         <secondarySecurityGroup>
-                          <objectId></objectId>
+                          <objectId>securitygroup-12</objectId>
+                          <objectTypeName>SecurityGroup</objectTypeName>
+                          <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                          <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                          <revision>2</revision>
+                          <type>
+                            <typeName>SecurityGroup</typeName>
+                          </type>
+                          <name>Local_DB_Tier</name>
+                          <description></description>
+                          <scope>
+                            <id>globalroot-0</id>
+                            <objectTypeName>GlobalRoot</objectTypeName>
+                            <name>Global</name>
+                          </scope>
+                          <clientHandle></clientHandle>
+                          <extendedAttributes/>
+                          <isUniversal>false</isUniversal>
+                          <universalRevision>0</universalRevision>
                         </secondarySecurityGroup>
-                        <secondarySecurityGroup>
-                          ...
-                        </secondarySecurityGroup>
-                        ...
-                        ...
-                        <secondarySecurityGroup>
-                          ...
-                        </secondarySecurityGroup>
-                        <applications>
-                          <application>
-                            <objectId></objectId>
-                          </application>
-                          <applicationGroup>
-                            <objectId></objectId>
-                          </applicationGroup>
-                          ...
-                          ...
-                        </applications>
-                        <logged></logged>
-                        <action></action>
-                        <direction></direction>
-                        <outsideSecondaryContainer></outsideSecondaryContainer>
-                      </action>
-                      <action>
-                        ...
-                      </action>
-                      ...
-                      ...
-                      <action>
-                        ...
+                        <invalidSecondaryContainers>false</invalidSecondaryContainers>
+                        <invalidApplications>false</invalidApplications>
+                        <logged>true</logged>
+                        <action>allow</action>
+                        <direction>outbound</direction>
+                        <outsideSecondaryContainer>false</outsideSecondaryContainer>
                       </action>
                     </actionsByCategory>
-                    <actionsByCategory>
-                      <category>endpoint</category>
-                      <action class="endpointSecurityAction">
-                        <name>name</name>
-                        <description>description</description>
-                        <category></category>
-                        <actionType></actionType>
-                        <isActionEnforced></isActionEnforced>
-                        <isActive></isActive>
-                        <isEnabled></isEnabled>
-                        <serviceId></serviceId>
-                        <vendorTemplateId></vendorTemplateId>
-                      </action>
-                    </actionsByCategory>
-                    <actionsByCategory>
-                      <category>traffic_steering</category>
-                      <action class="trafficSteeringSecurityAction">
-                        <name>name</name>
-                        <description>description</description>
-                        <category></category>
-                        <actionType></actionType>
-                        <isActionEnforced></isActionEnforced>
-                        <isActive></isActive>
-                        <isEnabled></isEnabled>
-                        <logged></logged>
-                        <redirect></redirect>
-                        <serviceProfile>
-                          <objectId></objectId>
-                        </serviceProfile>
-                      </action>
-                    </actionsByCategory>
+                    <statusesByCategory>
+                      <category>firewall</category>
+                      <status>in_sync</status>
+                    </statusesByCategory>
                   </securityPolicy>
       put:
         displayName: securityPolicyIDUpdate
@@ -16440,6 +16256,20 @@ securitySchemes:
             description: |
               If set to true, the security policy is deleted even if it is in use.
             required: false
+      /sgbinding/{securityGroupId}:
+        displayName: securityPolicyBind
+        description: |
+          Working With Security Group Bindings
+          ----
+        uriParameters:
+          securityGroupId:
+            displayName: securityGroupId
+            description: Security group ID, for example, *securitygroup-11*.
+            required: true
+        put:
+          displayName: securityPolicyBindingUpdate
+          description: |
+            Apply the specified security policy to the specified security group.
       /securityactions:
         displayName: securityActions
         description: |
@@ -16462,14 +16292,149 @@ securitySchemes:
                     <securityPolicies>
                       <securityPolicy></securityPolicy>
                       <securityPolicy></securityPolicy>
-                      ...
-                      ...
-                      <securityPolicy></securityPolicy>
                     </securityPolicies>
+    /status:
+      displayName: securityPolicyStatus
+      description: |
+        Working with Service Composer Status
+        ------------------------------------
+      get:
+        displayName: securityPolicyStatusRead
+        description: |
+          Retrieve the consolidated status of Service Composer.
+          
+          The possible return of value for status are: *in_sync*,
+          *in_progress*, *out_of_sync*, and *pending*.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <serviceComposerStatus>
+                    <status>in_sync</status>
+                  </serviceComposerStatus>
+    /alarms/all:
+      displayName: securityPolicyAlarmsAll
+      description: |
+        Working with All Service Composer Alarms
+        ------------
+      get:
+        displayName: securityPolicyAlarmsAllList # update existing addition securityPolicyAlarmsAllRead
+        description: |
+          Retrieve all system alarms that are raised at Service Composer
+          level and policy level.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <systemAlarms>
+                    <systemAlarm>
+                      <eventId></eventId>
+                      <timestamp></timestamp>
+                      <severity></severity>
+                      <eventSource></eventSource>
+                      <eventCode></eventCode>
+                      <message></message>
+                      <module></module>
+                      <objectId></objectId>
+                      <reporterName></reporterName>
+                      <reporterType></reporterType>
+                      <sourceType></sourceType>
+                      <displayName></displayName>
+                      <eventMetadata>
+                        <data>
+                        <key></key>
+                        <value></value>
+                        </data>
+                        <data>
+                        ...
+                        </data>
+                        ...
+                        <data>
+                        ...
+                        </data>
+                      </eventMetadata>
+                      <resolutionAttempted></resolutionAttempted>
+                      <resolvable></resolvable>
+                      <alarmId></alarmId>
+                      <alarmCode></alarmCode>
+                      <alarmSource></alarmSource>
+                      <alarmBeingResolved></alarmBeingResolved>
+                      <alarmMetadata>
+                        <data>
+                        <key></key>
+                        <value></value>
+                        </data>
+                        <data>
+                        ...
+                        </data>
+                        ...
+                        <data>
+                        ...
+                        </data>
+                      </alarmMetadata>
+                    </systemAlarm>
+                  </systemAlarms>
+    /serviceprovider/firewall:
+      displayName: serviceComposerFirewallAppliedTo
+      description: |
+        Working with Service Composer Firewall Applied To Setting
+        -------------
+        You can set the applied to setting for all firewall rules created
+        though Service Composer to either Distributed Firewall or Policy's
+        Security Groups. By default, the applied to is set to Distributed
+        Firewall. When Service Composer firewall rules have an applied to
+        setting of distributed firewall, the rules are applied to all clusters
+        on which distributed firewall is installed. If the firewall rules are
+        set to apply to the policy's security groups, you have more granular
+        control over the firewall rules, but may need multiple security
+        policies or firewall rules to get the desired result.
+        
+        **Applied To Values for Service Composer Firewall Rules**
+        
+        Value | Description
+        ------|----------
+        dfw_only | Firewall rules are applied to all clusters on which Distributed Firewall is installed.
+        policy_security_group | Firewall rules are applied to security groups on which the security policy is applied.
+      get:
+        displayName: serviceComposerFirewallAppliedToRead
+        description: |
+          Retrieve the Service Composer firewall applied to setting.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <SecurityPolicyFirewallConfig>
+                    <appliedTo>dfw_only</appliedTo>
+                  </SecurityPolicyFirewallConfig>
+      put:
+        displayName: serviceComposerFirewallAppliedToUpdate
+        description: |
+          Update the Service Composer firewall applied to setting.
+        body:
+          application/xml:
+            example: |
+              <SecurityPolicyFirewallConfig>
+                <appliedTo>policy_security_group</appliedTo>
+              </SecurityPolicyFirewallConfig>
     /hierarchy:
       displayName: hierarchy
       description: |
-        Working With Security Policy Configuration Hierarchies
+        Working With Service Composer Configuration Import and Export
         -----
       post:
         displayName: hierarchyCreate
@@ -16536,11 +16501,18 @@ securitySchemes:
               A prefix to add before the names of the objects in the exported
               XML.
             required: false
-  /securityaction/category/virtualmachines:
+  /securityaction/{category}/virtualmachines:
     displayName: securityActionVM
     description: |
       Working with Virtual Machines with Security Actions Applied
       --------------
+    uriParameters:
+      category:
+        displayName: category
+        description: |
+          Category of security action. Choice of *endpoint* (Guest
+          Introspection), *firewall* (Distributed Firewall) or
+          *traffic_steering* (Network Introspection/Network Extensibility).
     get:
       displayName: securityActionVMRead
       description: |
@@ -16567,17 +16539,11 @@ securitySchemes:
                     <vmId></vmId>
                     <vmName></vmName>
                   </vmnode>
-                  ...
-                  ...
-                  <vmnode>
-                    <vmId></vmId>
-                    <vmName></vmName>
-                  </vmnode>
                 </vmnodes>
   /securitygroup/{ID}/securityactions:
     displayName: securityActionSecGroup
     description: |
-      Working With Security Actions Applicable on Security Groups
+      Working With Security Actions Applicable on a Security Group
       ----
     uriParameters:
       ID:
@@ -16586,8 +16552,6 @@ securitySchemes:
     get:
       displayName: securityActionRead
       description: |
-        Retrieve all security actions applicable on a security group.
-        
         Retrieve all security actions applicable on a security group for all
         ExecutionOrderCategories. The list is sorted based on the weight of
         security actions in descending order.  The **isActive** tag indicates
@@ -16876,11 +16840,26 @@ securitySchemes:
     uriParameters:
       ID:
         displayName: ID
-        description: VM ID
+        description: VM ID.
+        required: true
     get:
       displayName: vmApplicableSecurityActionRead # dupfix vmApplicableSecurityAction
       description: |
-        Retrieve the security actions applicable on a virtual machine.
+        You can retrieve the security actions applicable on a virtual machine for
+        all ExecutionOrderCategories. The list of SecurityActions per
+        ExecutionOrderCategory is sorted based on the weight of security actions
+        in descending order. The **isActive** tag indicates whether a security
+        action will be applied (by the enforcement engine) on the virtual
+        machine.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <securityPolicies>
+                  <securityPolicy></securityPolicy>
+                  <securityPolicy></securityPolicy>
+                </securityPolicies>
   /serviceprovider/firewall:
     displayName: serviceComposerDFW # existing change serviceComposerDFWSync
     description: |
@@ -16975,9 +16954,124 @@ securitySchemes:
       ID:
         displayName: ID
         description: Specified security group ID
+        required: true
     get:
       displayName: secGroupPoliciesRead
-      description: Retrieve security policies mapped to a security group.
+      description: |
+        Retrieve security policies mapped to a security group.
+        
+        The list is sorted based on the precedence of security policy precedence
+        in descending order. The security policy with the highest precedence
+        (highest numeric value) is the first entry (index = 0) in the list.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <securityPolicies>
+                  <securityPolicy>
+                    <objectId>policy-5</objectId>
+                    <objectTypeName>Policy</objectTypeName>
+                    <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                    <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                    <revision>10</revision>
+                    <type>
+                      <typeName>Policy</typeName>
+                    </type>
+                    <name>Test Security Policy</name>
+                    <description></description>
+                    <scope>
+                      <id>globalroot-0</id>
+                      <objectTypeName>GlobalRoot</objectTypeName>
+                      <name>Global</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes/>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                    <inheritanceAllowed>false</inheritanceAllowed>
+                    <precedence>4300</precedence>
+                    <securityGroupBinding>
+                      <objectId>securitygroup-10</objectId>
+                      <objectTypeName>SecurityGroup</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>2</revision>
+                      <type>
+                        <typeName>SecurityGroup</typeName>
+                      </type>
+                      <name>Local_Web_Tier</name>
+                      <description></description>
+                      <scope>
+                        <id>globalroot-0</id>
+                        <objectTypeName>GlobalRoot</objectTypeName>
+                        <name>Global</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </securityGroupBinding>
+                    <actionsByCategory>
+                      <category>firewall</category>
+                      <action class="firewallSecurityAction">
+                        <objectId>firewallpolicyaction-1</objectId>
+                        <objectTypeName>FirewallPolicyAction</objectTypeName>
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>7</revision>
+                        <type>
+                          <typeName>FirewallPolicyAction</typeName>
+                        </type>
+                        <name>allow to DB_SG</name>
+                        <scope>
+                          <id>globalroot-0</id>
+                          <objectTypeName>GlobalRoot</objectTypeName>
+                          <name>Global</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <category>firewall</category>
+                        <executionOrder>1</executionOrder>
+                        <isEnabled>true</isEnabled>
+                        <isActionEnforced>false</isActionEnforced>
+                        <secondarySecurityGroup>
+                          <objectId>securitygroup-12</objectId>
+                          <objectTypeName>SecurityGroup</objectTypeName>
+                          <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                          <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                          <revision>2</revision>
+                          <type>
+                            <typeName>SecurityGroup</typeName>
+                          </type>
+                          <name>Local_DB_Tier</name>
+                          <description></description>
+                          <scope>
+                            <id>globalroot-0</id>
+                            <objectTypeName>GlobalRoot</objectTypeName>
+                            <name>Global</name>
+                          </scope>
+                          <clientHandle></clientHandle>
+                          <extendedAttributes/>
+                          <isUniversal>false</isUniversal>
+                          <universalRevision>0</universalRevision>
+                        </secondarySecurityGroup>
+                        <invalidSecondaryContainers>false</invalidSecondaryContainers>
+                        <invalidApplications>false</invalidApplications>
+                        <logged>true</logged>
+                        <action>allow</action>
+                        <direction>outbound</direction>
+                        <outsideSecondaryContainer>false</outsideSecondaryContainer>
+                      </action>
+                    </actionsByCategory>
+                    <statusesByCategory>
+                      <category>firewall</category>
+                      <status>in_sync</status>
+                    </statusesByCategory>
+                  </securityPolicy>
+                </securityPolicies>
 /2.0/services/snmp:
   # new is 6.2.3
   displayName: snmp

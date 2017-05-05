@@ -1282,8 +1282,14 @@ Working with Members of a Specific Security Group
 Working with Virtual Machines in a Security Group
 ----
 
-* **get** *(secured)*: Retrieve list of virtual machine entities that belong to a specific security
-group.
+* **get** *(secured)*: Retrieve effective membership of a security group in terms of virtual
+machines. The effective membership is calculated using all the three
+membership components of a security group - static include, static
+exclude, and dynamic using the following formula:
+  
+Effective membership virtual machines = [ (VMs resulting from static include
+component + VMs resulting from dynamic component) - (VMs resulting from static
+exclude component) ]
 
 ### /2.0/services/securitygroup/{objectId}/translation/ipaddresses
 Working with IP Addresses in a Security Group
@@ -1309,8 +1315,9 @@ Working with vNICs in a Security Group
 Working with Virtual Machine Security Group Membership
 ------
 
-* **get** *(secured)*: Retrieve list of security groups that the specified virtual machine
-belongs to.
+* **get** *(secured)*: Retrieves the collection of security groups to which a virtual machine
+is a direct or indirect member. Indirect membership involves nesting of
+security groups.
 
 ### /2.0/services/securitygroup/internal/scope/{scopeId}
 Working with Internal Security Groups
@@ -5875,34 +5882,60 @@ list (CRL).
 * **delete** *(secured)*: Delete the specified certificate revocation list (CRL).
 
 ## policy
-Working with Security Policies and Actions
+Working with Service Composer
 ============================
+Service Composer helps you provision and assign network and security
+services to applications in a virtual infrastructure. You map these services
+to a security group, and the services are applied to the virtual machines in
+the security group.
 
-### /2.0/services/policy/securitypolicy
-Working with Security Policies
-------------------------------
-A security policy is a set of Endpoint, firewall, and network
-introspection services that can be applied to a security group.
+## Security Groups
 
-* **post** *(secured)*: Create a security policy.
+You begin by creating a security group to define assets that you want to
+protect. Security groups may be static (including specific virtual machines)
+or dynamic where membership may be defined in one or more of the following
+ways:
+* vCenter containers (clusters, port groups, or datacenters).
+* Security tags, IPset, MACset, or even other security groups. For example,
+  you may include a criteria to add all members tagged with the specified
+  security tag (such as AntiVirus.virusFound) to the security group.
+* Directory Groups (if NSX Manager is registered with Active Directory).
+* Regular expressions such as virtual machines with name *VM1*.
 
-When creating a security policy, a parent security policy can be
-specified if required. The security policy inherits services from the
-parent security policy. Security group bindings and actions can also
-be specified while creating the policy. Note that execution order of
-actions in a category is implied by their order in the list. The
-response of the call has Location header populated with the URI using
-which the created object can be fetched.
+Note that security group membership changes constantly. For example, a
+virtual machine tagged with the AntiVirus.virusFound tag is moved into the
+Quarantine security group. When the virus is cleaned and this tag is removed
+from the virtual machine, it again moves out of the Quarantine security
+group.
 
-Ensure that:
-* the required VMware built in services (such as Distributed Firewall
-  and Endpoint) are installed. See *NSX Installation Guide*.
-* the required partner services have been registered with NSX Manager.
-* the required security groups have been created.
+## Security Policies
 
-Tags related to Service Composer, security policies, and security
-groups:
-Common Tags
+A security policy is a collection of the following service configurations.
+
+Service | Description | Applies to
+---|---|---
+Distributed Firewall rules<br>**category**: *firewall* |  Rules that define the traffic to be allowed to, from, or within the security group. | vNIC
+Guest Introspection service<br>**category**: *endpoint* | Data Security or third party solution provider services such as anti-virus or vulnerability management services. | virtual machines
+Network Introspection services <br>(NetX or Network Extensibility)<br>**category**: *traffic_steering*| Services that monitor your network such as IPS. | virtual machines
+
+## Applying Security Policies to Security Groups
+
+You apply a security policy (say SP1) to a security group (say SG1). The
+services configured for SP1 are applied to all virtual machines that are
+members of SG1. If a virtual machine belongs to more than one security
+group, the services that are applied to the virtual machine depends on the
+precedence of the security policy mapped to the security groups. Service
+Composer profiles can be exported and imported as backups or for use in
+other environments. This approach to managing network and security services
+helps you with actionable and repeatable security policy management.
+
+## Service Composer Parameters
+
+The following parameters are related to Service Composer, security
+policies, and security groups.
+  
+### Common Parameters
+
 * **actionType** - Defines the type of action belonging to a given
 executionOrderCategory
 * **executionOrderCategory** - Category to which the action belongs to
@@ -5918,15 +5951,17 @@ actionType and executionOrderCategory, there can be only one action
 which can be marked as enforced.
 * **isEnabled** - Indicates whether an action is enabled
 * **secondarySecurityGroup** - Applicable for actions which need secondary
-security groups, say a
-source-destination firewall rule
+security groups, say a source-destination firewall rule
 * **securityPolicy** - Parent policy in an action
-Output only Tags
+
+### Output-only Parameters
+
 * **executionOrder** - Defines the sequence in which actions belonging to
-an executionOrderCategory are
-executed. Note that this is not an input parameter and its value is
-implied by the index in the list.
-Firewall Category Tags
+an executionOrderCategory are executed. Note that this is not an input
+parameter and its value is implied by the index in the list.
+
+### Firewall Category Parameters
+
 * **action** - Allow or block the traffic
 * **applications** - Applications / application groups on which the rules
 are to be applied
@@ -5936,7 +5971,9 @@ Possible values: inbound, outbound, intra
 rule
 * **outsideSecondaryContainer** - Flag to specify outside i.e. outside
 securitygroup-3
-Endpoint Category Tags
+
+### Endpoint Category Parameters
+
 * **serviceId** - ID of the service (as registered with the service
 insertion module). If this tag is null, the
 functionality type (as defined in actionType tag) is not applied which
@@ -5955,16 +5992,89 @@ that was referenced in this rule is deleted, which makes
 the rule ineffective (or deviate from the original intent that existed
 while configuring the rule). You must either modify this rule by
 adding correct Service Profile or delete this rule.
-The following tags are deprecated:
+
+The following parameters are deprecated:
 * **vendorTemplateId**
 * **invalidVendorTemplateId**
 * **vendorTemplateName**
-Traffic Steering/NetX Category Tags
+
+### Traffic Steering/NetX Category Parameters
+
 * **redirect** - Flag to indicate whether to redirect the traffic or not
 * **serviceProfile** - Service profile for which redirection is being
 configured
 * **logged** - Flag to enable logging of the traffic that is hit by this
 rule
+
+### /2.0/services/policy/securitypolicy
+Working with Security Policies
+------------------------------
+A security policy is a set of Endpoint, firewall, and network
+introspection services that can be applied to a security group.
+
+See *Working with Security Groups* for more information about managing
+security groups.
+
+* **post** *(secured)*: Create a security policy.
+
+When creating a security policy, a parent security policy can be
+specified if required. The security policy inherits services from the
+parent security policy. Security group bindings and actions can also
+be specified while creating the policy. Note that execution order of
+actions in a category is implied by their order in the list. The
+response of the call has Location header populated with the URI using
+which the created object can be fetched.
+
+Ensure that:
+* the required VMware built in services (such as Distributed Firewall
+  and Endpoint) are installed. See *NSX Installation Guide*.
+* the required partner services have been registered with NSX Manager.
+* the required security groups have been created.
+
+### /2.0/services/policy/securitypolicy/{ID}
+Working With a Specific Security Policy
+------------------
+
+* **get** *(secured)*: Retrieve security policy information. To view all security policies,
+specify *all* as the security policy ID.
+
+* **put** *(secured)*: Edit a security policy.
+
+To update a security policy, you must first fetch it.
+Then edit the received XML and pass it back as the input. The
+specified configuration replaces the current configuration.
+
+Security group mappings provided in the PUT call replaces the
+security group mappings for the security policy. To remove all
+mappings, delete the securityGroupBindings parameter.
+
+You can add or update actions for the security policy by editing the
+actionsByCategory parameter. To remove all actions (belonging to all
+categories), delete the actionsByCategory parameter. To remove
+actions belonging to a specific category, delete the block for that
+category.
+
+* **delete** *(secured)*: Delete a security policy.
+
+When you delete a security policy, its child security policies and
+all the actions in it are deleted as well.
+
+### /2.0/services/policy/securitypolicy/{ID}/sgbinding/{securityGroupId}
+Working With Security Group Bindings
+----
+
+* **put** *(secured)*: Apply the specified security policy to the specified security group.
+
+### /2.0/services/policy/securitypolicy/{ID}/securityactions
+Working with Security Actions on a Security Policy
+-------------
+
+* **get** *(secured)*: Retrieve all security actions applicable on a security policy.
+
+This list includes security actions from associated parent
+security policies, if any. Security actions per Execution Order
+Category are sorted based on the weight of security actions in
+descending order.
 
 ### /2.0/services/policy/securitypolicy/status
 Working with Service Composer Status
@@ -5980,10 +6090,6 @@ The possible return of value for status are: *in_sync*,
 Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
-
-### /2.0/services/policy/securitypolicy/alarms
-Working with Security Policy Alarms
------------
 
 ### /2.0/services/policy/securitypolicy/alarms/all
 Working with All Service Composer Alarms
@@ -6022,46 +6128,8 @@ policy_security_group | Firewall rules are applied to security groups on which t
 
 * **put** *(secured)*: Update the Service Composer firewall applied to setting.
 
-### /2.0/services/policy/securitypolicy/{ID}
-Working with Security Policies
-------------------
-
-* **get** *(secured)*: Retrieve security policy information.
-
-* **put** *(secured)*: Edit a security policy.
-
-To update a security policy, you must first fetch it.
-Then edit the received XML and pass it back as the input. The
-specified configuration replaces the current configuration.
-
-Security group mappings provided in the PUT call replaces the
-security group mappings for the security policy. To remove all
-mappings, delete the securityGroupBindings parameter.
-
-You can add or update actions for the security policy by editing the
-actionsByCategory parameter. To remove all actions (belonging to all
-categories), delete the actionsByCategory parameter. To remove
-actions belonging to a specific category, delete the block for that
-category.
-
-* **delete** *(secured)*: Delete a security policy.
-
-When you delete a security policy, its child security policies and
-all the actions in it are deleted as well.
-
-### /2.0/services/policy/securitypolicy/{ID}/securityactions
-Working with Security Actions on a Security Policy
--------------
-
-* **get** *(secured)*: Retrieve all security actions applicable on a security policy.
-
-This list includes security actions from associated parent
-security policies, if any. Security actions per Execution Order
-Category are sorted based on the weight of security actions in
-descending order.
-
 ### /2.0/services/policy/securitypolicy/hierarchy
-Working With Security Policy Configuration Hierarchies
+Working With Service Composer Configuration Import and Export
 -----
 
 * **post** *(secured)*: Import a security policy configuration
@@ -6095,7 +6163,7 @@ security policy, security action, and security group objects in the
 exported XML. The prefix can thus be used to indicate the remote
 source from where the hierarchy was exported.
 
-### /2.0/services/policy/securityaction/category/virtualmachines
+### /2.0/services/policy/securityaction/{category}/virtualmachines
 Working with Virtual Machines with Security Actions Applied
 --------------
 
@@ -6103,12 +6171,10 @@ Working with Virtual Machines with Security Actions Applied
 given category and attribute has been applied.
 
 ### /2.0/services/policy/securitygroup/{ID}/securityactions
-Working With Security Actions Applicable on Security Groups
+Working With Security Actions Applicable on a Security Group
 ----
 
-* **get** *(secured)*: Retrieve all security actions applicable on a security group.
-
-Retrieve all security actions applicable on a security group for all
+* **get** *(secured)*: Retrieve all security actions applicable on a security group for all
 ExecutionOrderCategories. The list is sorted based on the weight of
 security actions in descending order.  The **isActive** tag indicates
 if a securityaction will be applied (by the enforcement engine) on the
@@ -6118,7 +6184,12 @@ security group.
 Working with Security Actions Applicable on a Virtual Machine
 ----
 
-* **get** *(secured)*: Retrieve the security actions applicable on a virtual machine.
+* **get** *(secured)*: You can retrieve the security actions applicable on a virtual machine for
+all ExecutionOrderCategories. The list of SecurityActions per
+ExecutionOrderCategory is sorted based on the weight of security actions
+in descending order. The **isActive** tag indicates whether a security
+action will be applied (by the enforcement engine) on the virtual
+machine.
 
 ### /2.0/services/policy/serviceprovider/firewall
 Working with Service Composer Firewall
@@ -6198,6 +6269,10 @@ Working with Security Policies Mapped to a Security Group
 -----
 
 * **get** *(secured)*: Retrieve security policies mapped to a security group.
+
+The list is sorted based on the precedence of security policy precedence
+in descending order. The security policy with the highest precedence
+(highest numeric value) is the first entry (index = 0) in the list.
 
 ## snmp
 Working with SNMP
