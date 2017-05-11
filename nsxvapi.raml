@@ -2411,7 +2411,9 @@ securitySchemes:
           /api/2.0/services/application/scope/{scopeId}`.
     get:
       displayName: serviceAppRead # existing reorg/dupfix serviceRead
-      description: Retrieve details about the specified service.
+      description: |
+        Retrieve details about the specified service. The scopeId can
+        be "globalroot-0", or datacenterId in upgrade use cases.
     put:
       displayName: serviceAppUpdate # existing reorg/dupfix serviceUpdate
       description: |
@@ -2437,15 +2439,23 @@ securitySchemes:
           schema: serviceUpdate
     delete:
       displayName: serviceAppDelete # existing reorg/dupfix serviceDelete
-      description: Delete the specified service.
+      description: |
+        Delete the specified service.You can delete a service by specifying its
+        <applicationgroup-id>. 
       queryParameters:
         force:
           type: boolean
           required: false
           displayName: force
           description: |
-            Indicates if the delete should be forced or unforced. The default is
-            unforced (false).
+            Determines if the delete should be forced or unforced. Default is *false*.
+            
+            If *true*, the object is deleted even if it is in use in other places
+            such as firewall rules, which invalidates other configurations referring
+            to the deleted object.
+            
+            If *false*, the object is deleted only if it is not being used by any
+            other configuration.
 /2.0/services/applicationgroup:
   displayName: applicationgroup
   description: |
@@ -2536,15 +2546,22 @@ securitySchemes:
           schema: serviceGroupUpdate
     delete:
       displayName: serviceGroupDelete
-      description: Delete the specified service group from a scope.
+      description: | 
+        Delete the specified service group (application group) from a scope.
       queryParameters:
         force:
           type: boolean
           required: false
           displayName: force
           description: |
-            Indicates if the delete should be forced or unforced. The default
-            is unforced (false).
+            Determines if the delete should be forced or unforced. Default is *false*.
+            
+            If *true*, the object is deleted even if it is in use in other places
+            such as firewall rules, which invalidates other configurations referring
+            to the deleted object.
+            
+            If *false*, the object is deleted only if it is not being used by any
+            other configuration.
     /members/{moref}:
       displayName: serviceGroupMembers
       description: |
@@ -2577,11 +2594,6 @@ securitySchemes:
       description: |
         Get a list of member elements that can be added to the service groups
         created on a particular scope.
-        
-        Since service group allows only either services or other service
-        groups as members to be added, this helps you get a list of all
-        possible valid elements that can be added to the
-        service.
 /2.0/services/ipam/pools:
   displayName: ipPoolsObjects # added for reorg
   description: |
@@ -3196,6 +3208,15 @@ securitySchemes:
   get:
     displayName: ssoConfigRead
     description: Retrieve SSO Configuration.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <ssoConfig>
+                <ssoLookupServiceUrl>https://vc-l-01a.corp.local:443/lookservice/sdk</ssoLookupServiceUrl>
+                <ssoAdminUsername>administrator@vsphere.local</ssoAdminUsername>
+              </ssoConfig> 
   post:
     displayName: ssoConfigSet
     description: Register NSX Manager to SSO Services.
@@ -7452,7 +7473,8 @@ securitySchemes:
         displayName: macsetId
         description: |
           Specified MAC address set ID (can be retrieved by listing the MAC
-          address set on a scope).
+          address set on a scope). The revision parameter is incremented and the
+          value parameter lists the updated IP addresses.
     get:
       displayName: macsetRead
       description: Retrieve details about a MAC address set.
@@ -7538,9 +7560,10 @@ securitySchemes:
         required: true
         displayName: scopeId
         description: |
-          Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade
-          use cases. Universal MAC address sets are read-only from secondary
-          managers.
+          Can be "globalroot-0", "universalroot-0" or datacenterId in upgrade use cases.
+          The value parameter can include a single MAC identifier or a comma separated
+          set of MAC identifiers. Universal MAC address sets are read-only from
+          secondary managers.
     post:
       displayName: macsetScopesCreate
       description: Create a MAC address set on the specified scope.
@@ -12387,8 +12410,8 @@ securitySchemes:
         network.
         
         You can configure NAT rules to provide access to services running on
-        privately addressed virtual machines. There are two types of NAT rules
-        that can be configured: SNAT (Source NAT) and DNAT (Destination NAT).
+        privately addressed virtual machines.  There are two types of NAT rules
+        that can be configured: SNAT and DNAT.
         
         For the data path to work, you need to add firewall rules to allow the
         required traffic for IP addresses and port per the NAT rules.
@@ -12965,40 +12988,52 @@ securitySchemes:
             application/xml:
               example: |
                 <ospf>
-                  <enabled></enabled>
+                  <enabled>true</enabled>
                   <ospfAreas>
                     <ospfArea>
-                      <areaId></areaId>
+                      <areaId>100</areaId>
                       <translateType7ToType5></translateType7ToType5>
-                      <type></type>
+                      <type>normal</type>
                       <authentication>
-                        <type></type>
-                        <value></value>
+                        <type>password</type>
+                        <value>vmware123</value>
                       </authentication>
                     </ospfArea>
                   </ospfAreas>
                   <ospfInterfaces>
                     <ospfInterface>
-                      <vnic></vnic>
-                      <areaId></areaId>
-                      <helloInterval></helloInterval>
-                      <deadInterval></deadInterval>
-                      <priority></priority>
-                      <cost></cost>
+                      <vnic>0</vnic>
+                      <areaId>100</areaId>
+                      <helloInterval>10</helloInterval>
+                      <deadInterval>40</deadInterval>
+                      <priority>128</priority>
+                      <cost>10</cost>
                     </ospfInterface>
                   </ospfInterfaces>
                   <redistribution>
-                    <enabled></enabled>
+                    <enabled>true</enabled>
                     <rules>
                       <rule>
-                        <prefixName></prefixName>
+                        <prefixName>a</prefixName>
                         <from>
-                          <ospf></ospf>
-                          <bgp></bgp>
-                          <static></static>
-                          <connected></connected>
+                          <isis>true</isis>
+                          <ospf>false</ospf>
+                          <bgp>false</bgp>
+                          <static>false</static>
+                          <connected>true</connected>
                         </from>
-                        <action></action>
+                        <action>deny</action>
+                      </rule>
+                      <rule>
+                        <prefixName>b</prefixName>
+                        <from>
+                          <isis>false</isis>
+                          <ospf>false</ospf>
+                          <bgp>true</bgp>
+                          <static>false</static>
+                          <connected>false</connected>
+                        </from>
+                        <action>permit</action>
                       </rule>
                     </rules>
                   </redistribution>
@@ -13023,6 +13058,65 @@ securitySchemes:
           displayName: routingBGPRead
           description: |
             Retrieve BGP configuration.
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                    <bgp>
+                      <enabled>true</enabled>
+                      <localAS>65535</localAS>
+                      <bgpNeighbours>
+                        <bgpNeighbour>
+                          <ipAddress>192.168.1.10</ipAddress>
+                          <remoteAS>65500</remoteAS>
+                          <weight>60</weight>
+                          <holdDownTimer>180</holdDownTimer>
+                          <keepAliveTimer>60</keepAliveTimer>
+                          <password>vmware123</password>
+                          <bgpFilters>
+                            <bgpFilter>
+                              <direction>in</direction>
+                              <action>permit</action>
+                              <network>10.0.0.0/8</network>
+                              <ipPrefixGe>17</ipPrefixGe>
+                              <ipPrefixLe>32</ipPrefixLe>
+                            </bgpFilter>
+                            <bgpFilter>
+                              <direction>out</direction>
+                              <action>deny</action>
+                              <network>20.0.0.0/26</network>
+                            </bgpFilter>
+                          </bgpFilters>
+                        </bgpNeighbour>
+                      </bgpNeighbours>
+                      <redistribution>
+                        <enabled>true</enabled>
+                        <rules>
+                          <rule>
+                            <id>1</id>
+                            <prefixName>a</prefixName>
+                            <from>
+                              <ospf>true</ospf>
+                              <bgp>false</bgp>
+                              <static>true</static>
+                              <connected>false</connected>
+                            </from>
+                            <action>deny</action>
+                          </rule>
+                          <rule>
+                            <id>0</id>
+                            <from>
+                              <ospf>false</ospf>
+                              <bgp>false</bgp>
+                              <static>false</static>
+                              <connected>true</connected>
+                            </from>
+                            <action>permit</action>
+                          </rule>
+                        </rules>
+                      </redistribution>
+                    </bgp>
             
             **Method history:**
             
@@ -13047,41 +13141,41 @@ securitySchemes:
             application/xml:
               example: |
                 <bgp>
-                  <enabled></enabled>
-                  <localAS></localAS>
-                  <localASNumber></localASNumber>
+                  <enabled>true</enabled>
+                  <localAS>65534</localAS>
+                  <localASNumber>65534</localASNumber>
                   <bgpNeighbours>
                     <bgpNeighbour>
-                      <ipAddress></ipAddress>
-                      <remoteAS></remoteAS>
-                      <remoteASNumber></remoteASNumber>
-                      <weight></weight>
-                      <holdDownTimer></holdDownTimer>
-                      <keepAliveTimer></keepAliveTimer>
-                      <password></password>
+                      <ipAddress>192.168.1.10</ipAddress>
+                      <remoteAS>65500</remoteAS>
+                      <remoteASNumber>65500</remoteASNumber>
+                      <weight>60</weight>
+                      <holdDownTimer>180</holdDownTimer>
+                      <keepAliveTimer>60</keepAliveTimer>
+                      <password>vmware123</password>
                       <bgpFilters>
                         <bgpFilter>
-                          <direction></direction>
-                          <action></action>
-                          <network></network>
-                          <ipPrefixGe></ipPrefixGe>
-                          <ipPrefixLe></ipPrefixLe>
+                          <direction>in</direction>
+                          <action>permit</action>
+                          <network>10.0.0.0/8</network>
+                          <ipPrefixGe>17</ipPrefixGe>
+                          <ipPrefixLe>32</ipPrefixLe>
                         </bgpFilter>
                       </bgpFilters>
                     </bgpNeighbour>
                   </bgpNeighbours>
                   <redistribution>
-                    <enabled></enabled>
+                    <enabled>true</enabled>
                     <rules>
                       <rule>
-                        <prefixName></prefixName>
+                        <prefixName>a</prefixName>
                         <from>
-                          <ospf></ospf>
-                          <bgp></bgp>
-                          <static></static>
-                          <connected></connected>
+                          <ospf>false</ospf>
+                          <bgp>false</bgp>
+                          <static>false</static>
+                          <connected>true</connected>
                         </from>
-                        <action></action>
+                        <action>permit</action>
                       </rule>
                     </rules>
                   </redistribution>
@@ -13638,6 +13732,14 @@ securitySchemes:
         name resolution requests from clients. NSX Edge will relay client
         application requests to the DNS servers to fully resolve a network
         name and cache the response from the servers.
+        
+        Configure DNS updates the DNS server configuration. The DNS server list allows two
+        addresses – primary and secondary. The default cache size is 16 MB where
+        the minimum can be 1 MB, and the maximum 8196 MB. The default listeners
+        is any, which means listen on all VSE interfaces. If provided, the
+        listener’s IP address must be assigned to an internal interface. Logging
+        is disabled by default.
+
       get:
         displayName: edgeDnsRead
         description: Retrieve DNS configuration.
@@ -13684,7 +13786,46 @@ securitySchemes:
       description: Get DNS server statistics
       get:
         displayName: edgeDnsStatsRead # dupfix edgeDnsStats
-        description: Get DNS server statistics
+        description: |
+          Get DNS server statistics
+          
+          **DNS Server Statistics Parameters**
+        
+          Parameter Name | Parameter Information
+          ------|-----
+          **requests > total** | Indicates all of the incoming requests to the DNS server, including DNS query and other types of requests such as transfers, and updates. 
+          **requests > queries** | Indicates all of the DNS queries the server received.
+          **requests > total** | Indicates all of the responses the server returned to requests. This might be different from the requests.total because some requests might be rejected. total = success + nxrrset + servFail + formErr + nxdomain + others.
+          **responses > success** | Indicates all of the successful DNS responses.
+          **responses > nxrrset** | Indicates the count of no existent resource record. 
+          **responses > servFail** | Indicates the count of the SERVFAIL responses.
+          **responses > formErr** | Indicates the count of the format error responses.
+          **responses > nxdomain** | Indicates the count of no-suhc-domain answer
+          **responses > others** | Indicates the count of other types of responses.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <dns>
+                    <stats>
+                      <timeStamp>2011-10-10 12:12:12</timeStamp>
+                      <requests>
+                        <total>120000</total>
+                        <queries>110000</queries>
+                      </requests>
+                      <responses>
+                        <total>108000</total>
+                        <success>105000</success>
+                        <nxrrset>1000</nxrrset>
+                        <servFail>400</servFail>
+                        <formErr>300</formErr>
+                        <nxdomain>1000</nxdomain>
+                        <others>300</others>
+                      </responses>
+                      <cachedDBRRSet>15000</cachedDBRRSet>
+                    </stats>
+                  </dns>
     /dhcp/config:
       displayName: dhcp
       description: |
@@ -13701,6 +13842,10 @@ securitySchemes:
         
         If either bindings or pools are not included in the PUT call, existing
         bindings or pools are deleted.
+        
+        If the NSX Edge autoConfiguration flag and autoConfigureDNS is true, and the
+        primaryNameServer or secondaryNameServer parameters are not specified, NSX
+        Manager applies the DNS settings to the DHCP configuration.
         
         NSX Edge DHCP service adheres to the following rules:
         * Listens on the NSX Edge internal interface (non-uplink interface)
@@ -13721,9 +13866,10 @@ securitySchemes:
         * Setting the parameter **enable** to *true* starts the DHCP service
         while setting **enable** to *false* stops the service.  
         * Both **staticBinding** and **ipPools** must be part of the PUT request body.
-        Else, they will be deleted if configured earlier.
+        If either bindings or pools are not included in the PUT call, existing
+        bindings or pools are deleted.
         
-        **DHCP Configuration Paramters**
+        **DHCP Configuration Parameters**
         
         Parameter Name | Parameter Information 
         ------|-----
@@ -13987,9 +14133,73 @@ securitySchemes:
         description: |
           Working With DHCP Relays
           ----
+            Dynamic Host Configuration Protocol (DHCP) relay enables you to leverage your
+            existing DHCP infrastructure from within NSX without any interruption to the
+            IP address management in your environment. DHCP messages are relayed from
+            virtual machine(s) to the designated DHCP server(s) in the physical world.
+            This enables IP addresses within NSX to continue to be in synch with IP
+            addresses in other environments. 
+            
+            DHCP configuration is applied on the logical
+            router port and can list several DHCP servers. Requests are sent to all listed
+            servers. While relaying the DHCP request from the client, the relay adds a
+            Gateway IP Address to the request. The external DHCP server uses this gateway
+            address to match a pool and allocate an IP address for the request. The
+            gateway address must belong to a subnet of the NSX port on which the relay is
+            running. 
+            
+            You can specify a different DHCP server for each logical switch and
+            can configure multiple DHCP servers on each logical router to provide support
+            for multiple IP domains. 
+            
+            NOTE DHCP relay does not support overlapping IP address space (option 82). 
+            
+            DHCP Relay and DHCP service cannot run on a
+            port/vNic at the same time. If a relay agent is configured on a port, a DHCP
+            pool cannot be configured on the subnet(s) of this port.  
+            
+            Parameter |  Description | Comments
+            ---|---|---
+            **relay**   |You can configure ipPool, static-binding and relay at the same time if
+                        there is not any overlap on vnic.|
+            **relayServer**   |There must be at least one external server.|Required.
+            **groupingObjectId**   |A list of dhcp server IP addresses.
+              There can be multiple sever group objects, the maximum groupObject is 4 the maxium number of server IP
+              addresses is 16 |
+            **ipAddress**   |Supports both IP address and FQDN|
+            **fqdn**   |Specify the IP of the fqdn, and add a Firewall rule to allow the response from
+                  the server represented by the fqdn such as: src - the IP; dest - any; service -
+                  udp:67:any.|
+            **relayAgents**   |There must be at least one relay agent.|Required.
+            **vnicIndex**   | No default. Specify the vNic that proxy the dhcp request. | Required.
+            **giAddress> | Defaults to the vNic primary address. Only one giAddress allowed. | Optional. 
+            
+            
         get:
           displayName: dhcpRelayRead
           description: Query DHCP relay
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <relay>
+                      <relayServer>
+                        <groupingObjectId>IPset1</groupingObjectId>
+                        <groupingObjectId>IPset2</groupingObjectId>
+                      </relayServer>
+                      <relayAgents>
+                        <relayAgent>
+                          <vnicIndex>1</vnicIndex>
+                          <giAddress>
+                            192.168.1.254</giAddress>
+                        </relayAgent>
+                        <relayAgent>
+                          <vnicIndex >3</vnicIndex>
+                          <giAddress>192.168.3.254</giAddress>
+                        </relayAgent>
+                      </relayAgents>
+                    </relay>
         put:
           displayName: dhcpRelayUpdate
           description: Configure DHCP relay
@@ -13998,15 +14208,18 @@ securitySchemes:
               example: |
                 <relay>
                   <relayServer>
-                    <groupingObjectId></groupingObjectId>
-                    <groupingObjectId></groupingObjectId>
-                    <ipAddress></ipAddress>
-                    <fqdn></fqdn>
+                    <groupingObjectId>IPset1</groupingObjectId>
+                    <groupingObjectId>IPset2</groupingObjectId>
+                    <ipAddress>10.117.35.202</ipAddress>
+                    <fqdn>www.dhcpserver</fqdn>
                   </relayServer>
                   <relayAgents>
                     <relayAgent>
-                      <vnicIndex></vnicIndex>
-                      <giAddress></giAddress>
+                      <giAddress>192.168.1.254</giAddress>
+                    </relayAgent>
+                    <relayAgent>
+                      <vnicIndex>3</vnicIndex>
+                      <giAddress>192.168.3.254</giAddress>
                     </relayAgent>
                   </relayAgents>
                 </relay>
@@ -14026,27 +14239,61 @@ securitySchemes:
       description: |
         Working with NSX Edge High Availability
         ----
+          
+          High Availability (HA) ensures that a NSX Edge appliance is always
+          available on your virtualized network. You can enable HA either when
+          installing NSX Edge or on an installed NSX Edge instance.
+          
+          If a single appliance is associated with NSX Edge, the appliance configuration
+          is cloned for the standby appliance. If two appliances are associated with NSX
+          Edge and one of them is deployed, this REST call deploys the remaining appliance
+          and push HA configuration to both. 
+          
+          HA relies on an internal interface. If an
+          internal interface does not exist, this call will not deploy the secondary
+          appliance, or push HA config to appliance. The enabling of HA will be done once
+          an available internal interface is added. If the PUT call includes an empty xml
+          <highAvailability /> or enabled=false, it acts as a DELETE call.
       get:
         displayName: highAvailabilityRead
         description: Get high availability configuration.
+        
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <highAvailability>
+                    <vnic>1</vnic>
+                    <ipAddresses>
+                      <ipAddress>192.168.10.1/30</ipAddress>
+                      <ipAddress>192.168.10.2/30</ipAddress>
+                    </ipAddresses>
+                    <declareDeadTime>6</declareDeadTime>
+                  </highAvailability>
       put:
         displayName: highAvailabilityCreate
-        description: Configure high availability.
+        description: Configure high availability.|
+          **ipAddress** - Optional. A pair of ipAddresses with /30 subnet mandatory,
+          one for each appliance. If provided, they must NOT overlap with any subnet defined on the Edge vNics. If not specified, a pair of IPs will be picked up from reserved subnet, 169.254.0.0/16.
+          **declareDeadTime** Optional. The default is 6 seconds. 
+          **enabled** - Optional. The default is set to true. The enabled flag will cause the HA appliance to be deployed or destroyed.
+
         body:
           application/xml:
             example: |
               <highAvailability>
-                <vnic></vnic>
                 <ipAddresses>
-                  <ipAddress></ipAddress>
+                  <ipAddress>192.168.10.1/30</ipAddress>
+                  <ipAddress>192.168.10.2/30</ipAddress>
                 </ipAddresses>
-                <declareDeadTime></declareDeadTime>
-                <enabled></enabled>
+                <declareDeadTime>6</declareDeadTime>
+                <enabled>true</enabled>
               </highAvailability>
             schema: highAvailabilityCreate
       delete:
         displayName: highAvailabilityDelete
-        description: Delete high availability configuration.
+        description: NSX Manager deletes the standby appliance and removes the HA config from the active appliance.You can also delete the HA configuration by using a PUT call with empty xml <highAvailability /> or with <highAvailability><enabled>false</enabled></highAvailability>.
     /syslog/config:
       displayName: syslog
       description: |
@@ -14067,9 +14314,10 @@ securitySchemes:
           application/xml:
             example: |
               <syslog>
-                <protocol></protocol>
+                <protocol>udp</protocol>
                 <serverAddresses>
-                  <ipAddress></ipAddress>
+                  <ipAddress>1.1.1.1</ipAddress>
+                  <ipAddress>1.1.1.2</ipAddress>
                 </serverAddresses>
               </syslog>
             schema: syslogUpdate
@@ -14213,15 +14461,15 @@ securitySchemes:
             application/xml:
               example: |
                 <ipAddressPool>
-                  <description></description>
-                  <ipRange></ipRange>
-                  <netmask></netmask>
-                  <gateway></gateway>
-                  <primaryDns></primaryDns>
-                  <secondaryDns></secondaryDns>
+                  <description>description</description>
+                  <ipRange>10.112.243.11-10.112.243.57</ipRange>
+                  <netmask>255.0.0.0</netmask>
+                  <gateway>192.168.1.1</gateway>
+                  <primaryDns>192.168.10.1</primaryDns>
+                  <secondaryDns>4.2.2.2</secondaryDns>
                   <dnsSuffix></dnsSuffix>
-                  <winsServer></winsServer>
-                  <enabled></enabled>
+                  <winsServer>10.112.243.201</winsServer>
+                  <enabled>true</enabled>
                 </ipAddressPool>
               schema: netExtipPoolsCreate
         get:
@@ -14324,9 +14572,9 @@ securitySchemes:
             clients and installed on their systems. The primary parameters
             needed to configure this setup are hostname of the gateway, and
             its port and a profile name which is shown to the user to identify
-            this connection. Administrator can also set few other parameters
+            this connection. The Administrator can also set other parameters
             such as whether to automatically start the application on windows
-            login, hide the system tray icon etc.
+            login, or hide the system tray icon.
           body:
             application/xml:
               example: |

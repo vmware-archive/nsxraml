@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x64;&#111;&#99;&#x66;&#101;&#101;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#109;">&#x64;&#111;&#99;&#x66;&#101;&#101;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#100;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#109;&#119;&#97;&#114;&#x65;&#46;&#x63;&#x6f;&#109;">&#100;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#109;&#119;&#97;&#114;&#x65;&#46;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -4601,7 +4601,8 @@ cases.</p>
     href="#GET/2.0/services/application/{applicationId}"
   ><h2>GET /2.0/services/application/{applicationId}</h2></a>
   <div class="content">
-    <p><p>Retrieve details about the specified service.</p>
+    <p><p>Retrieve details about the specified service. The scopeId can
+be &quot;globalroot-0&quot;, or datacenterId in upgrade use cases.</p>
 </p>
   </div>
 </div>
@@ -4670,7 +4671,8 @@ service.</p>
     href="#DELETE/2.0/services/application/{applicationId}"
   ><h2>DELETE /2.0/services/application/{applicationId}</h2></a>
   <div class="content">
-    <p><p>Delete the specified service.</p>
+    <p><p>Delete the specified service.You can delete a service by specifying its</p>
+<p><applicationgroup-id>. </p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -4681,8 +4683,12 @@ service.</p>
     
   </dt>
   <dd>
-      <p>Indicates if the delete should be forced or unforced. The default is
-unforced (false).</p>
+      <p>Determines if the delete should be forced or unforced. Default is <em>false</em>.</p>
+<p>If <em>true</em>, the object is deleted even if it is in use in other places
+such as firewall rules, which invalidates other configurations referring
+to the deleted object.</p>
+<p>If <em>false</em>, the object is deleted only if it is not being used by any
+other configuration.</p>
 
   </dd>
 </dl>
@@ -4856,10 +4862,6 @@ in upgrade use cases</p>
   <div class="content">
     <p><p>Get a list of member elements that can be added to the service groups
 created on a particular scope.</p>
-<p>Since service group allows only either services or other service
-groups as members to be added, this helps you get a list of all
-possible valid elements that can be added to the
-service.</p>
 </p>
   </div>
 </div>
@@ -5004,7 +5006,7 @@ the specified service group.</p>
     href="#DELETE/2.0/services/applicationgroup/{applicationgroupId}"
   ><h2>DELETE /2.0/services/applicationgroup/{applicationgroupId}</h2></a>
   <div class="content">
-    <p><p>Delete the specified service group from a scope.</p>
+    <p><p>Delete the specified service group (application group) from a scope.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -5015,8 +5017,12 @@ the specified service group.</p>
     
   </dt>
   <dd>
-      <p>Indicates if the delete should be forced or unforced. The default
-is unforced (false).</p>
+      <p>Determines if the delete should be forced or unforced. Default is <em>false</em>.</p>
+<p>If <em>true</em>, the object is deleted even if it is in use in other places
+such as firewall rules, which invalidates other configurations referring
+to the deleted object.</p>
+<p>If <em>false</em>, the object is deleted only if it is not being used by any
+other configuration.</p>
 
   </dd>
 </dl>
@@ -5743,9 +5749,10 @@ returns a string identifier for the new MAC address set.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Can be &quot;globalroot-0&quot;, &quot;universalroot-0&quot; or datacenterId in upgrade
-use cases. Universal MAC address sets are read-only from secondary
-managers.</p>
+      <p>Can be &quot;globalroot-0&quot;, &quot;universalroot-0&quot; or datacenterId in upgrade use cases.
+The value parameter can include a single MAC identifier or a comma separated
+set of MAC identifiers. Universal MAC address sets are read-only from
+secondary managers.</p>
 
   </dd>
 </dl>
@@ -5866,7 +5873,8 @@ managers.</p>
   </dt>
   <dd>
       <p>Specified MAC address set ID (can be retrieved by listing the MAC
-address set on a scope).</p>
+address set on a scope). The revision parameter is incremented and the
+value parameter lists the updated IP addresses.</p>
 
   </dd>
 </dl>
@@ -9528,6 +9536,17 @@ network fabric, and hypervisors.</p>
   <div class="content">
     <p><p>Retrieve SSO Configuration.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ssoConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ssoLookupServiceUrl</span>&gt;</span>https://vc-l-01a.corp.local:443/lookservice/sdk<span class="hljs-tag">&lt;/<span class="hljs-name">ssoLookupServiceUrl</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ssoAdminUsername</span>&gt;</span>administrator@vsphere.local<span class="hljs-tag">&lt;/<span class="hljs-name">ssoAdminUsername</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ssoConfig</span>&gt;</span> 
+</code></pre>
   </div>
 </div>
 <div class="method post">
@@ -19537,6 +19556,9 @@ allocation based on the vCenter managed object ID (vmId) and interface
 ID (interfaceId) of the requesting client.</p>
 <p>If either bindings or pools are not included in the PUT call, existing
 bindings or pools are deleted.</p>
+<p>If the NSX Edge autoConfiguration flag and autoConfigureDNS is true, and the
+primaryNameServer or secondaryNameServer parameters are not specified, NSX
+Manager applies the DNS settings to the DHCP configuration.</p>
 <p>NSX Edge DHCP service adheres to the following rules:</p>
 <ul>
 <li>Listens on the NSX Edge internal interface (non-uplink interface)
@@ -19557,9 +19579,10 @@ the default lease time is 1 day.</li>
 <li>Setting the parameter <strong>enable</strong> to <em>true</em> starts the DHCP service
 while setting <strong>enable</strong> to <em>false</em> stops the service.  </li>
 <li>Both <strong>staticBinding</strong> and <strong>ipPools</strong> must be part of the PUT request body.
-Else, they will be deleted if configured earlier.</li>
+If either bindings or pools are not included in the PUT call, existing
+bindings or pools are deleted.</li>
 </ul>
-<p><strong>DHCP Configuration Paramters</strong></p>
+<p><strong>DHCP Configuration Parameters</strong></p>
 <table class="table"><thead><tr>
 <th>Parameter Name</th>
 <th>Parameter Information </th>
@@ -20239,6 +20262,56 @@ a Location HTTP header.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-dhcp-relays">Working With DHCP Relays</h2>
+<p>  Dynamic Host Configuration Protocol (DHCP) relay enables you to leverage your
+  existing DHCP infrastructure from within NSX without any interruption to the
+  IP address management in your environment. DHCP messages are relayed from
+  virtual machine(s) to the designated DHCP server(s) in the physical world.
+  This enables IP addresses within NSX to continue to be in synch with IP
+  addresses in other environments. </p>
+<p>  DHCP configuration is applied on the logical
+  router port and can list several DHCP servers. Requests are sent to all listed
+  servers. While relaying the DHCP request from the client, the relay adds a
+  Gateway IP Address to the request. The external DHCP server uses this gateway
+  address to match a pool and allocate an IP address for the request. The
+  gateway address must belong to a subnet of the NSX port on which the relay is
+  running. </p>
+<p>  You can specify a different DHCP server for each logical switch and
+  can configure multiple DHCP servers on each logical router to provide support
+  for multiple IP domains. </p>
+<p>  NOTE DHCP relay does not support overlapping IP address space (option 82). </p>
+<p>  DHCP Relay and DHCP service cannot run on a
+  port/vNic at the same time. If a relay agent is configured on a port, a DHCP
+  pool cannot be configured on the subnet(s) of this port.  </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>relay</strong></td>
+<td>You can configure ipPool, static-binding and relay at the same time if</td>
+</tr>
+<tr>
+<td>              there is not any overlap on vnic.</td>
+<td></td>
+</tr>
+<tr>
+<td>  <strong>relayServer</strong></td>
+<td>There must be at least one external server.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>  <strong>groupingObjectId</strong></td>
+<td>A list of dhcp server IP addresses.</td>
+</tr>
+</tbody></table><pre><code class="code-block hljs lang-armasm"><span class="hljs-symbol">There</span> can <span class="hljs-keyword">be </span><span class="hljs-keyword">multiple </span><span class="hljs-keyword">sever </span>group objects, the maximum groupObject is <span class="hljs-number">4</span> the maxium number of server <span class="hljs-built_in">IP</span>
+<span class="hljs-keyword">addresses </span>is <span class="hljs-number">16</span> <span class="hljs-title">|</span></code></pre><p>  <strong>ipAddress</strong>   |Supports both IP address and FQDN|
+  <strong>fqdn</strong>   |Specify the IP of the fqdn, and add a Firewall rule to allow the response from
+        the server represented by the fqdn such as: src - the IP; dest - any; service -
+        udp:67:any.|
+  <strong>relayAgents</strong>   |There must be at least one relay agent.|Required.
+  <strong>vnicIndex</strong>   | No default. Specify the vNic that proxy the dhcp request. | Required.
+  **giAddress&gt; | Defaults to the vNic primary address. Only one giAddress allowed. | Optional. </p>
 </div>
 <div class="method get">
   <a
@@ -20249,6 +20322,30 @@ a Location HTTP header.</p>
   <div class="content">
     <p><p>Query DHCP relay</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">relay</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">relayServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span>IPset1<span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span>IPset2<span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">relayServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">relayAgents</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">relayAgent</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnicIndex</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vnicIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">giAddress</span>&gt;</span>
+        192.168.1.254<span class="hljs-tag">&lt;/<span class="hljs-name">giAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">relayAgent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">relayAgent</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnicIndex</span> &gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">vnicIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">giAddress</span>&gt;</span>192.168.3.254<span class="hljs-tag">&lt;/<span class="hljs-name">giAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">relayAgent</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">relayAgents</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">relay</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -20296,15 +20393,18 @@ a Location HTTP header.</p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">relay</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">relayServer</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span>IPset1<span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span>IPset2<span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span>www.dhcpserver<span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">relayServer</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">relayAgents</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">relayAgent</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vnicIndex</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnicIndex</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">giAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">giAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">giAddress</span>&gt;</span>192.168.1.254<span class="hljs-tag">&lt;/<span class="hljs-name">giAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">relayAgent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">relayAgent</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnicIndex</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">vnicIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">giAddress</span>&gt;</span>192.168.3.254<span class="hljs-tag">&lt;/<span class="hljs-name">giAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">relayAgent</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">relayAgents</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">relay</span>&gt;</span>
@@ -20344,6 +20444,12 @@ a Location HTTP header.</p>
 name resolution requests from clients. NSX Edge will relay client
 application requests to the DNS servers to fully resolve a network
 name and cache the response from the servers.</p>
+<p>Configure DNS updates the DNS server configuration. The DNS server list allows two
+addresses – primary and secondary. The default cache size is 16 MB where
+the minimum can be 1 MB, and the maximum 8196 MB. The default listeners
+is any, which means listen on all VSE interfaces. If provided, the
+listener’s IP address must be assigned to an internal interface. Logging
+is disabled by default.</p>
 </div>
 <div class="method get">
   <a
@@ -20479,7 +20585,74 @@ name and cache the response from the servers.</p>
   ><h2>GET /4.0/edges/{edgeId}/dns/statistics</h2></a>
   <div class="content">
     <p><p>Get DNS server statistics</p>
-</p>
+<p><strong>DNS Server Statistics Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter Name</th>
+<th>Parameter Information</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>requests &gt; total</strong></td>
+<td>Indicates all of the incoming requests to the DNS server, including DNS query and other types of requests such as transfers, and updates. </td>
+</tr>
+<tr>
+<td><strong>requests &gt; queries</strong></td>
+<td>Indicates all of the DNS queries the server received.</td>
+</tr>
+<tr>
+<td><strong>requests &gt; total</strong></td>
+<td>Indicates all of the responses the server returned to requests. This might be different from the requests.total because some requests might be rejected. total = success + nxrrset + servFail + formErr + nxdomain + others.</td>
+</tr>
+<tr>
+<td><strong>responses &gt; success</strong></td>
+<td>Indicates all of the successful DNS responses.</td>
+</tr>
+<tr>
+<td><strong>responses &gt; nxrrset</strong></td>
+<td>Indicates the count of no existent resource record. </td>
+</tr>
+<tr>
+<td><strong>responses &gt; servFail</strong></td>
+<td>Indicates the count of the SERVFAIL responses.</td>
+</tr>
+<tr>
+<td><strong>responses &gt; formErr</strong></td>
+<td>Indicates the count of the format error responses.</td>
+</tr>
+<tr>
+<td><strong>responses &gt; nxdomain</strong></td>
+<td>Indicates the count of no-suhc-domain answer</td>
+</tr>
+<tr>
+<td><strong>responses &gt; others</strong></td>
+<td>Indicates the count of other types of responses.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">stats</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeStamp</span>&gt;</span>2011-10-10 12:12:12<span class="hljs-tag">&lt;/<span class="hljs-name">timeStamp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">requests</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">total</span>&gt;</span>120000<span class="hljs-tag">&lt;/<span class="hljs-name">total</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">queries</span>&gt;</span>110000<span class="hljs-tag">&lt;/<span class="hljs-name">queries</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">requests</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">responses</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">total</span>&gt;</span>108000<span class="hljs-tag">&lt;/<span class="hljs-name">total</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">success</span>&gt;</span>105000<span class="hljs-tag">&lt;/<span class="hljs-name">success</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nxrrset</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">nxrrset</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">servFail</span>&gt;</span>400<span class="hljs-tag">&lt;/<span class="hljs-name">servFail</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">formErr</span>&gt;</span>300<span class="hljs-tag">&lt;/<span class="hljs-name">formErr</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nxdomain</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">nxdomain</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">others</span>&gt;</span>300<span class="hljs-tag">&lt;/<span class="hljs-name">others</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">responses</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cachedDBRRSet</span>&gt;</span>15000<span class="hljs-tag">&lt;/<span class="hljs-name">cachedDBRRSet</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">stats</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dns</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -21384,6 +21557,18 @@ oneMonth | oneYear.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-nsx-edge-high-availability">Working with NSX Edge High Availability</h2>
+<p>  High Availability (HA) ensures that a NSX Edge appliance is always
+  available on your virtualized network. You can enable HA either when
+  installing NSX Edge or on an installed NSX Edge instance.</p>
+<p>  If a single appliance is associated with NSX Edge, the appliance configuration
+  is cloned for the standby appliance. If two appliances are associated with NSX
+  Edge and one of them is deployed, this REST call deploys the remaining appliance
+  and push HA configuration to both. </p>
+<p>  HA relies on an internal interface. If an
+  internal interface does not exist, this call will not deploy the secondary
+  appliance, or push HA config to appliance. The enabling of HA will be done once
+  an available internal interface is added. If the PUT call includes an empty xml
+  <highAvailability /> or enabled=false, it acts as a DELETE call.</p>
 </div>
 <div class="method get">
   <a
@@ -21394,6 +21579,21 @@ oneMonth | oneYear.</p>
   <div class="content">
     <p><p>Get high availability configuration.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">highAvailability</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddresses</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.10.1/30<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.10.2/30<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ipAddresses</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">declareDeadTime</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">declareDeadTime</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">highAvailability</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -21403,7 +21603,7 @@ oneMonth | oneYear.</p>
     href="#PUT/4.0/edges/{edgeId}/highavailability/config"
   ><h2>PUT /4.0/edges/{edgeId}/highavailability/config</h2></a>
   <div class="content">
-    <p><p>Configure high availability.</p>
+    <p><p>Configure high availability.| <strong>ipAddress</strong> - Optional. A pair of ipAddresses with /30 subnet mandatory, one for each appliance. If provided, they must NOT overlap with any subnet defined on the Edge vNics. If not specified, a pair of IPs will be picked up from reserved subnet, 169.254.0.0/16. <strong>declareDeadTime</strong> Optional. The default is 6 seconds. <strong>enabled</strong> - Optional. The default is set to true. The enabled flag will cause the HA appliance to be deployed or destroyed.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -21427,12 +21627,12 @@ oneMonth | oneYear.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">highAvailability</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ipAddresses</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.10.1/30<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.10.2/30<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ipAddresses</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">declareDeadTime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">declareDeadTime</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">declareDeadTime</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">declareDeadTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">highAvailability</span>&gt;</span>
 </code></pre>
   </div>
@@ -21444,7 +21644,7 @@ oneMonth | oneYear.</p>
     href="#DELETE/4.0/edges/{edgeId}/highavailability/config"
   ><h2>DELETE /4.0/edges/{edgeId}/highavailability/config</h2></a>
   <div class="content">
-    <p><p>Delete high availability configuration.</p>
+    <p><p>NSX Manager deletes the standby appliance and removes the HA config from the active appliance.You can also delete the HA configuration by using a PUT call with empty xml <highAvailability /> or with <highAvailability><enabled>false</enabled></highAvailability>.</p>
 </p>
   </div>
 </div>
@@ -23198,8 +23398,8 @@ of parameters used to configure the logical router HA interface.</p>
 the IP addresses of internal (private) networks from the public
 network.</p>
 <p>You can configure NAT rules to provide access to services running on
-privately addressed virtual machines. There are two types of NAT rules
-that can be configured: SNAT (Source NAT) and DNAT (Destination NAT).</p>
+privately addressed virtual machines.  There are two types of NAT rules
+that can be configured: SNAT and DNAT.</p>
 <p>For the data path to work, you need to add firewall rules to allow the
 required traffic for IP addresses and port per the NAT rules.</p>
 <p><strong>NAT Parameter Table</strong></p>
@@ -24427,7 +24627,66 @@ their tables.</p>
     href="#GET/4.0/edges/{edgeId}/routing/config/bgp"
   ><h2>GET /4.0/edges/{edgeId}/routing/config/bgp</h2></a>
   <div class="content">
-    <p><p>Retrieve BGP configuration.</p>
+    <p><p>Retrieve BGP configuration.
+responses:
+  200:
+    body:
+      application/xml:
+        example: |
+        <bgp>
+          <enabled>true</enabled>
+          <localAS>65535</localAS>
+          <bgpNeighbours>
+            <bgpNeighbour>
+              <ipAddress>192.168.1.10</ipAddress>
+              <remoteAS>65500</remoteAS>
+              <weight>60</weight>
+              <holdDownTimer>180</holdDownTimer>
+              <keepAliveTimer>60</keepAliveTimer>
+              <password>vmware123</password>
+              <bgpFilters>
+                <bgpFilter>
+                  <direction>in</direction>
+                  <action>permit</action>
+                  <network>10.0.0.0/8</network>
+                  <ipPrefixGe>17</ipPrefixGe>
+                  <ipPrefixLe>32</ipPrefixLe>
+                </bgpFilter>
+                <bgpFilter>
+                  <direction>out</direction>
+                  <action>deny</action>
+                  <network>20.0.0.0/26</network>
+                </bgpFilter>
+              </bgpFilters>
+            </bgpNeighbour>
+          </bgpNeighbours>
+          <redistribution>
+            <enabled>true</enabled>
+            <rules>
+              <rule>
+                <id>1</id>
+                <prefixName>a</prefixName>
+                <from>
+                  <ospf>true</ospf>
+                  <bgp>false</bgp>
+                  <static>true</static>
+                  <connected>false</connected>
+                </from>
+                <action>deny</action>
+              </rule>
+              <rule>
+                <id>0</id>
+                <from>
+                  <ospf>false</ospf>
+                  <bgp>false</bgp>
+                  <static>false</static>
+                  <connected>true</connected>
+                </from>
+                <action>permit</action>
+              </rule>
+            </rules>
+          </redistribution>
+        </bgp></p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -24548,41 +24807,41 @@ their tables.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">localAS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">localAS</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">localASNumber</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">localASNumber</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">localAS</span>&gt;</span>65534<span class="hljs-tag">&lt;/<span class="hljs-name">localAS</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">localASNumber</span>&gt;</span>65534<span class="hljs-tag">&lt;/<span class="hljs-name">localASNumber</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">bgpNeighbours</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">bgpNeighbour</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">remoteAS</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">remoteAS</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">remoteASNumber</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">remoteASNumber</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">holdDownTimer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">holdDownTimer</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">keepAliveTimer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">keepAliveTimer</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteAS</span>&gt;</span>65500<span class="hljs-tag">&lt;/<span class="hljs-name">remoteAS</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteASNumber</span>&gt;</span>65500<span class="hljs-tag">&lt;/<span class="hljs-name">remoteASNumber</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">holdDownTimer</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">holdDownTimer</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">keepAliveTimer</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">keepAliveTimer</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>vmware123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilters</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilter</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixGe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixGe</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixLe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixLe</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span>in<span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>permit<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span>10.0.0.0/8<span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixGe</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixGe</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixLe</span>&gt;</span>32<span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixLe</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">bgpFilter</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">bgpFilters</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">bgpNeighbour</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">bgpNeighbours</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">redistribution</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">rules</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span>a<span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>permit<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">rules</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">redistribution</span>&gt;</span>
@@ -24822,40 +25081,52 @@ and links that have the same area identification.  </p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ospfAreas</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ospfArea</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">translateType7ToType5</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">translateType7ToType5</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>normal<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">authentication</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>password<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vmware123<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">authentication</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ospfArea</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ospfAreas</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ospfInterfaces</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ospfInterface</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">helloInterval</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">helloInterval</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">deadInterval</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">deadInterval</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">priority</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">priority</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">cost</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cost</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">helloInterval</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">helloInterval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">deadInterval</span>&gt;</span>40<span class="hljs-tag">&lt;/<span class="hljs-name">deadInterval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">priority</span>&gt;</span>128<span class="hljs-tag">&lt;/<span class="hljs-name">priority</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cost</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">cost</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ospfInterface</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ospfInterfaces</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">redistribution</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">rules</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span>a<span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">isis</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isis</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>deny<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span>b<span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">isis</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isis</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>permit<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">rules</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">redistribution</span>&gt;</span>
@@ -25656,9 +25927,9 @@ clients. These setup binaries are later downloaded by remote
 clients and installed on their systems. The primary parameters
 needed to configure this setup are hostname of the gateway, and
 its port and a profile name which is shown to the user to identify
-this connection. Administrator can also set few other parameters
+this connection. The Administrator can also set other parameters
 such as whether to automatically start the application on windows
-login, hide the system tray icon etc.</p>
+login, or hide the system tray icon.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -25903,15 +26174,15 @@ deleted.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipAddressPool</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ipRange</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipRange</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">netmask</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">netmask</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">primaryDns</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">primaryDns</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">secondaryDns</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">secondaryDns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipRange</span>&gt;</span>10.112.243.11-10.112.243.57<span class="hljs-tag">&lt;/<span class="hljs-name">ipRange</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">netmask</span>&gt;</span>255.0.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">netmask</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">gateway</span>&gt;</span>192.168.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">gateway</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">primaryDns</span>&gt;</span>192.168.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">primaryDns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">secondaryDns</span>&gt;</span>4.2.2.2<span class="hljs-tag">&lt;/<span class="hljs-name">secondaryDns</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">winsServer</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">winsServer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">winsServer</span>&gt;</span>10.112.243.201<span class="hljs-tag">&lt;/<span class="hljs-name">winsServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ipAddressPool</span>&gt;</span>
 </code></pre>
   </div>
@@ -27362,9 +27633,10 @@ the syslog servers</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">syslog</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>udp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">serverAddresses</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>1.1.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>1.1.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">serverAddresses</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">syslog</span>&gt;</span>
 </code></pre>

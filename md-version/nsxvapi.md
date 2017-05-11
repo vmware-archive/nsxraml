@@ -872,11 +872,14 @@ Create a Service on a Specific Scope
 Working With a Specified Service
 -------
 
-* **get** *(secured)*: Retrieve details about the specified service.
+* **get** *(secured)*: Retrieve details about the specified service. The scopeId can
+be "globalroot-0", or datacenterId in upgrade use cases.
+
 * **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a
 service.
 
-* **delete** *(secured)*: Delete the specified service.
+* **delete** *(secured)*: Delete the specified service.You can delete a service by specifying its
+<applicationgroup-id>. 
 
 ## applicationgroup
 Working with Service Groups Grouping Objects
@@ -897,7 +900,7 @@ Working with a Specific Service Group
 * **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of
 the specified service group.
 
-* **delete** *(secured)*: Delete the specified service group from a scope.
+* **delete** *(secured)*: Delete the specified service group (application group) from a scope.
 
 ### /2.0/services/applicationgroup/{applicationgroupId}/members/{moref}
 Working with a Specific Service Group Member
@@ -912,11 +915,6 @@ Working with Service Group Members on a Specific Scope
 
 * **get** *(secured)*: Get a list of member elements that can be added to the service groups
 created on a particular scope.
-
-Since service group allows only either services or other service
-groups as members to be added, this helps you get a list of all
-possible valid elements that can be added to the
-service.
 
 ## ipPoolsObjects
 Working with IP Pool Grouping Objects
@@ -4568,8 +4566,8 @@ the IP addresses of internal (private) networks from the public
 network.
 
 You can configure NAT rules to provide access to services running on
-privately addressed virtual machines. There are two types of NAT rules
-that can be configured: SNAT (Source NAT) and DNAT (Destination NAT).
+privately addressed virtual machines.  There are two types of NAT rules
+that can be configured: SNAT and DNAT.
 
 For the data path to work, you need to add firewall rules to allow the
 required traffic for IP addresses and port per the NAT rules.
@@ -4865,6 +4863,65 @@ the connection is established, the BGP speakers exchange routes and synchronize
 their tables.
 
 * **get** *(secured)*: Retrieve BGP configuration.
+responses:
+  200:
+    body:
+      application/xml:
+        example: |
+        <bgp>
+          <enabled>true</enabled>
+          <localAS>65535</localAS>
+          <bgpNeighbours>
+            <bgpNeighbour>
+              <ipAddress>192.168.1.10</ipAddress>
+              <remoteAS>65500</remoteAS>
+              <weight>60</weight>
+              <holdDownTimer>180</holdDownTimer>
+              <keepAliveTimer>60</keepAliveTimer>
+              <password>vmware123</password>
+              <bgpFilters>
+                <bgpFilter>
+                  <direction>in</direction>
+                  <action>permit</action>
+                  <network>10.0.0.0/8</network>
+                  <ipPrefixGe>17</ipPrefixGe>
+                  <ipPrefixLe>32</ipPrefixLe>
+                </bgpFilter>
+                <bgpFilter>
+                  <direction>out</direction>
+                  <action>deny</action>
+                  <network>20.0.0.0/26</network>
+                </bgpFilter>
+              </bgpFilters>
+            </bgpNeighbour>
+          </bgpNeighbours>
+          <redistribution>
+            <enabled>true</enabled>
+            <rules>
+              <rule>
+                <id>1</id>
+                <prefixName>a</prefixName>
+                <from>
+                  <ospf>true</ospf>
+                  <bgp>false</bgp>
+                  <static>true</static>
+                  <connected>false</connected>
+                </from>
+                <action>deny</action>
+              </rule>
+              <rule>
+                <id>0</id>
+                <from>
+                  <ospf>false</ospf>
+                  <bgp>false</bgp>
+                  <static>false</static>
+                  <connected>true</connected>
+                </from>
+                <action>permit</action>
+              </rule>
+            </rules>
+          </redistribution>
+        </bgp>
 
 **Method history:**
 
@@ -5094,6 +5151,13 @@ name resolution requests from clients. NSX Edge will relay client
 application requests to the DNS servers to fully resolve a network
 name and cache the response from the servers.
 
+Configure DNS updates the DNS server configuration. The DNS server list allows two
+addresses – primary and secondary. The default cache size is 16 MB where
+the minimum can be 1 MB, and the maximum 8196 MB. The default listeners
+is any, which means listen on all VSE interfaces. If provided, the
+listener’s IP address must be assigned to an internal interface. Logging
+is disabled by default.
+
 * **get** *(secured)*: Retrieve DNS configuration.
 * **put** *(secured)*: Configure DNS servers.
 * **delete** *(secured)*: Delete DNS configuration
@@ -5102,6 +5166,20 @@ name and cache the response from the servers.
 Get DNS server statistics
 
 * **get** *(secured)*: Get DNS server statistics
+
+**DNS Server Statistics Parameters**
+
+Parameter Name | Parameter Information
+------|-----
+**requests > total** | Indicates all of the incoming requests to the DNS server, including DNS query and other types of requests such as transfers, and updates. 
+**requests > queries** | Indicates all of the DNS queries the server received.
+**requests > total** | Indicates all of the responses the server returned to requests. This might be different from the requests.total because some requests might be rejected. total = success + nxrrset + servFail + formErr + nxdomain + others.
+**responses > success** | Indicates all of the successful DNS responses.
+**responses > nxrrset** | Indicates the count of no existent resource record. 
+**responses > servFail** | Indicates the count of the SERVFAIL responses.
+**responses > formErr** | Indicates the count of the format error responses.
+**responses > nxdomain** | Indicates the count of no-suhc-domain answer
+**responses > others** | Indicates the count of other types of responses.
 
 ### /4.0/edges/{edgeId}/dhcp/config
 Configure DHCP for NSX Edge
@@ -5117,6 +5195,10 @@ ID (interfaceId) of the requesting client.
 
 If either bindings or pools are not included in the PUT call, existing
 bindings or pools are deleted.
+
+If the NSX Edge autoConfiguration flag and autoConfigureDNS is true, and the
+primaryNameServer or secondaryNameServer parameters are not specified, NSX
+Manager applies the DNS settings to the DHCP configuration.
 
 NSX Edge DHCP service adheres to the following rules:
 * Listens on the NSX Edge internal interface (non-uplink interface)
@@ -5137,9 +5219,10 @@ the default lease time is 1 day.
 * Setting the parameter **enable** to *true* starts the DHCP service
 while setting **enable** to *false* stops the service.  
 * Both **staticBinding** and **ipPools** must be part of the PUT request body.
-Else, they will be deleted if configured earlier.
+If either bindings or pools are not included in the PUT call, existing
+bindings or pools are deleted.
 
-**DHCP Configuration Paramters**
+**DHCP Configuration Parameters**
 
 Parameter Name | Parameter Information 
 ------|-----
@@ -5224,6 +5307,48 @@ Working with a Specific DHCP Static Binding
 ### /4.0/edges/{edgeId}/dhcp/config/relay
 Working With DHCP Relays
 ----
+  Dynamic Host Configuration Protocol (DHCP) relay enables you to leverage your
+  existing DHCP infrastructure from within NSX without any interruption to the
+  IP address management in your environment. DHCP messages are relayed from
+  virtual machine(s) to the designated DHCP server(s) in the physical world.
+  This enables IP addresses within NSX to continue to be in synch with IP
+  addresses in other environments. 
+  
+  DHCP configuration is applied on the logical
+  router port and can list several DHCP servers. Requests are sent to all listed
+  servers. While relaying the DHCP request from the client, the relay adds a
+  Gateway IP Address to the request. The external DHCP server uses this gateway
+  address to match a pool and allocate an IP address for the request. The
+  gateway address must belong to a subnet of the NSX port on which the relay is
+  running. 
+  
+  You can specify a different DHCP server for each logical switch and
+  can configure multiple DHCP servers on each logical router to provide support
+  for multiple IP domains. 
+  
+  NOTE DHCP relay does not support overlapping IP address space (option 82). 
+  
+  DHCP Relay and DHCP service cannot run on a
+  port/vNic at the same time. If a relay agent is configured on a port, a DHCP
+  pool cannot be configured on the subnet(s) of this port.  
+  
+  Parameter |  Description | Comments
+  ---|---|---
+  **relay**   |You can configure ipPool, static-binding and relay at the same time if
+              there is not any overlap on vnic.|
+  **relayServer**   |There must be at least one external server.|Required.
+  **groupingObjectId**   |A list of dhcp server IP addresses.
+    There can be multiple sever group objects, the maximum groupObject is 4 the maxium number of server IP
+    addresses is 16 |
+  **ipAddress**   |Supports both IP address and FQDN|
+  **fqdn**   |Specify the IP of the fqdn, and add a Firewall rule to allow the response from
+        the server represented by the fqdn such as: src - the IP; dest - any; service -
+        udp:67:any.|
+  **relayAgents**   |There must be at least one relay agent.|Required.
+  **vnicIndex**   | No default. Specify the vNic that proxy the dhcp request. | Required.
+  **giAddress> | Defaults to the vNic primary address. Only one giAddress allowed. | Optional. 
+  
+  
 
 * **get** *(secured)*: Query DHCP relay
 * **put** *(secured)*: Configure DHCP relay
@@ -5237,10 +5362,25 @@ Working With DHCP Leases
 ### /4.0/edges/{edgeId}/highavailability/config
 Working with NSX Edge High Availability
 ----
+  
+  High Availability (HA) ensures that a NSX Edge appliance is always
+  available on your virtualized network. You can enable HA either when
+  installing NSX Edge or on an installed NSX Edge instance.
+  
+  If a single appliance is associated with NSX Edge, the appliance configuration
+  is cloned for the standby appliance. If two appliances are associated with NSX
+  Edge and one of them is deployed, this REST call deploys the remaining appliance
+  and push HA configuration to both. 
+  
+  HA relies on an internal interface. If an
+  internal interface does not exist, this call will not deploy the secondary
+  appliance, or push HA config to appliance. The enabling of HA will be done once
+  an available internal interface is added. If the PUT call includes an empty xml
+  <highAvailability /> or enabled=false, it acts as a DELETE call.
 
 * **get** *(secured)*: Get high availability configuration.
-* **put** *(secured)*: Configure high availability.
-* **delete** *(secured)*: Delete high availability configuration.
+* **put** *(secured)*: Configure high availability.| **ipAddress** - Optional. A pair of ipAddresses with /30 subnet mandatory, one for each appliance. If provided, they must NOT overlap with any subnet defined on the Edge vNics. If not specified, a pair of IPs will be picked up from reserved subnet, 169.254.0.0/16. **declareDeadTime** Optional. The default is 6 seconds. **enabled** - Optional. The default is set to true. The enabled flag will cause the HA appliance to be deployed or destroyed.
+* **delete** *(secured)*: NSX Manager deletes the standby appliance and removes the HA config from the active appliance.You can also delete the HA configuration by using a PUT call with empty xml <highAvailability /> or with <highAvailability><enabled>false</enabled></highAvailability>.
 
 ### /4.0/edges/{edgeId}/syslog/config
 Working With Remote Syslog Server on NSX Edge
@@ -5342,9 +5482,9 @@ clients. These setup binaries are later downloaded by remote
 clients and installed on their systems. The primary parameters
 needed to configure this setup are hostname of the gateway, and
 its port and a profile name which is shown to the user to identify
-this connection. Administrator can also set few other parameters
+this connection. The Administrator can also set other parameters
 such as whether to automatically start the application on windows
-login, hide the system tray icon etc.
+login, or hide the system tray icon.
 
 * **get** *(secured)*: Retrieve information about all installation packages.
 * **put** *(secured)*: Update all installation packages with the given list. If the
