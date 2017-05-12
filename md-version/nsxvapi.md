@@ -4976,6 +4976,268 @@ pool, monitor and application rule.
 For the data path to work, you need to add firewall rules to allow
 required traffic as per the load balancer configuration.
 
+**General Load Balancer Parameter Table**
+
+Parameter |  Description | Comments
+---|---|---
+  **logging**      |Load balancer logging setting.|Optional.
+  **enable**     |Whether logging is enabled.|Optional. Options are *True* or *False*. Default is *False*.
+  **logLevel**     |Logging level.|Optional. Options are: *EMERGENCY*, *ALERT*, *CRITICAL*, *ERROR*, *WARNING*, *NOTICE*, *INFO*, and *DEBUG*. Default is *INFO*.
+  **accelerationEnabled**      |Whether **accelerationEnabled** is enabled.|Optional. Options are *True* or *False*. Default is *False*.
+  **enabled**      |Whether load balancer is enabled.|Optional. Options are *True* or *False*. Default is *True*.
+  
+ **Parameter Table for Monitors**
+ 
+ Parameter |  Description | Comments
+ ---|---|---
+  **monitor**      |Monitor list.|Optional.
+  **monitorId**     |Generated monitor identifier.|Optional. Required if it is used in a pool.
+  **name**     |Name of the monitor.|Required.
+  **type**     |Monitor type.|Required. Options are : *HTTP*, *HTTPS*, *TCP*, *ICMP*, *UDP*.
+  **interval**     |Interval in seconds in which a server is to be tested.|Optional. Default is *5*.
+  **timeout**     |Timeout value is the maximum time in seconds within which a response from the server must be received.|Optional. Default is *15*.
+  **maxRetries**     |Maximum number of times the server is tested  before it is declared DOWN.|Optional. Default is *3*.
+  **method**     |Method to send the health check request to the server.|Optional. Options are: *OPTIONS*, *GET*, *HEAD*, *POST*, *PUT*, *DELETE*, *TRACE*, *CONNECT*. Default is *GET* for HTTP monitor.
+  **url**     |URL to *GET* or *POST*.|Optional. Default is *"/"* for HTTP monitor.
+  **expected**     |Expected string.|Optional. Default is "HTTP/1" for HTTP/HTTPS protocol.
+  **send**     |String to be sent to the backend server after a connection is established.|Optional. URL encoded HTTP POST data for HTTP/HTTPS protocol.
+  **receive**     |String to be received from the backend server for HTTP/HTTPS protocol.|Optional.
+  **extension**     |Advanced monitor configuration.|Optional.
+  
+**Parameter Table for Virtual Servers**
+
+ Parameter |  Description | Comments
+ ---|---|---
+  **virtualServer**      |Virtual server list.|Optional. 0-64 **virtualServer** items can be added
+  **name**     |Name of the virtual server.|Required. Unique virtualServer name per NSX Edge.
+  **description**     |Description of the virtual server.|Optional.
+  **enabled**     |Whether the virtual server is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*.
+  **ipAddress**     |IP address that the load balancer  is listening on. |Required. A valid Edge vNic IP address (IPv4 or IPv6).
+  **protocol**     |Virtual server protocol.|Required. Options are: *HTTP*, *HTTPS*, *TCP*, *UDP*.
+  **port**    |Port number or port range.|Required. Port number such as *80*, port range such as *80,443* or *1234-1238*, or a combination such as *443,6000-7000*. Valid range: 1-65535.
+  **connectionLimit**     |Maximum concurrent connections.|Optional. Long. Default is *0*.
+  **connectionRateLimit**     |Maximum incoming new connection requests per second.|Optional. Long. Default is *null*.
+  **defaultPoolId**     |Default pool ID.|Optional.
+  **applicationProfileId**     |Application profile ID.|Optional. 
+  **accelerationEnabled**     |Use the faster L4 load balancer  engine rather than L7 load  balancer engine.|Optional. Boolean. Options are *True* or *False*. Default is *False*. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.
+  **applicationRuleId**     |Application rule ID list.|Optional.
+
+**Parameter Table for Pools**
+
+ Parameter |  Description | Comments
+ ---|---|---
+  **pool**      |Pool list.|Optional.
+  **poolId**     |Generated pool identifier.|Optional. Required if you specify pool object.
+  **name**     |Name of the pool.|Required.
+  **description**     |Description of the pool.|Optional.
+  **algorithm**     |Pool member balancing algorithm.|Optional. Options are: *round-robin*, *ip-hash*, *uri*, *leastconn*, *url*, *httpheader*. Default is *round-robin*.
+  **algorithmParameters**     |Algorithm parameters for *httpheader*, *url*. |Optional. Required for *url*,*httpheader* algorithm.
+  **transparent**     |Whether client IP addresses are  visible to the backend servers.|Optional. Options are *True* or *False*. Default is *False*.
+  **monitorId**     |Monitor identifier list.|Optional. Only one monitor is supported.
+  **member**     |Pool member list.|Optional.
+  **memberId**    |Generated member identifier.|Optional. Required if you specify member object.
+  **name**    |Member name.|Optional. Required when it is used in ACL rule.
+  **ipAddress**    |Member IP address (IPv4/IPv6).|Optional. Required if **groupingObjectId** is null.
+  **groupingObjectId**    |Member grouping object identifier.|Optional. Required if **ipAddress** is null.
+  **groupingObjectName**    |Member grouping object name.|Optional.
+  **weight**    |Member weight.|Optional. Default is *1*.
+  **monitorPort**    |Monitor port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
+  **port**    |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
+  **maxConn**    |Maximum number of concurrent connections a member can handle.|Optional. Default is *0* which means unlimited.
+  **minConn**    |Minimum number of concurrent connections a member can handle.|Optional. Default is *0* which means unlimited.
+  **condition**    |Whether the member is enabled or disabled.|Optional. Options are: *enabled* or *disabled*. Default is *enabled*.
+
+**Parameter Table for Application Profiles**
+
+Parameter |  Description | Comments
+---|---|---
+  **applicationProfile**      |Application profile list.|Optional.
+  **applicationProfileId**     |Generated application profile identifier.|Optional. Required if it is used in virtual server.
+  **name**     |Name of application profile.|Required.
+  **persistence**     |Persistence setting.|Optional.
+  **method**    |Persistent method.|Required. Options are: *cookie*, *ssl_sessionid*, *sourceip*, *msrdp*.
+  **cookieName**    |Cookie name.|Optional.
+  **cookieMode**    |Cookie mode.|Optional. Options are: *insert*, *prefix*, *app*.
+  **expire**    |Expire time.|Optional.
+  **insertXForwardedFor**     |Whether **insertXForwardedFor** is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+  **sslPassthrough**     |Whether **sslPassthrough** is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+  **httpRedirect**     |HTTP redirect setting.|Optional.
+  **to**    |HTTP redirect to.|Required. Required if **httpRedirect** is specified.
+  **serverSslEnabled**     |Whether **serverSsl** offloading is enabled.|Optional. Boolean. Options are *True* or *False*.
+  **serverSsl**     |Server SSL setting.|Optional.
+  **ciphers**    |Cipher suites.|Optional. Options are: *DEFAULT* *ECDHE-RSA-AES128-GCM-SHA256*, *ECDHE-RSA-AES256-GCM-SHA384*, *ECDHE-RSA-AES256-SHA*, *ECDHE-ECDSA-AES256-SHA*, *ECDH-ECDSA-AES256-SHA*, *ECDH-RSA-AES256-SHA*, *AES256-SHA AES128-SHA*, *DES-CBC3-SHA*. Default is *DEFAULT*.
+  **serviceCertificate**    |Service certificate identifier list.|Optional. Only one certificate is supported.
+  **caCertificate**    |CA identifier list.|Optional. Required if **serverAuth** is required.
+  **crlCertificate**    |CRL identifier list.|Optional.
+  **serverAuth**    |Whether peer certificate should be verified.|Optional. Options are *Required* or *Ignore*. Default is *Ignore*.
+  **clientSsl**     |Client SSL setting.|Optional.
+  **ciphers**    |Cipher suites.|Optional. Options are: *DEFAULT* *ECDHE-RSA-AES128-GCM-SHA256*, *ECDHE-RSA-AES256-GCM-SHA384*, *ECDHE-RSA-AES256-SHA*, *ECDHE-ECDSA-AES256-SHA*, *ECDH-ECDSA-AES256-SHA*, *ECDH-RSA-AES256-SHA*, *AES256-SHA AES128-SHA*, *DES-CBC3-SHA*. Default is *DEFAULT*.
+  **serviceCertificate**    |Service certificate identifier list.|Required. Only one certificate is supported.
+  **caCertificate**    |CA identifier list.|Optional.
+  **crlCertificate**    |CRL identifier list.|Optional.
+  **clientAuth**    |Whether peer certificate should be verified.|Optional. Options are *Required* or *Ignore*. Default is *Ignore*.
+  
+**Parameter Table for Application Rules**
+
+Parameter |  Description | Comments
+---|---|---
+  **applicationRule**      |Application rule list.|Optional. 
+  **applicationRuleId**     |Generated application rule identifier.|Optional. 
+  **name**     |Name of application rule.|Required.
+  **script**     |Application rule script.|Required.
+  
+For the data path to work, you need to add firewall rules to allow required
+traffic as per the load balancer configuration. 
+
+**The following configuration example is displaying the HTTP/HTTPS Redirection, SSL
+Offloading, Content Switching, HTTP HealthMonitor parameters**: 
+ 
+    <loadBalancer>
+      <enabled>true</enabled>
+      <accelerationEnabled>true</accelerationEnabled>
+      <logging>
+        <enable>true</enable>
+        <logLevel>debug</logLevel>
+      </logging>
+      <applicationRule>
+        <applicationRuleId>applicationRule-1</applicationRuleId>
+        <name>traffic_ctrl_rule</name>
+        <script>
+          acl srv1_full srv_conn(pool - http / m1)gt 50
+          acl srv2_full srv_conn(pool - http / m2)gt 50 use_backend pool - backup if srv1_full or srv2_full
+        </script>
+      </applicationRule>
+      <applicationRule>
+        <applicationRuleId>applicationRule-2</applicationRuleId>
+        <name>redirection_rule</name>
+        <script>
+          acl google_page url_beg / google redirect location https : //www.google.com/ if google_page</script>
+        </applicationRule>
+        <applicationRule>
+          <applicationRuleId>applicationRule-3</applicationRuleId>
+          <name>l7_rule</name>
+          <script>acl backup_page url_beg / backup use_backend pool - backup if backup_page</script>
+      </applicationRule>
+      <virtualServer>
+        <virtualServerId>virtualServer-1</virtualServerId>
+        <name>http_redirection_vip</name>
+        <description>http redirection virtualServer</description>
+        <enabled>true</enabled>
+        <ipAddress>10.117.35.171</ipAddress>
+        <protocol>http</protocol>
+        <port>80</port>
+        <connectionLimit>123</connectionLimit>
+        <connectionRateLimit>123</connectionRateLimit>
+        <applicationProfileId>applicationProfile-1</applicationProfileId>
+        <enableServiceInsertion>false</enableServiceInsertion>
+        <accelerationEnabled>true</accelerationEnabled>
+      </virtualServer>
+      <virtualServer>
+        <virtualServerId>virtualServer-2</virtualServerId>
+        <name>https_vip</name>
+        <description>https virtualServer</description>
+        <enabled>true</enabled>
+        <ipAddress>10.117.35.171</ipAddress>
+        <protocol>https</protocol>
+        <port>443</port>
+        <connectionLimit>123</connectionLimit>
+        <connectionRateLimit>123</connectionRateLimit>
+        <defaultPoolId>pool-1</defaultPoolId>
+        <applicationProfileId>applicationProfile-2</applicationProfileId>
+        <applicationRuleId>applicationRule-1</applicationRuleId>
+        <applicationRuleId>applicationRule-2</applicationRuleId>
+        <applicationRuleId>applicationRule-3</applicationRuleId>
+        <enableServiceInsertion>false</enableServiceInsertion>
+        <accelerationEnabled>true</accelerationEnabled>
+      </virtualServer>
+      <applicationProfile>
+        <applicationProfileId>applicationProfile-1</applicationProfileId>
+        <name>https_redirection_application_profile</name>
+        <insertXForwardedFor>false</insertXForwardedFor>
+        <sslPassthrough>false</sslPassthrough>
+        <httpRedirect>
+          <to>https://10.117.35.171</to>
+        </httpRedirect>
+      </applicationProfile>
+      <applicationProfile>
+        <applicationProfileId>applicationProfile-2</applicationProfileId>
+        <name>ssl_offloading_application_profile</name>
+        <insertXForwardedFor>false</insertXForwardedFor>
+        <serverSslEnabled>true</serverSslEnabled>
+        <sslPassthrough>false</sslPassthrough>
+        <clientSsl>
+          <clientAuth>ignore</clientAuth>
+          <ciphers>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH</ciphers>
+          <serviceCertificate>certificate-4</serviceCertificate>
+          <caCertificate>certificate-3</caCertificate>
+          <crlCertificate>crl-1</crlCertificate>
+        </clientSsl>
+        <serverSsl>
+          <ciphers>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH</ciphers>
+          <serviceCertificate>certificate-4</serviceCertificate>
+          <caCertificate>certificate-3</caCertificate>
+          <crlCertificate>crl-1</crlCertificate>
+        </serverSsl>
+      </applicationProfile>
+      <pool>
+        <poolId>pool-1</poolId>
+        <name>pool-http</name>
+        <description>pool-http</description>
+        <transparent>false</transparent>
+        <algorithm>round-robin</algorithm>
+        <monitorId>monitor-1</monitorId>
+        <member>
+          <memberId>member-1</memberId>
+          <ipAddress>192.168.101.101</ipAddress>
+          <weight>1</weight>
+          <port>80</port>
+          <minConn>10</minConn>
+          <maxConn>100</maxConn>
+          <name>m1</name>
+        </member>
+        <member>
+          <memberId>member-2</memberId>
+          <ipAddress>192.168.101.102</ipAddress>
+          <weight>1</weight>
+          <port>80</port>
+          <minConn>10</minConn>
+          <maxConn>100</maxConn>
+          <name>m2</name>
+        </member>
+      </pool>
+      <pool>
+        <poolId>pool-2</poolId>
+        <name>pool-backup</name>
+        <description>pool backup</description>
+        <transparent>false</transparent>
+        <algorithm>round-robin</algorithm>
+        <monitorId>monitor-1</monitorId>
+        <member>
+          <memberId>member-3</memberId>
+          <ipAddress>192.168.102.101</ipAddress>
+          <weight>1</weight>
+          <port>80</port>
+          <name>m3</name>
+        </member>
+        <member>
+          <memberId>member-4</memberId>
+          <ipAddress>192.168.102.102</ipAddress>
+          <weight>1</weight>
+          <port>80</port>
+          <name>m4</name>
+        </member>
+      </pool>
+      <monitor>
+        <monitorId>monitor-1</monitorId>
+        <type>http</type>
+        <interval>5</interval>
+        <timeout>15</timeout>
+        <maxRetries>3</maxRetries>
+        <method>GET</method>
+        <url>/</url>
+        <name>http-monitor</name>
+      </monitor>  
+
 * **delete** *(secured)*: Delete load balancer configuration.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles
@@ -4987,6 +5249,8 @@ associate the profile with a virtual server. The virtual server then
 processes traffic according to the values specified in the profile.
 Using profiles enhances your control over managing network traffic,
 and makes traffic-management tasks easier and more efficient.
+
+See *Working With NSX Edge Load Balancer* for **applicationProfiles** parameter information.
 
 * **post** *(secured)*: Add an application profile.
 * **get** *(secured)*: Retrieve all application profiles on the specified Edge.
@@ -5005,6 +5269,8 @@ Working With Application Rules
 ----
 You can write an application rule to directly manipulate and manage
 IP application traffic.
+
+See *Working With NSX Edge Load Balancer* for **applicationRule** parameter information.
 
 * **post** *(secured)*: Add an application rule.
 * **get** *(secured)*: Retrieve all application rules.
@@ -5025,6 +5291,8 @@ You create a service monitor to define health check parameters for a
 particular type of network traffic. When you associate a service
 monitor with a pool, the pool members are monitored according to the
 service monitor parameters.
+
+See *Working With NSX Edge Load Balancer* for **monitor** parameter information.
 
 * **post** *(secured)*: Add a load balancer monitor.
 * **get** *(secured)*: Retrieve all load balancer monitors.
@@ -5047,20 +5315,7 @@ Working With Virtual Servers
 You can add an NSX Edge internal or uplink interface as a virtual
 server.
 
-Parameter |  Description | Comments
----|---|---
- **name**      |Name of virtual server.|Required.
- **description**     |Description of virtual server.|Optional.
- **enabled**    |Whether the virtual server is enabled.|Optional. Boolean. Options are *true* or *false*. Default is *true*.
- **ipAddress**      |IP address that the load balancer is listening on. |Required. A valid NSX Edge vNic IP address (IPv4 or IPv6).
- **protocol**      |Virtual server protocol.|Required. Options are: *HTTP*, *HTTPS*, *TCP*, *UDP*.
- **port**      |Port number or port range.|Required. Port number such as *80*, port range such as *80,443* or *1234-1238*, or a combination such as *443,6000-7000*.
- **connectionLimit**      |Maximum concurrent connections.|Optional. Long.
- **connectionRateLimit**      |Maximum incoming new connection requests per second.|Optional. Long.
- **defaultPoolId**      |Default backend server pool identifier.|Optional.
- **applicationProfileId**      |Application profile identifier.|Optional.
- **accelerationEnabled**      |Use the faster L4 load balancer  engine rather than L7 load  balancer engine.|Optional. Boolean. Options are *true* or *false*. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.
- **applicationRuleId**      |Application rule identifier list.|Optional. Each item should be a valid **applicationRuleId**.
+See *Working With NSX Edge Load Balancer* for **virtualServer** parameter information.
 
 * **get** *(secured)*: Retrieve all virtual servers.
 * **delete** *(secured)*: Delete all virtual servers.
@@ -5079,25 +5334,7 @@ flexibly and efficiently. A pool manages load balancer distribution
 methods and has a service monitor attached to it for health check
 parameters.
 
-Parameter |  Description | Comments
----|---|---
-**pool > name**   |Name of pool.|Required.
-**description**   |Description of pool.|Optional.
-**algorithm**   |Pool member balancing algorithm.|Optional. Options are: *round-robin*, *ip-hash*, *uri*, *leastconn*, *url*, *httpheader*. Default is *round-robin*.
-**algorithmParameters**   |Algorithm parameters for *httpheader* and *url*. |Optional. Required for *httpheader* and *url* algorithm.
-**transparent**   |Whether client IP addresses are  visible to the backend servers.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
-**monitorId**   |Monitor identifier list.|Optional. At the most one monitor is supported.
-**member**   |Pool member list.|Optional.
-**member > name**  |Member name.|Optional. Required, when used in ACL rule.
-**ipAddress**  |Member IP address.|Optional. Required, if **groupingObjectId** is null.
-**groupingObjectId**  |Member grouping object identifier.|Optional. Required, if **ipAddress** is null.
-**groupingObjectName**  |Member grouping object name.|Optional.
-**weight**  |Member weight.|Optional. Default is *1*.
-**monitorPort**  |Monitor port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
-**port**  |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured. 
-**maxConn**  |Maximum number of concurrent connections the member can handle.|Optional. Default is *0* which means unlimited.
-**minConn**  |Minimum number of concurrent connections a member must always accept.|Optional. Default is *0* which means unlimited.
-**condition**  |Condition of the member.|Optional. Options are: *enabled*, *disabled*, or *drain*. Default is *enabled*.
+See *Working With NSX Edge Load Balancer* for **pools** parameter information.
 
 * **post** *(secured)*: Add a load balancer server pool to the Edge.
 
@@ -5134,6 +5371,64 @@ Working With a Specific Load Balancer Member
 ### /4.0/edges/{edgeId}/loadbalancer/statistics
 Working With Load Balancer Statistics
 ----
+Retrieves load balancer statistics.
+  
+**Load Balancer Statistics Parameters**
+
+Parameter |  Description
+---|---
+**virtualServer**      |Virtual server list.
+**virtualServerId**     |Virtual server identifier.
+**name**     |Name of the virtual server.
+**description**     |Description of virtual server.
+**ipAddress**     |IP address that the load balancer is listening on.
+**status**     |Virtual server status.
+**bytesIn**     |Number of bytes in.
+**bytesOut**     |Number of bytes out.
+**curSessions**     |Number of current sessions.
+**httpReqTotal**     |Total number of HTTP requests received.
+**httpReqRate**     |HTTP requests per second over last elapsed second.
+**httpReqRateMax**     |Maximum number of HTTP requests per second observed.
+**maxSession**     |Number of maximum sessions.
+**rate**     |Number of sessions per second over last elapsed second.
+**rateLimit**     |Configured limit on new sessions per second.
+**rateMax**     |Maximum number of new sessions per second.
+**totalSession**     |Total number of sessions.
+**pool**      |Pool list.
+**poolId**     |Generated pool identifier.
+**name**     |Name of the pool.
+**description**     |Description of the pool.
+**status**     |Pool status.
+**bytesIn**     |Number of bytes in.
+**bytesOut**     |Number of bytes out.
+**curSessions**     |Number of current sessions.
+**httpReqTotal**     |Total number of HTTP requests received.
+**httpReqRate**     |HTTP requests per second over last elapsed second.
+**httpReqRateMax**     |Maximum number of HTTP requests per second observed.
+**maxSession**     |Number of maximum sessions.
+**rate**     |Number of sessions per second over last elapsed second.
+**rateLimit**     |Configured limit on new sessions per second.
+**rateMax**     |Maximum number of new sessions per second.
+**totalSession**     |Total number of sessions.
+**member**     |Pool member list.
+**memberId**    |Generated member identifier.
+**name**    |Member name.
+**ipAddress**    |Member IP address.
+**groupingObjectId**    |Member grouping object identifier.
+**status**    |Member status.
+**bytesIn**    |Number of bytes in.
+**bytesOut**    |Number of bytes out.
+**curSessions**    |Number of current sessions.
+**httpReqTotal**    |Total number of HTTP requests received.
+**httpReqRate**    |HTTP requests per second over last elapsed second.
+**httpReqRateMax**    |Maximum number of HTTP requests per second observed.
+**maxSession**    |Number of maximum sessions.
+**rate**    |Number of sessions per second over last elapsed second.
+**rateLimit**    |Configured limit on new sessions per second.
+**rateMax**    |Maximum number of new sessions per second.
+**totalSession**    |Total number of sessions.
+**timestamp**      |Timestamp to fetch load balancer statistics.
+**serverStatus**      |Load balancer server status.
 
 * **get** *(secured)*: Retrieve load balancer statistics.
 
@@ -5141,7 +5436,7 @@ Working With Load Balancer Statistics
 Working With Load Balancer Acceleration
 ----
 
-* **post** *(secured)*: 
+* **post** *(secured)*: Configure load balancer acceleration mode.
 
 ### /4.0/edges/{edgeId}/dns/config
 Working with NSX Edge DNS Server Configuration

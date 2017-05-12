@@ -13243,82 +13243,516 @@ securitySchemes:
           
           For the data path to work, you need to add firewall rules to allow
           required traffic as per the load balancer configuration.
-        body:
-          application/xml:
-            example: |
+          
+          **General Load Balancer Parameter Table**
+          
+          Parameter |  Description | Comments
+          ---|---|---
+            **logging**      |Load balancer logging setting.|Optional.
+            **enable**     |Whether logging is enabled.|Optional. Options are *True* or *False*. Default is *False*.
+            **logLevel**     |Logging level.|Optional. Options are: *EMERGENCY*, *ALERT*, *CRITICAL*, *ERROR*, *WARNING*, *NOTICE*, *INFO*, and *DEBUG*. Default is *INFO*.
+            **accelerationEnabled**      |Whether **accelerationEnabled** is enabled.|Optional. Options are *True* or *False*. Default is *False*.
+            **enabled**      |Whether load balancer is enabled.|Optional. Options are *True* or *False*. Default is *True*.
+            
+           **Parameter Table for Monitors**
+           
+           Parameter |  Description | Comments
+           ---|---|---
+            **monitor**      |Monitor list.|Optional.
+            **monitorId**     |Generated monitor identifier.|Optional. Required if it is used in a pool.
+            **name**     |Name of the monitor.|Required.
+            **type**     |Monitor type.|Required. Options are : *HTTP*, *HTTPS*, *TCP*, *ICMP*, *UDP*.
+            **interval**     |Interval in seconds in which a server is to be tested.|Optional. Default is *5*.
+            **timeout**     |Timeout value is the maximum time in seconds within which a response from the server must be received.|Optional. Default is *15*.
+            **maxRetries**     |Maximum number of times the server is tested  before it is declared DOWN.|Optional. Default is *3*.
+            **method**     |Method to send the health check request to the server.|Optional. Options are: *OPTIONS*, *GET*, *HEAD*, *POST*, *PUT*, *DELETE*, *TRACE*, *CONNECT*. Default is *GET* for HTTP monitor.
+            **url**     |URL to *GET* or *POST*.|Optional. Default is *"/"* for HTTP monitor.
+            **expected**     |Expected string.|Optional. Default is "HTTP/1" for HTTP/HTTPS protocol.
+            **send**     |String to be sent to the backend server after a connection is established.|Optional. URL encoded HTTP POST data for HTTP/HTTPS protocol.
+            **receive**     |String to be received from the backend server for HTTP/HTTPS protocol.|Optional.
+            **extension**     |Advanced monitor configuration.|Optional.
+            
+          **Parameter Table for Virtual Servers**
+          
+           Parameter |  Description | Comments
+           ---|---|---
+            **virtualServer**      |Virtual server list.|Optional. 0-64 **virtualServer** items can be added
+            **name**     |Name of the virtual server.|Required. Unique virtualServer name per NSX Edge.
+            **description**     |Description of the virtual server.|Optional.
+            **enabled**     |Whether the virtual server is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*.
+            **ipAddress**     |IP address that the load balancer  is listening on. |Required. A valid Edge vNic IP address (IPv4 or IPv6).
+            **protocol**     |Virtual server protocol.|Required. Options are: *HTTP*, *HTTPS*, *TCP*, *UDP*.
+            **port**    |Port number or port range.|Required. Port number such as *80*, port range such as *80,443* or *1234-1238*, or a combination such as *443,6000-7000*. Valid range: 1-65535.
+            **connectionLimit**     |Maximum concurrent connections.|Optional. Long. Default is *0*.
+            **connectionRateLimit**     |Maximum incoming new connection requests per second.|Optional. Long. Default is *null*.
+            **defaultPoolId**     |Default pool ID.|Optional.
+            **applicationProfileId**     |Application profile ID.|Optional. 
+            **accelerationEnabled**     |Use the faster L4 load balancer  engine rather than L7 load  balancer engine.|Optional. Boolean. Options are *True* or *False*. Default is *False*. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.
+            **applicationRuleId**     |Application rule ID list.|Optional.
+          
+          **Parameter Table for Pools**
+          
+           Parameter |  Description | Comments
+           ---|---|---
+            **pool**      |Pool list.|Optional.
+            **poolId**     |Generated pool identifier.|Optional. Required if you specify pool object.
+            **name**     |Name of the pool.|Required.
+            **description**     |Description of the pool.|Optional.
+            **algorithm**     |Pool member balancing algorithm.|Optional. Options are: *round-robin*, *ip-hash*, *uri*, *leastconn*, *url*, *httpheader*. Default is *round-robin*.
+            **algorithmParameters**     |Algorithm parameters for *httpheader*, *url*. |Optional. Required for *url*,*httpheader* algorithm.
+            **transparent**     |Whether client IP addresses are  visible to the backend servers.|Optional. Options are *True* or *False*. Default is *False*.
+            **monitorId**     |Monitor identifier list.|Optional. Only one monitor is supported.
+            **member**     |Pool member list.|Optional.
+            **memberId**    |Generated member identifier.|Optional. Required if you specify member object.
+            **name**    |Member name.|Optional. Required when it is used in ACL rule.
+            **ipAddress**    |Member IP address (IPv4/IPv6).|Optional. Required if **groupingObjectId** is null.
+            **groupingObjectId**    |Member grouping object identifier.|Optional. Required if **ipAddress** is null.
+            **groupingObjectName**    |Member grouping object name.|Optional.
+            **weight**    |Member weight.|Optional. Default is *1*.
+            **monitorPort**    |Monitor port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
+            **port**    |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
+            **maxConn**    |Maximum number of concurrent connections a member can handle.|Optional. Default is *0* which means unlimited.
+            **minConn**    |Minimum number of concurrent connections a member can handle.|Optional. Default is *0* which means unlimited.
+            **condition**    |Whether the member is enabled or disabled.|Optional. Options are: *enabled* or *disabled*. Default is *enabled*.
+          
+          **Parameter Table for Application Profiles**
+          
+          Parameter |  Description | Comments
+          ---|---|---
+            **applicationProfile**      |Application profile list.|Optional.
+            **applicationProfileId**     |Generated application profile identifier.|Optional. Required if it is used in virtual server.
+            **name**     |Name of application profile.|Required.
+            **persistence**     |Persistence setting.|Optional.
+            **method**    |Persistent method.|Required. Options are: *cookie*, *ssl_sessionid*, *sourceip*, *msrdp*.
+            **cookieName**    |Cookie name.|Optional.
+            **cookieMode**    |Cookie mode.|Optional. Options are: *insert*, *prefix*, *app*.
+            **expire**    |Expire time.|Optional.
+            **insertXForwardedFor**     |Whether **insertXForwardedFor** is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+            **sslPassthrough**     |Whether **sslPassthrough** is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+            **httpRedirect**     |HTTP redirect setting.|Optional.
+            **to**    |HTTP redirect to.|Required. Required if **httpRedirect** is specified.
+            **serverSslEnabled**     |Whether **serverSsl** offloading is enabled.|Optional. Boolean. Options are *True* or *False*.
+            **serverSsl**     |Server SSL setting.|Optional.
+            **ciphers**    |Cipher suites.|Optional. Options are: *DEFAULT* *ECDHE-RSA-AES128-GCM-SHA256*, *ECDHE-RSA-AES256-GCM-SHA384*, *ECDHE-RSA-AES256-SHA*, *ECDHE-ECDSA-AES256-SHA*, *ECDH-ECDSA-AES256-SHA*, *ECDH-RSA-AES256-SHA*, *AES256-SHA AES128-SHA*, *DES-CBC3-SHA*. Default is *DEFAULT*.
+            **serviceCertificate**    |Service certificate identifier list.|Optional. Only one certificate is supported.
+            **caCertificate**    |CA identifier list.|Optional. Required if **serverAuth** is required.
+            **crlCertificate**    |CRL identifier list.|Optional.
+            **serverAuth**    |Whether peer certificate should be verified.|Optional. Options are *Required* or *Ignore*. Default is *Ignore*.
+            **clientSsl**     |Client SSL setting.|Optional.
+            **ciphers**    |Cipher suites.|Optional. Options are: *DEFAULT* *ECDHE-RSA-AES128-GCM-SHA256*, *ECDHE-RSA-AES256-GCM-SHA384*, *ECDHE-RSA-AES256-SHA*, *ECDHE-ECDSA-AES256-SHA*, *ECDH-ECDSA-AES256-SHA*, *ECDH-RSA-AES256-SHA*, *AES256-SHA AES128-SHA*, *DES-CBC3-SHA*. Default is *DEFAULT*.
+            **serviceCertificate**    |Service certificate identifier list.|Required. Only one certificate is supported.
+            **caCertificate**    |CA identifier list.|Optional.
+            **crlCertificate**    |CRL identifier list.|Optional.
+            **clientAuth**    |Whether peer certificate should be verified.|Optional. Options are *Required* or *Ignore*. Default is *Ignore*.
+            
+          **Parameter Table for Application Rules**
+          
+          Parameter |  Description | Comments
+          ---|---|---
+            **applicationRule**      |Application rule list.|Optional. 
+            **applicationRuleId**     |Generated application rule identifier.|Optional. 
+            **name**     |Name of application rule.|Required.
+            **script**     |Application rule script.|Required.
+            
+          For the data path to work, you need to add firewall rules to allow required
+          traffic as per the load balancer configuration. 
+          
+          **The following configuration example is displaying the HTTP/HTTPS Redirection, SSL
+          Offloading, Content Switching, HTTP HealthMonitor parameters**: 
+           
               <loadBalancer>
-                <enabled></enabled>
-                <enableServiceInsertion></enableServiceInsertion>
-                <accelerationEnabled></accelerationEnabled>
+                <enabled>true</enabled>
+                <accelerationEnabled>true</accelerationEnabled>
                 <logging>
-                  <enable></enable>
-                  <logLevel></logLevel>
+                  <enable>true</enable>
+                  <logLevel>debug</logLevel>
                 </logging>
+                <applicationRule>
+                  <applicationRuleId>applicationRule-1</applicationRuleId>
+                  <name>traffic_ctrl_rule</name>
+                  <script>
+                    acl srv1_full srv_conn(pool - http / m1)gt 50
+                    acl srv2_full srv_conn(pool - http / m2)gt 50 use_backend pool - backup if srv1_full or srv2_full
+                  </script>
+                </applicationRule>
+                <applicationRule>
+                  <applicationRuleId>applicationRule-2</applicationRuleId>
+                  <name>redirection_rule</name>
+                  <script>
+                    acl google_page url_beg / google redirect location https : //www.google.com/ if google_page</script>
+                  </applicationRule>
+                  <applicationRule>
+                    <applicationRuleId>applicationRule-3</applicationRuleId>
+                    <name>l7_rule</name>
+                    <script>acl backup_page url_beg / backup use_backend pool - backup if backup_page</script>
+                </applicationRule>
                 <virtualServer>
-                  <virtualServerId></virtualServerId>
-                  <name></name>
-                  <description></description>
-                  <enabled></enabled>
-                  <ipAddress></ipAddress>
-                  <protocol></protocol>
-                  <port></port>
-                  <connectionLimit></connectionLimit>
-                  <connectionRateLimit></connectionRateLimit>
-                  <applicationProfileId></applicationProfileId>
-                  <defaultPoolId></defaultPoolId>
-                  <enableServiceInsertion></enableServiceInsertion>
-                  <accelerationEnabled></accelerationEnabled>
-                  <applicationRuleId></applicationRuleId>
+                  <virtualServerId>virtualServer-1</virtualServerId>
+                  <name>http_redirection_vip</name>
+                  <description>http redirection virtualServer</description>
+                  <enabled>true</enabled>
+                  <ipAddress>10.117.35.171</ipAddress>
+                  <protocol>http</protocol>
+                  <port>80</port>
+                  <connectionLimit>123</connectionLimit>
+                  <connectionRateLimit>123</connectionRateLimit>
+                  <applicationProfileId>applicationProfile-1</applicationProfileId>
+                  <enableServiceInsertion>false</enableServiceInsertion>
+                  <accelerationEnabled>true</accelerationEnabled>
+                </virtualServer>
+                <virtualServer>
+                  <virtualServerId>virtualServer-2</virtualServerId>
+                  <name>https_vip</name>
+                  <description>https virtualServer</description>
+                  <enabled>true</enabled>
+                  <ipAddress>10.117.35.171</ipAddress>
+                  <protocol>https</protocol>
+                  <port>443</port>
+                  <connectionLimit>123</connectionLimit>
+                  <connectionRateLimit>123</connectionRateLimit>
+                  <defaultPoolId>pool-1</defaultPoolId>
+                  <applicationProfileId>applicationProfile-2</applicationProfileId>
+                  <applicationRuleId>applicationRule-1</applicationRuleId>
+                  <applicationRuleId>applicationRule-2</applicationRuleId>
+                  <applicationRuleId>applicationRule-3</applicationRuleId>
+                  <enableServiceInsertion>false</enableServiceInsertion>
+                  <accelerationEnabled>true</accelerationEnabled>
                 </virtualServer>
                 <applicationProfile>
-                  <applicationProfileId></applicationProfileId>
-                  <name></name>
-                  <insertXForwardedFor></insertXForwardedFor>
-                  <sslPassthrough></sslPassthrough>
-                  <template></template>
-                  <persistence>
-                    <method></method>
-                    <cookieName></cookieName>
-                    <cookieMode></cookieMode>
-                  </persistence>
-                  <serverSslEnabled></serverSslEnabled>
+                  <applicationProfileId>applicationProfile-1</applicationProfileId>
+                  <name>https_redirection_application_profile</name>
+                  <insertXForwardedFor>false</insertXForwardedFor>
+                  <sslPassthrough>false</sslPassthrough>
+                  <httpRedirect>
+                    <to>https://10.117.35.171</to>
+                  </httpRedirect>
+                </applicationProfile>
+                <applicationProfile>
+                  <applicationProfileId>applicationProfile-2</applicationProfileId>
+                  <name>ssl_offloading_application_profile</name>
+                  <insertXForwardedFor>false</insertXForwardedFor>
+                  <serverSslEnabled>true</serverSslEnabled>
+                  <sslPassthrough>false</sslPassthrough>
                   <clientSsl>
-                    <clientAuth></clientAuth>
-                    <serviceCertificate></serviceCertificate>
+                    <clientAuth>ignore</clientAuth>
+                    <ciphers>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH</ciphers>
+                    <serviceCertificate>certificate-4</serviceCertificate>
+                    <caCertificate>certificate-3</caCertificate>
+                    <crlCertificate>crl-1</crlCertificate>
                   </clientSsl>
+                  <serverSsl>
+                    <ciphers>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH</ciphers>
+                    <serviceCertificate>certificate-4</serviceCertificate>
+                    <caCertificate>certificate-3</caCertificate>
+                    <crlCertificate>crl-1</crlCertificate>
+                  </serverSsl>
                 </applicationProfile>
                 <pool>
-                  <poolId></poolId>
-                  <name></name>
-                  <description></description>
-                  <transparent></transparent>
-                  <algorithm></algorithm>
-                  <monitorId></monitorId>
+                  <poolId>pool-1</poolId>
+                  <name>pool-http</name>
+                  <description>pool-http</description>
+                  <transparent>false</transparent>
+                  <algorithm>round-robin</algorithm>
+                  <monitorId>monitor-1</monitorId>
                   <member>
-                    <memberId></memberId>
-                    <ipAddress></ipAddress>
-                    <weight></weight>
-                    <port></port>
-                    <monitorPort></monitorPort>
-                    <minConn></minConn>
-                    <maxConn></maxConn>
-                    <name></name>
+                    <memberId>member-1</memberId>
+                    <ipAddress>192.168.101.101</ipAddress>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m1</name>
+                  </member>
+                  <member>
+                    <memberId>member-2</memberId>
+                    <ipAddress>192.168.101.102</ipAddress>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m2</name>
+                  </member>
+                </pool>
+                <pool>
+                  <poolId>pool-2</poolId>
+                  <name>pool-backup</name>
+                  <description>pool backup</description>
+                  <transparent>false</transparent>
+                  <algorithm>round-robin</algorithm>
+                  <monitorId>monitor-1</monitorId>
+                  <member>
+                    <memberId>member-3</memberId>
+                    <ipAddress>192.168.102.101</ipAddress>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <name>m3</name>
+                  </member>
+                  <member>
+                    <memberId>member-4</memberId>
+                    <ipAddress>192.168.102.102</ipAddress>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <name>m4</name>
                   </member>
                 </pool>
                 <monitor>
-                  <monitorId></monitorId>
-                  <type></type>
-                  <interval></interval>
-                  <timeout></timeout>
-                  <maxRetries></maxRetries>
-                  <method></method>
-                  <url></url>
-                  <name></name>
+                  <monitorId>monitor-1</monitorId>
+                  <type>http</type>
+                  <interval>5</interval>
+                  <timeout>15</timeout>
+                  <maxRetries>3</maxRetries>
+                  <method>GET</method>
+                  <url>/</url>
+                  <name>http-monitor</name>
+                </monitor>  
+        body: 
+          application/xml:
+            example: |
+              <loadBalancer>
+                <enabled>true</enabled>
+                <enableServiceInsertion>false</enableServiceInsertion>
+                <accelerationEnabled>true</accelerationEnabled>
+                <logging>
+                  <enable>true</enable>
+                  <logLevel>debug</logLevel>
+                </logging>
+                <virtualServer>
+                  <virtualServerId>virtualServer-1</virtualServerId>
+                  <name>http_vip</name>
+                  <description>http virtualServer</description>
+                  <enabled>true</enabled>
+                  <ipAddress>10.117.35.172</ipAddress>
+                  <protocol>http</protocol>
+                  <port>80</port>
+                  <connectionLimit>123</connectionLimit>
+                  <connectionRateLimit>123</connectionRateLimit>
+                  <applicationProfileId>applicationProfile-1</applicationProfileId>
+                  <defaultPoolId>pool-1</defaultPoolId>
+                  <enableServiceInsertion>false</enableServiceInsertion>
+                  <accelerationEnabled>true</accelerationEnabled>
+                  <vendorProfile>
+                    <vendorTemplateId>577</vendorTemplateId>
+                    <vendorTemplateName>F5</vendorTemplateName>
+                    <profileAttributes>
+                      <attribute>
+                        <key>abcd</key>
+                        <name>abcd</name>
+                        <value>1234</value>
+                      </attribute>
+                    </profileAttributes>
+                  </vendorProfile>
+                </virtualServer>
+                <virtualServer>
+                  <virtualServerId>virtualServer-2</virtualServerId>
+                  <name>https_vip</name>
+                  <description>https virtualServer</description>
+                  <enabled>true</enabled>
+                  <ipAddress>10.117.35.172</ipAddress>
+                  <protocol>https</protocol>
+                  <port>443</port>
+                  <connectionLimit>123</connectionLimit>
+                  <connectionRateLimit>123</connectionRateLimit>
+                  <applicationProfileId>applicationProfile-2</applicationProfileId>
+                  <defaultPoolId>pool-2</defaultPoolId>
+                  <enableServiceInsertion>false</enableServiceInsertion>
+                  <accelerationEnabled>false</accelerationEnabled>
+                </virtualServer>
+                <virtualServer>
+                  <virtualServerId>virtualServer-3</virtualServerId>
+                  <name>tcp_transparent_vip</name>
+                  <description>tcp virtualServer</description>
+                  <enabled>true</enabled>
+                  <ipAddress>10.117.35.172</ipAddress>
+                  <protocol>tcp</protocol>
+                  <port>1234</port>
+                  <connectionLimit>123</connectionLimit>
+                  <applicationProfileId>applicationProfile-3</applicationProfileId>
+                  <defaultPoolId>pool-3</defaultPoolId>
+                  <enableServiceInsertion>false</enableServiceInsertion>
+                  <accelerationEnabled>true</accelerationEnabled>
+                </virtualServer>
+                <virtualServer>
+                  <virtualServerId>virtualServer-4</virtualServerId>
+                  <name>tcp_snat_vip</name>
+                  <description>tcp snat virtualServer</description>
+                  <enabled>true</enabled>
+                  <ipAddress>10.117.35.172</ipAddress>
+                  <protocol>tcp</protocol>
+                  <port>1235</port>
+                  <connectionLimit>123</connectionLimit>
+                  <applicationProfileId>applicationProfile-3</applicationProfileId>
+                  <defaultPoolId>pool-4</defaultPoolId>
+                  <enableServiceInsertion>false</enableServiceInsertion>
+                  <accelerationEnabled>true</accelerationEnabled>
+                </virtualServer>
+                <applicationProfile>
+                  <applicationProfileId>applicationProfile-1</applicationProfileId>
+                  <name>http_application_profile</name>
+                  <insertXForwardedFor>true</insertXForwardedFor>
+                  <sslPassthrough>true</sslPassthrough>
+                  <persistence>
+                    <method>cookie</method>
+                    <cookieName>JSESSIONID</cookieName>
+                    <cookieMode>insert</cookieMode>
+                  </persistence>
+                </applicationProfile>
+                <applicationProfile>
+                  <applicationProfileId>applicationProfile-2</applicationProfileId>
+                  <name>https_application_profile</name>
+                  <insertXForwardedFor>true</insertXForwardedFor>
+                  <sslPassthrough>true</sslPassthrough>
+                  <persistence>
+                    <method>ssl_sessionid</method>
+                  </persistence>
+                </applicationProfile>
+                <applicationProfile>
+                  <applicationProfileId>applicationProfile-3</applicationProfileId>
+                  <name>tcp_application_profile</name>
+                  <insertXForwardedFor>false</insertXForwardedFor>
+                  <sslPassthrough>true</sslPassthrough>
+                </applicationProfile>
+                <pool>
+                  <poolId>pool-1</poolId>
+                  <name>pool-http</name>
+                  <description>pool-http</description>
+                  <transparent>false</transparent>
+                  <algorithm>round-robin</algorithm>
+                  <monitorId>monitor-1</monitorId>
+                  <member>
+                    <memberId>member-1</memberId>
+                    <ipAddress>192.168.101.201</ipAddress>
+                    <groupingObjectId>vm-24</groupingObjectId>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m1</name>
+                  </member>
+                  <member>
+                    <memberId>member-2</memberId>
+                    <ipAddress>192.168.101.202</ipAddress>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m2</name>
+                    <condition>enabled</condition>
+                  </member>
+                </pool>
+                <pool>
+                  <poolId>pool-2</poolId>
+                  <name>pool-https</name>
+                  <description>pool-https</description>
+                  <transparent>false</transparent>
+                  <algorithm>round-robin</algorithm>
+                  <monitorId>monitor-2</monitorId>
+                  <member>
+                    <memberId>member-3</memberId>
+                    <ipAddress>192.168.101.201</ipAddress>
+                    <weight>1</weight>
+                    <port>443</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m3</name>
+                  </member>
+                  <member>
+                    <memberId>member-4</memberId>
+                    <ipAddress>192.168.101.202</ipAddress>
+                    <weight>1</weight>
+                    <port>443</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m4</name>
+                  </member>
+                </pool>
+                <pool>
+                  <poolId>pool-3</poolId>
+                  <name>pool-tcp</name>
+                  <description>pool-tcp</description>
+                  <transparent>true</transparent>
+                  <algorithm>round-robin</algorithm>
+                  <monitorId>monitor-3</monitorId>
+                  <member>
+                    <memberId>member-5</memberId>
+                    <ipAddress>192.168.101.201</ipAddress>
+                    <weight>1</weight>
+                    <port>1234</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m5</name>
+                    <monitorPort>80</monitorPort>
+                  </member>
+                  <member>
+                    <memberId>member-6</memberId>
+                    <ipAddress>192.168.101.202</ipAddress>
+                    <weight>1</weight>
+                    <port>1234</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m6</name>
+                    <monitorPort>80</monitorPort>
+                  </member>
+                </pool>
+                <pool>
+                  <poolId>pool-4</poolId>
+                  <name>pool-tcp-snat</name>
+                  <description>pool-tcp-snat</description>
+                  <transparent>false</transparent>
+                  <algorithm>round-robin</algorithm>
+                  <monitorId>monitor-3</monitorId>
+                  <member>
+                    <memberId>member-7</memberId>
+                    <ipAddress>192.168.101.201</ipAddress>
+                    <weight>1</weight>
+                    <port>1234</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m7</name>
+                    <monitorPort>80</monitorPort>
+                  </member>
+                  <member>
+                    <memberId>member-8</memberId>
+                    <ipAddress>192.168.101.202</ipAddress>
+                    <weight>1</weight>
+                    <port>1234</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m8</name>
+                    <monitorPort>80</monitorPort>
+                  </member>
+                </pool>
+                <monitor>
+                  <monitorId>monitor-1</monitorId>
+                  <type>http</type>
+                  <interval>5</interval>
+                  <timeout>15</timeout>
+                  <maxRetries>3</maxRetries>
+                  <method>GET</method>
+                  <url>/</url>
+                  <name>http-monitor</name>
+                  <expected>HTTP/1</expected>
+                  <send>hello</send>
+                  <receive>ok</receive>
+                  <extension>no-bodymax-age=3hcontent-type=Application/xml</extension>
                 </monitor>
-                <applicationRule>
-                  <name></name>
-                  <script></script>
-                </applicationRule>
+                <monitor>
+                  <monitorId>monitor-2</monitorId>
+                  <type>https</type>
+                  <interval>5</interval>
+                  <timeout>15</timeout>
+                  <maxRetries>3</maxRetries>
+                  <method>GET</method>
+                  <url>/</url>
+                  <name>https-monitor</name>
+                </monitor>
+                <monitor>
+                  <monitorId>monitor-3</monitorId>
+                  <type>tcp</type>
+                  <interval>5</interval>
+                  <timeout>15</timeout>
+                  <maxRetries>3</maxRetries>
+                  <name>tcp-monitor</name>
+                </monitor>
               </loadBalancer>
             schema: loadBalancerConfig
       delete:
@@ -13335,6 +13769,9 @@ securitySchemes:
           processes traffic according to the values specified in the profile.
           Using profiles enhances your control over managing network traffic,
           and makes traffic-management tasks easier and more efficient.
+          
+          See *Working With NSX Edge Load Balancer* for **applicationProfiles** parameter information.
+          
         post:
           displayName: applicationProfilesCreate
           description: Add an application profile.
@@ -13342,19 +13779,58 @@ securitySchemes:
             application/xml:
               example: |
                 <applicationProfile>
-                  <name></name>
-                  <insertXForwardedFor></insertXForwardedFor>
-                  <sslPassthrough></sslPassthrough>
+                  <name>http_application_profile_2</name>
+                  <insertXForwardedFor>true</insertXForwardedFor>
+                  <sslPassthrough>true</sslPassthrough>
                   <persistence>
-                    <method></method>
-                    <cookieName></cookieName>
-                    <cookieMode></cookieMode>
+                    <method>cookie</method>
+                    <cookieName>JSESSIONID</cookieName>
+                    <cookieMode>insert</cookieMode>
                   </persistence>
                 </applicationProfile>
               schema: applicationProfilesCreate
         get:
           displayName: applicationProfilesRead
           description: Retrieve all application profiles on the specified Edge.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <loadBalancer>
+                      <applicationProfile>
+                        <applicationProfileId>applicationProfile-2</applicationProfileId>
+                        <name>HTTPS-Application-Profile</name>
+                        <insertXForwardedFor>true</insertXForwardedFor>
+                        <sslPassthrough>false</sslPassthrough>
+                        <template>HTTPS</template>
+                        <serverSslEnabled>false</serverSslEnabled>
+                      </applicationProfile>
+                      <applicationProfile>
+                        <applicationProfileId>applicationProfile-3</applicationProfileId>
+                        <persistence>
+                          <method>cookie</method>
+                          <cookieName>JSESSIONID</cookieName>
+                          <cookieMode>insert</cookieMode>
+                        </persistence>
+                        <name>HTTP-Application-Profile</name>
+                        <insertXForwardedFor>true</insertXForwardedFor>
+                        <sslPassthrough>false</sslPassthrough>
+                        <template>HTTP</template>
+                        <serverSslEnabled>false</serverSslEnabled>
+                      </applicationProfile>
+                      <applicationProfile>
+                        <applicationProfileId>applicationProfile-4</applicationProfileId>
+                        <persistence>
+                          <method>sourceip</method>
+                        </persistence>
+                        <name>TCP-Application-Profile</name>
+                        <insertXForwardedFor>false</insertXForwardedFor>
+                        <sslPassthrough>false</sslPassthrough>
+                        <template>TCP</template>
+                        <serverSslEnabled>false</serverSslEnabled>
+                      </applicationProfile>
+                    </loadBalancer>
         delete:
           displayName: applicationProfilesDelete
           description: Delete all application profiles on the specified Edge.
@@ -13375,19 +13851,32 @@ securitySchemes:
               application/xml:
                 example: |
                   <applicationProfile>
-                    <name></name>
-                    <insertXForwardedFor></insertXForwardedFor>
-                    <sslPassthrough></sslPassthrough>
+                    <name>http_application_profile_2</name>
+                    <insertXForwardedFor>true</insertXForwardedFor>
+                    <sslPassthrough>true</sslPassthrough>
                     <persistence>
-                      <method></method>
-                      <cookieName></cookieName>
-                      <cookieMode></cookieMode>
+                      <method>cookie</method>
+                      <cookieName>JSESSIONID</cookieName>
+                      <cookieMode>insert</cookieMode>
                     </persistence>
                   </applicationProfile>
                 schema: applicationProfileUpdate
           get:
             displayName: applicationProfileRead
             description: Retrieve an application profile.
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                      <applicationProfile>
+                        <applicationProfileId>applicationProfile-2</applicationProfileId>
+                        <name>HTTPS-Application-Profile</name>
+                        <insertXForwardedFor>true</insertXForwardedFor>
+                        <sslPassthrough>false</sslPassthrough>
+                        <template>HTTPS</template>
+                        <serverSslEnabled>false</serverSslEnabled>
+                      </applicationProfile>
           delete:
             displayName: applicationProfileDelete
             description: Delete an application profile.
@@ -13398,6 +13887,8 @@ securitySchemes:
           ----
           You can write an application rule to directly manipulate and manage
           IP application traffic.
+          
+          See *Working With NSX Edge Load Balancer* for **applicationRule** parameter information.
         post:
           displayName: appRulesCreate
           description: Add an application rule.
@@ -13405,13 +13896,28 @@ securitySchemes:
             application/xml:
               example: |
                 <applicationRule>
-                  <name></name>
-                  <script></script>
+                  <name>redirection_rule</name>
+                  <script>
+                    acl vmware_page url_beg / vmware redirect location https : //www.vmware.com/ if
+                    vmware_page
+                  </script>
                 </applicationRule>
               schema: appRulesCreate
         get:
           displayName: appRulesRead
           description: Retrieve all application rules.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <applicationRule>
+                      <name>redirection_rule</name>
+                      <script>
+                        acl vmware_page url_beg / vmware redirect location https : //www.vmware.com/ if
+                        vmware_page
+                      </script>
+                    </applicationRule>
         delete:
           displayName: appRulesDelete
           description: Delete all application rules.
@@ -13428,6 +13934,18 @@ securitySchemes:
           get:
             displayName: appRuleRead
             description: Retrieve an application rule.
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                      <applicationRule>
+                        <name>redirection_rule</name>
+                        <script>
+                          acl vmware_page url_beg / vmware redirect location https : //www.vmware.com/ if
+                          vmware_page
+                        </script>
+                      </applicationRule>
           put:
             displayName: appRuleUpdate
             description: Modify an application rule.
@@ -13435,8 +13953,11 @@ securitySchemes:
               application/xml:
                 example: |
                   <applicationRule>
-                    <name></name>
-                    <script></script>
+                    <name>redirection_rule</name>
+                    <script>
+                      acl vmware_page url_beg / vmware redirect location https : //www.vmware.com/ if
+                      vmware_page
+                    </script>
                   </applicationRule>
                 schema: appRuleUpdate
           delete:
@@ -13451,6 +13972,9 @@ securitySchemes:
           particular type of network traffic. When you associate a service
           monitor with a pool, the pool members are monitored according to the
           service monitor parameters.
+          
+          See *Working With NSX Edge Load Balancer* for **monitor** parameter information.
+          
         post:
           displayName: lbMonitorsCreate
           description: Add a load balancer monitor.
@@ -13458,18 +13982,53 @@ securitySchemes:
             application/xml:
               example: |
                 <monitor>
-                  <type></type>
-                  <interval></interval>
-                  <timeout></timeout>
-                  <maxRetries></maxRetries>
-                  <method></method>
-                  <url></url>
-                  <name></name>
+                  <type>http</type>
+                  <interval>5</interval>
+                  <timeout>15</timeout>
+                  <maxRetries>3</maxRetries>
+                  <method>GET</method>
+                  <url>/</url>
+                  <name>http-monitor-2</name>
                 </monitor>
               schema: lbMonitorsCreate
         get:
           displayName: lbMonitorsRead
           description: Retrieve all load balancer monitors.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <loadBalancer>
+                      <monitor>
+                        <monitorId>monitor-1</monitorId>
+                        <type>http</type>
+                        <interval>5</interval>
+                        <timeout>15</timeout>
+                        <maxRetries>3</maxRetries>
+                        <method>GET</method>
+                        <url>/</url>
+                        <name>http-monitor</name>
+                      </monitor>
+                      <monitor>
+                        <monitorId>monitor-2</monitorId>
+                        <type>https</type>
+                        <interval>5</interval>
+                        <timeout>15</timeout>
+                        <maxRetries>3</maxRetries>
+                        <method>GET</method>
+                        <url>/</url>
+                        <name>https-monitor</name>
+                      </monitor>
+                      <monitor>
+                        <monitorId>monitor-3</monitorId>
+                        <type>tcp</type>
+                        <interval>5</interval>
+                        <timeout>15</timeout>
+                        <maxRetries>3</maxRetries>
+                        <name>tcp-monitor</name>
+                      </monitor>
+                    </loadBalancer>
         delete:
           displayName: lbMonitorsDelete
           description: Delete all load balancer monitors.
@@ -13486,6 +14045,20 @@ securitySchemes:
           get:
             displayName: lbMonitorRead
             description: Retrieve a load balancer monitor.
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                      <monitor>
+                        <type>http</type>
+                        <interval>5</interval>
+                        <timeout>15</timeout>
+                        <maxRetries>3</maxRetries>
+                        <method>GET</method>
+                        <url>/</url>
+                        <name>http-monitor-2</name>
+                      </monitor>
           put:
             displayName: lbMonitorUpdate
             description: Modify a load balancer monitor.
@@ -13493,13 +14066,13 @@ securitySchemes:
               application/xml:
                 example: |
                   <monitor>
-                    <type></type>
-                    <interval></interval>
-                    <timeout></timeout>
-                    <maxRetries></maxRetries>
-                    <method></method>
-                    <url></url>
-                    <name></name>
+                    <type>http</type>
+                    <interval>15</interval>
+                    <timeout>25</timeout>
+                    <maxRetries>3</maxRetries>
+                    <method>GET</method>
+                    <url>/</url>
+                    <name>http-monitor-2</name>
                   </monitor>
                 schema: lbMonitorUpdate
           delete:
@@ -13518,20 +14091,8 @@ securitySchemes:
             You can add an NSX Edge internal or uplink interface as a virtual
             server.
             
-            Parameter |  Description | Comments
-            ---|---|---
-             **name**      |Name of virtual server.|Required.
-             **description**     |Description of virtual server.|Optional.
-             **enabled**    |Whether the virtual server is enabled.|Optional. Boolean. Options are *true* or *false*. Default is *true*.
-             **ipAddress**      |IP address that the load balancer is listening on. |Required. A valid NSX Edge vNic IP address (IPv4 or IPv6).
-             **protocol**      |Virtual server protocol.|Required. Options are: *HTTP*, *HTTPS*, *TCP*, *UDP*.
-             **port**      |Port number or port range.|Required. Port number such as *80*, port range such as *80,443* or *1234-1238*, or a combination such as *443,6000-7000*.
-             **connectionLimit**      |Maximum concurrent connections.|Optional. Long.
-             **connectionRateLimit**      |Maximum incoming new connection requests per second.|Optional. Long.
-             **defaultPoolId**      |Default backend server pool identifier.|Optional.
-             **applicationProfileId**      |Application profile identifier.|Optional.
-             **accelerationEnabled**      |Use the faster L4 load balancer  engine rather than L7 load  balancer engine.|Optional. Boolean. Options are *true* or *false*. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if **accelerationEnabled** is not set to true.
-             **applicationRuleId**      |Application rule identifier list.|Optional. Each item should be a valid **applicationRuleId**.
+            See *Working With NSX Edge Load Balancer* for **virtualServer** parameter information.
+            
           body:
             application/xml:
               example: |
@@ -13580,25 +14141,7 @@ securitySchemes:
           methods and has a service monitor attached to it for health check
           parameters.
           
-          Parameter |  Description | Comments
-          ---|---|---
-          **pool > name**   |Name of pool.|Required.
-          **description**   |Description of pool.|Optional.
-          **algorithm**   |Pool member balancing algorithm.|Optional. Options are: *round-robin*, *ip-hash*, *uri*, *leastconn*, *url*, *httpheader*. Default is *round-robin*.
-          **algorithmParameters**   |Algorithm parameters for *httpheader* and *url*. |Optional. Required for *httpheader* and *url* algorithm.
-          **transparent**   |Whether client IP addresses are  visible to the backend servers.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
-          **monitorId**   |Monitor identifier list.|Optional. At the most one monitor is supported.
-          **member**   |Pool member list.|Optional.
-          **member > name**  |Member name.|Optional. Required, when used in ACL rule.
-          **ipAddress**  |Member IP address.|Optional. Required, if **groupingObjectId** is null.
-          **groupingObjectId**  |Member grouping object identifier.|Optional. Required, if **ipAddress** is null.
-          **groupingObjectName**  |Member grouping object name.|Optional.
-          **weight**  |Member weight.|Optional. Default is *1*.
-          **monitorPort**  |Monitor port.|Optional. Long. Either  **monitorPort** or **port** must be configured.
-          **port**  |Member port.|Optional. Long. Either  **monitorPort** or **port** must be configured. 
-          **maxConn**  |Maximum number of concurrent connections the member can handle.|Optional. Default is *0* which means unlimited.
-          **minConn**  |Minimum number of concurrent connections a member must always accept.|Optional. Default is *0* which means unlimited.
-          **condition**  |Condition of the member.|Optional. Options are: *enabled*, *disabled*, or *drain*. Default is *enabled*.
+          See *Working With NSX Edge Load Balancer* for **pools** parameter information.
         post:
           displayName: poolsCreate
           description: |
@@ -13613,25 +14156,161 @@ securitySchemes:
             application/xml:
               example: |
                 <pool>
-                  <name></name>
-                  <description></description>
-                  <transparent></transparent>
-                  <algorithm></algorithm>
-                  <monitorId></monitorId>
+                  <name>pool-tcp-snat-2</name>
+                  <description>pool-tcp-snat-2</description>
+                  <transparent>false</transparent>
+                  <algorithm>round-robin</algorithm>
+                  <monitorId>monitor-3</monitorId>
                   <member>
-                    <ipAddress></ipAddress>
-                    <weight></weight>
-                    <port></port>
-                    <minConn></minConn>
-                    <maxConn></maxConn>
-                    <name></name>
-                    <monitorPort></monitorPort>
+                    <ipAddress>192.168.101.201</ipAddress>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m5</name>
+                    <monitorPort>80</monitorPort>
+                  </member>
+                  <member>
+                    <ipAddress>192.168.101.202</ipAddress>
+                    <weight>1</weight>
+                    <port>80</port>
+                    <minConn>10</minConn>
+                    <maxConn>100</maxConn>
+                    <name>m6</name>
+                    <monitorPort>80</monitorPort>
                   </member>
                 </pool>
               schema: poolsCreate
         get:
           displayName: poolsRead
           description: Get all server pools on the specified NSX Edge.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <loadBalancer>
+                      <pool>
+                        <type>slb</type>
+                        <poolId>pool-1</poolId>
+                        <name>pool-http</name>
+                        <description>pool-http</description>
+                        <algorithm>round-robin</algorithm>
+                        <transparent>true</transparent>
+                        <monitorId>monitor-1</monitorId>
+                        <member>
+                          <memberId>member-1</memberId>
+                          <ipAddress>192.168.101.201</ipAddress>
+                          <weight>1</weight>
+                          <port>80</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m1</name>
+                        </member>
+                        <member>
+                          <memberId>member-2</memberId>
+                          <ipAddress>192.168.101.202</ipAddress>
+                          <weight>1</weight>
+                          <port>80</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m2</name>
+                        </member>
+                      </pool>
+                      <pool>
+                        <type>slb</type>
+                        <poolId>pool-2</poolId>
+                        <name>pool-https</name>
+                        <description>pool-https</description>
+                        <algorithm>round-robin</algorithm>
+                        <transparent>false</transparent>
+                        <monitorId>monitor-2</monitorId>
+                        <member>
+                          <memberId>member-11</memberId>
+                          <ipAddress>192.168.101.201</ipAddress>
+                          <weight>1</weight>
+                          <port>443</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m3</name>
+                        </member>
+                        <member>
+                          <memberId>member-4</memberId>
+                          <ipAddress>192.168.101.202</ipAddress>
+                          <weight>1</weight>
+                          <port>443</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m4</name>
+                        </member>
+                      </pool>
+                      <pool>
+                        <type>slb</type>
+                        <poolId>pool-3</poolId>
+                        <name>pool-tcp</name>
+                        <description>pool-tcp</description>
+                        <algorithm>round-robin</algorithm>
+                        <transparent>true</transparent>
+                        <monitorId>monitor-3</monitorId>
+                        <member>
+                          <memberId>member-5</memberId>
+                          <ipAddress>192.168.101.201</ipAddress>
+                          <weight>1</weight>
+                          <monitorPort>80</monitorPort>
+                          <port>1234</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m5</name>
+                        </member>
+                        <member>
+                          <memberId>member-6</memberId>
+                          <ipAddress>192.168.101.202</ipAddress>
+                          <weight>1</weight>
+                          <monitorPort>80</monitorPort>
+                          <port>1234</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m6</name>
+                        </member>
+                      </pool>
+                      <pool>
+                        <type>slb</type>
+                        <poolId>pool-4</poolId>
+                        <name>pool-tcp-snat</name>
+                        <description>pool-tcp-snat</description>
+                        <algorithm>round-robin</algorithm>
+                        <transparent>false</transparent>
+                        <monitorId>monitor-3</monitorId>
+                        <member>
+                          <memberId>member-7</memberId>
+                          <ipAddress>192.168.101.201</ipAddress>
+                          <weight>1</weight>
+                          <monitorPort>80</monitorPort>
+                          <port>1234</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m7</name>
+                        </member>
+                        <member>
+                          <memberId>member-8</memberId>
+                          <ipAddress>192.168.101.202</ipAddress>
+                          <weight>1</weight>
+                          <monitorPort>80</monitorPort>
+                          <port>1234</port>
+                          <maxConn>100</maxConn>
+                          <minConn>10</minConn>
+                          <condition>enabled</condition>
+                          <name>m8</name>
+                        </member>
+                      </pool>
+                    </loadBalancer>
         delete:
           displayName: poolsDelete
           description: |
@@ -13663,20 +14342,30 @@ securitySchemes:
               application/xml:
                 example: |
                   <pool>
-                    <name></name>
-                    <description></description>
-                    <transparent></transparent>
-                    <algorithm></algorithm>
-                    <monitorId></monitorId>
+                    <name>pool-tcp-snat-2</name>
+                    <description>pool-tcp-snat-3</description>
+                    <transparent>false</transparent>
+                    <algorithm>round-robin</algorithm>
+                    <monitorId>monitor-3</monitorId>
                     <member>
-                      <ipAddress></ipAddress>
-                      <weight></weight>
-                      <monitorPort></monitorPort>
-                      <port></port>
-                      <maxConn></maxConn>
-                      <minConn></minConn>
-                      <condition>enabled</condition>
-                      <name></name>
+                      <ipAddress>192.168.101.201</ipAddress>
+                      <weight>1</weight>
+                      <port>1234</port>
+                      <minConn>10</minConn>
+                      <maxConn>100</maxConn>
+                      <name>m5</name>
+                      <condition>enabled\disabled</condition>
+                      <monitorPort>80</monitorPort>
+                    </member>
+                    <member>
+                      <ipAddress>192.168.101.202</ipAddress>
+                      <weight>1</weight>
+                      <port>1234</port>
+                      <minConn>10</minConn>
+                      <maxConn>100</maxConn>
+                      <name>m6</name>
+                      <condition>enabled\disabled</condition>
+                      <monitorPort>80</monitorPort>
                     </member>
                   </pool>
                 schema: poolUpdate
@@ -13708,20 +14397,204 @@ securitySchemes:
       description: |
         Working With Load Balancer Statistics
         ----
+        Retrieves load balancer statistics.
+          
+        **Load Balancer Statistics Parameters**
+        
+        Parameter |  Description
+        ---|---
+        **virtualServer**      |Virtual server list.
+        **virtualServerId**     |Virtual server identifier.
+        **name**     |Name of the virtual server.
+        **description**     |Description of virtual server.
+        **ipAddress**     |IP address that the load balancer is listening on.
+        **status**     |Virtual server status.
+        **bytesIn**     |Number of bytes in.
+        **bytesOut**     |Number of bytes out.
+        **curSessions**     |Number of current sessions.
+        **httpReqTotal**     |Total number of HTTP requests received.
+        **httpReqRate**     |HTTP requests per second over last elapsed second.
+        **httpReqRateMax**     |Maximum number of HTTP requests per second observed.
+        **maxSession**     |Number of maximum sessions.
+        **rate**     |Number of sessions per second over last elapsed second.
+        **rateLimit**     |Configured limit on new sessions per second.
+        **rateMax**     |Maximum number of new sessions per second.
+        **totalSession**     |Total number of sessions.
+        **pool**      |Pool list.
+        **poolId**     |Generated pool identifier.
+        **name**     |Name of the pool.
+        **description**     |Description of the pool.
+        **status**     |Pool status.
+        **bytesIn**     |Number of bytes in.
+        **bytesOut**     |Number of bytes out.
+        **curSessions**     |Number of current sessions.
+        **httpReqTotal**     |Total number of HTTP requests received.
+        **httpReqRate**     |HTTP requests per second over last elapsed second.
+        **httpReqRateMax**     |Maximum number of HTTP requests per second observed.
+        **maxSession**     |Number of maximum sessions.
+        **rate**     |Number of sessions per second over last elapsed second.
+        **rateLimit**     |Configured limit on new sessions per second.
+        **rateMax**     |Maximum number of new sessions per second.
+        **totalSession**     |Total number of sessions.
+        **member**     |Pool member list.
+        **memberId**    |Generated member identifier.
+        **name**    |Member name.
+        **ipAddress**    |Member IP address.
+        **groupingObjectId**    |Member grouping object identifier.
+        **status**    |Member status.
+        **bytesIn**    |Number of bytes in.
+        **bytesOut**    |Number of bytes out.
+        **curSessions**    |Number of current sessions.
+        **httpReqTotal**    |Total number of HTTP requests received.
+        **httpReqRate**    |HTTP requests per second over last elapsed second.
+        **httpReqRateMax**    |Maximum number of HTTP requests per second observed.
+        **maxSession**    |Number of maximum sessions.
+        **rate**    |Number of sessions per second over last elapsed second.
+        **rateLimit**    |Configured limit on new sessions per second.
+        **rateMax**    |Maximum number of new sessions per second.
+        **totalSession**    |Total number of sessions.
+        **timestamp**      |Timestamp to fetch load balancer statistics.
+        **serverStatus**      |Load balancer server status.
+        
       get:
         displayName: lbStatisticsRead
         description: Retrieve load balancer statistics.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <loadBalancerStatusAndStats>
+                    <timeStamp>1359722922</timeStamp>
+                    <pool>
+                      <poolId>pool-1</poolId>
+                      <name>pool-http</name>
+                      <member>
+                        <memberId>member-1</memberId>
+                        <name>m1</name>
+                        <ipAddress>192.168.101.201</ipAddress>
+                        <status>UP</status>
+                        <bytesIn>70771</bytesIn>
+                        <bytesOut>74619</bytesOut>
+                        <curSessions>0</curSessions>
+                        <maxSessions>1</maxSessions>
+                        <rate>0</rate>
+                        <rateMax>17</rateMax>
+                        <totalSessions>142</totalSessions>
+                      </member>
+                      <member>
+                        <memberId>member-2</memberId>
+                        <name>m2</name>
+                        <ipAddress>192.168.101.202</ipAddress>
+                        <status>UP</status>
+                        <bytesIn>70823</bytesIn>
+                        <bytesOut>70605</bytesOut>
+                        <curSessions>0</curSessions>
+                        <maxSessions>1</maxSessions>
+                        <rate>0</rate>
+                        <rateMax>17</rateMax>
+                        <totalSessions>141</totalSessions>
+                      </member>
+                      <status>UP</status>
+                      <bytesIn>141594</bytesIn>
+                      <bytesOut>145224</bytesOut>
+                      <curSessions>0</curSessions>
+                      <maxSessions>2</maxSessions>
+                      <rate>0</rate>
+                      <rateMax>34</rateMax>
+                      <totalSessions>283</totalSessions>
+                    </pool>
+                    <virtualServer>
+                      <virtualServerId>virtualServer-9</virtualServerId>
+                      <name>http_vip</name>
+                      <ipAddress>10.117.35.172</ipAddress>
+                      <status>OPEN</status>
+                      <bytesIn>141594</bytesIn>
+                      <bytesOut>145224</bytesOut>
+                      <curSessions>1</curSessions>
+                      <httpReqTotal>283</httpReqTotal>
+                      <httpReqRate>0</httpReqRate>
+                      <httpReqRateMax>34</httpReqRateMax>
+                      <maxSessions>2</maxSessions>
+                      <rate>0</rate>
+                      <rateLimit>0</rateLimit>
+                      <rateMax>2</rateMax>
+                      <totalSessions>13</totalSessions>
+                    </virtualServer>
+                    <globalSite>
+                      <name>BJ site</name>
+                      <globalSiteId>site-3</globalSiteId>
+                      <msgSent>3</msgSent>
+                      <msgRecv>747</msgRecv>
+                      <msgRate>0</msgRate>
+                      <dnsReq>0</dnsReq>
+                      <dnsResolved>0</dnsResolved>
+                    </globalSite>
+                    <globalIp>
+                      <fqdn>www.company.com</fqdn>
+                      <globalIpId>gip-3</globalIpId>
+                      <dnsReq>0</dnsReq>
+                      <dnsResolved>0</dnsResolved>
+                      <dnsMiss>0</dnsMiss>
+                    </globalIp>
+                    <globalPool>
+                      <name>www-primary</name>
+                      <poolId>pool-1</poolId>
+                      <dnsReq>0</dnsReq>
+                      <dnsResolved>0</dnsResolved>
+                      <dnsMiss>0</dnsMiss>
+                      <member>
+                        <name>10.117.7.110</name>
+                        <memberId>member-3</memberId>
+                        <status>up</status>
+                        <dnsHit>0</dnsHit>
+                        <cpuUsage>3</cpuUsage>
+                        <memUsage>91</memUsage>
+                        <sessions>0</sessions>
+                        <curConn>14</curConn>
+                        <sessLimit>0</sessLimit>
+                        <sessRate>0</sessRate>
+                        <totalThroughput>0</totalThroughput>
+                        <packagesPerSec>0</packagesPerSec>
+                      </member>
+                    </globalPool>
+                    <globalPool>
+                      <name>www-primary</name>
+                      <poolId>pool-1</poolId>
+                      <dnsReq>0</dnsReq>
+                      <dnsResolved>0</dnsResolved>
+                      <dnsMiss>0</dnsMiss>
+                      <member>
+                        <name>10.117.7.110</name>
+                        <memberId>member-3</memberId>
+                        <status>up</status>
+                        <dnsHit>0</dnsHit>
+                        <cpuUsage>3</cpuUsage>
+                        <memUsage>91</memUsage>
+                        <sessions>0</sessions>
+                        <curConn>14</curConn>
+                        <sessLimit>0</sessLimit>
+                        <sessRate>0</sessRate>
+                        <totalThroughput>0</totalThroughput>
+                        <packagesPerSec>0</packagesPerSec>
+                      </member>
+                    </globalPool>
+                  </loadBalancerStatusAndStats>                  
     /loadbalancer/acceleration:
       displayName: lbAcceleration
       description: |
         Working With Load Balancer Acceleration
         ----
       post:
+        displayName: lbAccelerationEnable
+        description: Configure load balancer acceleration mode.
         queryParameters:
           enable:
             required: true
             displayName: enable
-            description: Enable or disable load balancer acceleration mode.
+            description: |
+              Set to *true* to enable or *false* to disable load balancer
+              acceleration mode.
             type: boolean
     /dns/config:
       displayName: edgeDns

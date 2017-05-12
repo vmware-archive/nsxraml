@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#100;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#109;&#119;&#97;&#114;&#x65;&#46;&#x63;&#x6f;&#109;">&#100;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#109;&#119;&#97;&#114;&#x65;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#100;&#111;&#99;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#109;">&#100;&#111;&#99;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -22063,6 +22063,8 @@ sent bytes, received bytes for the specified Edge.</p>
     href="#POST/4.0/edges/{edgeId}/loadbalancer/acceleration"
   ><h2>POST /4.0/edges/{edgeId}/loadbalancer/acceleration</h2></a>
   <div class="content">
+    <p><p>Configure load balancer acceleration mode.</p>
+</p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -22072,7 +22074,8 @@ sent bytes, received bytes for the specified Edge.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>Enable or disable load balancer acceleration mode.</p>
+      <p>Set to <em>true</em> to enable or <em>false</em> to disable load balancer
+acceleration mode.</p>
 
   </dd>
 </dl>
@@ -22118,7 +22121,591 @@ the default port for HTTP, and port 443 is the default port for HTTPs.</p>
 pool, monitor and application rule.</p>
 <p>For the data path to work, you need to add firewall rules to allow
 required traffic as per the load balancer configuration.</p>
-</p>
+<p><strong>General Load Balancer Parameter Table</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>logging</strong></td>
+<td>Load balancer logging setting.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>enable</strong></td>
+<td>Whether logging is enabled.</td>
+<td>Optional. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>logLevel</strong></td>
+<td>Logging level.</td>
+<td>Optional. Options are: <em>EMERGENCY</em>, <em>ALERT</em>, <em>CRITICAL</em>, <em>ERROR</em>, <em>WARNING</em>, <em>NOTICE</em>, <em>INFO</em>, and <em>DEBUG</em>. Default is <em>INFO</em>.</td>
+</tr>
+<tr>
+<td>  <strong>accelerationEnabled</strong></td>
+<td>Whether <strong>accelerationEnabled</strong> is enabled.</td>
+<td>Optional. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>enabled</strong></td>
+<td>Whether load balancer is enabled.</td>
+<td>Optional. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>.</td>
+</tr>
+</tbody></table><p> <strong>Parameter Table for Monitors</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>monitor</strong></td>
+<td>Monitor list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>monitorId</strong></td>
+<td>Generated monitor identifier.</td>
+<td>Optional. Required if it is used in a pool.</td>
+</tr>
+<tr>
+<td>  <strong>name</strong></td>
+<td>Name of the monitor.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>  <strong>type</strong></td>
+<td>Monitor type.</td>
+<td>Required. Options are : <em>HTTP</em>, <em>HTTPS</em>, <em>TCP</em>, <em>ICMP</em>, <em>UDP</em>.</td>
+</tr>
+<tr>
+<td>  <strong>interval</strong></td>
+<td>Interval in seconds in which a server is to be tested.</td>
+<td>Optional. Default is <em>5</em>.</td>
+</tr>
+<tr>
+<td>  <strong>timeout</strong></td>
+<td>Timeout value is the maximum time in seconds within which a response from the server must be received.</td>
+<td>Optional. Default is <em>15</em>.</td>
+</tr>
+<tr>
+<td>  <strong>maxRetries</strong></td>
+<td>Maximum number of times the server is tested  before it is declared DOWN.</td>
+<td>Optional. Default is <em>3</em>.</td>
+</tr>
+<tr>
+<td>  <strong>method</strong></td>
+<td>Method to send the health check request to the server.</td>
+<td>Optional. Options are: <em>OPTIONS</em>, <em>GET</em>, <em>HEAD</em>, <em>POST</em>, <em>PUT</em>, <em>DELETE</em>, <em>TRACE</em>, <em>CONNECT</em>. Default is <em>GET</em> for HTTP monitor.</td>
+</tr>
+<tr>
+<td>  <strong>url</strong></td>
+<td>URL to <em>GET</em> or <em>POST</em>.</td>
+<td>Optional. Default is <em>&quot;/&quot;</em> for HTTP monitor.</td>
+</tr>
+<tr>
+<td>  <strong>expected</strong></td>
+<td>Expected string.</td>
+<td>Optional. Default is &quot;HTTP/1&quot; for HTTP/HTTPS protocol.</td>
+</tr>
+<tr>
+<td>  <strong>send</strong></td>
+<td>String to be sent to the backend server after a connection is established.</td>
+<td>Optional. URL encoded HTTP POST data for HTTP/HTTPS protocol.</td>
+</tr>
+<tr>
+<td>  <strong>receive</strong></td>
+<td>String to be received from the backend server for HTTP/HTTPS protocol.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>extension</strong></td>
+<td>Advanced monitor configuration.</td>
+<td>Optional.</td>
+</tr>
+</tbody></table><p><strong>Parameter Table for Virtual Servers</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>virtualServer</strong></td>
+<td>Virtual server list.</td>
+<td>Optional. 0-64 <strong>virtualServer</strong> items can be added</td>
+</tr>
+<tr>
+<td>  <strong>name</strong></td>
+<td>Name of the virtual server.</td>
+<td>Required. Unique virtualServer name per NSX Edge.</td>
+</tr>
+<tr>
+<td>  <strong>description</strong></td>
+<td>Description of the virtual server.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>enabled</strong></td>
+<td>Whether the virtual server is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>.</td>
+</tr>
+<tr>
+<td>  <strong>ipAddress</strong></td>
+<td>IP address that the load balancer  is listening on.</td>
+<td>Required. A valid Edge vNic IP address (IPv4 or IPv6).</td>
+</tr>
+<tr>
+<td>  <strong>protocol</strong></td>
+<td>Virtual server protocol.</td>
+<td>Required. Options are: <em>HTTP</em>, <em>HTTPS</em>, <em>TCP</em>, <em>UDP</em>.</td>
+</tr>
+<tr>
+<td>  <strong>port</strong></td>
+<td>Port number or port range.</td>
+<td>Required. Port number such as <em>80</em>, port range such as <em>80,443</em> or <em>1234-1238</em>, or a combination such as <em>443,6000-7000</em>. Valid range: 1-65535.</td>
+</tr>
+<tr>
+<td>  <strong>connectionLimit</strong></td>
+<td>Maximum concurrent connections.</td>
+<td>Optional. Long. Default is <em>0</em>.</td>
+</tr>
+<tr>
+<td>  <strong>connectionRateLimit</strong></td>
+<td>Maximum incoming new connection requests per second.</td>
+<td>Optional. Long. Default is <em>null</em>.</td>
+</tr>
+<tr>
+<td>  <strong>defaultPoolId</strong></td>
+<td>Default pool ID.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>applicationProfileId</strong></td>
+<td>Application profile ID.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td>  <strong>accelerationEnabled</strong></td>
+<td>Use the faster L4 load balancer  engine rather than L7 load  balancer engine.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if <strong>accelerationEnabled</strong> is not set to true.</td>
+</tr>
+<tr>
+<td>  <strong>applicationRuleId</strong></td>
+<td>Application rule ID list.</td>
+<td>Optional.</td>
+</tr>
+</tbody></table><p><strong>Parameter Table for Pools</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>pool</strong></td>
+<td>Pool list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>poolId</strong></td>
+<td>Generated pool identifier.</td>
+<td>Optional. Required if you specify pool object.</td>
+</tr>
+<tr>
+<td>  <strong>name</strong></td>
+<td>Name of the pool.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>  <strong>description</strong></td>
+<td>Description of the pool.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>algorithm</strong></td>
+<td>Pool member balancing algorithm.</td>
+<td>Optional. Options are: <em>round-robin</em>, <em>ip-hash</em>, <em>uri</em>, <em>leastconn</em>, <em>url</em>, <em>httpheader</em>. Default is <em>round-robin</em>.</td>
+</tr>
+<tr>
+<td>  <strong>algorithmParameters</strong></td>
+<td>Algorithm parameters for <em>httpheader</em>, <em>url</em>.</td>
+<td>Optional. Required for <em>url</em>,<em>httpheader</em> algorithm.</td>
+</tr>
+<tr>
+<td>  <strong>transparent</strong></td>
+<td>Whether client IP addresses are  visible to the backend servers.</td>
+<td>Optional. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>monitorId</strong></td>
+<td>Monitor identifier list.</td>
+<td>Optional. Only one monitor is supported.</td>
+</tr>
+<tr>
+<td>  <strong>member</strong></td>
+<td>Pool member list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>memberId</strong></td>
+<td>Generated member identifier.</td>
+<td>Optional. Required if you specify member object.</td>
+</tr>
+<tr>
+<td>  <strong>name</strong></td>
+<td>Member name.</td>
+<td>Optional. Required when it is used in ACL rule.</td>
+</tr>
+<tr>
+<td>  <strong>ipAddress</strong></td>
+<td>Member IP address (IPv4/IPv6).</td>
+<td>Optional. Required if <strong>groupingObjectId</strong> is null.</td>
+</tr>
+<tr>
+<td>  <strong>groupingObjectId</strong></td>
+<td>Member grouping object identifier.</td>
+<td>Optional. Required if <strong>ipAddress</strong> is null.</td>
+</tr>
+<tr>
+<td>  <strong>groupingObjectName</strong></td>
+<td>Member grouping object name.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>weight</strong></td>
+<td>Member weight.</td>
+<td>Optional. Default is <em>1</em>.</td>
+</tr>
+<tr>
+<td>  <strong>monitorPort</strong></td>
+<td>Monitor port.</td>
+<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured.</td>
+</tr>
+<tr>
+<td>  <strong>port</strong></td>
+<td>Member port.</td>
+<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured.</td>
+</tr>
+<tr>
+<td>  <strong>maxConn</strong></td>
+<td>Maximum number of concurrent connections a member can handle.</td>
+<td>Optional. Default is <em>0</em> which means unlimited.</td>
+</tr>
+<tr>
+<td>  <strong>minConn</strong></td>
+<td>Minimum number of concurrent connections a member can handle.</td>
+<td>Optional. Default is <em>0</em> which means unlimited.</td>
+</tr>
+<tr>
+<td>  <strong>condition</strong></td>
+<td>Whether the member is enabled or disabled.</td>
+<td>Optional. Options are: <em>enabled</em> or <em>disabled</em>. Default is <em>enabled</em>.</td>
+</tr>
+</tbody></table><p><strong>Parameter Table for Application Profiles</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>applicationProfile</strong></td>
+<td>Application profile list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>applicationProfileId</strong></td>
+<td>Generated application profile identifier.</td>
+<td>Optional. Required if it is used in virtual server.</td>
+</tr>
+<tr>
+<td>  <strong>name</strong></td>
+<td>Name of application profile.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>  <strong>persistence</strong></td>
+<td>Persistence setting.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>method</strong></td>
+<td>Persistent method.</td>
+<td>Required. Options are: <em>cookie</em>, <em>ssl_sessionid</em>, <em>sourceip</em>, <em>msrdp</em>.</td>
+</tr>
+<tr>
+<td>  <strong>cookieName</strong></td>
+<td>Cookie name.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>cookieMode</strong></td>
+<td>Cookie mode.</td>
+<td>Optional. Options are: <em>insert</em>, <em>prefix</em>, <em>app</em>.</td>
+</tr>
+<tr>
+<td>  <strong>expire</strong></td>
+<td>Expire time.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>insertXForwardedFor</strong></td>
+<td>Whether <strong>insertXForwardedFor</strong> is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>sslPassthrough</strong></td>
+<td>Whether <strong>sslPassthrough</strong> is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>httpRedirect</strong></td>
+<td>HTTP redirect setting.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>to</strong></td>
+<td>HTTP redirect to.</td>
+<td>Required. Required if <strong>httpRedirect</strong> is specified.</td>
+</tr>
+<tr>
+<td>  <strong>serverSslEnabled</strong></td>
+<td>Whether <strong>serverSsl</strong> offloading is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>serverSsl</strong></td>
+<td>Server SSL setting.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>ciphers</strong></td>
+<td>Cipher suites.</td>
+<td>Optional. Options are: <em>DEFAULT</em> <em>ECDHE-RSA-AES128-GCM-SHA256</em>, <em>ECDHE-RSA-AES256-GCM-SHA384</em>, <em>ECDHE-RSA-AES256-SHA</em>, <em>ECDHE-ECDSA-AES256-SHA</em>, <em>ECDH-ECDSA-AES256-SHA</em>, <em>ECDH-RSA-AES256-SHA</em>, <em>AES256-SHA AES128-SHA</em>, <em>DES-CBC3-SHA</em>. Default is <em>DEFAULT</em>.</td>
+</tr>
+<tr>
+<td>  <strong>serviceCertificate</strong></td>
+<td>Service certificate identifier list.</td>
+<td>Optional. Only one certificate is supported.</td>
+</tr>
+<tr>
+<td>  <strong>caCertificate</strong></td>
+<td>CA identifier list.</td>
+<td>Optional. Required if <strong>serverAuth</strong> is required.</td>
+</tr>
+<tr>
+<td>  <strong>crlCertificate</strong></td>
+<td>CRL identifier list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>serverAuth</strong></td>
+<td>Whether peer certificate should be verified.</td>
+<td>Optional. Options are <em>Required</em> or <em>Ignore</em>. Default is <em>Ignore</em>.</td>
+</tr>
+<tr>
+<td>  <strong>clientSsl</strong></td>
+<td>Client SSL setting.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>ciphers</strong></td>
+<td>Cipher suites.</td>
+<td>Optional. Options are: <em>DEFAULT</em> <em>ECDHE-RSA-AES128-GCM-SHA256</em>, <em>ECDHE-RSA-AES256-GCM-SHA384</em>, <em>ECDHE-RSA-AES256-SHA</em>, <em>ECDHE-ECDSA-AES256-SHA</em>, <em>ECDH-ECDSA-AES256-SHA</em>, <em>ECDH-RSA-AES256-SHA</em>, <em>AES256-SHA AES128-SHA</em>, <em>DES-CBC3-SHA</em>. Default is <em>DEFAULT</em>.</td>
+</tr>
+<tr>
+<td>  <strong>serviceCertificate</strong></td>
+<td>Service certificate identifier list.</td>
+<td>Required. Only one certificate is supported.</td>
+</tr>
+<tr>
+<td>  <strong>caCertificate</strong></td>
+<td>CA identifier list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>crlCertificate</strong></td>
+<td>CRL identifier list.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td>  <strong>clientAuth</strong></td>
+<td>Whether peer certificate should be verified.</td>
+<td>Optional. Options are <em>Required</em> or <em>Ignore</em>. Default is <em>Ignore</em>.</td>
+</tr>
+</tbody></table><p><strong>Parameter Table for Application Rules</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>applicationRule</strong></td>
+<td>Application rule list.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td>  <strong>applicationRuleId</strong></td>
+<td>Generated application rule identifier.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td>  <strong>name</strong></td>
+<td>Name of application rule.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>  <strong>script</strong></td>
+<td>Application rule script.</td>
+<td>Required.</td>
+</tr>
+</tbody></table><p>For the data path to work, you need to add firewall rules to allow required
+traffic as per the load balancer configuration. </p>
+<p><strong>The following configuration example is displaying the HTTP/HTTPS Redirection, SSL
+Offloading, Content Switching, HTTP HealthMonitor parameters</strong>: </p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">loadBalancer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>debug<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationRuleId</span>&gt;</span>applicationRule-1<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRuleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>traffic_ctrl_rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+      acl srv1_full srv_conn(pool - http / m1)gt <span class="hljs-number">50</span>
+      acl srv2_full srv_conn(pool - http / m2)gt <span class="hljs-number">50</span> use_backend pool - backup <span class="hljs-keyword">if</span> srv1_full or srv2_full
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationRuleId</span>&gt;</span>applicationRule-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRuleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>redirection_rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+      acl google_page url_beg / google redirect location https : <span class="hljs-comment">//www.google.com/ if google_page</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">applicationRuleId</span>&gt;</span>applicationRule-3<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRuleId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>l7_rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">acl backup_page url_beg / backup use_backend pool - backup <span class="hljs-keyword">if</span> backup_page</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span>virtualServer-1<span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http_redirection_vip<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>http redirection virtualServer<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.171<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionRateLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionRateLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-1<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span>virtualServer-2<span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>https_vip<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>https virtualServer<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.171<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>https<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionRateLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionRateLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">defaultPoolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">defaultPoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationRuleId</span>&gt;</span>applicationRule-1<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRuleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationRuleId</span>&gt;</span>applicationRule-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRuleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationRuleId</span>&gt;</span>applicationRule-3<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRuleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-1<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>https_redirection_application_profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">httpRedirect</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>https://10.117.35.171<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">httpRedirect</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ssl_offloading_application_profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serverSslEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">serverSslEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientSsl</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientAuth</span>&gt;</span>ignore<span class="hljs-tag">&lt;/<span class="hljs-name">clientAuth</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ciphers</span>&gt;</span>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH<span class="hljs-tag">&lt;/<span class="hljs-name">ciphers</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span>certificate-4<span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span>certificate-3<span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificate</span>&gt;</span>crl-1<span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">clientSsl</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serverSsl</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ciphers</span>&gt;</span>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH<span class="hljs-tag">&lt;/<span class="hljs-name">ciphers</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span>certificate-4<span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span>certificate-3<span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificate</span>&gt;</span>crl-1<span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">serverSsl</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-http<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-http<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-1<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-1<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.101<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-2<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.102<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-2<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-backup<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool backup<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-1<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-3<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.102.101<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m3<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-4<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.102.102<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m4<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-1<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http-monitor<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>  </code></pre></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="loadBalancer"&gt;
@@ -22238,78 +22825,250 @@ required traffic as per the load balancer configuration.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">loadBalancer</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>debug<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">connectionLimit</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">connectionLimit</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">connectionRateLimit</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">connectionRateLimit</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">defaultPoolId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">defaultPoolId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">applicationRuleId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applicationRuleId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span>virtualServer-1<span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http_vip<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>http virtualServer<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.172<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionRateLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionRateLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-1<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">defaultPoolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">defaultPoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vendorProfile</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vendorTemplateId</span>&gt;</span>577<span class="hljs-tag">&lt;/<span class="hljs-name">vendorTemplateId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vendorTemplateName</span>&gt;</span>F5<span class="hljs-tag">&lt;/<span class="hljs-name">vendorTemplateName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">profileAttributes</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>abcd<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>abcd<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">attribute</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">profileAttributes</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vendorProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span>virtualServer-2<span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>https_vip<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>https virtualServer<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.172<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>https<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionRateLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionRateLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">defaultPoolId</span>&gt;</span>pool-2<span class="hljs-tag">&lt;/<span class="hljs-name">defaultPoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span>virtualServer-3<span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>tcp_transparent_vip<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>tcp virtualServer<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.172<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-3<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">defaultPoolId</span>&gt;</span>pool-3<span class="hljs-tag">&lt;/<span class="hljs-name">defaultPoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span>virtualServer-4<span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>tcp_snat_vip<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>tcp snat virtualServer<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.172<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1235<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectionLimit</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">connectionLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-3<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">defaultPoolId</span>&gt;</span>pool-4<span class="hljs-tag">&lt;/<span class="hljs-name">defaultPoolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableServiceInsertion</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableServiceInsertion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">accelerationEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">accelerationEnabled</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-1<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http_application_profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">persistence</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>cookie<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span>JSESSIONID<span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span>insert<span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">serverSslEnabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serverSslEnabled</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">clientSsl</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">clientAuth</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientAuth</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">clientSsl</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>https_application_profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">persistence</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>ssl_sessionid<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-3<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>tcp_application_profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-http<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-http<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-1<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-1<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">groupingObjectId</span>&gt;</span>vm-24<span class="hljs-tag">&lt;/<span class="hljs-name">groupingObjectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-2<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-2<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-https<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-https<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-2<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-3<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m3<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-4<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m4<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-3<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-tcp<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-tcp<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-5<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m5<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-6<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m6<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-4<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-tcp-snat<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-tcp-snat<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-7<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m7<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-8<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m8<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-1<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http-monitor<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">expected</span>&gt;</span>HTTP/1<span class="hljs-tag">&lt;/<span class="hljs-name">expected</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">send</span>&gt;</span>hello<span class="hljs-tag">&lt;/<span class="hljs-name">send</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">receive</span>&gt;</span>ok<span class="hljs-tag">&lt;/<span class="hljs-name">receive</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extension</span>&gt;</span>no-bodymax-age=3hcontent-type=Application/xml<span class="hljs-tag">&lt;/<span class="hljs-name">extension</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-2<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>https<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>https-monitor<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>tcp-monitor<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">loadBalancer</span>&gt;</span>
 </code></pre>
   </div>
@@ -22334,6 +23093,7 @@ associate the profile with a virtual server. The virtual server then
 processes traffic according to the values specified in the profile.
 Using profiles enhances your control over managing network traffic,
 and makes traffic-management tasks easier and more efficient.</p>
+<p>See <em>Working With NSX Edge Load Balancer</em> for <strong>applicationProfiles</strong> parameter information.</p>
 </div>
 <div class="method post">
   <a
@@ -22368,13 +23128,13 @@ and makes traffic-management tasks easier and more efficient.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http_application_profile_2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">persistence</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>cookie<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span>JSESSIONID<span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span>insert<span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
 </code></pre>
@@ -22389,6 +23149,47 @@ and makes traffic-management tasks easier and more efficient.</p>
   <div class="content">
     <p><p>Retrieve all application profiles on the specified Edge.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">loadBalancer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>HTTPS-Application-Profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>HTTPS<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serverSslEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">serverSslEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-3<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">persistence</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>cookie<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span>JSESSIONID<span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span>insert<span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>HTTP-Application-Profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>HTTP<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serverSslEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">serverSslEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-4<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">persistence</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>sourceip<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>TCP-Application-Profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>TCP<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serverSslEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">serverSslEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">loadBalancer</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -22453,13 +23254,13 @@ and makes traffic-management tasks easier and more efficient.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http_application_profile_2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">persistence</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>cookie<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cookieName</span>&gt;</span>JSESSIONID<span class="hljs-tag">&lt;/<span class="hljs-name">cookieName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cookieMode</span>&gt;</span>insert<span class="hljs-tag">&lt;/<span class="hljs-name">cookieMode</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
 </code></pre>
@@ -22474,6 +23275,21 @@ and makes traffic-management tasks easier and more efficient.</p>
   <div class="content">
     <p><p>Retrieve an application profile.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationProfile</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">applicationProfileId</span>&gt;</span>applicationProfile-2<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfileId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>HTTPS-Application-Profile<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">insertXForwardedFor</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">insertXForwardedFor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sslPassthrough</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">sslPassthrough</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>HTTPS<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">serverSslEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">serverSslEnabled</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">applicationProfile</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -22492,6 +23308,7 @@ and makes traffic-management tasks easier and more efficient.</p>
   <div class="description"><h2 id="working-with-application-rules">Working With Application Rules</h2>
 <p>You can write an application rule to directly manipulate and manage
 IP application traffic.</p>
+<p>See <em>Working With NSX Edge Load Balancer</em> for <strong>applicationRule</strong> parameter information.</p>
 </div>
 <div class="method post">
   <a
@@ -22516,8 +23333,11 @@ IP application traffic.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>redirection_rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+    acl vmware_page url_beg / vmware redirect location https : <span class="hljs-comment">//www.vmware.com/ if</span>
+    vmware_page
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
 </code></pre>
   </div>
@@ -22531,6 +23351,20 @@ IP application traffic.</p>
   <div class="content">
     <p><p>Retrieve all application rules.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>redirection_rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+    acl vmware_page url_beg / vmware redirect location https : <span class="hljs-comment">//www.vmware.com/ if</span>
+    vmware_page
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -22571,6 +23405,20 @@ IP application traffic.</p>
   <div class="content">
     <p><p>Retrieve an application rule.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>redirection_rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+    acl vmware_page url_beg / vmware redirect location https : <span class="hljs-comment">//www.vmware.com/ if</span>
+    vmware_page
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -22596,8 +23444,11 @@ IP application traffic.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationRule</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>redirection_rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+    acl vmware_page url_beg / vmware redirect location https : <span class="hljs-comment">//www.vmware.com/ if</span>
+    vmware_page
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">applicationRule</span>&gt;</span>
 </code></pre>
   </div>
@@ -22663,6 +23514,7 @@ IP application traffic.</p>
 particular type of network traffic. When you associate a service
 monitor with a pool, the pool members are monitored according to the
 service monitor parameters.</p>
+<p>See <em>Working With NSX Edge Load Balancer</em> for <strong>monitor</strong> parameter information.</p>
 </div>
 <div class="method post">
   <a
@@ -22692,13 +23544,13 @@ service monitor parameters.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http-monitor-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
 </code></pre>
   </div>
@@ -22712,6 +23564,43 @@ service monitor parameters.</p>
   <div class="content">
     <p><p>Retrieve all load balancer monitors.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">loadBalancer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-1<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http-monitor<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-2<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>https<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>https-monitor<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>tcp-monitor<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">loadBalancer</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -22752,6 +23641,22 @@ service monitor parameters.</p>
   <div class="content">
     <p><p>Retrieve a load balancer monitor.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http-monitor-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -22782,13 +23687,13 @@ service monitor parameters.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">monitor</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeout</span>&gt;</span>25<span class="hljs-tag">&lt;/<span class="hljs-name">timeout</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">maxRetries</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">maxRetries</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">method</span>&gt;</span>GET<span class="hljs-tag">&lt;/<span class="hljs-name">method</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http-monitor-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">monitor</span>&gt;</span>
 </code></pre>
   </div>
@@ -22811,97 +23716,8 @@ service monitor parameters.</p>
 flexibly and efficiently. A pool manages load balancer distribution
 methods and has a service monitor attached to it for health check
 parameters.</p>
-<table class="table"><thead><tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Comments</th>
-</tr>
-</thead><tbody><tr>
-<td><strong>pool &gt; name</strong></td>
-<td>Name of pool.</td>
-<td>Required.</td>
-</tr>
-<tr>
-<td><strong>description</strong></td>
-<td>Description of pool.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td><strong>algorithm</strong></td>
-<td>Pool member balancing algorithm.</td>
-<td>Optional. Options are: <em>round-robin</em>, <em>ip-hash</em>, <em>uri</em>, <em>leastconn</em>, <em>url</em>, <em>httpheader</em>. Default is <em>round-robin</em>.</td>
-</tr>
-<tr>
-<td><strong>algorithmParameters</strong></td>
-<td>Algorithm parameters for <em>httpheader</em> and <em>url</em>.</td>
-<td>Optional. Required for <em>httpheader</em> and <em>url</em> algorithm.</td>
-</tr>
-<tr>
-<td><strong>transparent</strong></td>
-<td>Whether client IP addresses are  visible to the backend servers.</td>
-<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
-</tr>
-<tr>
-<td><strong>monitorId</strong></td>
-<td>Monitor identifier list.</td>
-<td>Optional. At the most one monitor is supported.</td>
-</tr>
-<tr>
-<td><strong>member</strong></td>
-<td>Pool member list.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td><strong>member &gt; name</strong></td>
-<td>Member name.</td>
-<td>Optional. Required, when used in ACL rule.</td>
-</tr>
-<tr>
-<td><strong>ipAddress</strong></td>
-<td>Member IP address.</td>
-<td>Optional. Required, if <strong>groupingObjectId</strong> is null.</td>
-</tr>
-<tr>
-<td><strong>groupingObjectId</strong></td>
-<td>Member grouping object identifier.</td>
-<td>Optional. Required, if <strong>ipAddress</strong> is null.</td>
-</tr>
-<tr>
-<td><strong>groupingObjectName</strong></td>
-<td>Member grouping object name.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td><strong>weight</strong></td>
-<td>Member weight.</td>
-<td>Optional. Default is <em>1</em>.</td>
-</tr>
-<tr>
-<td><strong>monitorPort</strong></td>
-<td>Monitor port.</td>
-<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured.</td>
-</tr>
-<tr>
-<td><strong>port</strong></td>
-<td>Member port.</td>
-<td>Optional. Long. Either  <strong>monitorPort</strong> or <strong>port</strong> must be configured. </td>
-</tr>
-<tr>
-<td><strong>maxConn</strong></td>
-<td>Maximum number of concurrent connections the member can handle.</td>
-<td>Optional. Default is <em>0</em> which means unlimited.</td>
-</tr>
-<tr>
-<td><strong>minConn</strong></td>
-<td>Minimum number of concurrent connections a member must always accept.</td>
-<td>Optional. Default is <em>0</em> which means unlimited.</td>
-</tr>
-<tr>
-<td><strong>condition</strong></td>
-<td>Condition of the member.</td>
-<td>Optional. Options are: <em>enabled</em>, <em>disabled</em>, or <em>drain</em>. Default is <em>enabled</em>.</td>
-</tr>
-</tbody></table></div>
+<p>See <em>Working With NSX Edge Load Balancer</em> for <strong>pools</strong> parameter information.</p>
+</div>
 <div class="method post">
   <a
     class="verb post"
@@ -22950,19 +23766,28 @@ parameters.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-tcp-snat-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-tcp-snat-2<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m5<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m6<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
 </code></pre>
@@ -22977,6 +23802,135 @@ parameters.</p>
   <div class="content">
     <p><p>Get all server pools on the specified NSX Edge.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">loadBalancer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>slb<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-http<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-http<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-1<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-1<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-2<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>slb<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-2<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-https<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-https<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-2<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-11<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m3<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-4<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m4<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>slb<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-3<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-tcp<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-tcp<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-5<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m5<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-6<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m6<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>slb<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-4<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-tcp-snat<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-tcp-snat<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-7<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m7<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-8<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m8<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">loadBalancer</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -23067,20 +24021,30 @@ parameters.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-tcp-snat-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>pool-tcp-snat-3<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">transparent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">transparent</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">algorithm</span>&gt;</span>round-robin<span class="hljs-tag">&lt;/<span class="hljs-name">algorithm</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">monitorId</span>&gt;</span>monitor-3<span class="hljs-tag">&lt;/<span class="hljs-name">monitorId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m5<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled\disabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>1234<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">minConn</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">minConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxConn</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">maxConn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m6<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>enabled\disabled<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">monitorPort</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">monitorPort</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
 </code></pre>
@@ -23111,72 +24075,8 @@ parameters.</p>
     <p><p>Add a virtual server.</p>
 <p>You can add an NSX Edge internal or uplink interface as a virtual
 server.</p>
-<table class="table"><thead><tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Comments</th>
-</tr>
-</thead><tbody><tr>
-<td> <strong>name</strong></td>
-<td>Name of virtual server.</td>
-<td>Required.</td>
-</tr>
-<tr>
-<td> <strong>description</strong></td>
-<td>Description of virtual server.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td> <strong>enabled</strong></td>
-<td>Whether the virtual server is enabled.</td>
-<td>Optional. Boolean. Options are <em>true</em> or <em>false</em>. Default is <em>true</em>.</td>
-</tr>
-<tr>
-<td> <strong>ipAddress</strong></td>
-<td>IP address that the load balancer is listening on.</td>
-<td>Required. A valid NSX Edge vNic IP address (IPv4 or IPv6).</td>
-</tr>
-<tr>
-<td> <strong>protocol</strong></td>
-<td>Virtual server protocol.</td>
-<td>Required. Options are: <em>HTTP</em>, <em>HTTPS</em>, <em>TCP</em>, <em>UDP</em>.</td>
-</tr>
-<tr>
-<td> <strong>port</strong></td>
-<td>Port number or port range.</td>
-<td>Required. Port number such as <em>80</em>, port range such as <em>80,443</em> or <em>1234-1238</em>, or a combination such as <em>443,6000-7000</em>.</td>
-</tr>
-<tr>
-<td> <strong>connectionLimit</strong></td>
-<td>Maximum concurrent connections.</td>
-<td>Optional. Long.</td>
-</tr>
-<tr>
-<td> <strong>connectionRateLimit</strong></td>
-<td>Maximum incoming new connection requests per second.</td>
-<td>Optional. Long.</td>
-</tr>
-<tr>
-<td> <strong>defaultPoolId</strong></td>
-<td>Default backend server pool identifier.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td> <strong>applicationProfileId</strong></td>
-<td>Application profile identifier.</td>
-<td>Optional.</td>
-</tr>
-<tr>
-<td> <strong>accelerationEnabled</strong></td>
-<td>Use the faster L4 load balancer  engine rather than L7 load  balancer engine.</td>
-<td>Optional. Boolean. Options are <em>true</em> or <em>false</em>. If a virtual server configuration such as application rules, HTTP type, or cookie persistence, is using the L7 load balancer engine, then the L7 load balancer engine is used, even if <strong>accelerationEnabled</strong> is not set to true.</td>
-</tr>
-<tr>
-<td> <strong>applicationRuleId</strong></td>
-<td>Application rule identifier list.</td>
-<td>Optional. Each item should be a valid <strong>applicationRuleId</strong>.</td>
-</tr>
-</tbody></table></p>
+<p>See <em>Working With NSX Edge Load Balancer</em> for <strong>virtualServer</strong> parameter information.</p>
+</p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="virtualServer"&gt;
@@ -23283,7 +24183,221 @@ server.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-load-balancer-statistics">Working With Load Balancer Statistics</h2>
-</div>
+<p>Retrieves load balancer statistics.</p>
+<p><strong>Load Balancer Statistics Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>virtualServer</strong></td>
+<td>Virtual server list.</td>
+</tr>
+<tr>
+<td><strong>virtualServerId</strong></td>
+<td>Virtual server identifier.</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Name of the virtual server.</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>Description of virtual server.</td>
+</tr>
+<tr>
+<td><strong>ipAddress</strong></td>
+<td>IP address that the load balancer is listening on.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>Virtual server status.</td>
+</tr>
+<tr>
+<td><strong>bytesIn</strong></td>
+<td>Number of bytes in.</td>
+</tr>
+<tr>
+<td><strong>bytesOut</strong></td>
+<td>Number of bytes out.</td>
+</tr>
+<tr>
+<td><strong>curSessions</strong></td>
+<td>Number of current sessions.</td>
+</tr>
+<tr>
+<td><strong>httpReqTotal</strong></td>
+<td>Total number of HTTP requests received.</td>
+</tr>
+<tr>
+<td><strong>httpReqRate</strong></td>
+<td>HTTP requests per second over last elapsed second.</td>
+</tr>
+<tr>
+<td><strong>httpReqRateMax</strong></td>
+<td>Maximum number of HTTP requests per second observed.</td>
+</tr>
+<tr>
+<td><strong>maxSession</strong></td>
+<td>Number of maximum sessions.</td>
+</tr>
+<tr>
+<td><strong>rate</strong></td>
+<td>Number of sessions per second over last elapsed second.</td>
+</tr>
+<tr>
+<td><strong>rateLimit</strong></td>
+<td>Configured limit on new sessions per second.</td>
+</tr>
+<tr>
+<td><strong>rateMax</strong></td>
+<td>Maximum number of new sessions per second.</td>
+</tr>
+<tr>
+<td><strong>totalSession</strong></td>
+<td>Total number of sessions.</td>
+</tr>
+<tr>
+<td><strong>pool</strong></td>
+<td>Pool list.</td>
+</tr>
+<tr>
+<td><strong>poolId</strong></td>
+<td>Generated pool identifier.</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Name of the pool.</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>Description of the pool.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>Pool status.</td>
+</tr>
+<tr>
+<td><strong>bytesIn</strong></td>
+<td>Number of bytes in.</td>
+</tr>
+<tr>
+<td><strong>bytesOut</strong></td>
+<td>Number of bytes out.</td>
+</tr>
+<tr>
+<td><strong>curSessions</strong></td>
+<td>Number of current sessions.</td>
+</tr>
+<tr>
+<td><strong>httpReqTotal</strong></td>
+<td>Total number of HTTP requests received.</td>
+</tr>
+<tr>
+<td><strong>httpReqRate</strong></td>
+<td>HTTP requests per second over last elapsed second.</td>
+</tr>
+<tr>
+<td><strong>httpReqRateMax</strong></td>
+<td>Maximum number of HTTP requests per second observed.</td>
+</tr>
+<tr>
+<td><strong>maxSession</strong></td>
+<td>Number of maximum sessions.</td>
+</tr>
+<tr>
+<td><strong>rate</strong></td>
+<td>Number of sessions per second over last elapsed second.</td>
+</tr>
+<tr>
+<td><strong>rateLimit</strong></td>
+<td>Configured limit on new sessions per second.</td>
+</tr>
+<tr>
+<td><strong>rateMax</strong></td>
+<td>Maximum number of new sessions per second.</td>
+</tr>
+<tr>
+<td><strong>totalSession</strong></td>
+<td>Total number of sessions.</td>
+</tr>
+<tr>
+<td><strong>member</strong></td>
+<td>Pool member list.</td>
+</tr>
+<tr>
+<td><strong>memberId</strong></td>
+<td>Generated member identifier.</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Member name.</td>
+</tr>
+<tr>
+<td><strong>ipAddress</strong></td>
+<td>Member IP address.</td>
+</tr>
+<tr>
+<td><strong>groupingObjectId</strong></td>
+<td>Member grouping object identifier.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>Member status.</td>
+</tr>
+<tr>
+<td><strong>bytesIn</strong></td>
+<td>Number of bytes in.</td>
+</tr>
+<tr>
+<td><strong>bytesOut</strong></td>
+<td>Number of bytes out.</td>
+</tr>
+<tr>
+<td><strong>curSessions</strong></td>
+<td>Number of current sessions.</td>
+</tr>
+<tr>
+<td><strong>httpReqTotal</strong></td>
+<td>Total number of HTTP requests received.</td>
+</tr>
+<tr>
+<td><strong>httpReqRate</strong></td>
+<td>HTTP requests per second over last elapsed second.</td>
+</tr>
+<tr>
+<td><strong>httpReqRateMax</strong></td>
+<td>Maximum number of HTTP requests per second observed.</td>
+</tr>
+<tr>
+<td><strong>maxSession</strong></td>
+<td>Number of maximum sessions.</td>
+</tr>
+<tr>
+<td><strong>rate</strong></td>
+<td>Number of sessions per second over last elapsed second.</td>
+</tr>
+<tr>
+<td><strong>rateLimit</strong></td>
+<td>Configured limit on new sessions per second.</td>
+</tr>
+<tr>
+<td><strong>rateMax</strong></td>
+<td>Maximum number of new sessions per second.</td>
+</tr>
+<tr>
+<td><strong>totalSession</strong></td>
+<td>Total number of sessions.</td>
+</tr>
+<tr>
+<td><strong>timestamp</strong></td>
+<td>Timestamp to fetch load balancer statistics.</td>
+</tr>
+<tr>
+<td><strong>serverStatus</strong></td>
+<td>Load balancer server status.</td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -23293,6 +24407,129 @@ server.</p>
   <div class="content">
     <p><p>Retrieve load balancer statistics.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">loadBalancerStatusAndStats</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeStamp</span>&gt;</span>1359722922<span class="hljs-tag">&lt;/<span class="hljs-name">timeStamp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>pool-http<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-1<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.201<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>70771<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>74619<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxSessions</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">maxSessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rateMax</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">rateMax</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalSessions</span>&gt;</span>142<span class="hljs-tag">&lt;/<span class="hljs-name">totalSessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-2<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>70823<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>70605<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">maxSessions</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">maxSessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rateMax</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">rateMax</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalSessions</span>&gt;</span>141<span class="hljs-tag">&lt;/<span class="hljs-name">totalSessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>141594<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>145224<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxSessions</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">maxSessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rateMax</span>&gt;</span>34<span class="hljs-tag">&lt;/<span class="hljs-name">rateMax</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalSessions</span>&gt;</span>283<span class="hljs-tag">&lt;/<span class="hljs-name">totalSessions</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualServerId</span>&gt;</span>virtualServer-9<span class="hljs-tag">&lt;/<span class="hljs-name">virtualServerId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>http_vip<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.117.35.172<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>OPEN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>141594<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>145224<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">httpReqTotal</span>&gt;</span>283<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqTotal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRateMax</span>&gt;</span>34<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRateMax</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">maxSessions</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">maxSessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rateLimit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rateLimit</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rateMax</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">rateMax</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalSessions</span>&gt;</span>13<span class="hljs-tag">&lt;/<span class="hljs-name">totalSessions</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">virtualServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">globalSite</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>BJ site<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">globalSiteId</span>&gt;</span>site-3<span class="hljs-tag">&lt;/<span class="hljs-name">globalSiteId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">msgSent</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">msgSent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">msgRecv</span>&gt;</span>747<span class="hljs-tag">&lt;/<span class="hljs-name">msgRecv</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">msgRate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">msgRate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsReq</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsReq</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsResolved</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsResolved</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">globalSite</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">globalIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fqdn</span>&gt;</span>www.company.com<span class="hljs-tag">&lt;/<span class="hljs-name">fqdn</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">globalIpId</span>&gt;</span>gip-3<span class="hljs-tag">&lt;/<span class="hljs-name">globalIpId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsReq</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsReq</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsResolved</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsResolved</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsMiss</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsMiss</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">globalIp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">globalPool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>www-primary<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsReq</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsReq</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsResolved</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsResolved</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsMiss</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsMiss</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>10.117.7.110<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-3<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsHit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsHit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cpuUsage</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">cpuUsage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memUsage</span>&gt;</span>91<span class="hljs-tag">&lt;/<span class="hljs-name">memUsage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">sessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">curConn</span>&gt;</span>14<span class="hljs-tag">&lt;/<span class="hljs-name">curConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sessLimit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">sessLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sessRate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">sessRate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalThroughput</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">totalThroughput</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">packagesPerSec</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">packagesPerSec</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">globalPool</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">globalPool</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>www-primary<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">poolId</span>&gt;</span>pool-1<span class="hljs-tag">&lt;/<span class="hljs-name">poolId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsReq</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsReq</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsResolved</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsResolved</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dnsMiss</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsMiss</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>10.117.7.110<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-3<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dnsHit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">dnsHit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cpuUsage</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">cpuUsage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">memUsage</span>&gt;</span>91<span class="hljs-tag">&lt;/<span class="hljs-name">memUsage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">sessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">curConn</span>&gt;</span>14<span class="hljs-tag">&lt;/<span class="hljs-name">curConn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sessLimit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">sessLimit</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sessRate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">sessRate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalThroughput</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">totalThroughput</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">packagesPerSec</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">packagesPerSec</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">globalPool</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">loadBalancerStatusAndStats</span>&gt;</span>                  
+</code></pre>
   </div>
 </div>
 </section>
