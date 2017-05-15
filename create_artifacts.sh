@@ -34,5 +34,5 @@ raml2md -i $(pwd)/nsxvapi.raml -o $(pwd)/md-version/nsxvapi.md
 #
 # Generate Postman collections
 #
-raml2postman -s $(pwd)/nsxvapi.raml -o $(pwd)/postman-collection/nsxvapi.json -g
+raml2postman -s $(pwd)/nsxvapi.raml -o $(pwd)/postman-collection/nsxvapi.postman_collection.json -g
 
