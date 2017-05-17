@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#100;&#111;&#99;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#109;">&#100;&#111;&#99;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#109;</a>.</p>
+<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#109;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#109;">&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#109;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -21972,6 +21972,46 @@ provide all services to VMs on the other site.</p>
   <div class="content">
     <p><p>Retrieve the current L2VPN configuration for NSX Edge.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">l2Vpn</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSites</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSite</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">client</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">serverAddress</span>&gt;</span>192.168.15.23<span class="hljs-tag">&lt;/<span class="hljs-name">serverAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">serverPort</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">serverPort</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span>certificate-4<span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">egressOptimization</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">gatewayIpAddress</span>&gt;</span>192.168.15.1<span class="hljs-tag">&lt;/<span class="hljs-name">gatewayIpAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">egressOptimization</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>AES128-SHA<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnUser</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">userId</span>&gt;</span>apple<span class="hljs-tag">&lt;/<span class="hljs-name">userId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnUser</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">proxySetting</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>https<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">address</span>&gt;</span>10.112.243.202<span class="hljs-tag">&lt;/<span class="hljs-name">address</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>root<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">proxySetting</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">client</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnSite</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnSites</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">l2Vpn</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -21984,37 +22024,207 @@ provide all services to VMs on the other site.</p>
     <p><p>Configure L2VPN for server or client.</p>
 <p>You first enable the L2 VPN service on the NSX Edge instance and then
 configure a server and a client.</p>
-</p>
+<p><strong>L2 VPN Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>Whether L2 VPN is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>. </td>
+</tr>
+<tr>
+<td><strong>logging</strong></td>
+<td>L2 VPN logging setting.</td>
+<td>Optional. Disable by default.</td>
+</tr>
+<tr>
+<td><strong>logging &gt; enable</strong></td>
+<td>Whether logging is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td><strong>logging &gt; logLevel</strong></td>
+<td>Logging level.</td>
+<td>Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is <em>INFO</em>.</td>
+</tr>
+<tr>
+<td><strong>listenerIp</strong></td>
+<td>IP of external interface on which L2VPN service listens to.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>listenerPort</strong></td>
+<td>Port on which L2VPN service listens to.</td>
+<td>Optional. Default is 443.</td>
+</tr>
+<tr>
+<td><strong>encryptionAlgorithm</strong></td>
+<td>Encryption algorithm for communication between the server and the client.</td>
+<td>Mandatory. Supported ciphers are <em>RC4-MD5</em>, <em>AES128-SHA</em>, <em>AES256-SHA</em>, <em>DES-CBC3-SHA</em>, <em>AES128-GCM-SHA256</em>, and <em>NULL-MD5</em>.</td>
+</tr>
+<tr>
+<td><strong>serverCertificate</strong></td>
+<td>Select the certificate to be bound to L2 VPN server.</td>
+<td>Optional. If not specified server will use its default (self-signed) certificate.</td>
+</tr>
+</tbody></table><p><strong>Peer Site Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>peerSites </strong></td>
+<td>To connect multiple sites to the L2 VPN server.</td>
+<td>Required. Minimum one peer site must be configured to enable L2 VPN server service. </td>
+</tr>
+<tr>
+<td><strong>name </strong></td>
+<td>Unique name for the site getting configured.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>description </strong></td>
+<td>Description about the site.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>l2VpnUser </strong></td>
+<td>Every peer site must have a user configuration.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>l2VpnUser &gt; userId </strong></td>
+<td>L2 VPN user ID.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>l2VpnUser &gt; password </strong></td>
+<td>Password for L2 VPN user.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>vnics</strong></td>
+<td>List of vNICs to be stretched over the tunnel.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>vnics &gt; index</strong></td>
+<td>Select the virtual machine NIC to bind to the IP address.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>egressOptimization &gt; gatewayIpAddress</strong></td>
+<td>The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>enabled</strong></td>
+<td>Whether the peer site is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>.    </td>
+</tr>
+</tbody></table><p><strong>Example to configure L2 VPN for Client</strong></p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">l2Vpn</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSites</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSite</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">client</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">serverAddress</span>&gt;</span>192.168.15.23<span class="hljs-tag">&lt;/<span class="hljs-name">serverAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">serverPort</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">serverPort</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>AES128-SHA<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span>certificate-4<span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">egressOptimization</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">gatewayIpAddress</span>&gt;</span>192.168.15.1<span class="hljs-tag">&lt;/<span class="hljs-name">gatewayIpAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">egressOptimization</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">proxySetting</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>https<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">address</span>&gt;</span>10.112.243.202<span class="hljs-tag">&lt;/<span class="hljs-name">address</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>root<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>java123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">proxySetting</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnUser</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">userId</span>&gt;</span>apple<span class="hljs-tag">&lt;/<span class="hljs-name">userId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>apple<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnUser</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">client</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnSite</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnSites</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">l2Vpn</span>&gt;</span>          </code></pre><p><strong>Example to configure L2 VPN for Server</strong></p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">l2Vpn</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSites</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSite</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">listenerIp</span>&gt;</span>192.168.15.65<span class="hljs-tag">&lt;/<span class="hljs-name">listenerIp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">listenerPort</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">listenerPort</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>RC4-MD5<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">peerSites</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">peerSite</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>PeerSite1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnUser</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">userId</span>&gt;</span>apple<span class="hljs-tag">&lt;/<span class="hljs-name">userId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>apple<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnUser</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">vnics</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">vnics</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">egressOptimization</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">gatewayIpAddress</span>&gt;</span>192.168.15.1<span class="hljs-tag">&lt;/<span class="hljs-name">gatewayIpAddress</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">egressOptimization</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">peerSite</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">peerSites</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">server</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnSite</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnSites</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">l2Vpn</span>&gt;</span></code></pre></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">l2Vpn</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>info<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSites</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSites</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnSite</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">server</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">listenerIp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">listenerIp</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">listenerPort</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">listenerPort</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">serverCertificate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serverCertificate</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">listenerIp</span>&gt;</span>192.168.15.65<span class="hljs-tag">&lt;/<span class="hljs-name">listenerIp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">listenerPort</span>&gt;</span>443<span class="hljs-tag">&lt;/<span class="hljs-name">listenerPort</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>RC4-MD5<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">peerSites</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-name">peerSite</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>PeerSite1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>description<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
               <span class="hljs-tag">&lt;<span class="hljs-name">l2VpnUser</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">userId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">userId</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">userId</span>&gt;</span>apple<span class="hljs-tag">&lt;/<span class="hljs-name">userId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>apple<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
               <span class="hljs-tag">&lt;/<span class="hljs-name">l2VpnUser</span>&gt;</span>
               <span class="hljs-tag">&lt;<span class="hljs-name">vnics</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
               <span class="hljs-tag">&lt;/<span class="hljs-name">vnics</span>&gt;</span>
               <span class="hljs-tag">&lt;<span class="hljs-name">egressOptimization</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">gatewayIpAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">gatewayIpAddress</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">gatewayIpAddress</span>&gt;</span>192.168.15.1<span class="hljs-tag">&lt;/<span class="hljs-name">gatewayIpAddress</span>&gt;</span>
               <span class="hljs-tag">&lt;/<span class="hljs-name">egressOptimization</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
             <span class="hljs-tag">&lt;/<span class="hljs-name">peerSite</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">peerSites</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
@@ -22050,6 +22260,34 @@ configure a server and a client.</p>
     <p><p>Retrieve L2 VPN statistics, which has information such as tunnel status,
 sent bytes, received bytes for the specified Edge.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">l2vpnStatusAndStats</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeStamp</span>&gt;</span>1403285853<span class="hljs-tag">&lt;/<span class="hljs-name">timeStamp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">siteStats</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">l2vpnStats</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>site-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStatus</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">establishedDate</span>&gt;</span>1403285827<span class="hljs-tag">&lt;/<span class="hljs-name">establishedDate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">txBytesFromLocalSubnet</span>&gt;</span>478<span class="hljs-tag">&lt;/<span class="hljs-name">txBytesFromLocalSubnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>RC4-MD5<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rxBytesOnLocalSubnet</span>&gt;</span>42<span class="hljs-tag">&lt;/<span class="hljs-name">rxBytesOnLocalSubnet</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">l2vpnStats</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">l2vpnStats</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>site-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStatus</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">establishedDate</span>&gt;</span>1403285829<span class="hljs-tag">&lt;/<span class="hljs-name">establishedDate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">txBytesFromLocalSubnet</span>&gt;</span>408<span class="hljs-tag">&lt;/<span class="hljs-name">txBytesFromLocalSubnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>RC4-MD5<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rxBytesOnLocalSubnet</span>&gt;</span>450<span class="hljs-tag">&lt;/<span class="hljs-name">rxBytesOnLocalSubnet</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">l2vpnStats</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">siteStats</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">l2vpnStatusAndStats</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -22121,7 +22359,7 @@ the default port for HTTP, and port 443 is the default port for HTTPs.</p>
 pool, monitor and application rule.</p>
 <p>For the data path to work, you need to add firewall rules to allow
 required traffic as per the load balancer configuration.</p>
-<p><strong>General Load Balancer Parameter Table</strong></p>
+<p><strong>General Load Balancer Parameters</strong></p>
 <table class="table"><thead><tr>
 <th>Parameter</th>
 <th>Description</th>

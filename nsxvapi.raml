@@ -13244,7 +13244,7 @@ securitySchemes:
           For the data path to work, you need to add firewall rules to allow
           required traffic as per the load balancer configuration.
           
-          **General Load Balancer Parameter Table**
+          **General Load Balancer Parameters**
           
           Parameter |  Description | Comments
           ---|---|---
@@ -16030,6 +16030,44 @@ securitySchemes:
       get:
         displayName: l2VPNRead
         description: Retrieve the current L2VPN configuration for NSX Edge.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <l2Vpn>
+                    <version>4</version>
+                    <enabled>true</enabled>
+                    <logging>
+                      <enable>false</enable>
+                      <logLevel>info</logLevel>
+                    </logging>
+                    <l2VpnSites>
+                      <l2VpnSite>
+                        <client>
+                          <configuration>
+                            <serverAddress>192.168.15.23</serverAddress>
+                            <serverPort>443</serverPort>
+                            <caCertificate>certificate-4</caCertificate>
+                            <vnic>10</vnic>
+                            <egressOptimization>
+                              <gatewayIpAddress>192.168.15.1</gatewayIpAddress>
+                            </egressOptimization>
+                            <encryptionAlgorithm>AES128-SHA</encryptionAlgorithm>
+                          </configuration>
+                          <l2VpnUser>
+                            <userId>apple</userId>
+                          </l2VpnUser>
+                          <proxySetting>
+                            <type>https</type>
+                            <address>10.112.243.202</address>
+                            <port>443</port>
+                            <userName>root</userName>
+                          </proxySetting>
+                        </client>
+                      </l2VpnSite>
+                    </l2VpnSites>
+                  </l2Vpn>
       put:
         displayName: l2VPNUpdate
         description: |
@@ -16037,6 +16075,109 @@ securitySchemes:
           
           You first enable the L2 VPN service on the NSX Edge instance and then
           configure a server and a client.
+          
+          **L2 VPN Parameters**
+          
+          Parameter |  Description | Comments
+          ---|---|---
+          **enabled**      |Whether L2 VPN is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*. 
+          **logging**      |L2 VPN logging setting.|Optional. Disable by default.
+          **logging > enable**      |Whether logging is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+          **logging > logLevel**      |Logging level.|Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is *INFO*.
+          **listenerIp** | IP of external interface on which L2VPN service listens to. |Required.
+          **listenerPort** | Port on which L2VPN service listens to. |Optional. Default is 443.
+          **encryptionAlgorithm** | Encryption algorithm for communication between the server and the client. |Mandatory. Supported ciphers are *RC4-MD5*, *AES128-SHA*, *AES256-SHA*, *DES-CBC3-SHA*, *AES128-GCM-SHA256*, and *NULL-MD5*.
+          **serverCertificate** | Select the certificate to be bound to L2 VPN server. |Optional. If not specified server will use its default (self-signed) certificate.
+          
+          **Peer Site Parameters**
+          
+          Parameter |  Description | Comments
+          ---|---|---
+          **peerSites **| To connect multiple sites to the L2 VPN server. |Required. Minimum one peer site must be configured to enable L2 VPN server service. 
+          **name **| Unique name for the site getting configured. |Required.
+          **description **| Description about the site. |Optional.
+          **l2VpnUser **| Every peer site must have a user configuration. |Required.
+          **l2VpnUser > userId **| L2 VPN user ID. |Required.
+          **l2VpnUser > password **| Password for L2 VPN user. |Required.
+          **vnics**| List of vNICs to be stretched over the tunnel. |Required.
+          **vnics > index** | Select the virtual machine NIC to bind to the IP address. |Required.
+          **egressOptimization > gatewayIpAddress** | The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel. |Optional.
+          **enabled**| Whether the peer site is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*.    
+          
+          **Example to configure L2 VPN for Client**
+          
+              <l2Vpn>
+                <enabled>true</enabled>
+                <logging>
+                  <enable>false</enable>
+                  <logLevel>info</logLevel>
+                </logging>
+                <l2VpnSites>
+                  <l2VpnSite>
+                    <client>
+                      <configuration>
+                        <serverAddress>192.168.15.23</serverAddress>
+                        <serverPort>443</serverPort>
+                        <vnic>10</vnic>
+                        <encryptionAlgorithm>AES128-SHA</encryptionAlgorithm>
+                        <caCertificate>certificate-4</caCertificate>
+                        <egressOptimization>
+                          <gatewayIpAddress>192.168.15.1</gatewayIpAddress>
+                        </egressOptimization>
+                      </configuration>
+                      <proxySetting>
+                        <type>https</type>
+                        <address>10.112.243.202</address>
+                        <port>443</port>
+                        <userName>root</userName>
+                        <password>java123</password>
+                      </proxySetting>
+                      <l2VpnUser>
+                        <userId>apple</userId>
+                        <password>apple</password>
+                      </l2VpnUser>
+                    </client>
+                  </l2VpnSite>
+                </l2VpnSites>
+              </l2Vpn>          
+        
+          **Example to configure L2 VPN for Server**
+        
+              <l2Vpn>
+                <enabled>true</enabled>
+                <logging>
+                  <enable>false</enable>
+                  <logLevel>info</logLevel>
+                </logging>
+                <l2VpnSites>
+                  <l2VpnSite>
+                    <server>
+                      <configuration>
+                        <listenerIp>192.168.15.65</listenerIp>
+                        <listenerPort>443</listenerPort>
+                        <encryptionAlgorithm>RC4-MD5</encryptionAlgorithm>
+                        <peerSites>
+                          <peerSite>
+                            <name>PeerSite1</name>
+                            <description>description</description>
+                            <l2VpnUser>
+                              <userId>apple</userId>
+                              <password>apple</password>
+                            </l2VpnUser>
+                            <vnics>
+                              <index>10</index>
+                            </vnics>
+                            <egressOptimization>
+                              <gatewayIpAddress>192.168.15.1</gatewayIpAddress>
+                            </egressOptimization>
+                            <enabled>true</enabled>
+                          </peerSite>
+                        </peerSites>
+                      </configuration>
+                    </server>
+                  </l2VpnSite>
+                </l2VpnSites>
+              </l2Vpn>
         body:
           application/xml:
             example: |
@@ -16045,30 +16186,29 @@ securitySchemes:
                 <logging>
                   <enable>false</enable>
                   <logLevel>info</logLevel>
-                  </logging>
-                  <l2VpnSites>
+                </logging>
+                <l2VpnSites>
                   <l2VpnSite>
                     <server>
                       <configuration>
-                        <listenerIp></listenerIp>
-                        <listenerPort></listenerPort>
-                        <encryptionAlgorithm></encryptionAlgorithm>
-                        <serverCertificate></serverCertificate>
+                        <listenerIp>192.168.15.65</listenerIp>
+                        <listenerPort>443</listenerPort>
+                        <encryptionAlgorithm>RC4-MD5</encryptionAlgorithm>
                         <peerSites>
                           <peerSite>
-                            <name></name>
-                            <description></description>
+                            <name>PeerSite1</name>
+                            <description>description</description>
                             <l2VpnUser>
-                              <userId></userId>
-                              <password></password>
+                              <userId>apple</userId>
+                              <password>apple</password>
                             </l2VpnUser>
                             <vnics>
-                              <index></index>
+                              <index>10</index>
                             </vnics>
                             <egressOptimization>
-                              <gatewayIpAddress></gatewayIpAddress>
+                              <gatewayIpAddress>192.168.15.1</gatewayIpAddress>
                             </egressOptimization>
-                            <enabled></enabled>
+                            <enabled>true</enabled>
                           </peerSite>
                         </peerSites>
                       </configuration>
@@ -16078,7 +16218,8 @@ securitySchemes:
               </l2Vpn>
       delete:
         displayName: l2VPNDelete
-        description: Delete the L2 VPN configuration.
+        description: |
+          Delete the L2 VPN configuration.
       /statistics:
         displayName: statistics
         description: |
@@ -16089,6 +16230,32 @@ securitySchemes:
           description: |
             Retrieve L2 VPN statistics, which has information such as tunnel status,
             sent bytes, received bytes for the specified Edge.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <l2vpnStatusAndStats>
+                      <timeStamp>1403285853</timeStamp>
+                      <siteStats>
+                        <l2vpnStats>
+                          <name>site-1</name>
+                          <tunnelStatus>up</tunnelStatus>
+                          <establishedDate>1403285827</establishedDate>
+                          <txBytesFromLocalSubnet>478</txBytesFromLocalSubnet>
+                          <encryptionAlgorithm>RC4-MD5</encryptionAlgorithm>
+                          <rxBytesOnLocalSubnet>42</rxBytesOnLocalSubnet>
+                        </l2vpnStats>
+                        <l2vpnStats>
+                          <name>site-2</name>
+                          <tunnelStatus>up</tunnelStatus>
+                          <establishedDate>1403285829</establishedDate>
+                          <txBytesFromLocalSubnet>408</txBytesFromLocalSubnet>
+                          <encryptionAlgorithm>RC4-MD5</encryptionAlgorithm>
+                          <rxBytesOnLocalSubnet>450</rxBytesOnLocalSubnet>
+                        </l2vpnStats>
+                      </siteStats>
+                    </l2vpnStatusAndStats>
     /ipsec/config:
       displayName: ipsecConfig
       description: |
