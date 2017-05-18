@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#109;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#109;">&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#109;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#109;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;">&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -21842,7 +21842,123 @@ provide the VPN native address and the VPN Gateway ID to set up the
 tunnel. On both ends, static one-to-one NAT is required for the VPN
 address.</p>
 <p>You can have a maximum of 64 tunnels across a maximum of 10 sites.</p>
-</div>
+<p><strong>IPsec VPN Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>logging</strong></td>
+<td>IPsec VPN logging setting.</td>
+<td>Optional. Disable by default.</td>
+</tr>
+<tr>
+<td><strong>logging &gt; logLevel</strong></td>
+<td>Logging level.</td>
+<td>Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is <em>INFO</em>.</td>
+</tr>
+<tr>
+<td><strong>logging &gt; enable</strong></td>
+<td>Whether logging is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td><strong>psk</strong></td>
+<td>Indicates that the secret key shared between NSX Edge and the peer site is to be used for authentication.</td>
+<td>Optional. Required only when peerIp is specified as <em>Any</em> in site configuration.</td>
+</tr>
+<tr>
+<td><strong>encryptionAlgorithm</strong></td>
+<td>Encryption algorithm for communication.</td>
+<td>Mandatory. Supported ciphers are <em>AES</em>, <em>AES256</em>, <em>Triple DES</em>, and <em>AES-GCM</em>.</td>
+</tr>
+<tr>
+<td><strong>serviceCertificate</strong></td>
+<td>Select the certificate to be bound to IPsec VPN server.</td>
+<td>Optional. Required when <em>x.509</em> certificate mode is selected.</td>
+</tr>
+<tr>
+<td><strong>caCertificate</strong></td>
+<td>List of CA certificates.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>crlCertificate</strong></td>
+<td>List of CRL certificates.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>enablePfs</strong></td>
+<td>Perfect Forward Secrecy (PFS) ensures that each new cryptographic key is unrelated to any previous key.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>. </td>
+</tr>
+<tr>
+<td><strong>authenticationMode</strong></td>
+<td>Select authentication mode as <em>psk</em> or <em>x.509</em>.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>site </strong></td>
+<td>To connect multiple sites to the IPsec VPN server.</td>
+<td>Required. Minimum one site must be configured to enable IPsec VPN server service. </td>
+</tr>
+<tr>
+<td><strong>site &gt; enabled</strong></td>
+<td>Whether site is enabled.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>. </td>
+</tr>
+<tr>
+<td><strong>site &gt; name </strong></td>
+<td>Unique name for the site getting configured.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>site &gt; description </strong></td>
+<td>Description about the site.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>localId</strong></td>
+<td>Type the IP address of the NSX Edge instance.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>localIp</strong></td>
+<td>Type the IP address of the local endpoint.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>localSubnets</strong></td>
+<td>Type the subnets to share between the sites.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>peerId</strong></td>
+<td>Type the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is <em>x.509</em>.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>peerIp &gt; index</strong></td>
+<td>Select the virtual machine NIC to bind to the IP address. This can be a IPv4 address such as 11.0.0.3.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>egressOptimization</strong></td>
+<td>The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel.</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>dhGroup</strong></td>
+<td>In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel.</td>
+<td>Optional. <em>dh2</em> is selected by default.</td>
+</tr>
+<tr>
+<td><strong>extension</strong></td>
+<td>Default value is <em>securelocaltrafficbyip=192.168.11.1</em>. To disable this extension, replace with securelocaltrafficbyip=0.</td>
+<td></td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -21852,6 +21968,69 @@ address.</p>
   <div class="content">
     <p><p>Retrieve IPsec configuration.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>debug<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">global</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">psk</span>&gt;</span>hello123<span class="hljs-tag">&lt;/<span class="hljs-name">psk</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span>certificate-4<span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">caCertificates</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span>certificate-3<span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">caCertificates</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificates</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificate</span>&gt;</span>crl-1<span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificates</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">global</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sites</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">site</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VPN to edge-pa-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localId</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>aes256<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">authenticationMode</span>&gt;</span>psk<span class="hljs-tag">&lt;/<span class="hljs-name">authenticationMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dhGroup</span>&gt;</span>dh2<span class="hljs-tag">&lt;/<span class="hljs-name">dhGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localSubnets</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.11.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">localSubnets</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">site</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VPN to edge-right<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>certificate VPN to edge-right 192.168.22.0/24 == 192.168.2.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localId</span>&gt;</span>11.0.0.12<span class="hljs-tag">&lt;/<span class="hljs-name">localId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>11.0.0.12<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>C=CN, ST=BJ, L=BJ, O=VMware, OU=DEV, CN=Right<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>11.0.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>aes256<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">authenticationMode</span>&gt;</span>x.509<span class="hljs-tag">&lt;/<span class="hljs-name">authenticationMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dhGroup</span>&gt;</span>dh2<span class="hljs-tag">&lt;/<span class="hljs-name">dhGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localSubnets</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.22.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">localSubnets</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.2.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">sites</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ipsec</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -21865,39 +22044,59 @@ address.</p>
 </p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>debug<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">global</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">psk</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">psk</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">psk</span>&gt;</span>hello123<span class="hljs-tag">&lt;/<span class="hljs-name">psk</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span>certificate-4<span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">caCertificates</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span>certificate-3<span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">caCertificates</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificates</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificate</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificate</span>&gt;</span>crl-1<span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificate</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificates</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">global</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">sites</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">site</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">localId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">localId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VPN to edge-pa-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localId</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>aes256<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">authenticationMode</span>&gt;</span>psk<span class="hljs-tag">&lt;/<span class="hljs-name">authenticationMode</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">psk</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">psk</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">dhGroup</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dhGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dhGroup</span>&gt;</span>dh2<span class="hljs-tag">&lt;/<span class="hljs-name">dhGroup</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">localSubnets</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.11.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">localSubnets</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">site</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VPN to edge-right<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>certificate VPN to edge-right 192.168.22.0/24 == 192.168.2.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localId</span>&gt;</span>11.0.0.12<span class="hljs-tag">&lt;/<span class="hljs-name">localId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>11.0.0.12<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>C=CN, ST=BJ, L=BJ, O=VMware, OU=DEV, CN=Right<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>11.0.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>aes256<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">authenticationMode</span>&gt;</span>x.509<span class="hljs-tag">&lt;/<span class="hljs-name">authenticationMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dhGroup</span>&gt;</span>dh2<span class="hljs-tag">&lt;/<span class="hljs-name">dhGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localSubnets</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.22.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">localSubnets</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.2.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extension</span>&gt;</span>securelocaltrafficbyip=192.168.11.1<span class="hljs-tag">&lt;/<span class="hljs-name">extension</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">sites</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ipsec</span>&gt;</span>
@@ -21928,6 +22127,50 @@ address.</p>
   <div class="content">
     <p><p>Retrieve IPsec statistics.</p>
 </p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipsecStatusAndStats</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">siteStatistics</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ikeStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">channelStatus</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">channelStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">channelState</span>&gt;</span>STATE_MAIN_I4 (ISAKMP SA established)<span class="hljs-tag">&lt;/<span class="hljs-name">channelState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastInformationalMessage</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">lastInformationalMessage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localIpAddress</span>&gt;</span>10.0.0.12<span class="hljs-tag">&lt;/<span class="hljs-name">localIpAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.12<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerIpAddress</span>&gt;</span>10.0.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">peerIpAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ikeStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStats</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStatus</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelState</span>&gt;</span>STATE_QUICK_I2 (sent QI2, IPsec SA established)<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastInformationalMessage</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">lastInformationalMessage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localSubnet</span>&gt;</span>192.168.2.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">localSubnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnet</span>&gt;</span>192.168.22.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnet</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStats</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">siteStatistics</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">siteStatistics</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ikeStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">channelStatus</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">channelStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">channelState</span>&gt;</span>STATE_MAIN_I4 (ISAKMP SA established)<span class="hljs-tag">&lt;/<span class="hljs-name">channelState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastInformationalMessage</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">lastInformationalMessage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localIpAddress</span>&gt;</span>10.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localIpAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerIpAddress</span>&gt;</span>10.0.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">peerIpAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ikeStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStats</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStatus</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelState</span>&gt;</span>STATE_QUICK_I2 (sent QI2, IPsec SA established)<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastInformationalMessage</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">lastInformationalMessage</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localSubnet</span>&gt;</span>192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">localSubnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnet</span>&gt;</span>192.168.11.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnet</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStats</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">siteStatistics</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">timeStamp</span>&gt;</span>1325766138<span class="hljs-tag">&lt;/<span class="hljs-name">timeStamp</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ipsecStatusAndStats</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>

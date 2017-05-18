@@ -16281,9 +16281,98 @@ securitySchemes:
         address.
         
         You can have a maximum of 64 tunnels across a maximum of 10 sites.
+        
+        **IPsec VPN Parameters**
+        
+        Parameter |  Description | Comments
+        ---|---|---
+        **logging**      |IPsec VPN logging setting.|Optional. Disable by default.
+        **logging > logLevel**      |Logging level.|Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is *INFO*.
+        **logging > enable**      |Whether logging is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+        **psk**  |Indicates that the secret key shared between NSX Edge and the peer site is to be used for authentication. |Optional. Required only when peerIp is specified as *Any* in site configuration.
+        **encryptionAlgorithm** | Encryption algorithm for communication. |Mandatory. Supported ciphers are *AES*, *AES256*, *Triple DES*, and *AES-GCM*.
+        **serviceCertificate** | Select the certificate to be bound to IPsec VPN server. |Optional. Required when *x.509* certificate mode is selected.
+        **caCertificate**| List of CA certificates. |Optional. 
+        **crlCertificate**| List of CRL certificates. |Optional. 
+        **enablePfs** |Perfect Forward Secrecy (PFS) ensures that each new cryptographic key is unrelated to any previous key. | Optional. Boolean. Options are *True* or *False*. Default is *True*. 
+        **authenticationMode** |Select authentication mode as *psk* or *x.509*.| Required.
+        **site **| To connect multiple sites to the IPsec VPN server. |Required. Minimum one site must be configured to enable IPsec VPN server service. 
+        **site > enabled**      |Whether site is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*. 
+        **site > name **| Unique name for the site getting configured. |Optional.
+        **site > description **| Description about the site. |Optional.
+        **localId**| Type the IP address of the NSX Edge instance. |
+        **localIp**| Type the IP address of the local endpoint. |
+        **localSubnets** |Type the subnets to share between the sites. | 
+        **peerId**| Type the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is *x.509*. |
+        **peerIp > index** | Select the virtual machine NIC to bind to the IP address. This can be a IPv4 address such as 11.0.0.3.|
+        **egressOptimization** | The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel. |Optional.
+        **dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh2* is selected by default.
+        **extension** |Default value is *securelocaltrafficbyip=192.168.11.1*. To disable this extension, replace with securelocaltrafficbyip=0.|
+
       get:
         displayName: ipsecConfigRead
         description: Retrieve IPsec configuration.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <ipsec>
+                    <enabled>true</enabled>
+                    <logging>
+                      <logLevel>debug</logLevel>
+                      <enable>true</enable>
+                    </logging>
+                    <global>
+                      <psk>hello123</psk>
+                      <serviceCertificate>certificate-4</serviceCertificate>
+                      <caCertificates>
+                        <caCertificate>certificate-3</caCertificate>
+                      </caCertificates>
+                      <crlCertificates>
+                        <crlCertificate>crl-1</crlCertificate>
+                      </crlCertificates>
+                    </global>
+                    <sites>
+                      <site>
+                        <enabled>true</enabled>
+                        <name>VPN to edge-pa-1</name>
+                        <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
+                        <localId>11.0.0.11</localId>
+                        <localIp>11.0.0.11</localIp>
+                        <peerId>11.0.0.1</peerId>
+                        <peerIp>any</peerIp>
+                        <encryptionAlgorithm>aes256</encryptionAlgorithm>
+                        <authenticationMode>psk</authenticationMode>
+                        <enablePfs>true</enablePfs>
+                        <dhGroup>dh2</dhGroup>
+                        <localSubnets>
+                          <subnet>192.168.11.0/24</subnet>
+                        </localSubnets>
+                        <peerSubnets>
+                          <subnet>192.168.1.0/24</subnet>
+                        </peerSubnets>
+                      </site>
+                      <site>
+                        <name>VPN to edge-right</name>
+                        <description>certificate VPN to edge-right 192.168.22.0/24 == 192.168.2.0/24</description>
+                        <localId>11.0.0.12</localId>
+                        <localIp>11.0.0.12</localIp>
+                        <peerId>C=CN, ST=BJ, L=BJ, O=VMware, OU=DEV, CN=Right</peerId>
+                        <peerIp>11.0.0.2</peerIp>
+                        <encryptionAlgorithm>aes256</encryptionAlgorithm>
+                        <authenticationMode>x.509</authenticationMode>
+                        <enablePfs>true</enablePfs>
+                        <dhGroup>dh2</dhGroup>
+                        <localSubnets>
+                          <subnet>192.168.22.0/24</subnet>
+                        </localSubnets>
+                        <peerSubnets>
+                          <subnet>192.168.2.0/24</subnet>
+                        </peerSubnets>
+                      </site>
+                    </sites>
+                  </ipsec>
       put:
         displayName: ipsecConfigUpdate
         description: Update IPsec VPN configuration.
@@ -16291,39 +16380,59 @@ securitySchemes:
           application/xml:
             example: |
               <ipsec>
-                <enabled></enabled>
-                <logLevel></logLevel>
-                <enable></enable>
+                <enabled>true</enabled>
+                  <logging>
+                    <logLevel>debug</logLevel>
+                    <enable>true</enable>
+                  </logging>
                 <global>
-                  <psk></psk>
-                  <serviceCertificate></serviceCertificate>
+                  <psk>hello123</psk>
+                  <serviceCertificate>certificate-4</serviceCertificate>
                   <caCertificates>
-                    <caCertificate></caCertificate>
+                    <caCertificate>certificate-3</caCertificate>
                   </caCertificates>
                   <crlCertificates>
-                    <crlCertificate></crlCertificate>
+                    <crlCertificate>crl-1</crlCertificate>
                   </crlCertificates>
                 </global>
                 <sites>
                   <site>
-                    <enabled></enabled>
-                    <name></name>
-                    <description></description>
-                    <localId></localId>
-                    <localIp></localIp>
-                    <peerId></peerId>
-                    <peerIp></peerIp>
-                    <encryptionAlgorithm></encryptionAlgorithm>
+                    <enabled>true</enabled>
+                    <name>VPN to edge-pa-1</name>
+                    <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
+                    <localId>11.0.0.11</localId>
+                    <localIp>11.0.0.11</localIp>
+                    <peerId>11.0.0.1</peerId>
+                    <peerIp>any</peerIp>
+                    <encryptionAlgorithm>aes256</encryptionAlgorithm>
                     <authenticationMode>psk</authenticationMode>
-                    <psk></psk>
-                    <enablePfs></enablePfs>
-                    <dhGroup></dhGroup>
+                    <enablePfs>true</enablePfs>
+                    <dhGroup>dh2</dhGroup>
                     <localSubnets>
-                      <subnet></subnet>
+                      <subnet>192.168.11.0/24</subnet>
                     </localSubnets>
                     <peerSubnets>
-                      <subnet></subnet>
+                      <subnet>192.168.1.0/24</subnet>
                     </peerSubnets>
+                  </site>
+                  <site>
+                    <name>VPN to edge-right</name>
+                    <description>certificate VPN to edge-right 192.168.22.0/24 == 192.168.2.0/24</description>
+                    <localId>11.0.0.12</localId>
+                    <localIp>11.0.0.12</localIp>
+                    <peerId>C=CN, ST=BJ, L=BJ, O=VMware, OU=DEV, CN=Right</peerId>
+                    <peerIp>11.0.0.2</peerIp>
+                    <encryptionAlgorithm>aes256</encryptionAlgorithm>
+                    <authenticationMode>x.509</authenticationMode>
+                    <enablePfs>true</enablePfs>
+                    <dhGroup>dh2</dhGroup>
+                    <localSubnets>
+                      <subnet>192.168.22.0/24</subnet>
+                    </localSubnets>
+                    <peerSubnets>
+                      <subnet>192.168.2.0/24</subnet>
+                    </peerSubnets>
+                    <extension>securelocaltrafficbyip=192.168.11.1</extension>
                   </site>
                 </sites>
               </ipsec>
@@ -16338,6 +16447,48 @@ securitySchemes:
       get:
         displayName: ipsecStatsRead
         description: Retrieve IPsec statistics.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <ipsecStatusAndStats>
+                    <siteStatistics>
+                      <ikeStatus>
+                        <channelStatus>up</channelStatus>
+                        <channelState>STATE_MAIN_I4 (ISAKMP SA established)</channelState>
+                        <lastInformationalMessage></lastInformationalMessage>
+                        <localIpAddress>10.0.0.12</localIpAddress>
+                        <peerId>11.0.0.12</peerId>
+                        <peerIpAddress>10.0.0.2</peerIpAddress>
+                      </ikeStatus>
+                      <tunnelStats>
+                        <tunnelStatus>up</tunnelStatus>
+                        <tunnelState>STATE_QUICK_I2 (sent QI2, IPsec SA established)</tunnelState>
+                        <lastInformationalMessage></lastInformationalMessage>
+                        <localSubnet>192.168.2.0/24</localSubnet>
+                        <peerSubnet>192.168.22.0/24</peerSubnet>
+                      </tunnelStats>
+                    </siteStatistics>
+                    <siteStatistics>
+                      <ikeStatus>
+                        <channelStatus>up</channelStatus>
+                        <channelState>STATE_MAIN_I4 (ISAKMP SA established)</channelState>
+                        <lastInformationalMessage></lastInformationalMessage>
+                        <localIpAddress>10.0.0.11</localIpAddress>
+                        <peerId>11.0.0.11</peerId>
+                        <peerIpAddress>10.0.0.1</peerIpAddress>
+                      </ikeStatus>
+                      <tunnelStats>
+                        <tunnelStatus>up</tunnelStatus>
+                        <tunnelState>STATE_QUICK_I2 (sent QI2, IPsec SA established)</tunnelState>
+                        <lastInformationalMessage></lastInformationalMessage>
+                        <localSubnet>192.168.1.0/24</localSubnet>
+                        <peerSubnet>192.168.11.0/24</peerSubnet>
+                      </tunnelStats>
+                    </siteStatistics>
+                    <timeStamp>1325766138</timeStamp>
+                  </ipsecStatusAndStats>
     /autoconfiguration:
       displayName: autoConfig
       description: |

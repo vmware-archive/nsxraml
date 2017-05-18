@@ -6143,6 +6143,33 @@ address.
 
 You can have a maximum of 64 tunnels across a maximum of 10 sites.
 
+**IPsec VPN Parameters**
+
+Parameter |  Description | Comments
+---|---|---
+**logging**      |IPsec VPN logging setting.|Optional. Disable by default.
+**logging > logLevel**      |Logging level.|Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is *INFO*.
+**logging > enable**      |Whether logging is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+**psk**  |Indicates that the secret key shared between NSX Edge and the peer site is to be used for authentication. |Optional. Required only when peerIp is specified as *Any* in site configuration.
+**encryptionAlgorithm** | Encryption algorithm for communication. |Mandatory. Supported ciphers are *AES*, *AES256*, *Triple DES*, and *AES-GCM*.
+**serviceCertificate** | Select the certificate to be bound to IPsec VPN server. |Optional. Required when *x.509* certificate mode is selected.
+**caCertificate**| List of CA certificates. |Optional. 
+**crlCertificate**| List of CRL certificates. |Optional. 
+**enablePfs** |Perfect Forward Secrecy (PFS) ensures that each new cryptographic key is unrelated to any previous key. | Optional. Boolean. Options are *True* or *False*. Default is *True*. 
+**authenticationMode** |Select authentication mode as *psk* or *x.509*.| Required.
+**site **| To connect multiple sites to the IPsec VPN server. |Required. Minimum one site must be configured to enable IPsec VPN server service. 
+**site > enabled**      |Whether site is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*. 
+**site > name **| Unique name for the site getting configured. |Optional.
+**site > description **| Description about the site. |Optional.
+**localId**| Type the IP address of the NSX Edge instance. |
+**localIp**| Type the IP address of the local endpoint. |
+**localSubnets** |Type the subnets to share between the sites. | 
+**peerId**| Type the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is *x.509*. |
+**peerIp > index** | Select the virtual machine NIC to bind to the IP address. This can be a IPv4 address such as 11.0.0.3.|
+**egressOptimization** | The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel. |Optional.
+**dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh2* is selected by default.
+**extension** |Default value is *securelocaltrafficbyip=192.168.11.1*. To disable this extension, replace with securelocaltrafficbyip=0.|
+
 * **get** *(secured)*: Retrieve IPsec configuration.
 * **put** *(secured)*: Update IPsec VPN configuration.
 * **delete** *(secured)*: Delete the IPsec configuration.
