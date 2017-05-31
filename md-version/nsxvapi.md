@@ -3648,17 +3648,17 @@ Parameter | Description | Comments
 **appliedTo > value** | The ID of the object on which to apply the timeout settings. | Required. For example VM ID *vm-216*.
 **appliedTo > type** | The type of object on which to apply the timeout settings. | Required. Can be *VirtualMachine* or *Vnic*
 **generationNumber** | Generation number for the configuration. | When updating session timers, you must ensure the latest generation number is included in the request body. 
-**tcpFirstPacket** | The timeout value for the connection after the first packet has been sent. This will be the initial timeout for the connection once a SYN has been sent and the flow is created. | Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *120*. 
-**tcpOpen** | The timeout value for the connection after a second packet has been transferred. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *30*. 
-**tcpEstablished** | The timeout value for the connection once the connection has become fully established. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *43200*. 
-**tcpClosing** | The timeout value for the connection after the first FIN has been sent. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *120*. 
-**tcpFinWait** | The timeout value for the connection after both FINs have been exchanged and the connection is closed. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *45*. 
-**tcpClosed** | The timeout value for the connection after one endpoint sends an RST. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *20*. 
-**udpFirstPacket** | The timeout value for the connection after the first packet. This will be the initial timeout for the new UDP flow. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *60*. 
-**udpSingle** | The timeout value for the connection if the source host sends more than one packet but the destination host has never sent one back. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *30*. 
-**udpMultiple** | The timeout value for the connection if both hosts have sent packets. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *60*. 
-**icmpFirstPacket** | The timeout value for the connection after the first packet. This will be the initial timeout for the new ICMP flow. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *20*. 
-**icmpErrorReply** | The timeout value for the connection after an ICMP error came back in response to an ICMP packet. |Set to *0* to disable. Valid timer values: *1*-*4320000* seconds. Default is *10*. 
+**tcpFirstPacket** | The timeout value for the connection after the first packet has been sent. This will be the initial timeout for the connection once a SYN has been sent and the flow is created. | Valid timer values: *10*-*4320000* seconds. Default is *120*. 
+**tcpOpen** | The timeout value for the connection after a second packet has been transferred. |Valid timer values: *10*-*4320000* seconds. Default is *30*. 
+**tcpEstablished** | The timeout value for the connection once the connection has become fully established. |Valid timer values: *120*-*4320000* seconds. Default is *43200*. 
+**tcpClosing** | The timeout value for the connection after the first FIN has been sent. |Valid timer values: *10*-*4320000* seconds. Default is *120*. 
+**tcpFinWait** | The timeout value for the connection after both FINs have been exchanged and the connection is closed. |Valid timer values: *10*-*4320000* seconds. Default is *45*. 
+**tcpClosed** | The timeout value for the connection after one endpoint sends an RST. |Valid timer values: *10*-*4320000* seconds. Default is *20*. 
+**udpFirstPacket** | The timeout value for the connection after the first packet. This will be the initial timeout for the new UDP flow. |Valid timer values: *10*-*4320000* seconds. Default is *60*. 
+**udpSingle** | The timeout value for the connection if the source host sends more than one packet but the destination host has never sent one back. |Valid timer values: *10*-*4320000* seconds. Default is *30*. 
+**udpMultiple** | The timeout value for the connection if both hosts have sent packets. |Valid timer values: *10*-*4320000* seconds. Default is *60*. 
+**icmpFirstPacket** | The timeout value for the connection after the first packet. This will be the initial timeout for the new ICMP flow. |Valid timer values: *10*-*4320000* seconds. Default is *20*. 
+**icmpErrorReply** | The timeout value for the connection after an ICMP error came back in response to an ICMP packet. |Valid timer values: *10*-*4320000* seconds. Default is *10*. 
 
 * **get** *(secured)*: Retrieve Distributed Firewall session timer configuration.
 
