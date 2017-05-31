@@ -201,7 +201,7 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### part-number
-EN-002339-01
+EN-002339-02
 
 ---
 
