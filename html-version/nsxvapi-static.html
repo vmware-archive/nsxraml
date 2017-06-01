@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#100;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#109;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;">&#100;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#109;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#100;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#111;&#109;">&#100;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#x61;&#x72;&#101;&#46;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -3016,7 +3016,192 @@ Line Interface Reference</em>.</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-nsx-manager-audit-logs">Working with NSX Manager Audit Logs</h1>
-</div>
+<p>You can retrieve NSX Manager audit logs. The following table translates the
+names used for modules in the API and the vSphere Web Client UI.</p>
+<p>Navigate to <strong>Networking &amp; Security &gt; NSX Managers &gt; <em>NSX Manager</em> &gt;
+Monitor &gt; Audit Logs</strong> to view the logs in the vSphere Web Client UI.</p>
+<h3 id="module-names-for-audit-logs-in-api-and-ui">Module Names for Audit Logs in API and UI</h3>
+<table class="table"><thead><tr>
+<th>API Names for Audit Log Modules</th>
+<th>UI Names for Audit Log Modules</th>
+</tr>
+</thead><tbody><tr>
+<td>UNKNOWN</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>ZONES_FIREWALL</td>
+<td>App Firewall</td>
+</tr>
+<tr>
+<td>EDGE_FIREWALL</td>
+<td>Edge Firewall</td>
+</tr>
+<tr>
+<td>EDGE</td>
+<td>Edge</td>
+</tr>
+<tr>
+<td>EDGE_NAT</td>
+<td>Edge NAT</td>
+</tr>
+<tr>
+<td>EDGE_SNAT</td>
+<td>Edge SNAT</td>
+</tr>
+<tr>
+<td>EDGE_DNAT</td>
+<td>Edge DNAT</td>
+</tr>
+<tr>
+<td>EDGE_DHCP</td>
+<td>Edge DHCP</td>
+</tr>
+<tr>
+<td>EDGE_VPN</td>
+<td>Edge VPN</td>
+</tr>
+<tr>
+<td>EDGE_LB</td>
+<td>Edge Load Balancer</td>
+</tr>
+<tr>
+<td>EDGE_SYSLOG</td>
+<td>Edge Syslog</td>
+</tr>
+<tr>
+<td>EDGE_STATIC_ROUTING</td>
+<td>Edge Static Routing</td>
+</tr>
+<tr>
+<td>EDGE_TRAFFICSTATS</td>
+<td>Edge Traffic Stats</td>
+</tr>
+<tr>
+<td>EDGE_SUPPORT</td>
+<td>Edge Support</td>
+</tr>
+<tr>
+<td>EDGE_CERTIFICATE</td>
+<td>Edge Certificate</td>
+</tr>
+<tr>
+<td>EPSEC</td>
+<td>Guest Introspection</td>
+</tr>
+<tr>
+<td>NETWORK_ISOLATION</td>
+<td>Port Group Isolation</td>
+</tr>
+<tr>
+<td>INVENTORY</td>
+<td>Inventory</td>
+</tr>
+<tr>
+<td>SDD</td>
+<td>Data Security</td>
+</tr>
+<tr>
+<td>SHIELD</td>
+<td>vShield</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>System</td>
+</tr>
+<tr>
+<td>UPGRADE</td>
+<td>Upgrade</td>
+</tr>
+<tr>
+<td>ACCESS_CONTROL</td>
+<td>Access Control</td>
+</tr>
+<tr>
+<td>DLP</td>
+<td>Data Recovery</td>
+</tr>
+<tr>
+<td>APPLICATION</td>
+<td>Application</td>
+</tr>
+<tr>
+<td>IP_SET</td>
+<td>IP Addresses</td>
+</tr>
+<tr>
+<td>MAC_SET</td>
+<td>MAC Addresses</td>
+</tr>
+<tr>
+<td>SECURITY_GROUP</td>
+<td>Security Group</td>
+</tr>
+<tr>
+<td>SPOOFGUARD</td>
+<td>SpoofGuard</td>
+</tr>
+<tr>
+<td>APP_FAIL_SAFE</td>
+<td>App Fail Safe Config</td>
+</tr>
+<tr>
+<td>APP_EXCLUDE_LIST</td>
+<td>App Exclude List</td>
+</tr>
+<tr>
+<td>SYSLOG_SERVER_CONFIG</td>
+<td>Syslog Server Config</td>
+</tr>
+<tr>
+<td>TRUST_STORE</td>
+<td>Trust Store</td>
+</tr>
+<tr>
+<td>PASSWORD_CHANGE</td>
+<td>Password Change</td>
+</tr>
+<tr>
+<td>SSO_CONFIG</td>
+<td>SSO Config</td>
+</tr>
+<tr>
+<td>BACKUP_RESTORE</td>
+<td>Backup Restore</td>
+</tr>
+<tr>
+<td>SSL_CERTIFICATE</td>
+<td>SSL Certificate</td>
+</tr>
+<tr>
+<td>APPLICATION_GROUP</td>
+<td>Application Group</td>
+</tr>
+<tr>
+<td>NAMESPACE</td>
+<td>Namespace</td>
+</tr>
+<tr>
+<td>DYNAMIC_SET</td>
+<td>Dynamic set</td>
+</tr>
+<tr>
+<td>DYNAMIC_CRITERIA</td>
+<td>Dynamic criteria</td>
+</tr>
+<tr>
+<td>NamespaceService</td>
+<td>Namespace Service</td>
+</tr>
+<tr>
+<td>SECURITY_POLICY</td>
+<td>Security Policy</td>
+</tr>
+<tr>
+<td>SECURITY_TAG</td>
+<td>Security Tag</td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -3024,7 +3209,7 @@ Line Interface Reference</em>.</p>
     href="#GET/2.0/auditlog"
   ><h2>GET /2.0/auditlog</h2></a>
   <div class="content">
-    <p><p>Get NSX Manager audit logs</p>
+    <p><p>Get NSX Manager audit logs.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>

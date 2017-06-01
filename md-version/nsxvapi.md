@@ -1940,9 +1940,64 @@ Working with NSX Manager System Events
 Working with NSX Manager Audit Logs
 ==========
 
+You can retrieve NSX Manager audit logs. The following table translates the
+names used for modules in the API and the vSphere Web Client UI.
+
+Navigate to **Networking & Security > NSX Managers > *NSX Manager* >
+Monitor > Audit Logs** to view the logs in the vSphere Web Client UI.
+
+### Module Names for Audit Logs in API and UI
+
+API Names for Audit Log Modules | UI Names for Audit Log Modules
+---|---
+UNKNOWN | Unknown
+ZONES_FIREWALL | App Firewall
+EDGE_FIREWALL | Edge Firewall
+EDGE | Edge
+EDGE_NAT | Edge NAT
+EDGE_SNAT | Edge SNAT
+EDGE_DNAT | Edge DNAT
+EDGE_DHCP | Edge DHCP
+EDGE_VPN | Edge VPN
+EDGE_LB | Edge Load Balancer
+EDGE_SYSLOG | Edge Syslog
+EDGE_STATIC_ROUTING | Edge Static Routing
+EDGE_TRAFFICSTATS | Edge Traffic Stats
+EDGE_SUPPORT | Edge Support
+EDGE_CERTIFICATE | Edge Certificate
+EPSEC | Guest Introspection
+NETWORK_ISOLATION | Port Group Isolation
+INVENTORY | Inventory
+SDD | Data Security
+SHIELD | vShield
+SYSTEM | System
+UPGRADE | Upgrade
+ACCESS_CONTROL | Access Control
+DLP | Data Recovery
+APPLICATION | Application
+IP_SET | IP Addresses
+MAC_SET | MAC Addresses
+SECURITY_GROUP | Security Group
+SPOOFGUARD | SpoofGuard
+APP_FAIL_SAFE | App Fail Safe Config
+APP_EXCLUDE_LIST | App Exclude List
+SYSLOG_SERVER_CONFIG | Syslog Server Config
+TRUST_STORE | Trust Store
+PASSWORD_CHANGE | Password Change
+SSO_CONFIG | SSO Config
+BACKUP_RESTORE | Backup Restore
+SSL_CERTIFICATE | SSL Certificate
+APPLICATION_GROUP | Application Group
+NAMESPACE | Namespace
+DYNAMIC_SET | Dynamic set
+DYNAMIC_CRITERIA | Dynamic criteria
+NamespaceService | Namespace Service
+SECURITY_POLICY | Security Policy
+SECURITY_TAG | Security Tag
+
 ### /2.0/auditlog
 
-* **get** *(secured)*: Get NSX Manager audit logs
+* **get** *(secured)*: Get NSX Manager audit logs.
 
 ## nwfabric
 Working with Network Fabric Configuration
