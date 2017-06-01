@@ -4583,7 +4583,7 @@ Parameter |  Description | Other information
 **ruleType** |Rule type. |Read-only.  Values: *user*, *internal_high*.
 **action** |Type of NAT.| Valid values: *snat* or *dnat*.
 **vnic** | Interface on which the translating is applied.|String. Optional.
-**originalAddress** | Original address or address range. This is the source address for SNAT rules, and the destination address for DNAT rules. For DNAT rules, this address must be configured on the NSX Edge.|String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. 
+**originalAddress** | Original address or address range. This is the source address for SNAT rules, and the destination address for DNAT rules. |String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. 
 **translatedAddress** | Translated address or address range. For SNAT rules, this address must be configured on the NSX Edge. |String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. 
 **dnatMatchSourceAddress** | Source address to match in DNAT rules. | String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. Not valid for SNAT rules.
 **snatMatchDestinationAddress** | Destination address to match in SNAT rules. | String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. Not valid for DNAT rules.
@@ -4604,6 +4604,7 @@ be deleted.
 
 Release | Modification
 --------|-------------
+6.2.3 | Method updated. **vnic** parameter is now optional. The **originalAddress** for DNAT rules is no longer required to be one of the IPs on the NSX Edge vNics.
 6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **get** *(secured)*: Retrieve SNAT and DNAT rules for the specified NSX Edge.
@@ -4614,7 +4615,8 @@ Release | Modification
 --------|-------------
 6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
-* **delete** *(secured)*: Delete all NAT rules for the specified NSX Edge.
+* **delete** *(secured)*: Delete all NAT rules for the specified NSX Edge. The auto plumbed
+rules continue to exist.
 
 ### /4.0/edges/{edgeId}/nat/config/rules
 Working With NAT Rules
@@ -4627,6 +4629,7 @@ Working With NAT Rules
 
 Release | Modification
 --------|-------------
+6.2.3 | Method updated. **vnic** parameter is now optional. The **originalAddress** for DNAT rules is no longer required to be one of the IPs on the NSX Edge vNics.
 6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 ### /4.0/edges/{edgeId}/nat/config/rules/{ruleID}
@@ -4639,6 +4642,7 @@ Working With a Specific NAT Rule
 
 Release | Modification
 --------|-------------
+6.2.3 | Method updated. **vnic** parameter is now optional. The **originalAddress** for DNAT rules is no longer required to be one of the IPs on the NSX Edge vNics.
 6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
 
 * **delete** *(secured)*: Delete the specified NAT rule.

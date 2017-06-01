@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;">&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#100;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#109;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;">&#100;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#97;&#99;&#x6b;&#64;&#118;&#109;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -25163,7 +25163,7 @@ required traffic for IP addresses and port per the NAT rules.</p>
 </tr>
 <tr>
 <td><strong>originalAddress</strong></td>
-<td>Original address or address range. This is the source address for SNAT rules, and the destination address for DNAT rules. For DNAT rules, this address must be configured on the NSX Edge.</td>
+<td>Original address or address range. This is the source address for SNAT rules, and the destination address for DNAT rules.</td>
 <td>String. Specify <em>any</em>, an IP address (e.g. <em>192.168.10.10</em>), an IP range (e.g. <em>192.168.10.10-192.168.10.19</em>), or a subnet in CIDR notation (e.g. <em>192.168.10.1/24</em>). Default is <em>any</em>. </td>
 </tr>
 <tr>
@@ -25229,6 +25229,10 @@ be deleted.</p>
 <th>Modification</th>
 </tr>
 </thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. <strong>vnic</strong> parameter is now optional. The <strong>originalAddress</strong> for DNAT rules is no longer required to be one of the IPs on the NSX Edge vNics.</td>
+</tr>
+<tr>
 <td>6.3.0</td>
 <td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <br><strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
 </tr>
@@ -25323,6 +25327,47 @@ be deleted.</p>
 <td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <br><strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
 </tr>
 </tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nat</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">natRules</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span>196609<span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleId</span>&gt;</span>196609<span class="hljs-tag">&lt;/<span class="hljs-name">ruleId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>dnat<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>my comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>tcp<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>3389<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleType</span>&gt;</span>user<span class="hljs-tag">&lt;/<span class="hljs-name">ruleType</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">natRule</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleTag</span>&gt;</span>196609<span class="hljs-tag">&lt;/<span class="hljs-name">ruleTag</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleId</span>&gt;</span>196609<span class="hljs-tag">&lt;/<span class="hljs-name">ruleId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>snat<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vnic</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">vnic</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">originalAddress</span>&gt;</span>172.16.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">originalAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedAddress</span>&gt;</span>10.112.196.116<span class="hljs-tag">&lt;/<span class="hljs-name">translatedAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">loggingEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">loggingEnabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>no comments<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">originalPort</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">originalPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">translatedPort</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">translatedPort</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ruleType</span>&gt;</span>user<span class="hljs-tag">&lt;/<span class="hljs-name">ruleType</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">natRule</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">natRules</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nat</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">
@@ -25332,7 +25377,8 @@ be deleted.</p>
     href="#DELETE/4.0/edges/{edgeId}/nat/config"
   ><h2>DELETE /4.0/edges/{edgeId}/nat/config</h2></a>
   <div class="content">
-    <p><p>Delete all NAT rules for the specified NSX Edge.</p>
+    <p><p>Delete all NAT rules for the specified NSX Edge. The auto plumbed
+rules continue to exist.</p>
 </p>
   </div>
 </div>
@@ -25355,6 +25401,10 @@ be deleted.</p>
 <th>Modification</th>
 </tr>
 </thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. <strong>vnic</strong> parameter is now optional. The <strong>originalAddress</strong> for DNAT rules is no longer required to be one of the IPs on the NSX Edge vNics.</td>
+</tr>
+<tr>
 <td>6.3.0</td>
 <td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <br><strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
 </tr>
@@ -25454,6 +25504,10 @@ ID <em>0</em>.</p>
 <th>Modification</th>
 </tr>
 </thead><tbody><tr>
+<td>6.2.3</td>
+<td>Method updated. <strong>vnic</strong> parameter is now optional. The <strong>originalAddress</strong> for DNAT rules is no longer required to be one of the IPs on the NSX Edge vNics.</td>
+</tr>
+<tr>
 <td>6.3.0</td>
 <td>Method updated. <strong>dnatMatchSourceAddress</strong>, <strong>snatMatchDestinationAddress</strong>, <strong>dnatMatchSourcePort</strong>, <strong>snatMatchDestinationPort</strong> parameters added. <br><strong>protocol</strong>, <strong>originalPort</strong>, and <strong>translatedPort</strong> now supported in SNAT rules.</td>
 </tr>
