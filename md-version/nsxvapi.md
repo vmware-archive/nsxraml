@@ -378,6 +378,27 @@ Working with Transport Zones
 * **get** *(secured)*: Retrieve information about all transport zones (also known as network
 scopes).
 
+**CDO mode state parameters (read-only)**
+
+The CDO mode state shows the most recent CDO operation, and the status of that operation. The status can be:
+*UNKNOWN*, *PENDING*, *IN_PROGRESS*, *COMPLETED*, or *FAILED*.
+
+Operation Type | Description 
+----|----
+*ENABLE* | Enable CDO mode on all distributed switches in the transport zone.
+*DISABLE* | Disable CDO mode on all distributed switches in the transport zone.
+*EXPAND* | Enable CDO mode on newly joined distributed swithes.
+*SHRINK* | Disable CDO mode on removed distributed switches.
+*CLEAN_UP* | Transport zone removed, clean up the CDO mode configuration from all distributed switches in the transport zone.
+*SYNC_ENABLE* | Repush CDO mode configuration data to all distributed switches in the scope
+*SYNC_DISABLE* | Remove CDO mode configuration from all distributed switches in the transport zone.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. Output includes information about CDO mode. See *Working With Transport Zone CDO Mode* for more information.
+
 * **post** *(secured)*: Create a transport zone.
 
 Request body parameters:
@@ -397,6 +418,12 @@ Working with a Specific Transport Zone
 ---------
 
 * **get** *(secured)*: Retrieve information about the specified transport zone.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method updated. Output includes information about CDO mode. See *Working With Transport Zone CDO Mode* for more information.
 
 * **post** *(secured)*: Update the specified transport zone.
 
@@ -418,6 +445,27 @@ Working With Transport Zone Attributes
 For example, you can update the name, description, or control plane
 mode. You must include the cluster object IDs for the transport zone
 in the request body.
+
+### /2.0/vdn/scopes/{scopeId}/cdo
+Working With Transport Zone CDO Mode
+-----
+
+* **post** *(secured)*: Enable or disable CDO mode for the specified transport zone.
+
+Controller Disconnected Operation (CDO) mode ensures that the data
+plane connectivity is unaffected when host lose connectivity with the
+controller. 
+
+If you want to enable CDO mode on the universal transport zone in a
+cross-vCenter NSX environment, you must do this from the primary NSX
+Manager. The universal synchronization service will propagate the CDO
+configuration to the secondary NSX Managers.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.2 | Method introduced. (Tech preview in 6.3.0).
 
 ### /2.0/vdn/scopes/{scopeId}/conn-check/multicast
 Testing Multicast Group Connectivity

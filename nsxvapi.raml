@@ -719,6 +719,27 @@ securitySchemes:
     description: |
       Retrieve information about all transport zones (also known as network
       scopes).
+      
+      **CDO mode state parameters (read-only)**
+
+      The CDO mode state shows the most recent CDO operation, and the status of that operation. The status can be:
+      *UNKNOWN*, *PENDING*, *IN_PROGRESS*, *COMPLETED*, or *FAILED*.
+     
+      Operation Type | Description 
+      ----|----
+      *ENABLE* | Enable CDO mode on all distributed switches in the transport zone.
+      *DISABLE* | Disable CDO mode on all distributed switches in the transport zone.
+      *EXPAND* | Enable CDO mode on newly joined distributed swithes.
+      *SHRINK* | Disable CDO mode on removed distributed switches.
+      *CLEAN_UP* | Transport zone removed, clean up the CDO mode configuration from all distributed switches in the transport zone.
+      *SYNC_ENABLE* | Repush CDO mode configuration data to all distributed switches in the scope
+      *SYNC_DISABLE* | Remove CDO mode configuration from all distributed switches in the transport zone.
+      
+      **Method history:**
+     
+      Release | Modification
+      --------|-------------
+      6.3.0 | Method updated. Output includes information about CDO mode. See *Working With Transport Zone CDO Mode* for more information.
     responses:
       200:
         body:
@@ -726,21 +747,20 @@ securitySchemes:
             example: |
               <vdnScopes>
                 <vdnScope>
-                  <objectId>vdnscope-1</objectId>
+                  <objectId>universalvdnscope</objectId>
                   <objectTypeName>VdnScope</objectTypeName>
                   <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
                   <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                  <revision>0</revision>
+                  <revision>5</revision>
                   <type>
                     <typeName>VdnScope</typeName>
                   </type>
-                  <name>Local-Transport-Zone-A</name>
-                  <description></description>
+                  <name>Universal-Transport-Zone</name>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
-                  <isUniversal>false</isUniversal>
+                  <isUniversal>true</isUniversal>
                   <universalRevision>0</universalRevision>
-                  <id>vdnscope-1</id>
+                  <id>universalvdnscope</id>
                   <clusters>
                     <cluster>
                       <cluster>
@@ -748,7 +768,7 @@ securitySchemes:
                         <objectTypeName>ClusterComputeResource</objectTypeName>
                         <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
                         <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                        <revision>11</revision>
+                        <revision>20</revision>
                         <type>
                           <typeName>ClusterComputeResource</typeName>
                         </type>
@@ -768,17 +788,37 @@ securitySchemes:
                       <cluster>
                         <objectId>domain-c41</objectId>
                         <objectTypeName>ClusterComputeResource</objectTypeName>
-                        ...
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>16</revision>
+                        <type>
+                          <typeName>ClusterComputeResource</typeName>
+                        </type>
+                        <name>Management &amp; Edge Cluster</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>Datacenter Site A</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
                         <isUniversal>false</isUniversal>
                         <universalRevision>0</universalRevision>
                       </cluster>
                     </cluster>
                   </clusters>
-                  <virtualWireCount>4</virtualWireCount>
+                  <virtualWireCount>5</virtualWireCount>
                   <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                  <cdoModeEnabled>false</cdoModeEnabled>
+                  <cdoModeState>
+                    <jobId>jobdata-23061</jobId>
+                    <operationType>SYNC_DISABLE</operationType>
+                    <status>COMPLETED</status>
+                    <errorCode>0</errorCode>
+                  </cdoModeState>
                 </vdnScope>
                 <vdnScope>
-                  <objectId>universalvdnscope</objectId>
+                  <objectId>vdnscope-1</objectId>
                   <objectTypeName>VdnScope</objectTypeName>
                   <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
                   <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
@@ -786,18 +826,32 @@ securitySchemes:
                   <type>
                     <typeName>VdnScope</typeName>
                   </type>
-                  <name>Universal-Transport-Zone</name>
+                  <name>Local-Transport-Zone-A test</name>
+                  <description></description>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
-                  <isUniversal>true</isUniversal>
+                  <isUniversal>false</isUniversal>
                   <universalRevision>0</universalRevision>
-                  <id>universalvdnscope</id>
+                  <id>vdnscope-1</id>
                   <clusters>
                     <cluster>
                       <cluster>
                         <objectId>domain-c33</objectId>
                         <objectTypeName>ClusterComputeResource</objectTypeName>
-                        ...
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>20</revision>
+                        <type>
+                          <typeName>ClusterComputeResource</typeName>
+                        </type>
+                        <name>Compute Cluster A</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>Datacenter Site A</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
                         <isUniversal>false</isUniversal>
                         <universalRevision>0</universalRevision>
                       </cluster>
@@ -806,7 +860,20 @@ securitySchemes:
                       <cluster>
                         <objectId>domain-c41</objectId>
                         <objectTypeName>ClusterComputeResource</objectTypeName>
-                        ...
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>16</revision>
+                        <type>
+                          <typeName>ClusterComputeResource</typeName>
+                        </type>
+                        <name>Management &amp; Edge Cluster</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>Datacenter Site A</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
                         <isUniversal>false</isUniversal>
                         <universalRevision>0</universalRevision>
                       </cluster>
@@ -814,6 +881,7 @@ securitySchemes:
                   </clusters>
                   <virtualWireCount>4</virtualWireCount>
                   <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                  <cdoModeEnabled>false</cdoModeEnabled>
                 </vdnScope>
               </vdnScopes>
   post:
@@ -869,27 +937,32 @@ securitySchemes:
       displayName: vdnScopeProperties
       description: |
         Retrieve information about the specified transport zone.
+
+        **Method history:**
+       
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method updated. Output includes information about CDO mode. See *Working With Transport Zone CDO Mode* for more information.
       responses:
         200:
           body:
             application/xml:
               example: |
                 <vdnScope>
-                  <objectId>vdnscope-1</objectId>
+                  <objectId>universalvdnscope</objectId>
                   <objectTypeName>VdnScope</objectTypeName>
                   <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
                   <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                  <revision>0</revision>
+                  <revision>4</revision>
                   <type>
                     <typeName>VdnScope</typeName>
                   </type>
-                  <name>Local-Transport-Zone-A</name>
-                  <description></description>
+                  <name>Universal-Transport-Zone</name>
                   <clientHandle></clientHandle>
                   <extendedAttributes/>
-                  <isUniversal>false</isUniversal>
+                  <isUniversal>true</isUniversal>
                   <universalRevision>0</universalRevision>
-                  <id>vdnscope-1</id>
+                  <id>universalvdnscope</id>
                   <clusters>
                     <cluster>
                       <cluster>
@@ -897,7 +970,7 @@ securitySchemes:
                         <objectTypeName>ClusterComputeResource</objectTypeName>
                         <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
                         <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                        <revision>11</revision>
+                        <revision>20</revision>
                         <type>
                           <typeName>ClusterComputeResource</typeName>
                         </type>
@@ -916,13 +989,56 @@ securitySchemes:
                     <cluster>
                       <cluster>
                         <objectId>domain-c41</objectId>
-                        ...
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                        <revision>16</revision>
+                        <type>
+                          <typeName>ClusterComputeResource</typeName>
+                        </type>
+                        <name>Management &amp; Edge Cluster</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>Datacenter Site A</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
                       </cluster>
                     </cluster>
                   </clusters>
-                  <virtualWireCount>4</virtualWireCount>
+                  <virtualWireCount>5</virtualWireCount>
                   <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
-                </vdnScope>
+                  <cdoModeEnabled>true</cdoModeEnabled>
+                  <cdoModeState>
+                    <jobId>jobdata-23057</jobId>
+                    <operationType>ENABLE</operationType>
+                    <status>COMPLETED</status>
+                    <errorCode>0</errorCode>
+                    <cdoLogicalSwitch>
+                      <objectId>universalcdologicalswitch-2</objectId>
+                      <objectTypeName>CdoLogicalSwitch</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>0</revision>
+                      <type>
+                        <typeName>CdoLogicalSwitch</typeName>
+                      </type>
+                      <name>universalvdnscope-cdo-logical-switch</name>
+                      <description>The backing logical switch to support the cdo mode on universalvdnscope.</description>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>true</isUniversal>
+                      <universalRevision>0</universalRevision>
+                      <vdnId>200005</vdnId>
+                      <tenantId>cdo logical switch tenant</tenantId>
+                      <status>OK</status>
+                      <lSwitchUuid>30059c1e-8d79-4f20-99a3-3d49852835e4</lSwitchUuid>
+                    </cdoLogicalSwitch>
+                  </cdoModeState>
+                </vdnScope> 
     post:
       displayName: vdnScopeChange
       description: |
@@ -990,6 +1106,39 @@ securitySchemes:
                 </clusters>
               </vdnScope>
             schema: vdnScopeUpdate
+    /cdo:
+      displayName: vdnScopeCdo
+      description: |
+        Working With Transport Zone CDO Mode
+        -----
+      post:
+        displayName: vdnScopeCdoAction
+        description: |
+          Enable or disable CDO mode for the specified transport zone.
+         
+          Controller Disconnected Operation (CDO) mode ensures that the data
+          plane connectivity is unaffected when host lose connectivity with the
+          controller. 
+         
+          If you want to enable CDO mode on the universal transport zone in a
+          cross-vCenter NSX environment, you must do this from the primary NSX
+          Manager. The universal synchronization service will propagate the CDO
+          configuration to the secondary NSX Managers.
+          
+          **Method history:**
+         
+          Release | Modification
+          --------|-------------
+          6.3.2 | Method introduced. (Tech preview in 6.3.0).
+        queryParameters:
+          action:
+            displayName: action
+            description: |
+              * *enable* to enable CDO mode configuration.
+              * *disable* to disable CDO mode configuration.
+              * *force_sync* to manually push the CDO configuration to all 
+                distributed switches in the transport zone.
+            required: true
     /conn-check/multicast:
       displayName: vdnScopeConnCheck
       description: |

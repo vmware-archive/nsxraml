@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#100;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#100;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x64;&#111;&#99;&#x66;&#101;&#101;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#109;">&#x64;&#111;&#99;&#x66;&#101;&#101;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -13921,7 +13921,51 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
   <div class="content">
     <p><p>Retrieve information about all transport zones (also known as network
 scopes).</p>
-</p>
+<p><strong>CDO mode state parameters (read-only)</strong></p>
+<p>The CDO mode state shows the most recent CDO operation, and the status of that operation. The status can be:
+<em>UNKNOWN</em>, <em>PENDING</em>, <em>IN_PROGRESS</em>, <em>COMPLETED</em>, or <em>FAILED</em>.</p>
+<table class="table"><thead><tr>
+<th>Operation Type</th>
+<th>Description </th>
+</tr>
+</thead><tbody><tr>
+<td><em>ENABLE</em></td>
+<td>Enable CDO mode on all distributed switches in the transport zone.</td>
+</tr>
+<tr>
+<td><em>DISABLE</em></td>
+<td>Disable CDO mode on all distributed switches in the transport zone.</td>
+</tr>
+<tr>
+<td><em>EXPAND</em></td>
+<td>Enable CDO mode on newly joined distributed swithes.</td>
+</tr>
+<tr>
+<td><em>SHRINK</em></td>
+<td>Disable CDO mode on removed distributed switches.</td>
+</tr>
+<tr>
+<td><em>CLEAN_UP</em></td>
+<td>Transport zone removed, clean up the CDO mode configuration from all distributed switches in the transport zone.</td>
+</tr>
+<tr>
+<td><em>SYNC_ENABLE</em></td>
+<td>Repush CDO mode configuration data to all distributed switches in the scope</td>
+</tr>
+<tr>
+<td><em>SYNC_DISABLE</em></td>
+<td>Remove CDO mode configuration from all distributed switches in the transport zone.</td>
+</tr>
+</tbody></table><p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. Output includes information about CDO mode. See <em>Working With Transport Zone CDO Mode</em> for more information.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -13930,21 +13974,20 @@ scopes).</p>
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdnScopes</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>universalvdnscope<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Local-Transport-Zone-A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Universal-Transport-Zone<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>universalvdnscope<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clusters</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
@@ -13952,7 +13995,7 @@ scopes).</p>
           <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>20<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
@@ -13972,17 +14015,37 @@ scopes).</p>
         <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-          ...
+          <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">clusters</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cdoModeEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">cdoModeEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cdoModeState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">jobId</span>&gt;</span>jobdata-23061<span class="hljs-tag">&lt;/<span class="hljs-name">jobId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">operationType</span>&gt;</span>SYNC_DISABLE<span class="hljs-tag">&lt;/<span class="hljs-name">operationType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">cdoModeState</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>universalvdnscope<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
@@ -13990,18 +14053,32 @@ scopes).</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Universal-Transport-Zone<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Local-Transport-Zone-A test<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>universalvdnscope<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">clusters</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c33<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-          ...
+          <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>20<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Compute Cluster A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
@@ -14010,7 +14087,20 @@ scopes).</p>
         <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
-          ...
+          <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
@@ -14018,6 +14108,7 @@ scopes).</p>
     <span class="hljs-tag">&lt;/<span class="hljs-name">clusters</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cdoModeEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">cdoModeEnabled</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScopes</span>&gt;</span>
 </code></pre>
@@ -14134,7 +14225,16 @@ transport zone.</p>
   ><h2>GET /2.0/vdn/scopes/{scopeId}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified transport zone.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.0</td>
+<td>Method updated. Output includes information about CDO mode. See <em>Working With Transport Zone CDO Mode</em> for more information.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -14142,21 +14242,20 @@ transport zone.</p>
               (<tt>application/xml</tt>)
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>universalvdnscope<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Local-Transport-Zone-A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Universal-Transport-Zone<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>universalvdnscope<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">clusters</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
@@ -14164,7 +14263,7 @@ transport zone.</p>
         <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>20<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
@@ -14183,13 +14282,56 @@ transport zone.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">cluster</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-        ...
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Datacenter Site A<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">cluster</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">clusters</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cdoModeEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">cdoModeEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cdoModeState</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">jobId</span>&gt;</span>jobdata-23057<span class="hljs-tag">&lt;/<span class="hljs-name">jobId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">operationType</span>&gt;</span>ENABLE<span class="hljs-tag">&lt;/<span class="hljs-name">operationType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cdoLogicalSwitch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>universalcdologicalswitch-2<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>CdoLogicalSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>CdoLogicalSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>universalvdnscope-cdo-logical-switch<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>The backing logical switch to support the cdo mode on universalvdnscope.<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vdnId</span>&gt;</span>200005<span class="hljs-tag">&lt;/<span class="hljs-name">vdnId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>cdo logical switch tenant<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>OK<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lSwitchUuid</span>&gt;</span>30059c1e-8d79-4f20-99a3-3d49852835e4<span class="hljs-tag">&lt;/<span class="hljs-name">lSwitchUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">cdoLogicalSwitch</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cdoModeState</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span> 
 </code></pre>
   </div>
 </div>
@@ -14343,6 +14485,56 @@ in the request body.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">clusters</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
 </code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-transport-zone-cdo-mode">Working With Transport Zone CDO Mode</h2>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/vdn/scopes/{scopeId}/cdo"
+    href="#POST/2.0/vdn/scopes/{scopeId}/cdo"
+  ><h2>POST /2.0/vdn/scopes/{scopeId}/cdo</h2></a>
+  <div class="content">
+    <p><p>Enable or disable CDO mode for the specified transport zone.</p>
+<p>Controller Disconnected Operation (CDO) mode ensures that the data
+plane connectivity is unaffected when host lose connectivity with the
+controller. </p>
+<p>If you want to enable CDO mode on the universal transport zone in a
+cross-vCenter NSX environment, you must do this from the primary NSX
+Manager. The universal synchronization service will propagate the CDO
+configuration to the secondary NSX Managers.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.2</td>
+<td>Method introduced. (Tech preview in 6.3.0).</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <ul>
+<li><em>enable</em> to enable CDO mode configuration.</li>
+<li><em>disable</em> to disable CDO mode configuration.</li>
+<li><em>force_sync</em> to manually push the CDO configuration to all 
+distributed switches in the transport zone.</li>
+</ul>
+
+  </dd>
+</dl>
+    </div>
   </div>
 </div>
 </section>
