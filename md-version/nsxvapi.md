@@ -206,7 +206,7 @@ EN-002339-02
 ---
 
 ## vdsManage
-Working with vSphere Distributed Switches
+Working With vSphere Distributed Switches
 ===========
 
 ### /2.0/vdn/switches
@@ -222,7 +222,7 @@ is higher than the standard MTU. You must set the MTU for each switch to
 * **get** *(secured)*: Retrieve information about all vSphere Distributed Switches.
 
 ### /2.0/vdn/switches/datacenter/{datacenterID}
-Working with vSphere Distributed Switches in a Datacenter
+Working With vSphere Distributed Switches in a Datacenter
 ------
 
 * **get** *(secured)*: Retrieve information about all vSphere Distributed Switches in the specified datacenter.
@@ -236,7 +236,7 @@ Working With a Specific vSphere Distributed Switch
 * **delete** *(secured)*: Delete the specified vSphere Distributed Switch.
 
 ## vdnConfig
-Working with Segement ID Pools and Multicast Ranges
+Working With Segment ID Pools and Multicast Ranges
 ========
 
 ### /2.0/vdn/config/segments
@@ -281,7 +281,7 @@ If the segment ID pool is universal you must send the API request to
 the primary NSX Manager.
 
 ### /2.0/vdn/config/multicasts
-Working with Multicast Address Ranges
+Working With Multicast Address Ranges
 ------
 If any of your transport zones will use multicast or hybrid replication
 mode, you must add a multicast address range (also called a multicast
@@ -315,7 +315,7 @@ If the multicast address range is universal you must send the API
 request to the primary NSX Manager.
 
 ### /2.0/vdn/config/vxlan/udp/port
-Working with the VXLAN Port Configuration
+Working With the VXLAN Port Configuration
 ----------
 
 * **get** *(secured)*: Retrieve the UDP port configured for VXLAN traffic.
@@ -351,7 +351,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/vdn/config/resources/allocated
-Working with Allocated Resources
+Working With Allocated Resources
 ------
 
 * **get** *(secured)*: Retrieve information about allocated segment IDs or multicast
@@ -370,7 +370,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ## vdnScopes
-Working with Transport Zones
+Working With Transport Zones
 ==============
 
 ### /2.0/vdn/scopes
@@ -414,7 +414,7 @@ Request body parameters:
       * *MULTICAST_MODE*
 
 ### /2.0/vdn/scopes/{scopeId}
-Working with a Specific Transport Zone
+Working With a Specific Transport Zone
 ---------
 
 * **get** *(secured)*: Retrieve information about the specified transport zone.
@@ -429,10 +429,10 @@ Release | Modification
 
 You can add a cluster to or delete a cluster from a transport zone.
 
-You can also repair missing portgroups. For every logical switch
-created, NSX creates a corresponding portgroup in vCenter. If the
-portgroup is lost for any reason, the logical switch will stop
-functioning. The repair action recreates any missing portgroups.
+You can also repair missing port groups. For every logical switch
+created, NSX creates a corresponding port group in vCenter. If the
+port group is lost for any reason, the logical switch will stop
+functioning. The repair action recreates any missing port groups.
 
 * **delete** *(secured)*: Delete the specified transport zone.
 
@@ -484,7 +484,7 @@ If you set **packetSizeMode** to *2*, you must specify the size using
 the **packetSize** parameter.
 
 ## logicalSwitches
-Working with Logical Switches in a Specific Transport Zone
+Working With Logical Switches in a Specific Transport Zone
 ==================
 
 ### /2.0/vdn/scopes/{scopeId}/virtualwires
@@ -509,7 +509,7 @@ Request body parameters:
   * **guestVlanAllowed** - Optional. Default is *false*.
 
 ## traceflows
-Working with Traceflow
+Working With Traceflow
 ================
 For Traceflow to work as expected, make sure that the controller cluster is
 connected and in healthy state. The Traceflow operation requires active
@@ -525,18 +525,18 @@ Traceflow packet as delivered. The packet which is reported as delivered
 need not necessarily mean that the trace packet was delivered to the
 destination specified. You should conclude only after validating the
 observations.vdl2 serves ARP proxy for ARP packets coming from VMs.
-However, traceflow bypasses this process, hence vdl2 may broadcast the
-traceflow packet out.
+However, Traceflow bypasses this process, hence vdl2 may broadcast the
+Traceflow packet out.
 
 ### /api/2.0/vdn/traceflow
 
 * **post** *(secured)*: Create a traceflow.
 
 ### /api/2.0/vdn/traceflow/{traceflowId}
-Working with a Specific Traceflow
+Working With a Specific Traceflow
 ---------
 
-* **get** *(secured)*: Query a specific traceflow by *tracflowId* which is the value returned
+* **get** *(secured)*: Query a specific Traceflow by *tracflowId* which is the value returned
 after executing the create Traceflow API call.
 
 ### /api/2.0/vdn/traceflow/{traceflowId}/observations
@@ -546,7 +546,7 @@ Traceflow Observations
 * **get** *(secured)*: Retrieve traceflow observations.
 
 ## logicalSwitchesGlobal
-Working with Logical Switches in All Transport Zones
+Working With Logical Switches in All Transport Zones
 ===========
 
 ### /2.0/vdn/virtualwires
@@ -591,7 +591,7 @@ mode.
 * **delete** *(secured)*: Delete the specified logical switch.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/backing
-Resolving Missing Portgroups for a Logical Switch
+Resolving Missing Port Groups for a Logical Switch
 ----
 
 * **post** *(secured)*: For every logical switch created, NSX creates a corresponding port
@@ -640,7 +640,7 @@ If you set **packetSizeMode** to *2*, you must specify the size using
 the **packetSize** parameter.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways
-Working with Hardware Gateway Bindings for a Specific Logical Switch
+Working With Hardware Gateway Bindings for a Specific Logical Switch
 -----
 
 * **get** *(secured)*: Retrieve hardware gateway bindings for the specified logical switch.
@@ -652,7 +652,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/vdn/virtualwires/{virtualWireID}/hardwaregateways/{hardwareGatewayBindingId}
-Working with Connections Between Hardware Gateways and Logical Switches
+Working With Connections Between Hardware Gateways and Logical Switches
 -------
 
 * **post** *(secured)*: Manage the connection between a hardware gateway and a logical switch.
@@ -696,7 +696,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ## arpMAC
-Working with IP Discovery and MAC Learning for Logical Switches
+Working With IP Discovery and MAC Learning for Logical Switches
 ==============
 You can enable IP discovery (ARP suppression) and MAC learning for logical
 switches or dvPortGroup. Enabling MAC learning builds a VLAN - MAC
@@ -738,7 +738,7 @@ Release | Modification
 6.2.3 | Method updated. IP discovery can be disabled on secondary NSX Managers.
 
 ## nsxControllers
-Working with NSX Controllers
+Working With NSX Controllers
 ==============
 For the unicast or hybrid control plane mode,
 you must add an NSX controller to manage overlay transport and provide
@@ -786,7 +786,7 @@ Working With of Controller Job Status
 a percentage indication of current deploy / remove procedure.
 
 ### /2.0/vdn/controller/{controllerId}
-Working with a Specific Controller
+Working With a Specific Controller
 -----
 
 * **delete** *(secured)*: Delete the NSX controller.
@@ -815,7 +815,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/vdn/controller/{controllerId}/techsupportlogs
-Working with Controller Tech Support Logs
+Working With Controller Tech Support Logs
 -----
 
 * **get** *(secured)*: Retrieve controller logs. Response content type is
@@ -823,7 +823,7 @@ application/octet-stream and response header is filename. This
 streams a fairly large bundle back (possibly hundreds of MB).
 
 ### /2.0/vdn/controller/{controllerId}/syslog
-Working with Controller Syslog
+Working With Controller Syslog
 -----
 
 * **post** *(secured)*: Add controller syslog exporter on the controller.
@@ -832,14 +832,14 @@ Working with Controller Syslog
 * **delete** *(secured)*: Deletes syslog exporter on the specified controller node.
 
 ### /2.0/vdn/controller/{controllerId}/snapshot
-Working with Controller Cluster Snapshots
+Working With Controller Cluster Snapshots
 -----
 
 * **get** *(secured)*: Take a snapshot of the control cluster from the specified controller
 node.
 
 ### /2.0/vdn/controller/cluster
-Working with the NSX Controller Cluster Configuration
+Working With the NSX Controller Cluster Configuration
 ----
 
 * **get** *(secured)*: Retrieve cluster wide configuration information for controller.
@@ -847,13 +847,13 @@ Working with the NSX Controller Cluster Configuration
 * **put** *(secured)*: Modify cluster wide configuration information for controller.
 
 ### /2.0/vdn/controller/credential
-Working with the NSX Controller Password
+Working With the NSX Controller Password
 ------
 
 * **put** *(secured)*: Change the NSX controller password.
 
 ## servicesApps
-Working with Services Grouping Objects
+Working With Services Grouping Objects
 =============
 
 ### /2.0/services/application/scope/{scopeId}
@@ -872,28 +872,26 @@ Create a Service on a Specific Scope
 Working With a Specified Service
 -------
 
-* **get** *(secured)*: Retrieve details about the specified service. The scopeId can
-be "globalroot-0", or datacenterId in upgrade use cases.
+* **get** *(secured)*: Retrieve details about the specified service. 
 
 * **put** *(secured)*: Modify the name, description, applicationProtocol, or port value of a
 service.
 
-* **delete** *(secured)*: Delete the specified service.You can delete a service by specifying its
-<applicationgroup-id>. 
+* **delete** *(secured)*: Delete the specified service.
 
 ## applicationgroup
-Working with Service Groups Grouping Objects
+Working With Service Groups Grouping Objects
 ============
 
 ### /2.0/services/applicationgroup/scope/{scopeId}
-Working with Service Groups on a Specific Scope
+Working With Service Groups on a Specific Scope
 -------
 
 * **post** *(secured)*: Create a new service group on the specified scope.
 * **get** *(secured)*: Retrieve a list of service groups that have been created on the scope.
 
 ### /2.0/services/applicationgroup/{applicationgroupId}
-Working with a Specific Service Group
+Working With a Specific Service Group
 ----
 
 * **get** *(secured)*: Retrieve details about the specified service group.
@@ -903,36 +901,36 @@ the specified service group.
 * **delete** *(secured)*: Delete the specified service group (application group) from a scope.
 
 ### /2.0/services/applicationgroup/{applicationgroupId}/members/{moref}
-Working with a Specific Service Group Member
+Working With a Specific Service Group Member
 -----
 
 * **put** *(secured)*: Add a member to the service group.
 * **delete** *(secured)*: Delete a member from the service group.
 
 ### /2.0/services/applicationgroup/scope/{scopeId}/members
-Working with Service Group Members on a Specific Scope
+Working With Service Group Members on a Specific Scope
 ------
 
 * **get** *(secured)*: Get a list of member elements that can be added to the service groups
 created on a particular scope.
 
 ## ipPoolsObjects
-Working with IP Pool Grouping Objects
+Working With IP Pool Grouping Objects
 ========
 
 ### /2.0/services/ipam/pools/scope/{scopeId}
-Working with IP Pools on a Specific Scope
+Working With IP Pools on a Specific Scope
 -----
 
-* **get** *(secured)*: Retrieves all IP pools on the specified scope where the *scopeID* is the
-reference to the desired scope. An example of the *scopeID* is
-globalroot-0.
+* **get** *(secured)*: Retrieves all IP pools on the specified scope where the **scopeId** is the
+reference to the desired scope. An example of the **scopeID** is
+*globalroot-0*.
 
-* **post** *(secured)*: Create a pool of IP addresses. For *scopeId* use globalroot-0 or
+* **post** *(secured)*: Create a pool of IP addresses. For **scopeId** use *globalroot-0* or
 the *datacenterId* in upgrade use cases.
 
 ### /2.0/services/ipam/pools/{poolId}
-Working with a Specific IP Pool
+Working With a Specific IP Pool
 ------
 
 * **get** *(secured)*: Retrieve details about a specific IP pool.
@@ -942,24 +940,24 @@ send it back as the request body.
 * **delete** *(secured)*: Delete an IP pool.
 
 ### /2.0/services/ipam/pools/{poolId}/ipaddresses
-Working with IP Pool Address Allocations
+Working With IP Pool Address Allocations
 ------
 
 * **get** *(secured)*: Retrieves all allocated IP addresses from the specified pool.
 
-* **post** *(secured)*: Allocate an IP Address from the pool. Use *ALLOCATE* in the
+* **post** *(secured)*: Allocate an IP address from the pool. Use *ALLOCATE* in the
 **allocationMode** field in the body to allocate the next available
-IP. To allocate a specific one use *RESERVE* and pass the IP to
+IP. To allocate a specific IP use *RESERVE* and pass the IP to
 reserve in the **ipAddress** fields in the body.
 
 ### /2.0/services/ipam/pools/{poolId}/ipaddresses/{ipAddress}
-Working with Specific IPs Allocated to an IP Pool
+Working With Specific IPs Allocated to an IP Pool
 ----
 
 * **delete** *(secured)*: Release an IP address allocation in the pool.
 
 ## capacityUsage
-Working with Licensing Capacity
+Working With Licensing Capacity
 ============
 The licensing capacity usage API command reports usage of CPUs, VMs and
 concurrent users for the distributed firewall and VXLAN.
@@ -976,7 +974,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ## securitytags
-Working with Security Tags
+Working With Security Tags
 =====
 
 You can manage security tags and their virtual machine assignments. For
@@ -1136,7 +1134,7 @@ Release | Modification
 6.3.0 | Method introduced.
 
 ## ssoConfig
-Working with NSX Manager SSO Registration
+Working With NSX Manager SSO Registration
 ============
 
 ### /2.0/services/ssoconfig
@@ -1146,13 +1144,13 @@ Working with NSX Manager SSO Registration
 * **delete** *(secured)*: Deletes the NSX Manager SSO Configuration.
 
 ### /2.0/services/ssoconfig/status
-Working with SSO Configuration Status
+Working With SSO Configuration Status
 -----
 
 * **get** *(secured)*: Retrieve the SSO configuration status of NSX Manager.
 
 ## userMgmt
-Working with User Management
+Working With User Management
 ==========
 
 ### /2.0/services/usermgmt/user/{userId}
@@ -1166,8 +1164,8 @@ Manage Users on NSX Manager
 Manage NSX Roles for Users
 -----
 
-* **get** *(secured)*: Retrieve a user's role (possible roles are super_user, vshield_admin,
-enterprise_admin, security_admin, and audit).
+* **get** *(secured)*: Retrieve a user's role (possible roles are *super_user*, *vshield_admin*,
+*enterprise_admin*, *security_admin*, and *audit*).
 
 * **post** *(secured)*: Add role and resources for a user.
 * **put** *(secured)*: Change a user's role.
@@ -1176,20 +1174,20 @@ is deleted, the user is removed from NSX Manager. You cannot delete the
 role for a local user.
 
 ### /2.0/services/usermgmt/enablestate/{value}
-Working with User Account State
+Working With User Account State
 -----
 
 * **put** *(secured)*: Enable or disable a user account.
 
 ### /2.0/services/usermgmt/users/vsm
-Working with NSX Manager Role Assignment
+Working With NSX Manager Role Assignment
 ----
 
 * **get** *(secured)*: Get information about users who have been assigned a NSX Manager role
 (local users as well as vCenter users with NSX Manager role).
 
 ### /2.0/services/usermgmt/roles
-Working with Available NSX Manager Roles
+Working With Available NSX Manager Roles
 ----
 
 * **get** *(secured)*: Read all possible roles in NSX Manager
@@ -1202,7 +1200,7 @@ Working With Scoping Objects
 scope.
 
 ## secGroup
-Working with Security Group Grouping Objects
+Working With Security Group Grouping Objects
 ===========
 A security group is a collection of assets or grouping objects from your
 vSphere inventory.
@@ -1297,10 +1295,11 @@ Release | Modification
 Updating a Specific Security Group Including Membership
 ----
 
-* **put** *(secured)*: Update configuration for the specified security group, including membership information.
+* **put** *(secured)*: Update configuration for the specified security group, including
+membership information.
 
 ### /2.0/services/securitygroup/{objectId}
-Working with a Specific Security Group
+Working With a Specific Security Group
 ----
 
 * **get** *(secured)*: Retrieve all members of the specified security group.
@@ -1317,7 +1316,7 @@ specified, the object is deleted only if it is not used by other
 configuration; otherwise the delete fails.
 
 ### /2.0/services/securitygroup/{objectId}/members/{memberId}
-Working with Members of a Specific Security Group
+Working With Members of a Specific Security Group
 ----
 
 * **put** *(secured)*: Add a new member to the specified security group.
@@ -1325,7 +1324,7 @@ Working with Members of a Specific Security Group
 * **delete** *(secured)*: Delete member from the specified security group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/virtualmachines
-Working with Virtual Machines in a Security Group
+Working With Virtual Machines in a Security Group
 ----
 
 * **get** *(secured)*: Retrieve effective membership of a security group in terms of virtual
@@ -1338,27 +1337,27 @@ component + VMs resulting from dynamic component) - (VMs resulting from static
 exclude component) ]
 
 ### /2.0/services/securitygroup/{objectId}/translation/ipaddresses
-Working with IP Addresses in a Security Group
+Working With IP Addresses in a Security Group
 -----
 
 * **get** *(secured)*: Retrieve list of IP addresses that belong to a specific security
 group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/macaddresses
-Working with MAC Addresses in a Security Group
+Working With MAC Addresses in a Security Group
 -----
 
 * **get** *(secured)*: Retrieve list of MAC addresses that belong to a specific security
 group.
 
 ### /2.0/services/securitygroup/{objectId}/translation/vnics
-Working with vNICs in a Security Group
+Working With vNICs in a Security Group
 -----
 
 * **get** *(secured)*: Retrieve list of vNICs that belong to a specific security group.
 
 ### /2.0/services/securitygroup/lookup/virtualmachine/{virtualMachineId}
-Working with Virtual Machine Security Group Membership
+Working With Virtual Machine Security Group Membership
 ------
 
 * **get** *(secured)*: Retrieves the collection of security groups to which a virtual machine
@@ -1366,7 +1365,7 @@ is a direct or indirect member. Indirect membership involves nesting of
 security groups.
 
 ### /2.0/services/securitygroup/internal/scope/{scopeId}
-Working with Internal Security Groups
+Working With Internal Security Groups
 ----
 
 * **get** *(secured)*: Retrieve all internal security groups on the NSX Manager. These are used
@@ -1374,30 +1373,30 @@ Working with Internal Security Groups
 users.
 
 ### /2.0/services/securitygroup/scope/{scopeId}
-Working with Security Groups on a Specific Scope
+Working With Security Groups on a Specific Scope
 ----
 
 * **get** *(secured)*: List all the security groups created on a specific scope.
 
 ### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
-Working with Security Group Member Types
+Working With Security Group Member Types
 ----
 
 * **get** *(secured)*: Retrieve a list of valid elements that can be added to a security
 group.
 
 ### /2.0/services/securitygroup/scope/{scopeId}/members/{memberType}
-Working with a Specific Security Group Member Type
+Working With a Specific Security Group Member Type
 ----
 
 * **get** *(secured)*: Retrieve members of a specific type in the specified scope.
 
 ## ipsets
-Working with IP Set Grouping Objects
+Working With IP Set Grouping Objects
 =======
 
 ### /2.0/services/ipset/scope/{scopeMoref}
-Working with IP Sets on a Specific Scope
+Working With IP Sets on a Specific Scope
 ----
 
 * **get** *(secured)*: Retrieve all configured IPSets
@@ -1409,7 +1408,7 @@ Creating New IP Sets
 * **post** *(secured)*: Create a new IP set.
 
 ### /2.0/services/ipset/{ipsetId}
-Working with a Specific IP Set
+Working With a Specific IP Set
 ----
 
 * **get** *(secured)*: Retrieve an individual IP set.
@@ -1426,13 +1425,14 @@ Infrastructure inventory.
 **vCenter Config Parameters**
 
 Parameter | Comments
-ipAddress | FQDN or IP address of vCenter server.
-userName | Required.
-password | Required.
-certificateThumbprint | Required. Must be colon (:) delimited hexadecimal.
-assignRoleToUser | Optional. *true* or *false*.
-pluginDownloadServer | Optional.
-pluginDownloadPort | Optional.
+----|----
+**ipAddress** | FQDN or IP address of vCenter server.
+**userName** | Required.
+**password** | Required.
+**certificateThumbprint** | Required. Must be colon (:) delimited hexadecimal.
+**assignRoleToUser** | Optional. *true* or *false*.
+**pluginDownloadServer** | Optional.
+**pluginDownloadPort** | Optional.
 
 ### /2.0/services/vcconfig
 
@@ -1446,11 +1446,11 @@ Connection Status for vCenter Server
 * **get** *(secured)*: Get default vCenter Server connection status.
 
 ## universalSync
-Working with Universal Sync Configuration in Cross-vCenter NSX
+Working With Universal Sync Configuration in Cross-vCenter NSX
 ======
 
 ### /2.0/universalsync/configuration/role
-Working with Universal Sync Configuration Roles
+Working With Universal Sync Configuration Roles
 ----
 You can set the role of an NSX Manager to primary, secondary, or
 standalone. If you set an NSX Manager’s role to primary, then use it to
@@ -1462,7 +1462,7 @@ still exist, but cannot be modified, other than being deleted.
 * **get** *(secured)*: Retrieve the universal sync configuration role.
 
 ### /2.0/universalsync/configuration/nsxmanagers
-Working with Universal Sync Configuration of NSX Managers
+Working With Universal Sync Configuration of NSX Managers
 -----
 
 * **post** *(secured)*: Add a secondary NSX manager.
@@ -1501,7 +1501,7 @@ NSX Manager Synchronization
 * **post** *(secured)*: Sync all objects on the NSX Manager.
 
 ### /2.0/universalsync/entitystatus
-Working with Universal Sync Entities
+Working With Universal Sync Entities
 ----
 
 * **get** *(secured)*: Retrieve the status of a universal sync entity.
@@ -1513,14 +1513,14 @@ Working With Universal Sync Status
 * **get** *(secured)*: Retrieve the universal sync status.
 
 ## applianceManager
-Working with the Appliance Manager
+Working With the Appliance Manager
 ========
 
 With the appliance management tool, you can manage:
 * System configurations like network configuration, syslog, time settings,
   and certificate management etc.
 * Components of appliance such as NSX Manager, Postgres, SSH component,
-  Rabbitmq service etc.
+  RabbitMQ service.
 * Overall support related features such as tech support logs, backup
   restore, status, and summary reports of appliance health.
 
@@ -1535,7 +1535,7 @@ current logged in user.
 Summary Information for NSX Manager
 ----
 
-* **get** *(secured)*: Retrieve system summary info such as address, dns name, version, CPU,
+* **get** *(secured)*: Retrieve system summary info such as address, DNS name, version, CPU,
 memory and storage.
 
 ### /1.0/appliance-management/summary/components
@@ -1583,12 +1583,12 @@ NSX Manager Appliance Storage Information
 NSX Manager Appliance Network Settings
 ----
 
-* **get** *(secured)*: Retrieve network information for the NSX Manager appliance. i.e. host name, IP address, DNS settings
+* **get** *(secured)*: Retrieve network information for the NSX Manager appliance. i.e. host name, IP address, DNS settings.
 
 * **put** *(secured)*: Update network information for the NSX Manager appliance.
 
 ### /1.0/appliance-management/system/network/dns
-Working with DNS Configuration
+Working With DNS Configuration
 -----
 
 * **put** *(secured)*: Configure DNS.
@@ -1621,7 +1621,7 @@ Release | Modification
 6.3.0 | Method introduced.
 
 ### /1.0/appliance-management/system/tlssettings
-Working with TLS Settings
+Working With TLS Settings
 ----
 
 * **get** *(secured)*: Retrieve TLS settings.
@@ -1644,7 +1644,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /1.0/appliance-management/system/timesettings
-Working with Time Settings
+Working With Time Settings
 ------
 You can either configure time or specify the NTP server to be used for
 time synchronization.
@@ -1656,7 +1656,7 @@ NTP server, if configured.
 synchronization.
 
 ### /1.0/appliance-management/system/timesettings/ntp
-Working with NTP Settings
+Working With NTP Settings
 ----
 
 * **delete** *(secured)*: Delete NTP server.
@@ -1669,7 +1669,7 @@ Configure System Locale
 * **put** *(secured)*: Configure locale.
 
 ### /1.0/appliance-management/system/syslogserver
-Working with Syslog Servers
+Working With Syslog Servers
 -----
 
 * **get** *(secured)*: Retrieve syslog servers.
@@ -1677,10 +1677,10 @@ Working with Syslog Servers
 * **delete** *(secured)*: Delete syslog servers.
 
 ### /1.0/appliance-management/components
-Working with Components
+Working With Components
 ----
 
-The NSX Manager appliance has the following components:
+The NSX Manager appliance has the following components.
 
 Component | Description |
 ------|--------
@@ -1693,25 +1693,25 @@ VPOSTGRES | vPostgres - Database service
 * **get** *(secured)*: Retrieve all appliance manager components.
 
 ### /1.0/appliance-management/components/component/{componentID}
-Working with a Specific Component
+Working With a Specific Component
 ----
 
 * **get** *(secured)*: Retrieve details for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/dependencies
-Working with Component Dependencies
+Working With Component Dependencies
 ----
 
 * **get** *(secured)*: Retrieve dependency details for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/dependents
-Working with Component Dependents
+Working With Component Dependents
 ----
 
 * **get** *(secured)*: Retrieve dependents for the specified component.
 
 ### /1.0/appliance-management/components/component/{componentID}/status
-Working with Component Status
+Working With Component Status
 ----
 
 * **get** *(secured)*: Retrieve current status for the specified component.
@@ -1784,7 +1784,7 @@ NSX Manager Appliance On-Demand Backup
 * **post** *(secured)*: Start an on-demand NSX backup.
 
 ### /1.0/appliance-management/backuprestore/backups
-Working with NSX Manager Appliance Backup Files
+Working With NSX Manager Appliance Backup Files
 -----
 
 * **get** *(secured)*: Retrieve list of all backups available at configured backup location.
@@ -1795,23 +1795,23 @@ Restoring Data from an NSX Manager Appliance Backup File
 
 * **post** *(secured)*: Restore data from a backup file.
 
-Retrive a list of restore files using `GET /api/1.0/appliance-management/backuprestore/backups`.
+Retrieve a list of restore files using `GET /api/1.0/appliance-management/backuprestore/backups`.
 
 ### /1.0/appliance-management/techsupportlogs/{componentID}
-Working with Tech Support Logs by Component
+Working With Tech Support Logs by Component
 ----
 
 * **post** *(secured)*: Generate tech support logs. The location response header contains the
 location of the created tech support file. 
 
 ### /1.0/appliance-management/techsupportlogs/{filename}
-Working with Tech Support Log Files
+Working With Tech Support Log Files
 -----
 
-* **get** *(secured)*: Download tech support logs
+* **get** *(secured)*: Download tech support logs.
 
 ### /1.0/appliance-management/notifications
-Working with Support Notifications
+Working With Support Notifications
 ----
 
 * **get** *(secured)*: Retrieve all system generated notifications.
@@ -1886,11 +1886,11 @@ NSX Manager Upgrade Status
 * **get** *(secured)*: Query upgrade status.
 
 ### /1.0/appliance-management/certificatemanager
-Working with Certificates on the NSX Manager Appliance
+Working With Certificates on the NSX Manager Appliance
 -------
 
 ### /1.0/appliance-management/certificatemanager/pkcs12keystore/nsx
-Working with Keystore Files
+Working With Keystore Files
 ------------
 
 * **post** *(secured)*: Upload keystore file.
@@ -1904,7 +1904,7 @@ NSX Manager Certificate Manager
 * **get** *(secured)*: Retrieve certificate information from NSX Manager.
 
 ### /1.0/appliance-management/certificatemanager/csr/nsx
-Working with Certificate Signing Requests
+Working With Certificate Signing Requests
 ------
 
 * **post** *(secured)*: Create a certificate signing request (CSR) for NSX Manager.
@@ -1920,7 +1920,7 @@ Release | Modification
 * **get** *(secured)*: Retrieve generated certificate signing request (CSR).
 
 ### /1.0/appliance-management/certificatemanager/uploadchain/nsx
-Working with Certificate Chains
+Working With Certificate Chains
 -----
 
 * **post** *(secured)*: Upload certificate chain.
@@ -1929,7 +1929,7 @@ Input is certificate chain file which is a PEM encoded chain of
 certificates received from the CA after signing a CSR.
 
 ## systemEvents
-Working with NSX Manager System Events
+Working With NSX Manager System Events
 ==========
 
 ### /2.0/systemevent
@@ -1937,7 +1937,7 @@ Working with NSX Manager System Events
 * **get** *(secured)*: Get NSX Manager system events
 
 ## auditLogs
-Working with NSX Manager Audit Logs
+Working With NSX Manager Audit Logs
 ==========
 
 You can retrieve NSX Manager audit logs. The following table translates the
@@ -2000,11 +2000,11 @@ SECURITY_TAG | Security Tag
 * **get** *(secured)*: Get NSX Manager audit logs.
 
 ## nwfabric
-Working with Network Fabric Configuration
+Working With Network Fabric Configuration
 =====
 
 ### /2.0/nwfabric/configure
-Working with Network Virtualization Components and VXLAN
+Working With Network Virtualization Components and VXLAN
 ---
 Cluster preparation can be broken down into the following:
   * Install VIB and non-VIB related action: Before any per-host config
@@ -2120,7 +2120,7 @@ This method can be used to perform the following tasks:
 ```
 
 * **put** *(secured)*: Upgrade Network virtualization components.
-_
+
 This API call can be used to upgrade network virtualization components.
 After NSX Manager is upgraded, previously prepared clusters must have
 the 6.x network virtualization components installed.
@@ -2219,7 +2219,7 @@ Working With Locale ID Configuration for Hosts
 * **delete** *(secured)*: Delete the locale ID for the specified host.
 
 ## securityFabric
-Working with Security Fabric and Security Services
+Working With Security Fabric and Security Services
 ======
 The security fabric simplifies and automates deployment of security
 services and provide a platform for configuration of the elements that are
@@ -2281,7 +2281,7 @@ Working With a Specified Service
 * **delete** *(secured)*: Uninstall specified service from specified clusters.
 
 ### /2.0/si/deploy/service/{serviceID}/dependsOn
-Working with Service Dependencies
+Working With Service Dependencies
 ----
 Services installed through the security fabric may be dependent on
 other services. When an internal service is registered, a dependencyMap
@@ -2312,7 +2312,7 @@ Working with a Specific Service on a Cluster
 * **get** *(secured)*: Retrieve detailed information about the service.
 
 ## eventControl
-Working with Data Collection for Activity Monitoring
+Working With Data Collection for Activity Monitoring
 ===========
 Activity Monitoring provides visibility into your virtual network to
 ensure that security policies at your organization are being enforced
@@ -2336,7 +2336,7 @@ running a report, ensure that the enabled virtual machines are active and
 are generating network traffic.
 
 You should also register NSX Manager with the AD Domain Controller. See
-"Working with Domains".
+"Working With Domains".
 
 Note that only active connections are tracked by Activity Monitoring.
 Virtual machine traffic blocked by firewall rules at the vNIC level is not
@@ -2387,7 +2387,7 @@ event collection should be performed for this virtual machine.
 * **get** *(secured)*: Retrieve per VM configuration for data collection.
 
 ## activityMonitoring
-Working with Activity Monitoring
+Working With Activity Monitoring
 ======
 
 ### /3.0/ai/records
@@ -2491,7 +2491,7 @@ groups and can use this data to fine tune your firewall rules.
 `&param=src:SECURITY_GROUP:1:EXCLUDE`
 
 ### /3.0/ai/userdetails
-Working with User Details
+Working With User Details
 ---------
 
 * **get** *(secured)*: ### View Outbound Activity
@@ -2618,7 +2618,7 @@ Working With Applications
 * **get** *(secured)*: Retrieve app details.
 
 ### /3.0/ai/app/{appID}
-Working with a Specific Application
+Working With a Specific Application
 ----
 
 * **get** *(secured)*: Retrieve details for specific app.
@@ -2631,7 +2631,7 @@ Working With Discovered Hosts
 LDAP Sync) and their detail.
 
 ### /3.0/ai/host/{hostID}
-Working with a Specific Discovered Host
+Working With a Specific Discovered Host
 ----
 
 * **get** *(secured)*: Get host details.
@@ -2643,44 +2643,44 @@ Working With Desktop Pools
 * **get** *(secured)*: Retrieve list of all discovered desktop pools by agent introspection.
 
 ### /3.0/ai/desktoppool/{desktoppoolID}
-Working with a Specific Desktop Pool
+Working With a Specific Desktop Pool
 ----
 
 * **get** *(secured)*: Retrieve specific desktop pool details.
 
 ### /3.0/ai/vm
-Working with Virtual Machines
+Working With Virtual Machines
 ----
 
 * **get** *(secured)*: Retrieve list of all discovered VMs.
 
 ### /3.0/ai/vm/{vmID}
-Working with a Specific Virtual Machine
+Working With a Specific Virtual Machine
 ----
 
 * **get** *(secured)*: Retrieve details about a specific virtual machine.
 
 ### /3.0/ai/directorygroup
-Working with LDAP Directory Groups
+Working With LDAP Directory Groups
 ----
 
 * **get** *(secured)*: Retrieve list of all discovered (and configured) LDAP directory
 groups.
 
 ### /3.0/ai/directorygroup/{directorygroupID}
-Working with a Specific LDAP Directory Group
+Working With a Specific LDAP Directory Group
 ----
 
 * **get** *(secured)*: Retrieve details about a specific directory group.
 
 ### /3.0/ai/directorygroup/user/{userID}
-Working with a Specific User's Active Directory Groups
+Working With a Specific User's Active Directory Groups
 -----
 
 * **get** *(secured)*: Retrieve Active Directory groups that user belongs to.
 
 ### /3.0/ai/securitygroup
-Working with Security Groups
+Working With Security Groups
 -----
 
 * **get** *(secured)*: Retrieve list of all observed security groups.
@@ -2691,13 +2691,13 @@ belongs to a security group then that security group would reported as
 observed in SAM database.
 
 ### /3.0/ai/securitygroup/{secgroupID}
-Working with a Specific Security Group
+Working With a Specific Security Group
 ----
 
 * **get** *(secured)*: Retrieve details about specific security group.
 
 ## domain
-Working with Domains
+Working With Domains
 ===========
 After you create a domain, you can apply a security policy to it and run
 queries to view the applications and virtual machines being accessed by
@@ -2782,7 +2782,7 @@ EventLog Server
 * **post** *(secured)*: Create EventLog server.
 
 ### /1.0/directory/listEventLogServersForDomain/{domainID}
-Working with EventLog Servers for a Domain
+Working With EventLog Servers for a Domain
 ----
 
 * **get** *(secured)*: Query EventLog servers for a domain.
@@ -2794,7 +2794,7 @@ Delete EventLog Server
 * **delete** *(secured)*: Delete EventLog server.
 
 ## mappingLists
-Working with Mapping Lists
+Working With Mapping Lists
 =========
 
 ### /1.0/identity/userIpMapping
@@ -2826,19 +2826,19 @@ Working With User Domain Groups
 user belongs.
 
 ### /1.0/identity/staticUserMapping/{userID}/{IP}
-Working with a Specific Static User Mapping
+Working With a Specific Static User Mapping
 ----
 
 * **post** *(secured)*: Create static user IP mapping.
 
 ### /1.0/identity/staticUserMappings
-Working with Static User Mappings
+Working With Static User Mappings
 ----
 
 * **get** *(secured)*: Query static user IP mapping list.
 
 ### /1.0/identity/staticUserMappingsbyUser/{userID}
-Working with Static User IP Mappings for a Specific User
+Working With Static User IP Mappings for a Specific User
 ----
 
 * **get** *(secured)*: Query static user IP mapping for specified user.
@@ -2852,7 +2852,7 @@ Working With Static User IP Mappings for a Specific IP
 * **delete** *(secured)*: Delete static user IP mapping for specified IP.
 
 ## activityMonitoringSyslog
-Working with Activity Monitoring Syslog Support
+Working With Activity Monitoring Syslog Support
 ==========
 
 ### /1.0/sam/syslog/enable
@@ -2868,7 +2868,7 @@ Disable Syslog Support
 * **post** *(secured)*: Disable syslog support.
 
 ## solutionIntegration
-Working with Solution Integrations
+Working With Solution Integrations
 =========
 
 ### /2.0/si/host/{hostID}/agents
@@ -2880,13 +2880,13 @@ agent IDs for each agent, which you can use to retrieve details about
 that agent.
 
 ### /2.0/si/agent/{agentID}
-Working with a Specific Agent
+Working With a Specific Agent
 ----
 
 * **get** *(secured)*: Retrieve agent (host components and appliances) details.
 
 ### /2.0/si/deployment/{deploymentunitID}/agents
-Working with Agents on a Specific Deployment
+Working With Agents on a Specific Deployment
 ----
 
 * **get** *(secured)*: Retrieve all agents for the specified deployment.
@@ -2931,7 +2931,7 @@ EAM agencies.
 ```
 
 ## macsets
-Working with MAC Address Set Grouping Objects
+Working With MAC Address Set Grouping Objects
 =============
 You can create a MAC address set on the specified scope. On success, the API
 returns a string identifier for the new MAC address set.
@@ -2945,10 +2945,15 @@ Working With a Specific MAC Address Set
 * **delete** *(secured)*: Delete a MAC address set.
 
 ### /2.0/services/macset/scope/{scopeId}
-Working with MAC Address Sets on a Specific Scope
+Working With MAC Address Sets on a Specific Scope
 ----
 
 * **post** *(secured)*: Create a MAC address set on the specified scope.
+
+The value parameter can include a single MAC identifier or a comma separated
+set of MAC identifiers. Universal MAC address sets are read-only from
+secondary managers.
+
 * **get** *(secured)*: List MAC address sets on the specified scope.
 
 ## servicesAlarmsSource
@@ -3009,7 +3014,7 @@ Release | Modification
 6.3.0 | Method introduced.
 
 ## taskFramework
-Working with the Task Framework
+Working With the Task Framework
 ======
 Working with filtering criteria and paging information for jobs on the task
 framework.
@@ -3025,7 +3030,7 @@ Working With a Specific Job Instance
 * **get** *(secured)*: Retrieve all job instances for the specified job ID.
 
 ## guestIntrospection
-Working with Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
+Working With Guest Introspection and Third-party Endpoint Protection (Anti-virus) Solutions
 ============
 
 About Guest Introspection and Endpoint Protection Solutions
@@ -3167,14 +3172,14 @@ and located. Specify the following parameter in the request body.
 |**svmMoid**     | Managed object ID of the virtual machine of the activated endpoint protection solution. |
 
 ### /2.0/endpointsecurity/activation/{vendorID}/{altitude}/{moid}
-Working with Solution Activation Status
+Working With Solution Activation Status
 ----
 
 * **get** *(secured)*: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
 * **delete** *(secured)*: Deactivate an endpoint protection solution on a host.
 
 ## dfw
-Working with Distributed Firewall
+Working With Distributed Firewall
 =================================
 
 ### /4.0/firewall/globalroot-0/defaultconfig
@@ -3403,7 +3408,7 @@ When updating the firewall configuration:
   originating from all IPs other than 1.1.1.1.
 
 ### /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}/rules/{ruleId}
-Working with a Specific Rule in a Specific Layer 3 Section
+Working With a Specific Rule in a Specific Layer 3 Section
 ----
 
 * **get** *(secured)*: Retrieve information about the specified distributed firewall rule.
@@ -3459,7 +3464,7 @@ Working With a Specific Layer 2 Distributed Firewall Section
 * **get** *(secured)*: Retrieve information about the specified layer 2 section.
 * **post** *(secured)*: Move the specified layer 2 section.
 
-Use the **action**, **operation**, and optionally **achorId**
+Use the **action**, **operation**, and optionally **anchorId**
 query parameters to specify the destination for the section.
 
 `POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009
@@ -3609,7 +3614,7 @@ whole redirect section configuration in the GET body.
 * **delete** *(secured)*: Delete specified L3 redirect section
 
 ### /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}/rules
-Working with Layer 3 Redirect Rules for a Specific Section
+Working With Layer 3 Redirect Rules for a Specific Section
 ----
 
 * **post** *(secured)*: Add L3 redirect rule
@@ -3652,7 +3657,7 @@ enable, you can enable distributed firewall.
 * **put** *(secured)*: Enable distributed firewall.
 
 ### /4.0/firewall/globalroot-0/status
-Working with Distributed Firewall Status
+Working With Distributed Firewall Status
 ----
 Retrieve status of last publish action for each cluster in the NSX
 environment.
@@ -3683,7 +3688,7 @@ Release | Modification
 6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
 
 ### /4.0/firewall/globalroot-0/status/layer3sections/{sectionID}
-Working with a Specific Layer 3 Section Status
+Working With a Specific Layer 3 Section Status
 ----
 
 * **get** *(secured)*: Retrieve status of the last publish action for the specified layer 3 section.
@@ -3695,7 +3700,7 @@ Release | Modification
 6.2.4 | Method updated. Parameter **generationNumberObjects** added. Clusters not configured for firewall are excluded from the status output.
 
 ### /4.0/firewall/globalroot-0/status/layer2sections/{sectionID}
-Working with a Specific Layer 2 Section Status
+Working With a Specific Layer 2 Section Status
 ----
 
 * **get** *(secured)*: Retrieve status of the last publish action for the specified layer 2 section.
@@ -3819,9 +3824,9 @@ usage crosses these thresholds.
 * **put** *(secured)*: Update threshold configuration for distributed firewall.
 
 ### /4.0/firewall/config/globalconfiguration
-Working with the Distributed Firewall Global Configuration
+Working With the Distributed Firewall Global Configuration
 ----------------------------------------------------------
-You can use the following parameters to improve firewall performancer:
+You can use the following parameters to improve firewall performance:
 
 * **layer3RuleOptimize** and **layer2RuleOptimize** to turn
 on/off rule optimization.
@@ -3870,7 +3875,7 @@ Enable or disable firewall components on a cluster.
 * **post** *(secured)*: Enable or disable firewall components on a cluster
 
 ### /4.0/firewall/{contextId}/config/ipfix
-Working with IPFIX
+Working With IPFIX
 ---
 Configuring IPFIX exports specific flows directly from Distributed
 Firewall to a flow collector.
@@ -3895,7 +3900,7 @@ separately from Firewall rules, you can use SpoofGuard to block traffic
 determined to be spoofed.
 
 ### /4.0/services/spoofguard/policies
-Working with SpoofGuard Policies
+Working With SpoofGuard Policies
 ---------
 You can create a SpoofGuard policy to specify the operation mode for
 specific networks. The system generated policy applies to port groups
@@ -3930,7 +3935,7 @@ Perform SpoofGuard Operations on IP Addresses in a Specific Policy
 * **get** *(secured)*: Retrieve IP addresses for the specified state.
 
 ## flowMonitoring
-Working with Flow Monitoring
+Working With Flow Monitoring
 ========
 
 ### /2.1/app/flow/flowstats
@@ -3995,7 +4000,7 @@ Flow exclusion happens at the host. The following flows are discarded by default
 * **put** *(secured)*: Update flow monitoring configuration.
 
 ### /2.1/app/flow/{contextId}
-Working with Flow Configuration for a Specific Context
+Working With Flow Configuration for a Specific Context
 ----
 
 * **delete** *(secured)*: Delete flow records for the specified context.
@@ -4009,14 +4014,14 @@ Exclude Virtual Machines from Firewall Protection
 * **get** *(secured)*: Retrieve the set of VMs in the exclusion list.
 
 ### /2.1/app/excludelist/{memberID}
-Working with the Exclusion List
+Working With the Exclusion List
 ---
 
 * **put** *(secured)*: Add a vm to the exclusion list.
 * **delete** *(secured)*: Delete a vm from exclusion list.
 
 ## nsxEdges
-Working with NSX Edge
+Working With NSX Edge
 =======
 There are two types of NSX Edge: Edge services gateway and logical
 (distributed) router.
@@ -4208,7 +4213,7 @@ are specified and at least one connected interface/vnic is specified,
 then the appliance(s) are deployed and configuration is applied to them.
 
 It is not possible to set the <ecmp>true</ecmp> property upon creation
-of a distributed logicalrouter Edge and a subsequent API call is
+of a distributed logical router Edge and a subsequent API call is
 required to enable ECMP.
 
 DHCP relay settings are not able to be used when creating a distributed
@@ -4388,13 +4393,13 @@ Release | Modification
 also deleted.
 
 ### /4.0/edges/{edgeId}/dnsclient
-Working with DNS Client Configuration
+Working With DNS Client Configuration
 ----
 
 * **put** *(secured)*: Update Edge DNS settings.
 
 ### /4.0/edges/{edgeId}/aesni
-Working with AESNI 
+Working With AESNI 
 ----
 
 * **post** *(secured)*: Modify AESNI setting.
@@ -4446,25 +4451,25 @@ The **edgeStatus** has the following possible states:
 * *RED*: None of the appliances for this NSX Edge are in a serving state.
 
 ### /4.0/edges/{edgeId}/techsupportlogs
-Working with NSX Edge Tech Support Logs 
+Working With NSX Edge Tech Support Logs 
 ----
 
 * **get** *(secured)*: Retrieve the tech support logs for Edge.
 
 ### /4.0/edges/{edgeId}/clisettings
-Working with NSX Edge CLI Settings
+Working With NSX Edge CLI Settings
 ----
 
 * **put** *(secured)*: Modify CLI credentials and enable/disable SSH for Edge.
 
 ### /4.0/edges/{edgeId}/cliremoteaccess
-Working with NSX Edge Remote Access 
+Working With NSX Edge Remote Access 
 ----
 
 * **post** *(secured)*: Change CLI remote access
 
 ### /4.0/edges/{edgeId}/systemcontrol/config
-Working with NSX Edge System Control Configuration
+Working With NSX Edge System Control Configuration
 -----
 
 * **put** *(secured)*: Update the NSX Edge system control (sysctl) configuration.
@@ -4608,7 +4613,7 @@ Working With NSX Edge Firewall Statistics
 configuration.
 
 ### /4.0/edges/{edgeId}/firewall/statistics/{ruleId}
-Working with Statistics for a Specific Firewall Rule
+Working With Statistics for a Specific Firewall Rule
 -----
 
 * **get** *(secured)*: Retrieve stats for firewall rule.
@@ -4703,7 +4708,7 @@ Release | Modification
 * **delete** *(secured)*: Delete the specified NAT rule.
 
 ### /4.0/edges/{edgeId}/routing/config
-Working with the NSX Edge Routing Configuration
+Working With the NSX Edge Routing Configuration
 ----
 You can specify static and dynamic routing for each NSX Edge.
 
@@ -4858,7 +4863,7 @@ Release | Modification
 default routes from the specified NSX Edge appliance.
 
 ### /4.0/edges/{edgeId}/routing/config/global
-Working with the NSX Edge Global Configuration
+Working With the NSX Edge Global Configuration
 ----
 
 * **put** *(secured)*: Configure global route.
@@ -4866,7 +4871,7 @@ Working with the NSX Edge Global Configuration
 settings, static route configurations).
 
 ### /4.0/edges/{edgeId}/routing/config/static
-Working with Static and Default Routes
+Working With Static and Default Routes
 ----
 
 * **get** *(secured)*: Read static and default routes.
@@ -4911,7 +4916,7 @@ Release | Modification
 * **delete** *(secured)*: Delete OSPF routing.
 
 ### /4.0/edges/{edgeId}/routing/config/bgp
-Working with BGP Routes for NSX Edge
+Working With BGP Routes for NSX Edge
 ---
 Border Gateway Protocol (BGP) makes core routing decisions. It includes a table
 of IP networks or prefixes which designate network reachability among
@@ -5148,159 +5153,10 @@ Parameter |  Description | Comments
 For the data path to work, you need to add firewall rules to allow required
 traffic as per the load balancer configuration. 
 
-**The following configuration example is displaying the HTTP/HTTPS Redirection, SSL
-Offloading, Content Switching, HTTP HealthMonitor parameters**: 
- 
-    <loadBalancer>
-      <enabled>true</enabled>
-      <accelerationEnabled>true</accelerationEnabled>
-      <logging>
-        <enable>true</enable>
-        <logLevel>debug</logLevel>
-      </logging>
-      <applicationRule>
-        <applicationRuleId>applicationRule-1</applicationRuleId>
-        <name>traffic_ctrl_rule</name>
-        <script>
-          acl srv1_full srv_conn(pool - http / m1)gt 50
-          acl srv2_full srv_conn(pool - http / m2)gt 50 use_backend pool - backup if srv1_full or srv2_full
-        </script>
-      </applicationRule>
-      <applicationRule>
-        <applicationRuleId>applicationRule-2</applicationRuleId>
-        <name>redirection_rule</name>
-        <script>
-          acl google_page url_beg / google redirect location https : //www.google.com/ if google_page</script>
-        </applicationRule>
-        <applicationRule>
-          <applicationRuleId>applicationRule-3</applicationRuleId>
-          <name>l7_rule</name>
-          <script>acl backup_page url_beg / backup use_backend pool - backup if backup_page</script>
-      </applicationRule>
-      <virtualServer>
-        <virtualServerId>virtualServer-1</virtualServerId>
-        <name>http_redirection_vip</name>
-        <description>http redirection virtualServer</description>
-        <enabled>true</enabled>
-        <ipAddress>10.117.35.171</ipAddress>
-        <protocol>http</protocol>
-        <port>80</port>
-        <connectionLimit>123</connectionLimit>
-        <connectionRateLimit>123</connectionRateLimit>
-        <applicationProfileId>applicationProfile-1</applicationProfileId>
-        <enableServiceInsertion>false</enableServiceInsertion>
-        <accelerationEnabled>true</accelerationEnabled>
-      </virtualServer>
-      <virtualServer>
-        <virtualServerId>virtualServer-2</virtualServerId>
-        <name>https_vip</name>
-        <description>https virtualServer</description>
-        <enabled>true</enabled>
-        <ipAddress>10.117.35.171</ipAddress>
-        <protocol>https</protocol>
-        <port>443</port>
-        <connectionLimit>123</connectionLimit>
-        <connectionRateLimit>123</connectionRateLimit>
-        <defaultPoolId>pool-1</defaultPoolId>
-        <applicationProfileId>applicationProfile-2</applicationProfileId>
-        <applicationRuleId>applicationRule-1</applicationRuleId>
-        <applicationRuleId>applicationRule-2</applicationRuleId>
-        <applicationRuleId>applicationRule-3</applicationRuleId>
-        <enableServiceInsertion>false</enableServiceInsertion>
-        <accelerationEnabled>true</accelerationEnabled>
-      </virtualServer>
-      <applicationProfile>
-        <applicationProfileId>applicationProfile-1</applicationProfileId>
-        <name>https_redirection_application_profile</name>
-        <insertXForwardedFor>false</insertXForwardedFor>
-        <sslPassthrough>false</sslPassthrough>
-        <httpRedirect>
-          <to>https://10.117.35.171</to>
-        </httpRedirect>
-      </applicationProfile>
-      <applicationProfile>
-        <applicationProfileId>applicationProfile-2</applicationProfileId>
-        <name>ssl_offloading_application_profile</name>
-        <insertXForwardedFor>false</insertXForwardedFor>
-        <serverSslEnabled>true</serverSslEnabled>
-        <sslPassthrough>false</sslPassthrough>
-        <clientSsl>
-          <clientAuth>ignore</clientAuth>
-          <ciphers>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH</ciphers>
-          <serviceCertificate>certificate-4</serviceCertificate>
-          <caCertificate>certificate-3</caCertificate>
-          <crlCertificate>crl-1</crlCertificate>
-        </clientSsl>
-        <serverSsl>
-          <ciphers>AES:ALL:!aNULL:!eNULL:+RC4:@STRENGTH</ciphers>
-          <serviceCertificate>certificate-4</serviceCertificate>
-          <caCertificate>certificate-3</caCertificate>
-          <crlCertificate>crl-1</crlCertificate>
-        </serverSsl>
-      </applicationProfile>
-      <pool>
-        <poolId>pool-1</poolId>
-        <name>pool-http</name>
-        <description>pool-http</description>
-        <transparent>false</transparent>
-        <algorithm>round-robin</algorithm>
-        <monitorId>monitor-1</monitorId>
-        <member>
-          <memberId>member-1</memberId>
-          <ipAddress>192.168.101.101</ipAddress>
-          <weight>1</weight>
-          <port>80</port>
-          <minConn>10</minConn>
-          <maxConn>100</maxConn>
-          <name>m1</name>
-        </member>
-        <member>
-          <memberId>member-2</memberId>
-          <ipAddress>192.168.101.102</ipAddress>
-          <weight>1</weight>
-          <port>80</port>
-          <minConn>10</minConn>
-          <maxConn>100</maxConn>
-          <name>m2</name>
-        </member>
-      </pool>
-      <pool>
-        <poolId>pool-2</poolId>
-        <name>pool-backup</name>
-        <description>pool backup</description>
-        <transparent>false</transparent>
-        <algorithm>round-robin</algorithm>
-        <monitorId>monitor-1</monitorId>
-        <member>
-          <memberId>member-3</memberId>
-          <ipAddress>192.168.102.101</ipAddress>
-          <weight>1</weight>
-          <port>80</port>
-          <name>m3</name>
-        </member>
-        <member>
-          <memberId>member-4</memberId>
-          <ipAddress>192.168.102.102</ipAddress>
-          <weight>1</weight>
-          <port>80</port>
-          <name>m4</name>
-        </member>
-      </pool>
-      <monitor>
-        <monitorId>monitor-1</monitorId>
-        <type>http</type>
-        <interval>5</interval>
-        <timeout>15</timeout>
-        <maxRetries>3</maxRetries>
-        <method>GET</method>
-        <url>/</url>
-        <name>http-monitor</name>
-      </monitor>  
-
 * **delete** *(secured)*: Delete load balancer configuration.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationprofiles
-Working with Application Profiles
+Working With Application Profiles
 ----
 You create an application profile to define the behavior of a
 particular type of network traffic. After configuring a profile, you
@@ -5336,7 +5192,7 @@ See *Working With NSX Edge Load Balancer* for **applicationRule** parameter info
 * **delete** *(secured)*: Delete all application rules.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/applicationrules/{appruleID}
-Working with a Specific Application Rule
+Working With a Specific Application Rule
 ----
 
 * **get** *(secured)*: Retrieve an application rule.
@@ -5380,13 +5236,14 @@ See *Working With NSX Edge Load Balancer* for **virtualServer** parameter inform
 * **delete** *(secured)*: Delete all virtual servers.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/virtualservers/{virtualserverID}
-Specified virtual server.
+Working With a Specific Virtual Server
+----
 
 * **get** *(secured)*: Retrieve details for the specified virtual server.
 * **delete** *(secured)*: Delete the specified virtual server.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools
-Working with Server Pools
+Working With Server Pools
 ----
 You can add a server pool to manage and share backend servers
 flexibly and efficiently. A pool manages load balancer distribution
@@ -5498,19 +5355,18 @@ Working With Load Balancer Acceleration
 * **post** *(secured)*: Configure load balancer acceleration mode.
 
 ### /4.0/edges/{edgeId}/dns/config
-Working with NSX Edge DNS Server Configuration
+Working With NSX Edge DNS Server Configuration
 ----
 You can configure external DNS servers to which NSX Edge can relay
 name resolution requests from clients. NSX Edge will relay client
 application requests to the DNS servers to fully resolve a network
 name and cache the response from the servers.
 
-Configure DNS updates the DNS server configuration. The DNS server list allows two
-addresses – primary and secondary. The default cache size is 16 MB where
-the minimum can be 1 MB, and the maximum 8196 MB. The default listeners
-is any, which means listen on all VSE interfaces. If provided, the
-listener’s IP address must be assigned to an internal interface. Logging
-is disabled by default.
+The DNS server list allows two addresses – primary and secondary. The
+default cache size is 16 MB where the minimum can be 1 MB, and the
+maximum 8196 MB. The default listeners is any, which means listen on all
+NSX Edge interfaces. If provided, the listener’s IP address must be
+assigned to an internal interface. Logging is disabled by default.
 
 * **get** *(secured)*: Retrieve DNS configuration.
 * **put** *(secured)*: Configure DNS servers.
@@ -5520,6 +5376,7 @@ is disabled by default.
 Get DNS server statistics
 
 * **get** *(secured)*: Get DNS server statistics
+----
 
 **DNS Server Statistics Parameters**
 
@@ -5532,7 +5389,7 @@ Parameter Name | Parameter Information
 **responses > nxrrset** | Indicates the count of no existent resource record. 
 **responses > servFail** | Indicates the count of the SERVFAIL responses.
 **responses > formErr** | Indicates the count of the format error responses.
-**responses > nxdomain** | Indicates the count of no-suhc-domain answer
+**responses > nxdomain** | Indicates the count of no-such-domain answer
 **responses > others** | Indicates the count of other types of responses.
 
 ### /4.0/edges/{edgeId}/dhcp/config
@@ -5611,8 +5468,17 @@ Parameter Name | Parameter Information
 **logging > enable** |  Optional, default is *false*.
 **logging > logLevel** | Optional, default is *info*.
 
-* **get** *(secured)*: Get DHCP configuration.
+* **get** *(secured)*: Retrieve DHCP configuration.
+
+**Method History**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. DHCP options added.
+
 * **put** *(secured)*: Configure DHCP service.
+
+**Method History**
 
 Release | Modification
 --------|-------------
@@ -5621,7 +5487,7 @@ Release | Modification
 * **delete** *(secured)*: Delete the DHCP configuration, restoring it to factory default.
 
 ### /4.0/edges/{edgeId}/dhcp/config/ippools
-Working with DHCP IP Pools
+Working With DHCP IP Pools
 -----
 
 * **post** *(secured)*: Add an IP pool to the DHCP configuration. Returns a pool ID within
@@ -5634,7 +5500,7 @@ Release | Modification
 6.2.3 | Method updated. DHCP options added.
 
 ### /4.0/edges/{edgeId}/dhcp/config/ippools/{poolID}
-Working with a Specific DHCP IP Pool
+Working With a Specific DHCP IP Pool
 ----
 
 * **delete** *(secured)*: Delete a pool specified by pool ID
@@ -5653,7 +5519,7 @@ Release | Modification
 6.2.3 | Method updated. DHCP options added.
 
 ### /4.0/edges/{edgeId}/dhcp/config/bindings/{bindingID}
-Working with a Specific DHCP Static Binding
+Working With a Specific DHCP Static Binding
 ----
 
 * **delete** *(secured)*: Delete the static-binding by ID
@@ -5661,80 +5527,86 @@ Working with a Specific DHCP Static Binding
 ### /4.0/edges/{edgeId}/dhcp/config/relay
 Working With DHCP Relays
 ----
-  Dynamic Host Configuration Protocol (DHCP) relay enables you to leverage your
-  existing DHCP infrastructure from within NSX without any interruption to the
-  IP address management in your environment. DHCP messages are relayed from
-  virtual machine(s) to the designated DHCP server(s) in the physical world.
-  This enables IP addresses within NSX to continue to be in synch with IP
-  addresses in other environments. 
-  
-  DHCP configuration is applied on the logical
-  router port and can list several DHCP servers. Requests are sent to all listed
-  servers. While relaying the DHCP request from the client, the relay adds a
-  Gateway IP Address to the request. The external DHCP server uses this gateway
-  address to match a pool and allocate an IP address for the request. The
-  gateway address must belong to a subnet of the NSX port on which the relay is
-  running. 
-  
-  You can specify a different DHCP server for each logical switch and
-  can configure multiple DHCP servers on each logical router to provide support
-  for multiple IP domains. 
-  
-  NOTE DHCP relay does not support overlapping IP address space (option 82). 
-  
-  DHCP Relay and DHCP service cannot run on a
-  port/vNic at the same time. If a relay agent is configured on a port, a DHCP
-  pool cannot be configured on the subnet(s) of this port.  
-  
-  Parameter |  Description | Comments
-  ---|---|---
-  **relay**   |You can configure ipPool, static-binding and relay at the same time if
-              there is not any overlap on vnic.|
-  **relayServer**   |There must be at least one external server.|Required.
-  **groupingObjectId**   |A list of dhcp server IP addresses.
-    There can be multiple sever group objects, the maximum groupObject is 4 the maxium number of server IP
-    addresses is 16 |
-  **ipAddress**   |Supports both IP address and FQDN|
-  **fqdn**   |Specify the IP of the fqdn, and add a Firewall rule to allow the response from
-        the server represented by the fqdn such as: src - the IP; dest - any; service -
-        udp:67:any.|
-  **relayAgents**   |There must be at least one relay agent.|Required.
-  **vnicIndex**   | No default. Specify the vNic that proxy the dhcp request. | Required.
-  **giAddress> | Defaults to the vNic primary address. Only one giAddress allowed. | Optional. 
-  
-  
+Dynamic Host Configuration Protocol (DHCP) relay enables you to leverage your
+existing DHCP infrastructure from within NSX without any interruption to the
+IP address management in your environment. DHCP messages are relayed from
+virtual machine(s) to the designated DHCP server(s) in the physical world.
+This enables IP addresses within NSX to continue to be in synch with IP
+addresses in other environments. 
 
-* **get** *(secured)*: Query DHCP relay
-* **put** *(secured)*: Configure DHCP relay
-* **delete** *(secured)*: Delete DHCP relay configuration
+DHCP configuration is applied on the logical
+router port and can list several DHCP servers. Requests are sent to all listed
+servers. While relaying the DHCP request from the client, the relay adds a
+Gateway IP Address to the request. The external DHCP server uses this gateway
+address to match a pool and allocate an IP address for the request. The
+gateway address must belong to a subnet of the NSX port on which the relay is
+running. 
+
+You can specify a different DHCP server for each logical switch and
+can configure multiple DHCP servers on each logical router to provide support
+for multiple IP domains. 
+
+NOTE DHCP relay does not support overlapping IP address space (option 82). 
+
+DHCP Relay and DHCP service cannot run on a
+port/vNic at the same time. If a relay agent is configured on a port, a DHCP
+pool cannot be configured on the subnet(s) of this port.  
+
+Parameter | Comments
+---|---
+**relay**   |You can configure ipPool, static-binding and relay at the same time if there is not any overlap on vnic.
+**relayServer**   |Required. There must be at least one external server.
+**groupingObjectId**   |A list of dhcp server IP addresses. There can be multiple sever group objects, the maximum groupObject is 4, the maximum number of server IP addresses is 16. 
+**ipAddress**   |Supports both IP address and FQDN.
+**fqdn**   |Specify the IP of the fqdn, and add a Firewall rule to allow the response from the server represented by the fqdn such as: src - the IP; dest - any; service - udp:67:any.
+**relayAgents**   |Required. There must be at least one relay agent.
+**vnicIndex**   | Required. No default. Specify the vNic that proxy the dhcp request. 
+**giAddress** | Optional. Defaults to the vNic primary address. Only one giAddress allowed. 
+
+* **get** *(secured)*: Retrieve DHCP relay information.
+* **put** *(secured)*: Configure DHCP relay.
+* **delete** *(secured)*: Delete DHCP relay configuration.
 
 ### /4.0/edges/{edgeId}/dhcp/leaseInfo
 Working With DHCP Leases
+----
 
 * **get** *(secured)*: Get DHCP lease information.
 
 ### /4.0/edges/{edgeId}/highavailability/config
-Working with NSX Edge High Availability
+Working With NSX Edge High Availability
 ----
-  
-  High Availability (HA) ensures that a NSX Edge appliance is always
-  available on your virtualized network. You can enable HA either when
-  installing NSX Edge or on an installed NSX Edge instance.
-  
-  If a single appliance is associated with NSX Edge, the appliance configuration
-  is cloned for the standby appliance. If two appliances are associated with NSX
-  Edge and one of them is deployed, this REST call deploys the remaining appliance
-  and push HA configuration to both. 
-  
-  HA relies on an internal interface. If an
-  internal interface does not exist, this call will not deploy the secondary
-  appliance, or push HA config to appliance. The enabling of HA will be done once
-  an available internal interface is added. If the PUT call includes an empty xml
-  <highAvailability /> or enabled=false, it acts as a DELETE call.
+High Availability (HA) ensures that a NSX Edge appliance is always
+available on your virtualized network. You can enable HA either when
+installing NSX Edge or on an installed NSX Edge instance.
+
+If a single appliance is associated with NSX Edge, the appliance configuration
+is cloned for the standby appliance. If two appliances are associated with NSX
+Edge and one of them is deployed, this REST call deploys the remaining appliance
+and push HA configuration to both. 
+
+HA relies on an internal interface. If an
+internal interface does not exist, this call will not deploy the secondary
+appliance, or push HA config to appliance. The enabling of HA will be done once
+an available internal interface is added. If the PUT call includes an empty 
+&lt;highAvailability /&gt; or enabled=false, it acts as a DELETE call.
 
 * **get** *(secured)*: Get high availability configuration.
-* **put** *(secured)*: Configure high availability.| **ipAddress** - Optional. A pair of ipAddresses with /30 subnet mandatory, one for each appliance. If provided, they must NOT overlap with any subnet defined on the Edge vNics. If not specified, a pair of IPs will be picked up from reserved subnet, 169.254.0.0/16. **declareDeadTime** Optional. The default is 6 seconds. **enabled** - Optional. The default is set to true. The enabled flag will cause the HA appliance to be deployed or destroyed.
-* **delete** *(secured)*: NSX Manager deletes the standby appliance and removes the HA config from the active appliance.You can also delete the HA configuration by using a PUT call with empty xml <highAvailability /> or with <highAvailability><enabled>false</enabled></highAvailability>.
+* **put** *(secured)*: Configure high availability.
+
+* **ipAddress** - Optional. A pair of ipAddresses with /30 subnet
+  mandatory, one for each appliance. If provided, they must NOT
+  overlap with any subnet defined on the Edge vNics. If not specified,
+  a pair of IPs will be picked up from the reserved subnet,
+  169.254.0.0/16.
+* **declareDeadTime** Optional. The default is 6 seconds. 
+* **enabled** - Optional. The default is set to true. The enabled flag
+  will cause the HA appliance to be deployed or destroyed.
+
+* **delete** *(secured)*: NSX Manager deletes the standby appliance and removes the HA config
+from the active appliance. You can also delete the HA configuration by
+using a PUT call with empty &lt;highAvailability /&gt; or with
+&lt;highAvailability&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/highAvailability&gt;.
 
 ### /4.0/edges/{edgeId}/syslog/config
 Working With Remote Syslog Server on NSX Edge
@@ -5941,7 +5813,7 @@ SSL VPN Advanced Configuration
 * **put** *(secured)*: Update SSL VPN advanced configuration.
 
 ### /4.0/edges/{edgeId}/sslvpn/config/script
-Working with Logon and Logoff Scripts for SSL VPN
+Working With Logon and Logoff Scripts for SSL VPN
 ----
 
 * **post** *(secured)*: Configure parameters associated with the uploaded script file.
@@ -5991,7 +5863,7 @@ https://192.168.110.42/api/4.0/edges/edge-3/sslvpn/config/script/file/
 ```
 
 ### /4.0/edges/{edgeId}/sslvpn/auth/localusers/users
-Working with SSL VPN Users
+Working With SSL VPN Users
 ---
 
 * **put** *(secured)*: Update all users with the given list of users. If the user is
@@ -6051,7 +5923,7 @@ Working With Internal Interface Statistics
 * **get** *(secured)*: Retrieve internal interface statistics.
 
 ### /4.0/edges/{edgeId}/l2vpn/config
-Working with L2 VPN
+Working With L2 VPN
 ----
 L2 VPN allows you to configure a tunnel between two sites. 
 VMs can move between the sites and stay on the same subnet,
@@ -6259,17 +6131,17 @@ become active.
 ### /4.0/edges/{edgeId}/appliances
 Working With NSX Edge Appliance Configuration
 -----
-See *Working with NSX Edge* for additional parameters used to configure appliances.
+See *Working With NSX Edge* for additional parameters used to configure appliances.
 
 When you create an NSX Edge, you define parameters that determine how
-the appliance is deployed, including resourcePoolId, dataStoreId,
-hostId, and VmFolderId. After the appliance is deployed, these
+the appliance is deployed, including **resourcePoolId**, **dataStoreId**,
+**hostId**, and **vmFolderId**. After the appliance is deployed, these
 deployment details may change, and the appliance parameters are updated
 to reflect the current, live location.
 
-You can view the originally configured paramters by using the
-configuredResourcePool, configuredDataStore, configuredHost, and
-configuredVmFolder parameters.
+You can view the originally configured parameters by using the
+**configuredResourcePool**, **configuredDataStore**, **configuredHost**, and
+**configuredVmFolder** parameters.
 
 You can trigger a high availability failover on the active NSX Edge
 appliance by changing the haAdminState value to *down* as part of
@@ -6324,9 +6196,12 @@ Release | Modification
 Working With NSX Edge Appliance Configuration by Index
 ----
 
-* **post** *(secured)*: Used to send CLI Commands to the Edge Gw. To use CLI commands you also
-need to add an additional Accept Header with type text\plain, as well as
-the query parameter action=execute
+* **post** *(secured)*: Used to send CLI Commands to the Edge Gateway. To use CLI commands you also
+need to add an additional Accept Header with type text/plain, as well as
+the query parameter action=execute.
+
+VMware recommends using the Central CLI instead of this method.
+See *Working With the Central CLI* 
 
 * **get** *(secured)*: Retrieve the configuration of the specified appliance.
 
@@ -6349,7 +6224,7 @@ Release | Modification
 ### /4.0/edges/{edgeId}/vnics
 Working With Edge Services Gateway Interfaces
 ----
-See *Working with NSX Edge* for descriptions of parameters used to
+See *Working With NSX Edge* for descriptions of parameters used to
 configure Edge Service Gateway interfaces.
 
 * **post** *(secured)*: Add an interface or sub interface.
@@ -6358,7 +6233,7 @@ configure Edge Service Gateway interfaces.
 ### /4.0/edges/{edgeId}/vnics/{index}
 Working With a Specific Edge Services Gateway Interface
 ----
-See *Working with NSX Edge* for descriptions of parameters used to
+See *Working With NSX Edge* for descriptions of parameters used to
 configure Edge Service Gateway interfaces.
 
 * **get** *(secured)*: Retrieve the specified interface.
@@ -6366,14 +6241,14 @@ configure Edge Service Gateway interfaces.
 * **delete** *(secured)*: Delete interface
 
 ### /4.0/edges/{edgeId}/mgmtinterface
-Working with Logical Router HA (Management) Interface
+Working With Logical Router HA (Management) Interface
 ----
 
 * **get** *(secured)*: Retrieve the management interface configuration for the logical
 router.
 
 * **put** *(secured)*: Configure high availability (management) interface for logical
-(distributed) router.  See *Working with NSX Edge* for descriptions
+(distributed) router.  See *Working With NSX Edge* for descriptions
 of parameters used to configure the logical router HA interface.
 
 ### /4.0/edges/{edgeId}/interfaces
@@ -6425,7 +6300,7 @@ Working With a Specific Edge Job Status
 * **get** *(secured)*: Retrieve job status for the specified job.
 
 ## nsxEdgePublish
-Working with NSX Edge Configuration Publishing
+Working With NSX Edge Configuration Publishing
 =========
 
 ### /4.0/edgePublish/tuningConfiguration
@@ -6475,14 +6350,14 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ## truststore
-Working with Certificates
+Working With Certificates
 =============
 NSX Edge supports self-signed certificates, certificates signed by a
 Certification Authority (CA), and certificates generated and signed by a
 CA.
 
 ### /2.0/services/truststore/certificate
-Working with Certificates and Certificate Chains
+Working With Certificates and Certificate Chains
 ------
 
 * **post** *(secured)*: Import a certificate or a certificate chain against a certificate
@@ -6514,7 +6389,8 @@ a chain, multiple certificate objects are retrieved.
 * **delete** *(secured)*: Delete the specified certificate.
 
 ### /2.0/services/truststore/csr/{scopeId}
-Working with Certificate Signing Requests (CSRs)
+Working With Certificate Signing Requests
+----
 
 * **post** *(secured)*: Create a certificate signing request (CSR).
 
@@ -6539,13 +6415,13 @@ Working With Certificate Revocation Lists on a Specific Scope
 * **post** *(secured)*: Create a certificate revocation list (CRL) on the specified scope.
 
 ### /2.0/services/truststore/crl/scope/{scopeId}
-Working with CRL Certificates in a Specific Scope
+Working With CRL Certificates in a Specific Scope
 ----
 
 * **get** *(secured)*: Retrieve all certificates for the specified scope.
 
 ### /2.0/services/truststore/crl/{crlId}
-Working with a Specific CRL Certificate
+Working With a Specific CRL Certificate
 ----
 
 * **get** *(secured)*: Retrieve certificate object for the specified certificate revocation
@@ -6554,7 +6430,7 @@ list (CRL).
 * **delete** *(secured)*: Delete the specified certificate revocation list (CRL).
 
 ## policy
-Working with Service Composer
+Working With Service Composer
 ============================
 Service Composer helps you provision and assign network and security
 services to applications in a virtual infrastructure. You map these services
@@ -6679,12 +6555,12 @@ configured
 rule
 
 ### /2.0/services/policy/securitypolicy
-Working with Security Policies
+Working With Security Policies
 ------------------------------
 A security policy is a set of Endpoint, firewall, and network
 introspection services that can be applied to a security group.
 
-See *Working with Security Groups* for more information about managing
+See *Working With Security Groups* for more information about managing
 security groups.
 
 * **post** *(secured)*: Create a security policy.
@@ -6738,7 +6614,7 @@ Working With Security Group Bindings
 * **put** *(secured)*: Apply the specified security policy to the specified security group.
 
 ### /2.0/services/policy/securitypolicy/{ID}/securityactions
-Working with Security Actions on a Security Policy
+Working With Security Actions on a Security Policy
 -------------
 
 * **get** *(secured)*: Retrieve all security actions applicable on a security policy.
@@ -6749,7 +6625,7 @@ Category are sorted based on the weight of security actions in
 descending order.
 
 ### /2.0/services/policy/securitypolicy/status
-Working with Service Composer Status
+Working With Service Composer Status
 ------------------------------------
 
 * **get** *(secured)*: Retrieve the consolidated status of Service Composer.
@@ -6764,7 +6640,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/services/policy/securitypolicy/alarms/all
-Working with All Service Composer Alarms
+Working With All Service Composer Alarms
 ------------
 
 * **get** *(secured)*: Retrieve all system alarms that are raised at Service Composer
@@ -6777,7 +6653,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/services/policy/securitypolicy/serviceprovider/firewall
-Working with Service Composer Firewall Applied To Setting
+Working With Service Composer Firewall Applied To Setting
 -------------
 You can set the applied to setting for all firewall rules created
 though Service Composer to either Distributed Firewall or Policy's
@@ -6836,7 +6712,7 @@ exported XML. The prefix can thus be used to indicate the remote
 source from where the hierarchy was exported.
 
 ### /2.0/services/policy/securityaction/{category}/virtualmachines
-Working with Virtual Machines with Security Actions Applied
+Working With Virtual Machines with Security Actions Applied
 --------------
 
 * **get** *(secured)*: Retrieve all VirtualMachine objects on which security action of a
@@ -6853,7 +6729,7 @@ if a securityaction will be applied (by the enforcement engine) on the
 security group.
 
 ### /2.0/services/policy/virtualmachine/{ID}/securityactions
-Working with Security Actions Applicable on a Virtual Machine
+Working With Security Actions Applicable on a Virtual Machine
 ----
 
 * **get** *(secured)*: You can retrieve the security actions applicable on a virtual machine for
@@ -6864,7 +6740,7 @@ action will be applied (by the enforcement engine) on the virtual
 machine.
 
 ### /2.0/services/policy/serviceprovider/firewall
-Working with Service Composer Firewall
+Working With Service Composer Firewall
 --------------
 
 * **get** *(secured)*: If Service Composer goes out of sync with Distributed Firewall, you
@@ -6937,7 +6813,7 @@ Provide request body value of true or false.
   6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
 
 ### /2.0/services/policy/securitygroup/{ID}/securitypolicies
-Working with Security Policies Mapped to a Security Group
+Working With Security Policies Mapped to a Security Group
 -----
 
 * **get** *(secured)*: Retrieve security policies mapped to a security group.
@@ -6947,7 +6823,7 @@ in descending order. The security policy with the highest precedence
 (highest numeric value) is the first entry (index = 0) in the list.
 
 ## snmp
-Working with SNMP
+Working With SNMP
 =================
 NSX Manager receives events from other NSX components, including NSX Edge,
 network fabric, and hypervisors.
@@ -6955,11 +6831,10 @@ network fabric, and hypervisors.
 You can configure NSX Manager to forward SNMP traps to an SNMP Manager.
 
 ### /2.0/services/snmp/status
-Working with SNMP Status Settings
+Working With SNMP Status Settings
 -----
 You can configure settings for SNMP on the NSX Manager.
 
--------------------------
 Parameter | Description
 ----------|------------
 serviceStatus | Boolean. Set to true to enable SNMP. There must be at least one SNMP manager configured to enable SNMP.
@@ -6982,7 +6857,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/services/snmp/manager
-Working with SNMP Managers
+Working With SNMP Managers
 -----
 
 * **get** *(secured)*: Retrieve information about SNMP managers.
@@ -7002,7 +6877,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/services/snmp/manager/{managerId}
-Working with a Specific SNMP Manager
+Working With a Specific SNMP Manager
 ------------------------------------
 
 * **get** *(secured)*: Retrieve information about the specified SNMP manager.
@@ -7030,7 +6905,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/services/snmp/trap
-Working with SNMP Traps
+Working With SNMP Traps
 -----------------------
 
 * **get** *(secured)*: Retrieve information about SNMP traps.
@@ -7042,7 +6917,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/services/snmp/trap/{oid}
-Working with a Specific SNMP Trap
+Working With a Specific SNMP Trap
 -----------------------
 
 * **get** *(secured)*: Retrieve information about the specified SNMP trap.
@@ -7062,7 +6937,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ## nsxCli
-Working with the Central CLI
+Working With the Central CLI
 =======
 
 ### /1.0/nsx/cli
@@ -7115,7 +6990,7 @@ Release | Modification
 6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
 
 ## hardwareGateways
-Working with Hardware Gateways
+Working With Hardware Gateways
 ============
 
 ### /2.0/vdn/hardwaregateways
@@ -7187,7 +7062,7 @@ Working With a Specific Switch on a Specific Hardware Gateway
 Working With Ports on a Specific Switch on a Specific Hardware Gateway
 ----
 
-* **get** *(secured)*: Retrive information about the hardware gateway switch ports for
+* **get** *(secured)*: Retrieve information about the hardware gateway switch ports for
 the specified switch and hardware gateway.
 
 **Method history:**
@@ -7219,7 +7094,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/bindings
-Retrieve Information About Hardware Gateway Bindings
+Working With Hardware Gateway Bindings
 -----
 
 * **post** *(secured)*: Create a hardware gateway binding.
@@ -7273,7 +7148,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/vdn/hardwaregateways/bindings/{bindingId}/statistic
-Working with Hardware Gateway Binding Statistics
+Working With Hardware Gateway Binding Statistics
 ----
 
 * **get** *(secured)*: Retrieve statistics for the specified hardware gateway binding.
