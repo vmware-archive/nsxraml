@@ -4454,7 +4454,43 @@ The **edgeStatus** has the following possible states:
 Working With NSX Edge Tech Support Logs 
 ----
 
-* **get** *(secured)*: Retrieve the tech support logs for Edge.
+* **get** *(secured)*: Retrieve the tech support logs for the specified NSX Edge.
+
+The response status for the tech support logs API request is `303 See
+Other`, and the **Location** header contains the file location of the
+tech support logs on the NSX Manager web server.
+
+If your REST client is configured to not follow redirects, see the
+Location header to find the location of the tech support logs on the
+NSX Manager web server. You can retrieve the logs from
+`https://<nsxmgr-address>/<location>`.
+
+Example in curl:
+```
+$ curl -k -i -s -H 'Authorization: Basic YWRtaW46Vk13YXJlMSE=' -H "Content-Type: application/xml" -H "Accept: application/xml" -X GET https://192.168.110.42/api/4.0/edges/edge-4/techsupportlogs
+HTTP/1.1 303 See Other
+Cache-Control: private
+Expires: Thu, 01 Jan 1970 00:00:00 GMT+00:00
+Server:
+Cache-Control: no-cache
+Location: /tech_support_logs/vse/NSX_Edge_Support_edge-4_050217_155853GMT+00:00.log.gz
+Date: Tue, 02 May 2017 15:59:02 GMT
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+Content-Length: 0
+```
+
+In this example, the log location is `https://192.168.110.42/tech_support_logs/vse/NSX_Edge_Support_edge-4_050217_155853GMT+00:00.log.gz`
+
+If your REST client is configured to follow redirects, the request
+retrieves the tech support log file from the file location in the
+**Location** field. Consult your REST client documentation for
+information on saving binary file responses.
+
+Example in curl:
+```
+curl -k -L -s -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' -H "Content-Type: application/xml" -H "Accept: application/xml" -X GET https://192.168.110.42/api/4.0/edges/edge-4/techsupportlogs > NSX_Edge_Support_edge-4.log.gz
+```
 
 ### /4.0/edges/{edgeId}/clisettings
 Working With NSX Edge CLI Settings

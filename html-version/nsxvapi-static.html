@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x64;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#109;">&#x64;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x64;&#111;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#97;&#x63;&#107;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#109;">&#x64;&#111;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#97;&#x63;&#107;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -29572,8 +29572,32 @@ system control configuration. The NSX Edge appliance is rebooted.</p>
     href="#GET/4.0/edges/{edgeId}/techsupportlogs"
   ><h2>GET /4.0/edges/{edgeId}/techsupportlogs</h2></a>
   <div class="content">
-    <p><p>Retrieve the tech support logs for Edge.</p>
-</p>
+    <p><p>Retrieve the tech support logs for the specified NSX Edge.</p>
+<p>The response status for the tech support logs API request is <code>303 See
+Other</code>, and the <strong>Location</strong> header contains the file location of the
+tech support logs on the NSX Manager web server.</p>
+<p>If your REST client is configured to not follow redirects, see the
+Location header to find the location of the tech support logs on the
+NSX Manager web server. You can retrieve the logs from
+<code>https://&lt;nsxmgr-address&gt;/&lt;location&gt;</code>.</p>
+<p>Example in curl:</p>
+<pre><code class="code-block hljs lang-groovy">$ curl -k -i -s -H <span class="hljs-string">'Authorization: Basic YWRtaW46Vk13YXJlMSE='</span> -H <span class="hljs-string">"Content-Type: application/xml"</span> -H <span class="hljs-string">"Accept: application/xml"</span> -X GET <span class="hljs-string">https:</span><span class="hljs-comment">//192.168.110.42/api/4.0/edges/edge-4/techsupportlogs</span>
+HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">303</span> See Other
+Cache-<span class="hljs-string">Control:</span> <span class="hljs-keyword">private</span>
+<span class="hljs-string">Expires:</span> Thu, <span class="hljs-number">01</span> Jan <span class="hljs-number">1970</span> <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span> GMT+<span class="hljs-number">00</span>:<span class="hljs-number">00</span>
+<span class="hljs-string">Server:</span>
+Cache-<span class="hljs-string">Control:</span> no-cache
+<span class="hljs-string">Location:</span> <span class="hljs-regexp">/tech_support_logs/</span>vse/NSX_Edge_Support_edge<span class="hljs-number">-4</span>_050217_155853GMT+<span class="hljs-number">00</span>:<span class="hljs-number">00.</span>log.gz
+<span class="hljs-string">Date:</span> Tue, <span class="hljs-number">02</span> May <span class="hljs-number">2017</span> <span class="hljs-number">15</span>:<span class="hljs-number">59</span>:<span class="hljs-number">02</span> GMT
+Strict-Transport-<span class="hljs-string">Security:</span> max-age=<span class="hljs-number">31536000</span>; includeSubDomains
+X-Frame-<span class="hljs-string">Options:</span> SAMEORIGIN
+Content-<span class="hljs-string">Length:</span> <span class="hljs-number">0</span></code></pre><p>In this example, the log location is <code>https://192.168.110.42/tech_support_logs/vse/NSX_Edge_Support_edge-4_050217_155853GMT+00:00.log.gz</code></p>
+<p>If your REST client is configured to follow redirects, the request
+retrieves the tech support log file from the file location in the
+<strong>Location</strong> field. Consult your REST client documentation for
+information on saving binary file responses.</p>
+<p>Example in curl:</p>
+<pre><code class="code-block hljs lang-elixir">curl -k -L -s -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span> -H <span class="hljs-string">"Content-Type: application/xml"</span> -H <span class="hljs-string">"Accept: application/xml"</span> -X GET <span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/192.168.110.42/api</span><span class="hljs-regexp">/4.0/edges</span><span class="hljs-regexp">/edge-4/techsupportlogs</span> &gt; NSX_Edge_Support_edge-<span class="hljs-number">4</span>.log.gz</code></pre></p>
   </div>
 </div>
 </section>
