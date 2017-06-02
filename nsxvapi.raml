@@ -721,7 +721,7 @@ securitySchemes:
       scopes).
       
       **CDO mode state parameters (read-only)**
-
+      
       The CDO mode state shows the most recent CDO operation, and the status of that operation. The status can be:
       *UNKNOWN*, *PENDING*, *IN_PROGRESS*, *COMPLETED*, or *FAILED*.
      
@@ -937,7 +937,7 @@ securitySchemes:
       displayName: vdnScopeProperties
       description: |
         Retrieve information about the specified transport zone.
-
+        
         **Method history:**
        
         Release | Modification
@@ -2919,9 +2919,9 @@ securitySchemes:
       displayName: securityTagRead
       description: |
         Retrieve all security tags.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method updated. Added **isUniversal** query parameter to filter universal security tags.
@@ -2962,20 +2962,20 @@ securitySchemes:
           displayName: securityTagVMsAction
           description: |
             Attach or detach a security tag to a virtual machine.
-
+            
             This operation does not check that the virtual machine exists in
             the local inventory. This allows you to attach a universal
             security tag to a virtual machine that is connected to a secondary
             NSX Manager (and therefore is not connected to the primary NSX
             Manager where the call is sent).
-
+            
             Possible keys for the tagParameter are:
             * instance_uuid
             * bios_uuid
             * vmname
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.3.0 | Method introduced.
@@ -3011,7 +3011,7 @@ securitySchemes:
             displayName: securityTagVMAttach
             description: |
               Apply a security tag to the specified virtual machine.
-
+              
               **Note:** this method can attach a universal security tag to a
               virtual machine. However, this method checks that the VM exists
               on the NSX Manager to which the API call is sent. In a
@@ -3030,16 +3030,16 @@ securitySchemes:
       /vmDetail:
         displayName: securityTagVMDetail
         description: |
-          Working with Virtual Machine Details for a Specific Security Tag
+          Working With Virtual Machine Details for a Specific Security Tag
           -----
         get:
           displayName: securityTagVMDetailList
           description: |
             Retrieve details about the VMs that are attached to the
             specified security tag.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.3.0 | Method introduced.
@@ -3111,12 +3111,12 @@ securitySchemes:
       displayName: securitytagVmMoidAction
       description: |
         Update security tags associated with the specified virtual machine.
-
+        
         You can assign multiple tags at a time to the specified VM, or clear
         all assigned tags from the specified VM.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
@@ -3143,14 +3143,14 @@ securitySchemes:
   /selection-criteria:
     displayName: securitytagsCriteria
     description: |
-      Working with Security Tags Unique ID Selection Criteria
+      Working With Security Tags Unique ID Selection Criteria
       -------
       In NSX versions before 6.3.0, security tags are local to a NSX Manager,
       and are mapped to VMs using the VM's managed object ID.
       
       In NSX 6.3.0 and later, you can create universal security tags to use in
       all NSX Managers in a cross-vCenter NSX environment.
-
+      
       In an active standby environment, the managed object ID for a given VM
       might not be the same in the active and standby datacenters. NSX 6.3.x
       introduces a Unique ID Selection Criteria on the primary NSX Manager to
@@ -3158,12 +3158,12 @@ securitySchemes:
       You can use them singly or in combination. The VM instance UUID is the
       recommended selection criteria. See the descriptions for more
       information.
-
+     
       The default value for the selection criteria is null and must be set
       before assigning a universal security tag to a VM. The selection
       criteria can be set only on the primary NSX manager and is read-only on
       secondary NSX Managers.
-
+     
       Security Tag Assignment<br>Metadata Parameter | Description
       ------|-------
       instance_uuid | The VM instance UUID is generally unique within a vCenter domain, however there are exceptions such as when deployments are made through snapshots. If the VM instance UUID is not unique, you can use the VM BIOS UUID in combination with the VM name.
@@ -3173,9 +3173,9 @@ securitySchemes:
       displayName: securitytagsCriteriaRead
       description: |
         Retrieve unique ID section criteria configuration.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
@@ -3183,13 +3183,13 @@ securitySchemes:
       displayName: securitytagsCriteriaUpdate
       description: |
         Configure the unique ID section criteria configuration.
-
+        
         If you set the selection criteria and assign security tags to VMs, you
         must remove all security tags from VMs before you can change the
         selection criteria.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
@@ -3398,7 +3398,7 @@ securitySchemes:
         * IP Address Set
         * MAC Address Set
         * Universal Security Groups with *localMembersOnly=false*
-
+        
         When you create a universal security group (on scope
         *universalroot-0*) you can set the extendedAttribute
         **localMembersOnly** to *true* to indicate that the universal security
@@ -3412,12 +3412,12 @@ securitySchemes:
         * MAC Address Set
         * Universal Security Groups with *localMembersOnly=true*
         * Dynamic criteria using VM name
-
+        
         You can set the **localMembersOnly** attribute only when the universal
         security group is created, it cannot be modified afterwards.
- 
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Extended attribute **localMembersOnly** introduced.
@@ -3523,7 +3523,7 @@ securitySchemes:
         * IP Address Set
         * MAC Address Set
         * Universal Security Groups with *localMembersOnly=false*
-
+        
         When you create a universal security group (on scope
         *universalroot-0*) you can set the extendedAttribute
         **localMembersOnly** to *true* to indicate that the universal security
@@ -3537,12 +3537,12 @@ securitySchemes:
         * MAC Address Set
         * Universal Security Groups with *localMembersOnly=true*
         * Dynamic criteria using VM name
-
+        
         You can set the **localMembersOnly** attribute only when the universal
         security group is created, it cannot be modified afterwards.
- 
+         
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Extended attribute **localMembersOnly** introduced.
@@ -4187,7 +4187,7 @@ securitySchemes:
   description: |
     Working With the Appliance Manager
     ========
-
+    
     With the appliance management tool, you can manage:
     * System configurations like network configuration, syslog, time settings,
       and certificate management etc.
@@ -4529,15 +4529,15 @@ securitySchemes:
   /system/securitysettings:
     displayName: systemSecSettings
     description: |
-      Working with Security Settings
+      Working With Security Settings
       ----
     get:
       displayName: systemSecSettingsRead
       description: |
         Retrieve the NSX Manager FIPS and TLS settings.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
@@ -4557,15 +4557,15 @@ securitySchemes:
       displayName: systemSecSettingsUpdate
       description: |
         Update the NSX Manager security settings, including FIPS and TLS.
-
+        
         Do not enable FIPS until you have upgraded all NSX components to NSX
         6.3.0 or later. Enable FIPS on NSX Edges before enabling it on the NSX
         Manager.
-
+        
         Changing the FIPS mode will reboot the NSX Manager appliance.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
@@ -5439,15 +5439,15 @@ securitySchemes:
   description: |
     Working With NSX Manager Audit Logs
     ==========
-
+    
     You can retrieve NSX Manager audit logs. The following table translates the
     names used for modules in the API and the vSphere Web Client UI.
-
+    
     Navigate to **Networking & Security > NSX Managers > *NSX Manager* >
     Monitor > Audit Logs** to view the logs in the vSphere Web Client UI.
-
+    
     ### Module Names for Audit Logs in API and UI
-
+    
     API Names for Audit Log Modules | UI Names for Audit Log Modules
     ---|---
     UNKNOWN | Unknown
@@ -6306,7 +6306,7 @@ securitySchemes:
     /service/{serviceID}:
       displayName: serviceDetails
       description: |
-        Working with a Specific Service on a Cluster
+        Working With a Specific Service on a Cluster
         -----
       uriParameters:
         serviceID:
@@ -7682,9 +7682,9 @@ securitySchemes:
 /2.0/services/alarms/{sourceId}:
   displayName: servicesAlarmsSource
   description: |
-    Working with Alarms from a Specific Source
+    Working With Alarms from a Specific Source
     =====
-
+    
     Some system alerts will show up as alarms in the NSX dashboard. You can
     view and resolve alarms from a specific source.
   uriParameters:
@@ -7702,7 +7702,7 @@ securitySchemes:
     displayName: servicesAlarmsSourceUpdate
     description: |
       Resolve all alarms for the specified source.
-
+      
       Alarms will resolve automatically when the cause of the alarm is
       resolved.  For example, if an NSX Edge appliance is powered off, this
       will trigger an alarm. If you power the NSX Edge appliance back on, the
@@ -7710,7 +7710,7 @@ securitySchemes:
       alarm will persist, because the alarm cause was never resolved. In this
       case, you may want to manually resolve the alarm. Resolving the alarms
       will clear them from the NSX dashboard.
-
+      
       Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
       alarms for the source. Use this response as the request body for the
       `POST` call.
@@ -7855,7 +7855,7 @@ securitySchemes:
 /2.0/services/systemalarms/{alarmId}:
   displayName: servicesSystemAlarmsId
   description: |
-    Working with a Specific Alarm
+    Working With a Specific Alarm
     -------
     Some system alerts will show up as alarms in the NSX dashboard. You can
     view and resolve alarms by alarm ID.
@@ -7869,9 +7869,9 @@ securitySchemes:
     displayName: servicesSystemAlarmsIdRead
     description: |
       Retrieve information about the specified alarm.
-
+      
       **Method history:**
-
+      
       Release | Modification
       --------|-------------
       6.3.0 | Method introduced.
@@ -7907,7 +7907,7 @@ securitySchemes:
     displayName: servicesSystemAlarmsIdAction
     description: | 
       Resolve the specified alarm.
-
+      
       Alarms will resolve automatically when the cause of the alarm is
       resolved.  For example, if an NSX Edge appliance is powered off, this
       will trigger an alarm. If you power the NSX Edge appliance back on, the
@@ -7915,9 +7915,9 @@ securitySchemes:
       alarm will persist, because the alarm cause was never resolved. In this
       case, you may want to manually resolve the alarm. Resolving the alarm 
       will clear it from the NSX dashboard.
-
+      
       **Method history:**
-
+      
       Release | Modification
       --------|-------------
       6.3.0 | Method introduced.
@@ -8293,12 +8293,13 @@ securitySchemes:
         /api/4.0/firewall/globalroot-0/defaultconfig` response body to create
         the request body of `PUT
         /api/4.0/firewall/globalroot-0/config/layer2sections|layer3sections/{sectionId}`.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
+
   /globalroot-0/config:
     displayName: dfwConfig
     description: |
@@ -9282,13 +9283,13 @@ securitySchemes:
           displayName: dfwL2SectionIdDelete
           description: |
             Delete the specified layer 2 section and its contents.
-
+            
             If the default layer 2 firewall section is selected, the request is
             rejected. See `GET /api/4.0/firewall/globalroot-0/defaultconfig`
             for information on resetting the default firewall section.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.3.0 | Method updated. When deleting the default firewall rule section, the method previously removed all rules except for the default rule. The method now returns status 400 and the message `Cannot delete default section <sectionId>`.
@@ -9881,16 +9882,16 @@ securitySchemes:
   /globalroot-0/timeouts:
     displayName: dfwTimeouts
     description: |
-      Working with Distributed Firewall Session Timers
+      Working With Distributed Firewall Session Timers
       -------
       You can configure session timers (session timeouts) for TCP, UDP, and
       ICMP. There is a default configuration, which applies to all VMs protected by
       Distributed Firewall. You can modify the session timers values of the
       default configuration, but not the **appliedTo** values.
-
+      
       You can add additional session timer configurations with different
       **appliedTo** configurations.
-
+      
       Parameter | Description | Comments
       -----|-----|-----
       **appliedTo > value** | The ID of the object on which to apply the timeout settings. | Required. For example VM ID *vm-216*.
@@ -9911,9 +9912,9 @@ securitySchemes:
       displayName: dfwTimeoutsList
       description: |
         Retrieve Distributed Firewall session timer configuration.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
@@ -9953,9 +9954,9 @@ securitySchemes:
       displayName: dfwTimeoutCreate
       description: |
         Create a Distributed Firewall session timer configuration.
-
+        
         **Method history:**
-
+        
         Release | Modification
         --------|-------------
         6.3.0 | Method introduced.
@@ -9999,9 +10000,9 @@ securitySchemes:
         displayName: dfwTimeoutConfigIdRead
         description: |
           Retrieve the specified Distributed Firewall session timer configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.3.0 | Method introduced.
@@ -10009,9 +10010,9 @@ securitySchemes:
         displayName: dfwTimeoutConfigIdUpdate
         description: |
           Update the specified Distributed Firewall session timer configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.3.0 | Method introduced.
@@ -10050,9 +10051,9 @@ securitySchemes:
         displayName: dfwTimeoutConfigIdDelete
         description: |
           Delete the specified Distributed Firewall session timer configuration.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.3.0 | Method introduced.
@@ -11485,7 +11486,7 @@ securitySchemes:
     /fips:
       displayName: fips
       description: |
-        Working with FIPS on NSX Edge
+        Working With FIPS on NSX Edge
         ----
       post:
         displayName: fipsCreate
@@ -11519,9 +11520,9 @@ securitySchemes:
         displayName: summaryRead
         description: |
           Retrieve details about the specified NSX Edge.
-
+          
           **Method history:**
-
+          
           Release | Modification
           --------|-------------
           6.3.0 | Method updated. **enableFips** parameter added to **appliancesSummary**.
@@ -12656,7 +12657,7 @@ securitySchemes:
               Update the specified NAT rule.
               
               **Method history:**
-
+              
               Release | Modification
               --------|-------------
               6.2.3 | Method updated. **vnic** parameter is now optional. The **originalAddress** for DNAT rules is no longer required to be one of the IPs on the NSX Edge vNics.
@@ -12780,30 +12781,30 @@ securitySchemes:
         **bgpFilter > network**  | The network that you want to filter to or from the neighbor. | CIDR format. IPv4 only. IPv6 is not supported.
         **bgpFilter > ipPrefixGe**  | The IP prefixes that are to be filtered.  Filter prefixes greater than or equal to this value.  | Optional. Integer. Specify valid IPv4 prefixes.
         **bgpFilter > ipPrefixLe**  | The IP prefixes that are to be filtered. Filter prefixes less than or equal to this value. | Optional. Integer. Specify valid IPv4 prefixes. 
-
+        
         **Note:** New parameters **localASNumber** and **remoteASNumber** have
         been added in NSX 6.3.0 to allow configuration of 4 byte AS numbers.
         The previous parameters, **localAS** and **remoteAS** are still valid.
-
+        
         When you configure BGP, you must provide a local AS number parameter
         (**localAS** or **localASNumber**) and a remote AS number parameter
         (**remoteAS** or **remoteASNumber**). If you provide both forms of
         either local or remote AS number (for example, **localAS** and
         **localASNumber**), the values must be the same.
-
+        
         You can use any combination of remote and local AS parameters, as long
         as the values are valid. For example, **localAS** of *65501* and
         **remoteASNumber** of *70000*.
-
+        
         If you configure a 2 byte number, both forms of the AS number
         parameters are returned with a GET request (for example, **localAS**
         and **localASNumber**). If you configure a 4 byte number, only the 4
         byte parameter is returned (**localASNumber**).  
-
+        
         If both parameters are present (for example **localAS** and
         **localASNumber**), and you update one parameter (**localAS**)
         subsequent GET requests will show both parameters updated.  
-
+        
         ### Route Redistribution Configuration for OSPF or BGP
         
         Parameter  |   Description  | Comments  
@@ -14088,9 +14089,9 @@ securitySchemes:
           displayName: poolsCreate
           description: |
             Add a load balancer server pool to the Edge.
-
+            
             **Method history:**
-
+            
             Release | Modification
             --------|-------------
             6.3.0 | Method updated. Member **condition** can be set to *drain*.
@@ -14274,9 +14275,9 @@ securitySchemes:
             displayName: poolUpdate
             description: |
               Update the specified server pool.
-
+              
               **Method history:**
-
+              
               Release | Modification
               --------|-------------
               6.3.0 | Method updated. Member **condition** can be set to *drain*.
@@ -14553,7 +14554,6 @@ securitySchemes:
         maximum 8196 MB. The default listeners is any, which means listen on all
         NSX Edge interfaces. If provided, the listener’s IP address must be
         assigned to an internal interface. Logging is disabled by default.
-
       get:
         displayName: edgeDnsRead
         description: Retrieve DNS configuration.
@@ -16259,7 +16259,6 @@ securitySchemes:
         **egressOptimization** | The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel. |Optional.
         **dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh2* is selected by default.
         **extension** |Default value is *securelocaltrafficbyip=192.168.11.1*. To disable this extension, replace with securelocaltrafficbyip=0.|
-
       get:
         displayName: ipsecConfigRead
         description: Retrieve IPsec configuration.

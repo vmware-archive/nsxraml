@@ -1055,7 +1055,7 @@ that the VM is local to the NSX Manager.
 * **delete** *(secured)*: Detach a security tag from the specified virtual machine.
 
 ### /2.0/services/securitytags/tag/{tagId}/vmDetail
-Working with Virtual Machine Details for a Specific Security Tag
+Working With Virtual Machine Details for a Specific Security Tag
 -----
 
 * **get** *(secured)*: Retrieve details about the VMs that are attached to the
@@ -1086,7 +1086,7 @@ Release | Modification
 6.3.0 | Method introduced.
 
 ### /2.0/services/securitytags/selection-criteria
-Working with Security Tags Unique ID Selection Criteria
+Working With Security Tags Unique ID Selection Criteria
 -------
 In NSX versions before 6.3.0, security tags are local to a NSX Manager,
 and are mapped to VMs using the VM's managed object ID.
@@ -1284,7 +1284,7 @@ security group with *localMembersOnly=true* (active standby):
 
 You can set the **localMembersOnly** attribute only when the universal
 security group is created, it cannot be modified afterwards.
-
+ 
 **Method history:**
 
 Release | Modification
@@ -1595,7 +1595,7 @@ Working With DNS Configuration
 * **delete** *(secured)*: Delete DNS server configuration.
 
 ### /1.0/appliance-management/system/securitysettings
-Working with Security Settings
+Working With Security Settings
 ----
 
 * **get** *(secured)*: Retrieve the NSX Manager FIPS and TLS settings.
@@ -2306,7 +2306,7 @@ service depends on.
 In order to uninstall services in any order, set parameter ignoreDependency to true.
 
 ### /2.0/si/deploy/cluster/{clusterID}/service/{serviceID}
-Working with a Specific Service on a Cluster
+Working With a Specific Service on a Cluster
 -----
 
 * **get** *(secured)*: Retrieve detailed information about the service.
@@ -2957,7 +2957,7 @@ secondary managers.
 * **get** *(secured)*: List MAC address sets on the specified scope.
 
 ## servicesAlarmsSource
-Working with Alarms from a Specific Source
+Working With Alarms from a Specific Source
 =====
 
 Some system alerts will show up as alarms in the NSX dashboard. You can
@@ -2982,7 +2982,7 @@ alarms for the source. Use this response as the request body for the
 `POST` call.
 
 ## servicesSystemAlarmsId
-Working with a Specific Alarm
+Working With a Specific Alarm
 -------
 Some system alerts will show up as alarms in the NSX dashboard. You can
 view and resolve alarms by alarm ID.
@@ -3739,7 +3739,7 @@ Import a Firewall Configuration
 * **post** *(secured)*: Import a configuration.
 
 ### /4.0/firewall/globalroot-0/timeouts
-Working with Distributed Firewall Session Timers
+Working With Distributed Firewall Session Timers
 -------
 You can configure session timers (session timeouts) for TCP, UDP, and
 ICMP. There is a default configuration, which applies to all VMs protected by
@@ -4413,7 +4413,7 @@ to save core-dump files. Disabling detaches the disk.
 * **post** *(secured)*: Modify core dump setting.
 
 ### /4.0/edges/{edgeId}/fips
-Working with FIPS on NSX Edge
+Working With FIPS on NSX Edge
 ----
 
 * **post** *(secured)*: Modify FIPS setting.
