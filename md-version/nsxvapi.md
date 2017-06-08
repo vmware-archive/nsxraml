@@ -367,6 +367,12 @@ You can check the progress of the VXLAN port update with
 Only try resuming the port update if it has failed to complete. You
 should not need to resume the port update under normal circumstances.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+
 ### /2.0/vdn/config/resources/allocated
 Working With Allocated Resources
 ------
