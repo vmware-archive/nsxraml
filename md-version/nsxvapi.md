@@ -351,7 +351,7 @@ Release | Modification
 6.2.3 | Method introduced.
 
 ### /2.0/vdn/config/vxlan/udp/port/resume
-VXLAN Port Configuration Update Resume
+Resume VXLAN Port Configuration Update
 ----
 
 * **post** *(secured)*: If you update the VXLAN port using the **Change** button on
@@ -364,8 +364,8 @@ the port config change.
 You can check the progress of the VXLAN port update with 
 `GET /api/2.0/vdn/config/vxlan/udp/port/taskStatus`.
 
-Only try resuming the port update if has failed to complete. You should
-not need to resume the port update under normal circumstances.
+Only try resuming the port update if it has failed to complete. You
+should not need to resume the port update under normal circumstances.
 
 ### /2.0/vdn/config/resources/allocated
 Working With Allocated Resources
