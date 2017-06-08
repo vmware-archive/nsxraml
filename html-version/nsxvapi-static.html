@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#100;&#111;&#x63;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#x72;&#x65;&#x2e;&#99;&#x6f;&#109;">&#100;&#111;&#x63;&#102;&#101;&#101;&#x64;&#98;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#x72;&#x65;&#x2e;&#99;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#100;&#111;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;">&#100;&#111;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -261,7 +261,23 @@ restore, status, and summary reports of appliance health.</li>
   ><h2>POST /1.0/appliance-management/backuprestore/backup</h2></a>
   <div class="content">
     <p><p>Start an on-demand NSX backup.</p>
+<p>You must set the <strong>Content-Type</strong> header to <em>application/xml</em> for the
+backup to run successfully.</p>
 </p>
+    <div class="params">
+      <h3>Request Headers</h3>
+        <dl>
+  <dt>
+    <span class="param">Content-Type</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Specify <em>application/xml</em>.</p>
+
+  </dd>
+</dl>
+    </div>
   </div>
 </div>
 </section>
@@ -285,9 +301,14 @@ restore, status, and summary reports of appliance health.</li>
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">list</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">backupFileProperties</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fileName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fileName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fileSize</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fileSize</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">creationTime</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">creationTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fileName</span>&gt;</span>SiteA_00_27_58_Thu08Jun2017<span class="hljs-tag">&lt;/<span class="hljs-name">fileName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fileSize</span>&gt;</span>3645472<span class="hljs-tag">&lt;/<span class="hljs-name">fileSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">creationTime</span>&gt;</span>1496881678000<span class="hljs-tag">&lt;/<span class="hljs-name">creationTime</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">backupFileProperties</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">backupFileProperties</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fileName</span>&gt;</span>SiteA_01_06_16_Wed07Jun2017<span class="hljs-tag">&lt;/<span class="hljs-name">fileName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fileSize</span>&gt;</span>3604512<span class="hljs-tag">&lt;/<span class="hljs-name">fileSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">creationTime</span>&gt;</span>1496797576000<span class="hljs-tag">&lt;/<span class="hljs-name">creationTime</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">backupFileProperties</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span>
 </code></pre>
@@ -300,20 +321,84 @@ restore, status, and summary reports of appliance health.</li>
 system configuration, events, and audit log tables. Configuration tables
 are included in every backup. Backups are saved to a remote location that
 must be accessible by the NSX Manager.</p>
-<p>Parameters for the NSX Manager appliance backup:</p>
-<ul>
-<li><strong>transferProtocol</strong>: <em>FTP, SFTP</em></li>
-<li><strong>frequency</strong>: <em>weekly, daily, hourly</em></li>
-<li><strong>dayOfWeek</strong>: <em>SUNDAY, MONDAY, ...., SATURDAY</em></li>
-<li><strong>hourOfDay</strong>: [<em>0-24</em>]</li>
-<li><strong>minuteOfHour</strong>: [<em>0-60</em>]</li>
-<li><strong>excludeTables</strong>: <em>AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS</em><br>The tables specified in the <strong>excludeTables</strong> parameter are not backed up.</li>
-</ul>
-<p>You must set a <strong>passPhrase</strong> for the backups. The passphrase is used
-to create and read backup files. If you do not set a passphrase, backups
-will fail. If you forget the passphrase set on a backup file, you cannot
-restore that backup file.</p>
-</div>
+<p><strong>FTP parameters for backup and restore</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>transferProtocol</strong></td>
+<td>Transfer protocol.</td>
+<td>Required. <em>SFTP</em> or <em>FTP</em>.</td>
+</tr>
+<tr>
+<td><strong>hostNameIPAddress</strong></td>
+<td>Backup server hostname or IP address.</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>port</strong></td>
+<td>Transfer protocol port.</td>
+<td>Required. Determined by backup server configuration, standard ports are <em>22</em> for <em>SFTP</em>, <em>21</em> for <em>FTP</em>.</td>
+</tr>
+<tr>
+<td><strong>userName</strong></td>
+<td>User name to log in to backup server.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>password</strong></td>
+<td>Password for user on backup server.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>backupDirectory</strong></td>
+<td>Directory location to save backup files on backup server.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>fileNamePrefix</strong></td>
+<td>Prefix for backup files.</td>
+<td>Required. </td>
+</tr>
+<tr>
+<td><strong>passPhrase</strong></td>
+<td>Passphrase to encrypt and decrypt backups.</td>
+<td>Required.</td>
+</tr>
+</tbody></table><p><strong>Backup frequency parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>frequency</strong></td>
+<td>Frequency to run backups</td>
+<td><em>WEEKLY</em>, <em>DAILY</em>, or <em>HOURLY</em>.</td>
+</tr>
+<tr>
+<td><strong>dayOfWeek</strong></td>
+<td>Day of week to run backups.</td>
+<td>Required for <em>WEEKLY</em> backups. <em>SUNDAY, MONDAY, ..., SATURDAY</em>.</td>
+</tr>
+<tr>
+<td><strong>hourOfDay</strong></td>
+<td>Hour of day to run backups.</td>
+<td>Required for <em>WEEKLY</em> and <em>DAILY</em> backups. [<em>0-23</em>].</td>
+</tr>
+<tr>
+<td><strong>minuteOfHour</strong></td>
+<td>Minute of hour to run backups.</td>
+<td>Required for <em>WEEKLY</em>, <em>DAILY</em>, and <em>HOURLY</em> backups. [<em>0-59</em>].</td>
+</tr>
+<tr>
+<td><strong>excludeTable</strong></td>
+<td>Table to exclude from backups.</td>
+<td>Optional if <strong>excludeTables</strong> section is omitted. Specify <em>AUDIT_LOG</em>, <em>SYSTEM_EVENTS</em>, or <em>FLOW_RECORDS</em>. You can provide multiple <strong>excludeTable</strong> parameters.</td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -332,26 +417,23 @@ restore that backup file.</p>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ftpSettings</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span>SFTP<span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>192.168.110.30<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>10.2.56.199<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>22<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>testing123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>/backups<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">passPhrase</span>&gt;</span>testing456<span class="hljs-tag">&lt;/<span class="hljs-name">passPhrase</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>backup-user<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>backups<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span>SiteA_<span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">passiveMode</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">passiveMode</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">useEPRT</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">useEPRT</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">useEPSV</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">useEPSV</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ftpSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">backupFrequency</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>DAILY<span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>WEEKLY<span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dayOfWeek</span>&gt;</span>SUNDAY<span class="hljs-tag">&lt;/<span class="hljs-name">dayOfWeek</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">hourOfDay</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">hourOfDay</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">minuteOfHour</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">minuteOfHour</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">backupFrequency</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">excludeTables</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>AUDIT_LOGS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>SYSTEM_EVENTS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>FLOW_RECORDS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">excludeTables</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
 </code></pre>
@@ -365,6 +447,10 @@ restore that backup file.</p>
   ><h2>PUT /1.0/appliance-management/backuprestore/backupsettings</h2></a>
   <div class="content">
     <p><p>Configure backups on the appliance manager.</p>
+<p>You must set a <strong>passPhrase</strong> for the backups. The passphrase is used
+to encrypt and decrypt backup files. If you do not set a passphrase, backups
+will fail. If you forget the passphrase set on a backup file, you cannot
+restore that backup file.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -414,12 +500,12 @@ restore that backup file.</p>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">backupRestoreSettings</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ftpSettings</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span>SFTP<span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>192.168.110.30<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>10.2.56.199<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>22<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>backup-user<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>testing123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>/backups<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span>nsxmgr-01a<span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>backups<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span>SiteA_<span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">passPhrase</span>&gt;</span>testing456<span class="hljs-tag">&lt;/<span class="hljs-name">passPhrase</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">passiveMode</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">passiveMode</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">useEPRT</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">useEPRT</span>&gt;</span>
@@ -463,6 +549,11 @@ restore that backup file.</p>
   <div class="content">
     <p><p>Specify tables that need not be backed up.</p>
 </p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">excludeTables</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">excludeTable</span>&gt;</span>AUDIT_LOGS<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTable</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">excludeTables</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -479,6 +570,21 @@ restore that backup file.</p>
   <div class="content">
     <p><p>Configure FTP settings.</p>
 </p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ftpSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span>SFTP<span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>10.2.56.199<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>22<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>backup-user<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>testing123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>backups<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">filenamePrefix</span>&gt;</span>SiteA_<span class="hljs-tag">&lt;/<span class="hljs-name">filenamePrefix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">passPhrase</span>&gt;</span>testing456<span class="hljs-tag">&lt;/<span class="hljs-name">passPhrase</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">passiveMode</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">passiveMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">useEPRT</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">useEPRT</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">useEPSV</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">useEPSV</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ftpSettings</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -495,6 +601,14 @@ restore that backup file.</p>
   <div class="content">
     <p><p>Set backup schedule.</p>
 </p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">backupFrequency</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>WEEKLY<span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dayOfWeek</span>&gt;</span>SUNDAY<span class="hljs-tag">&lt;/<span class="hljs-name">dayOfWeek</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hourOfDay</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">hourOfDay</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">minuteOfHour</span>&gt;</span>15<span class="hljs-tag">&lt;/<span class="hljs-name">minuteOfHour</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">backupFrequency</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method delete">

@@ -1736,23 +1736,37 @@ system configuration, events, and audit log tables. Configuration tables
 are included in every backup. Backups are saved to a remote location that
 must be accessible by the NSX Manager.
 
-Parameters for the NSX Manager appliance backup:
+**FTP parameters for backup and restore**
 
-* **transferProtocol**: *FTP, SFTP*
-* **frequency**: *weekly, daily, hourly*
-* **dayOfWeek**: *SUNDAY, MONDAY, ...., SATURDAY*
-* **hourOfDay**: [*0-24*]
-* **minuteOfHour**: [*0-60*]
-* **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
-The tables specified in the **excludeTables** parameter are not backed up.
+Parameter | Description | Comments
+---|---|---
+**transferProtocol** | Transfer protocol. | Required. *SFTP* or *FTP*.
+**hostNameIPAddress** | Backup server hostname or IP address. | Required. 
+**port** | Transfer protocol port. | Required. Determined by backup server configuration, standard ports are *22* for *SFTP*, *21* for *FTP*.
+**userName** | User name to log in to backup server. | Required.
+**password**| Password for user on backup server. | Required.
+**backupDirectory** | Directory location to save backup files on backup server. |  Required.
+**fileNamePrefix** | Prefix for backup files. | Required. 
+**passPhrase** | Passphrase to encrypt and decrypt backups. | Required.
 
-You must set a **passPhrase** for the backups. The passphrase is used
-to create and read backup files. If you do not set a passphrase, backups
-will fail. If you forget the passphrase set on a backup file, you cannot
-restore that backup file.
+**Backup frequency parameters**
+
+Parameter | Description | Comments
+---|---|---
+**frequency** | Frequency to run backups | *WEEKLY*, *DAILY*, or *HOURLY*.
+**dayOfWeek** | Day of week to run backups. | Required for *WEEKLY* backups. *SUNDAY, MONDAY, ..., SATURDAY*.
+**hourOfDay** | Hour of day to run backups. | Required for *WEEKLY* and *DAILY* backups. [*0-23*].
+**minuteOfHour** | Minute of hour to run backups. | Required for *WEEKLY*, *DAILY*, and *HOURLY* backups. [*0-59*].
+**excludeTable** | Table to exclude from backups. | Optional if **excludeTables** section is omitted. Specify *AUDIT_LOG*, *SYSTEM_EVENTS*, or *FLOW_RECORDS*. You can provide multiple **excludeTable** parameters.
 
 * **get** *(secured)*: Retrieve backup settings.
 * **put** *(secured)*: Configure backups on the appliance manager.
+
+You must set a **passPhrase** for the backups. The passphrase is used
+to encrypt and decrypt backup files. If you do not set a passphrase, backups
+will fail. If you forget the passphrase set on a backup file, you cannot
+restore that backup file.
+
 * **delete** *(secured)*: Delete appliance manager backup configuration.
 
 ### /1.0/appliance-management/backuprestore/backupsettings/ftpsettings
@@ -1782,6 +1796,9 @@ NSX Manager Appliance On-Demand Backup
 ----
 
 * **post** *(secured)*: Start an on-demand NSX backup.
+
+You must set the **Content-Type** header to *application/xml* for the
+backup to run successfully.
 
 ### /1.0/appliance-management/backuprestore/backups
 Working With NSX Manager Appliance Backup Files

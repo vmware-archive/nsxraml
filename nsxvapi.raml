@@ -4953,20 +4953,28 @@ securitySchemes:
       are included in every backup. Backups are saved to a remote location that
       must be accessible by the NSX Manager.
       
-      Parameters for the NSX Manager appliance backup:
+      **FTP parameters for backup and restore**
       
-      * **transferProtocol**: *FTP, SFTP*
-      * **frequency**: *weekly, daily, hourly*
-      * **dayOfWeek**: *SUNDAY, MONDAY, ...., SATURDAY*
-      * **hourOfDay**: [*0-24*]
-      * **minuteOfHour**: [*0-60*]
-      * **excludeTables**: *AUDIT_LOG, SYSTEM_EVENTS, FLOW_RECORDS*  
-      The tables specified in the **excludeTables** parameter are not backed up.
+      Parameter | Description | Comments
+      ---|---|---
+      **transferProtocol** | Transfer protocol. | Required. *SFTP* or *FTP*.
+      **hostNameIPAddress** | Backup server hostname or IP address. | Required. 
+      **port** | Transfer protocol port. | Required. Determined by backup server configuration, standard ports are *22* for *SFTP*, *21* for *FTP*.
+      **userName** | User name to log in to backup server. | Required.
+      **password**| Password for user on backup server. | Required.
+      **backupDirectory** | Directory location to save backup files on backup server. |  Required.
+      **fileNamePrefix** | Prefix for backup files. | Required. 
+      **passPhrase** | Passphrase to encrypt and decrypt backups. | Required.
       
-      You must set a **passPhrase** for the backups. The passphrase is used
-      to create and read backup files. If you do not set a passphrase, backups
-      will fail. If you forget the passphrase set on a backup file, you cannot
-      restore that backup file.
+      **Backup frequency parameters**
+      
+      Parameter | Description | Comments
+      ---|---|---
+      **frequency** | Frequency to run backups | *WEEKLY*, *DAILY*, or *HOURLY*.
+      **dayOfWeek** | Day of week to run backups. | Required for *WEEKLY* backups. *SUNDAY, MONDAY, ..., SATURDAY*.
+      **hourOfDay** | Hour of day to run backups. | Required for *WEEKLY* and *DAILY* backups. [*0-23*].
+      **minuteOfHour** | Minute of hour to run backups. | Required for *WEEKLY*, *DAILY*, and *HOURLY* backups. [*0-59*].
+      **excludeTable** | Table to exclude from backups. | Optional if **excludeTables** section is omitted. Specify *AUDIT_LOG*, *SYSTEM_EVENTS*, or *FLOW_RECORDS*. You can provide multiple **excludeTable** parameters.
     get:
       displayName: applianceMgrBackupSettingsRead
       description: Retrieve backup settings.
@@ -4978,43 +4986,46 @@ securitySchemes:
                 <backupRestoreSettings>
                   <ftpSettings>
                     <transferProtocol>SFTP</transferProtocol>
-                    <hostNameIPAddress>192.168.110.30</hostNameIPAddress>
+                    <hostNameIPAddress>10.2.56.199</hostNameIPAddress>
                     <port>22</port>
-                    <userName>admin</userName>
-                    <password>testing123</password>
-                    <backupDirectory>/backups</backupDirectory>
-                    <filenamePrefix>nsxmgr-01a</filenamePrefix>
-                    <passPhrase>testing456</passPhrase>
+                    <userName>backup-user</userName>
+                    <backupDirectory>backups</backupDirectory>
+                    <filenamePrefix>SiteA_</filenamePrefix>
                     <passiveMode>true</passiveMode>
                     <useEPRT>false</useEPRT>
                     <useEPSV>true</useEPSV>
                   </ftpSettings>
                   <backupFrequency>
-                    <frequency>DAILY</frequency>
+                    <frequency>WEEKLY</frequency>
+                    <dayOfWeek>SUNDAY</dayOfWeek>
                     <hourOfDay>2</hourOfDay>
                     <minuteOfHour>15</minuteOfHour>
                   </backupFrequency>
                   <excludeTables>
                     <excludeTable>AUDIT_LOGS</excludeTable>
-                    <excludeTable>SYSTEM_EVENTS</excludeTable>
-                    <excludeTable>FLOW_RECORDS</excludeTable>
                   </excludeTables>
                 </backupRestoreSettings>
     put:
       displayName: applianceMgrBackupSettingsUpdate
-      description: Configure backups on the appliance manager.
+      description: |
+        Configure backups on the appliance manager.
+        
+        You must set a **passPhrase** for the backups. The passphrase is used
+        to encrypt and decrypt backup files. If you do not set a passphrase, backups
+        will fail. If you forget the passphrase set on a backup file, you cannot
+        restore that backup file.
       body:
         application/xml:
           example: |
             <backupRestoreSettings>
               <ftpSettings>
                 <transferProtocol>SFTP</transferProtocol>
-                <hostNameIPAddress>192.168.110.30</hostNameIPAddress>
+                <hostNameIPAddress>10.2.56.199</hostNameIPAddress>
                 <port>22</port>
-                <userName>admin</userName>
+                <userName>backup-user</userName>
                 <password>testing123</password>
-                <backupDirectory>/backups</backupDirectory>
-                <filenamePrefix>nsxmgr-01a</filenamePrefix>
+                <backupDirectory>backups</backupDirectory>
+                <filenamePrefix>SiteA_</filenamePrefix>
                 <passPhrase>testing456</passPhrase>
                 <passiveMode>true</passiveMode>
                 <useEPRT>false</useEPRT>
@@ -5043,6 +5054,22 @@ securitySchemes:
       put:
         displayName: applianceMgrBackupSettingsFtpUpdate
         description: Configure FTP settings.
+        body:
+          application/xml:
+            example: |
+              <ftpSettings>
+                <transferProtocol>SFTP</transferProtocol>
+                <hostNameIPAddress>10.2.56.199</hostNameIPAddress>
+                <port>22</port>
+                <userName>backup-user</userName>
+                <password>testing123</password>
+                <backupDirectory>backups</backupDirectory>
+                <filenamePrefix>SiteA_</filenamePrefix>
+                <passPhrase>testing456</passPhrase>
+                <passiveMode>true</passiveMode>
+                <useEPRT>false</useEPRT>
+                <useEPSV>true</useEPSV>
+              </ftpSettings>
     /excludedata:
       displayName: applianceMgrBackupSettingsExclude
       description: |
@@ -5052,6 +5079,12 @@ securitySchemes:
       put:
         displayName: applianceMgrBackupSettingsExcludeUpdate
         description: Specify tables that need not be backed up.
+        body:
+          application/xml:
+            example: |
+              <excludeTables>
+                <excludeTable>AUDIT_LOGS</excludeTable>
+              </excludeTables>
     /schedule:
       displayName: applianceMgrBackupSettingsSchedule
       description: |
@@ -5061,6 +5094,15 @@ securitySchemes:
       put:
         displayName: applianceMgrBackupSettingsScheduleUpdate
         description: Set backup schedule.
+        body:
+          application/xml:
+            example: |
+              <backupFrequency>
+                <frequency>WEEKLY</frequency>
+                <dayOfWeek>SUNDAY</dayOfWeek>
+                <hourOfDay>2</hourOfDay>
+                <minuteOfHour>15</minuteOfHour>
+              </backupFrequency>
       delete:
         displayName: applianceMgrBackupSettingsScheduleDelete
         description: Delete backup schedule.
@@ -5071,7 +5113,16 @@ securitySchemes:
       ----
     post:
       displayName: applianceMgrBackupCreate # existing dupfix applianceMgrBackup
-      description: Start an on-demand NSX backup.
+      description: |
+        Start an on-demand NSX backup.
+        
+        You must set the **Content-Type** header to *application/xml* for the
+        backup to run successfully.
+      headers:
+        Content-Type:
+          displayName: Content-Type
+          description: Specify *application/xml*.
+          required: true
   /backuprestore/backups:
     displayName: applianceMgrBackups
     description: |
@@ -5088,9 +5139,14 @@ securitySchemes:
               example: |
                 <list>
                   <backupFileProperties>
-                    <fileName></fileName>
-                    <fileSize></fileSize>
-                    <creationTime></creationTime>
+                    <fileName>SiteA_00_27_58_Thu08Jun2017</fileName>
+                    <fileSize>3645472</fileSize>
+                    <creationTime>1496881678000</creationTime>
+                  </backupFileProperties>
+                  <backupFileProperties>
+                    <fileName>SiteA_01_06_16_Wed07Jun2017</fileName>
+                    <fileSize>3604512</fileSize>
+                    <creationTime>1496797576000</creationTime>
                   </backupFileProperties>
                 </list>
   /backuprestore/restore:
