@@ -605,8 +605,6 @@ securitySchemes:
           displayName: portNumber
           description: A valid UDP port for VXLAN
       put:
-      # updated 6.2.3: Port change is no longer disruptive. New force query
-      # parameter allows port change using the previous disruptive mechanism.
         displayName: vdnConfigUDPUpdateUpdate # dupfix vdnConfigUDPUpdate
         description: |
           Update the VXLAN port configuration to use port *portNumber*.
@@ -660,6 +658,26 @@ securitySchemes:
                     <taskPhase>PHASE_TWO</taskPhase>
                     <taskStatus>PAUSED</taskStatus>
                   </vxlanPortUpdatingStatus>
+    /resume:
+      displayName: vdnConfigUDPUpdateResume
+      description: |
+        VXLAN Port Configuration Update Resume
+        ----
+      post:
+        displayName: vdnConfigUDPUpdateResumeExecute
+        description: |
+          If you update the VXLAN port using the **Change** button on
+          the **Installation > Logical Network Preparation** page in the vSphere
+          Web Client, or using `PUT
+          /api/2.0/vdn/config/vxlan/udp/port/{portNumber}` without the **force**
+          parameter, and the port update does not complete, you can try resuming
+          the port config change.
+          
+          You can check the progress of the VXLAN port update with 
+          `GET /api/2.0/vdn/config/vxlan/udp/port/taskStatus`.
+          
+          Only try resuming the port update if has failed to complete. You should
+          not need to resume the port update under normal circumstances.
   /resources/allocated:
     displayName: allocatedResources
     description: |

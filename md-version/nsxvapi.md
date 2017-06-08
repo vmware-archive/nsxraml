@@ -350,6 +350,23 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
+### /2.0/vdn/config/vxlan/udp/port/resume
+VXLAN Port Configuration Update Resume
+----
+
+* **post** *(secured)*: If you update the VXLAN port using the **Change** button on
+the **Installation > Logical Network Preparation** page in the vSphere
+Web Client, or using `PUT
+/api/2.0/vdn/config/vxlan/udp/port/{portNumber}` without the **force**
+parameter, and the port update does not complete, you can try resuming
+the port config change.
+
+You can check the progress of the VXLAN port update with 
+`GET /api/2.0/vdn/config/vxlan/udp/port/taskStatus`.
+
+Only try resuming the port update if has failed to complete. You should
+not need to resume the port update under normal circumstances.
+
 ### /2.0/vdn/config/resources/allocated
 Working With Allocated Resources
 ------
