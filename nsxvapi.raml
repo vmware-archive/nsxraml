@@ -15066,9 +15066,36 @@ securitySchemes:
               required: true
               displayName: bindingID
               description: Specified static-binding ID
+          get:
+            displayName: dhcpStaticBindingIDRead
+            description: |
+              Retrieve the specified static binding.
+              
+              **Method history:**
+              
+              Release | Modification
+              --------|-------------
+              6.3.3 | Method introduced.   
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                      <staticBinding>
+                        <autoConfigureDNS>false</autoConfigureDNS>
+                        <defaultGateway>172.16.20.1</defaultGateway>
+                        <domainName>corp.local</domainName>
+                        <primaryNameServer>192.168.110.10</primaryNameServer>
+                        <leaseTime>86400</leaseTime>
+                        <subnetMask>255.255.255.0</subnetMask>
+                        <bindingId>binding-1</bindingId>
+                        <hostname>app-01a</hostname>
+                        <macAddress>00:50:56:AE:23:B9</macAddress>
+                        <ipAddress>172.16.20.11</ipAddress>
+                      </staticBinding>
           delete:
             displayName: dhcpStaticBindingIDDelete
-            description: Delete the static-binding by ID
+            description: Delete the specified static binding.
       /relay:
         displayName: dhcpRelay
         description: |

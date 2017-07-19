@@ -5598,7 +5598,15 @@ Release | Modification
 Working With a Specific DHCP Static Binding
 ----
 
-* **delete** *(secured)*: Delete the static-binding by ID
+* **get** *(secured)*: Retrieve the specified static binding.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method introduced.   
+
+* **delete** *(secured)*: Delete the specified static binding.
 
 ### /4.0/edges/{edgeId}/dhcp/config/relay
 Working With DHCP Relays
