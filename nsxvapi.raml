@@ -5587,6 +5587,78 @@ securitySchemes:
         description: !include documentation/reuse/pagesize-1024
         required: false
         default: 256
+/1.0/telemetry:
+  displayName: telemetry
+  description: |
+    Working With the VMware Customer Experience Improvement Program
+    =====
+    
+    NSX participates in VMware’s Customer Experience Improvement Program (CEIP).
+    
+    See "Customer Experience Improvement Program" in the *NSX Administration
+    Guide* for more information.
+
+  /config:
+    displayName: telemetryConfig
+    description: |
+      Working With the VMware CEIP Configuration
+      ----
+      You can join or leave the CEIP at any time. You can also define the
+      frequency and the days the information is collected.
+      
+      **CEIP Parameters**
+      
+      Parameter | Description | Comments
+      ---|---|---
+      **enabled** | Enable status of data collection | *true* or *false*.
+      **frequency** | Frequency of data collection | *daily*, *weekly*, or *monthly*.
+      **dayOfWeek** | Day to collect data | *SUNDAY*, *MONDAY*, ... *SATURDAY*.
+      **hourOfDay** | Hour to collect data | *0-23*.
+      **minutes** | Minute to collect data | *0-59*. Read only.
+      **lastCollectionTime** | Time of last collection. | Timestamp in milliseconds. Read only.
+      
+    get:
+      displayName: telemetryConfigRead
+      description: |
+        Retrieve the CEIP configuration.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced. 
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <telemetryConfiguration>
+                  <enabled>true</enabled>
+                  <frequency>weekly</frequency>
+                  <dayOfWeek>MONDAY</dayOfWeek>
+                  <hourOfDay>2</hourOfDay>
+                  <minutes>0</minutes>
+                  <lastCollectionTime>1499369743000</lastCollectionTime>
+                </telemetryConfiguration>
+    put:
+      displayName: telemetryConfigUpdate
+      description: |
+        Update the CEIP configuration.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced. 
+      body:
+        application/xml:
+          example: |
+            <telemetryConfiguration>
+              <enabled>true</enabled>
+              <frequency>daily</frequency>
+              <hourOfDay>2</hourOfDay>
+              <minutes>0</minutes>
+            </telemetryConfiguration>
 /2.0/nwfabric:
   displayName: nwfabric
   description: |

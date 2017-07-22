@@ -2039,6 +2039,48 @@ SECURITY_TAG | Security Tag
 
 * **get** *(secured)*: Get NSX Manager audit logs.
 
+## telemetry
+Working With the VMware Customer Experience Improvement Program
+=====
+
+NSX participates in VMware’s Customer Experience Improvement Program (CEIP).
+
+See "Customer Experience Improvement Program" in the *NSX Administration
+Guide* for more information.
+
+### /1.0/telemetry/config
+Working With the VMware CEIP Configuration
+----
+You can join or leave the CEIP at any time. You can also define the
+frequency and the days the information is collected.
+
+**CEIP Parameters**
+
+Parameter | Description | Comments
+---|---|---
+**enabled** | Enable status of data collection | *true* or *false*.
+**frequency** | Frequency of data collection | *daily*, *weekly*, or *monthly*.
+**dayOfWeek** | Day to collect data | *SUNDAY*, *MONDAY*, ... *SATURDAY*.
+**hourOfDay** | Hour to collect data | *0-23*.
+**minutes** | Minute to collect data | *0-59*. Read only.
+**lastCollectionTime** | Time of last collection. | Timestamp in milliseconds. Read only.
+
+* **get** *(secured)*: Retrieve the CEIP configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced. 
+
+* **put** *(secured)*: Update the CEIP configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced. 
+
 ## nwfabric
 Working With Network Fabric Configuration
 =====
