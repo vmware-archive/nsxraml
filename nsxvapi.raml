@@ -5614,7 +5614,7 @@ securitySchemes:
       **frequency** | Frequency of data collection | *daily*, *weekly*, or *monthly*.
       **dayOfWeek** | Day to collect data | *SUNDAY*, *MONDAY*, ... *SATURDAY*.
       **hourOfDay** | Hour to collect data | *0-23*.
-      **minutes** | Minute to collect data | *0-59*. Read only.
+      **minutes** | Minute to collect data | *0-59*.
       **lastCollectionTime** | Time of last collection. | Timestamp in milliseconds. Read only.
       
     get:
@@ -5650,6 +5650,7 @@ securitySchemes:
         Release | Modification
         --------|-------------
         6.2.3 | Method introduced. 
+        6.3.3 | Method updated. *minutes* parameter is configurable.
       body:
         application/xml:
           example: |
@@ -5659,6 +5660,70 @@ securitySchemes:
               <hourOfDay>2</hourOfDay>
               <minutes>0</minutes>
             </telemetryConfiguration>
+  /proxy:
+    displayName: telemetryProxy
+    description: |
+      Working With Proxy Setting for VMware CEIP 
+      -----
+        
+      If your NSX Manager appliance does not have a direct connection to the 
+      internet, you can configure a proxy server for the purpose of sending
+      information collected by CEIP to VMware.
+      
+      **CEIP Proxy Parameters**
+      
+      Parameter | Description | Comments
+      ---|---|---
+      **enabled** | Enabled status of proxy | Required. Default is *AUTO*.<br>*OFF*: use direct connection<br>*MANUAL*: use settings defined here<br>*AUTO*: use proxy auto-discovery.
+      **scheme** | Proxy scheme. | Required if **enabled** is set to *MANUAL*. Valid value: *http*. Default is *http*.
+      **hostname** | Hostname of proxy server | Required if **enabled** is set to *MANUAL*.
+      **port** | Port used for proxy server | Required if **enabled** is set to *MANUAL*. Default is *0*.
+      **username** | Proxy server username | Optional.
+      **password** | Proxy server password | Optional. Not included in GET response.
+      
+    get:
+      displayName: telemetryProxyRead
+      description: |
+        Retrieve the NSX Manager proxy settings for CEIP.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.3 | Method introduced. 
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <telemetryProxy>
+                  <enabled>manual</enabled>
+                  <scheme>http</scheme>
+                  <hostname>proxy.example.com</hostname>
+                  <port>3128</port>
+                  <username>nsxadmin</username>
+                </telemetryProxy>                
+    put:
+      displayName: telemetryProxyUpdate
+      description: |
+        Retrieve the NSX Manager proxy settings for CEIP.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.3 | Method introduced. 
+      body:
+        application/xml:
+          example: |
+            <telemetryProxy>
+              <enabled>manual</enabled>
+              <scheme>http</scheme>
+              <hostname>proxy.example.com</hostname>
+              <port>3128</port>
+              <username>nsxadmin</username>
+              <password>testing123</password>
+            </telemetryProxy>
 /2.0/nwfabric:
   displayName: nwfabric
   description: |

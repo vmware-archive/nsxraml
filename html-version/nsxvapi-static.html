@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#100;&#98;&#97;&#99;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#x6d;">&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#100;&#98;&#97;&#99;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#x65;&#46;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#107;&#x40;&#x76;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#107;&#x40;&#x76;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -3168,7 +3168,7 @@ frequency and the days the information is collected.</p>
 <tr>
 <td><strong>minutes</strong></td>
 <td>Minute to collect data</td>
-<td><em>0-59</em>. Read only.</td>
+<td><em>0-59</em>.</td>
 </tr>
 <tr>
 <td><strong>lastCollectionTime</strong></td>
@@ -3228,6 +3228,10 @@ frequency and the days the information is collected.</p>
 <td>6.2.3</td>
 <td>Method introduced. </td>
 </tr>
+<tr>
+<td>6.3.3</td>
+<td>Method updated. <em>minutes</em> parameter is configurable.</td>
+</tr>
 </tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">telemetryConfiguration</span>&gt;</span>
@@ -3236,6 +3240,113 @@ frequency and the days the information is collected.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">hourOfDay</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">hourOfDay</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">minutes</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">minutes</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">telemetryConfiguration</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-proxy-setting-for-vmware-ceip-">Working With Proxy Setting for VMware CEIP </h2>
+<p>If your NSX Manager appliance does not have a direct connection to the 
+internet, you can configure a proxy server for the purpose of sending
+information collected by CEIP to VMware.</p>
+<p><strong>CEIP Proxy Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>Enabled status of proxy</td>
+<td>Required. Default is <em>AUTO</em>.<br><em>OFF</em>: use direct connection<br><em>MANUAL</em>: use settings defined here<br><em>AUTO</em>: use proxy auto-discovery.</td>
+</tr>
+<tr>
+<td><strong>scheme</strong></td>
+<td>Proxy scheme.</td>
+<td>Required if <strong>enabled</strong> is set to <em>MANUAL</em>. Valid value: <em>http</em>. Default is <em>http</em>.</td>
+</tr>
+<tr>
+<td><strong>hostname</strong></td>
+<td>Hostname of proxy server</td>
+<td>Required if <strong>enabled</strong> is set to <em>MANUAL</em>.</td>
+</tr>
+<tr>
+<td><strong>port</strong></td>
+<td>Port used for proxy server</td>
+<td>Required if <strong>enabled</strong> is set to <em>MANUAL</em>. Default is <em>0</em>.</td>
+</tr>
+<tr>
+<td><strong>username</strong></td>
+<td>Proxy server username</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>password</strong></td>
+<td>Proxy server password</td>
+<td>Optional. Not included in GET response.</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/1.0/telemetry/proxy"
+    href="#GET/1.0/telemetry/proxy"
+  ><h2>GET /1.0/telemetry/proxy</h2></a>
+  <div class="content">
+    <p><p>Retrieve the NSX Manager proxy settings for CEIP.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.3</td>
+<td>Method introduced. </td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">telemetryProxy</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>manual<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">scheme</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">scheme</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostname</span>&gt;</span>proxy.example.com<span class="hljs-tag">&lt;/<span class="hljs-name">hostname</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>3128<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>nsxadmin<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">telemetryProxy</span>&gt;</span>                
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/1.0/telemetry/proxy"
+    href="#PUT/1.0/telemetry/proxy"
+  ><h2>PUT /1.0/telemetry/proxy</h2></a>
+  <div class="content">
+    <p><p>Retrieve the NSX Manager proxy settings for CEIP.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.3</td>
+<td>Method introduced. </td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">telemetryProxy</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>manual<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">scheme</span>&gt;</span>http<span class="hljs-tag">&lt;/<span class="hljs-name">scheme</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostname</span>&gt;</span>proxy.example.com<span class="hljs-tag">&lt;/<span class="hljs-name">hostname</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>3128<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>nsxadmin<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>testing123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">telemetryProxy</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -29895,7 +30006,7 @@ retrieves the tech support log file from the file location in the
 <strong>Location</strong> field. Consult your REST client documentation for
 information on saving binary file responses.</p>
 <p>Example in curl:</p>
-<pre><code class="code-block hljs lang-elixir">curl -k -L -s -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span> -H <span class="hljs-string">"Content-Type: application/xml"</span> -H <span class="hljs-string">"Accept: application/xml"</span> -X GET <span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/192.168.110.42/api</span><span class="hljs-regexp">/4.0/edges</span><span class="hljs-regexp">/edge-4/techsupportlogs</span> &gt; NSX_Edge_Support_edge-<span class="hljs-number">4</span>.log.gz</code></pre></p>
+<pre><code class="code-block hljs lang-awk">curl -k -L -s -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span> -H <span class="hljs-string">"Content-Type: application/xml"</span> -H <span class="hljs-string">"Accept: application/xml"</span> -X GET https:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">110.42</span><span class="hljs-regexp">/api/</span><span class="hljs-number">4.0</span><span class="hljs-regexp">/edges/</span>edge-<span class="hljs-number">4</span><span class="hljs-regexp">/techsupportlogs &gt; NSX_Edge_Support_edge-4.log.gz</span></code></pre></p>
   </div>
 </div>
 </section>
@@ -30874,9 +30985,9 @@ query parameters to specify the destination for the section.</p>
 <p><code>POST /api/4.0/firewall/globalroot-0/config/layer2sections/1009
 ?action=revise&amp;operation=insert_before&amp;anchorId=1008</code></p>
 <p><code>If-Match: 1478307787160</code></p>
-<pre><code class="code-block hljs lang-applescript">&lt;section <span class="hljs-built_in">id</span>=<span class="hljs-string">"1009"</span> <span class="hljs-built_in">name</span>=<span class="hljs-string">"Test Section"</span> generationNumber=<span class="hljs-string">"1478307787160"</span> timestamp=<span class="hljs-string">"1478307787160"</span> type=<span class="hljs-string">"LAYER2"</span>&gt;
+<pre><code class="code-block hljs lang-llvm">&lt;<span class="hljs-keyword">section</span> id=<span class="hljs-string">"1009"</span> name=<span class="hljs-string">"Test Section"</span> generationNumber=<span class="hljs-string">"1478307787160"</span> timestamp=<span class="hljs-string">"1478307787160"</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"LAYER2"</span>&gt;
   ...
-&lt;/section&gt;</code></pre></p>
+&lt;/<span class="hljs-keyword">section</span>&gt;</code></pre></p>
     <div class="params">
       <h3>Request Headers</h3>
         <dl>
@@ -32266,9 +32377,9 @@ query parameters to specify the destination for the section.</p>
 <p><code>POST /api/4.0/firewall/globalroot-0/config/layer3sections/1007
 ?action=revise&amp;operation=insert_before&amp;anchorId=1006</code></p>
 <p><code>If-Match: 1477989118875</code> </p>
-<pre><code class="code-block hljs lang-applescript">&lt;section <span class="hljs-built_in">id</span>=<span class="hljs-string">"1007"</span> <span class="hljs-built_in">name</span>=<span class="hljs-string">"Web Section"</span> generationNumber=<span class="hljs-string">"1477989118875"</span> timestamp=<span class="hljs-string">"1477989118875"</span> type=<span class="hljs-string">"LAYER3"</span>&gt;
+<pre><code class="code-block hljs lang-llvm">&lt;<span class="hljs-keyword">section</span> id=<span class="hljs-string">"1007"</span> name=<span class="hljs-string">"Web Section"</span> generationNumber=<span class="hljs-string">"1477989118875"</span> timestamp=<span class="hljs-string">"1477989118875"</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;
   ...
-&lt;/section&gt;</code></pre></p>
+&lt;/<span class="hljs-keyword">section</span>&gt;</code></pre></p>
     <div class="params">
       <h3>Request Headers</h3>
         <dl>
