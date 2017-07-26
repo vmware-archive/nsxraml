@@ -5257,7 +5257,7 @@ securitySchemes:
         * retrieve the upgrade information   
           `GET /api/1.0/appliance-management/upgrade/information/{componentID}`
         * edit the **preUpgradeQuestionsAnswers** section of the upgrade
-          information response, if needed
+          information response to include answers
         * start the upgrade, providing the edited **preUpgradeQuestionsAnswers**
           section as the request body   
           `POST /api/1.0/appliance-management/upgrade/start/{componentID}`
@@ -5286,7 +5286,7 @@ securitySchemes:
         componentID:
           required: true
           displayName: componentID
-          description: Component ID.
+          description: Component ID. Specify *NSX*.
       post:
         displayName: upgradeBundleUpload
         description: Upload upgrade bundle.
@@ -5295,16 +5295,24 @@ securitySchemes:
       description: |
         Prepare for NSX Manager Upgrade
         ---
+      uriParameters:
+        componentID:
+          required: true
+          displayName: componentID
+          description: Component ID. Specify *NSX*.
       get:
         displayName: upgradeBundleDetails
         description: |
           Once you have uploaded an upgrade bundle, you must retrieve
           information about the upgrade. This request contains pre-upgrade
           validation warnings and error messages, along with pre-upgrade
-          questions with default answers. Review the information and edit the
-          answers in the **preUpgradeQuestionsAnswers** section if needed before
-          providing the section as the request body to the `POST
-          /api/1.0/appliance-management/upgrade/start/{componentID}` method.
+          questions. 
+          
+          You use the **preUpgradeQuestionsAnswers** section with the addition of
+          your answers to create the request body for the `POST
+          /api/1.0/appliance-management/upgrade/start/{componentID}` request to
+          start the backup.  See *Start the NSX Manager Upgrade* for more
+          information.
         responses:
           200:
             body:
@@ -5319,7 +5327,6 @@ securitySchemes:
                         <questionId>preUpgradeChecks1:Q1</questionId>
                         <question>Do you want to enable SSH ?</question>
                         <questionAnserType>YESNO</questionAnserType>
-                        <defaultSelection>NO</defaultSelection>
                       </preUpgradeQuestionAnswer>
                       <preUpgradeQuestionAnswer>
                         <questionId>preUpgradeChecks1:Q2</questionId>
@@ -5328,7 +5335,6 @@ securitySchemes:
                           key(s). This information does not personally identify any individual. For additional information regarding the CEIP, please see the Trust and Assurance Center at http://www.vmware.com/trustvmware/ceip.html. You can select your participation
                           preferences below. Do you want to join the VMware Customer Experience Improvement Program ?</question>
                         <questionAnserType>YESNO</questionAnserType>
-                        <defaultSelection>YES</defaultSelection>
                       </preUpgradeQuestionAnswer>
                     </preUpgradeQuestionsAnswers>
                     <upgradeStepsDto>
@@ -5353,10 +5359,14 @@ securitySchemes:
         componentID:
           required: true
           displayName: componentID
-          description: Component ID
+          description: Component ID. Specify *NSX*.
       post:
         displayName: upgradeStartExecute # dupfix upgradeStart
-        description: Start upgrade process.
+        description: | 
+          Start upgrade process.
+          
+          If you want to enable SSH or join the VMware CEIP program, you must
+          specify *Yes* (not *YES*) for the **answer** parameter.
         body:
           application/xml:
             example: |
@@ -5365,7 +5375,7 @@ securitySchemes:
                   <questionId>preUpgradeChecks1:Q1</questionId>
                   <question>Do you want to enable SSH ?</question>
                   <questionAnserType>YESNO</questionAnserType>
-                  <answer>YES</answer>
+                  <answer>Yes</answer>
                 </preUpgradeQuestionAnswer>
                 <preUpgradeQuestionAnswer>
                   <questionId>preUpgradeChecks1:Q2</questionId>
@@ -5374,7 +5384,7 @@ securitySchemes:
                     key(s). This information does not personally identify any individual. For additional information regarding the CEIP, please see the Trust and Assurance Center at http://www.vmware.com/trustvmware/ceip.html. You can select your participation
                     preferences below. Do you want to join the VMware Customer Experience Improvement Program ?</question>
                   <questionAnserType>YESNO</questionAnserType>
-                  <answer>YES</answer>
+                  <answer>Yes</answer>
                 </preUpgradeQuestionAnswer>
               </preUpgradeQuestionsAnswers>
     /status/{componentID}:
@@ -5386,7 +5396,7 @@ securitySchemes:
         componentID:
           required: true
           displayName: componentID
-          description: Component ID.
+          description: Component ID. Specify *NSX*.
       get:
         displayName: upgradeStatusRead # dupfix upgradeStatus
         description: Query upgrade status.
