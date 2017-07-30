@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x64;&#111;&#99;&#x66;&#101;&#101;&#x64;&#x62;&#x61;&#99;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#x72;&#x65;&#46;&#99;&#111;&#109;">&#x64;&#111;&#99;&#x66;&#101;&#101;&#x64;&#x62;&#x61;&#99;&#x6b;&#64;&#118;&#109;&#x77;&#97;&#x72;&#x65;&#46;&#99;&#111;&#109;</a>.</p>
+<a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x64;&#111;&#99;&#102;&#x65;&#x65;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#99;&#111;&#109;">&#x64;&#111;&#99;&#102;&#x65;&#x65;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#101;&#46;&#99;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -5314,39 +5314,6 @@ other configuration.</p>
   </dd>
 </dl>
   </div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/2.0/services/applicationgroup/scope/{scopeId}"
-    href="#POST/2.0/services/applicationgroup/scope/{scopeId}"
-  ><h2>POST /2.0/services/applicationgroup/scope/{scopeId}</h2></a>
-  <div class="content">
-    <p><p>Create a new service group on the specified scope.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="applicationGroup"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="description"/&gt;
-        &lt;xs:element type="xs:string" name="name"/&gt;
-        &lt;xs:element type="xs:string" name="revision"/&gt;
-        &lt;xs:element type="xs:string" name="inheritanceAllowed"/&gt;
-      &lt;/xs:sequence&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationGroup</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">applicationGroup</span>&gt;</span>
-</code></pre>
-  </div>
-</div>
 <div class="method get">
   <a
     class="verb get"
@@ -5590,6 +5557,58 @@ other configuration.</p>
   <div class="content">
     <p><p>Delete a member from the service group.</p>
 </p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="creating-service-groups-on-a-specific-scope">Creating Service Groups on a Specific Scope</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">scopeId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>The <strong>scopeId</strong> can be <em>globalroot-0</em>, <em>universalroot-0</em> or
+<em>datacenterId</em> in upgrade use cases.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/services/applicationgroup/{scopeId}"
+    href="#POST/2.0/services/applicationgroup/{scopeId}"
+  ><h2>POST /2.0/services/applicationgroup/{scopeId}</h2></a>
+  <div class="content">
+    <p><p>Create a new service group on the specified scope.</p>
+</p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="applicationGroup"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="description"/&gt;
+        &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element type="xs:string" name="revision"/&gt;
+        &lt;xs:element type="xs:string" name="inheritanceAllowed"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">applicationGroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">applicationGroup</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
