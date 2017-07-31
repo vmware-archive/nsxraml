@@ -2815,15 +2815,30 @@ securitySchemes:
       post:
         displayName: ipPoolAllocateIp
         description: |
-          Allocate an IP address from the pool. Use *ALLOCATE* in the
-          **allocationMode** field in the body to allocate the next available
-          IP. To allocate a specific IP use *RESERVE* and pass the IP to
-          reserve in the **ipAddress** fields in the body.
+          Allocate an IP address from the pool. 
+          
+          To allocate the next available IP, set **allocationMode** to *ALLOCATE*  
+          
+          ```
+          <ipAddressRequest>
+            <allocationMode>ALLOCATE</allocationMode>
+          </ipAddressRequest>
+          ```
+          
+          To allocate a specific IP, set **allocationMode** to *RESERVE* and pass
+          the IP to reserve in the **ipAddress** parameter.
+          
+          ```
+          <ipAddressRequest>
+            <allocationMode>RESERVE</allocationMode>
+            <ipAddress>192.168.1.2</ipAddress>
+          </ipAddressRequest>
+          ```
         body:
           application/xml:
             example: |
               <ipAddressRequest>
-                <allocationMode>ALLOCATE</allocationMode>
+                <allocationMode>RESERVE</allocationMode>
                 <ipAddress>192.168.1.2</ipAddress>
               </ipAddressRequest>
             schema: ipAddressRequest

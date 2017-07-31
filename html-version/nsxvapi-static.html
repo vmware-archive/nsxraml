@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#111;&#99;&#x66;&#x65;&#101;&#100;&#98;&#97;&#x63;&#107;&#64;&#118;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#111;&#99;&#x66;&#x65;&#101;&#100;&#98;&#97;&#x63;&#107;&#64;&#118;&#109;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#107;&#x40;&#x76;&#109;&#119;&#97;&#114;&#x65;&#46;&#99;&#x6f;&#x6d;">&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#107;&#x40;&#x76;&#109;&#119;&#97;&#114;&#x65;&#46;&#99;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -5933,11 +5933,16 @@ send it back as the request body.</p>
     href="#POST/2.0/services/ipam/pools/{poolId}/ipaddresses"
   ><h2>POST /2.0/services/ipam/pools/{poolId}/ipaddresses</h2></a>
   <div class="content">
-    <p><p>Allocate an IP address from the pool. Use <em>ALLOCATE</em> in the
-<strong>allocationMode</strong> field in the body to allocate the next available
-IP. To allocate a specific IP use <em>RESERVE</em> and pass the IP to
-reserve in the <strong>ipAddress</strong> fields in the body.</p>
-</p>
+    <p><p>Allocate an IP address from the pool. </p>
+<p>To allocate the next available IP, set <strong>allocationMode</strong> to <em>ALLOCATE</em>  </p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipAddressRequest</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocationMode</span>&gt;</span>ALLOCATE<span class="hljs-tag">&lt;/<span class="hljs-name">allocationMode</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddressRequest</span>&gt;</span></code></pre><p>To allocate a specific IP, set <strong>allocationMode</strong> to <em>RESERVE</em> and pass
+the IP to reserve in the <strong>ipAddress</strong> parameter.</p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipAddressRequest</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocationMode</span>&gt;</span>RESERVE<span class="hljs-tag">&lt;/<span class="hljs-name">allocationMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddressRequest</span>&gt;</span></code></pre></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="ipAddressRequest"&gt;
@@ -5952,7 +5957,7 @@ reserve in the <strong>ipAddress</strong> fields in the body.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ipAddressRequest</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">allocationMode</span>&gt;</span>ALLOCATE<span class="hljs-tag">&lt;/<span class="hljs-name">allocationMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">allocationMode</span>&gt;</span>RESERVE<span class="hljs-tag">&lt;/<span class="hljs-name">allocationMode</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ipAddressRequest</span>&gt;</span>
 </code></pre>
