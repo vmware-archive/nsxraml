@@ -3291,13 +3291,31 @@ securitySchemes:
       userId:
         required: true
         displayName: userId
-        description: user ID
+        description: |
+          User ID. To specify a domain user, use *user@domain* not *domain\user*.
     get:
       displayName: userMgmtUserRead
       description: Get information about a user.
     delete:
       displayName: userMgmtUserDelete
       description: Remove the NSX role for a vCenter user.
+    /enablestate/{value}:
+      displayName: userMgmtState
+      description: |
+        Working With User Account State
+        -----
+      uriParameters:
+        value:
+          required: true
+          type: integer
+          displayName: value
+          description: |
+            **value** can be *0* to disable, or *1* to enable.
+      put:
+        displayName: userMgmtStateUpdate
+        description: |
+          You can disable or enable a user account, either local user or vCenter
+          user. When a user account is created, the account is enabled by default.
   /role/{userId}:
     displayName: userRoleMgmt
     description: |
@@ -3307,7 +3325,8 @@ securitySchemes:
       userId:
         required: true
         displayName: userId
-        description: User to retrieve role information from.
+        description: |
+          User ID. To specify a domain user, use *user@domain* not *domain\user*.
     get:
       displayName: userMgmtRoleRead
       description: |
@@ -3353,20 +3372,6 @@ securitySchemes:
         Delete the role assignment for specified vCenter user. Once this role
         is deleted, the user is removed from NSX Manager. You cannot delete the
         role for a local user.
-  /enablestate/{value}:
-    displayName: userMgmtState
-    description: |
-      Working With User Account State
-      -----
-    uriParameters:
-      value:
-        required: true
-        type: integer
-        displayName: value
-        description: value can be 0 to disable, or 1 to enable.
-    put:
-      displayName: userMgmtStateUpdate
-      description: Enable or disable a user account.
   /users/vsm:
     displayName: userNSXManagerInfo
     description: |
