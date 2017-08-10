@@ -7938,14 +7938,290 @@ securitySchemes:
                     <value>FF:FF:FF:FF:FF:FF</value>
                   </macset>
                 </list>
+/2.0/services/systemalarms:
+  displayName: servicesSystemAlarms
+  description: |
+    Working With Alarms
+    ========
+    
+    Alarms are notifications that are activated in response to an event, a set
+    of conditions, or the state of an object. Alarms, along with other alerts,
+    are displayed on the NSX Dashboard and other screens on the vSphere Web
+    Client UI.
+    
+    See "Alarms" in the *NSX Logging and System Events Guide* for more information.
+    
+    Generally, an alarm gets automatically deleted by the system when the error
+    condition is rectified.  Some alarms are not automatically cleared on a
+    configuration update. Once the issue is resolved, you have to clear the
+    alarms manually.   
+    
+    **Alarm Parameters**
+    
+    Paramter | Description | Comments
+    ----|-----|------
+    **resolutionAttempted** | Was resolution of the alarm was attempted? | *true* or *false*. 
+    **resolvable** | Can the alarm be resolved? | *true* or *false*
+    **alarmId** | ID of the alarm. | For example, *79965*.
+    **alarmCode** | Event code which uniquely identifies the system event. | For example, *130027*. 
+    **alarmSource** | The domain object identifier of the source where you can resolve the reported alarm. | For example, *edge-3*.
+    **totalCount** | The total number of unresolved alarms. | 
+  get:
+    displayName: servicesSystemAlarmsRead
+    description: |
+      Retrieve all unresolved alarms on NSX Manager.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.3.3 | Method introduced.
+    queryParameters:
+      sortBy:
+        displayName: sortBy
+        description: Parameter to sort by. Default is *eventId*.
+        required: false
+      pageSize:
+        displayName: pageSize
+        description: !include documentation/reuse/pagesize
+        required: false
+        type: integer
+      sortOrderAscending:
+        displayName: sortOrderAscending
+        description: |
+          Set to *true* to sort ascending or *false* to sort descending. Default is *false*.
+        required: false
+        type: boolean
+      startIndex:
+        displayName: startIndex
+        description: !include documentation/reuse/startindex
+        default: 0
+        required: false
+        type: integer
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <pagedSystemAlarmList>
+                <dataPage>
+                  <pagingInfo>
+                    <pageSize>256</pageSize>
+                    <startIndex>0</startIndex>
+                    <totalCount>2</totalCount>
+                    <sortOrderAscending>false</sortOrderAscending>
+                    <sortBy>id</sortBy>
+                  </pagingInfo>
+                  <systemAlarm>
+                    <eventId>1390</eventId>
+                    <timestamp>1501114563913</timestamp>
+                    <severity>High</severity>
+                    <eventSource>edge-5</eventSource>
+                    <eventCode>130033</eventCode>
+                    <message>NSX Edge VM (vmId : vm-435) is not responding to NSX manager health check. Please check NSX manager logs for details.</message>
+                    <module>NSX Edge Health Check</module>
+                    <objectId>edge-5</objectId>
+                    <reporterName>vShield Manager</reporterName>
+                    <reporterType>4</reporterType>
+                    <sourceType>4</sourceType>
+                    <isResourceUniversal>false</isResourceUniversal>
+                    <eventMetadata>
+                      <data>
+                        <key>edgeId</key>
+                        <value>edge-5</value>
+                      </data>
+                      <data>
+                        <key>edgeVmVcUUId</key>
+                        <value>502ecb37-306e-8cf9-4919-16bdf053bd06</value>
+                      </data>
+                      <data>
+                        <key>edgeVmName</key>
+                        <value>Perimeter-Gateway-02-0</value>
+                      </data>
+                      <data>
+                        <key>edgeVmId</key>
+                        <value>vm-435</value>
+                      </data>
+                    </eventMetadata>
+                    <resolutionAttempted>false</resolutionAttempted>
+                    <resolvable>true</resolvable>
+                    <alarmId>1390</alarmId>
+                    <alarmCode>130033</alarmCode>
+                    <alarmSource>edge-5</alarmSource>
+                    <target>
+                      <objectId>vm-435</objectId>
+                      <objectTypeName>VirtualMachine</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>13</revision>
+                      <type>
+                        <typeName>VirtualMachine</typeName>
+                      </type>
+                      <name>Perimeter-Gateway-02-0</name>
+                      <scope>
+                        <id>domain-c41</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>Management &amp; Edge Cluster</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </target>
+                    <alarmBeingResolved>false</alarmBeingResolved>
+                    <alarmMetadata>
+                      <data>
+                        <key>edgeId</key>
+                        <value>edge-5</value>
+                      </data>
+                      <data>
+                        <key>edgeVmVcUUId</key>
+                        <value>502ecb37-306e-8cf9-4919-16bdf053bd06</value>
+                      </data>
+                      <data>
+                        <key>edgeVmName</key>
+                        <value>Perimeter-Gateway-02-0</value>
+                      </data>
+                      <data>
+                        <key>edgeVmId</key>
+                        <value>vm-435</value>
+                      </data>
+                    </alarmMetadata>
+                  </systemAlarm>
+                  <systemAlarm>
+                    <eventId>1388</eventId>
+                    <timestamp>1501114563865</timestamp>
+                    <severity>High</severity>
+                    <eventSource>edge-5</eventSource>
+                    <eventCode>130027</eventCode>
+                    <message>NSX Edge VM (vmId : vm-435) is powered off. Please use vsphere client to power on Edge VM</message>
+                    <module>NSX Edge Communication Agent</module>
+                    <objectId>edge-5</objectId>
+                    <reporterName>vShield Manager</reporterName>
+                    <reporterType>4</reporterType>
+                    <sourceType>4</sourceType>
+                    <isResourceUniversal>false</isResourceUniversal>
+                    <eventMetadata>
+                      <data>
+                        <key>edgeVmVcUUId</key>
+                        <value>502ecb37-306e-8cf9-4919-16bdf053bd06</value>
+                      </data>
+                    </eventMetadata>
+                    <resolutionAttempted>false</resolutionAttempted>
+                    <resolvable>true</resolvable>
+                    <alarmId>1388</alarmId>
+                    <alarmCode>130027</alarmCode>
+                    <alarmSource>edge-5</alarmSource>
+                    <target>
+                      <objectId>vm-435</objectId>
+                      <objectTypeName>VirtualMachine</objectTypeName>
+                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
+                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
+                      <revision>13</revision>
+                      <type>
+                        <typeName>VirtualMachine</typeName>
+                      </type>
+                      <name>Perimeter-Gateway-02-0</name>
+                      <scope>
+                        <id>domain-c41</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>Management &amp; Edge Cluster</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </target>
+                    <alarmBeingResolved>false</alarmBeingResolved>
+                    <alarmMetadata>
+                      <data>
+                        <key>edgeVmVcUUId</key>
+                        <value>502ecb37-306e-8cf9-4919-16bdf053bd06</value>
+                      </data>
+                    </alarmMetadata>
+                  </systemAlarm>
+                </dataPage>
+              </pagedSystemAlarmList>
+  /{alarmId}:
+    displayName: servicesSystemAlarmsId
+    description: |
+      Working With a Specific System Alarm
+      -------
+      You can view and resolve alarms by alarm ID. 
+    uriParameters:
+      alarmId:
+        displayName: alarmId
+        description: |
+          Alarm ID. 
+    get:
+      displayName: servicesSystemAlarmsIdRead
+      description: |
+        Retrieve information about the specified alarm. Both resolved and
+        unresolved alarms can be retrieved.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method introduced.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <systemAlarm>
+                  <eventId>262</eventId>
+                  <timestamp>1479121141922</timestamp>
+                  <severity>High</severity>
+                  <eventSource>Policy</eventSource>
+                  <eventCode>300006</eventCode>
+                  <message>Service Composer is out of sync due to failure on sync on reboot operation</message>
+                  <module>Policy</module>
+                  <objectId>servicecomposer</objectId>
+                  <reporterName>NSX Manager</reporterName>
+                  <reporterType>1</reporterType>
+                  <sourceType>1</sourceType>
+                  <displayName>Service Composer</displayName>
+                  <isResourceUniversal>false</isResourceUniversal>
+                  <eventMetadata/>
+                  <resolutionAttempted>true</resolutionAttempted>
+                  <resolvable>true</resolvable>
+                  <alarmId>262</alarmId>
+                  <alarmCode>300006</alarmCode>
+                  <alarmSource>Policy</alarmSource>
+                  <alarmBeingResolved>false</alarmBeingResolved>
+                  <alarmMetadata/>
+                </systemAlarm>
+    post:
+      displayName: servicesSystemAlarmsIdAction
+      description: | 
+        Resolve the specified alarm.
+        
+        System alarms resolve automatically when the cause of the alarm is resolved.
+        For example, if an NSX Edge appliance is powered off, this triggers a
+        alarm. If you power the NSX Edge appliance back on, the alarm resolves.
+        If however, you delete the NSX Edge appliance, the alarm persists,
+        because the alarm cause was never resolved. In this case, you might want
+        to manually resolve the alarm. Resolving the alarm will clear it from
+        the NSX Dashboard.         
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.0 | Method introduced.
+      queryParameters:
+        action:
+          displayName: action
+          description: |
+            Use *action=resolve* to resolve the specified alarm.
 /2.0/services/alarms/{sourceId}:
   displayName: servicesAlarmsSource
   description: |
     Working With Alarms from a Specific Source
     =====
     
-    Some system alerts will show up as alarms in the NSX dashboard. You can
-    view and resolve alarms from a specific source.
+    You can view and resolve alarms from a specific source.
   uriParameters:
     sourceId:
       displayName: sourceId
@@ -7968,7 +8244,7 @@ securitySchemes:
       alarm will resolve. If however, you delete the NSX Edge appliance, the
       alarm will persist, because the alarm cause was never resolved. In this
       case, you may want to manually resolve the alarm. Resolving the alarms
-      will clear them from the NSX dashboard.
+      will clear them from the NSX Dashboard.
       
       Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
       alarms for the source. Use this response as the request body for the
@@ -7977,7 +8253,7 @@ securitySchemes:
       action:
         displayName: action
         description: | 
-          Use *action=resolve* to resolve system alarms.
+          Use *action=resolve* to resolve alarms.
     body:
       application/xml:
         example: |
@@ -8111,80 +8387,6 @@ securitySchemes:
                   </alarmMetadata>
               </systemAlarm>
           </systemAlarms>
-/2.0/services/systemalarms/{alarmId}:
-  displayName: servicesSystemAlarmsId
-  description: |
-    Working With a Specific Alarm
-    -------
-    Some system alerts will show up as alarms in the NSX dashboard. You can
-    view and resolve alarms by alarm ID.
-  uriParameters:
-    alarmId:
-      displayName: alarmId
-      description: |
-        The alarm ID you want to manage. Find the alarm ID using the
-        `GET /api/2.0/services/alarms/{source-Id}` method.
-  get:
-    displayName: servicesSystemAlarmsIdRead
-    description: |
-      Retrieve information about the specified alarm.
-      
-      **Method history:**
-      
-      Release | Modification
-      --------|-------------
-      6.3.0 | Method introduced.
-    responses:
-      200:
-        body:
-          application/xml:
-            example: |
-              <systemAlarm>
-                <eventId>262</eventId>
-                <timestamp>1479121141922</timestamp>
-                <severity>High</severity>
-                <eventSource>Policy</eventSource>
-                <eventCode>300006</eventCode>
-                <message>Service Composer is out of sync due to failure on sync on reboot operation</message>
-                <module>Policy</module>
-                <objectId>servicecomposer</objectId>
-                <reporterName>NSX Manager</reporterName>
-                <reporterType>1</reporterType>
-                <sourceType>1</sourceType>
-                <displayName>Service Composer</displayName>
-                <isResourceUniversal>false</isResourceUniversal>
-                <eventMetadata/>
-                <resolutionAttempted>true</resolutionAttempted>
-                <resolvable>true</resolvable>
-                <alarmId>262</alarmId>
-                <alarmCode>300006</alarmCode>
-                <alarmSource>Policy</alarmSource>
-                <alarmBeingResolved>false</alarmBeingResolved>
-                <alarmMetadata/>
-              </systemAlarm>
-  post:
-    displayName: servicesSystemAlarmsIdAction
-    description: | 
-      Resolve the specified alarm.
-      
-      Alarms will resolve automatically when the cause of the alarm is
-      resolved.  For example, if an NSX Edge appliance is powered off, this
-      will trigger an alarm. If you power the NSX Edge appliance back on, the
-      alarm will resolve. If however, you delete the NSX Edge appliance, the
-      alarm will persist, because the alarm cause was never resolved. In this
-      case, you may want to manually resolve the alarm. Resolving the alarm 
-      will clear it from the NSX dashboard.
-      
-      **Method history:**
-      
-      Release | Modification
-      --------|-------------
-      6.3.0 | Method introduced.
-    queryParameters:
-      action:
-        displayName: action
-        description: |
-          Use *action=resolve* to resolve the specified alarm.
 /2.0/services/taskservice/job:
   displayName: taskFramework
   description: |

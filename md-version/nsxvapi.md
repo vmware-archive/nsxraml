@@ -3063,13 +3063,22 @@ Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
 alarms for the source. Use this response as the request body for the
 `POST` call.
 
-## servicesSystemAlarmsId
+## servicesSystemAlarms
+Working With System Alarms
+========
+Some system alerts will show up as alarms in the NSX dashboard. 
+You can view
+all unresolved system alarms on NSX Manager.
+
+### /2.0/services/systemalarms
+
+* **get** *(secured)*: Retrieve all unresolved system alarms on NSX Manager.
+
+### /2.0/services/systemalarms/{alarmId}
 Working With a Specific Alarm
 -------
 Some system alerts will show up as alarms in the NSX dashboard. You can
 view and resolve alarms by alarm ID.
-
-### /2.0/services/systemalarms/{alarmId}
 
 * **get** *(secured)*: Retrieve information about the specified alarm.
 

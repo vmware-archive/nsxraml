@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#107;&#x40;&#x76;&#109;&#119;&#97;&#114;&#x65;&#46;&#99;&#x6f;&#x6d;">&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#107;&#x40;&#x76;&#109;&#119;&#97;&#114;&#x65;&#46;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#100;&#111;&#99;&#x66;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#109;">&#100;&#111;&#99;&#x66;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -4870,8 +4870,7 @@ vCenter MOID (e.g. domain-c34 for a cluster).</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-alarms-from-a-specific-source">Working With Alarms from a Specific Source</h1>
-<p>Some system alerts will show up as alarms in the NSX dashboard. You can
-view and resolve alarms from a specific source.</p>
+<p>You can view and resolve alarms from a specific source.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -4914,7 +4913,7 @@ will trigger an alarm. If you power the NSX Edge appliance back on, the
 alarm will resolve. If however, you delete the NSX Edge appliance, the
 alarm will persist, because the alarm cause was never resolved. In this
 case, you may want to manually resolve the alarm. Resolving the alarms
-will clear them from the NSX dashboard.</p>
+will clear them from the NSX Dashboard.</p>
 <p>Use <code>GET /api/2.0/services/alarms/{sourceId}</code> to retrieve the list of
 alarms for the source. Use this response as the request body for the
 <code>POST</code> call.</p>
@@ -4928,7 +4927,7 @@ alarms for the source. Use this response as the request body for the
     
   </dt>
   <dd>
-      <p>Use <em>action=resolve</em> to resolve system alarms.</p>
+      <p>Use <em>action=resolve</em> to resolve alarms.</p>
 
   </dd>
 </dl>
@@ -10149,9 +10148,264 @@ network fabric, and hypervisors.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-a-specific-alarm">Working With a Specific Alarm</h2>
-<p>Some system alerts will show up as alarms in the NSX dashboard. You can
-view and resolve alarms by alarm ID.</p>
+  <div class="description"><h1 id="working-with-alarms">Working With Alarms</h1>
+<p>Alarms are notifications that are activated in response to an event, a set
+of conditions, or the state of an object. Alarms, along with other alerts,
+are displayed on the NSX Dashboard and other screens on the vSphere Web
+Client UI.</p>
+<p>See &quot;Alarms&quot; in the <em>NSX Logging and System Events Guide</em> for more information.</p>
+<p>Generally, an alarm gets automatically deleted by the system when the error
+condition is rectified.  Some alarms are not automatically cleared on a
+configuration update. Once the issue is resolved, you have to clear the
+alarms manually.   </p>
+<p><strong>Alarm Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Paramter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>resolutionAttempted</strong></td>
+<td>Was resolution of the alarm was attempted?</td>
+<td><em>true</em> or <em>false</em>. </td>
+</tr>
+<tr>
+<td><strong>resolvable</strong></td>
+<td>Can the alarm be resolved?</td>
+<td><em>true</em> or <em>false</em></td>
+</tr>
+<tr>
+<td><strong>alarmId</strong></td>
+<td>ID of the alarm.</td>
+<td>For example, <em>79965</em>.</td>
+</tr>
+<tr>
+<td><strong>alarmCode</strong></td>
+<td>Event code which uniquely identifies the system event.</td>
+<td>For example, <em>130027</em>. </td>
+</tr>
+<tr>
+<td><strong>alarmSource</strong></td>
+<td>The domain object identifier of the source where you can resolve the reported alarm.</td>
+<td>For example, <em>edge-3</em>.</td>
+</tr>
+<tr>
+<td><strong>totalCount</strong></td>
+<td>The total number of unresolved alarms.</td>
+<td></td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/systemalarms"
+    href="#GET/2.0/services/systemalarms"
+  ><h2>GET /2.0/services/systemalarms</h2></a>
+  <div class="content">
+    <p><p>Retrieve all unresolved alarms on NSX Manager.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">sortBy</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Parameter to sort by. Default is <em>eventId</em>.</p>
+
+  </dd>
+  <dt>
+    <span class="param">pageSize</span>
+    <span class="badge">integer</span>
+    
+  </dt>
+  <dd>
+      <p>The number of results to return.</p>
+
+  </dd>
+  <dt>
+    <span class="param">sortOrderAscending</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>Set to <em>true</em> to sort ascending or <em>false</em> to sort descending. Default is <em>false</em>.</p>
+
+  </dd>
+  <dt>
+    <span class="param">startIndex</span>
+    <span class="badge">integer</span>
+    
+  </dt>
+  <dd>
+      <p>The starting point for returning results.</p>
+
+  </dd>
+</dl>
+    </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pagedSystemAlarmList</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dataPage</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pagingInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>256<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">startIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">startIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sortOrderAscending</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">sortOrderAscending</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sortBy</span>&gt;</span>id<span class="hljs-tag">&lt;/<span class="hljs-name">sortBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">pagingInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemAlarm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventId</span>&gt;</span>1390<span class="hljs-tag">&lt;/<span class="hljs-name">eventId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">timestamp</span>&gt;</span>1501114563913<span class="hljs-tag">&lt;/<span class="hljs-name">timestamp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">severity</span>&gt;</span>High<span class="hljs-tag">&lt;/<span class="hljs-name">severity</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventSource</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">eventSource</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventCode</span>&gt;</span>130033<span class="hljs-tag">&lt;/<span class="hljs-name">eventCode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>NSX Edge VM (vmId : vm-435) is not responding to NSX manager health check. Please check NSX manager logs for details.<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">module</span>&gt;</span>NSX Edge Health Check<span class="hljs-tag">&lt;/<span class="hljs-name">module</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reporterName</span>&gt;</span>vShield Manager<span class="hljs-tag">&lt;/<span class="hljs-name">reporterName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reporterType</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">reporterType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sourceType</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">sourceType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isResourceUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isResourceUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventMetadata</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmVcUUId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>502ecb37-306e-8cf9-4919-16bdf053bd06<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmName<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>Perimeter-Gateway-02-0<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vm-435<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">eventMetadata</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">resolutionAttempted</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">resolutionAttempted</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">resolvable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">resolvable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmId</span>&gt;</span>1390<span class="hljs-tag">&lt;/<span class="hljs-name">alarmId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmCode</span>&gt;</span>130033<span class="hljs-tag">&lt;/<span class="hljs-name">alarmCode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmSource</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">alarmSource</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-435<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>13<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Perimeter-Gateway-02-0<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmBeingResolved</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alarmBeingResolved</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmMetadata</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmVcUUId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>502ecb37-306e-8cf9-4919-16bdf053bd06<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmName<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>Perimeter-Gateway-02-0<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>vm-435<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">alarmMetadata</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">systemAlarm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemAlarm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventId</span>&gt;</span>1388<span class="hljs-tag">&lt;/<span class="hljs-name">eventId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">timestamp</span>&gt;</span>1501114563865<span class="hljs-tag">&lt;/<span class="hljs-name">timestamp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">severity</span>&gt;</span>High<span class="hljs-tag">&lt;/<span class="hljs-name">severity</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventSource</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">eventSource</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventCode</span>&gt;</span>130027<span class="hljs-tag">&lt;/<span class="hljs-name">eventCode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>NSX Edge VM (vmId : vm-435) is powered off. Please use vsphere client to power on Edge VM<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">module</span>&gt;</span>NSX Edge Communication Agent<span class="hljs-tag">&lt;/<span class="hljs-name">module</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reporterName</span>&gt;</span>vShield Manager<span class="hljs-tag">&lt;/<span class="hljs-name">reporterName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reporterType</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">reporterType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sourceType</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">sourceType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isResourceUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isResourceUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventMetadata</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmVcUUId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>502ecb37-306e-8cf9-4919-16bdf053bd06<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">eventMetadata</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">resolutionAttempted</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">resolutionAttempted</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">resolvable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">resolvable</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmId</span>&gt;</span>1388<span class="hljs-tag">&lt;/<span class="hljs-name">alarmId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmCode</span>&gt;</span>130027<span class="hljs-tag">&lt;/<span class="hljs-name">alarmCode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmSource</span>&gt;</span>edge-5<span class="hljs-tag">&lt;/<span class="hljs-name">alarmSource</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-435<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>423A993F-BEE6-1285-58F1-54E48D508D90<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>916287b3-761d-430b-8ab2-83878dfe3e7f<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>13<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Perimeter-Gateway-02-0<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c41<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Management &amp;amp; Edge Cluster<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmBeingResolved</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">alarmBeingResolved</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmMetadata</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeVmVcUUId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>502ecb37-306e-8cf9-4919-16bdf053bd06<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">alarmMetadata</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">systemAlarm</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dataPage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">pagedSystemAlarmList</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-a-specific-system-alarm">Working With a Specific System Alarm</h2>
+<p>You can view and resolve alarms by alarm ID. </p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -10162,8 +10416,7 @@ view and resolve alarms by alarm ID.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>The alarm ID you want to manage. Find the alarm ID using the
-<code>GET /api/2.0/services/alarms/{source-Id}</code> method.</p>
+      <p>Alarm ID. </p>
 
   </dd>
 </dl>
@@ -10175,7 +10428,8 @@ view and resolve alarms by alarm ID.</p>
     href="#GET/2.0/services/systemalarms/{alarmId}"
   ><h2>GET /2.0/services/systemalarms/{alarmId}</h2></a>
   <div class="content">
-    <p><p>Retrieve information about the specified alarm.</p>
+    <p><p>Retrieve information about the specified alarm. Both resolved and
+unresolved alarms can be retrieved.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -10226,13 +10480,13 @@ view and resolve alarms by alarm ID.</p>
   ><h2>POST /2.0/services/systemalarms/{alarmId}</h2></a>
   <div class="content">
     <p><p>Resolve the specified alarm.</p>
-<p>Alarms will resolve automatically when the cause of the alarm is
-resolved.  For example, if an NSX Edge appliance is powered off, this
-will trigger an alarm. If you power the NSX Edge appliance back on, the
-alarm will resolve. If however, you delete the NSX Edge appliance, the
-alarm will persist, because the alarm cause was never resolved. In this
-case, you may want to manually resolve the alarm. Resolving the alarm 
-will clear it from the NSX dashboard.</p>
+<p>System alarms resolve automatically when the cause of the alarm is resolved.
+For example, if an NSX Edge appliance is powered off, this triggers a
+alarm. If you power the NSX Edge appliance back on, the alarm resolves.
+If however, you delete the NSX Edge appliance, the alarm persists,
+because the alarm cause was never resolved. In this case, you might want
+to manually resolve the alarm. Resolving the alarm will clear it from
+the NSX Dashboard.         </p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
