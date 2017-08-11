@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#100;&#111;&#99;&#x66;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#109;">&#100;&#111;&#99;&#x66;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x64;&#111;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#x61;&#99;&#107;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#99;&#x6f;&#109;">&#x64;&#111;&#x63;&#x66;&#101;&#101;&#x64;&#98;&#x61;&#99;&#107;&#64;&#118;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -9357,6 +9357,10 @@ selection criteria.</p>
 <td>6.3.0</td>
 <td>Method updated. Added <strong>isUniversal</strong> query parameter to filter universal security tags.</td>
 </tr>
+<tr>
+<td>6.3.3</td>
+<td>Method updated. Output is now paginated. <strong>startIndex</strong>, <strong>pageSize</strong>, <strong>sortOrderAscending</strong>, <strong>sortBy</strong>, <strong>filterBy</strong>, and <strong>filterValue</strong> query parameters added.</td>
+</tr>
 </tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -9373,8 +9377,114 @@ To view all tags (tags local to that NSX Manager plus universal
 tags), omit the action parameter.</p>
 
   </dd>
+  <dt>
+    <span class="param">startIndex</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>The starting point for returning results.</p>
+
+  </dd>
+  <dt>
+    <span class="param">pageSize</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>The number of results to return. Default is <em>1024</em>.</p>
+
+  </dd>
+  <dt>
+    <span class="param">sortOrderAscending</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Sort in ascending order of start time (<em>true</em> or <em>false</em>).</p>
+
+  </dd>
+  <dt>
+    <span class="param">sortBy</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Parameter to sort by. Default is <em>objectId</em>.</p>
+
+  </dd>
+  <dt>
+    <span class="param">filterBy</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Parameter type to filter by. Options are <em>objectId</em> or <em>name</em>.</p>
+
+  </dd>
+  <dt>
+    <span class="param">filtervalue</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Value for <em>filterBy</em>. For example, <em>securitytag-1</em> if <strong>filterBy</strong> is <em>objectId</em>, or <em>IDS_IPS.threat=medium</em> if <strong>filterBy</strong> is <em>name</em>.</p>
+
+  </dd>
 </dl>
     </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securityTags</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pagingInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>1024<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">startIndex</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sortOrderAscending</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sortOrderAscending</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sortBy</span>&gt;</span>objectId<span class="hljs-tag">&lt;/<span class="hljs-name">sortBy</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pagingInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">securityTag</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>securitytag-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>SecurityTag<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42030D04-DA84-841C-B02B-3D0F845AF88A<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6438f0c2-593c-4237-b116-7c958fffa15b<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>SecurityTag<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VULNERABILITY_MGMT.VulnerabilityFound.threat=high<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Tag indicates that the vulnerability found has a high threat level<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemResource</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResource</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vmCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">securityTag</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">securityTag</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>securitytag-10<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>SecurityTag<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42030D04-DA84-841C-B02B-3D0F845AF88A<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6438f0c2-593c-4237-b116-7c958fffa15b<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>SecurityTag<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>IDS_IPS.threat=medium<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Tag indicates that the data violation detected has a medium threat level<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemResource</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResource</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">vmCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">securityTag</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">securityTags</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
