@@ -2036,31 +2036,34 @@ securitySchemes:
   post:
     displayName: nsxControllerCreate
     description: |
-      Adds a new NSX controller on the specified given cluster. The *hostId*
+      Add a new NSX Controller on the specified cluster. The *hostId*
       parameter is optional. The *resourcePoolId* can be either the
       *clusterId* or *resourcePoolId*.
       
       The IP address of the controller node will be allocated
-      from the specified IP pool. The *deployType* property determines the
-      controller node memory size and can be small, medium, or large. However,
-      different controller deployment types are not currently supported because
-      the OVF overrides it and different OVF types require changes in the
-      manager build scripts. Despite not being supported, an arbitrary
-      *deployType* size must still be specified or an error will be returned.
-      Request without body to upgrade controller cluster.
+      from the specified IP pool. 
+      
+      **Note:** Controller nodes are deployed with 4 GB of memory regardless of 
+      which **deployType** value is provided.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.3.3 | Method updated. **deployType** is no longer required.
     body:
       application/xml:
         example: |
           <controllerSpec>
-            <name></name>
-            <description></description>
-            <ipPoolId></ipPoolId>
-            <resourcePoolId></resourcePoolId>
-            <hostId></hostId>
-            <datastoreId></datastoreId>
-            <deployType></deployType>
-            <networkId></networkId>
-            <password></password>
+            <name>nsx-controller-node1</name>
+            <description>nsx-controller</description>
+            <ipPoolId>ipPool-1</ipPoolId>
+            <resourcePoolId>domain-c1</resourcePoolId>
+            <hostId>host-1</hostId>
+            <datastoreId>datastore-1</datastoreId>
+            <deployType>medium</deployType>
+            <networkId>dvportgroup-1</networkId>
+            <password>MyTestPassword</password>
           </controllerSpec>
         schema: controller
   get:
