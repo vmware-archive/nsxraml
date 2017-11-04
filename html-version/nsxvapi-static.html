@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#100;&#111;&#99;&#102;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#111;&#99;&#102;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#100;&#x6f;&#99;&#x66;&#x65;&#101;&#100;&#98;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#119;&#x61;&#x72;&#101;&#x2e;&#99;&#111;&#109;">&#100;&#x6f;&#99;&#x66;&#x65;&#101;&#100;&#98;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#119;&#x61;&#x72;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -22534,37 +22534,6 @@ using the query parameter, indicating the desired ruleID.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-nsx-edge-firewall-statistics">Working With NSX Edge Firewall Statistics</h2>
-</div>
-<div class="method get">
-  <a
-    class="verb get"
-    id="GET/4.0/edges/{edgeId}/firewall/statistics/firewall"
-    href="#GET/4.0/edges/{edgeId}/firewall/statistics/firewall"
-  ><h2>GET /4.0/edges/{edgeId}/firewall/statistics/firewall</h2></a>
-  <div class="content">
-    <p><p>Retrieve number of ongoing connections for the firewall
-configuration.</p>
-</p>
-    <div class="params">
-      <h3>Query Parameters</h3>
-        <dl>
-  <dt>
-    <span class="param">interval</span>
-    <span class="badge">string</span>
-    
-  </dt>
-  <dd>
-      <p>60 min by default, can be given as <em>1</em> - <em>60</em> min, <em>oneDay</em>, 
-<em>oneWeek</em>, <em>oneMonth</em>, <em>oneYear</em>.</p>
-
-  </dd>
-</dl>
-    </div>
-  </div>
-</div>
-</section>
-<section class="resource">
   <div class="description"><h2 id="working-with-statistics-for-a-specific-firewall-rule">Working With Statistics for a Specific Firewall Rule</h2>
 </div>
   <div class="params">
@@ -29544,6 +29513,69 @@ and a <strong>value</strong> for the file. The <strong>key</strong> is <em>file<
     <span class="hljs-tag">&lt;<span class="hljs-name">cipher</span>&gt;</span>AES256-SHA<span class="hljs-tag">&lt;/<span class="hljs-name">cipher</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">cipherList</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">serverSettings</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-nsx-edge-firewall-dashboard-statistics">Working With NSX Edge Firewall Dashboard Statistics</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/edges/{edgeId}/statistics/dashboard/firewall"
+    href="#GET/4.0/edges/{edgeId}/statistics/dashboard/firewall"
+  ><h2>GET /4.0/edges/{edgeId}/statistics/dashboard/firewall</h2></a>
+  <div class="content">
+    <p><p>Retrieve number of ongoing connections for the firewall
+configuration.</p>
+</p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">interval</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>60 min by default, can be given as <em>1</em> - <em>60</em> min, <em>oneDay</em>, 
+<em>oneWeek</em>, <em>oneMonth</em>, <em>oneYear</em>.</p>
+
+  </dd>
+</dl>
+    </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dashboardStatistics</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startTime</span>&gt;</span>1509754620<span class="hljs-tag">&lt;/<span class="hljs-name">startTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">endTime</span>&gt;</span>1509758200<span class="hljs-tag">&lt;/<span class="hljs-name">endTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>20<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">meta</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">firewall</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">connections</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dashboardStatistic</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">timestamp</span>&gt;</span>1509754620<span class="hljs-tag">&lt;/<span class="hljs-name">timestamp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>15.0<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dashboardStatistic</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dashboardStatistic</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">timestamp</span>&gt;</span>1509754640<span class="hljs-tag">&lt;/<span class="hljs-name">timestamp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>15.0<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dashboardStatistic</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dashboardStatistic</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">timestamp</span>&gt;</span>1509754660<span class="hljs-tag">&lt;/<span class="hljs-name">timestamp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>15.0<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dashboardStatistic</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">connections</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">firewall</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dashboardStatistics</span>&gt;</span>
 </code></pre>
   </div>
 </div>

@@ -13014,22 +13014,6 @@ securitySchemes:
                   <loggingEnabled></loggingEnabled>
                 </firewallDefaultPolicy>
               schema: defaultFirewallPolicyUpdate
-    /firewall/statistics/firewall:
-      displayName: firewallStatistics
-      description: |
-        Working With NSX Edge Firewall Statistics
-        ----
-      get:
-        displayName: firewallStatisticsRead
-        description: |
-          Retrieve number of ongoing connections for the firewall
-          configuration.
-        queryParameters:
-          interval:
-            displayName: interval
-            description: |
-              60 min by default, can be given as *1* - *60* min, *oneDay*, 
-              *oneWeek*, *oneMonth*, *oneYear*.
     /firewall/statistics/{ruleId}:
       displayName: firewallRuleStatistics
       description: |
@@ -16500,6 +16484,52 @@ securitySchemes:
         delete:
           displayName: sessionDelete
           description: Disconnect an active client.
+    /statistics/dashboard/firewall:
+      displayName: firewallStatistics
+      description: |
+        Working With NSX Edge Firewall Dashboard Statistics
+        ----
+      get:
+        displayName: firewallStatisticsRead
+        description: |
+          Retrieve number of ongoing connections for the firewall
+          configuration.
+        queryParameters:
+          interval:
+            displayName: interval
+            description: |
+              60 min by default, can be given as *1* - *60* min, *oneDay*, 
+              *oneWeek*, *oneMonth*, *oneYear*.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <dashboardStatistics>
+                    <meta>
+                      <startTime>1509754620</startTime>
+                      <endTime>1509758200</endTime>
+                      <interval>20</interval>
+                    </meta>
+                    <data>
+                      <firewall>
+                        <connections>
+                          <dashboardStatistic>
+                            <timestamp>1509754620</timestamp>
+                            <value>15.0</value>
+                          </dashboardStatistic>
+                          <dashboardStatistic>
+                            <timestamp>1509754640</timestamp>
+                            <value>15.0</value>
+                          </dashboardStatistic>
+                          <dashboardStatistic>
+                            <timestamp>1509754660</timestamp>
+                            <value>15.0</value>
+                          </dashboardStatistic>
+                        </connections>
+                      </firewall>
+                    </data>
+                  </dashboardStatistics>
     /statistics/dashboard/sslvpn:
       displayName: sslVPNStats
       description: |
