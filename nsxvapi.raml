@@ -10830,42 +10830,53 @@ securitySchemes:
     put:
       displayName: dfwEnableDisableToggle # existing dupfix/change dfwEnableDisableAPI
       description: Enable or disable firewall components on a cluster
-  /{contextId}/config/ipfix:
+  /globalroot-0/config/ipfix:
     displayName: dfwIPFix
     description: |
       Working With IPFIX
       ---
       Configuring IPFIX exports specific flows directly from Distributed
       Firewall to a flow collector.
-    uriParameters:
-      contextId:
-        required: true
-        displayName: contextId
-        description: Specified context
+      
+      Parameter |  Description | Comments
+      ---|---|---
+      **ipfixEnabled** | Enabled status of IPFIX | Valid values: *true* or *false*.
+      **observationDomainId** | Observation domain ID for IPFIX | Required. Must be greater than *0*.
+      **flowTimeout** | Flow timeout | Required. Valid values: *1-60*.
+      **collector** | IPFIX collector configuration | Can define multiple.
+      **collector > ip** | IPFIX collector IP address |
+      **collector > port** | IPFIX collector port | Valid values: *0-65535*. Default is *4739*. 
     get:
       displayName: dfwIPFixRead
-      description: Query IPFIX configuration.
+      description: Retrieve IPFIX configuration.
     put:
       displayName: dfwIPFixUpdate
-      description: Configure IPFIX.
+      description: |
+        Update IPFIX configuration.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.5 | Default value for collector port changed from *0* to *4739*.
       body:
         application/xml:
           example: |
             <ipfixConfiguration>
-              <contextId></contextId>
-              <ipfixEnabled></ipfixEnabled>
-              <observationDomainId></observationDomainId>
-              <flowTimeout></flowTimeout>
+              <contextId>globalroot-0</contextId>
+              <ipfixEnabled>true</ipfixEnabled>
+              <observationDomainId>1234</observationDomainId>
+              <flowTimeout>50</flowTimeout>
               <collector>
-                <ip></ip>
-                <port></port>
+                <ip>11.11.12.14</ip>
+                <port>8087</port>
               </collector>
             </ipfixConfiguration>
           schema: dfwIPFixUpdate
     delete:
       displayName: dfwIPFixDelete
       description: |
-        Deleting IPFIX configuration resets the config to default values
+        Deleting IPFIX configuration resets the configuration to default values.
 /4.0/services/spoofguard:
   displayName: spoofGuard
   description: |
