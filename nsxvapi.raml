@@ -8849,11 +8849,64 @@ securitySchemes:
         delete:
           displayName: guestIntrospectionSolutionDeactivate
           description: Deactivate an endpoint protection solution on a host.
+  /usvmstats/usvmhealththresholds:
+    displayName: usvmHealthThresholds
+    description: |
+      Working With Guest Introspection SVM Health Thresholds 
+      ============
+      System events are generated when the Guest Introspection service VM memory
+      and CPU usage reach the defined thresholds.
+      
+    get:
+      displayName: usvmHealthThresholdsRead
+      description: |
+        Retrieve Guest Introspection service VM CPU and memory usage thresholds.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.5 | Method introduced.
+      responses:
+        200:
+          description: Success
+          body:
+            application/xml:
+              example: |
+                <UsvmHealthStats>
+                  <memThreshold>75</memThreshold>
+                  <cpuThreshold>75</cpuThreshold>
+                </UsvmHealthStats>  
+    put:
+      displayName: usvmHealthThresholdsRead
+      description: |
+        Update Guest Introspection service VM CPU and memory usage thresholds.
+        
+        Valid values are *0-100*. The default value is *75*.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.5 | Method introduced.
+      body:
+        application/xml:
+          example: |
+            <UsvmHealthStats>
+              <memThreshold>70</memThreshold>
+              <cpuThreshold>70</cpuThreshold>
+            </UsvmHealthStats>  
+      responses: 
+        200:
+          description: Success
+        400:
+          description: Bad Request
 /4.0/firewall:
   displayName: dfw
   description: |
     Working With Distributed Firewall
     =================================
+
   /globalroot-0/defaultconfig:
     displayName: dfwConfigDefault
     description: | 
