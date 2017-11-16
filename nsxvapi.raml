@@ -5079,6 +5079,7 @@ securitySchemes:
       post:
         displayName: componentAppMgmtRestartExecute # update existing addition componentRestartAction 
         description: Restart the appliance management web application.
+
   /backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
     description: |
@@ -5101,6 +5102,9 @@ securitySchemes:
       **backupDirectory** | Directory location to save backup files on backup server. |  Required.
       **fileNamePrefix** | Prefix for backup files. | Required. 
       **passPhrase** | Passphrase to encrypt and decrypt backups. | Required.
+      **passiveMode** | Use passive mode. | Optional. Default is *true*.
+      **useEPRT** | Use EPRT. | Optional. Default is *false*.
+      **useEPSV** | Use EPSV. | Optional. Default is *true*.
       
       **Backup frequency parameters**
       
@@ -5150,6 +5154,12 @@ securitySchemes:
         to encrypt and decrypt backup files. If you do not set a passphrase, backups
         will fail. If you forget the passphrase set on a backup file, you cannot
         restore that backup file.
+        
+        **Method history:**
+       
+        Release | Modification
+        --------|-------------
+        6.3.3 | Method updated. Parameters **passiveMode** and **useEPSV** previously defaulted to *false*, now default to *true*.
       body:
         application/xml:
           example: |
@@ -5189,7 +5199,14 @@ securitySchemes:
         See *NSX Manager Appliance Backup Settings* for details.
       put:
         displayName: applianceMgrBackupSettingsFtpUpdate
-        description: Configure FTP settings.
+        description: |
+          Configure FTP settings.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.3.3 | Method updated. Parameters **passiveMode** and **useEPSV** previously defaulted to *false*, now default to *true*.
         body:
           application/xml:
             example: |
