@@ -51,10 +51,40 @@ There are three type of errors returned by NSX Manager:
       </errorData>
     </error>
     
-## API Removals
+## API Removals and Behavior Changes
 
-This section lists resources that have been removed from the API. See **Method
-history** information throughout the *NSX API Guide* for changes. 
+This section lists API removals and behavior changes. See **Method
+history** information throughout the *NSX API Guide* for details of
+other changes, such as parameter additions.
+
+### Behavior Changes in NSX 6.3.5
+
+NSX 6.3.5 introduces these changes in error handling:
+
+* If an API request results in a database exception on the NSX Manager, the
+  response is *500 Internal server* error. In previous releases, NSX Manager
+  responded with *200 OK*, even though the request failed.
+* If you send an API request with an empty body when a request body is expected,
+  the response is *400 Bad request*. In previous releases NSX Manager responded
+  with *500 Internal server error*.
+* If you specify an incorrect security group in this API, `GET
+  /api/2.0/services/policy/securitygroup/{ID}/securitypolicies`, the response is
+  *404 Not found*. In previous releases NSX Manager responded with *200 OK*.
+
+### Behavior Changes in NSX 6.3.3
+
+Starting in 6.3.3, the defaults for two backup and restore parameters have
+changed to match the defaults in the UI. Previously passiveMode and useEPSV
+defaulted to false, now they default to true. This affects the following APIs:
+
+* `PUT /api/1.0/appliance-management/backuprestore/backupsettings`
+* `PUT /api/1.0/appliance-management/backuprestore/backupsettings/ftpsettings`
+
+### Removed in NSX 6.3.0
+
+SSL VPN web access removed.  
+`GET, POST, DELETE /api/4.0/edges/{edgeId}/sslvpn/config/webresources`  
+`GET, PUT, DELETE /api/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}`
 
 ### Removed in NSX 6.2.3
 
@@ -65,8 +95,13 @@ ISIS removed from NSX Edge routing.
 `PUT /api/1.0/appliance-management/certificatemanager/csr/nsx` removed.  
 Replaced with `POST /api/1.0/appliance-management/certificatemanager/csr/nsx`.
 
-### Removed in 6.3.0
+### Removed in NSX 6.0
 
-SSL VPN web access removed.  
-`GET, POST, DELETE /api/4.0/edges/{edgeId}/sslvpn/config/webresources`  
-`GET, PUT, DELETE /api/4.0/edges/{edgeId}/sslvpn/config/webresources/{id}`
+Removed API | Alternative API
+------------|-----------------
+/api/2.0/global/heartbeat | /api/1.0/appliance-management/global/info 
+/api/2.0/global/config | /api/2.0/services/vcconfig <br>/api/2.0/services/ssoconfig <br>/api/1.0/appliance-management/system/network/dns <br>/api/1.0/appliance-management/system/timesettings
+/api/2.0/global/vcInfo | /api/2.0/services/vcconfig 
+/api/2.0/global/techsupportlogs | /api/1.0/appliance-management/techsupportlogs/NSX 
+/api/2.0/vdn/map/cluster/clusterId |
+/api/2.0/services/usermgmt/securityprofile  |

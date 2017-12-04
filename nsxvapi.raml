@@ -5,9 +5,9 @@ documentation:
  - title: Introduction
    content: !include documentation/introduction.md
  - title: update-number
-   content: Update 3
+   content: Update 4
  - title: update-date
-   content: Modified on 10 AUG 2017
+   content: Modified on 16 NOV 2017
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
@@ -5079,6 +5079,7 @@ securitySchemes:
       post:
         displayName: componentAppMgmtRestartExecute # update existing addition componentRestartAction 
         description: Restart the appliance management web application.
+
   /backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
     description: |
@@ -5101,6 +5102,9 @@ securitySchemes:
       **backupDirectory** | Directory location to save backup files on backup server. |  Required.
       **fileNamePrefix** | Prefix for backup files. | Required. 
       **passPhrase** | Passphrase to encrypt and decrypt backups. | Required.
+      **passiveMode** | Use passive mode. | Optional. Default is *true*.
+      **useEPRT** | Use EPRT. | Optional. Default is *false*.
+      **useEPSV** | Use EPSV. | Optional. Default is *true*.
       
       **Backup frequency parameters**
       
@@ -5150,6 +5154,12 @@ securitySchemes:
         to encrypt and decrypt backup files. If you do not set a passphrase, backups
         will fail. If you forget the passphrase set on a backup file, you cannot
         restore that backup file.
+        
+        **Method history:**
+       
+        Release | Modification
+        --------|-------------
+        6.3.3 | Method updated. Parameters **passiveMode** and **useEPSV** previously defaulted to *false*, now default to *true*.
       body:
         application/xml:
           example: |
@@ -5189,7 +5199,14 @@ securitySchemes:
         See *NSX Manager Appliance Backup Settings* for details.
       put:
         displayName: applianceMgrBackupSettingsFtpUpdate
-        description: Configure FTP settings.
+        description: |
+          Configure FTP settings.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.3.3 | Method updated. Parameters **passiveMode** and **useEPSV** previously defaulted to *false*, now default to *true*.
         body:
           application/xml:
             example: |
@@ -8018,6 +8035,42 @@ securitySchemes:
                     <value>FF:FF:FF:FF:FF:FF</value>
                   </macset>
                 </list>
+/2.0/eam:
+  displayName: eam
+  description: |
+    Working With ESX Agent Manager
+    ========
+    vSphere ESX Agent Manager (EAM) automates the process of deploying and
+    managing NSX networking and security services.
+
+  /status:
+    displayName: eamStatus
+    description: |
+      Working With EAM Status
+      --------
+    get:
+      displayName: eamStatusRead
+      description: |
+        Retrieve EAM status from vCenter.
+        
+        You can verify the status is UP before proceeding with an NSX install or
+        upgrade.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.5 | Method introduced.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <eamStatusInfo>
+                  <status>UP</status>
+                  <vcName>vcsa-01a.corp.local</vcName>
+                  <eamServiceName>VMware ESX Agent Manager</eamServiceName>
+                </eamStatusInfo>
 /2.0/services/systemalarms:
   displayName: servicesSystemAlarms
   description: |
@@ -8813,11 +8866,64 @@ securitySchemes:
         delete:
           displayName: guestIntrospectionSolutionDeactivate
           description: Deactivate an endpoint protection solution on a host.
+  /usvmstats/usvmhealththresholds:
+    displayName: usvmHealthThresholds
+    description: |
+      Working With Guest Introspection SVM Health Thresholds 
+      ============
+      System events are generated when the Guest Introspection service VM memory
+      and CPU usage reach the defined thresholds.
+      
+    get:
+      displayName: usvmHealthThresholdsRead
+      description: |
+        Retrieve Guest Introspection service VM CPU and memory usage thresholds.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.5 | Method introduced.
+      responses:
+        200:
+          description: Success
+          body:
+            application/xml:
+              example: |
+                <UsvmHealthStats>
+                  <memThreshold>75</memThreshold>
+                  <cpuThreshold>75</cpuThreshold>
+                </UsvmHealthStats>  
+    put:
+      displayName: usvmHealthThresholdsRead
+      description: |
+        Update Guest Introspection service VM CPU and memory usage thresholds.
+        
+        Valid values are *0-100*. The default value is *75*.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.5 | Method introduced.
+      body:
+        application/xml:
+          example: |
+            <UsvmHealthStats>
+              <memThreshold>70</memThreshold>
+              <cpuThreshold>70</cpuThreshold>
+            </UsvmHealthStats>  
+      responses: 
+        200:
+          description: Success
+        400:
+          description: Bad Request
 /4.0/firewall:
   displayName: dfw
   description: |
     Working With Distributed Firewall
     =================================
+
   /globalroot-0/defaultconfig:
     displayName: dfwConfigDefault
     description: | 
@@ -10741,42 +10847,53 @@ securitySchemes:
     put:
       displayName: dfwEnableDisableToggle # existing dupfix/change dfwEnableDisableAPI
       description: Enable or disable firewall components on a cluster
-  /{contextId}/config/ipfix:
+  /globalroot-0/config/ipfix:
     displayName: dfwIPFix
     description: |
       Working With IPFIX
       ---
       Configuring IPFIX exports specific flows directly from Distributed
       Firewall to a flow collector.
-    uriParameters:
-      contextId:
-        required: true
-        displayName: contextId
-        description: Specified context
+      
+      Parameter |  Description | Comments
+      ---|---|---
+      **ipfixEnabled** | Enabled status of IPFIX | Valid values: *true* or *false*.
+      **observationDomainId** | Observation domain ID for IPFIX | Required. Must be greater than *0*.
+      **flowTimeout** | Flow timeout | Required. Valid values: *1-60*.
+      **collector** | IPFIX collector configuration | Can define multiple.
+      **collector > ip** | IPFIX collector IP address |
+      **collector > port** | IPFIX collector port | Valid values: *0-65535*. Default is *4739*. 
     get:
       displayName: dfwIPFixRead
-      description: Query IPFIX configuration.
+      description: Retrieve IPFIX configuration.
     put:
       displayName: dfwIPFixUpdate
-      description: Configure IPFIX.
+      description: |
+        Update IPFIX configuration.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.3.5 | Default value for collector port changed from *0* to *4739*.
       body:
         application/xml:
           example: |
             <ipfixConfiguration>
-              <contextId></contextId>
-              <ipfixEnabled></ipfixEnabled>
-              <observationDomainId></observationDomainId>
-              <flowTimeout></flowTimeout>
+              <contextId>globalroot-0</contextId>
+              <ipfixEnabled>true</ipfixEnabled>
+              <observationDomainId>1234</observationDomainId>
+              <flowTimeout>50</flowTimeout>
               <collector>
-                <ip></ip>
-                <port></port>
+                <ip>11.11.12.14</ip>
+                <port>8087</port>
               </collector>
             </ipfixConfiguration>
           schema: dfwIPFixUpdate
     delete:
       displayName: dfwIPFixDelete
       description: |
-        Deleting IPFIX configuration resets the config to default values
+        Deleting IPFIX configuration resets the configuration to default values.
 /4.0/services/spoofguard:
   displayName: spoofGuard
   description: |
@@ -10839,42 +10956,42 @@ securitySchemes:
         
         **Note:** you must include the trailing slash for this URI:
         `/api/4.0/services/spoofguard/policies/`.
-    /{policyID}:
-      displayName: spoofGuardPolicy
-      description: | 
-        Working With a Specific SpoofGuard Policy
-        ---
-      uriParameters:
-        policyID:
-          required: true
-          displayName: SpoofGuardPolicyID
-          description: SpoofGuard policy ID.
-      get:
-        displayName: spoofGuardPolicyRead
-        description: |
-          Retrieve information about the specified SpoofGuard policy.
-      put:
-        displayName: spoofGuardPolicyUpdate
-        description: Modify the specified SpoofGuard policy.
-        body:
-          application/xml:
-            example: |
-              <spoofguardPolicy>
-                <policyId></policyId>
+  /policies/{policyID}:
+    displayName: spoofGuardPolicy
+    description: | 
+      Working With a Specific SpoofGuard Policy
+      ---
+    uriParameters:
+      policyID:
+        required: true
+        displayName: SpoofGuardPolicyID
+        description: SpoofGuard policy ID.
+    get:
+      displayName: spoofGuardPolicyRead
+      description: |
+        Retrieve information about the specified SpoofGuard policy.
+    put:
+      displayName: spoofGuardPolicyUpdate
+      description: Modify the specified SpoofGuard policy.
+      body:
+        application/xml:
+          example: |
+            <spoofguardPolicy>
+              <policyId></policyId>
+              <name></name>
+              <description></description>
+              <operationMode></operationMode>
+              <enforcementPoint>
+                <id></id>
                 <name></name>
-                <description></description>
-                <operationMode></operationMode>
-                <enforcementPoint>
-                  <id></id>
-                  <name></name>
-                  <type></type>
-                </enforcementPoint>
-                <allowLocalIPs></allowLocalIPs>
-              </spoofguardPolicy>
-            schema: spoofGuardPolicyUpdate
-      delete:
-        displayName: spoofGuardPolicyDelete
-        description: Delete the specified SpoofGuard policy.
+                <type></type>
+              </enforcementPoint>
+              <allowLocalIPs></allowLocalIPs>
+            </spoofguardPolicy>
+          schema: spoofGuardPolicyUpdate
+    delete:
+      displayName: spoofGuardPolicyDelete
+      description: Delete the specified SpoofGuard policy.
   /{policyID}:
     displayName: SpoofGuardPolicyIP
     description: |
@@ -13014,22 +13131,6 @@ securitySchemes:
                   <loggingEnabled></loggingEnabled>
                 </firewallDefaultPolicy>
               schema: defaultFirewallPolicyUpdate
-    /firewall/statistics/firewall:
-      displayName: firewallStatistics
-      description: |
-        Working With NSX Edge Firewall Statistics
-        ----
-      get:
-        displayName: firewallStatisticsRead
-        description: |
-          Retrieve number of ongoing connections for the firewall
-          configuration.
-        queryParameters:
-          interval:
-            displayName: interval
-            description: |
-              60 min by default, can be given as *1* - *60* min, *oneDay*, 
-              *oneWeek*, *oneMonth*, *oneYear*.
     /firewall/statistics/{ruleId}:
       displayName: firewallRuleStatistics
       description: |
@@ -13211,20 +13312,20 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <natRule>
-                  <action>dnat</action>
-                  <vnic>0</vnic>
-                  <originalAddress>10.112.196.116</originalAddress>
-                  <translatedAddress>172.16.1.10</translatedAddress>
-                  <dnatMatchSourceAddress>any</dnatMatchSourceAddress>
-                  <loggingEnabled>true</loggingEnabled>
-                  <enabled>true</enabled>
-                  <description>my comments</description>
-                  <protocol>tcp</protocol>
-                  <translatedPort>3389</translatedPort>
-                  <originalPort>3389</originalPort>
-                  <dnatMatchSourcePort>any</dnatMatchSourcePort>
-                </natRule>
+                <natRules>
+                  <natRule>
+                    <action>dnat</action>
+                    <vnic>0</vnic>
+                    <originalAddress>10.112.196.116</originalAddress>
+                    <translatedAddress>172.16.1.10</translatedAddress>
+                    <loggingEnabled>true</loggingEnabled>
+                    <enabled>true</enabled>
+                    <description>my comments</description>
+                    <protocol>tcp</protocol>
+                    <translatedPort>3389</translatedPort>
+                    <originalPort>3389</originalPort>
+                  </natRule>
+                </natRules>
               schema: edgeNatRulesCreate
         /{ruleID}:
           displayName: edgeNatRule
@@ -16500,6 +16601,52 @@ securitySchemes:
         delete:
           displayName: sessionDelete
           description: Disconnect an active client.
+    /statistics/dashboard/firewall:
+      displayName: firewallStatistics
+      description: |
+        Working With NSX Edge Firewall Dashboard Statistics
+        ----
+      get:
+        displayName: firewallStatisticsRead
+        description: |
+          Retrieve number of ongoing connections for the firewall
+          configuration.
+        queryParameters:
+          interval:
+            displayName: interval
+            description: |
+              60 min by default, can be given as *1* - *60* min, *oneDay*, 
+              *oneWeek*, *oneMonth*, *oneYear*.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <dashboardStatistics>
+                    <meta>
+                      <startTime>1509754620</startTime>
+                      <endTime>1509758200</endTime>
+                      <interval>20</interval>
+                    </meta>
+                    <data>
+                      <firewall>
+                        <connections>
+                          <dashboardStatistic>
+                            <timestamp>1509754620</timestamp>
+                            <value>15.0</value>
+                          </dashboardStatistic>
+                          <dashboardStatistic>
+                            <timestamp>1509754640</timestamp>
+                            <value>15.0</value>
+                          </dashboardStatistic>
+                          <dashboardStatistic>
+                            <timestamp>1509754660</timestamp>
+                            <value>15.0</value>
+                          </dashboardStatistic>
+                        </connections>
+                      </firewall>
+                    </data>
+                  </dashboardStatistics>
     /statistics/dashboard/sslvpn:
       displayName: sslVPNStats
       description: |
@@ -18447,6 +18594,24 @@ securitySchemes:
                       <securityPolicy></securityPolicy>
                       <securityPolicy></securityPolicy>
                     </securityPolicies>
+    /maxprecedence:
+      displayName: securityPolicyPrecedence
+      description: |
+        Working with Service Composer Policy Precedence
+        --------
+      get:
+        displayName: securityPolicyPrecedenceRead
+        description: |
+          Retrieve the highest precedence (or weight) of the Service Composer
+          security policies.
+          
+          The response body contains only the maximum precedence.
+          
+          Example:
+          
+          ```
+          6300
+          ```
     /status:
       displayName: securityPolicyStatus
       description: |
