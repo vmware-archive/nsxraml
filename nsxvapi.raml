@@ -8520,6 +8520,115 @@ securitySchemes:
                   </alarmMetadata>
               </systemAlarm>
           </systemAlarms>
+/2.0/capacity-parameters:
+  displayName: CapacityParameter
+  description: |
+    Working With System Scale (Capacity Parameter) Dashboard
+    ===================
+    The System Scale (Capacity Parameter) dashboard displays information about the current object count, maximum object supported 
+    by the system, and  percentage usage for each parameter.
+    The capacity parameter report collects information about the current system scale and the supported scale
+    parameters. It also allows you to view a warning threshold value  and percentage usage for each the parameter. 
+    It also allows you to view and configure a warning threshold value at the system level. If the current global threshold values
+    exceeds a specified threshold value, a warning indicator is displayed on the UI to alert that the maximum 
+    supported scale is approaching. 
+    This information is also logged and included in the support bundle.
+
+  /report:
+    displayName: CapacityParameterReport
+    description: |
+      System Scale (Capacity Parameter) Dashboard Report
+      ----------------------------
+      Retrieves the current and supported scale configuration of the system.
+    get:
+      displayName: CapacityParameterReportRead
+      description: |
+        The output displays scale summary, current scale value, supported system scale value, 
+        threshold value, and the percentage usage for each parameter.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <CapacityParameters>
+                  <timeStamp>2017-11-06 09:53:50.057</timeStamp>
+                  <ScaleSummary>
+                      <parametersAboveSupportedValue>0</parametersAboveSupportedValue>
+                      <parametersAboveThreshold>0</parametersAboveThreshold>
+                      <parametersBelowThreshold>18</parametersBelowThreshold>
+                  </ScaleSummary>
+                  <CapacityParameter>
+                      <name>Security Policies</name>
+                      <currValue>0</currValue>
+                      <supportedValue>10000</supportedValue>
+                      <threshold>80</threshold>
+                      <percentageUsed>0.0</percentageUsed>
+                  </CapacityParameter>
+                  <CapacityParameter>
+                      <name>IP Pools</name>
+                      <currValue>0</currValue>
+                      <supportedValue>10000</supportedValue>
+                      <threshold>80</threshold>
+                      <percentageUsed>0.0</percentageUsed>
+                  </CapacityParameter>
+                  <CapacityParameter>
+                      <name>AD Domains</name>
+                      <currValue>0</currValue>
+                      <supportedValue>15</supportedValue>
+                      <threshold>80</threshold>
+                      <percentageUsed>0.0</percentageUsed>
+                  </CapacityParameter>
+                </CapacityParameters>
+  /thresholds:
+    displayName: CapacityParameterThreshold
+    description: |
+      System Scale (Capacity Parameter) Dashboard Threshold
+      ---------------------------------
+      You can find out and change the global threshold for the system, if required. 
+       The default global threshold value for the system is set to *80*.
+    get:
+      displayName: CapacityParameterThresholdRead
+      description: |    
+          Retrieves the global threshold for the system. The System Scale dashboard on UI displays warning when the 
+          threshold value is reached.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+      responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <CapacityThresholds>
+                    <globalThresholdPercentage>80</globalThresholdPercentage>
+                  </CapacityThresholds>
+    put:
+      displayName: CapacityParameterThresholdUpdate
+      description: |
+        You can configure the scale threshold of the system. If you change the global threshold from 80 to 70,
+        it means the System Scale dashboard displays warning when the system threshold reaches at 70%.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      body:
+        application/xml:
+          example: |
+            <CapacityThresholds>
+              <globalThresholdPercentage>70</globalThresholdPercentage>
+            </CapacityThresholds>
+                        
 /2.0/services/taskservice/job:
   displayName: taskFramework
   description: |
