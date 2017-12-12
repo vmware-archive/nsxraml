@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#46;&#99;&#111;&#109;">&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#46;&#99;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#109;">&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -3754,7 +3754,6 @@ it means the System Scale dashboard displays warning when the system threshold r
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CapacityThresholds</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">globalThresholdPercentage</span>&gt;</span>70<span class="hljs-tag">&lt;/<span class="hljs-name">globalThresholdPercentage</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">CapacityThresholds</span>&gt;</span>
-            
 </code></pre>
   </div>
 </div>
@@ -5906,6 +5905,228 @@ other configuration.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">applicationGroup</span>&gt;</span>
 </code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="working-with-custom-dashboard-widget">Working With Custom Dashboard Widget</h1>
+<p>You can customize the existing system-defined widgets and can also add custom widgets to the dashboard. 
+You can add five custom widgets to the dashboard. You can have total of maximum 10 widgets on your dashboard.
+Following data types are supported:</p>
+<ul>
+<li>Datasource</li>
+<li>GridConfiguration</li>
+<li>LabelValueConfiguration</li>
+<li>UrlAlias</li>
+<li>Label</li>
+<li>Icon</li>
+<li>WidgetConfigurationList</li>
+<li>WidgetQueryParameters</li>
+</ul>
+<p><strong>Datasource</strong>
+Parameter  | Description |   Type | Comments</p>
+<p>----------|------------ | ----------|------------
+display_name | Datasource Instance Name. If name is not specified, then datasource is considered as &#39;default&#39;.|  String<br>urls |    Array of relative urls and their aliases.  |     array of UrlAlias   | Required</p>
+<p><strong>GridConfiguration</strong>
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------
+resource_type | Must be set to the value GridConfiguration.|  String |  Required <br> Read only<br> Enum: GridConfiguration, LabelValueConfiguration
+datasources |    Array of Datasource Instances with their relative urls. <br> The &#39;datasources&#39; represent the sources from which data is fetched.Currently, only NSX-API is supported as a &#39;default&#39; datasource. An example of specifying &#39;default&#39; datasource along with the urls to fetch data from is given at &#39;example_request&#39; section of &#39;CreateWidgetConfiguration&#39; API.|     array of Datasource  | Minimum items: 0
+description |    Description of this widget configuration.  |     String   | Maximum length: 1024 <br> Sortable
+category_id |    Category of this widget configuration. If category is not provided, system  generates a category ID.  |   String   | 
+category_display_name |  Display name of the category. If category display name is not provided, then category is used as its display name  |  String   | 
+properties |    Rows.  |     array of PropertyItem   | Required
+shared |    Share  widget configuration with other users.  |     Boolean   | Default is False</p>
+<p><strong>GridConfiguration: Grid Column</strong> - Represents column of the Grid
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>field |    Column Field <br> Field from which values of the column are derived.|     String   | Required
+label |    Label of the column.  |     Label   | Required
+render_configuration |    Render configuration to be applied, if any.  |     Array of RenderConfiguration   | 
+type |    Data type of the field.  |     String   | Required <br> Options are String, Number, Date. Default is String</p>
+<p><strong>Label Value Configuration</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>resource_type |    Label Value Configuration |     String   | Required. Read only<br>sub_type |    [Optional] Sub-type of the resource type. When the sub-type is deleted, then the parent type will be considered. <br>For  <em>LabelValueConfiguration</em> the available sub-type is  <em>aggregate_count</em>. |     String   | Read only
+object_type |    [Optional] User defined type for identifying the widget’s data. Example: <em>HostConnStatuses</em> |     String   |<br>datasources |    Array of Datasource Instances with their relative URLs. |     Srray of <em>Datasource</em>   | Required. Read only<br>description |    Description of this widget configuration. |     String   | Maximum length:1024 <br> Sortable 
+display_name |    Widget Title. |     String   | Required<br>category_id |    Category of this widget configuration.<br> If category is not provided, system generates an ID for category. |     String   |<br>category_display_name |    Display name of the category. <br> If category display name is not provided, then category is used as the display name. |     String   |<br>properties |    Rows |     Array of <em>PropertyItem</em>   | Required
+shared |    Share the widget configuration with other users. |     Boolean   | Default is False
+revision |    Revision of this widget configuration. It is auto-generated and auto-updated. |     Integer   | Read only</p>
+<p><strong>PropertyItem</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>field |    Field of the Property. |     String   | Required
+label |    Label of the donut configuration. <br> By default, displayed at the middle of the donut. It labels the entities of the donut. |     Label   | Required
+render_configuration |    Render Configuration. |     Array of RenderConfiguration    | 
+type |    Label Value Configuration. |     String   | Required
+resource_type |    Field data type. |     String   | Required
+resource_type |    Label Value Configuration. |     String   | Required.<br> Options are String, Number, 
+Date <br> Default is String
+drilldown_id |    ID of the drill-down widget configuration. |     String   | </p>
+<p><strong>RenderConfiguration</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>condition |    Expression for evaluating condition. |     String   | 
+display_value |    Overridden value to display, if any. |     String   | 
+icons |    Icons to be applied at dashboard for widgets and UI elements. |     Array of Icon   | Minimum item is 0</p>
+<p><strong>UrlAlias</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>alias |    Alias name for URL. |     String   | 
+url |    URL. |     String   | Required</p>
+<p>  <strong>Label</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>text |    Text to be displayed at the label. |     String   | Required <br> Maximum length is 255
+url |    URL. |     String   | Required</p>
+<p><strong>Icon</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>type |    Icon is rendered based on its type. <br> For example, if ERROR is chosen, then icon representing error will be rendered. |     String   | 
+Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE </p>
+<p><strong>WidgetConfigurationList</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>widgetconfigurations |    Array of widget configurations.  |     Array of widgetconfiguration   | Required. Read only </p>
+<p><strong>WidgetQueryParameters</strong> 
+Parameter  | Description |   Type | Comments
+----------|------------ | ----------|------------<br>widget_ids |    Comma separated IDs of the WidgetConfiguration to be queried.  |     String   | Read only</p>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations"
+    href="#GET/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations"
+  ><h2>GET /2.0/services/dashboard/ui-views/dashboard/widgetconfigurations</h2></a>
+  <div class="content">
+    <p><p>Retrieves configuration details for all the widgets available on dashboard.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+  </div>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations"
+    href="#POST/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations"
+  ><h2>POST /2.0/services/dashboard/ui-views/dashboard/widgetconfigurations</h2></a>
+  <div class="content">
+    <p><p>Creates a new Widget Configuration and adds it to the default Dashboard on UI. Supported resource_type are <em>LabelValueConfiguration</em> and <em>GridConfiguration</em>.<b></p>
+<p><strong>Notes for Expressions in Widget Configuration</strong></p>
+<p>Expressions should be given in a single line. If an expression spans multiple lines, then form the expression in a single line. 
+Expressions are evaluated as follows:<br></p>
+<ul>
+<li>First, render configurations are evaluated in their order of appearance in the widget configuration. 
+The <em>field</em> is evaluated at the end.</li>
+<li>Next, when render configuration is provided then the order of evaluation is as follows: <br><ol>
+<li>If expressions provided in condition and display value are well-formed and free  of runtime errors such as null pointers 
+and evaluates to true; then the remaining render configurations are not evaluated, and the current render configurations 
+<em>display value</em> is taken as the final value.</li>
+<li>If expression provided in condition of render configuration is false, then next render configuration is evaluated.  </li>
+<li>Finally, field is evaluated only when every render configuration evaluates to false and no error occurs during steps
+1 and 2 above. <br>
+If an error occurs during evaluation of render configuration, then an error message: &quot;<strong>ERROR</strong>: See the Error_Messages field of 
+this report for details&quot; is shown. The display value corresponding to that label is not shown and evaluation of the 
+remaining render configurations continues to collect and show all the error messages (marked with the Label for identification)
+as Error_Messages: {}. If during evaluation of expressions for any label-value pair an error occurs, 
+then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.<br><strong>Important Note for text in condition, field and render configuration&#39;s display value</strong>:<br> 
+For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration&#39;s display_value. <br> 
+JSON Example:<br>
+&quot;condition&quot;: &quot;#{default.comp.operationStatus} == \&quot;SUCCESS\&quot;&quot;,
+&quot;field&quot;: &quot;#{default.status.components[?(@.status == \&quot;STOPPED\&quot;)].status}.size()&quot;
+&quot;render_configuration&quot;: [{
+&quot;display_value&quot;: &quot;\&quot;CPU usage less than 10%.\&quot;&quot;
+}]<br>
+<strong>Notes for Drilldowns</strong>: <br>
+Only <em>GridConfiguration</em> is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as <em>drilldown</em>. Drilldowns are supported for <em>aggregate_count</em> (subtype of <em>LabelValueConfiguration</em>) widgets only.  In other words, only &#39;aggregate_count&#39; widgets can have drilldowns.
+<strong>Notes for Sharing the widget to other users</strong>:<br>
+Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set shared to true).<br></li>
+</ol>
+</li>
+</ul>
+<p>Few Examples of different Widget Types:
+Example 1: A Label Value Widget</p>
+<p>Example 2: A Label value widget with subtype as Aggregate count</p>
+<p>Example 3: A Grid Widget</p>
+<p>Example 4: An Aggregate Count widget with a Drilldown Grid Widget</p>
+<p><strong>Method history:</strong>
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-a-specific-widget">Working With a Specific Widget</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">widgetconfigurationId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>ID for a specific widget on the dashboard.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}"
+    href="#GET/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}"
+  ><h2>GET /2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}</h2></a>
+  <div class="content">
+    <p><p>Retrieves the configuration details about a specific widget on the dashboard. </p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}"
+    href="#PUT/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}"
+  ><h2>PUT /2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}</h2></a>
+  <div class="content">
+    <p><p>Updates the configuration about a specific widget on the dashboard. For example, <em>LabelValueConfiguration</em>, 
+PUT https://<nsx-mgr>/api/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/
+LabelValueConfiguration_497802b7-e0d9-48b3-abfd-479058540956.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}"
+    href="#DELETE/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}"
+  ><h2>DELETE /2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/{widgetconfigurationId}</h2></a>
+  <div class="content">
+    <p><p>Deletes a specific widget on the dashboard.            </p>
+</p>
   </div>
 </div>
 </section>

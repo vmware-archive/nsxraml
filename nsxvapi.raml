@@ -8628,6 +8628,234 @@ securitySchemes:
             <CapacityThresholds>
               <globalThresholdPercentage>70</globalThresholdPercentage>
             </CapacityThresholds>
+            
+/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations:
+  displayName: widgetconfigurations
+  description: |
+    Working With Custom Dashboard Widget
+    =============================
+    You can customize the existing system-defined widgets and can also add custom widgets to the dashboard. 
+    You can add five custom widgets to the dashboard. You can have total of maximum 10 widgets on your dashboard.
+    Following data types are supported:
+    * Datasource
+    * GridConfiguration
+    * LabelValueConfiguration
+    * UrlAlias
+    * Label
+    * Icon
+    * WidgetConfigurationList
+    * WidgetQueryParameters
+    
+    **Datasource**
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------
+    display_name | Datasource Instance Name. If name is not specified, then datasource is considered as 'default'.|  String        
+    urls |    Array of relative urls and their aliases.  |     array of UrlAlias   | Required
+    
+    **GridConfiguration**
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------
+    resource_type | Must be set to the value GridConfiguration.|  String |  Required <br> Read only<br> Enum: GridConfiguration, LabelValueConfiguration
+    datasources |    Array of Datasource Instances with their relative urls. <br> The 'datasources' represent the sources from which data is fetched.Currently, only NSX-API is supported as a 'default' datasource. An example of specifying 'default' datasource along with the urls to fetch data from is given at 'example_request' section of 'CreateWidgetConfiguration' API.|     array of Datasource  | Minimum items: 0
+    description |    Description of this widget configuration.  |     String   | Maximum length: 1024 <br> Sortable
+    category_id |    Category of this widget configuration. If category is not provided, system  generates a category ID.  |   String   | 
+    category_display_name |  Display name of the category. If category display name is not provided, then category is used as its display name  |  String   | 
+    properties |    Rows.  |     array of PropertyItem   | Required
+    shared |    Share  widget configuration with other users.  |     Boolean   | Default is False
+            
+            
+    **GridConfiguration: Grid Column** - Represents column of the Grid
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    field |    Column Field <br> Field from which values of the column are derived.|     String   | Required
+    label |    Label of the column.  |     Label   | Required
+    render_configuration |    Render configuration to be applied, if any.  |     Array of RenderConfiguration   | 
+    type |    Data type of the field.  |     String   | Required <br> Options are String, Number, Date. Default is String
+      
+      
+    **Label Value Configuration** 
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    resource_type |    Label Value Configuration |     String   | Required. Read only  
+    sub_type |    [Optional] Sub-type of the resource type. When the sub-type is deleted, then the parent type will be considered. <br>For  *LabelValueConfiguration* the available sub-type is  *aggregate_count*. |     String   | Read only
+    object_type |    [Optional] User defined type for identifying the widget’s data. Example: *HostConnStatuses* |     String   |  
+    datasources |    Array of Datasource Instances with their relative URLs. |     Srray of *Datasource*   | Required. Read only  
+    description |    Description of this widget configuration. |     String   | Maximum length:1024 <br> Sortable 
+    display_name |    Widget Title. |     String   | Required  
+    category_id |    Category of this widget configuration.<br> If category is not provided, system generates an ID for category. |     String   |  
+    category_display_name |    Display name of the category. <br> If category display name is not provided, then category is used as the display name. |     String   |   
+    properties |    Rows |     Array of *PropertyItem*   | Required
+    shared |    Share the widget configuration with other users. |     Boolean   | Default is False
+    revision |    Revision of this widget configuration. It is auto-generated and auto-updated. |     Integer   | Read only
+    
+    
+    **PropertyItem** 
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    field |    Field of the Property. |     String   | Required
+    label |    Label of the donut configuration. <br> By default, displayed at the middle of the donut. It labels the entities of the donut. |     Label   | Required
+    render_configuration |    Render Configuration. |     Array of RenderConfiguration    | 
+    type |    Label Value Configuration. |     String   | Required
+    resource_type |    Field data type. |     String   | Required
+    resource_type |    Label Value Configuration. |     String   | Required.<br> Options are String, Number, 
+    Date <br> Default is String
+    drilldown_id |    ID of the drill-down widget configuration. |     String   | 
+    
+    
+    **RenderConfiguration** 
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    condition |    Expression for evaluating condition. |     String   | 
+    display_value |    Overridden value to display, if any. |     String   | 
+    icons |    Icons to be applied at dashboard for widgets and UI elements. |     Array of Icon   | Minimum item is 0
+    
+    
+    **UrlAlias** 
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    alias |    Alias name for URL. |     String   | 
+    url |    URL. |     String   | Required
+    
+    
+      **Label** 
+      
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    text |    Text to be displayed at the label. |     String   | Required <br> Maximum length is 255
+    url |    URL. |     String   | Required
+      
+      
+    **Icon** 
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    type |    Icon is rendered based on its type. <br> For example, if ERROR is chosen, then icon representing error will be rendered. |     String   | 
+    Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE 
+    
+    
+    **WidgetConfigurationList** 
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    widgetconfigurations |    Array of widget configurations.  |     Array of widgetconfiguration   | Required. Read only 
+       
+       
+    **WidgetQueryParameters** 
+    
+    Parameter  | Description |   Type | Comments
+    ----------|------------ | ----------|------------      
+    widget_ids |    Comma separated IDs of the WidgetConfiguration to be queried.  |     String   | Read only
+      
+      
+  get:
+    displayName: widgetconfigurationsRead
+    description: |
+      Retrieves configuration details for all the widgets available on dashboard.
+       
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method introduced.
+    responses:
+      200:
+            
+      
+  post:
+    displayName: widgetconfigurationsAction
+    description: | 
+      Creates a new Widget Configuration and adds it to the default Dashboard on UI. Supported resource_type are *LabelValueConfiguration* and *GridConfiguration*.
+      
+      **Notes for Expressions in Widget Configuration**
+      
+      Expressions should be given in a single line. If an expression spans multiple lines, then form the expression in a single line. 
+      Expressions are evaluated as follows:<br>
+      * First, render configurations are evaluated in their order of appearance in the widget configuration. 
+      The *field* is evaluated at the end.
+      * Next, when render configuration is provided then the order of evaluation is as follows: 
+        
+          * If expressions provided in condition and display value are well-formed and free  of runtime errors such as null pointers 
+          and evaluates to true; then the remaining render configurations are not evaluated, and the current render configurations 
+          *display value* is taken as the final value.
+          
+          * If expression provided in condition of render configuration is false, then next render configuration is evaluated. 
+          
+          * Finally, field is evaluated only when every render configuration evaluates to false and no error occurs during steps mentioned above.
+          
+          If an error occurs during evaluation of render configuration, then an error message: "__ERROR__: See the Error_Messages field of 
+          this report for details" is shown. The display value corresponding to that label is not shown and evaluation of the 
+          remaining render configurations continues to collect and show all the error messages (marked with the Label for identification)
+          as Error_Messages: {}. If during evaluation of expressions for any label-value pair an error occurs, 
+          then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.
+      **Important Note for text in condition, field and render configuration's display value**: 
+      For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration's display_value. 
+      
+      **Notes for Drilldowns**:
+      Only *GridConfiguration* is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as *drilldown*. Drilldowns are supported for *aggregate_count* (subtype of *LabelValueConfiguration*) widgets only.  In other words, only 'aggregate_count' widgets can have drilldowns.
+      **Notes for Sharing the widget to other users**:
+      Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set shared to true).
+                    
+      Few Examples of different Widget Types:
+      Example 1: A Label Value Widget
+      
+      Example 2: A Label value widget with subtype as Aggregate count
+      
+      Example 3: A Grid Widget
+      
+      Example 4: An Aggregate Count widget with a Drilldown Grid Widget
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method introduced.
+          
+  /{widgetconfigurationId}:
+    displayName: widgetconfiguration
+    description: |
+      Working With a Specific Widget
+      ---------------------------------
+    uriParameters:
+      widgetconfigurationId:
+          required: true
+          displayName: widgetconfigurationId
+          description: |
+            ID for a specific widget on the dashboard.
+    get:
+      displayName: widgetconfigurationidRead
+      description: |
+        Retrieves the configuration details about a specific widget on the dashboard. 
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      
+    put:
+        displayName: widgetconfigurationidUpdate
+        description: |
+          Updates the configuration about a specific widget on the dashboard. For example, *LabelValueConfiguration*, 
+          PUT https://<nsx-mgr>/api/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations/
+          LabelValueConfiguration_497802b7-e0d9-48b3-abfd-479058540956.
+                  
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+              
+    delete:
+          displayName: widgetconfigurationidDelete
+          description: |
+            Deletes a specific widget on the dashboard.            
                         
 /2.0/services/taskservice/job:
   displayName: taskFramework
