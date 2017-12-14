@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#109;">&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x64;&#111;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#99;&#111;&#x6d;">&#x64;&#111;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -5923,67 +5923,345 @@ Following data types are supported:</p>
 <li>WidgetConfigurationList</li>
 <li>WidgetQueryParameters</li>
 </ul>
-<p><strong>Datasource</strong>
-Parameter  | Description |   Type | Comments</p>
-<p>----------|------------ | ----------|------------
-display_name | Datasource Instance Name. If name is not specified, then datasource is considered as &#39;default&#39;.|  String<br>urls |    Array of relative urls and their aliases.  |     array of UrlAlias   | Required</p>
-<p><strong>GridConfiguration</strong>
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------
-resource_type | Must be set to the value GridConfiguration.|  String |  Required <br> Read only<br> Enum: GridConfiguration, LabelValueConfiguration
-datasources |    Array of Datasource Instances with their relative urls. <br> The &#39;datasources&#39; represent the sources from which data is fetched.Currently, only NSX-API is supported as a &#39;default&#39; datasource. An example of specifying &#39;default&#39; datasource along with the urls to fetch data from is given at &#39;example_request&#39; section of &#39;CreateWidgetConfiguration&#39; API.|     array of Datasource  | Minimum items: 0
-description |    Description of this widget configuration.  |     String   | Maximum length: 1024 <br> Sortable
-category_id |    Category of this widget configuration. If category is not provided, system  generates a category ID.  |   String   | 
-category_display_name |  Display name of the category. If category display name is not provided, then category is used as its display name  |  String   | 
-properties |    Rows.  |     array of PropertyItem   | Required
-shared |    Share  widget configuration with other users.  |     Boolean   | Default is False</p>
-<p><strong>GridConfiguration: Grid Column</strong> - Represents column of the Grid
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>field |    Column Field <br> Field from which values of the column are derived.|     String   | Required
-label |    Label of the column.  |     Label   | Required
-render_configuration |    Render configuration to be applied, if any.  |     Array of RenderConfiguration   | 
-type |    Data type of the field.  |     String   | Required <br> Options are String, Number, Date. Default is String</p>
-<p><strong>Label Value Configuration</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>resource_type |    Label Value Configuration |     String   | Required. Read only<br>sub_type |    [Optional] Sub-type of the resource type. When the sub-type is deleted, then the parent type will be considered. <br>For  <em>LabelValueConfiguration</em> the available sub-type is  <em>aggregate_count</em>. |     String   | Read only
-object_type |    [Optional] User defined type for identifying the widget’s data. Example: <em>HostConnStatuses</em> |     String   |<br>datasources |    Array of Datasource Instances with their relative URLs. |     Srray of <em>Datasource</em>   | Required. Read only<br>description |    Description of this widget configuration. |     String   | Maximum length:1024 <br> Sortable 
-display_name |    Widget Title. |     String   | Required<br>category_id |    Category of this widget configuration.<br> If category is not provided, system generates an ID for category. |     String   |<br>category_display_name |    Display name of the category. <br> If category display name is not provided, then category is used as the display name. |     String   |<br>properties |    Rows |     Array of <em>PropertyItem</em>   | Required
-shared |    Share the widget configuration with other users. |     Boolean   | Default is False
-revision |    Revision of this widget configuration. It is auto-generated and auto-updated. |     Integer   | Read only</p>
-<p><strong>PropertyItem</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>field |    Field of the Property. |     String   | Required
-label |    Label of the donut configuration. <br> By default, displayed at the middle of the donut. It labels the entities of the donut. |     Label   | Required
-render_configuration |    Render Configuration. |     Array of RenderConfiguration    | 
-type |    Label Value Configuration. |     String   | Required
-resource_type |    Field data type. |     String   | Required
-resource_type |    Label Value Configuration. |     String   | Required.<br> Options are String, Number, 
-Date <br> Default is String
+<p><strong>Datasource</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>display_name</td>
+<td>Datasource Instance Name. If name is not specified, then datasource is considered as &#39;default&#39;.</td>
+<td>String        </td>
+</tr>
+<tr>
+<td>urls</td>
+<td>Array of relative urls and their aliases.</td>
+<td>array of UrlAlias</td>
+<td>Required</td>
+</tr>
+</tbody></table><p><strong>GridConfiguration</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>resource_type</td>
+<td>Must be set to the value GridConfiguration.</td>
+<td>String</td>
+<td>Required <br> Read only<br> Enum: GridConfiguration, LabelValueConfiguration</td>
+</tr>
+<tr>
+<td>datasources</td>
+<td>Array of Datasource Instances with their relative urls. <br> The &#39;datasources&#39; represent the sources from which data is fetched.Currently, only NSX-API is supported as a &#39;default&#39; datasource. An example of specifying &#39;default&#39; datasource along with the urls to fetch data from is given at &#39;example_request&#39; section of &#39;CreateWidgetConfiguration&#39; API.</td>
+<td>array of Datasource</td>
+<td>Minimum items: 0</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Description of this widget configuration.</td>
+<td>String</td>
+<td>Maximum length: 1024 <br> Sortable</td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>Category of this widget configuration. If category is not provided, system  generates a category ID.</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>category_display_name</td>
+<td>Display name of the category. If category display name is not provided, then category is used as its display name</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>properties</td>
+<td>Rows.</td>
+<td>array of PropertyItem</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>shared</td>
+<td>Share  widget configuration with other users.</td>
+<td>Boolean</td>
+<td>Default is False</td>
+</tr>
+</tbody></table><p><strong>GridConfiguration: Grid Column</strong> - Represents column of the Grid</p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>field</td>
+<td>Column Field <br> Field from which values of the column are derived.</td>
+<td>String</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>label</td>
+<td>Label of the column.</td>
+<td>Label</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>render_configuration</td>
+<td>Render configuration to be applied, if any.</td>
+<td>Array of RenderConfiguration</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>Data type of the field.</td>
+<td>String</td>
+<td>Required <br> Options are String, Number, Date. Default is String</td>
+</tr>
+</tbody></table><p><strong>Label Value Configuration</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>resource_type</td>
+<td>Label Value Configuration</td>
+<td>String</td>
+<td>Required. Read only  </td>
+</tr>
+<tr>
+<td>sub_type</td>
+<td>[Optional] Sub-type of the resource type. When the sub-type is deleted, then the parent type will be considered. <br>For  <em>LabelValueConfiguration</em> the available sub-type is  <em>aggregate_count</em>.</td>
+<td>String</td>
+<td>Read only</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>[Optional] User defined type for identifying the widget’s data. Example: <em>HostConnStatuses</em>.</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>datasources</td>
+<td>Array of Datasource Instances with their relative URLs.</td>
+<td>Srray of <em>Datasource</em></td>
+<td>Required. Read only  </td>
+</tr>
+<tr>
+<td>description</td>
+<td>Description of this widget configuration.</td>
+<td>String</td>
+<td>Maximum length:1024 <br> Sortable </td>
+</tr>
+<tr>
+<td>display_name</td>
+<td>Widget Title.</td>
+<td>String</td>
+<td>Required  </td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>Category of this widget configuration.<br> If category is not provided, system generates an ID for category.</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>category_display_name</td>
+<td>Display name of the category. <br> If category display name is not provided, then category is used as the display name.</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>properties</td>
+<td>Rows</td>
+<td>Array of <em>PropertyItem</em></td>
+<td>Required</td>
+</tr>
+<tr>
+<td>shared</td>
+<td>Share the widget configuration with other users.</td>
+<td>Boolean</td>
+<td>Default is False</td>
+</tr>
+<tr>
+<td>revision</td>
+<td>Revision of this widget configuration. It is auto-generated and auto-updated.</td>
+<td>Integer</td>
+<td>Read only</td>
+</tr>
+</tbody></table><p><strong>PropertyItem</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>field</td>
+<td>Field of the Property.</td>
+<td>String</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>label</td>
+<td>Label of the donut configuration. <br> By default, displayed at the middle of the donut. It labels the entities of the donut.</td>
+<td>Label</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>render_configuration</td>
+<td>Render Configuration.</td>
+<td>Array of RenderConfiguration</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>Label Value Configuration.</td>
+<td>String</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>resource_type</td>
+<td>Field data type.</td>
+<td>String</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>resource_type</td>
+<td>Label Value Configuration.</td>
+<td>String</td>
+<td>Required.<br> Options are String, Number, </td>
+</tr>
+</tbody></table><p>Date <br> Default is String
 drilldown_id |    ID of the drill-down widget configuration. |     String   | </p>
-<p><strong>RenderConfiguration</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>condition |    Expression for evaluating condition. |     String   | 
-display_value |    Overridden value to display, if any. |     String   | 
-icons |    Icons to be applied at dashboard for widgets and UI elements. |     Array of Icon   | Minimum item is 0</p>
-<p><strong>UrlAlias</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>alias |    Alias name for URL. |     String   | 
-url |    URL. |     String   | Required</p>
-<p>  <strong>Label</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>text |    Text to be displayed at the label. |     String   | Required <br> Maximum length is 255
-url |    URL. |     String   | Required</p>
-<p><strong>Icon</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>type |    Icon is rendered based on its type. <br> For example, if ERROR is chosen, then icon representing error will be rendered. |     String   | 
-Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE </p>
-<p><strong>WidgetConfigurationList</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>widgetconfigurations |    Array of widget configurations.  |     Array of widgetconfiguration   | Required. Read only </p>
-<p><strong>WidgetQueryParameters</strong> 
-Parameter  | Description |   Type | Comments
-----------|------------ | ----------|------------<br>widget_ids |    Comma separated IDs of the WidgetConfiguration to be queried.  |     String   | Read only</p>
-</div>
+<p><strong>RenderConfiguration</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>condition</td>
+<td>Expression for evaluating condition.</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>display_value</td>
+<td>Overridden value to display, if any.</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>icons</td>
+<td>Icons to be applied at dashboard for widgets and UI elements.</td>
+<td>Array of Icon</td>
+<td>Minimum item is 0</td>
+</tr>
+</tbody></table><p><strong>UrlAlias</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>alias</td>
+<td>Alias name for URL.</td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>url</td>
+<td>URL.</td>
+<td>String</td>
+<td>Required</td>
+</tr>
+</tbody></table><p>  <strong>Label</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>text</td>
+<td>Text to be displayed at the label.</td>
+<td>String</td>
+<td>Required <br> Maximum length is 255</td>
+</tr>
+<tr>
+<td>url</td>
+<td>URL.</td>
+<td>String</td>
+<td>Required</td>
+</tr>
+</tbody></table><p><strong>Icon</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>type</td>
+<td>Icon is rendered based on its type. <br> For example, if ERROR is chosen, then icon representing error will be rendered.</td>
+<td>String</td>
+<td></td>
+</tr>
+</tbody></table><p>Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE </p>
+<p><strong>WidgetConfigurationList</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>widgetconfigurations</td>
+<td>Array of widget configurations.</td>
+<td>Array of widgetconfiguration</td>
+<td>Required. Read only </td>
+</tr>
+</tbody></table><p><strong>WidgetQueryParameters</strong> </p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>widget_ids</td>
+<td>Comma separated IDs of the WidgetConfiguration to be queried.</td>
+<td>String</td>
+<td>Read only</td>
+</tr>
+</tbody></table><h2 id="-expressions-">  <strong>Expressions</strong>:</h2>
+<p>  All the expressions used in any widget configuration does not require any context. 
+  This means all of the expressions are evaluable on their own without any “variable declaration”. 
+  For example, you can give following expressions:</p>
+<pre><code class="code-block hljs lang-livecodeserver">* Arithmetic:
+  (<span class="hljs-number">1</span> + <span class="hljs-number">2</span>)= evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">3</span>
+  (<span class="hljs-number">12.0</span> - <span class="hljs-number">5.2</span>) = evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">6.8</span>
+  (<span class="hljs-number">6</span> * <span class="hljs-number">12</span> + <span class="hljs-number">5</span> / <span class="hljs-number">2.6</span>) = evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">73.923</span>
+  (<span class="hljs-number">12</span> % <span class="hljs-number">2</span>)= evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">0</span>
+  (<span class="hljs-number">6</span> / <span class="hljs-number">4</span> )= evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">1.5</span>
+  (<span class="hljs-number">-12</span> + <span class="hljs-number">77.2</span>) = evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">65.2</span>
+  (x * <span class="hljs-number">1.1</span> + y) = Not allowed <span class="hljs-keyword">as</span> x <span class="hljs-keyword">and</span> y are <span class="hljs-keyword">not</span> defined.
+* Calling methods:
+  “(\”\”).isEmpty()” = evaluates <span class="hljs-built_in">to</span> boolean <span class="hljs-literal">true</span>.
+* Accessing properties:
+  “(\”Some <span class="hljs-keyword">long</span> <span class="hljs-keyword">string</span>\”).<span class="hljs-built_in">length</span> == <span class="hljs-number">16</span>” = evaluates <span class="hljs-built_in">to</span> boolean <span class="hljs-literal">true</span>. But you can <span class="hljs-keyword">not</span> give expressions like:
+    “V1 + <span class="hljs-number">2</span>” 
+    “aString.<span class="hljs-built_in">length</span>()” <span class="hljs-keyword">and</span> so <span class="hljs-keyword">on</span>.
+     These expressions <span class="hljs-built_in">require</span> <span class="hljs-keyword">the</span> definition <span class="hljs-keyword">of</span> “V1” <span class="hljs-keyword">and</span> “aString” <span class="hljs-built_in">to</span> be present <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> context, <span class="hljs-keyword">and</span> there is no place <span class="hljs-keyword">in</span> widget configuration <span class="hljs-built_in">to</span> define <span class="hljs-keyword">it</span>. 
+     * No Java statements are supported, only expressions are supported.</code></pre></div>
 <div class="method get">
   <a
     class="verb get"
@@ -6004,6 +6282,272 @@ Parameter  | Description |   Type | Comments
 </tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.WidgetConfigurationListDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">widgetconfigurations</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>LabelValueConfiguration_HostCommunicationChannelStatus<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceType</span>&gt;</span>LabelValueConfiguration<span class="hljs-tag">&lt;/<span class="hljs-name">resourceType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">subType</span>&gt;</span>aggregate_count<span class="hljs-tag">&lt;/<span class="hljs-name">subType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectType</span>&gt;</span>HostCommunicationChannelStatus<span class="hljs-tag">&lt;/<span class="hljs-name">objectType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>Host Communication Channel Status<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemResourceFlag</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResourceFlag</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">createUser</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">createUser</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastUpdatedBy</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">lastUpdatedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">shared</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">shared</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryId</span>&gt;</span>cluster_preparation_status<span class="hljs-tag">&lt;/<span class="hljs-name">categoryId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryDisplayName</span>&gt;</span>Fabric Status<span class="hljs-tag">&lt;/<span class="hljs-name">categoryDisplayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshInterval</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">refreshInterval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>9300<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datasources</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">urls</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>status<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>api/2.0/vdn/inventory/hosts/connection/DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>summary<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>api/2.0/vdn/inventory/hosts/status/summary<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">urls</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">datasources</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>#{default.summary.downHostsTotalNumber}<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.summary.downHostsTotalNumber} != 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ERROR<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Down<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Number<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">drilldownId</span>&gt;</span>GridConfiguration_hccsGrid<span class="hljs-tag">&lt;/<span class="hljs-name">drilldownId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>#{default.summary.preparedHostsTotalNumber}<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCountDesc</span>&gt;</span>Hosts<span class="hljs-tag">&lt;/<span class="hljs-name">totalCountDesc</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>GridConfiguration_hccsGrid<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceType</span>&gt;</span>GridConfiguration<span class="hljs-tag">&lt;/<span class="hljs-name">resourceType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectType</span>&gt;</span>HostConnStatuses<span class="hljs-tag">&lt;/<span class="hljs-name">objectType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>Host Communication Channel Status Details<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemResourceFlag</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResourceFlag</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">createUser</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">createUser</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastUpdatedBy</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">lastUpdatedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">shared</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">shared</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryId</span>&gt;</span>drilldown<span class="hljs-tag">&lt;/<span class="hljs-name">categoryId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryDisplayName</span>&gt;</span>drilldown<span class="hljs-tag">&lt;/<span class="hljs-name">categoryDisplayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshInterval</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">refreshInterval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>9900<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datasources</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">urls</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>hosts<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>api/2.0/vdn/inventory/hosts/connection/DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">urls</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">datasources</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">columns</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{hostName}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Host<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{hostToControllerConn}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Control Plane Agent to Controller<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{nsxMgrToFirewallAgentConn}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>NSX Manager to Firewall Agent<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{nsxMgrToControlPlaneAgentConn}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>NSX Manager to Control Plane Agent<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">columns</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rowListField</span>&gt;</span>default.hosts.hostConnStatuses.*<span class="hljs-tag">&lt;/<span class="hljs-name">rowListField</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>LabelValueConfiguration_ShortLivedSettings<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceType</span>&gt;</span>LabelValueConfiguration<span class="hljs-tag">&lt;/<span class="hljs-name">resourceType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>Tools<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemResourceFlag</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResourceFlag</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">createUser</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">createUser</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastUpdatedBy</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">lastUpdatedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">shared</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">shared</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryId</span>&gt;</span>short_lived_settings<span class="hljs-tag">&lt;/<span class="hljs-name">categoryId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryDisplayName</span>&gt;</span>Tools<span class="hljs-tag">&lt;/<span class="hljs-name">categoryDisplayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshInterval</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">refreshInterval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>9200<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datasources</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">urls</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>flowMonStatus<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>api/2.1/app/flow/config<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>appMonStatus<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>api/internal/appmon/currentsession<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">urls</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">datasources</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{default.flowMonStatus.collectFlows}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;On&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.flowMonStatus.collectFlows} == true<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;Off&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.flowMonStatus.collectFlows} == false<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>/&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Flow Monitoring<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{default.appMonStatus.startTime}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;On&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.appMonStatus.startTime} != 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;Off&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.appMonStatus.startTime} == 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>/&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Endpoint Monitoring<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>LabelValueConfiguration_SystemScale<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resourceType</span>&gt;</span>LabelValueConfiguration<span class="hljs-tag">&lt;/<span class="hljs-name">resourceType</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>System Scale<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">systemResourceFlag</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResourceFlag</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">createUser</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">createUser</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">lastUpdatedBy</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">lastUpdatedBy</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">shared</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">shared</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryId</span>&gt;</span>system_scale_overview<span class="hljs-tag">&lt;/<span class="hljs-name">categoryId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">categoryDisplayName</span>&gt;</span>System Scale<span class="hljs-tag">&lt;/<span class="hljs-name">categoryDisplayName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">refreshInterval</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">refreshInterval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>9100<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">datasources</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">urls</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>systemScale<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/api/2.0/capacity-parameters/report<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">urls</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">datasources</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveSupportedValue}<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveSupportedValue} != 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ERROR<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Alerts<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Number<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveThreshold}<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveThreshold} != 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Warnings<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Number<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">widgetconfigurations</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.WidgetConfigurationListDto</span>&gt;</span>
+  
+</code></pre>
   </div>
 </div>
 <div class="method post">
@@ -6013,49 +6557,235 @@ Parameter  | Description |   Type | Comments
     href="#POST/2.0/services/dashboard/ui-views/dashboard/widgetconfigurations"
   ><h2>POST /2.0/services/dashboard/ui-views/dashboard/widgetconfigurations</h2></a>
   <div class="content">
-    <p><p>Creates a new Widget Configuration and adds it to the default Dashboard on UI. Supported resource_type are <em>LabelValueConfiguration</em> and <em>GridConfiguration</em>.<b></p>
+    <p><p>Creates a new Widget Configuration and adds it to the default Dashboard on UI. Supported resource_type are <em>LabelValueConfiguration</em> and <em>GridConfiguration</em>.</p>
 <p><strong>Notes for Expressions in Widget Configuration</strong></p>
 <p>Expressions should be given in a single line. If an expression spans multiple lines, then form the expression in a single line. 
 Expressions are evaluated as follows:<br></p>
 <ul>
 <li>First, render configurations are evaluated in their order of appearance in the widget configuration. 
 The <em>field</em> is evaluated at the end.</li>
-<li>Next, when render configuration is provided then the order of evaluation is as follows: <br><ol>
-<li>If expressions provided in condition and display value are well-formed and free  of runtime errors such as null pointers 
+<li><p>Next, when render configuration is provided then the order of evaluation is as follows: </p>
+<ul>
+<li><p>If expressions provided in condition and display value are well-formed and free  of runtime errors such as null pointers 
 and evaluates to true; then the remaining render configurations are not evaluated, and the current render configurations 
-<em>display value</em> is taken as the final value.</li>
-<li>If expression provided in condition of render configuration is false, then next render configuration is evaluated.  </li>
-<li>Finally, field is evaluated only when every render configuration evaluates to false and no error occurs during steps
-1 and 2 above. <br>
-If an error occurs during evaluation of render configuration, then an error message: &quot;<strong>ERROR</strong>: See the Error_Messages field of 
+<em>display value</em> is taken as the final value.</p>
+</li>
+<li><p>If expression provided in condition of render configuration is false, then next render configuration is evaluated. </p>
+</li>
+<li><p>Finally, field is evaluated only when every render configuration evaluates to false and no error occurs during steps mentioned above.</p>
+<p>If an error occurs during evaluation of render configuration, then an error message: &quot;<strong>ERROR</strong>: See the Error_Messages field of 
 this report for details&quot; is shown. The display value corresponding to that label is not shown and evaluation of the 
 remaining render configurations continues to collect and show all the error messages (marked with the Label for identification)
 as Error_Messages: {}. If during evaluation of expressions for any label-value pair an error occurs, 
-then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.<br><strong>Important Note for text in condition, field and render configuration&#39;s display value</strong>:<br> 
-For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration&#39;s display_value. <br> 
-JSON Example:<br>
-&quot;condition&quot;: &quot;#{default.comp.operationStatus} == \&quot;SUCCESS\&quot;&quot;,
-&quot;field&quot;: &quot;#{default.status.components[?(@.status == \&quot;STOPPED\&quot;)].status}.size()&quot;
-&quot;render_configuration&quot;: [{
-&quot;display_value&quot;: &quot;\&quot;CPU usage less than 10%.\&quot;&quot;
-}]<br>
-<strong>Notes for Drilldowns</strong>: <br>
-Only <em>GridConfiguration</em> is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as <em>drilldown</em>. Drilldowns are supported for <em>aggregate_count</em> (subtype of <em>LabelValueConfiguration</em>) widgets only.  In other words, only &#39;aggregate_count&#39; widgets can have drilldowns.
-<strong>Notes for Sharing the widget to other users</strong>:<br>
-Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set shared to true).<br></li>
-</ol>
+then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.
+<strong>Important Note for text in condition, field and render configuration&#39;s display value</strong>: 
+For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration&#39;s display_value. </p>
 </li>
 </ul>
-<p>Few Examples of different Widget Types:
-Example 1: A Label Value Widget</p>
-<p>Example 2: A Label value widget with subtype as Aggregate count</p>
-<p>Example 3: A Grid Widget</p>
-<p>Example 4: An Aggregate Count widget with a Drilldown Grid Widget</p>
-<p><strong>Method history:</strong>
-Release | Modification
---------|-------------
-6.4.0 | Method introduced.</p>
-</p>
+</li>
+</ul>
+<p><strong>Notes for Drilldowns</strong>:
+Only <em>GridConfiguration</em> is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as <em>drilldown</em>. Drilldowns are supported for <em>aggregate_count</em> (subtype of <em>LabelValueConfiguration</em>) widgets only.  In other words, only &#39;aggregate_count&#39; widgets can have drilldowns.
+<strong>Notes for Sharing the widget to other users</strong>:
+Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set shared to true).</p>
+<p><strong>Few Examples of different Widget Types</strong>:
+<strong>Example 1: A Label Value Widget with subtype as Aggregate count</strong>:</p>
+<p>  <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+  <objectId>LabelValueConfiguration_HostCommunicationChannelStatus</objectId> =&gt; This is object ID.
+  <resourceType>LabelValueConfiguration</resourceType>
+  <subType>aggregate_count</subType>
+  <objectType>HostCommunicationChannelStatus</objectType>
+  <displayName>Host Communication Channel Status</displayName>
+  <systemResourceFlag>true</systemResourceFlag>
+  <createUser>system</createUser>
+  <lastUpdatedBy>system</lastUpdatedBy>
+  <revision>0</revision>
+  <shared>true</shared>
+  <categoryId>cluster_preparation_status</categoryId>
+  <categoryDisplayName>Fabric Status</categoryDisplayName>
+  <refreshInterval>0</refreshInterval>
+  <weight>9300</weight>
+  <datasources>
+  <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+      <urls>
+          <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+              <alias>status</alias>
+              <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
+          </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+          <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+              <alias>summary</alias>
+              <url>api/2.0/vdn/inventory/hosts/status/summary</url>
+          </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+      </urls>
+      <displayName>default</displayName>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+  </datasources>
+  <properties>
+  <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+      <field>0</field>
+      <renderConfiguration>
+          <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+              <displayValue>#{default.summary.downHostsTotalNumber}</displayValue>
+              <condition>#{default.summary.downHostsTotalNumber} != 0</condition>
+              <icons>
+                  <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                      <type>ERROR</type>
+                  </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+              </icons>
+          </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+      </renderConfiguration>
+      <label>
+          <text>Down</text>
+      </label>
+      <type>Number</type>
+      <drilldownId>GridConfiguration_hccsGrid</drilldownId>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+  </properties>
+  <totalCount>#{default.summary.preparedHostsTotalNumber}</totalCount>
+  <totalCountDesc>Hosts</totalCountDesc>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+  <vdnCdo>
+    <vdnCdoModeState>DISABLED</vdnCdoModeState>
+    <vdnCdoModeOperationStatus>SUCCESSFUL</vdnCdoModeOperationStatus>
+  </vdnCdo></p>
+<p><strong>Example 2: A Grid Widget with a drilldown parameter </strong>:</p>
+<p>  <com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
+  <objectId>GridConfiguration_hccsGrid</objectId> =&gt; This is object ID.
+  <resourceType>GridConfiguration</resourceType>
+  <objectType>HostConnStatuses</objectType>
+  <displayName>Host Communication Channel Status Details</displayName>
+  <systemResourceFlag>true</systemResourceFlag>
+  <createUser>system</createUser>
+  <lastUpdatedBy>system</lastUpdatedBy>
+  <revision>0</revision>
+  <shared>true</shared>
+  <categoryId>drilldown</categoryId>
+  <categoryDisplayName>drilldown</categoryDisplayName>
+  <refreshInterval>0</refreshInterval>
+  <weight>9900</weight>
+  <datasources>
+  <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+      <urls>
+          <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+              <alias>hosts</alias>
+              <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
+          </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+      </urls>
+      <displayName>default</displayName>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+  </datasources>
+  <columns>
+  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+      <field>#{hostName}</field>
+      <renderConfiguration/>
+      <label>
+          <text>Host</text>
+      </label>
+      <type>String</type>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+      <field>#{hostToControllerConn}</field>
+      <renderConfiguration/>
+      <label>
+          <text>Control Plane Agent to Controller</text>
+      </label>
+      <type>String</type>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+      <field>#{nsxMgrToFirewallAgentConn}</field>
+      <renderConfiguration/>
+      <label>
+          <text>NSX Manager to Firewall Agent</text>
+      </label>
+      <type>String</type>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+      <field>#{nsxMgrToControlPlaneAgentConn}</field>
+      <renderConfiguration/>
+      <label>
+          <text>NSX Manager to Control Plane Agent</text>
+      </label>
+      <type>String</type>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+  </columns>
+  <rowListField>default.hosts.hostConnStatuses.*</rowListField>
+  <pageSize>0</pageSize>
+  </com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto></p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>LabelValueConfiguration_SystemScale<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceType</span>&gt;</span>LabelValueConfiguration<span class="hljs-tag">&lt;/<span class="hljs-name">resourceType</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>System Scale<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">systemResourceFlag</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResourceFlag</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">createUser</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">createUser</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">lastUpdatedBy</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">lastUpdatedBy</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">shared</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">shared</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">categoryId</span>&gt;</span>system_scale_overview<span class="hljs-tag">&lt;/<span class="hljs-name">categoryId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">categoryDisplayName</span>&gt;</span>System Scale<span class="hljs-tag">&lt;/<span class="hljs-name">categoryDisplayName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">refreshInterval</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">refreshInterval</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>9100<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datasources</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">urls</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>systemScale<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>/api/2.0/capacity-parameters/report<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">urls</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">datasources</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveSupportedValue}<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveSupportedValue} != 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ERROR<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Alerts<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Number<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveThreshold}<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.systemScale.scaleSummary.parametersAboveThreshold} != 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Warnings<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>Number<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -6094,6 +6824,91 @@ Release | Modification
 <td>Method introduced.</td>
 </tr>
 </tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>LabelValueConfiguration_ShortLivedSettings<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resourceType</span>&gt;</span>LabelValueConfiguration<span class="hljs-tag">&lt;/<span class="hljs-name">resourceType</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>Tools<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">systemResourceFlag</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResourceFlag</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">createUser</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">createUser</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">lastUpdatedBy</span>&gt;</span>system<span class="hljs-tag">&lt;/<span class="hljs-name">lastUpdatedBy</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">shared</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">shared</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">categoryId</span>&gt;</span>short_lived_settings<span class="hljs-tag">&lt;/<span class="hljs-name">categoryId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">categoryDisplayName</span>&gt;</span>Tools<span class="hljs-tag">&lt;/<span class="hljs-name">categoryDisplayName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">refreshInterval</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">refreshInterval</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>9200<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">datasources</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">urls</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>flowMonStatus<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>api/2.1/app/flow/config<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">alias</span>&gt;</span>appMonStatus<span class="hljs-tag">&lt;/<span class="hljs-name">alias</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>api/internal/appmon/currentsession<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">urls</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">datasources</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{default.flowMonStatus.collectFlows}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;On&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.flowMonStatus.collectFlows} == true<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;Off&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.flowMonStatus.collectFlows} == false<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>/&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Flow Monitoring<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">field</span>&gt;</span>#{default.appMonStatus.startTime}<span class="hljs-tag">&lt;/<span class="hljs-name">field</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">renderConfiguration</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;On&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.appMonStatus.startTime} != 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>WARNING<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.IconDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">icons</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">displayValue</span>&gt;</span>&amp;quot;Off&amp;quot;<span class="hljs-tag">&lt;/<span class="hljs-name">displayValue</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span>#{default.appMonStatus.startTime} == 0<span class="hljs-tag">&lt;/<span class="hljs-name">condition</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">icons</span>/&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">renderConfiguration</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">text</span>&gt;</span>Endpoint Monitoring<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>String<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto</span>&gt;</span>    
+    
+</code></pre>
   </div>
 </div>
 <div class="method put">

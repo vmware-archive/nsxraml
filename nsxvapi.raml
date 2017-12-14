@@ -8682,7 +8682,7 @@ securitySchemes:
     ----------|------------ | ----------|------------      
     resource_type |    Label Value Configuration |     String   | Required. Read only  
     sub_type |    [Optional] Sub-type of the resource type. When the sub-type is deleted, then the parent type will be considered. <br>For  *LabelValueConfiguration* the available sub-type is  *aggregate_count*. |     String   | Read only
-    object_type |    [Optional] User defined type for identifying the widget’s data. Example: *HostConnStatuses* |     String   |  
+    object_type |    [Optional] User defined type for identifying the widget’s data. Example: *HostConnStatuses*. |     String   |  
     datasources |    Array of Datasource Instances with their relative URLs. |     Srray of *Datasource*   | Required. Read only  
     description |    Description of this widget configuration. |     String   | Maximum length:1024 <br> Sortable 
     display_name |    Widget Title. |     String   | Required  
@@ -8753,7 +8753,27 @@ securitySchemes:
     ----------|------------ | ----------|------------      
     widget_ids |    Comma separated IDs of the WidgetConfiguration to be queried.  |     String   | Read only
       
-      
+      **Expressions**:
+      --------------
+      All the expressions used in any widget configuration does not require any context. 
+      This means all of the expressions are evaluable on their own without any “variable declaration”. 
+      For example, you can give following expressions:
+        * Arithmetic:
+          (1 + 2)= evaluates to 3
+          (12.0 - 5.2) = evaluates to 6.8
+          (6 * 12 + 5 / 2.6) = evaluates to 73.923
+          (12 % 2)= evaluates to 0
+          (6 / 4 )= evaluates to 1.5
+          (-12 + 77.2) = evaluates to 65.2
+          (x * 1.1 + y) = Not allowed as x and y are not defined.
+        * Calling methods:
+          “(\”\”).isEmpty()” = evaluates to boolean true.
+        * Accessing properties:
+          “(\”Some long string\”).length == 16” = evaluates to boolean true. But you can not give expressions like:
+            “V1 + 2” 
+            “aString.length()” and so on.
+             These expressions require the definition of “V1” and “aString” to be present in the context, and there is no place in widget configuration to define it. 
+             * No Java statements are supported, only expressions are supported.
   get:
     displayName: widgetconfigurationsRead
     description: |
@@ -8766,7 +8786,270 @@ securitySchemes:
       6.4.0 | Method introduced.
     responses:
       200:
-            
+        body:
+          application/xml:
+            example: |
+              <com.vmware.vshield.vsm.dashboard.dto.custom.WidgetConfigurationListDto>
+                <widgetconfigurations>
+                <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+                  <objectId>LabelValueConfiguration_HostCommunicationChannelStatus</objectId>
+                  <resourceType>LabelValueConfiguration</resourceType>
+                  <subType>aggregate_count</subType>
+                  <objectType>HostCommunicationChannelStatus</objectType>
+                  <displayName>Host Communication Channel Status</displayName>
+                  <systemResourceFlag>true</systemResourceFlag>
+                  <createUser>system</createUser>
+                  <lastUpdatedBy>system</lastUpdatedBy>
+                  <revision>0</revision>
+                  <shared>true</shared>
+                  <categoryId>cluster_preparation_status</categoryId>
+                  <categoryDisplayName>Fabric Status</categoryDisplayName>
+                  <refreshInterval>0</refreshInterval>
+                  <weight>9300</weight>
+                  <datasources>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                          <urls>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                  <alias>status</alias>
+                                  <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                  <alias>summary</alias>
+                                  <url>api/2.0/vdn/inventory/hosts/status/summary</url>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                          </urls>
+                          <displayName>default</displayName>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                  </datasources>
+                  <properties>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                          <field>0</field>
+                          <renderConfiguration>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <displayValue>#{default.summary.downHostsTotalNumber}</displayValue>
+                                  <condition>#{default.summary.downHostsTotalNumber} != 0</condition>
+                                  <icons>
+                                      <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                          <type>ERROR</type>
+                                      </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                  </icons>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                          </renderConfiguration>
+                          <label>
+                              <text>Down</text>
+                          </label>
+                          <type>Number</type>
+                          <drilldownId>GridConfiguration_hccsGrid</drilldownId>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                  </properties>
+                  <totalCount>#{default.summary.preparedHostsTotalNumber}</totalCount>
+                  <totalCountDesc>Hosts</totalCountDesc>
+                </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+              <com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
+                  <objectId>GridConfiguration_hccsGrid</objectId>
+                  <resourceType>GridConfiguration</resourceType>
+                  <objectType>HostConnStatuses</objectType>
+                  <displayName>Host Communication Channel Status Details</displayName>
+                  <systemResourceFlag>true</systemResourceFlag>
+                  <createUser>system</createUser>
+                  <lastUpdatedBy>system</lastUpdatedBy>
+                  <revision>0</revision>
+                  <shared>true</shared>
+                  <categoryId>drilldown</categoryId>
+                  <categoryDisplayName>drilldown</categoryDisplayName>
+                  <refreshInterval>0</refreshInterval>
+                  <weight>9900</weight>
+                  <datasources>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                          <urls>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                  <alias>hosts</alias>
+                                  <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                          </urls>
+                          <displayName>default</displayName>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                  </datasources>
+                  <columns>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                          <field>#{hostName}</field>
+                          <renderConfiguration/>
+                          <label>
+                              <text>Host</text>
+                          </label>
+                          <type>String</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                          <field>#{hostToControllerConn}</field>
+                          <renderConfiguration/>
+                          <label>
+                              <text>Control Plane Agent to Controller</text>
+                          </label>
+                          <type>String</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                          <field>#{nsxMgrToFirewallAgentConn}</field>
+                          <renderConfiguration/>
+                          <label>
+                              <text>NSX Manager to Firewall Agent</text>
+                          </label>
+                          <type>String</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                          <field>#{nsxMgrToControlPlaneAgentConn}</field>
+                          <renderConfiguration/>
+                          <label>
+                              <text>NSX Manager to Control Plane Agent</text>
+                          </label>
+                          <type>String</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+                  </columns>
+                  <rowListField>default.hosts.hostConnStatuses.*</rowListField>
+                  <pageSize>0</pageSize>
+              </com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
+              <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+                  <objectId>LabelValueConfiguration_ShortLivedSettings</objectId>
+                  <resourceType>LabelValueConfiguration</resourceType>
+                  <displayName>Tools</displayName>
+                  <systemResourceFlag>true</systemResourceFlag>
+                  <createUser>system</createUser>
+                  <lastUpdatedBy>system</lastUpdatedBy>
+                  <revision>0</revision>
+                  <shared>true</shared>
+                  <categoryId>short_lived_settings</categoryId>
+                  <categoryDisplayName>Tools</categoryDisplayName>
+                  <refreshInterval>0</refreshInterval>
+                  <weight>9200</weight>
+                  <datasources>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                          <urls>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                  <alias>flowMonStatus</alias>
+                                  <url>api/2.1/app/flow/config</url>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                  <alias>appMonStatus</alias>
+                                  <url>api/internal/appmon/currentsession</url>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                          </urls>
+                          <displayName>default</displayName>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                  </datasources>
+                  <properties>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                          <field>#{default.flowMonStatus.collectFlows}</field>
+                          <renderConfiguration>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <displayValue>&quot;On&quot;</displayValue>
+                                  <condition>#{default.flowMonStatus.collectFlows} == true</condition>
+                                  <icons>
+                                      <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                          <type>WARNING</type>
+                                      </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                  </icons>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <displayValue>&quot;Off&quot;</displayValue>
+                                  <condition>#{default.flowMonStatus.collectFlows} == false</condition>
+                                  <icons/>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                          </renderConfiguration>
+                          <label>
+                              <text>Flow Monitoring</text>
+                          </label>
+                          <type>String</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                          <field>#{default.appMonStatus.startTime}</field>
+                          <renderConfiguration>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <displayValue>&quot;On&quot;</displayValue>
+                                  <condition>#{default.appMonStatus.startTime} != 0</condition>
+                                  <icons>
+                                      <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                          <type>WARNING</type>
+                                      </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                  </icons>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <displayValue>&quot;Off&quot;</displayValue>
+                                  <condition>#{default.appMonStatus.startTime} == 0</condition>
+                                  <icons/>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                          </renderConfiguration>
+                          <label>
+                              <text>Endpoint Monitoring</text>
+                          </label>
+                          <type>String</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                  </properties>
+              </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+              <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+                  <objectId>LabelValueConfiguration_SystemScale</objectId>
+                  <resourceType>LabelValueConfiguration</resourceType>
+                  <displayName>System Scale</displayName>
+                  <systemResourceFlag>true</systemResourceFlag>
+                  <createUser>system</createUser>
+                  <lastUpdatedBy>system</lastUpdatedBy>
+                  <revision>0</revision>
+                  <shared>true</shared>
+                  <categoryId>system_scale_overview</categoryId>
+                  <categoryDisplayName>System Scale</categoryDisplayName>
+                  <refreshInterval>0</refreshInterval>
+                  <weight>9100</weight>
+                  <datasources>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                          <urls>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                  <alias>systemScale</alias>
+                                  <url>/api/2.0/capacity-parameters/report</url>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                          </urls>
+                          <displayName>default</displayName>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                  </datasources>
+                  <properties>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                          <field>0</field>
+                          <renderConfiguration>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <displayValue>#{default.systemScale.scaleSummary.parametersAboveSupportedValue}</displayValue>
+                                  <condition>#{default.systemScale.scaleSummary.parametersAboveSupportedValue} != 0</condition>
+                                  <icons>
+                                      <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                          <type>ERROR</type>
+                                      </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                  </icons>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                          </renderConfiguration>
+                          <label>
+                              <text>Alerts</text>
+                          </label>
+                          <type>Number</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                      <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                          <field>0</field>
+                          <renderConfiguration>
+                              <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <displayValue>#{default.systemScale.scaleSummary.parametersAboveThreshold}</displayValue>
+                                  <condition>#{default.systemScale.scaleSummary.parametersAboveThreshold} != 0</condition>
+                                  <icons>
+                                      <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                          <type>WARNING</type>
+                                      </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                  </icons>
+                              </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                          </renderConfiguration>
+                          <label>
+                              <text>Warnings</text>
+                          </label>
+                          <type>Number</type>
+                      </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                  </properties>
+              </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+                </widgetconfigurations>
+              </com.vmware.vshield.vsm.dashboard.dto.custom.WidgetConfigurationListDto>
+                
       
   post:
     displayName: widgetconfigurationsAction
@@ -8802,20 +9085,204 @@ securitySchemes:
       **Notes for Sharing the widget to other users**:
       Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set shared to true).
                     
-      Few Examples of different Widget Types:
-      Example 1: A Label Value Widget
+      **Few Examples of different Widget Types**:
+      **Example 1: A Label Value Widget with subtype as Aggregate count**:
       
-      Example 2: A Label value widget with subtype as Aggregate count
+        <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+        <objectId>LabelValueConfiguration_HostCommunicationChannelStatus</objectId> => This is object ID.
+        <resourceType>LabelValueConfiguration</resourceType>
+        <subType>aggregate_count</subType>
+        <objectType>HostCommunicationChannelStatus</objectType>
+        <displayName>Host Communication Channel Status</displayName>
+        <systemResourceFlag>true</systemResourceFlag>
+        <createUser>system</createUser>
+        <lastUpdatedBy>system</lastUpdatedBy>
+        <revision>0</revision>
+        <shared>true</shared>
+        <categoryId>cluster_preparation_status</categoryId>
+        <categoryDisplayName>Fabric Status</categoryDisplayName>
+        <refreshInterval>0</refreshInterval>
+        <weight>9300</weight>
+        <datasources>
+        <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+            <urls>
+                <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                    <alias>status</alias>
+                    <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
+                </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                    <alias>summary</alias>
+                    <url>api/2.0/vdn/inventory/hosts/status/summary</url>
+                </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+            </urls>
+            <displayName>default</displayName>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+        </datasources>
+        <properties>
+        <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+            <field>0</field>
+            <renderConfiguration>
+                <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                    <displayValue>#{default.summary.downHostsTotalNumber}</displayValue>
+                    <condition>#{default.summary.downHostsTotalNumber} != 0</condition>
+                    <icons>
+                        <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                            <type>ERROR</type>
+                        </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                    </icons>
+                </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+            </renderConfiguration>
+            <label>
+                <text>Down</text>
+            </label>
+            <type>Number</type>
+            <drilldownId>GridConfiguration_hccsGrid</drilldownId>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+        </properties>
+        <totalCount>#{default.summary.preparedHostsTotalNumber}</totalCount>
+        <totalCountDesc>Hosts</totalCountDesc>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+        <vdnCdo>
+          <vdnCdoModeState>DISABLED</vdnCdoModeState>
+          <vdnCdoModeOperationStatus>SUCCESSFUL</vdnCdoModeOperationStatus>
+        </vdnCdo>
       
-      Example 3: A Grid Widget
+      **Example 2: A Grid Widget with a drilldown parameter **:
       
-      Example 4: An Aggregate Count widget with a Drilldown Grid Widget
+        <com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
+        <objectId>GridConfiguration_hccsGrid</objectId> => This is object ID.
+        <resourceType>GridConfiguration</resourceType>
+        <objectType>HostConnStatuses</objectType>
+        <displayName>Host Communication Channel Status Details</displayName>
+        <systemResourceFlag>true</systemResourceFlag>
+        <createUser>system</createUser>
+        <lastUpdatedBy>system</lastUpdatedBy>
+        <revision>0</revision>
+        <shared>true</shared>
+        <categoryId>drilldown</categoryId>
+        <categoryDisplayName>drilldown</categoryDisplayName>
+        <refreshInterval>0</refreshInterval>
+        <weight>9900</weight>
+        <datasources>
+        <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+            <urls>
+                <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                    <alias>hosts</alias>
+                    <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
+                </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+            </urls>
+            <displayName>default</displayName>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+        </datasources>
+        <columns>
+        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+            <field>#{hostName}</field>
+            <renderConfiguration/>
+            <label>
+                <text>Host</text>
+            </label>
+            <type>String</type>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+            <field>#{hostToControllerConn}</field>
+            <renderConfiguration/>
+            <label>
+                <text>Control Plane Agent to Controller</text>
+            </label>
+            <type>String</type>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+            <field>#{nsxMgrToFirewallAgentConn}</field>
+            <renderConfiguration/>
+            <label>
+                <text>NSX Manager to Firewall Agent</text>
+            </label>
+            <type>String</type>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+            <field>#{nsxMgrToControlPlaneAgentConn}</field>
+            <renderConfiguration/>
+            <label>
+                <text>NSX Manager to Control Plane Agent</text>
+            </label>
+            <type>String</type>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
+        </columns>
+        <rowListField>default.hosts.hostConnStatuses.*</rowListField>
+        <pageSize>0</pageSize>
+        </com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
       
       **Method history:**
       
       Release | Modification
       --------|-------------
       6.4.0 | Method introduced.
+    body:
+        application/xml:
+          example: |
+              <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+                <objectId>LabelValueConfiguration_SystemScale</objectId>
+                <resourceType>LabelValueConfiguration</resourceType>
+                <displayName>System Scale</displayName>
+                <systemResourceFlag>true</systemResourceFlag>
+                <createUser>system</createUser>
+                <lastUpdatedBy>system</lastUpdatedBy>
+                <revision>0</revision>
+                <shared>true</shared>
+                <categoryId>system_scale_overview</categoryId>
+                <categoryDisplayName>System Scale</categoryDisplayName>
+                <refreshInterval>0</refreshInterval>
+                <weight>9100</weight>
+                <datasources>
+                    <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                        <urls>
+                            <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                <alias>systemScale</alias>
+                                <url>/api/2.0/capacity-parameters/report</url>
+                            </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                        </urls>
+                        <displayName>default</displayName>
+                    </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                </datasources>
+                <properties>
+                    <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                        <field>0</field>
+                        <renderConfiguration>
+                            <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                <displayValue>#{default.systemScale.scaleSummary.parametersAboveSupportedValue}</displayValue>
+                                <condition>#{default.systemScale.scaleSummary.parametersAboveSupportedValue} != 0</condition>
+                                <icons>
+                                    <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                        <type>ERROR</type>
+                                    </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                </icons>
+                            </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                        </renderConfiguration>
+                        <label>
+                            <text>Alerts</text>
+                        </label>
+                        <type>Number</type>
+                    </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                    <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                        <field>0</field>
+                        <renderConfiguration>
+                            <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                <displayValue>#{default.systemScale.scaleSummary.parametersAboveThreshold}</displayValue>
+                                <condition>#{default.systemScale.scaleSummary.parametersAboveThreshold} != 0</condition>
+                                <icons>
+                                    <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                        <type>WARNING</type>
+                                    </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                </icons>
+                            </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                        </renderConfiguration>
+                        <label>
+                            <text>Warnings</text>
+                        </label>
+                        <type>Number</type>
+                    </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                </properties>
+              </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
           
   /{widgetconfigurationId}:
     displayName: widgetconfiguration
@@ -8838,7 +9305,89 @@ securitySchemes:
         Release | Modification
         --------|-------------
         6.4.0 | Method introduced.
-      
+      responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
+                      <objectId>LabelValueConfiguration_ShortLivedSettings</objectId>
+                      <resourceType>LabelValueConfiguration</resourceType>
+                      <displayName>Tools</displayName>
+                      <systemResourceFlag>true</systemResourceFlag>
+                      <createUser>system</createUser>
+                      <lastUpdatedBy>system</lastUpdatedBy>
+                      <revision>0</revision>
+                      <shared>true</shared>
+                      <categoryId>short_lived_settings</categoryId>
+                      <categoryDisplayName>Tools</categoryDisplayName>
+                      <refreshInterval>0</refreshInterval>
+                      <weight>9200</weight>
+                      <datasources>
+                          <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                              <urls>
+                                  <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                      <alias>flowMonStatus</alias>
+                                      <url>api/2.1/app/flow/config</url>
+                                  </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                  <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                                      <alias>appMonStatus</alias>
+                                      <url>api/internal/appmon/currentsession</url>
+                                  </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
+                              </urls>
+                              <displayName>default</displayName>
+                          </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
+                      </datasources>
+                      <properties>
+                          <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                              <field>#{default.flowMonStatus.collectFlows}</field>
+                              <renderConfiguration>
+                                  <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                      <displayValue>&quot;On&quot;</displayValue>
+                                      <condition>#{default.flowMonStatus.collectFlows} == true</condition>
+                                      <icons>
+                                          <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                              <type>WARNING</type>
+                                          </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                      </icons>
+                                  </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                      <displayValue>&quot;Off&quot;</displayValue>
+                                      <condition>#{default.flowMonStatus.collectFlows} == false</condition>
+                                      <icons/>
+                                  </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                              </renderConfiguration>
+                              <label>
+                                  <text>Flow Monitoring</text>
+                              </label>
+                              <type>String</type>
+                          </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                          <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                              <field>#{default.appMonStatus.startTime}</field>
+                              <renderConfiguration>
+                                  <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                      <displayValue>&quot;On&quot;</displayValue>
+                                      <condition>#{default.appMonStatus.startTime} != 0</condition>
+                                      <icons>
+                                          <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                              <type>WARNING</type>
+                                          </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
+                                      </icons>
+                                  </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                  <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                                      <displayValue>&quot;Off&quot;</displayValue>
+                                      <condition>#{default.appMonStatus.startTime} == 0</condition>
+                                      <icons/>
+                                  </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
+                              </renderConfiguration>
+                              <label>
+                                  <text>Endpoint Monitoring</text>
+                              </label>
+                              <type>String</type>
+                          </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
+                      </properties>
+                    </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>    
+                        
     put:
         displayName: widgetconfigurationidUpdate
         description: |
