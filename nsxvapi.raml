@@ -735,6 +735,84 @@ securitySchemes:
             *resync* action to remove the missing VXLAN VMKernel adapter from
             the NSX Manager configuration database.  
           required: true
+/2.0/vdn/cdo:
+  displayName: CdoMode
+  description: |
+    Working With Controller Disconnected Operation (CDO) Mode
+    ====================================
+    You can enable CDO mode on secondary NSX Manager to avoid connectivity issues with the primary site.
+    
+    CDO mode state has the following values:
+      * ENABLED: CDO mode has been successfully enabled on NSX Manager.
+      * DISABLED: CDO mode has been successfully disabled on NSX Manager.
+      * UNKNOWN: CDO mode has not been set on NSX Manager.
+    
+    CDO mode operation status has the following values:
+      * FAILED: NSX Manager failed to set CDO state.
+      * SUCCESSFUL: NSX Manager is successful to set CDO state.
+      * IN_PROGRESS: Setting of CDO state in-progress.
+      * UNKNOWN: Unknown state.
+      
+  get:
+    displayName: CdoModeRead
+    description: |
+      Retrieves the status of CDO mode.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method introduced.
+    responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <vdnCdo>
+                  <vdnCdoModeState>DISABLED</vdnCdoModeState>
+                  <vdnCdoModeOperationStatus>UNKNOWN</vdnCdoModeOperationStatus>
+                </vdnCdo>
+  post:
+    displayName: CdoModeAction
+    description: |
+      
+      Modify the status of CDO mode.
+      This method can be used to perform the following tasks: 
+      * Update the CDO mode: POST /api/2.0/vdn/cdo?action=update
+      * Resync the CDO mode: POST /api/2.0/vdn/cdo?action=resync
+      * Enable the CDO mode: POST /api/2.0/vdn/cdo?action=disable
+      * Disable the CDO mode: POST /api/2.0/vdn/cdo?action=enable
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method introduced.
+    
+    queryParameters:
+        enable:
+          displayName: enable
+          description: |
+            Use *action=enable* to enable the CDO mode. Return value is job ID.
+        disable:
+          displayName: disable
+          description: |
+            Use *action=enable* to disable the CDO mode. Return value is job ID.
+        resync:
+          displayName: resync
+          description: |
+            Use *action=resync* to resync the CDO mode. Return value is job ID.
+        update:
+          displayName: update
+          description: |
+            Use *action=update* to update the CDO mode detect time. CDO detect time indicates how much time the NSX Manager 
+            waits to detect the CDO mode. CDO mode detect time value should be between 2 minutes to 120 minutes.   
+    body:
+      application/xml:
+        example: |
+          <vdnCdoConfigDto>
+            <cdoDetectTime>12</cdoDetectTime>
+          </vdnCdoConfigDto>
 /2.0/vdn/scopes:
   displayName: vdnScopes
   description: |
@@ -1140,6 +1218,9 @@ securitySchemes:
       post:
         displayName: vdnScopeCdoAction
         description: |
+          **Note**: From 6.4.0, CDO feature is supported at NSX Manager level and not at Transport Zone level.
+          For more details, refer to *Working with Controller Disconnected Operation (CDO) Mode* section.
+          
           Enable or disable CDO mode for the specified transport zone.
          
           Controller Disconnected Operation (CDO) mode ensures that the data
@@ -1150,6 +1231,7 @@ securitySchemes:
           cross-vCenter NSX environment, you must do this from the primary NSX
           Manager. The universal synchronization service will propagate the CDO
           configuration to the secondary NSX Managers.
+          
           
           **Method history:**
          
