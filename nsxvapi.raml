@@ -20617,6 +20617,174 @@ securitySchemes:
                 <oid>1.3.6.1.4.1.6876.90.1.2.3.0.1</oid>
                 <enabled>false</enabled>
               </trapConfig>
+/2.0/techsupportbundle:
+  displayName: TechSupportBundle
+  description: |
+      Working With Support Bundle
+      ====================================
+      You can collect the support bundle data for NSX components like NSX Manager, hosts, edges, and 
+      controllers. 
+      These support bundles are required to troubleshoot any problem related to NSX. 
+      Bundle Status has the following values:
+      * Pending: Wait for the process to start.
+      * In Progress: Wait for process to complete.
+      * Skipped: This can be due to limited disk space. The bundle gets generated with partial logs and is made available for local download or is uploaded to remote server. The status of logs that are skipped is displayed.
+      * Failed: Log collection is failed due to various reasons like connectivity issues or timeout error. Click START NEW to start data collection again.
+      * Completed: You can now download the bundle or view at the remote server.
+      
+      **Permissions**
+      
+      API | Permission 
+      --------|----------- 
+      Generate Bundle | Read/Write
+      Bundle Status| Read
+      Cancel Bundle | Read/Write
+      Delete Bundle | Read/Write
+      Download Bundle | Read
+  post:
+    displayName: TechSupportBundleAction
+    description: |
+      Generates the technical support log bundle or aborts the bundle generation process.
+      Use */techsupportbundle?action=generate* to generate the bundle.
+      Use */techsupportbundle?action=cancel* to abort the bundle generation that is in in-progress.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method introduced.
+    responses: 
+      200:
+        description: Success.
+      400:
+        description: Request format is not correct or provided details for remote server are not correct. If request to generate support bundle is already in-progress,then the status code 405 is returned in the response and the support log generation request is discarded.      
+    queryParameters:
+        generate:
+          required: false
+          displayName: generate
+          description: Generates the technical support log bundle.
+        cancel:
+          required: false
+          displayName: cancel
+          description: Aborts the bundle generation process.
+    body:
+      application/xml:
+        example: |
+          <techSupportBundleRequest>
+              <managerLogsRequired>true</managerLogsRequired>
+              <uploadToFTP>true</uploadToFTP>
+              <timeoutInMins>10</timeoutInMins>
+              <ftpSettings>
+                             <transferProtocol>SFTP</transferProtocol>
+                             <hostNameIPAddress>12.12.12.12</hostNameIPAddress>
+                             <port>22</port>
+                             <userName>user</userName>
+                             <password>password</password>
+                             <backupDirectory>/home/Desktop/temp</backupDirectory>
+              </ftpSettings>
+          </techSupportBundleRequest>
+            
+  delete:
+    displayName: TechSupportBundleDelete
+    description: Deletes the support bundle.
+    
+  /status:
+    displayName: SupportBundleRead
+    description: |
+      Status of the Technical Support Bundle
+      ------------------
+    get:
+      displayName: TechSupportBundleRetrieve
+      description: |
+        Retrieves the status of the technical support bundle.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      responses: 
+        200:
+          description: Success.
+        400:
+          description: Support bundle not available.
+      body:
+        application/xml:
+          example: |
+            <techSupportBundleStatus>
+                <bundleStatus>COMPLETED</bundleStatus>
+                <ftpUploadStatus>NOT_APPLICABLE</ftpUploadStatus>
+                <fileName>VMware-NSX-TechSupport-Bundle-2017-11-07_11-25-46.tar.gz</fileName>
+                <nodesStatus>
+                    <nodeLogStatus>
+                        <nodeType>NSX-Manager</nodeType>
+                        <status>COMPLETED</status>
+                        <progressPercentage>100</progressPercentage>
+                    </nodeLogStatus>
+                    <nodeLogStatus>
+                        <nodeType>HOSTSYSTEM</nodeType>
+                        <status>COMPLETED</status>
+                        <objectsStatus>
+                            <objectStatus>
+                                <objectId>host-22</objectId>
+                                <logType>FIREWALL</logType>
+                                <status>COMPLETED</status>
+                            </objectStatus>
+                            <objectStatus>
+                                <objectId>host-22</objectId>
+                                <logType>GI</logType>
+                                <status>COMPLETED</status>
+                           </objectStatus>
+                        </objectsStatus>
+                        <progressPercentage>100</progressPercentage>
+                    </nodeLogStatus>
+                    <nodeLogStatus>
+                        <nodeType>Edge</nodeType>
+                        <status>COMPLETED</status>
+                        <objectsStatus>
+                            <objectStatus>
+                                <objectId>edge-1</objectId>
+                                <status>COMPLETED</status>
+                            </objectStatus>
+                        </objectsStatus>
+                        <progressPercentage>100</progressPercentage>
+                    </nodeLogStatus>
+                    <nodeLogStatus>
+                        <nodeType>Controller</nodeType>
+                        <status>COMPLETED</status>
+                        <objectsStatus>
+                            <objectStatus>
+                                <objectId>controller-1</objectId>
+                                <status>COMPLETED</status>
+                            </objectStatus>
+                        </objectsStatus>
+                        <progressPercentage>100</progressPercentage>
+                    </nodeLogStatus>
+                </nodesStatus>
+                <updatedTime>2017-11-07 11:25:47.825 UTC</updatedTime>
+                <progressPercentage>100</progressPercentage>
+            </techSupportBundleStatus>
+  /{filename}:
+    displayName: TechSupportBundleFile
+    description: |
+      Download Support Bundle 
+      --------------
+    uriParameters:
+      filename:
+        required: true
+        displayName: filename
+        description: Name of support bundle file that you want to download.
+    get:
+      displayName: TechSupportBundleDownload
+      description: |
+        You can use the filename to download the support bundle. You can get the file name from the */techsupportbundle/status* API.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+        
 /1.0/nsx/cli:
   displayName: nsxCli
   description: |
