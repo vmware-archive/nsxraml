@@ -14365,6 +14365,8 @@ securitySchemes:
         **ipPrefix**  | Details for one IP prefix. |  Optional. Required only if you define redistribution rules in dynamic routing protocols like ospf, bgp.
         **ipPrefix > name**  | The name of the IP prefix. | All defined IP prefixes must have unique names.
         **ipPrefix > ipAddress**  | IP addresses for the IP prefix. | Optional. String.
+        **ipPrefix > GE**  | Minimum prefix length to be matched. | Optional. 
+        **ipPrefix > LE**  | Maximum prefix length to be matched. | Optional. 
         
         ### Default Route Configuration
         
@@ -14483,6 +14485,7 @@ securitySchemes:
           --------|-------------
           6.2.3 | Method updated. **isis** configuration section removed. 
           6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+          6.4.0 | Method updated. Parameters **LE** and **GE** added.
 #          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
       put:
         displayName: routingConfigUpdate
@@ -14496,6 +14499,7 @@ securitySchemes:
           --------|-------------
           6.2.3 | Method updated. **isis** configuration section removed. 
           6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+          6.4.0 | Method updated. Parameters **LE** and **GE** added.
 #          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
         body:
           application/xml:
@@ -14511,6 +14515,8 @@ securitySchemes:
                     <ipPrefix>
                       <name>a</name>
                       <ipAddress>192.168.10.0/24</ipAddress>
+                      <ge>16</ge>
+                      <le>24</le>
                     </ipPrefix>
                   </ipPrefixes>
                 </routingGlobalConfig>

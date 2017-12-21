@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#x6d;">&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#x63;&#107;&#x40;&#118;&#x6d;&#119;&#97;&#114;&#x65;&#46;&#99;&#x6f;&#x6d;">&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#x63;&#107;&#x40;&#118;&#x6d;&#119;&#97;&#114;&#x65;&#46;&#99;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -28195,6 +28195,16 @@ thereby enabling tenants to access public networks.</p>
 <td>IP addresses for the IP prefix.</td>
 <td>Optional. String.</td>
 </tr>
+<tr>
+<td><strong>ipPrefix &gt; GE</strong></td>
+<td>Minimum prefix length to be matched.</td>
+<td>Optional. </td>
+</tr>
+<tr>
+<td><strong>ipPrefix &gt; LE</strong></td>
+<td>Maximum prefix length to be matched.</td>
+<td>Optional. </td>
+</tr>
 </tbody></table><h3 id="default-route-configuration">Default Route Configuration</h3>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -28555,6 +28565,10 @@ subsequent GET requests will show both parameters updated.  </p>
 <td>6.3.0</td>
 <td>Method updated. Parameter <strong>defaultOriginate</strong> removed for logical router NSX Edges.  <br>Parameter <strong>translateType7ToType5</strong> added to OSPF section. <br>Parameters <strong>localASNumber</strong> and <strong>remoteASNumber</strong> added to BGP section.</td>
 </tr>
+<tr>
+<td>6.4.0</td>
+<td>Method updated. Parameters <strong>LE</strong> and <strong>GE</strong> added.</td>
+</tr>
 </tbody></table></p>
   </div>
 </div>
@@ -28579,6 +28593,10 @@ dynamic routing (OSPF and BGP).</p>
 <tr>
 <td>6.3.0</td>
 <td>Method updated. Parameter <strong>defaultOriginate</strong> removed for logical router NSX Edges.  <br>Parameter <strong>translateType7ToType5</strong> added to OSPF section. <br>Parameters <strong>localASNumber</strong> and <strong>remoteASNumber</strong> added to BGP section.</td>
+</tr>
+<tr>
+<td>6.4.0</td>
+<td>Method updated. Parameters <strong>LE</strong> and <strong>GE</strong> added.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -28824,6 +28842,8 @@ dynamic routing (OSPF and BGP).</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefix</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>a<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.10.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ge</span>&gt;</span>16<span class="hljs-tag">&lt;/<span class="hljs-name">ge</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">le</span>&gt;</span>24<span class="hljs-tag">&lt;/<span class="hljs-name">le</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefix</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixes</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">routingGlobalConfig</span>&gt;</span>
