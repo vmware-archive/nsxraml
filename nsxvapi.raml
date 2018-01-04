@@ -4413,7 +4413,7 @@ securitySchemes:
       RabbitMQ service.
     * Overall support related features such as tech support logs, backup
       restore, status, and summary reports of appliance health.
-  /global/info:
+/global/info:
     displayName: globalInfo
     description: |
       Global Information for NSX Manager
@@ -4437,7 +4437,7 @@ securitySchemes:
                     <buildNumber>4818372</buildNumber>
                   </versionInfo>
                 </globalInfo>
-  /summary/system:
+/summary/system:
     displayName: systemInfo
     description: | 
       Summary Information for NSX Manager
@@ -4485,7 +4485,7 @@ securitySchemes:
                   </storageInfoDto>
                   <currentSystemDate>Wednesday, 19 April 2017 06:02:32 AM UTC</currentSystemDate>
                 </systemSummary>
-  /summary/components:
+/summary/components:
     displayName: componentInfo
     description: |
       Component Information for NSX Manager
@@ -4593,7 +4593,7 @@ securitySchemes:
                     </entry>
                   </componentsByGroup>
                 </componentsSummary>
-  /system/restart:
+/system/restart:
     displayName: systemReboot
     description: |
       Reboot NSX Manager
@@ -4601,7 +4601,7 @@ securitySchemes:
     post:
       displayName: systemRebootExecute # dupfix systemReboot
       description: Reboot the NSX Manager appliance.
-  /system/cpuinfo:
+/system/cpuinfo:
     displayName: systemCPUInfo
     description: |
       NSX Manager CPU Information
@@ -4621,7 +4621,7 @@ securitySchemes:
                   <freeCapacity>2752 MHZ</freeCapacity>
                   <usedPercentage>2</usedPercentage>
                 </cpuInfo>
-  /system/uptime:
+/system/uptime:
     displayName: systemUptime
     description: |
       NSX Manager Appliance Uptime Information
@@ -4635,7 +4635,7 @@ securitySchemes:
         ```
         25 days, 22 hours, 11 minutes
         ```
-  /system/meminfo:
+/system/meminfo:
     displayName: systemMemoryInfo
     description: |
       NSX Manager Appliance Memory Information
@@ -4654,7 +4654,7 @@ securitySchemes:
                   <freeMemory>10392 MB</freeMemory>
                   <usedPercentage>35</usedPercentage>
                 </memInfo>
-  /system/storageinfo:
+/system/storageinfo:
     displayName: systemStorageInfo
     description: |
       NSX Manager Appliance Storage Information
@@ -4673,7 +4673,7 @@ securitySchemes:
                   <freeStorage>64G</freeStorage>
                   <usedPercentage>25</usedPercentage>
                 </storageInfo>
-  /system/network:
+/system/network:
     displayName: networkSettings
     description: |
       NSX Manager Appliance Network Settings
@@ -4744,7 +4744,7 @@ securitySchemes:
       delete:
         displayName: applianceDnsClientDelete # existing dupfix dnsUpdate
         description: Delete DNS server configuration.
-  /system/securitysettings:
+/system/securitysettings:
     displayName: systemSecSettings
     description: |
       Working With Security Settings
@@ -4797,7 +4797,7 @@ securitySchemes:
                 <clientEnabledProtocols>TLSv1.1,TLSv1.2</clientEnabledProtocols>
               </tlsSettings>
             </securitySettings>
-  /system/tlssettings:
+/system/tlssettings:
     displayName: tlsSettings
     description: |
       Working With TLS Settings
@@ -4841,7 +4841,7 @@ securitySchemes:
               <serverEnabledProtocols>TLSv1.1,TLSv1.2</serverEnabledProtocols>
               <clientEnabledProtocols>TLSv1.1,TLSv1.2</clientEnabledProtocols>
             </tlsSettings>
-  /system/timesettings:
+/system/timesettings:
     displayName: systemTime
     description: |
       Working With Time Settings
@@ -4889,7 +4889,7 @@ securitySchemes:
       delete:
         displayName: ntpDelete
         description: Delete NTP server.
-  /system/locale:
+/system/locale:
     displayName: systemLocale
     description: |
       Configure System Locale
@@ -4917,14 +4917,14 @@ securitySchemes:
               <country>JP</country>
             </locale>
           schema: systemLocaleUpdate
-  /system/syslogserver:
+/system/syslogserver:
     displayName: systemSyslogServer
     description: |
-      Working With Syslog Servers
+      Working With Syslog Server
       -----
     get:
       displayName: systemSyslogServerRead
-      description: Retrieve syslog servers.
+      description: Retrieves only the first syslog server among the servers configured.
       responses:
         200:
           body:
@@ -4937,20 +4937,67 @@ securitySchemes:
                 </syslogserver>
     put:
       displayName: systemSyslogServerUpdate
-      description: Configure syslog servers.
+      description: Configure one or more syslog servers. You can configure more than one syslog server, the new server is configured at the beginning of the list. 
       body:
         application/xml:
           example: |
             <syslogserver>
-              <syslogServer>192.168.110.20</syslogServer>
-              <port>514</port>
-              <protocol>UDP</protocol>
+             <syslogServer>name-2</syslogServer>
+                <port>port-2</port>
+                <protocol>protocol-2</protocol>
             </syslogserver>
           schema: systemSyslogServerUpdate
     delete:
       displayName: systemSyslogServerDelete
-      description: Delete syslog servers.
-  /components:
+      description: Deletes all the syslog servers.
+/system/syslogservers:
+          displayName: systemSyslogServers
+          description: |
+            Working With Multiple Syslog Servers
+            -----
+          get:
+            displayName: systemSyslogServersRead
+            description: Retrieves all syslog servers configured on the NSX manager.
+            responses:
+              200:
+                body:
+                  application/xml:
+                    example: |
+                      <syslogservers>
+                       <syslogserver>
+                          <syslogServer>name-1</syslogServer>
+                          <port>port-1</port>
+                          <protocol>protocol-1</protocol>
+                       </syslogserver>
+                       <syslogserver>
+                       <syslogServer>name-2</syslogServer>
+                          <port>port-2</port>
+                          <protocol>protocol-2</protocol>
+                       </syslogserver>
+                      </syslogservers>
+          put:
+            displayName: systemSyslogServersUpdate
+            description: Configure one or more syslog servers. Unconfigures all servers that were previously configured, and configures the one provided in the request body for this API. Duplicates are ignored. 
+            body:
+              application/xml:
+                example: |
+                  <syslogservers>
+                  <syslogserver>
+                      <syslogServer>name-1</syslogServer>
+                      <port>port-1</port>
+                      <protocol>protocol-1</protocol>
+                  </syslogserver>
+                  <syslogserver>
+                   <syslogServer>name-2</syslogServer>
+                      <port>port-2</port>
+                      <protocol>protocol-2</protocol>
+                  </syslogserver>
+                  </syslogservers>
+                schema: systemSyslogServersUpdate
+          delete:
+            displayName: systemSyslogServersDelete
+            description: Deletes all the syslog servers. Same as DELETE /system/syslogserver.
+/components:
     displayName: componentsManagement
     description: |
       Working With Components
@@ -5161,8 +5208,7 @@ securitySchemes:
       post:
         displayName: componentAppMgmtRestartExecute # update existing addition componentRestartAction 
         description: Restart the appliance management web application.
-
-  /backuprestore/backupsettings:
+/backuprestore/backupsettings:
     displayName: applianceMgrBackupSettings
     description: |
       NSX Manager Appliance Backup Settings
@@ -5341,7 +5387,7 @@ securitySchemes:
       delete:
         displayName: applianceMgrBackupSettingsScheduleDelete
         description: Delete backup schedule.
-  /backuprestore/backup:
+/backuprestore/backup:
     displayName: applianceMgrBackup
     description: |
       NSX Manager Appliance On-Demand Backup
@@ -5358,7 +5404,7 @@ securitySchemes:
           displayName: Content-Type
           description: Specify *application/xml*.
           required: true
-  /backuprestore/backups:
+/backuprestore/backups:
     displayName: applianceMgrBackups
     description: |
       Working With NSX Manager Appliance Backup Files
@@ -5384,7 +5430,7 @@ securitySchemes:
                     <creationTime>1496797576000</creationTime>
                   </backupFileProperties>
                 </list>
-  /backuprestore/restore:
+/backuprestore/restore:
     displayName: applianceMgrBackupRestore
     description: |
       Restoring Data from an NSX Manager Appliance Backup File
@@ -5400,7 +5446,7 @@ securitySchemes:
           required: true
           displayName: restoreFile
           description: File name of restore file.
-  /techsupportlogs/{componentID}:
+/techsupportlogs/{componentID}:
     displayName: techLogs
     description: |
       Working With Tech Support Logs by Component
@@ -5417,7 +5463,7 @@ securitySchemes:
       description: | 
         Generate tech support logs. The location response header contains the
         location of the created tech support file. 
-  /techsupportlogs/{filename}:
+/techsupportlogs/{filename}:
     displayName: techLogsDownload
     description: | 
       Working With Tech Support Log Files
@@ -5430,7 +5476,7 @@ securitySchemes:
     get:
       displayName: techLogsDownloadRead # dupfix techLogsDownload
       description: Download tech support logs.
-  /notifications:
+/notifications:
     displayName: notifications
     description: |
       Working With Support Notifications
@@ -5456,7 +5502,7 @@ securitySchemes:
         description: |
           Acknowledge a notification. The notification is then deleted from
           the system.
-  /upgrade:
+/upgrade:
     displayName: nsxManagerUpgrade
     description: |
       Upgrading NSX Manager Appliance
@@ -5501,7 +5547,7 @@ securitySchemes:
       post:
         displayName: upgradeBundleUpload
         description: Upload upgrade bundle.
-    /information/{componentID}:
+/information/{componentID}:
       displayName: upgradeBundleInformation
       description: |
         Prepare for NSX Manager Upgrade
@@ -5561,7 +5607,7 @@ securitySchemes:
                       </step>
                     </upgradeStepsDto>
                   </upgradeInformation>
-    /start/{componentID}:
+/start/{componentID}:
       displayName: upgradeStart
       description: |
         Start the NSX Manager Upgrade
@@ -5598,7 +5644,7 @@ securitySchemes:
                   <answer>Yes</answer>
                 </preUpgradeQuestionAnswer>
               </preUpgradeQuestionsAnswers>
-    /status/{componentID}:
+/status/{componentID}:
       displayName: upgradeStatus
       description: |
         NSX Manager Upgrade Status
@@ -5611,13 +5657,13 @@ securitySchemes:
       get:
         displayName: upgradeStatusRead # dupfix upgradeStatus
         description: Query upgrade status.
-  /certificatemanager:
+/certificatemanager:
     displayName: certificateManager # URI added for reorg
     description: |
       Working With Certificates on the NSX Manager Appliance
       -------
 
-    /pkcs12keystore/nsx:
+/pkcs12keystore/nsx:
       displayName: certificatesKeystore
       description: |
         Working With Keystore Files
@@ -5632,7 +5678,7 @@ securitySchemes:
           password:
             displayName: password
             description: Password.
-    /certificates/nsx:
+/certificates/nsx:
       displayName: certificateManagerNsx # existing reorg certificateManager
       description: |
         NSX Manager Certificate Manager
@@ -5669,7 +5715,7 @@ securitySchemes:
                     </x509certificate>
                     ...
                   </x509Certificates>
-    /csr/nsx:
+/csr/nsx:
       displayName: certificateCsr
       description: |
         Working With Certificate Signing Requests
@@ -5705,7 +5751,7 @@ securitySchemes:
         displayName: certificateCsrRead
         description: |
           Retrieve generated certificate signing request (CSR).
-    /uploadchain/nsx:
+/uploadchain/nsx:
       displayName: certificateChain
       description: |
         Working With Certificate Chains
