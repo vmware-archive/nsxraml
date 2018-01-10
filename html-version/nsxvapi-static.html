@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x64;&#111;&#99;&#102;&#101;&#x65;&#x64;&#x62;&#97;&#99;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#x64;&#111;&#99;&#102;&#101;&#x65;&#x64;&#x62;&#97;&#99;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#100;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#x62;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#x6d;">&#100;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#x62;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -11751,33 +11751,40 @@ Bundle Status has the following values:</p>
 <ul>
 <li>Pending: Wait for the process to start.</li>
 <li>In Progress: Wait for process to complete.</li>
-<li>Skipped: This can be due to limited disk space. The bundle gets generated with partial logs and is made available for local download or is uploaded to remote server. The status of logs that are skipped is displayed.</li>
+<li>Skipped: This can be due to limited disk space. The bundle gets generated with partial logs and is made available for local download or is uploaded to remote server. 
+The status of logs that are skipped is displayed. Note that 30% of disk space is always reserved for NSX.</li>
 <li>Failed: Log collection is failed due to various reasons like connectivity issues or timeout error. Click START NEW to start data collection again.</li>
 <li>Completed: You can now download the bundle or view at the remote server.</li>
 </ul>
 <p><strong>Permissions</strong></p>
 <table class="table"><thead><tr>
 <th>API</th>
+<th>Role</th>
 <th>Permission </th>
 </tr>
 </thead><tbody><tr>
 <td>Generate Bundle</td>
+<td>NSX Admin, Security Admin, Enterprise Admin</td>
 <td>Read/Write</td>
 </tr>
 <tr>
 <td>Bundle Status</td>
+<td>NSX Admin, Security Admin, Enterprise Admin , Auditor</td>
 <td>Read</td>
 </tr>
 <tr>
 <td>Cancel Bundle</td>
+<td>NSX Admin, Security Admin, Enterprise Admin</td>
 <td>Read/Write</td>
 </tr>
 <tr>
 <td>Delete Bundle</td>
+<td>NSX Admin, Security Admin, Enterprise Admin</td>
 <td>Read/Write</td>
 </tr>
 <tr>
 <td>Download Bundle</td>
+<td>NSX Admin, Security Admin, Enterprise Admin , Auditor</td>
 <td>Read</td>
 </tr>
 </tbody></table></div>
@@ -11825,19 +11832,59 @@ Use <em>/techsupportbundle?action=cancel</em> to abort the bundle generation tha
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">techSupportBundleRequest</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">managerLogsRequired</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managerLogsRequired</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">uploadToFTP</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">uploadToFTP</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">timeoutInMins</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">timeoutInMins</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ftpSettings</span>&gt;</span>
-                   <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span>SFTP<span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
-                   <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>12.12.12.12<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
-                   <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>22<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
-                   <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>user<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
-                   <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>password<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-                   <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>/home/Desktop/temp<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">ftpSettings</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">techSupportBundleRequest</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">techSupportBundleStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bundleStatus</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">bundleStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ftpUploadStatus</span>&gt;</span>NOT_APPLICABLE<span class="hljs-tag">&lt;/<span class="hljs-name">ftpUploadStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fileName</span>&gt;</span>VMware-NSX-TechSupport-Bundle-2017-11-07_11-25-46.tar.gz<span class="hljs-tag">&lt;/<span class="hljs-name">fileName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nodesStatus</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>NSX-Manager<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>HOSTSYSTEM<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectsStatus</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">logType</span>&gt;</span>FIREWALL<span class="hljs-tag">&lt;/<span class="hljs-name">logType</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">logType</span>&gt;</span>GI<span class="hljs-tag">&lt;/<span class="hljs-name">logType</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">objectsStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectsStatus</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>edge-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">objectsStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>Controller<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">objectsStatus</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>controller-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">objectsStatus</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">nodesStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">updatedTime</span>&gt;</span>2017-11-07 11:25:47.825 UTC<span class="hljs-tag">&lt;/<span class="hljs-name">updatedTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">techSupportBundleStatus</span>&gt;</span>
   
 </code></pre>
     <h3>Responses</h3>
@@ -11940,6 +11987,9 @@ Use <em>/techsupportbundle?action=cancel</em> to abort the bundle generation tha
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
         <p>Success.</p>
+
+        <h4><span class="response-code response-code-2xx">202 Accepted</span></h4>
+        <p>Accepted.</p>
 
         <h4><span class="response-code response-code-4xx">400 Bad Request</span></h4>
         <p>Support bundle not available.</p>
@@ -36607,7 +36657,7 @@ Manager.</p>
     href="#PUT/system/syslogserver"
   ><h2>PUT /system/syslogserver</h2></a>
   <div class="content">
-    <p><p>Configure one or more syslog servers. You can configure more than one syslog server, the new server is configured at the beginning of the list.</p>
+    <p><p>Configures one syslog server. If there are syslog server(s) already configured, this API replaces the first one in the list.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -36645,7 +36695,16 @@ Manager.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-multiple-syslog-servers">Working With Multiple Syslog Servers</h2>
-</div>
+<p>  <strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>  6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></div>
 <div class="method get">
   <a
     class="verb get"
@@ -36653,7 +36712,7 @@ Manager.</p>
     href="#GET/system/syslogservers"
   ><h2>GET /system/syslogservers</h2></a>
   <div class="content">
-    <p><p>Retrieves all syslog servers configured on the NSX manager.</p>
+    <p><p>Retrieves all syslog servers configured on the NSX Manager.</p>
 </p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
@@ -36710,7 +36769,7 @@ Manager.</p>
     href="#DELETE/system/syslogservers"
   ><h2>DELETE /system/syslogservers</h2></a>
   <div class="content">
-    <p><p>Deletes all the syslog servers. Same as DELETE /system/syslogserver.</p>
+    <p><p>Deletes all the syslog servers. Same as <em>DELETE /system/syslogserver</em> API.</p>
 </p>
   </div>
 </div>

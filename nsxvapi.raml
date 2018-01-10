@@ -4937,7 +4937,7 @@ securitySchemes:
                 </syslogserver>
     put:
       displayName: systemSyslogServerUpdate
-      description: Configure one or more syslog servers. You can configure more than one syslog server, the new server is configured at the beginning of the list. 
+      description: Configures one syslog server. If there are syslog server(s) already configured, this API replaces the first one in the list. 
       body:
         application/xml:
           example: |
@@ -4955,9 +4955,15 @@ securitySchemes:
           description: |
             Working With Multiple Syslog Servers
             -----
+              
+              **Method history:**
+              
+              Release | Modification
+              --------|-------------
+              6.4.0 | Method introduced.
           get:
             displayName: systemSyslogServersRead
-            description: Retrieves all syslog servers configured on the NSX manager.
+            description: Retrieves all syslog servers configured on the NSX Manager.
             responses:
               200:
                 body:
@@ -4996,7 +5002,7 @@ securitySchemes:
                 schema: systemSyslogServersUpdate
           delete:
             displayName: systemSyslogServersDelete
-            description: Deletes all the syslog servers. Same as DELETE /system/syslogserver.
+            description: Deletes all the syslog servers. Same as *DELETE /system/syslogserver* API.
 /components:
     displayName: componentsManagement
     description: |
@@ -20680,19 +20686,20 @@ securitySchemes:
       Bundle Status has the following values:
       * Pending: Wait for the process to start.
       * In Progress: Wait for process to complete.
-      * Skipped: This can be due to limited disk space. The bundle gets generated with partial logs and is made available for local download or is uploaded to remote server. The status of logs that are skipped is displayed.
+      * Skipped: This can be due to limited disk space. The bundle gets generated with partial logs and is made available for local download or is uploaded to remote server. 
+      The status of logs that are skipped is displayed. Note that 30% of disk space is always reserved for NSX.
       * Failed: Log collection is failed due to various reasons like connectivity issues or timeout error. Click START NEW to start data collection again.
       * Completed: You can now download the bundle or view at the remote server.
       
       **Permissions**
       
-      API | Permission 
-      --------|----------- 
-      Generate Bundle | Read/Write
-      Bundle Status| Read
-      Cancel Bundle | Read/Write
-      Delete Bundle | Read/Write
-      Download Bundle | Read
+      API |  Role   |Permission 
+      --------|---- |------------ 
+      Generate Bundle | NSX Admin, Security Admin, Enterprise Admin   | Read/Write
+      Bundle Status|  NSX Admin, Security Admin, Enterprise Admin , Auditor   | Read
+      Cancel Bundle |  NSX Admin, Security Admin, Enterprise Admin   | Read/Write
+      Delete Bundle |   NSX Admin, Security Admin, Enterprise Admin   |Read/Write
+      Download Bundle |  NSX Admin, Security Admin, Enterprise Admin , Auditor   |Read
   post:
     displayName: TechSupportBundleAction
     description: |
@@ -20722,19 +20729,59 @@ securitySchemes:
     body:
       application/xml:
         example: |
-          <techSupportBundleRequest>
-              <managerLogsRequired>true</managerLogsRequired>
-              <uploadToFTP>true</uploadToFTP>
-              <timeoutInMins>10</timeoutInMins>
-              <ftpSettings>
-                             <transferProtocol>SFTP</transferProtocol>
-                             <hostNameIPAddress>12.12.12.12</hostNameIPAddress>
-                             <port>22</port>
-                             <userName>user</userName>
-                             <password>password</password>
-                             <backupDirectory>/home/Desktop/temp</backupDirectory>
-              </ftpSettings>
-          </techSupportBundleRequest>
+          <techSupportBundleStatus>
+              <bundleStatus>COMPLETED</bundleStatus>
+              <ftpUploadStatus>NOT_APPLICABLE</ftpUploadStatus>
+              <fileName>VMware-NSX-TechSupport-Bundle-2017-11-07_11-25-46.tar.gz</fileName>
+              <nodesStatus>
+                  <nodeLogStatus>
+                      <nodeType>NSX-Manager</nodeType>
+                      <status>COMPLETED</status>
+                      <progressPercentage>100</progressPercentage>
+                  </nodeLogStatus>
+                  <nodeLogStatus>
+                      <nodeType>HOSTSYSTEM</nodeType>
+                      <status>COMPLETED</status>
+                      <objectsStatus>
+                          <objectStatus>
+                              <objectId>host-22</objectId>
+                              <logType>FIREWALL</logType>
+                              <status>COMPLETED</status>
+                          </objectStatus>
+                          <objectStatus>
+                              <objectId>host-22</objectId>
+                              <logType>GI</logType>
+                              <status>COMPLETED</status>
+                          </objectStatus>
+                      </objectsStatus>
+                      <progressPercentage>100</progressPercentage>
+                  </nodeLogStatus>
+                  <nodeLogStatus>
+                      <nodeType>Edge</nodeType>
+                      <status>COMPLETED</status>
+                      <objectsStatus>
+                          <objectStatus>
+                              <objectId>edge-1</objectId>
+                              <status>COMPLETED</status>
+                          </objectStatus>
+                      </objectsStatus>
+                      <progressPercentage>100</progressPercentage>
+                  </nodeLogStatus>
+                  <nodeLogStatus>
+                      <nodeType>Controller</nodeType>
+                      <status>COMPLETED</status>
+                      <objectsStatus>
+                          <objectStatus>
+                              <objectId>controller-1</objectId>
+                              <status>COMPLETED</status>
+                          </objectStatus>
+                      </objectsStatus>
+                      <progressPercentage>100</progressPercentage>
+                  </nodeLogStatus>
+              </nodesStatus>
+              <updatedTime>2017-11-07 11:25:47.825 UTC</updatedTime>
+              <progressPercentage>100</progressPercentage>
+          </techSupportBundleStatus>
             
   delete:
     displayName: TechSupportBundleDelete
@@ -20758,6 +20805,8 @@ securitySchemes:
       responses: 
         200:
           description: Success.
+        202:
+          description: Accepted.
         400:
           description: Support bundle not available.
       body:
