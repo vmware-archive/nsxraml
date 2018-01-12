@@ -8768,8 +8768,13 @@ securitySchemes:
   description: |
     Working With Custom Dashboard Widget
     =============================
-    You can customize the existing system-defined widgets and can also add custom widgets to the dashboard. 
-    You can add five custom widgets to the dashboard. You can have total of maximum 10 widgets on your dashboard.
+    You can add up to five custom widgets to the dashboard. You can also share widgets with other users by setting the attribute **shared** to *true* in the widget configuration. It is recommended to have total of maximum 10 widgets on your dashboard. 
+    The following two types of widgets are supported:
+    * Label Value, and
+    * Grid (or Table)
+    
+    **Data Types**
+    
     Following data types are supported:
     * Datasource
     * GridConfiguration
@@ -8784,7 +8789,7 @@ securitySchemes:
     
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------
-    display_name | Datasource Instance Name. If name is not specified, then datasource is considered as 'default'.|  String        
+    display_name | Datasource Instance Name. Only NSX-API is supported as ‘default’ datasource. |  String    | Required
     urls |    Array of relative urls and their aliases.  |     array of UrlAlias   | Required
     
     **GridConfiguration**
@@ -8793,12 +8798,11 @@ securitySchemes:
     ----------|------------ | ----------|------------
     resource_type | Must be set to the value GridConfiguration.|  String |  Required <br> Read only<br> Enum: GridConfiguration, LabelValueConfiguration
     datasources |    Array of Datasource Instances with their relative urls. <br> The 'datasources' represent the sources from which data is fetched.Currently, only NSX-API is supported as a 'default' datasource. An example of specifying 'default' datasource along with the urls to fetch data from is given at 'example_request' section of 'CreateWidgetConfiguration' API.|     array of Datasource  | Minimum items: 0
-    description |    Description of this widget configuration.  |     String   | Maximum length: 1024 <br> Sortable
-    category_id |    Category of this widget configuration. If category is not provided, system  generates a category ID.  |   String   | 
-    category_display_name |  Display name of the category. If category display name is not provided, then category is used as its display name  |  String   | 
-    properties |    Rows.  |     array of PropertyItem   | Required
-    shared |    Share  widget configuration with other users.  |     Boolean   | Default is False
-            
+    description |    Description of this widget configuration.  |     String   | Maximum length: 1024 <br> 
+    category_id |    Category of this widget configuration. If *category_id* is not provided, system  generates a category ID.  |   String   | 
+    category_display_name |  Display name of the category. If category display name is not provided, then *category_id* is used as its display name.  |  String   | 
+    columns |    Columns describes the information about individual columns such as column heading or label, data type of the column and so on.  |     array of ColumnItem   | Required        
+    shared |    Share  widget configuration with other users.  |     Boolean   | Default is False   
             
     **GridConfiguration: Grid Column** - Represents column of the Grid
     
@@ -8815,14 +8819,14 @@ securitySchemes:
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------      
     resource_type |    Label Value Configuration |     String   | Required. Read only  
-    sub_type |    [Optional] Sub-type of the resource type. When the sub-type is deleted, then the parent type will be considered. <br>For  *LabelValueConfiguration* the available sub-type is  *aggregate_count*. |     String   | Read only
+    sub_type |    [Optional] Sub-type of the resource type. When the sub-type is omitted, then the parent type *LabelValueConfiguration* will be considered. <br>For  *LabelValueConfiguration* the available sub-type is  *aggregate_count*. |     String   | Read only
     object_type |    [Optional] User defined type for identifying the widget’s data. Example: *HostConnStatuses*. |     String   |  
-    datasources |    Array of Datasource Instances with their relative URLs. |     Srray of *Datasource*   | Required. Read only  
+    datasources |    Array of Datasource Instances with their relative URLs. |     Array of *Datasource*   | Required. Read only  
     description |    Description of this widget configuration. |     String   | Maximum length:1024 <br> Sortable 
     display_name |    Widget Title. |     String   | Required  
-    category_id |    Category of this widget configuration.<br> If category is not provided, system generates an ID for category. |     String   |  
-    category_display_name |    Display name of the category. <br> If category display name is not provided, then category is used as the display name. |     String   |   
-    properties |    Rows |     Array of *PropertyItem*   | Required
+    category_id |    Category of this widget configuration.<br> If *category_id* is not provided, system generates an ID for category. |     String   |  
+    category_display_name |    Display name of the category. <br> If category display name is not provided, then *category_id* is used as the display name. |     String   |   
+    properties |    Properties consisting of labels and values. |     Array of *PropertyItem*   | Required
     shared |    Share the widget configuration with other users. |     Boolean   | Default is False
     revision |    Revision of this widget configuration. It is auto-generated and auto-updated. |     Integer   | Read only
     
@@ -8832,13 +8836,10 @@ securitySchemes:
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------      
     field |    Field of the Property. |     String   | Required
-    label |    Label of the donut configuration. <br> By default, displayed at the middle of the donut. It labels the entities of the donut. |     Label   | Required
+    label |    Label of the Property.  |     Label   | Required
     render_configuration |    Render Configuration. |     Array of RenderConfiguration    | 
-    type |    Label Value Configuration. |     String   | Required
-    resource_type |    Field data type. |     String   | Required
-    resource_type |    Label Value Configuration. |     String   | Required.<br> Options are String, Number, 
-    Date <br> Default is String
-    drilldown_id |    ID of the drill-down widget configuration. |     String   | 
+    type |    Field data type. |     String   | Options are *String*, *Number*, and *Date*. Default is String.
+    drilldown id |    ID of the drill-down widget configuration. |     String   | 
     
     
     **RenderConfiguration** 
@@ -8865,14 +8866,11 @@ securitySchemes:
     text |    Text to be displayed at the label. |     String   | Required <br> Maximum length is 255
     url |    URL. |     String   | Required
       
-      
     **Icon** 
     
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------      
-    type |    Icon is rendered based on its type. <br> For example, if ERROR is chosen, then icon representing error will be rendered. |     String   | 
-    Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE 
-    
+    type |    Icon is rendered based on its type. <br> For example, if ERROR is chosen, then icon representing error will be rendered. |     String   | Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE 
     
     **WidgetConfigurationList** 
     
@@ -8889,8 +8887,7 @@ securitySchemes:
       
       **Expressions**:
       --------------
-      All the expressions used in any widget configuration does not require any context. 
-      This means all of the expressions are evaluable on their own without any “variable declaration”. 
+      Expressions can be used in widget configurations. Expressions should be evaluable on their own without any “variable declaration”. 
       For example, you can give following expressions:
         * Arithmetic:
           (1 + 2)= evaluates to 3
@@ -8901,13 +8898,39 @@ securitySchemes:
           (-12 + 77.2) = evaluates to 65.2
           (x * 1.1 + y) = Not allowed as x and y are not defined.
         * Calling methods:
-          “(\”\”).isEmpty()” = evaluates to boolean true.
+          "(\"\").isEmpty()" = evaluates to boolean true.
         * Accessing properties:
-          “(\”Some long string\”).length == 16” = evaluates to boolean true. But you can not give expressions like:
+          "(\"Some long string\").length == 16" = evaluates to boolean true. But you can not give expressions like:
             “V1 + 2” 
-            “aString.length()” and so on.
-             These expressions require the definition of “V1” and “aString” to be present in the context, and there is no place in widget configuration to define it. 
+            “aString.length()” and so on because these expressions require the definition of “V1” and “aString” to be present in the context, and there is no place in widget configuration to define it. 
              * No Java statements are supported, only expressions are supported.
+  
+        **Anatomy of an Expression in Widget Configuration**
+          * Expression
+            * Basic form: #{<datasource>.<url-alias>.<jsonpath>} 
+             * Examples:
+                * Expression:  #{default.status.degraded_count}      
+                * API: api/v1/transport-nodes/status        
+                * Expression:  #{default.status.status}                          
+                * API: api/v1/network-encryption/status
+                * Expression: #{default.config.allow_mirrored}              
+                * API: api/v1/network-encryption/config
+                * Function form: #{<datasource>.<url-alias>.<jsonpath>}.function()
+                * Example:
+                * Expression:  #{default.status.results}.size()                
+                * API:  *api/v1/logical-switches*
+              
+          **Anatomy of a Condition in Widget Configuration**
+           * Condition
+              * Evaluates to a boolean (true or false)
+               * Form: expression == value
+                  * Examples: 
+                      #{default.status.degraded_count} < 10
+                      #{default.status.results}.size() < 10
+                      #{default.status.status} == \"INSTALLED_DISABLED\"
+                      #{default.config.allow_mirrored} == true
+                      #{default.config.allow_mirrored}        //A boolean can be used directly in expression.
+
   get:
     displayName: widgetconfigurationsRead
     description: |
@@ -9193,7 +9216,7 @@ securitySchemes:
       **Notes for Expressions in Widget Configuration**
       
       Expressions should be given in a single line. If an expression spans multiple lines, then form the expression in a single line. 
-      Expressions are evaluated as follows:<br>
+      Order of evaluation of expressions is as follows:<br>
       * First, render configurations are evaluated in their order of appearance in the widget configuration. 
       The *field* is evaluated at the end.
       * Next, when render configuration is provided then the order of evaluation is as follows: 
@@ -9212,139 +9235,12 @@ securitySchemes:
           as Error_Messages: {}. If during evaluation of expressions for any label-value pair an error occurs, 
           then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.
       **Important Note for text in condition, field and render configuration's display value**: 
-      For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration's display_value. 
+      For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration's display_value. Example: <displayValue>"On"</displayValue>.
       
       **Notes for Drilldowns**:
       Only *GridConfiguration* is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as *drilldown*. Drilldowns are supported for *aggregate_count* (subtype of *LabelValueConfiguration*) widgets only.  In other words, only 'aggregate_count' widgets can have drilldowns.
       **Notes for Sharing the widget to other users**:
-      Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set shared to true).
-                    
-      **Few Examples of different Widget Types**:
-      **Example 1: A Label Value Widget with subtype as Aggregate count**:
-      
-        <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
-        <objectId>LabelValueConfiguration_HostCommunicationChannelStatus</objectId> => This is object ID.
-        <resourceType>LabelValueConfiguration</resourceType>
-        <subType>aggregate_count</subType>
-        <objectType>HostCommunicationChannelStatus</objectType>
-        <displayName>Host Communication Channel Status</displayName>
-        <systemResourceFlag>true</systemResourceFlag>
-        <createUser>system</createUser>
-        <lastUpdatedBy>system</lastUpdatedBy>
-        <revision>0</revision>
-        <shared>true</shared>
-        <categoryId>cluster_preparation_status</categoryId>
-        <categoryDisplayName>Fabric Status</categoryDisplayName>
-        <refreshInterval>0</refreshInterval>
-        <weight>9300</weight>
-        <datasources>
-        <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-            <urls>
-                <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-                    <alias>status</alias>
-                    <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
-                </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-                <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-                    <alias>summary</alias>
-                    <url>api/2.0/vdn/inventory/hosts/status/summary</url>
-                </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-            </urls>
-            <displayName>default</displayName>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-        </datasources>
-        <properties>
-        <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
-            <field>0</field>
-            <renderConfiguration>
-                <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
-                    <displayValue>#{default.summary.downHostsTotalNumber}</displayValue>
-                    <condition>#{default.summary.downHostsTotalNumber} != 0</condition>
-                    <icons>
-                        <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
-                            <type>ERROR</type>
-                        </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
-                    </icons>
-                </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
-            </renderConfiguration>
-            <label>
-                <text>Down</text>
-            </label>
-            <type>Number</type>
-            <drilldownId>GridConfiguration_hccsGrid</drilldownId>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
-        </properties>
-        <totalCount>#{default.summary.preparedHostsTotalNumber}</totalCount>
-        <totalCountDesc>Hosts</totalCountDesc>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
-        <vdnCdo>
-          <vdnCdoModeState>DISABLED</vdnCdoModeState>
-          <vdnCdoModeOperationStatus>SUCCESSFUL</vdnCdoModeOperationStatus>
-        </vdnCdo>
-      
-      **Example 2: A Grid Widget with a drilldown parameter **:
-      
-        <com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
-        <objectId>GridConfiguration_hccsGrid</objectId> => This is object ID.
-        <resourceType>GridConfiguration</resourceType>
-        <objectType>HostConnStatuses</objectType>
-        <displayName>Host Communication Channel Status Details</displayName>
-        <systemResourceFlag>true</systemResourceFlag>
-        <createUser>system</createUser>
-        <lastUpdatedBy>system</lastUpdatedBy>
-        <revision>0</revision>
-        <shared>true</shared>
-        <categoryId>drilldown</categoryId>
-        <categoryDisplayName>drilldown</categoryDisplayName>
-        <refreshInterval>0</refreshInterval>
-        <weight>9900</weight>
-        <datasources>
-        <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-            <urls>
-                <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-                    <alias>hosts</alias>
-                    <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
-                </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-            </urls>
-            <displayName>default</displayName>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-        </datasources>
-        <columns>
-        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-            <field>#{hostName}</field>
-            <renderConfiguration/>
-            <label>
-                <text>Host</text>
-            </label>
-            <type>String</type>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-            <field>#{hostToControllerConn}</field>
-            <renderConfiguration/>
-            <label>
-                <text>Control Plane Agent to Controller</text>
-            </label>
-            <type>String</type>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-            <field>#{nsxMgrToFirewallAgentConn}</field>
-            <renderConfiguration/>
-            <label>
-                <text>NSX Manager to Firewall Agent</text>
-            </label>
-            <type>String</type>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-        <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-            <field>#{nsxMgrToControlPlaneAgentConn}</field>
-            <renderConfiguration/>
-            <label>
-                <text>NSX Manager to Control Plane Agent</text>
-            </label>
-            <type>String</type>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-        </columns>
-        <rowListField>default.hosts.hostConnStatuses.*</rowListField>
-        <pageSize>0</pageSize>
-        </com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
+      Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set **shared** to *true*).
       
       **Method history:**
       
@@ -20715,73 +20611,59 @@ securitySchemes:
     responses: 
       200:
         description: Success.
+      202:
+          description: Accepted.
       400:
         description: Request format is not correct or provided details for remote server are not correct. If request to generate support bundle is already in-progress,then the status code 405 is returned in the response and the support log generation request is discarded.      
     queryParameters:
         generate:
-          required: false
           displayName: generate
           description: Generates the technical support log bundle.
         cancel:
-          required: false
           displayName: cancel
           description: Aborts the bundle generation process.
     body:
       application/xml:
         example: |
-          <techSupportBundleStatus>
-              <bundleStatus>COMPLETED</bundleStatus>
-              <ftpUploadStatus>NOT_APPLICABLE</ftpUploadStatus>
-              <fileName>VMware-NSX-TechSupport-Bundle-2017-11-07_11-25-46.tar.gz</fileName>
-              <nodesStatus>
-                  <nodeLogStatus>
-                      <nodeType>NSX-Manager</nodeType>
-                      <status>COMPLETED</status>
-                      <progressPercentage>100</progressPercentage>
-                  </nodeLogStatus>
-                  <nodeLogStatus>
-                      <nodeType>HOSTSYSTEM</nodeType>
-                      <status>COMPLETED</status>
-                      <objectsStatus>
-                          <objectStatus>
-                              <objectId>host-22</objectId>
-                              <logType>FIREWALL</logType>
-                              <status>COMPLETED</status>
-                          </objectStatus>
-                          <objectStatus>
-                              <objectId>host-22</objectId>
-                              <logType>GI</logType>
-                              <status>COMPLETED</status>
-                          </objectStatus>
-                      </objectsStatus>
-                      <progressPercentage>100</progressPercentage>
-                  </nodeLogStatus>
-                  <nodeLogStatus>
-                      <nodeType>Edge</nodeType>
-                      <status>COMPLETED</status>
-                      <objectsStatus>
-                          <objectStatus>
-                              <objectId>edge-1</objectId>
-                              <status>COMPLETED</status>
-                          </objectStatus>
-                      </objectsStatus>
-                      <progressPercentage>100</progressPercentage>
-                  </nodeLogStatus>
-                  <nodeLogStatus>
-                      <nodeType>Controller</nodeType>
-                      <status>COMPLETED</status>
-                      <objectsStatus>
-                          <objectStatus>
-                              <objectId>controller-1</objectId>
-                              <status>COMPLETED</status>
-                          </objectStatus>
-                      </objectsStatus>
-                      <progressPercentage>100</progressPercentage>
-                  </nodeLogStatus>
-              </nodesStatus>
-              <updatedTime>2017-11-07 11:25:47.825 UTC</updatedTime>
-              <progressPercentage>100</progressPercentage>
-          </techSupportBundleStatus>
+          <techSupportBundleRequest>
+                <ftpSettings>
+                    <backupDirectory>/home/user1/Desktop/temp</backupDirectory>
+                    <hostNameIPAddress>10.4.135.111</hostNameIPAddress>
+                    <password>peeyushg</password>
+                    <port>22</port>
+                    <transferProtocol>SFTP</transferProtocol>
+                    <userName>peeyushg</userName>
+                </ftpSettings>
+                  <nodesDetails>
+                      <nodeDetails>
+                          <nodeType>HostSystem</nodeType>
+                          <objectIds>
+                              <string>host-11</string>
+                              <string>host-22</string>
+                              <string>host-12</string>
+                          </objectIds>
+                          <logTypes>
+                              <string>FIREWALL</string>
+                              <string>GI</string>
+                          </logTypes>
+                      </nodeDetails>
+                      <nodeDetails>
+                          <nodeType>Edge</nodeType>
+                          <objectIds>
+                              <string>edge-1</string>
+                              <string>edge-2</string>
+                          </objectIds>
+                      </nodeDetails>
+                      <nodeDetails>
+                          <nodeType>Controller</nodeType>
+                          <objectIds>
+                              <string>controller-1</string>
+                          </objectIds>
+                      </nodeDetails>
+                  </nodesDetails>
+                  <managerLogsRequired>true</managerLogsRequired>
+                  <uploadToFTP>false</uploadToFTP>
+          </techSupportBundleRequest>
             
   delete:
     displayName: TechSupportBundleDelete

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#100;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#x62;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#x6d;">&#100;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#x62;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#100;&#111;&#x63;&#102;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#97;&#x72;&#x65;&#46;&#99;&#x6f;&#109;">&#100;&#111;&#x63;&#102;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#97;&#x72;&#x65;&#46;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -3927,9 +3927,14 @@ other configuration.</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-custom-dashboard-widget">Working With Custom Dashboard Widget</h1>
-<p>You can customize the existing system-defined widgets and can also add custom widgets to the dashboard. 
-You can add five custom widgets to the dashboard. You can have total of maximum 10 widgets on your dashboard.
-Following data types are supported:</p>
+<p>You can add up to five custom widgets to the dashboard. You can also share widgets with other users by setting the attribute <strong>shared</strong> to <em>true</em> in the widget configuration. It is recommended to have total of maximum 10 widgets on your dashboard. 
+The following two types of widgets are supported:</p>
+<ul>
+<li>Label Value, and</li>
+<li>Grid (or Table)</li>
+</ul>
+<p><strong>Data Types</strong></p>
+<p>Following data types are supported:</p>
 <ul>
 <li>Datasource</li>
 <li>GridConfiguration</li>
@@ -3949,8 +3954,9 @@ Following data types are supported:</p>
 </tr>
 </thead><tbody><tr>
 <td>display_name</td>
-<td>Datasource Instance Name. If name is not specified, then datasource is considered as &#39;default&#39;.</td>
-<td>String        </td>
+<td>Datasource Instance Name. Only NSX-API is supported as ‘default’ datasource.</td>
+<td>String</td>
+<td>Required</td>
 </tr>
 <tr>
 <td>urls</td>
@@ -3981,31 +3987,31 @@ Following data types are supported:</p>
 <td>description</td>
 <td>Description of this widget configuration.</td>
 <td>String</td>
-<td>Maximum length: 1024 <br> Sortable</td>
+<td>Maximum length: 1024 <br> </td>
 </tr>
 <tr>
 <td>category_id</td>
-<td>Category of this widget configuration. If category is not provided, system  generates a category ID.</td>
+<td>Category of this widget configuration. If <em>category_id</em> is not provided, system  generates a category ID.</td>
 <td>String</td>
 <td></td>
 </tr>
 <tr>
 <td>category_display_name</td>
-<td>Display name of the category. If category display name is not provided, then category is used as its display name</td>
+<td>Display name of the category. If category display name is not provided, then <em>category_id</em> is used as its display name.</td>
 <td>String</td>
 <td></td>
 </tr>
 <tr>
-<td>properties</td>
-<td>Rows.</td>
-<td>array of PropertyItem</td>
-<td>Required</td>
+<td>columns</td>
+<td>Columns describes the information about individual columns such as column heading or label, data type of the column and so on.</td>
+<td>array of ColumnItem</td>
+<td>Required        </td>
 </tr>
 <tr>
 <td>shared</td>
 <td>Share  widget configuration with other users.</td>
 <td>Boolean</td>
-<td>Default is False</td>
+<td>Default is False   </td>
 </tr>
 </tbody></table><p><strong>GridConfiguration: Grid Column</strong> - Represents column of the Grid</p>
 <table class="table"><thead><tr>
@@ -4053,7 +4059,7 @@ Following data types are supported:</p>
 </tr>
 <tr>
 <td>sub_type</td>
-<td>[Optional] Sub-type of the resource type. When the sub-type is deleted, then the parent type will be considered. <br>For  <em>LabelValueConfiguration</em> the available sub-type is  <em>aggregate_count</em>.</td>
+<td>[Optional] Sub-type of the resource type. When the sub-type is omitted, then the parent type <em>LabelValueConfiguration</em> will be considered. <br>For  <em>LabelValueConfiguration</em> the available sub-type is  <em>aggregate_count</em>.</td>
 <td>String</td>
 <td>Read only</td>
 </tr>
@@ -4066,7 +4072,7 @@ Following data types are supported:</p>
 <tr>
 <td>datasources</td>
 <td>Array of Datasource Instances with their relative URLs.</td>
-<td>Srray of <em>Datasource</em></td>
+<td>Array of <em>Datasource</em></td>
 <td>Required. Read only  </td>
 </tr>
 <tr>
@@ -4083,19 +4089,19 @@ Following data types are supported:</p>
 </tr>
 <tr>
 <td>category_id</td>
-<td>Category of this widget configuration.<br> If category is not provided, system generates an ID for category.</td>
+<td>Category of this widget configuration.<br> If <em>category_id</em> is not provided, system generates an ID for category.</td>
 <td>String</td>
 <td></td>
 </tr>
 <tr>
 <td>category_display_name</td>
-<td>Display name of the category. <br> If category display name is not provided, then category is used as the display name.</td>
+<td>Display name of the category. <br> If category display name is not provided, then <em>category_id</em> is used as the display name.</td>
 <td>String</td>
 <td></td>
 </tr>
 <tr>
 <td>properties</td>
-<td>Rows</td>
+<td>Properties consisting of labels and values.</td>
 <td>Array of <em>PropertyItem</em></td>
 <td>Required</td>
 </tr>
@@ -4126,7 +4132,7 @@ Following data types are supported:</p>
 </tr>
 <tr>
 <td>label</td>
-<td>Label of the donut configuration. <br> By default, displayed at the middle of the donut. It labels the entities of the donut.</td>
+<td>Label of the Property.</td>
 <td>Label</td>
 <td>Required</td>
 </tr>
@@ -4138,25 +4144,17 @@ Following data types are supported:</p>
 </tr>
 <tr>
 <td>type</td>
-<td>Label Value Configuration.</td>
-<td>String</td>
-<td>Required</td>
-</tr>
-<tr>
-<td>resource_type</td>
 <td>Field data type.</td>
 <td>String</td>
-<td>Required</td>
+<td>Options are <em>String</em>, <em>Number</em>, and <em>Date</em>. Default is String.</td>
 </tr>
 <tr>
-<td>resource_type</td>
-<td>Label Value Configuration.</td>
+<td>drilldown id</td>
+<td>ID of the drill-down widget configuration.</td>
 <td>String</td>
-<td>Required.<br> Options are String, Number, </td>
+<td></td>
 </tr>
-</tbody></table><p>Date <br> Default is String
-drilldown_id |    ID of the drill-down widget configuration. |     String   | </p>
-<p><strong>RenderConfiguration</strong> </p>
+</tbody></table><p><strong>RenderConfiguration</strong> </p>
 <table class="table"><thead><tr>
 <th>Parameter</th>
 <th>Description</th>
@@ -4230,10 +4228,9 @@ drilldown_id |    ID of the drill-down widget configuration. |     String   | </
 <td>type</td>
 <td>Icon is rendered based on its type. <br> For example, if ERROR is chosen, then icon representing error will be rendered.</td>
 <td>String</td>
-<td></td>
+<td>Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE </td>
 </tr>
-</tbody></table><p>Options are ERROR, WARNING, INFO, INPROGRESS, SUCCESS, DETAIL, NOT_AVAILABLE </p>
-<p><strong>WidgetConfigurationList</strong> </p>
+</tbody></table><p><strong>WidgetConfigurationList</strong> </p>
 <table class="table"><thead><tr>
 <th>Parameter</th>
 <th>Description</th>
@@ -4260,25 +4257,49 @@ drilldown_id |    ID of the drill-down widget configuration. |     String   | </
 <td>Read only</td>
 </tr>
 </tbody></table><h2 id="-expressions-">  <strong>Expressions</strong>:</h2>
-<p>  All the expressions used in any widget configuration does not require any context. 
-  This means all of the expressions are evaluable on their own without any “variable declaration”. 
+<p>  Expressions can be used in widget configurations. Expressions should be evaluable on their own without any “variable declaration”. 
   For example, you can give following expressions:</p>
-<pre><code class="code-block hljs lang-livecodeserver">* Arithmetic:
-  (<span class="hljs-number">1</span> + <span class="hljs-number">2</span>)= evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">3</span>
-  (<span class="hljs-number">12.0</span> - <span class="hljs-number">5.2</span>) = evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">6.8</span>
-  (<span class="hljs-number">6</span> * <span class="hljs-number">12</span> + <span class="hljs-number">5</span> / <span class="hljs-number">2.6</span>) = evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">73.923</span>
-  (<span class="hljs-number">12</span> % <span class="hljs-number">2</span>)= evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">0</span>
-  (<span class="hljs-number">6</span> / <span class="hljs-number">4</span> )= evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">1.5</span>
-  (<span class="hljs-number">-12</span> + <span class="hljs-number">77.2</span>) = evaluates <span class="hljs-built_in">to</span> <span class="hljs-number">65.2</span>
-  (x * <span class="hljs-number">1.1</span> + y) = Not allowed <span class="hljs-keyword">as</span> x <span class="hljs-keyword">and</span> y are <span class="hljs-keyword">not</span> defined.
+<pre><code class="code-block hljs lang-vbnet">* Arithmetic:
+  (<span class="hljs-number">1</span> + <span class="hljs-number">2</span>)= evaluates <span class="hljs-keyword">to</span> <span class="hljs-number">3</span>
+  (<span class="hljs-number">12.0</span> - <span class="hljs-number">5.2</span>) = evaluates <span class="hljs-keyword">to</span> <span class="hljs-number">6.8</span>
+  (<span class="hljs-number">6</span> * <span class="hljs-number">12</span> + <span class="hljs-number">5</span> / <span class="hljs-number">2.6</span>) = evaluates <span class="hljs-keyword">to</span> <span class="hljs-number">73.923</span>
+  (<span class="hljs-number">12</span> % <span class="hljs-number">2</span>)= evaluates <span class="hljs-keyword">to</span> <span class="hljs-number">0</span>
+  (<span class="hljs-number">6</span> / <span class="hljs-number">4</span> )= evaluates <span class="hljs-keyword">to</span> <span class="hljs-number">1.5</span>
+  (<span class="hljs-number">-12</span> + <span class="hljs-number">77.2</span>) = evaluates <span class="hljs-keyword">to</span> <span class="hljs-number">65.2</span>
+  (x * <span class="hljs-number">1.1</span> + y) = <span class="hljs-keyword">Not</span> allowed <span class="hljs-keyword">as</span> x <span class="hljs-keyword">and</span> y are <span class="hljs-keyword">not</span> defined.
 * Calling methods:
-  “(\”\”).isEmpty()” = evaluates <span class="hljs-built_in">to</span> boolean <span class="hljs-literal">true</span>.
+  <span class="hljs-string">"(\"</span>\<span class="hljs-string">").isEmpty()"</span> = evaluates <span class="hljs-keyword">to</span> <span class="hljs-built_in">boolean</span> <span class="hljs-literal">true</span>.
 * Accessing properties:
-  “(\”Some <span class="hljs-keyword">long</span> <span class="hljs-keyword">string</span>\”).<span class="hljs-built_in">length</span> == <span class="hljs-number">16</span>” = evaluates <span class="hljs-built_in">to</span> boolean <span class="hljs-literal">true</span>. But you can <span class="hljs-keyword">not</span> give expressions like:
+  <span class="hljs-string">"(\"</span>Some <span class="hljs-built_in">long</span> <span class="hljs-built_in">string</span>\<span class="hljs-string">").length == 16"</span> = evaluates <span class="hljs-keyword">to</span> <span class="hljs-built_in">boolean</span> <span class="hljs-literal">true</span>. But you can <span class="hljs-keyword">not</span> give expressions <span class="hljs-keyword">like</span>:
     “V1 + <span class="hljs-number">2</span>” 
-    “aString.<span class="hljs-built_in">length</span>()” <span class="hljs-keyword">and</span> so <span class="hljs-keyword">on</span>.
-     These expressions <span class="hljs-built_in">require</span> <span class="hljs-keyword">the</span> definition <span class="hljs-keyword">of</span> “V1” <span class="hljs-keyword">and</span> “aString” <span class="hljs-built_in">to</span> be present <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> context, <span class="hljs-keyword">and</span> there is no place <span class="hljs-keyword">in</span> widget configuration <span class="hljs-built_in">to</span> define <span class="hljs-keyword">it</span>. 
-     * No Java statements are supported, only expressions are supported.</code></pre></div>
+    “aString.length()” <span class="hljs-keyword">and</span> so <span class="hljs-keyword">on</span> because these expressions require the definition <span class="hljs-keyword">of</span> “V1” <span class="hljs-keyword">and</span> “aString” <span class="hljs-keyword">to</span> be present <span class="hljs-keyword">in</span> the context, <span class="hljs-keyword">and</span> there <span class="hljs-keyword">is</span> no place <span class="hljs-keyword">in</span> widget configuration <span class="hljs-keyword">to</span> define it. 
+     * No Java statements are supported, only expressions are supported.
+
+**Anatomy <span class="hljs-keyword">of</span> an Expression <span class="hljs-keyword">in</span> Widget Configuration**
+  * Expression
+    * Basic form: <span class="hljs-meta">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;} </span>
+     * Examples:
+        * Expression:  <span class="hljs-meta">#{default.status.degraded_count}      </span>
+        * API: api/v1/transport-nodes/status        
+        * Expression:  <span class="hljs-meta">#{default.status.status}                          </span>
+        * API: api/v1/network-encryption/status
+        * Expression: <span class="hljs-meta">#{default.config.allow_mirrored}              </span>
+        * API: api/v1/network-encryption/config
+        * <span class="hljs-keyword">Function</span> form: <span class="hljs-meta">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()</span>
+        * Example:
+        * Expression:  <span class="hljs-meta">#{default.status.results}.size()                </span>
+        * API:  *api/v1/logical-switches*
+
+  **Anatomy <span class="hljs-keyword">of</span> a Condition <span class="hljs-keyword">in</span> Widget Configuration**
+   * Condition
+      * Evaluates <span class="hljs-keyword">to</span> a <span class="hljs-built_in">boolean</span> (<span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>)
+       * Form: expression == value
+          * Examples: 
+              <span class="hljs-meta">#{default.status.degraded_count} &lt; 10</span>
+              <span class="hljs-meta">#{default.status.results}.size() &lt; 10</span>
+              <span class="hljs-meta">#{default.status.status} == \"INSTALLED_DISABLED\"</span>
+              <span class="hljs-meta">#{default.config.allow_mirrored} == true</span>
+              <span class="hljs-meta">#{default.config.allow_mirrored}        //A boolean can be used directly in expression.</span></code></pre></div>
 <div class="method get">
   <a
     class="verb get"
@@ -4577,7 +4598,7 @@ drilldown_id |    ID of the drill-down widget configuration. |     String   | </
     <p><p>Creates a new Widget Configuration and adds it to the default Dashboard on UI. Supported resource_type are <em>LabelValueConfiguration</em> and <em>GridConfiguration</em>.</p>
 <p><strong>Notes for Expressions in Widget Configuration</strong></p>
 <p>Expressions should be given in a single line. If an expression spans multiple lines, then form the expression in a single line. 
-Expressions are evaluated as follows:<br></p>
+Order of evaluation of expressions is as follows:<br></p>
 <ul>
 <li>First, render configurations are evaluated in their order of appearance in the widget configuration. 
 The <em>field</em> is evaluated at the end.</li>
@@ -4596,7 +4617,7 @@ remaining render configurations continues to collect and show all the error mess
 as Error_Messages: {}. If during evaluation of expressions for any label-value pair an error occurs, 
 then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.
 <strong>Important Note for text in condition, field and render configuration&#39;s display value</strong>: 
-For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration&#39;s display_value. </p>
+For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration&#39;s display_value. Example: <displayValue>&quot;On&quot;</displayValue>.</p>
 </li>
 </ul>
 </li>
@@ -4604,130 +4625,7 @@ For elements that take expressions, strings should be provided by escaping them 
 <p><strong>Notes for Drilldowns</strong>:
 Only <em>GridConfiguration</em> is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as <em>drilldown</em>. Drilldowns are supported for <em>aggregate_count</em> (subtype of <em>LabelValueConfiguration</em>) widgets only.  In other words, only &#39;aggregate_count&#39; widgets can have drilldowns.
 <strong>Notes for Sharing the widget to other users</strong>:
-Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set shared to true).</p>
-<p><strong>Few Examples of different Widget Types</strong>:
-<strong>Example 1: A Label Value Widget with subtype as Aggregate count</strong>:</p>
-<p>  <com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
-  <objectId>LabelValueConfiguration_HostCommunicationChannelStatus</objectId> =&gt; This is object ID.
-  <resourceType>LabelValueConfiguration</resourceType>
-  <subType>aggregate_count</subType>
-  <objectType>HostCommunicationChannelStatus</objectType>
-  <displayName>Host Communication Channel Status</displayName>
-  <systemResourceFlag>true</systemResourceFlag>
-  <createUser>system</createUser>
-  <lastUpdatedBy>system</lastUpdatedBy>
-  <revision>0</revision>
-  <shared>true</shared>
-  <categoryId>cluster_preparation_status</categoryId>
-  <categoryDisplayName>Fabric Status</categoryDisplayName>
-  <refreshInterval>0</refreshInterval>
-  <weight>9300</weight>
-  <datasources>
-  <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-      <urls>
-          <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-              <alias>status</alias>
-              <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
-          </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-          <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-              <alias>summary</alias>
-              <url>api/2.0/vdn/inventory/hosts/status/summary</url>
-          </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-      </urls>
-      <displayName>default</displayName>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-  </datasources>
-  <properties>
-  <com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
-      <field>0</field>
-      <renderConfiguration>
-          <com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
-              <displayValue>#{default.summary.downHostsTotalNumber}</displayValue>
-              <condition>#{default.summary.downHostsTotalNumber} != 0</condition>
-              <icons>
-                  <com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
-                      <type>ERROR</type>
-                  </com.vmware.vshield.vsm.dashboard.dto.custom.IconDto>
-              </icons>
-          </com.vmware.vshield.vsm.dashboard.dto.custom.RenderConfigurationDto>
-      </renderConfiguration>
-      <label>
-          <text>Down</text>
-      </label>
-      <type>Number</type>
-      <drilldownId>GridConfiguration_hccsGrid</drilldownId>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.PropertyItemDto>
-  </properties>
-  <totalCount>#{default.summary.preparedHostsTotalNumber}</totalCount>
-  <totalCountDesc>Hosts</totalCountDesc>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.LabelValueConfigurationDto>
-  <vdnCdo>
-    <vdnCdoModeState>DISABLED</vdnCdoModeState>
-    <vdnCdoModeOperationStatus>SUCCESSFUL</vdnCdoModeOperationStatus>
-  </vdnCdo></p>
-<p><strong>Example 2: A Grid Widget with a drilldown parameter </strong>:</p>
-<p>  <com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto>
-  <objectId>GridConfiguration_hccsGrid</objectId> =&gt; This is object ID.
-  <resourceType>GridConfiguration</resourceType>
-  <objectType>HostConnStatuses</objectType>
-  <displayName>Host Communication Channel Status Details</displayName>
-  <systemResourceFlag>true</systemResourceFlag>
-  <createUser>system</createUser>
-  <lastUpdatedBy>system</lastUpdatedBy>
-  <revision>0</revision>
-  <shared>true</shared>
-  <categoryId>drilldown</categoryId>
-  <categoryDisplayName>drilldown</categoryDisplayName>
-  <refreshInterval>0</refreshInterval>
-  <weight>9900</weight>
-  <datasources>
-  <com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-      <urls>
-          <com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-              <alias>hosts</alias>
-              <url>api/2.0/vdn/inventory/hosts/connection/DOWN</url>
-          </com.vmware.vshield.vsm.dashboard.dto.custom.UrlAliasDto>
-      </urls>
-      <displayName>default</displayName>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.DatasourceDto>
-  </datasources>
-  <columns>
-  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-      <field>#{hostName}</field>
-      <renderConfiguration/>
-      <label>
-          <text>Host</text>
-      </label>
-      <type>String</type>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-      <field>#{hostToControllerConn}</field>
-      <renderConfiguration/>
-      <label>
-          <text>Control Plane Agent to Controller</text>
-      </label>
-      <type>String</type>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-      <field>#{nsxMgrToFirewallAgentConn}</field>
-      <renderConfiguration/>
-      <label>
-          <text>NSX Manager to Firewall Agent</text>
-      </label>
-      <type>String</type>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-  <com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-      <field>#{nsxMgrToControlPlaneAgentConn}</field>
-      <renderConfiguration/>
-      <label>
-          <text>NSX Manager to Control Plane Agent</text>
-      </label>
-      <type>String</type>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.ColumnItemDto>
-  </columns>
-  <rowListField>default.hosts.hostConnStatuses.*</rowListField>
-  <pageSize>0</pageSize>
-  </com.vmware.vshield.vsm.dashboard.dto.custom.GridConfigurationDto></p>
+Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set <strong>shared</strong> to <em>true</em>).</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -11832,64 +11730,53 @@ Use <em>/techsupportbundle?action=cancel</em> to abort the bundle generation tha
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">techSupportBundleStatus</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">bundleStatus</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">bundleStatus</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ftpUploadStatus</span>&gt;</span>NOT_APPLICABLE<span class="hljs-tag">&lt;/<span class="hljs-name">ftpUploadStatus</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fileName</span>&gt;</span>VMware-NSX-TechSupport-Bundle-2017-11-07_11-25-46.tar.gz<span class="hljs-tag">&lt;/<span class="hljs-name">fileName</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">nodesStatus</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>NSX-Manager<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>HOSTSYSTEM<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">objectsStatus</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">logType</span>&gt;</span>FIREWALL<span class="hljs-tag">&lt;/<span class="hljs-name">logType</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">logType</span>&gt;</span>GI<span class="hljs-tag">&lt;/<span class="hljs-name">logType</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">objectsStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">objectsStatus</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>edge-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">objectsStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>Controller<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">objectsStatus</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">objectStatus</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>controller-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
-                    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>COMPLETED<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-                <span class="hljs-tag">&lt;/<span class="hljs-name">objectStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">objectsStatus</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">nodeLogStatus</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">nodesStatus</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">updatedTime</span>&gt;</span>2017-11-07 11:25:47.825 UTC<span class="hljs-tag">&lt;/<span class="hljs-name">updatedTime</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">progressPercentage</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">progressPercentage</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">techSupportBundleStatus</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">techSupportBundleRequest</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ftpSettings</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">backupDirectory</span>&gt;</span>/home/user1/Desktop/temp<span class="hljs-tag">&lt;/<span class="hljs-name">backupDirectory</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">hostNameIPAddress</span>&gt;</span>10.4.135.111<span class="hljs-tag">&lt;/<span class="hljs-name">hostNameIPAddress</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>peeyushg<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>22<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">transferProtocol</span>&gt;</span>SFTP<span class="hljs-tag">&lt;/<span class="hljs-name">transferProtocol</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>peeyushg<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ftpSettings</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodesDetails</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nodeDetails</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>HostSystem<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">objectIds</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>host-11<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>host-22<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>host-12<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">objectIds</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">logTypes</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>FIREWALL<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>GI<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">logTypes</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDetails</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nodeDetails</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">objectIds</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>edge-1<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>edge-2<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">objectIds</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDetails</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nodeDetails</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">nodeType</span>&gt;</span>Controller<span class="hljs-tag">&lt;/<span class="hljs-name">nodeType</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">objectIds</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>controller-1<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">objectIds</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">nodeDetails</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">nodesDetails</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">managerLogsRequired</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">managerLogsRequired</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">uploadToFTP</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">uploadToFTP</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">techSupportBundleRequest</span>&gt;</span>
   
 </code></pre>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
         <p>Success.</p>
+
+        <h4><span class="response-code response-code-2xx">202 Accepted</span></h4>
+        <p>Accepted.</p>
 
         <h4><span class="response-code response-code-4xx">400 Bad Request</span></h4>
         <p>Request format is not correct or provided details for remote server are not correct. If request to generate support bundle is already in-progress,then the status code 405 is returned in the response and the support log generation request is discarded.</p>
