@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#100;&#111;&#x63;&#102;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#97;&#x72;&#x65;&#46;&#99;&#x6f;&#109;">&#100;&#111;&#x63;&#102;&#x65;&#x65;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#109;&#x77;&#97;&#x72;&#x65;&#46;&#99;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#58;&#x64;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#x61;&#x72;&#101;&#46;&#x63;&#111;&#x6d;">&#x64;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#x62;&#97;&#x63;&#x6b;&#64;&#118;&#109;&#119;&#x61;&#x72;&#101;&#46;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -3927,7 +3927,7 @@ other configuration.</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-custom-dashboard-widget">Working With Custom Dashboard Widget</h1>
-<p>You can add up to five custom widgets to the dashboard. You can also share widgets with other users by setting the attribute <strong>shared</strong> to <em>true</em> in the widget configuration. It is recommended to have total of maximum 10 widgets on your dashboard. 
+<p>You can add up to five custom widgets to the dashboard. You can also share widgets with other users by setting the <strong>shared</strong> parameter to <em>true</em> in the widget configuration. It is recommended to have total of maximum 10 widgets on your dashboard. 
 The following two types of widgets are supported:</p>
 <ul>
 <li>Label Value, and</li>
@@ -3961,7 +3961,7 @@ The following two types of widgets are supported:</p>
 <tr>
 <td>urls</td>
 <td>Array of relative urls and their aliases.</td>
-<td>array of UrlAlias</td>
+<td>Array of <em>UrlAlias</em></td>
 <td>Required</td>
 </tr>
 </tbody></table><p><strong>GridConfiguration</strong></p>
@@ -3980,14 +3980,14 @@ The following two types of widgets are supported:</p>
 <tr>
 <td>datasources</td>
 <td>Array of Datasource Instances with their relative urls. <br> The &#39;datasources&#39; represent the sources from which data is fetched.Currently, only NSX-API is supported as a &#39;default&#39; datasource. An example of specifying &#39;default&#39; datasource along with the urls to fetch data from is given at &#39;example_request&#39; section of &#39;CreateWidgetConfiguration&#39; API.</td>
-<td>array of Datasource</td>
-<td>Minimum items: 0</td>
+<td>Array of <em>Datasource</em></td>
+<td>Minimum items: 1</td>
 </tr>
 <tr>
 <td>description</td>
 <td>Description of this widget configuration.</td>
 <td>String</td>
-<td>Maximum length: 1024 <br> </td>
+<td>Maximum length: 1024 </td>
 </tr>
 <tr>
 <td>category_id</td>
@@ -4004,7 +4004,7 @@ The following two types of widgets are supported:</p>
 <tr>
 <td>columns</td>
 <td>Columns describes the information about individual columns such as column heading or label, data type of the column and so on.</td>
-<td>array of ColumnItem</td>
+<td>Array of <em>ColumnItem</em></td>
 <td>Required        </td>
 </tr>
 <tr>
@@ -4035,7 +4035,7 @@ The following two types of widgets are supported:</p>
 <tr>
 <td>render_configuration</td>
 <td>Render configuration to be applied, if any.</td>
-<td>Array of RenderConfiguration</td>
+<td>Array of <em>RenderConfiguration</em></td>
 <td></td>
 </tr>
 <tr>
@@ -4079,7 +4079,7 @@ The following two types of widgets are supported:</p>
 <td>description</td>
 <td>Description of this widget configuration.</td>
 <td>String</td>
-<td>Maximum length:1024 <br> Sortable </td>
+<td>Maximum length:1024  </td>
 </tr>
 <tr>
 <td>display_name</td>
@@ -4240,7 +4240,7 @@ The following two types of widgets are supported:</p>
 </thead><tbody><tr>
 <td>widgetconfigurations</td>
 <td>Array of widget configurations.</td>
-<td>Array of widgetconfiguration</td>
+<td>Array of <em>widgetconfiguration</em></td>
 <td>Required. Read only </td>
 </tr>
 </tbody></table><p><strong>WidgetQueryParameters</strong> </p>
@@ -4273,33 +4273,29 @@ The following two types of widgets are supported:</p>
   <span class="hljs-string">"(\"</span>Some <span class="hljs-built_in">long</span> <span class="hljs-built_in">string</span>\<span class="hljs-string">").length == 16"</span> = evaluates <span class="hljs-keyword">to</span> <span class="hljs-built_in">boolean</span> <span class="hljs-literal">true</span>. But you can <span class="hljs-keyword">not</span> give expressions <span class="hljs-keyword">like</span>:
     “V1 + <span class="hljs-number">2</span>” 
     “aString.length()” <span class="hljs-keyword">and</span> so <span class="hljs-keyword">on</span> because these expressions require the definition <span class="hljs-keyword">of</span> “V1” <span class="hljs-keyword">and</span> “aString” <span class="hljs-keyword">to</span> be present <span class="hljs-keyword">in</span> the context, <span class="hljs-keyword">and</span> there <span class="hljs-keyword">is</span> no place <span class="hljs-keyword">in</span> widget configuration <span class="hljs-keyword">to</span> define it. 
-     * No Java statements are supported, only expressions are supported.
-
-**Anatomy <span class="hljs-keyword">of</span> an Expression <span class="hljs-keyword">in</span> Widget Configuration**
-  * Expression
-    * Basic form: <span class="hljs-meta">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;} </span>
-     * Examples:
-        * Expression:  <span class="hljs-meta">#{default.status.degraded_count}      </span>
-        * API: api/v1/transport-nodes/status        
-        * Expression:  <span class="hljs-meta">#{default.status.status}                          </span>
-        * API: api/v1/network-encryption/status
-        * Expression: <span class="hljs-meta">#{default.config.allow_mirrored}              </span>
-        * API: api/v1/network-encryption/config
-        * <span class="hljs-keyword">Function</span> form: <span class="hljs-meta">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()</span>
-        * Example:
-        * Expression:  <span class="hljs-meta">#{default.status.results}.size()                </span>
-        * API:  *api/v1/logical-switches*
-
-  **Anatomy <span class="hljs-keyword">of</span> a Condition <span class="hljs-keyword">in</span> Widget Configuration**
-   * Condition
-      * Evaluates <span class="hljs-keyword">to</span> a <span class="hljs-built_in">boolean</span> (<span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>)
+     * No Java statements are supported, only expressions are supported.</code></pre><p>  <strong>Anatomy of an Expression in Widget Configuration</strong></p>
+<pre><code class="code-block hljs lang-yaml">  <span class="hljs-string">*</span> <span class="hljs-string">Expression</span>
+    <span class="hljs-string">*</span> <span class="hljs-string">Basic</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;} </span>
+     <span class="hljs-string">*</span> <span class="hljs-attr">Examples:</span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.status.degraded_count}      </span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/v1/transport-nodes/status</span>        
+        <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.status.status}                          </span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/v1/network-encryption/status</span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span> <span class="hljs-comment">#{default.config.allow_mirrored}              </span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/v1/network-encryption/config</span>
+        <span class="hljs-string">*</span> <span class="hljs-string">Function</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()</span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">Example:</span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.status.results}.size()                </span>
+        <span class="hljs-string">*</span> <span class="hljs-attr">API:</span>  <span class="hljs-string">*api/v1/logical-switches*</span></code></pre><p>  <strong>Anatomy of a Condition in Widget Configuration</strong></p>
+<pre><code class="code-block hljs lang-dust"><span class="xml">   * Condition
+      * Evaluates to a boolean (true or false)
        * Form: expression == value
           * Examples: 
-              <span class="hljs-meta">#{default.status.degraded_count} &lt; 10</span>
-              <span class="hljs-meta">#{default.status.results}.size() &lt; 10</span>
-              <span class="hljs-meta">#{default.status.status} == \"INSTALLED_DISABLED\"</span>
-              <span class="hljs-meta">#{default.config.allow_mirrored} == true</span>
-              <span class="hljs-meta">#{default.config.allow_mirrored}        //A boolean can be used directly in expression.</span></code></pre></div>
+              #</span><span class="hljs-template-variable">{<span class="hljs-keyword">default</span>.status.degraded_count}</span><span class="xml"> <span class="hljs-tag">&lt; <span class="hljs-attr">10</span>
+              #</span></span><span class="hljs-template-variable">{<span class="hljs-keyword">default</span>.status.results}</span><span class="xml"><span class="hljs-tag"><span class="hljs-attr">.size</span>() &lt; <span class="hljs-attr">10</span>
+              #</span></span><span class="hljs-template-variable">{<span class="hljs-keyword">default</span>.status.status}</span><span class="xml"><span class="hljs-tag"> == <span class="hljs-string">\</span>"<span class="hljs-attr">INSTALLED_DISABLED</span>\"
+              #</span></span><span class="hljs-template-variable">{<span class="hljs-keyword">default</span>.config.allow_mirrored}</span><span class="xml"><span class="hljs-tag"> == <span class="hljs-string">true</span>
+              #</span></span><span class="hljs-template-variable">{<span class="hljs-keyword">default</span>.config.allow_mirrored}</span><span class="xml"><span class="hljs-tag">        //<span class="hljs-attr">A</span> <span class="hljs-attr">boolean</span> <span class="hljs-attr">can</span> <span class="hljs-attr">be</span> <span class="hljs-attr">used</span> <span class="hljs-attr">directly</span> <span class="hljs-attr">in</span> <span class="hljs-attr">expression.</span></span></span></code></pre></div>
 <div class="method get">
   <a
     class="verb get"
@@ -4615,16 +4611,16 @@ and evaluates to true; then the remaining render configurations are not evaluate
 this report for details&quot; is shown. The display value corresponding to that label is not shown and evaluation of the 
 remaining render configurations continues to collect and show all the error messages (marked with the Label for identification)
 as Error_Messages: {}. If during evaluation of expressions for any label-value pair an error occurs, 
-then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.
-<strong>Important Note for text in condition, field and render configuration&#39;s display value</strong>: 
-For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration&#39;s display_value. Example: <displayValue>&quot;On&quot;</displayValue>.</p>
+then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.</p>
 </li>
 </ul>
 </li>
 </ul>
+<p><strong>Important Note for text in condition, field and render configuration&#39;s display value</strong>: 
+For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration&#39;s display_value.</p>
 <p><strong>Notes for Drilldowns</strong>:
-Only <em>GridConfiguration</em> is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as <em>drilldown</em>. Drilldowns are supported for <em>aggregate_count</em> (subtype of <em>LabelValueConfiguration</em>) widgets only.  In other words, only &#39;aggregate_count&#39; widgets can have drilldowns.
-<strong>Notes for Sharing the widget to other users</strong>:
+Only <em>GridConfiguration</em> is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as <em>drilldown</em>. Drilldowns are supported for <em>aggregate_count</em> (subtype of <em>LabelValueConfiguration</em>) widgets only.  In other words, only &#39;aggregate_count&#39; widgets can have drilldowns.</p>
+<p><strong>Notes for Sharing the widget to other users</strong>:
 Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set <strong>shared</strong> to <em>true</em>).</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>

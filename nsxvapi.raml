@@ -8768,7 +8768,7 @@ securitySchemes:
   description: |
     Working With Custom Dashboard Widget
     =============================
-    You can add up to five custom widgets to the dashboard. You can also share widgets with other users by setting the attribute **shared** to *true* in the widget configuration. It is recommended to have total of maximum 10 widgets on your dashboard. 
+    You can add up to five custom widgets to the dashboard. You can also share widgets with other users by setting the **shared** parameter to *true* in the widget configuration. It is recommended to have total of maximum 10 widgets on your dashboard. 
     The following two types of widgets are supported:
     * Label Value, and
     * Grid (or Table)
@@ -8790,18 +8790,18 @@ securitySchemes:
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------
     display_name | Datasource Instance Name. Only NSX-API is supported as ‘default’ datasource. |  String    | Required
-    urls |    Array of relative urls and their aliases.  |     array of UrlAlias   | Required
+    urls |    Array of relative urls and their aliases.  |     Array of *UrlAlias*   | Required
     
     **GridConfiguration**
     
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------
     resource_type | Must be set to the value GridConfiguration.|  String |  Required <br> Read only<br> Enum: GridConfiguration, LabelValueConfiguration
-    datasources |    Array of Datasource Instances with their relative urls. <br> The 'datasources' represent the sources from which data is fetched.Currently, only NSX-API is supported as a 'default' datasource. An example of specifying 'default' datasource along with the urls to fetch data from is given at 'example_request' section of 'CreateWidgetConfiguration' API.|     array of Datasource  | Minimum items: 0
-    description |    Description of this widget configuration.  |     String   | Maximum length: 1024 <br> 
+    datasources |    Array of Datasource Instances with their relative urls. <br> The 'datasources' represent the sources from which data is fetched.Currently, only NSX-API is supported as a 'default' datasource. An example of specifying 'default' datasource along with the urls to fetch data from is given at 'example_request' section of 'CreateWidgetConfiguration' API.|     Array of *Datasource*  | Minimum items: 1
+    description |    Description of this widget configuration.  |     String   | Maximum length: 1024 
     category_id |    Category of this widget configuration. If *category_id* is not provided, system  generates a category ID.  |   String   | 
     category_display_name |  Display name of the category. If category display name is not provided, then *category_id* is used as its display name.  |  String   | 
-    columns |    Columns describes the information about individual columns such as column heading or label, data type of the column and so on.  |     array of ColumnItem   | Required        
+    columns |    Columns describes the information about individual columns such as column heading or label, data type of the column and so on.  |     Array of *ColumnItem*   | Required        
     shared |    Share  widget configuration with other users.  |     Boolean   | Default is False   
             
     **GridConfiguration: Grid Column** - Represents column of the Grid
@@ -8810,7 +8810,7 @@ securitySchemes:
     ----------|------------ | ----------|------------      
     field |    Column Field <br> Field from which values of the column are derived.|     String   | Required
     label |    Label of the column.  |     Label   | Required
-    render_configuration |    Render configuration to be applied, if any.  |     Array of RenderConfiguration   | 
+    render_configuration |    Render configuration to be applied, if any.  |     Array of *RenderConfiguration*   | 
     type |    Data type of the field.  |     String   | Required <br> Options are String, Number, Date. Default is String
       
       
@@ -8822,7 +8822,7 @@ securitySchemes:
     sub_type |    [Optional] Sub-type of the resource type. When the sub-type is omitted, then the parent type *LabelValueConfiguration* will be considered. <br>For  *LabelValueConfiguration* the available sub-type is  *aggregate_count*. |     String   | Read only
     object_type |    [Optional] User defined type for identifying the widget’s data. Example: *HostConnStatuses*. |     String   |  
     datasources |    Array of Datasource Instances with their relative URLs. |     Array of *Datasource*   | Required. Read only  
-    description |    Description of this widget configuration. |     String   | Maximum length:1024 <br> Sortable 
+    description |    Description of this widget configuration. |     String   | Maximum length:1024  
     display_name |    Widget Title. |     String   | Required  
     category_id |    Category of this widget configuration.<br> If *category_id* is not provided, system generates an ID for category. |     String   |  
     category_display_name |    Display name of the category. <br> If category display name is not provided, then *category_id* is used as the display name. |     String   |   
@@ -8848,7 +8848,7 @@ securitySchemes:
     ----------|------------ | ----------|------------      
     condition |    Expression for evaluating condition. |     String   | 
     display_value |    Overridden value to display, if any. |     String   | 
-    icons |    Icons to be applied at dashboard for widgets and UI elements. |     Array of Icon   | Minimum item is 0
+    icons |    Icons to be applied at dashboard for widgets and UI elements. |     Array of *Icon*  | Minimum item is 0
     
     
     **UrlAlias** 
@@ -8876,7 +8876,7 @@ securitySchemes:
     
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------      
-    widgetconfigurations |    Array of widget configurations.  |     Array of widgetconfiguration   | Required. Read only 
+    widgetconfigurations |    Array of widget configurations.  |     Array of *widgetconfiguration*   | Required. Read only 
        
        
     **WidgetQueryParameters** 
@@ -8905,7 +8905,7 @@ securitySchemes:
             “aString.length()” and so on because these expressions require the definition of “V1” and “aString” to be present in the context, and there is no place in widget configuration to define it. 
              * No Java statements are supported, only expressions are supported.
   
-        **Anatomy of an Expression in Widget Configuration**
+      **Anatomy of an Expression in Widget Configuration**
           * Expression
             * Basic form: #{<datasource>.<url-alias>.<jsonpath>} 
              * Examples:
@@ -8920,7 +8920,7 @@ securitySchemes:
                 * Expression:  #{default.status.results}.size()                
                 * API:  *api/v1/logical-switches*
               
-          **Anatomy of a Condition in Widget Configuration**
+      **Anatomy of a Condition in Widget Configuration**
            * Condition
               * Evaluates to a boolean (true or false)
                * Form: expression == value
@@ -9234,13 +9234,15 @@ securitySchemes:
           remaining render configurations continues to collect and show all the error messages (marked with the Label for identification)
           as Error_Messages: {}. If during evaluation of expressions for any label-value pair an error occurs, 
           then it is marked with error. The errors are shown in the report, along with the label value pairs that are error-free.
+          
       **Important Note for text in condition, field and render configuration's display value**: 
-      For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration's display_value. Example: <displayValue>"On"</displayValue>.
+      For elements that take expressions, strings should be provided by escaping them with a back-slash. These elements are - condition, field and render_configuration's display_value.
       
       **Notes for Drilldowns**:
       Only *GridConfiguration* is supported as drilldown widget. To make a widget as a drilldown, its category_id should be set as *drilldown*. Drilldowns are supported for *aggregate_count* (subtype of *LabelValueConfiguration*) widgets only.  In other words, only 'aggregate_count' widgets can have drilldowns.
+    
       **Notes for Sharing the widget to other users**:
-      Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set **shared** to *true*).
+      Use a valid vsphere user, who has an NSX role assigned that has sufficient permissions, to create the widget and it will get displayed on the UI when that vsphere user logs in. For other users to view the widget on the UI, the owner (user who owners that widget) needs to share the widget (set **shared** parameter to *true*).
       
       **Method history:**
       
