@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x64;&#x6f;&#99;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#x6b;&#x40;&#118;&#109;&#x77;&#x61;&#114;&#101;&#46;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#99;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#x6b;&#x40;&#118;&#109;&#x77;&#x61;&#114;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x64;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#x6f;&#109;">&#x64;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -28576,7 +28576,7 @@ thereby enabling tenants to access public networks.</p>
 </thead><tbody><tr>
 <td><strong>vnic</strong></td>
 <td>Interface on which the route is added.</td>
-<td></td>
+<td>Valid values: <em>0-4103</em>, <em>vNic_[0-4103]</em>, <em>gre-[1-96]</em>.</td>
 </tr>
 <tr>
 <td><strong>description</strong></td>
@@ -32503,6 +32503,411 @@ retrieves the tech support log file from the file location in the
 information on saving binary file responses.</p>
 <p>Example in curl:</p>
 <pre><code class="code-block hljs lang-awk">curl -k -L -s -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span> -H <span class="hljs-string">"Content-Type: application/xml"</span> -H <span class="hljs-string">"Accept: application/xml"</span> -X GET https:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">110.42</span><span class="hljs-regexp">/api/</span><span class="hljs-number">4.0</span><span class="hljs-regexp">/edges/</span>edge-<span class="hljs-number">4</span><span class="hljs-regexp">/techsupportlogs &gt; NSX_Edge_Support_edge-4.log.gz</span></code></pre></p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-gre-tunnels">Working With GRE Tunnels</h2>
+<p>You can create GRE tunnels between your NSX environment and another
+site. Routing using BGP and static routes is supported.</p>
+<p>You can create up to 32 tunnels.</p>
+<p>DHCP service is not supported through the tunnel, but DHCP relay is
+supported.</p>
+<p>Load balancer VIP on tunnel subnet is not supported. DNS relay through
+tunnel is not supported.</p>
+<p><strong>Tunnel Configuration</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>tunnelId</strong></td>
+<td>Identifier for tunnel.</td>
+<td>System generated. Integer, long.</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Name for tunnel.</td>
+<td>String. Max length 255.</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>Description for tunnel.</td>
+<td>String. Max length 1024.</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Type of tunnel.</td>
+<td><em>gre</em> is the only supported option.</td>
+</tr>
+<tr>
+<td><strong>label</strong></td>
+<td>Label of tunnel.</td>
+<td>System generated. Format is <em>type-tunnelId</em>, for example <em>gre-1</em>.</td>
+</tr>
+<tr>
+<td><strong>enabled</strong></td>
+<td>Enabled status of tunnel.</td>
+<td>Default is <em>true</em>.</td>
+</tr>
+<tr>
+<td><strong>sourceAddress</strong></td>
+<td>IPv4 address for source endpoint of tunnel.</td>
+<td>Required. String. Maximum length 255.</td>
+</tr>
+<tr>
+<td><strong>destinationAddress</strong></td>
+<td>FQDN hostname / IPv4 address for remote address</td>
+<td>Required. String. Maximum length 255.</td>
+</tr>
+</tbody></table><p><strong>Tunnel Interface Configuration</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>mtu</strong></td>
+<td>MTU for tunnel</td>
+<td>You must set the MTU to 24 bytes less than the interface MTU. Default is <em>1476</em>. Valid values <em>92-8976</em>.</td>
+</tr>
+<tr>
+<td><strong>tunnelAddress</strong></td>
+<td>List of IPv4 or IPv6 addresses assigned to tunnel interfaces.</td>
+<td>Required. CIDR format. BGP session runs on this IP. The BGP neighbor must be on the same subnet.</td>
+</tr>
+<tr>
+<td><strong>enableKeepAliveAck</strong></td>
+<td>Acknowledge keepAlives sent from the remote tunnel endpoint.</td>
+<td>Optional. Default is <em>false</em>. Note that the Edge Services Gateway cannot initate keepalives, it can only acknowledge them.</td>
+</tr>
+</tbody></table><p><strong>Tunnel Health Check Configuration</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>Enabled status for tunnel health checks.</td>
+<td>Default: <em>false</em>.</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td>Mechanism to determine tunnel health.</td>
+<td>Valid value: <em>ping</em>.</td>
+</tr>
+<tr>
+<td><strong>interval</strong></td>
+<td>Time interval in seconds between pings.</td>
+<td>Default: <em>3</em>. Min: <em>1</em>. Max: <em>10</em>.</td>
+</tr>
+<tr>
+<td><strong>deadTimeMultiplier</strong></td>
+<td>Number of consecutive response failures before the tunnel status is set to down.</td>
+<td>Default: <em>4</em>. Min: <em>0</em>. Max: <em>10</em>.</td>
+</tr>
+</tbody></table></div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/edges/{edgeId}/tunnels"
+    href="#POST/4.0/edges/{edgeId}/tunnels"
+  ><h2>POST /4.0/edges/{edgeId}/tunnels</h2></a>
+  <div class="content">
+    <p><p>Create a tunnel on this Edge Services Gateway.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tunnel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>GRE-T1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>GRE Tunnel 1<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>gre<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceAddress</span>&gt;</span>192.168.100.4<span class="hljs-tag">&lt;/<span class="hljs-name">sourceAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationAddress</span>&gt;</span>192.168.100.7<span class="hljs-tag">&lt;/<span class="hljs-name">destinationAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1400<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.11/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.12/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelInterface</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">greConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">greConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ping<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tunnel</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/4.0/edges/{edgeId}/tunnels"
+    href="#DELETE/4.0/edges/{edgeId}/tunnels"
+  ><h2>DELETE /4.0/edges/{edgeId}/tunnels</h2></a>
+  <div class="content">
+    <p><p>Delete all configured tunnels on this Edge Services Gateway.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/4.0/edges/{edgeId}/tunnels"
+    href="#PUT/4.0/edges/{edgeId}/tunnels"
+  ><h2>PUT /4.0/edges/{edgeId}/tunnels</h2></a>
+  <div class="content">
+    <p><p>Update all tunnels on this Edge Services Gateway.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tunnels</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnel</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelId</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>GRE-T1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>GRE Tunnel 1<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>gre<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>gre-1<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourceAddress</span>&gt;</span>192.168.100.4<span class="hljs-tag">&lt;/<span class="hljs-name">sourceAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationAddress</span>&gt;</span>192.168.100.7<span class="hljs-tag">&lt;/<span class="hljs-name">destinationAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelInterface</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1400<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.11/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.12/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">greConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">greConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ping<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnel</span>&gt;</span>  
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnel</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelId</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>GRE-T2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>GRE Tunnel 2<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>gre<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>gre-2<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sourceAddress</span>&gt;</span>192.168.200.4<span class="hljs-tag">&lt;/<span class="hljs-name">sourceAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">destinationAddress</span>&gt;</span>192.168.200.7<span class="hljs-tag">&lt;/<span class="hljs-name">destinationAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelInterface</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1400<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.2.11/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.2.12/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">greConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">greConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ping<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnel</span>&gt;</span>  
+<span class="hljs-tag">&lt;/<span class="hljs-name">tunnels</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/edges/{edgeId}/tunnels"
+    href="#GET/4.0/edges/{edgeId}/tunnels"
+  ><h2>GET /4.0/edges/{edgeId}/tunnels</h2></a>
+  <div class="content">
+    <p><p>Retrieve information about all tunnels on this Edge Services Gateway.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-a-specific-gre-tunnel">Working With a Specific GRE Tunnel</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">tunnelId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Identifier for the tunnel</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/edges/{edgeId}/tunnels/{tunnelId}"
+    href="#GET/4.0/edges/{edgeId}/tunnels/{tunnelId}"
+  ><h2>GET /4.0/edges/{edgeId}/tunnels/{tunnelId}</h2></a>
+  <div class="content">
+    <p><p>Retrieve information about the specified tunnel.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tunnel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelId</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>GRE-T1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>GRE Tunnel 1<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>gre<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>gre-1<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceAddress</span>&gt;</span>192.168.100.4<span class="hljs-tag">&lt;/<span class="hljs-name">sourceAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationAddress</span>&gt;</span>192.168.100.7<span class="hljs-tag">&lt;/<span class="hljs-name">destinationAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1400<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.11/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.12/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelInterface</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">greConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">greConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ping<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tunnel</span>&gt;</span>  
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/4.0/edges/{edgeId}/tunnels/{tunnelId}"
+    href="#PUT/4.0/edges/{edgeId}/tunnels/{tunnelId}"
+  ><h2>PUT /4.0/edges/{edgeId}/tunnels/{tunnelId}</h2></a>
+  <div class="content">
+    <p><p>Update the specified tunnel.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tunnel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelId</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>GRE-T1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>GRE Tunnel<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>gre<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>gre-1<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sourceAddress</span>&gt;</span>192.168.100.4<span class="hljs-tag">&lt;/<span class="hljs-name">sourceAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">destinationAddress</span>&gt;</span>192.168.100.7<span class="hljs-tag">&lt;/<span class="hljs-name">destinationAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1400<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.11/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tunnelAddress</span>&gt;</span>192.168.1.12/24<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelAddresses</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelInterface</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">greConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableKeepAliveAck</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">greConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ping<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interval</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">interval</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">deadTimeMultiplier</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelHealthCheck</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">tunnel</span>&gt;</span>  
+</code></pre>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/4.0/edges/{edgeId}/tunnels/{tunnelId}"
+    href="#DELETE/4.0/edges/{edgeId}/tunnels/{tunnelId}"
+  ><h2>DELETE /4.0/edges/{edgeId}/tunnels/{tunnelId}</h2></a>
+  <div class="content">
+    <p><p>Delete the specified tunnel.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 </section>

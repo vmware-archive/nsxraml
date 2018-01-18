@@ -14336,7 +14336,7 @@ securitySchemes:
         
         Parameter  |   Description  | Comments  
         --- | --- | --- 
-        **vnic**  | Interface on which the route is added. |
+        **vnic**  | Interface on which the route is added. | Valid values: *0-4103*, *vNic_[0-4103]*, *gre-[1-96]*.
         **description** | A description for the static route. |
         **mtu**  | The maximum transmission value for the data packet. |Default is 1500. By default, mtu is the MTU value of the interface on which the route is configured.
         **network**  | The network in CIDR notation. |
@@ -14899,6 +14899,278 @@ securitySchemes:
         delete:
           displayName: routingBGPDelete
           description: Delete BGP Routing
+          
+    /tunnels:
+      displayName: tunnels
+      description: |
+        Working With GRE Tunnels
+        --------------
+        
+        You can create GRE tunnels between your NSX environment and another
+        site. Routing using BGP and static routes is supported.
+        
+        You can create up to 32 tunnels.
+        
+        DHCP service is not supported through the tunnel, but DHCP relay is
+        supported.
+        
+        Load balancer VIP on tunnel subnet is not supported. DNS relay through
+        tunnel is not supported.
+        
+        **Tunnel Configuration**
+        
+        Parameter  |   Description  | Comments  
+        --- | --- | --- 
+        **tunnelId** | Identifier for tunnel. | System generated. Integer, long.
+        **name** | Name for tunnel. | String. Max length 255.
+        **description** | Description for tunnel. | String. Max length 1024.
+        **type** | Type of tunnel. | *gre* is the only supported option.
+        **label** | Label of tunnel. | System generated. Format is *type-tunnelId*, for example *gre-1*.
+        **enabled** | Enabled status of tunnel. | Default is *true*.
+        **sourceAddress** | IPv4 address for source endpoint of tunnel. | Required. String. Maximum length 255.
+        **destinationAddress** | FQDN hostname / IPv4 address for remote address | Required. String. Maximum length 255.
+        
+        **Tunnel Interface Configuration**
+        
+        Parameter  |   Description  | Comments  
+        --- | --- | --- 
+        **mtu** | MTU for tunnel | You must set the MTU to 24 bytes less than the interface MTU. Default is *1476*. Valid values *92-8976*.
+        **tunnelAddress** | List of IPv4 or IPv6 addresses assigned to tunnel interfaces. | Required. CIDR format. BGP session runs on this IP. The BGP neighbor must be on the same subnet.
+        **enableKeepAliveAck** | Acknowledge keepAlives sent from the remote tunnel endpoint. | Optional. Default is *false*. Note that the Edge Services Gateway cannot initate keepalives, it can only acknowledge them.
+        
+        **Tunnel Health Check Configuration**
+        
+        Parameter  |   Description  | Comments  
+        --- | --- | --- 
+        **enabled** | Enabled status for tunnel health checks. | Default: *false*.
+        **type** | Mechanism to determine tunnel health. | Valid value: *ping*.
+        **interval** | Time interval in seconds between pings. | Default: *3*. Min: *1*. Max: *10*.
+        **deadTimeMultiplier** | Number of consecutive response failures before the tunnel status is set to down. | Default: *4*. Min: *0*. Max: *10*.
+      post:
+        displayName: tunnelCreate
+        description: |
+          Create a tunnel on this Edge Services Gateway.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        body:
+          application/xml:
+            example: |
+              <tunnel>
+                <name>GRE-T1</name>
+                <description>GRE Tunnel 1</description>
+                <type>gre</type>
+                <enabled>true</enabled>
+                <sourceAddress>192.168.100.4</sourceAddress>
+                <destinationAddress>192.168.100.7</destinationAddress>
+                <tunnelInterface>
+                  <mtu>1400</mtu>
+                  <tunnelAddresses>
+                    <tunnelAddress>192.168.1.11/24</tunnelAddress>
+                    <tunnelAddress>192.168.1.12/24</tunnelAddress>
+                  </tunnelAddresses>
+                </tunnelInterface>
+                <greConfig>
+                  <enableKeepAliveAck>true</enableKeepAliveAck>
+                </greConfig>
+                <tunnelHealthCheck>
+                  <enabled>false</enabled>
+                  <type>ping</type>
+                  <interval>3</interval>
+                  <deadTimeMultiplier>4</deadTimeMultiplier>
+                </tunnelHealthCheck>
+              </tunnel>
+      delete:
+        displayName: tunnelsDelete
+        description: |
+          Delete all configured tunnels on this Edge Services Gateway.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+      put:
+        displayName: tunnelsUpdate
+        description: |
+          Update all tunnels on this Edge Services Gateway.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        body:
+          application/xml:
+            example: |
+              <tunnels>
+                <tunnel>
+                  <tunnelId>1</tunnelId>
+                  <name>GRE-T1</name>
+                  <description>GRE Tunnel 1</description>
+                  <type>gre</type>
+                  <label>gre-1</label>
+                  <enabled>true</enabled>
+                  <sourceAddress>192.168.100.4</sourceAddress>
+                  <destinationAddress>192.168.100.7</destinationAddress>
+                  <tunnelInterface>
+                    <mtu>1400</mtu>
+                    <tunnelAddresses>
+                      <tunnelAddress>192.168.1.11/24</tunnelAddress>
+                      <tunnelAddress>192.168.1.12/24</tunnelAddress>
+                    </tunnelAddresses>
+                  </tunnelInterface>
+                  <greConfig>
+                    <enableKeepAliveAck>false</enableKeepAliveAck>
+                  </greConfig>
+                  <tunnelHealthCheck>
+                    <enabled>false</enabled>
+                    <type>ping</type>
+                    <interval>3</interval>
+                    <deadTimeMultiplier>4</deadTimeMultiplier>
+                  </tunnelHealthCheck>
+                </tunnel>  
+                <tunnel>
+                  <tunnelId>2</tunnelId>
+                  <name>GRE-T2</name>
+                  <description>GRE Tunnel 2</description>
+                  <type>gre</type>
+                  <label>gre-2</label>
+                  <enabled>true</enabled>
+                  <sourceAddress>192.168.200.4</sourceAddress>
+                  <destinationAddress>192.168.200.7</destinationAddress>
+                  <tunnelInterface>
+                    <mtu>1400</mtu>
+                    <tunnelAddresses>
+                      <tunnelAddress>192.168.2.11/24</tunnelAddress>
+                      <tunnelAddress>192.168.2.12/24</tunnelAddress>
+                    </tunnelAddresses>
+                  </tunnelInterface>
+                  <greConfig>
+                    <enableKeepAliveAck>false</enableKeepAliveAck>
+                  </greConfig>
+                  <tunnelHealthCheck>
+                    <enabled>false</enabled>
+                    <type>ping</type>
+                    <interval>5</interval>
+                    <deadTimeMultiplier>5</deadTimeMultiplier>
+                  </tunnelHealthCheck>
+                </tunnel>  
+              </tunnels>
+      get:
+        displayName: tunnelsList
+        description: |
+          Retrieve information about all tunnels on this Edge Services Gateway.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+      /{tunnelId}:
+        displayName: tunnelId
+        description: |
+          Working With a Specific GRE Tunnel
+          --------
+
+        uriParameters:
+          tunnelId:
+            displayName: tunnelId
+            description: Identifier for the tunnel
+            required: true
+        get:
+          displayName: tunnelIdRead
+          description: |
+            Retrieve information about the specified tunnel.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method introduced.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <tunnel>
+                      <tunnelId>1</tunnelId>
+                      <name>GRE-T1</name>
+                      <description>GRE Tunnel 1</description>
+                      <type>gre</type>
+                      <label>gre-1</label>
+                      <enabled>true</enabled>
+                      <sourceAddress>192.168.100.4</sourceAddress>
+                      <destinationAddress>192.168.100.7</destinationAddress>
+                      <tunnelInterface>
+                        <mtu>1400</mtu>
+                        <tunnelAddresses>
+                          <tunnelAddress>192.168.1.11/24</tunnelAddress>
+                          <tunnelAddress>192.168.1.12/24</tunnelAddress>
+                        </tunnelAddresses>
+                      </tunnelInterface>
+                      <greConfig>
+                        <enableKeepAliveAck>false</enableKeepAliveAck>
+                      </greConfig>
+                      <tunnelHealthCheck>
+                        <enabled>false</enabled>
+                        <type>ping</type>
+                        <interval>3</interval>
+                        <deadTimeMultiplier>4</deadTimeMultiplier>
+                      </tunnelHealthCheck>
+                    </tunnel>  
+        put:
+          displayName: tunnelIdUpdate
+          description: |
+            Update the specified tunnel.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method introduced.
+          body:
+            application/xml:
+              example: |
+                <tunnel>
+                  <tunnelId>1</tunnelId>
+                  <name>GRE-T1</name>
+                  <description>GRE Tunnel</description>
+                  <type>gre</type>
+                  <label>gre-1</label>
+                  <enabled>true</enabled>
+                  <sourceAddress>192.168.100.4</sourceAddress>
+                  <destinationAddress>192.168.100.7</destinationAddress>
+                  <tunnelInterface>
+                    <mtu>1400</mtu>
+                    <tunnelAddresses>
+                      <tunnelAddress>192.168.1.11/24</tunnelAddress>
+                      <tunnelAddress>192.168.1.12/24</tunnelAddress>
+                    </tunnelAddresses>
+                  </tunnelInterface>
+                  <greConfig>
+                    <enableKeepAliveAck>true</enableKeepAliveAck>
+                  </greConfig>
+                  <tunnelHealthCheck>
+                    <enabled>true</enabled>
+                    <type>ping</type>
+                    <interval>5</interval>
+                    <deadTimeMultiplier>5</deadTimeMultiplier>
+                  </tunnelHealthCheck>
+                </tunnel>  
+        delete:
+          displayName: tunnelIdDelete
+          description: |
+            Delete the specified tunnel.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method introduced.
     /bridging/config:
       displayName: bridging
       description: |
