@@ -8806,9 +8806,11 @@ securitySchemes:
             
     **GridConfiguration: Grid Column** - Represents column of the Grid
     
+    **ColumnItem**
+    
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------      
-    field |    Column Field <br> Field from which values of the column are derived.|     String   | Required
+    field |    Column Field. <br> Field from which values of the column are derived.|     String   | Required
     label |    Label of the column.  |     Label   | Required
     render_configuration |    Render configuration to be applied, if any.  |     Array of *RenderConfiguration*   | 
     type |    Data type of the field.  |     String   | Required <br> Options are String, Number, Date. Default is String
@@ -8818,7 +8820,7 @@ securitySchemes:
     
     Parameter  | Description |   Type | Comments
     ----------|------------ | ----------|------------      
-    resource_type |    Label Value Configuration |     String   | Required. Read only  
+    resource_type |    Label Value Configuration. Must be set to the value *LabelValueConfiguration*. |     String   | Required. Read only  
     sub_type |    [Optional] Sub-type of the resource type. When the sub-type is omitted, then the parent type *LabelValueConfiguration* will be considered. <br>For  *LabelValueConfiguration* the available sub-type is  *aggregate_count*. |     String   | Read only
     object_type |    [Optional] User defined type for identifying the widget’s data. Example: *HostConnStatuses*. |     String   |  
     datasources |    Array of Datasource Instances with their relative URLs. |     Array of *Datasource*   | Required. Read only  
@@ -8904,6 +8906,21 @@ securitySchemes:
             “V1 + 2” 
             “aString.length()” and so on because these expressions require the definition of “V1” and “aString” to be present in the context, and there is no place in widget configuration to define it. 
              * No Java statements are supported, only expressions are supported.
+  
+      **Anatomy of an Expression in Widget Configuration**
+          * Expression
+           * Basic form: #{<datasource>.<url-alias>.<jsonpath>}
+           * Examples:
+               * Expression:   #{default.si.versionInfo.majorVersion}       
+               * API: api/1.0/appliance-management/summary/system             
+          * Expression:   #{default.si.cpuInfoDto.totalNoOfCPUs}                             
+               * API:  api/1.0/appliance-management/summary/system
+               * Expression:  #{default.summary.preparedHostsTotalNumber}                           
+               * API: api/2.0/vdn/inventory/hosts/status/summary
+               * Function form: #{<datasource>.<url-alias>.<jsonpath>}.function()
+               * Example:
+          * Expression:  #{default.se.dataPage.data}.size()                    
+               * API: api/2.0/systemevent
   
       **Anatomy of a Condition in Widget Configuration**
            * Condition
