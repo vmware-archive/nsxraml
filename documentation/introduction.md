@@ -58,11 +58,11 @@ Some requests require additional headers, for example, firewall configuration
 changes require the `If-Match` header. This is noted on each method
 description.
 
-* **To ensure you always receive XML response bodies, set the `Accept:  
-application/xml` header.**  
-Some API methods respond with JSON output, which is an experimental feature.
-Setting the Accept header ensures you always get XML output.  **Note:** some
-methods, for example, the central CLI method, `POST /1.0/nsx/cli`, might
+* **To ensure you always receive the correct response bodies, set the `Accept` header**
+Starting in NSX 6.4, both XML and JSON are supported. This guide documents XML
+examples. Set the `Accept` header to `application/xml` or `application/json` as
+needed.  
+**Note:** Some methods, for example, the central CLI method, `POST /1.0/nsx/cli`, might
 require a different Accept header.
 
 The following API method will return a response on a newly deployed NSX
