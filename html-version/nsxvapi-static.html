@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x64;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#x6f;&#109;">&#x64;&#x6f;&#x63;&#102;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#58;&#x64;&#x6f;&#99;&#x66;&#101;&#101;&#100;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#x61;&#114;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#x64;&#x6f;&#99;&#x66;&#101;&#101;&#100;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#119;&#x61;&#114;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -28756,6 +28756,11 @@ thereby enabling tenants to access public networks.</p>
 <td>Integer. A value (a globally unique number between 1-4294967295) for the remote AS. Can be in plain or dotted format (e.g. 2 byte: 65001 or 0.65001, 4 byte: 65545 or 1.9). Either <strong>remoteAS</strong> or <strong>remoteASNumber</strong> is required. </td>
 </tr>
 <tr>
+<td><strong>bgpNeighbour &gt; removePrivateAS</strong></td>
+<td>Determines whether to remove private AS number while redistributing routes.</td>
+<td>Boolean. You can set to <em>true</em> only when remote and local AS are different.</td>
+</tr>
+<tr>
 <td><strong>bgpNeighbour &gt; weight</strong></td>
 <td>Weight for the neighbor connection</td>
 <td>Optional. Integer. By default, weight is set to 60.</td>
@@ -28893,7 +28898,7 @@ subsequent GET requests will show both parameters updated.  </p>
 </tr>
 <tr>
 <td>6.4.0</td>
-<td>Method updated. Parameters <strong>LE</strong> and <strong>GE</strong> added.</td>
+<td>Method updated. Parameters <strong>LE</strong> and <strong>GE</strong> added. Parameter <strong>removePrivateAS</strong> added.</td>
 </tr>
 </tbody></table></p>
   </div>
@@ -28922,7 +28927,7 @@ dynamic routing (OSPF and BGP).</p>
 </tr>
 <tr>
 <td>6.4.0</td>
-<td>Method updated. Parameters <strong>LE</strong> and <strong>GE</strong> added.</td>
+<td>Method updated. Parameters <strong>LE</strong> and <strong>GE</strong> added. Parameter <strong>removePrivateAS</strong> added.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -29317,66 +29322,7 @@ their tables.</p>
     href="#GET/4.0/edges/{edgeId}/routing/config/bgp"
   ><h2>GET /4.0/edges/{edgeId}/routing/config/bgp</h2></a>
   <div class="content">
-    <p><p>Retrieve BGP configuration.
-responses:
-  200:
-    body:
-      application/xml:
-        example: |
-        <bgp>
-          <enabled>true</enabled>
-          <localAS>65535</localAS>
-          <bgpNeighbours>
-            <bgpNeighbour>
-              <ipAddress>192.168.1.10</ipAddress>
-              <remoteAS>65500</remoteAS>
-              <weight>60</weight>
-              <holdDownTimer>180</holdDownTimer>
-              <keepAliveTimer>60</keepAliveTimer>
-              <password>vmware123</password>
-              <bgpFilters>
-                <bgpFilter>
-                  <direction>in</direction>
-                  <action>permit</action>
-                  <network>10.0.0.0/8</network>
-                  <ipPrefixGe>17</ipPrefixGe>
-                  <ipPrefixLe>32</ipPrefixLe>
-                </bgpFilter>
-                <bgpFilter>
-                  <direction>out</direction>
-                  <action>deny</action>
-                  <network>20.0.0.0/26</network>
-                </bgpFilter>
-              </bgpFilters>
-            </bgpNeighbour>
-          </bgpNeighbours>
-          <redistribution>
-            <enabled>true</enabled>
-            <rules>
-              <rule>
-                <id>1</id>
-                <prefixName>a</prefixName>
-                <from>
-                  <ospf>true</ospf>
-                  <bgp>false</bgp>
-                  <static>true</static>
-                  <connected>false</connected>
-                </from>
-                <action>deny</action>
-              </rule>
-              <rule>
-                <id>0</id>
-                <from>
-                  <ospf>false</ospf>
-                  <bgp>false</bgp>
-                  <static>false</static>
-                  <connected>true</connected>
-                </from>
-                <action>permit</action>
-              </rule>
-            </rules>
-          </redistribution>
-        </bgp></p>
+    <p><p>Retrieve BGP configuration.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -29390,7 +29336,73 @@ responses:
 <td>6.3.0</td>
 <td>Method updated. Parameter <strong>defaultOriginate</strong> removed for logical router NSX Edges.  <br>Parameters <strong>localASNumber</strong> and <strong>remoteASNumber</strong> added to BGP section.</td>
 </tr>
+<tr>
+<td>6.4.0</td>
+<td>Method updated. Parameter <strong>removePrivateAS</strong> added.</td>
+</tr>
 </tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">localAS</span>&gt;</span>65535<span class="hljs-tag">&lt;/<span class="hljs-name">localAS</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">bgpNeighbours</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bgpNeighbour</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteAS</span>&gt;</span>65500<span class="hljs-tag">&lt;/<span class="hljs-name">remoteAS</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">weight</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">weight</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">holdDownTimer</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">holdDownTimer</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">keepAliveTimer</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">keepAliveTimer</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>vmware123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilters</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilter</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span>in<span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>permit<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span>10.0.0.0/8<span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixGe</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixGe</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ipPrefixLe</span>&gt;</span>32<span class="hljs-tag">&lt;/<span class="hljs-name">ipPrefixLe</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">bgpFilter</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">bgpFilter</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">direction</span>&gt;</span>out<span class="hljs-tag">&lt;/<span class="hljs-name">direction</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>deny<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">network</span>&gt;</span>20.0.0.0/26<span class="hljs-tag">&lt;/<span class="hljs-name">network</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">bgpFilter</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">bgpFilters</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">removePrivateAS</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">removePrivateAS</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bgpNeighbour</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">bgpNeighbours</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">redistribution</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rules</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">prefixName</span>&gt;</span>a<span class="hljs-tag">&lt;/<span class="hljs-name">prefixName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>deny<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rule</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">ospf</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">bgp</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">static</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">static</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">connected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">connected</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>permit<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">rules</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">redistribution</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bgp</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 <div class="method put">
@@ -29413,6 +29425,10 @@ responses:
 <tr>
 <td>6.3.0</td>
 <td>Method updated. Parameter <strong>defaultOriginate</strong> removed for logical router NSX Edges. <br>Parameters <strong>localASNumber</strong> and <strong>remoteASNumber</strong> added to BGP section.</td>
+</tr>
+<tr>
+<td>6.4.0</td>
+<td>Method updated. Parameter <strong>removePrivateAS</strong> added.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
