@@ -13788,7 +13788,7 @@ securitySchemes:
         **exclude**<br>(source or destination)|Boolean. Exclude the specified source or destination.
         **ipAddress**<br>(source or destination)|List of string. Can specify single IP address, range of IP address, or in CIDR format. Can define multiple.
         **groupingObjectId**<br>(source or destination)|List of string, Id of cluster, datacenter, distributedPortGroup, legacyPortGroup, VirtualMachine, vApp, resourcePool, logicalSwitch, IPSet, securityGroup. Can defined multiple.
-        **vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *external* or *internal*. Can define multiple.
+        **vnicGroupId**<br>(source or destination)|List of string. Possible values are *vnic-index-[1-9]*, *vse*, *nat64*, *external* or *internal*. Can define multiple.
         **application**| optional. When absent its treated as *any*.
         **applicationId**|List of string. Id of service or serviceGroup groupingObject. 
         **service**|List.   
@@ -13825,6 +13825,7 @@ securitySchemes:
           --------|-------------
           6.2.3 | Method updated. **enableSynFloodProtection** parameter added. Default value of **tcpTimeoutEstablished** increased from 3600 to 21600 seconds (6 hours).
           6.3.0 | Method updated. **logIcmpErrors** and **dropIcmpReplays** parameters added. 
+          6.4.0 | Method updated. *nat64* is now a possible value for **vnicGroupId** for source and destination.
         body:
          application/xml:
           example: |
@@ -14075,11 +14076,22 @@ securitySchemes:
         network.
         
         You can configure NAT rules to provide access to services running on
-        privately addressed virtual machines.  There are two types of NAT rules
-        that can be configured: SNAT and DNAT.
+        privately addressed virtual machines.  You can configure source NAT (SNAT) 
+        and destination NAT (DNAT) rules.
         
         For the data path to work, you need to add firewall rules to allow the
         required traffic for IP addresses and port per the NAT rules.
+        
+        You can also configure NAT64 rules to allow access from IPv6 networks
+        to IPv4 networks.
+        
+        You must configure your Edge Services Gateway to have the IPv6 address
+        configured on an uplink interface, and the IPv4 address configured on an
+        internal interface.
+        
+        See the *NSX Administration Guide* for more information about NAT64, 
+        including how to configure the Edge Services Gateway, and what features 
+        of NAT64 are supported.
         
         **NAT Parameter Table**
         
@@ -14091,7 +14103,7 @@ securitySchemes:
         **ruleId** |Identifier for the rule. |Read-only. Long.
         **ruleType** |Rule type. |Read-only.  Values: *user*, *internal_high*.
         **action** |Type of NAT.| Valid values: *snat* or *dnat*.
-        **vnic** | Interface on which the translating is applied.|String. Optional.
+        **vnic** | Interface on which the translating is applied.|String. Optional. *nat64* is supported as an interface.
         **originalAddress** | Original address or address range. This is the source address for SNAT rules, and the destination address for DNAT rules. |String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. 
         **translatedAddress** | Translated address or address range. |String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. 
         **dnatMatchSourceAddress** | Source address to match in DNAT rules. | String. Specify *any*, an IP address (e.g. *192.168.10.10*), an IP range (e.g. *192.168.10.10-192.168.10.19*), or a subnet in CIDR notation (e.g. *192.168.10.1/24*). Default is *any*. Not valid for SNAT rules.
@@ -14102,10 +14114,22 @@ securitySchemes:
         **translatedPort** |Translated port. |String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. 
         **dnatMatchSourcePort** | Source port in DNAT rules. | String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. Not valid for SNAT rules.
         **snatMatchDestinationPort** | Destination port in SNAT rules. | String. Optional. Specify *any*, a port (e.g. 1234) or port range (1234-1239). Default is *any*. Not valid for DNAT rules.
+        
+        **NAT64 Parameter Table**
+        
+        Parameter |  Description | Other information
+        ---|---
+        **matchIpv6DestinationPrefix** | IPv6 address used to map IPv6 destinations to IPv4 destinations. | IPv6 CIDR. Prefix length must be *32*, *40*, *48*, *56*, *64*, or *96*. The IPv4 destination address is appended to this network. For example, if the prefix is *64:ff9b::/96*, and the destination IPv4 IP is *120.1.1.3*, the IPv6 destination is *64:ff9b::7801:0103* (*7801:0103* is *120.1.1.3* in hex). You can use the well-known prefix defined in RFC 6052: *64:ff9b::/96*, or use any other IPv6 CIDR that is not already in use in your environment. You can use a network or an IP address.
+        **translatedIpv4SourcePrefix** | IPv4 address used to translate an IPv6 source address into an IPv4 source address. | IPv4 CIDR. The translated IPv4 source address is assigned from this network. For example, if the prefix is *10.10.10.0/24*, the source address might be *10.10.10.5*. You can use any IPv4 CIDR that is not already in use in your environment, or optionally use the shared address defined in RFC 6598: *100.64.0.0/10*. You can use a network or an IP address.
+        **ruleId** | Identifier for the NAT64 rule. |Read-only. Long.
+        **ruleTag** | Rule tag for the NAT64 rule. | This can be used to specify user-controlled **ruleId**. If not specified, NSX Manager will generate **ruleId**. Optional. Must be between *65537-131072*.
+        **loggingEnabled** | Enable logging for the NAT64 rule. | Boolean. Optional. Default is *false*.
+        **enabled** | Enable the NAT64 rule. | Boolean. Optional. Default is *true*.
+        **description** | Description for the NAT64 rule. | Optional.
       put:
         displayName: edgeNatConfig
         description: | 
-          Configure SNAT and DNAT rules for an Edge.
+          Configure NAT rules for an Edge.
           
           If you use this method to add new NAT rules, you must include all
           existing rules in the request body. Any rules that are omitted will
@@ -14117,16 +14141,26 @@ securitySchemes:
           --------|-------------
           6.2.3 | Method updated. **vnic** parameter is now optional. The **originalAddress** for DNAT rules, and the **translatedAddress** for SNAT rules is no longer required to be a IP configured on one of the NSX Edge vNics.
           6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+          6.4.0 | Method updated. NAT64 support added.
         body:
           application/xml:
             example: |
               <nat>
+                <nat64Rules>
+                  <nat64Rule>
+                    <matchIpv6DestinationPrefix>64:ff9b::/96</matchIpv6DestinationPrefix>
+                    <translatedIpv4SourcePrefix>10.10.10.0/24</translatedIpv4SourcePrefix> 
+                    <ruleId>65537</ruleId>
+                    <loggingEnabled>false</loggingEnabled>
+                    <enabled>true</enabled>
+                    <description>my comments</description> 
+                  </nat64Rule>
+                </nat64Rules>
                 <natRules>
                   <natRule>
-                    <ruleTag>65537</ruleTag>   
                     <action>dnat</action>
-                    <vnic>0</vnic> 
-                    <originalAddress>10.112.196.116</originalAddress>
+                    <vnic>nat64</vnic> 
+                    <originalAddress>192.168.10.1</originalAddress>
                     <translatedAddress>172.16.1.10</translatedAddress>
                     <dnatMatchSourceAddress>any</dnatMatchSourceAddress>
                     <loggingEnabled>true</loggingEnabled>   
@@ -14137,25 +14171,13 @@ securitySchemes:
                     <translatedPort>3389</translatedPort>   
                     <dnatMatchSourcePort>any</dnatMatchSourcePort>
                   </natRule>
-                  <natRule>
-                    <ruleTag>65538</ruleTag>   
-                    <action>snat</action>
-                    <vnic>1</vnic> 
-                    <originalAddress>172.16.1.10</originalAddress>
-                    <translatedAddress>10.112.196.116</translatedAddress>
-                    <snatMatchDestinationAddress>any</snatMatchDestinationAddress>
-                    <loggingEnabled>false</loggingEnabled>   
-                    <enabled>true</enabled>   
-                    <description>no comments</description>   
-                    <snatMatchDestinationPort>any</snatMatchDestinationPort>
-                  </natRule>
                 </natRules>
               </nat>
             schema: edgeNatConfig
       get:
         displayName: edgeNatRead
         description: | 
-          Retrieve SNAT and DNAT rules for the specified NSX Edge.
+          Retrieve NAT rules for the specified NSX Edge.
           
           **Method history:**
           
