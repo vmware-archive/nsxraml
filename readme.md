@@ -46,6 +46,9 @@ You will also need to install some additional packages. To install it globally u
 
     npm install -g janrain/raml-fleece
     npm install -g raml2md
+
+In some systems you may also have to manually install the following:
+
     npm install -g commander
     npm install -g node-uuid
     npm install -g postman_validator
