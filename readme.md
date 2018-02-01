@@ -68,7 +68,7 @@ http://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/support/product
 Special credits and thanks go to Conner Mullaney. He has created more than 80% of the original content in the RAML File out of the NSX-v 6.1.4 API Documentation available as PDF, and with this effort brought this project forward significantly.
 
 # License
-Copyright © 2015-2017 VMware, Inc. All Rights Reserved.
+Copyright © 2015-2018 VMware, Inc. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation
