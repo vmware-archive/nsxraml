@@ -42,9 +42,16 @@ If you are interested in building the artifacts you will need a modified version
 
 *Note that if you want a local install do not supply the -g argument.*
 
-You will also need to install raml-fleece. To install it globally use the following command:
+You will also need to install some additional packages. To install it globally use the following commands:
 
-    npm install -g raml-fleece
+    npm install -g janrain/raml-fleece
+    npm install -g raml2md
+    npm install -g commander
+    npm install -g node-uuid
+    npm install -g postman_validator
+    npm install -g raml-parser
+    npm install -g lodash
+    npm install -g async
 
 Once the pre-requisites packages are installed you can run the following script:
 
