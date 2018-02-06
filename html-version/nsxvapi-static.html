@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#x6b;&#x40;&#118;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#111;&#109;">&#100;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#97;&#x63;&#x6b;&#x40;&#118;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
+<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x64;&#111;&#99;&#102;&#101;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x64;&#111;&#99;&#102;&#101;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -6339,19 +6339,19 @@ The following two types of widgets are supported:</p>
     “V1 + <span class="hljs-number">2</span>” 
     “aString.length()” <span class="hljs-keyword">and</span> so <span class="hljs-keyword">on</span> because these expressions require the definition <span class="hljs-keyword">of</span> “V1” <span class="hljs-keyword">and</span> “aString” <span class="hljs-keyword">to</span> be present <span class="hljs-keyword">in</span> the context, <span class="hljs-keyword">and</span> there <span class="hljs-keyword">is</span> no place <span class="hljs-keyword">in</span> widget configuration <span class="hljs-keyword">to</span> define it. 
      * No Java statements are supported, only expressions are supported.</code></pre><p>  <strong>Anatomy of an Expression in Widget Configuration</strong></p>
-<pre><code class="code-block hljs lang-routeros">  * Expression
-   * Basic form: #{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}
-   * Examples:
-       * Expression:   #{default.si.versionInfo.majorVersion}       
-       * API: api/1.0/appliance-management/summary<span class="hljs-built_in">/system </span>            
-  * Expression:   #{default.si.cpuInfoDto.totalNoOfCPUs}                             
-       * API:  api/1.0/appliance-management/summary<span class="hljs-built_in">/system
-</span>       * Expression:  #{default.summary.preparedHostsTotalNumber}                           
-       * API: api/2.0/vdn/inventory/hosts/status/summary
-       * Function form: #{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()
-       * Example:
-  * Expression:  #{default.se.dataPage.data}.size()                    
-       * API: api/2.0/systemevent</code></pre><p>  <strong>Anatomy of a Condition in Widget Configuration</strong></p>
+<pre><code class="code-block hljs lang-yaml">  <span class="hljs-string">*</span> <span class="hljs-string">Expression</span>
+   <span class="hljs-string">*</span> <span class="hljs-string">Basic</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}</span>
+   <span class="hljs-string">*</span> <span class="hljs-attr">Examples:</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>   <span class="hljs-comment">#{default.si.versionInfo.majorVersion}       </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/1.0/appliance-management/summary/system</span>             
+  <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>   <span class="hljs-comment">#{default.si.cpuInfoDto.totalNoOfCPUs}                             </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span>  <span class="hljs-string">api/1.0/appliance-management/summary/system</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.summary.preparedHostsTotalNumber}                           </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/2.0/vdn/inventory/hosts/status/summary</span>
+       <span class="hljs-string">*</span> <span class="hljs-string">Function</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Example:</span>
+  <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.se.dataPage.data}.size()                    </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/2.0/systemevent</span></code></pre><p>  <strong>Anatomy of a Condition in Widget Configuration</strong></p>
 <pre><code class="code-block hljs lang-dust"><span class="xml">   * Condition
       * Evaluates to a boolean (true or false)
        * Form: expression == value
@@ -36978,11 +36978,12 @@ id). For example, <em>1004</em>.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-distributed-firewall-thresholds">Working With Distributed Firewall Thresholds</h2>
+  <div class="description"><h2 id="working-with-distributed-firewall-event-thresholds">Working With Distributed Firewall Event Thresholds</h2>
 <p>Configure memory, CPU, and connections per second (CPS) thresholds for
 distributed firewall.</p>
 <p>The firewall module generates system events when the memory and CPU
 usage crosses these thresholds.</p>
+<p><strong>Note</strong>: Deprecated. Use <em>GET  /api/4.0/firewall/stats/thresholds</em> instead.</p>
 </div>
 <div class="method get">
   <a
@@ -36991,7 +36992,9 @@ usage crosses these thresholds.</p>
     href="#GET/4.0/firewall/stats/eventthresholds"
   ><h2>GET /4.0/firewall/stats/eventthresholds</h2></a>
   <div class="content">
-    <p><p>Retrieve threshold configuration for distributed firewall.</p>
+    <p><p>Retrieve threshold configuration for distributed firewall. </p>
+<p><strong>Note</strong>: This API will not display new threshold types such as 
+process memory, different types of heap memory, and concurrent connections. Use the new API introduced in NSX 6.4 which is <em>GET: /api/4.0/firewall/stats/thresholds/host/<hostId>?type=&lt;&gt;&amp;thresholdValue=&lt;&gt;</em>.</p>
 </p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
@@ -37021,6 +37024,8 @@ usage crosses these thresholds.</p>
   ><h2>PUT /4.0/firewall/stats/eventthresholds</h2></a>
   <div class="content">
     <p><p>Update threshold configuration for distributed firewall.</p>
+<p><strong>Note</strong>: Do not use this API from NSX 6.4 or later. Using this PUT API will disable the new threshold types such as process memory
+ and concurrent connections. Use the new API introduced in NSX 6.4 which is <em>PUT: /api/4.0/firewall/stats/thresholds</em>.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -37065,6 +37070,182 @@ usage crosses these thresholds.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>250000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">connectionsPerSecond</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">eventThresholds</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-distributed-firewall-thresholds">Working With Distributed Firewall Thresholds</h2>
+<p>Retrieve memory, CPU, and connections per second (CPS) thresholds for
+distributed firewall. </p>
+<p>The firewall module generates system events when the memory and CPU
+usage crosses these thresholds.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></div>
+</section>
+<section class="resource">
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/4.0/firewall/thresholds"
+    href="#PUT/4.0/firewall/thresholds"
+  ><h2>PUT /4.0/firewall/thresholds</h2></a>
+  <div class="content">
+    <p><p>Configure threshold values for distributed firewall such as CPU utilization, heap memory, calls per second, concurrent connections, process memory.</p>
+<p><strong>Parameters</strong> </p>
+<table class="table"><thead><tr>
+<th>Types of threshold</th>
+<th>Default Value</th>
+<th>Range</th>
+<th>Unit</th>
+</tr>
+</thead><tbody><tr>
+<td>CPU</td>
+<td>90</td>
+<td>0-100</td>
+<td>percent</td>
+</tr>
+<tr>
+<td>Heap Memory</td>
+<td>90</td>
+<td>0-100</td>
+<td>percent</td>
+</tr>
+<tr>
+<td>Process Memory</td>
+<td>70</td>
+<td>0-100</td>
+<td>percent</td>
+</tr>
+<tr>
+<td>Connections per second</td>
+<td>40000</td>
+<td></td>
+<td>count</td>
+</tr>
+<tr>
+<td>Maximum connections</td>
+<td>500000</td>
+<td></td>
+<td>count</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallThresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"CpuUtilization"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"percent"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-cpu"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"HeapMemory"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"percent"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-attr"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-flow"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-ipdiscovery"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-module"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-rules"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-state"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"CallsPerSecond"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"count"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"e1441336-abfa-4f5f-be7c-50062a92ffc5.000-cps"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"e1441336-abfa-4f5f-be7c-50062a92ffc5.001-cps"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"ConcurrentConnections"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"count"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"ProcessMemory"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"percent"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">firewallThresholds</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">hostId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/firewall/thresholds/host/{hostId}"
+    href="#GET/4.0/firewall/thresholds/host/{hostId}"
+  ><h2>GET /4.0/firewall/thresholds/host/{hostId}</h2></a>
+  <div class="content">
+    <p><p>Retrieve threshold configuration for distributed firewall like  CPU utilization, heap memory, calls per second, concurrent connections, process memory.<br>Use <em>GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=&lt;&gt;&amp;thresholdValue=&lt;&gt;</em>.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallThresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"CpuUtilization"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"percent"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-cpu"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"HeapMemory"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"percent"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>80<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-attr"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-flow"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-ipdiscovery"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-module"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-rules"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"vsip-state"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"CallsPerSecond"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"count"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">current</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"e1441336-abfa-4f5f-be7c-50062a92ffc5.000-cps"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"0"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"ConcurrentConnections"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"count"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">thresholds</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"ProcessMemory"</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">"percent"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">configured</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">configured</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">thresholds</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">firewallThresholds</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/firewall/thresholds/types"
+    href="#GET/4.0/firewall/thresholds/types"
+  ><h2>GET /4.0/firewall/thresholds/types</h2></a>
+  <div class="content">
+    <p><p>Get the different types of thresholds for distributed firewall.</p>
+</p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">dfwThresholdstypesRead</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">thresholdTypes</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>CpuUtilization<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>HeapMemory<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>CallsPerSecond<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ConcurrentConnections<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>ProcessMemory<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">thresholdTypes</span>&gt;</span>
 </code></pre>
   </div>
 </div>

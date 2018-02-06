@@ -11628,17 +11628,24 @@ securitySchemes:
   /stats/eventthresholds:
     displayName: dfwThresholds
     description: |
-      Working With Distributed Firewall Thresholds
+      Working With Distributed Firewall Event Thresholds
       ----
       Configure memory, CPU, and connections per second (CPS) thresholds for
       distributed firewall.
       
       The firewall module generates system events when the memory and CPU
       usage crosses these thresholds.
+      
+      **Note**: Deprecated. Use *GET  /api/4.0/firewall/stats/thresholds* instead.
+    
     get:
       displayName: dfwThresholdsRead
       description: |
-        Retrieve threshold configuration for distributed firewall.
+        Retrieve threshold configuration for distributed firewall. 
+        
+        **Note**: This API will not display new threshold types such as 
+        process memory, different types of heap memory, and concurrent connections. Use the new API introduced in NSX 6.4 which is *GET: /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue=<>*.
+    
       responses:
         200:
           body:
@@ -11659,6 +11666,9 @@ securitySchemes:
       displayName: dfwThresholdsUpdate
       description: |
         Update threshold configuration for distributed firewall.
+        
+        **Note**: Do not use this API from NSX 6.4 or later. Using this PUT API will disable the new threshold types such as process memory
+         and concurrent connections. Use the new API introduced in NSX 6.4 which is *PUT: /api/4.0/firewall/stats/thresholds*.
       body:
         application/xml:
           example: |
@@ -11674,6 +11684,123 @@ securitySchemes:
               </connectionsPerSecond>
             </eventThresholds>
           schema: dfwThresholdsUpdate
+  /stats/thresholds:
+            displayName: dfwThresholdstypes
+            description: |
+              Working With Distributed Firewall Thresholds
+              ----
+              Retrieve memory, CPU, and connections per second (CPS) thresholds for
+              distributed firewall. 
+              
+              The firewall module generates system events when the memory and CPU
+              usage crosses these thresholds.
+              
+              **Method history:**
+              
+              Release | Modification
+              --------|-------------
+              6.4.0 | Method introduced.
+  
+  /thresholds:            
+    put:
+      displayName: dfwThresholdstypesUpdate
+      description: |
+        Configure threshold values for distributed firewall such as CPU utilization, heap memory, calls per second, concurrent connections, and process memory.
+        
+        **Parameters** 
+        
+        Types of threshold | Default Value | Range | Unit
+        -----|-----|-----|-----
+        CPU | 90 | 0 - 100  | Percent
+        Heap Memory | 90 | 0 - 100  | Percent
+        Process Memory | 70 | 0 - 100  | Percent
+        Connections per second | 40000 |   | Count
+        Maximum connections | 500000 |   | Count
+
+      body:
+        application/xml:
+          example: |
+            <firewallThresholds>
+                <thresholds type="CpuUtilization" unit="percent">
+                    <configured>80</configured>
+                    <current name="vsip-cpu" value="0"/>
+                </thresholds>
+                <thresholds type="HeapMemory" unit="percent">
+                    <configured>80</configured>
+                    <current name="vsip-attr" value="0"/>
+                    <current name="vsip-flow" value="0"/>
+                    <current name="vsip-ipdiscovery" value="0"/>
+                    <current name="vsip-module" value="0"/>
+                    <current name="vsip-rules" value="0"/>
+                    <current name="vsip-state" value="0"/>
+                </thresholds>
+                <thresholds type="CallsPerSecond" unit="count">
+                    <configured>10000</configured>
+                    <current name="e1441336-abfa-4f5f-be7c-50062a92ffc5.000-cps" value="0"/>
+                    <current name="e1441336-abfa-4f5f-be7c-50062a92ffc5.001-cps" value="0"/>
+                </thresholds>
+                <thresholds type="ConcurrentConnections" unit="count">
+                    <configured>0</configured>
+                </thresholds>
+                <thresholds type="ProcessMemory" unit="percent">
+                    <configured>0</configured>
+                </thresholds>
+            </firewallThresholds>
+  /thresholds/host/{hostId}:
+      get:
+        displayName: dfwThresholdstypeshostRead
+        description: |
+          Retrieve threshold configuration for distributed firewall like  CPU utilization, heap memory, calls per second, concurrent connections, process memory.  
+          Use *GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue=<>*.
+        
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <firewallThresholds>
+                      <thresholds type="CpuUtilization" unit="percent">
+                          <configured>80</configured>
+                          <current name="vsip-cpu" value="0"/>
+                      </thresholds>
+                      <thresholds type="HeapMemory" unit="percent">
+                          <configured>80</configured>
+                          <current name="vsip-attr" value="0"/>
+                          <current name="vsip-flow" value="0"/>
+                          <current name="vsip-ipdiscovery" value="0"/>
+                          <current name="vsip-module" value="0"/>
+                          <current name="vsip-rules" value="0"/>
+                          <current name="vsip-state" value="0"/>
+                      </thresholds>
+                      <thresholds type="CallsPerSecond" unit="count">
+                          <configured>10000</configured>
+                          <current name="e1441336-abfa-4f5f-be7c-50062a92ffc5.000-cps" value="0"/>
+                      </thresholds>
+                      <thresholds type="ConcurrentConnections" unit="count">
+                          <configured>0</configured>
+                      </thresholds>
+                      <thresholds type="ProcessMemory" unit="percent">
+                          <configured>0</configured>
+                      </thresholds>
+                  </firewallThresholds>
+                schema: dfwThresholdstypeshostRead
+  /thresholds/types:
+      get:
+              displayName: dfwThresholdstypesRead
+              description: |
+                Get the different types of thresholds for distributed firewall.
+
+              body:
+                application/xml:
+                  example: |
+                    <thresholdTypes>
+                     <type>CpuUtilization</type>
+                     <type>HeapMemory</type>
+                     <type>CallsPerSecond</type>
+                     <type>ConcurrentConnections</type>
+                     <type>ProcessMemory</type>
+                    </thresholdTypes>
+                  schema: dfwThresholdstypesRead
   /config/globalconfiguration:
     displayName: dfwPerformance
     description: |
