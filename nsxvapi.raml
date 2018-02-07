@@ -2464,14 +2464,14 @@ securitySchemes:
   description: |
     Working With BFD Configuration
     ==============
-    BFD configuration provides information about BFD configured on the interface.
-    By default, BFD is disabled.
+    Provides information about BFD configured on the interface.
+    You can enable or disable BFD for the heatmap. By default, BFD is disabled.
     
     **BFD Parameters**
     
     Parameter |  Description | Comments
     ---|---|---
-      **enabled**      |Enable or disable BFD in the heatmap.|Required. Options are *True* or *False*. Default is *False*.
+      **enabled**      |Enable or disable BFD for the heatmap.|Required. Options are *True* or *False*. Default is *False*.
       **pollingIntervalSecondsForHost**     |Configure the BFD polling interval.|Required. Value should be greater than *30*. Default value is *180*.
       **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session.|Required. Value should be greater than *30*. Default value is *120000*.
       
@@ -2511,7 +2511,56 @@ securitySchemes:
                 <bfdIntervalMillSecondsForHost>300</bfdIntervalMillSecondsForHost>
               </bfdGlobalConfiguration>
             schema: bfdConfigUpdate
-          
+/2.0/vdn/pnic-check/configuration/global:
+  displayName: pniccheckConfig
+  description: |
+    Working With pNIC Configuration Information 
+    ==============
+    Provides the status information about physical NIC (pNIC) global configuration.
+    You can enable or disable pNIC for the heatmap. By default, pNIC is disabled.
+        
+    **pNIC Parameters**
+    
+    Parameter |  Description | Comments
+    ---|---|---
+      **enabled**      |Enable or disable pNIC for the heatmap.|Required. Options are *True* or *False*. Default is *False*.
+      **pollingIntervalSecondsForHost**     |Configure the pNIC polling interval for the host.|Required. Value should be greater than *30*. Default value is *180*.
+
+  get:
+    displayName: pniccheckConfigCreate
+    description: |
+      Get pNIC status information. 
+            
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method Added.
+      
+    body:
+      application/xml:
+        example: |
+          <pnicStatusCheckGlobalConfiguration>
+            <enabled>false</enabled>
+             <pollingIntervalSecondsForHost>180</pollingIntervalSecondsForHost>
+          </pnicStatusCheckGlobalConfiguration>
+        schema: pniccheckConfigCreate
+  put:
+    displayName: pniccheckConfigUpdate
+    description: |
+      Update the global configuration for pNIC status check.
+  
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <pnicStatusCheckGlobalConfiguration>
+                <enabled>true</enabled>
+                 <pollingIntervalSecondsForHost>120</pollingIntervalSecondsForHost>
+              </pnicStatusCheckGlobalConfiguration>
+            schema: pniccheckConfigUpdate
+                                  
 /2.0/services/application:
   displayName: servicesApps # existing reorg URI
   description: |

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#100;&#111;&#x63;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#100;&#111;&#x63;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x64;&#111;&#99;&#102;&#x65;&#x65;&#100;&#x62;&#x61;&#99;&#107;&#x40;&#118;&#109;&#119;&#x61;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x64;&#111;&#99;&#102;&#x65;&#x65;&#100;&#x62;&#x61;&#99;&#107;&#x40;&#118;&#109;&#119;&#x61;&#x72;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -14267,8 +14267,8 @@ primary NSX Manager.</p>
 </section>
 <section class="resource">
   <div class="description"><h1 id="working-with-bfd-configuration">Working With BFD Configuration</h1>
-<p>BFD configuration provides information about BFD configured on the interface.
-By default, BFD is disabled.</p>
+<p>Provides information about BFD configured on the interface.
+You can enable or disable BFD for the heatmap. By default, BFD is disabled.</p>
 <p><strong>BFD Parameters</strong></p>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -14277,12 +14277,12 @@ By default, BFD is disabled.</p>
 </tr>
 </thead><tbody><tr>
 <td>  <strong>enabled</strong></td>
-<td>Enable or disable BFD in the heatmap.</td>
-<td>Required.Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+<td>Enable or disable BFD for the heatmap.</td>
+<td>Required. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
 </tr>
 <tr>
 <td>  <strong>pollingIntervalSecondsForHost</strong></td>
-<td>Configure the BFD polling interval .</td>
+<td>Configure the BFD polling interval.</td>
 <td>Required. Value should be greater than <em>30</em>. Default value is <em>180</em>.</td>
 </tr>
 <tr>
@@ -16709,6 +16709,78 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
     ...
   <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatuses</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatusList</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="working-with-pnic-configuration-information-">Working With pNIC Configuration Information </h1>
+<p>Provides the status information about physical NIC (pNIC) global configuration.
+You can enable or disable pNIC for the heatmap. By default, pNIC is disabled.</p>
+<p><strong>pNIC Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>enabled</strong></td>
+<td>Enable or disable pNIC for the heatmap.</td>
+<td>Required. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>pollingIntervalSecondsForHost</strong></td>
+<td>Configure the pNIC polling interval for the host.</td>
+<td>Required. Value should be greater than <em>30</em>. Default value is <em>180</em>.</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/pnic-check/configuration/global"
+    href="#GET/2.0/vdn/pnic-check/configuration/global"
+  ><h2>GET /2.0/vdn/pnic-check/configuration/global</h2></a>
+  <div class="content">
+    <p><p>Get pNIC status information. </p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method Added.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">pniccheckConfigCreate</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/vdn/pnic-check/configuration/global"
+    href="#PUT/2.0/vdn/pnic-check/configuration/global"
+  ><h2>PUT /2.0/vdn/pnic-check/configuration/global</h2></a>
+  <div class="content">
+    <p><p>Update the global configuration for pNIC status check.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>120<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
 </code></pre>
   </div>
 </div>
