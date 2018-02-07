@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x64;&#111;&#99;&#102;&#101;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x64;&#111;&#99;&#102;&#101;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#x77;&#97;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#100;&#111;&#x63;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#100;&#111;&#x63;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#64;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -14262,6 +14262,85 @@ primary NSX Manager.</p>
   </dd>
 </dl>
     </div>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="working-with-bfd-configuration">Working With BFD Configuration</h1>
+<p>BFD configuration provides information about BFD configured on the interface.
+By default, BFD is disabled.</p>
+<p><strong>BFD Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>enabled</strong></td>
+<td>Enable or disable BFD in the heatmap.</td>
+<td>Required.Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td>  <strong>pollingIntervalSecondsForHost</strong></td>
+<td>Configure the BFD polling interval .</td>
+<td>Required. Value should be greater than <em>30</em>. Default value is <em>180</em>.</td>
+</tr>
+<tr>
+<td>  <strong>bfdIntervalMillSecondsForHost</strong></td>
+<td>Configure the interval of BFD session.</td>
+<td>Required. Value should be greater than <em>30</em>. Default value is <em>120000</em>.</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/bfd/configuration/global"
+    href="#GET/2.0/vdn/bfd/configuration/global"
+  ><h2>GET /2.0/vdn/bfd/configuration/global</h2></a>
+  <div class="content">
+    <p><p>Retrieve the BFD global configuration.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method Added.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">bfdConfigCreate</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bfdGlobalConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">bfdIntervalMillSecondsForHost</span>&gt;</span>120000<span class="hljs-tag">&lt;/<span class="hljs-name">bfdIntervalMillSecondsForHost</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bfdGlobalConfiguration</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/vdn/bfd/configuration/global"
+    href="#PUT/2.0/vdn/bfd/configuration/global"
+  ><h2>PUT /2.0/vdn/bfd/configuration/global</h2></a>
+  <div class="content">
+    <p><p>Update the BFD global configuration.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bfdGlobalConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>190<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">bfdIntervalMillSecondsForHost</span>&gt;</span>300<span class="hljs-tag">&lt;/<span class="hljs-name">bfdIntervalMillSecondsForHost</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bfdGlobalConfiguration</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
@@ -37099,7 +37178,7 @@ usage crosses these thresholds.</p>
     href="#PUT/4.0/firewall/thresholds"
   ><h2>PUT /4.0/firewall/thresholds</h2></a>
   <div class="content">
-    <p><p>Configure threshold values for distributed firewall such as CPU utilization, heap memory, calls per second, concurrent connections, process memory.</p>
+    <p><p>Configure threshold values for distributed firewall such as CPU utilization, heap memory, calls per second, concurrent connections, and process memory.</p>
 <p><strong>Parameters</strong> </p>
 <table class="table"><thead><tr>
 <th>Types of threshold</th>
@@ -37110,32 +37189,32 @@ usage crosses these thresholds.</p>
 </thead><tbody><tr>
 <td>CPU</td>
 <td>90</td>
-<td>0-100</td>
-<td>percent</td>
+<td>0 - 100</td>
+<td>Percent</td>
 </tr>
 <tr>
 <td>Heap Memory</td>
 <td>90</td>
-<td>0-100</td>
-<td>percent</td>
+<td>0 - 100</td>
+<td>Percent</td>
 </tr>
 <tr>
 <td>Process Memory</td>
 <td>70</td>
-<td>0-100</td>
-<td>percent</td>
+<td>0 - 100</td>
+<td>Percent</td>
 </tr>
 <tr>
 <td>Connections per second</td>
 <td>40000</td>
 <td></td>
-<td>count</td>
+<td>Count</td>
 </tr>
 <tr>
 <td>Maximum connections</td>
 <td>500000</td>
 <td></td>
-<td>count</td>
+<td>Count</td>
 </tr>
 </tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
