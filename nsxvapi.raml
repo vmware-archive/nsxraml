@@ -2459,19 +2459,252 @@ securitySchemes:
               <apiPassword></apiPassword>
             </controllerCredential>
           schema: nsxControllerPasswordUpdate
+
+/2.0/vdn/host/status:
+  displayName: hostHealth
+  description: |
+    Working With Hypervisor Tunnel Health Status Using BFD
+    ==============
+    Provides overall information about tunnel health of hypervisor. Tunnel, pNIC, control plane, and management plane statuses are displayed.
+    
+    **Method history:**
+    
+    Release | Modification
+    --------|-------------
+    6.4.0 | Method Added.
+
+  get:
+      queryParameters:
+        source:
+          displayName: source
+          description: |
+            Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
+          required: false
+        status:
+          displayName: status
+          required: false
+          description: |
+            Specify the host status as UP, DOWN, DEGRADED. Default value is none.
+        host_id:
+          displayName: host_id
+          required: false
+          description: |
+            Specify host list to query status. ID of hosts as string [ ].
+      body:
+        application/xml:
+          example: |
+            <hostStatus>
+             <hostId>host-23</hostId>
+             <status>UP</status>
+             <controlConnectionStatus>UP</controlConnectionStatus>
+             <mgmtConnectionStatus>UP</mgmtConnectionStatus>
+            <pnicStatus>
+              <status>UP</status>
+              <upCount>1</upCount>
+              <downCount>0</downCount>
+              <degradedCount>0</degradedCount>
+            </pnicStatus>
+              <tunnelStatus>
+              <status>UP</status>
+              <upCount>1</upCount>
+              <downCount>0</downCount>
+              <degradedCount>0</degradedCount>
+                          <bfdStatusCount>
+                          <bfdAdminDownCount>0</bfdAdminDownCount>
+                          <bfdUpCount>3</bfdUpCount>
+                          <bfdDownCount>0</bfdDownCount>
+                          <bfdInitCount>3</bfdInitCount>
+                          </bfdStatusCount>
+                          <bfdDiagnostic>
+                             <echoFunctionFailedCount>0</echoFunctionFailedCount>
+                             <noDiagnosticCount>1</noDiagnosticCount>
+                             <pathDownCount>0</pathDownCount>
+                             <administrativelyDownCount>0</administrativelyDownCount>
+                             <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
+                             <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
+                             <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
+                             <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
+                             <concatenatedPathDownCount>0</concatenatedPathDownCount>
+                          </bfdDiagnostic>
+              </tunnelStatus>
+            </hostStatus>
+          schema: hostHealthRead
+
+  /{hostId}/status:
+    uriParameters:
+      hostId:
+        displayName: hostId
+        required: true
+        description: |
+          ID of the host.
+    get:
+      displayName: hostIdHealthRead
+      description: |
+        Retrieve tunnel health status for the specific host.
+       
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method Added.
+      queryParameters:
+        source:
+          displayName: source
+          required: false
+          description: |
+            Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
+      body:
+        application/xml:
+          example: |
+            <hostStatus>
+             <hostId>host-23</hostId>
+             <status>UP</status>
+             <controlConnectionStatus>UP</controlConnectionStatus>
+             <mgmtConnectionStatus>UP</mgmtConnectionStatus>
+            <pnicStatus>
+              <status>UP</status>
+              <upCount>1</upCount>
+              <downCount>0</downCount>
+              <degradedCount>0</degradedCount>
+            </pnicStatus>
+              <tunnelStatus>
+              <status>UP</status>
+              <upCount>1</upCount>
+              <downCount>0</downCount>
+              <degradedCount>0</degradedCount>
+                          <bfdStatusCount>
+                          <bfdAdminDownCount>0</bfdAdminDownCount>
+                          <bfdUpCount>3</bfdUpCount>
+                          <bfdDownCount>0</bfdDownCount>
+                          <bfdInitCount>3</bfdInitCount>
+                          </bfdStatusCount>
+                          <bfdDiagnostic>
+                             <echoFunctionFailedCount>0</echoFunctionFailedCount>
+                             <noDiagnosticCount>1</noDiagnosticCount>
+                             <pathDownCount>0</pathDownCount>
+                             <administrativelyDownCount>0</administrativelyDownCount>
+                             <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
+                             <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
+                             <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
+                             <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
+                             <concatenatedPathDownCount>0</concatenatedPathDownCount>
+                          </bfdDiagnostic>
+              </tunnelStatus>
+            </hostStatus>
+          schema: hostIdHealthRead
+
+  /{hostId}/tunnel:
+    uriParameters:
+      hostId:
+        displayName: hostId
+        required: true
+        description: |
+          ID of the host.
+    get:
+      displayName: hostIdTunnelRead
+      description: |
+        Retrieve tunnel connections for the specific host.
+       
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method Added.
+
+      body:
+        application/xml:
+          example: |
+            <bfdTunnels>
+              <tunnel>
+              <localIp>192.168.250.101</localIp>
+              <bfd>
+              <remoteState>DOWN</remoteState>
+              <remoteDiagnostic>CONTROL_DETECTION_TIME_EXPIRED</remoteDiagnostic>
+              <active>true</active>
+              <state>INIT</state>
+              <forwarding>false</forwarding>
+              <diagnostic>NEIGHBOR_SIGNALED_SESSION_DOWN</diagnostic>
+              </bfd>
+              <remoteIp>192.168.250.100</remoteIp>
+              <egressInterface>vmk10</egressInterface>
+              <name>stt3232299620</name>
+              <encap>VXLAN</encap>
+              <status>DOWN</status>
+              <remoteNodeId>host-31</remoteNodeId>
+              </tunnel>
+            </bfdTunnels>
+          schema: hostIdTunnelRead
+
+  /{hostId}/remote-host-status:
+    uriParameters:
+      hostId:
+        displayName: hostId
+        required: true
+        description: |
+          ID of the host.
+    get:
+      displayName: hostIdRemoteStatusRead
+      description: |
+        Retrieve status of all hosts with tunnel connections to the given host.
+       
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method Added.
+      queryParameters:
+        source:
+          displayName: source
+          required: false
+          description: |
+            Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
+        tunnel_status:
+          displayName: tunnel_status
+          required: false
+          description: |
+            Specify the tunnel status as UP, DOWN, or DEGRADED. Default value is none.
+        bfd_diagnostic_code:
+          displayName: bfd_diagnostic_code
+          required: false
+          description: |
+            This field is used to filter the remote hosts in current host’s tunnel status detail list by the *remoteDiagnostic* field, for the tunnel status detail list. BFD diagnostic code of tunnel is as defined in RFC 5880.  Allowed values are: NO_DIAGNOSTIC, CONTROL_DETECTION_TIME_EXPIRED, ECHO_FUNCTION_FAILED, NEIGHBOR_SIGNALED_SESSION_DOWN, FORWARDING_PLANE_RESET, PATH_DOWN, CONCATENATED_PATH_DOWN, ADMINISTRATIVELY_DOWN, REVERSE_CONCATENATED_PATH_DOWN.
+      body:
+        application/xml:
+          example: |
+            <bfdTunnels>
+              <tunnel>
+              <localIp>192.168.250.101</localIp>
+              <bfd>
+              <remoteState>DOWN</remoteState>
+              <remoteDiagnostic>CONTROL_DETECTION_TIME_EXPIRED</remoteDiagnostic>
+              <active>true</active>
+              <state>INIT</state>
+              <forwarding>false</forwarding>
+              <diagnostic>NEIGHBOR_SIGNALED_SESSION_DOWN</diagnostic>
+              </bfd>
+              <remoteIp>192.168.250.100</remoteIp>
+              <egressInterface>vmk10</egressInterface>
+              <name>stt3232299620</name>
+              <encap>VXLAN</encap>
+              <status>DOWN</status>
+              <remoteNodeId>host-31</remoteNodeId>
+              </tunnel>
+            </bfdTunnels>
+          schema: hostIdRemoteStatusRead
+
 /2.0/vdn/bfd/configuration/global:
   displayName: bfdConfig
   description: |
-    Working With BFD Configuration
+    Working With BFD Configuration Information
     ==============
     Provides information about BFD configured on the interface.
-    You can enable or disable BFD for the heatmap. By default, BFD is disabled.
+    You can enable or disable BFD to monitor tunnel health of a hypervisor. By default, BFD is disabled.
     
     **BFD Parameters**
     
     Parameter |  Description | Comments
     ---|---|---
-      **enabled**      |Enable or disable BFD for the heatmap.|Required. Options are *True* or *False*. Default is *False*.
+      **enabled**      |Enable or disable BFD to monitor tunnel health of a hypervisor.|Required. Options are *True* or *False*. Default is *False*.
       **pollingIntervalSecondsForHost**     |Configure the BFD polling interval.|Required. Value should be greater than *30*. Default value is *180*.
       **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session.|Required. Value should be greater than *30*. Default value is *120000*.
       
@@ -2479,13 +2712,13 @@ securitySchemes:
     displayName: bfdConfigCreate
     description: |
       Retrieve the BFD global configuration.
-            
+      
       **Method history:**
       
       Release | Modification
       --------|-------------
       6.4.0 | Method Added.
-      
+
     body:
       application/xml:
         example: |
@@ -2499,7 +2732,13 @@ securitySchemes:
     displayName: bfdConfigUpdate
     description: |
       Update the BFD global configuration.
-  
+     
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method Added.
+
     responses:
       200:
         body:
@@ -2517,26 +2756,26 @@ securitySchemes:
     Working With pNIC Configuration Information 
     ==============
     Provides the status information about physical NIC (pNIC) global configuration.
-    You can enable or disable pNIC for the heatmap. By default, pNIC is disabled.
+    You can enable or disable pNIC to monitor tunnel health of a hypervisor. By default, pNIC is disabled.
         
     **pNIC Parameters**
     
     Parameter |  Description | Comments
     ---|---|---
-      **enabled**      |Enable or disable pNIC for the heatmap.|Required. Options are *True* or *False*. Default is *False*.
+      **enabled**      |Enable or disable pNIC to monitor tunnel health of a hypervisor.|Required. Options are *True* or *False*. Default is *False*.
       **pollingIntervalSecondsForHost**     |Configure the pNIC polling interval for the host.|Required. Value should be greater than *30*. Default value is *180*.
 
   get:
     displayName: pniccheckConfigCreate
     description: |
       Get pNIC status information. 
-            
+     
       **Method history:**
       
       Release | Modification
       --------|-------------
       6.4.0 | Method Added.
-      
+
     body:
       application/xml:
         example: |
@@ -2549,7 +2788,13 @@ securitySchemes:
     displayName: pniccheckConfigUpdate
     description: |
       Update the global configuration for pNIC status check.
-  
+     
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method Added.
+
     responses:
       200:
         body:
