@@ -14961,6 +14961,19 @@ securitySchemes:
           6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
           6.4.0 | Method updated. Parameters **LE** and **GE** added. Parameter **removePrivateAS** added.
 #          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
+        queryParameters:
+          le:
+            required: false
+            displayName: le
+            type: number
+            description: |
+              Routes which has network prefix less than the value of the provided *le*, is filtered for redistribution. Allowed value is 0 to 32. 
+          ge:
+            required: false
+            displayName: ge
+            type: number
+            description: |
+              Routes which has network prefix greater than the value of the provided *ge* and less than 32, is filtered for redistribution. Allowed value is 0 to 32. 
       put:
         displayName: routingConfigUpdate
         description: |
@@ -14975,6 +14988,19 @@ securitySchemes:
           6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
           6.4.0 | Method updated. Parameters **LE** and **GE** added. Parameter **removePrivateAS** added.
 #          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
+        queryParameters:
+          le:
+            required: false
+            displayName: le
+            type: number
+            description: |
+              Routes which has network prefix less than the value of the provided *le*, is filtered for redistribution. Allowed value is 0 to 32. 
+          ge:
+            required: false
+            displayName: ge
+            type: number
+            description: |
+              Routes which has network prefix greater than the value of the provided *ge* and less than 32, is filtered for redistribution. Allowed value is 0 to 32. 
         body:
           application/xml:
             example: |
@@ -15119,6 +15145,19 @@ securitySchemes:
         put:
           displayName: routingGlobalConfigUpdate
           description: Configure global route.
+          queryParameters:
+            le:
+              required: false
+              displayName: le
+              type: number
+              description: |
+                Routes which has network prefix less than the value of the provided *le*, is filtered for redistribution. Allowed value is 0 to 32. 
+            ge:
+              required: false
+              displayName: ge
+              type: number
+              description: |
+                Routes which has network prefix greater than the value of the provided *ge* and less than 32, is filtered for redistribution. Allowed value is 0 to 32. 
           body:
             application/xml:
               example: |
@@ -15131,8 +15170,10 @@ securitySchemes:
                   </logging>
                   <ipPrefixes>
                     <ipPrefix>
-                      <name></name>
-                      <ipAddress></ipAddress>
+                      <name>a</name>
+                      <ipAddress>10.112.196.160/24</ipAddress>
+                      <le>30</le>
+                      <ge>26</ge>
                     </ipPrefix>
                   </ipPrefixes>
                 </routingGlobalConfig>
@@ -15142,6 +15183,19 @@ securitySchemes:
           description: |
             Retrieve routing info from NSX Manager database (default route
             settings, static route configurations).
+          queryParameters:
+            le:
+              required: false
+              displayName: le
+              type: number
+              description: |
+                Routes which has network prefix less than the value of the provided *le*, is filtered for redistribution. Allowed value is 0 to 32. 
+            ge:
+              required: false
+              displayName: ge
+              type: number
+              description: |
+                Routes which has network prefix greater than the value of the provided *ge* and less than 32, is filtered for redistribution. Allowed value is 0 to 32.
       /static:
         displayName: routingConfigStatic
         description: |
