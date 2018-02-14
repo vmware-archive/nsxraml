@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x64;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#114;&#101;&#x2e;&#99;&#x6f;&#109;">&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#x63;&#x6b;&#x40;&#118;&#x6d;&#119;&#97;&#114;&#101;&#x2e;&#99;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -10080,6 +10080,104 @@ security group is created, it cannot be modified afterwards.</p>
  internally by the system and should not be created or modified by end
 users.</p>
 </p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-ip-address-in-a-security-group">Working With IP Address in a Security Group</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">ipAddress</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Specified IP address</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/securitygroup/lookup/ipaddress/{ipAddress}"
+    href="#GET/2.0/services/securitygroup/lookup/ipaddress/{ipAddress}"
+  ><h2>GET /2.0/services/securitygroup/lookup/ipaddress/{ipAddress}</h2></a>
+  <div class="content">
+    <p><p>Retrieve all the security groups that contain the specified IP address.</p>
+</p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">securityGroups</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">securityGroups</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">securitygroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>securitygroup-654<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>SecurityGroup<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42013FC7-556D-36E8-EB79-DF359AE8AC70<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>a51981cd-18e1-4f55-abeb-079d61ca72fb<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>SecurityGroup<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSBU1-SG-AC-WORKDAY-DEV-XX-STATE-SMB<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>globalroot-0<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>GlobalRoot<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Global<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-156<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42013FC7-556D-36E8-EB79-DF359AE8AC70<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>a51981cd-18e1-4f55-abeb-079d61ca72fb<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>7<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Web01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>resgroup-v151<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualApp<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>3 Tier App<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>ipset-152<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>IPSet<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42013FC7-556D-36E8-EB79-DF359AE8AC70<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>a51981cd-18e1-4f55-abeb-079d61ca72fb<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>IPSet<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>IPSET-INTERNAL-TRUST-ZGF-003<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>globalroot-0<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>GlobalRoot<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Global<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">securitygroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">securityGroups</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">securityGroups</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>

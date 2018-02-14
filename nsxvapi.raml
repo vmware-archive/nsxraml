@@ -4400,6 +4400,90 @@ securitySchemes:
         Retrieves the collection of security groups to which a virtual machine
         is a direct or indirect member. Indirect membership involves nesting of
         security groups.
+  /lookup/ipaddress/{ipAddress}:
+    displayName: secGroupLookupIP
+    description: |
+      Working With IP Address in a Security Group
+      ------
+    uriParameters:
+      ipAddress:
+        required: true
+        displayName: ipAddress
+        description: Specified IP address
+    get:
+      displayName: secGroupLookupIPRead
+      description: |
+        Retrieve all the security groups that contain the specified IP address.
+      body:
+        application/xml:
+          example: |
+            <securityGroups>
+              <securityGroups>
+                <securitygroup>
+                  <objectId>securitygroup-654</objectId>
+                  <objectTypeName>SecurityGroup</objectTypeName>
+                  <vsmUuid>42013FC7-556D-36E8-EB79-DF359AE8AC70</vsmUuid>
+                  <nodeId>a51981cd-18e1-4f55-abeb-079d61ca72fb</nodeId>
+                  <revision>5</revision>
+                  <type>
+                    <typeName>SecurityGroup</typeName>
+                  </type>
+                  <name>NSBU1-SG-AC-WORKDAY-DEV-XX-STATE-SMB</name>
+                  <description></description>
+                  <scope>
+                    <id>globalroot-0</id>
+                    <objectTypeName>GlobalRoot</objectTypeName>
+                    <name>Global</name>
+                  </scope>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes />
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                  <inheritanceAllowed>false</inheritanceAllowed>
+                  <member>
+                    <objectId>vm-156</objectId>
+                    <objectTypeName>VirtualMachine</objectTypeName>
+                    <vsmUuid>42013FC7-556D-36E8-EB79-DF359AE8AC70</vsmUuid>
+                    <nodeId>a51981cd-18e1-4f55-abeb-079d61ca72fb</nodeId>
+                    <revision>7</revision>
+                    <type>
+                      <typeName>VirtualMachine</typeName>
+                    </type>
+                    <name>Web01</name>
+                    <scope>
+                      <id>resgroup-v151</id>
+                      <objectTypeName>VirtualApp</objectTypeName>
+                      <name>3 Tier App</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes />
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                  </member>
+                  <member>
+                    <objectId>ipset-152</objectId>
+                    <objectTypeName>IPSet</objectTypeName>
+                    <vsmUuid>42013FC7-556D-36E8-EB79-DF359AE8AC70</vsmUuid>
+                    <nodeId>a51981cd-18e1-4f55-abeb-079d61ca72fb</nodeId>
+                    <revision>3</revision>
+                    <type>
+                      <typeName>IPSet</typeName>
+                    </type>
+                    <name>IPSET-INTERNAL-TRUST-ZGF-003</name>
+                    <description></description>
+                    <scope>
+                      <id>globalroot-0</id>
+                      <objectTypeName>GlobalRoot</objectTypeName>
+                      <name>Global</name>
+                    </scope>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes />
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                  </member>
+                </securitygroup>
+              </securityGroups>
+            </securityGroups>
   /internal/scope/{scopeId}:
     displayName: secGroupInternal
     description: |
