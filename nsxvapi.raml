@@ -15774,17 +15774,20 @@ securitySchemes:
         description: Retrieve bridge configuration.
       put:
         displayName: bridingUpdate
-        description: Configure a bridge.
+        description: Configure a bridge. Note that the bridging is always enabled.  You cannot disable it by setting the *enable* field to *false*. The value for the *enable* field is not honored.
         body:
           application/xml:
             example: |
               <bridges>
-                <version></version>
-                <enabled></enabled>
+                <version>9</version>
+                <enabled>true</enabled>
                 <bridge>
-                  <name></name>
-                  <virtualWire></virtualWire>
-                  <dvportGroup></dvportGroup>
+                    <bridgeId>1</bridgeId>
+                    <name>br001</name>
+                    <virtualWire>virtualwire-3</virtualWire>
+                    <virtualWireName>ls001_03</virtualWireName>
+                    <dvportGroup>dvportgroup-32</dvportGroup>
+                    <dvportGroupName>dvpg01_01</dvportGroupName>
                 </bridge>
               </bridges>
             schema: bridingUpdate

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x64;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -22996,7 +22996,7 @@ become active.</p>
     href="#PUT/4.0/edges/{edgeId}/bridging/config"
   ><h2>PUT /4.0/edges/{edgeId}/bridging/config</h2></a>
   <div class="content">
-    <p><p>Configure a bridge.</p>
+    <p><p>Configure a bridge. Note that the bridging is always enabled.  You cannot disable it by setting the <em>enable</em> field to <em>false</em>. The value for the <em>enable</em> field is not honored.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -23021,12 +23021,15 @@ become active.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bridges</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>9<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">bridge</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">dvportGroup</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">dvportGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bridgeId</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">bridgeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>br001<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireName</span>&gt;</span>ls001_03<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dvportGroup</span>&gt;</span>dvportgroup-32<span class="hljs-tag">&lt;/<span class="hljs-name">dvportGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">dvportGroupName</span>&gt;</span>dvpg01_01<span class="hljs-tag">&lt;/<span class="hljs-name">dvportGroupName</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">bridge</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">bridges</span>&gt;</span>
 </code></pre>
