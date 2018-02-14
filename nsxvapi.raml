@@ -17417,6 +17417,41 @@ securitySchemes:
                   </dhcpOptions> 
                 </staticBinding>
               schema: dhcpStaticBindingCreate
+        get:
+          displayName: dhcpStaticBindingRead
+          description: |
+            Retrieve the multiple DHCP bindings with IP and MAC address.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method introduced.   
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <staticBindings>
+                      <staticBinding>
+                        <autoConfigureDNS>true</autoConfigureDNS>
+                        <leaseTime>86400</leaseTime>
+                        <subnetMask>255.255.255.0</subnetMask>
+                        <bindingId>binding-2</bindingId>
+                        <hostname>30.4.1.21</hostname>
+                        <macAddress>20:20:20:20:21:20</macAddress>
+                        <ipAddress>30.2.1.1</ipAddress>
+                        </staticBinding>
+                        <staticBinding>
+                        <autoConfigureDNS>true</autoConfigureDNS>
+                        <leaseTime>86400</leaseTime>
+                        <subnetMask>255.255.255.0</subnetMask>
+                        <bindingId>binding-1</bindingId>
+                        <hostname>30.4.1.11</hostname>
+                        <macAddress>20:20:20:20:20:20</macAddress>
+                        <ipAddress>30.1.1.1</ipAddress>
+                      </staticBinding>
+                    </staticBindings>
         /{bindingID}:
           displayName: dhcpStaticBindingID
           description: |

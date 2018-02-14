@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x64;&#111;&#x63;&#x66;&#x65;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x64;&#111;&#x63;&#x66;&#x65;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
+<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -23670,6 +23670,53 @@ returned within a Location HTTP header.</p>
     <span class="hljs-tag">&lt;/<span class="hljs-name">other</span>&gt;</span> 
   <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpOptions</span>&gt;</span> 
 <span class="hljs-tag">&lt;/<span class="hljs-name">staticBinding</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/edges/{edgeId}/dhcp/config/bindings"
+    href="#GET/4.0/edges/{edgeId}/dhcp/config/bindings"
+  ><h2>GET /4.0/edges/{edgeId}/dhcp/config/bindings</h2></a>
+  <div class="content">
+    <p><p>Retrieve the multiple DHCP bindings with IP and MAC address.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.   </td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">staticBindings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">staticBinding</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigureDNS</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigureDNS</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span>86400<span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bindingId</span>&gt;</span>binding-2<span class="hljs-tag">&lt;/<span class="hljs-name">bindingId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostname</span>&gt;</span>30.4.1.21<span class="hljs-tag">&lt;/<span class="hljs-name">hostname</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">macAddress</span>&gt;</span>20:20:20:20:21:20<span class="hljs-tag">&lt;/<span class="hljs-name">macAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>30.2.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">staticBinding</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">staticBinding</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">autoConfigureDNS</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">autoConfigureDNS</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">leaseTime</span>&gt;</span>86400<span class="hljs-tag">&lt;/<span class="hljs-name">leaseTime</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bindingId</span>&gt;</span>binding-1<span class="hljs-tag">&lt;/<span class="hljs-name">bindingId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hostname</span>&gt;</span>30.4.1.11<span class="hljs-tag">&lt;/<span class="hljs-name">hostname</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">macAddress</span>&gt;</span>20:20:20:20:20:20<span class="hljs-tag">&lt;/<span class="hljs-name">macAddress</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>30.1.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">staticBinding</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">staticBindings</span>&gt;</span>
 </code></pre>
   </div>
 </div>
