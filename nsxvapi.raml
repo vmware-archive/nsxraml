@@ -3314,61 +3314,99 @@ securitySchemes:
         delete:
           displayName: ipAddressReleaseDelete # dupfix ipAddressRelease
           description: Release an IP address allocation in the pool.
-/2.0/services/licensing/capacityusage:
+/2.0/services/licensing:
   displayName: capacityUsage
   description: |
-    Working With Licensing Capacity
+    Working With Licensing 
     ============
     The licensing capacity usage API command reports usage of CPUs, VMs and
-    concurrent users for the distributed firewall and VXLAN.
-  get:
-    displayName: capacityUsageRead
+    concurrent users for the distributed firewall and VXLAN. The licensing status API command displays details about the assigned NSX license.
+
+  /capacityusage:
+    displayName: capacityUsage
     description: |
-      Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
-      users for the distributed firewall and VXLAN.
-      
-      **Method history:**
-      
-      Release | Modification
-      --------|-------------
-      6.2.3 | Method introduced.
-    responses:
-      200:
-        body:
-          application/xml:
-            example: |
-              <featureCapacityUsageList>
-                <featureCapacityUsageInfo>
-                  <capacityUsageInfo>
-                    <capacityType>CPU_CAPACITY_TYPE</capacityType>
-                    <usageCount>16</usageCount>
-                  </capacityUsageInfo>
-                  <capacityUsageInfo>
-                    <capacityType>VM_CAPACITY_TYPE</capacityType>
-                    <usageCount>3</usageCount>
-                  </capacityUsageInfo>
-                  <capacityUsageInfo>
-                    <capacityType>CONCURRENT_USER_CAPACITY_TYPE</capacityType>
-                    <usageCount>3</usageCount>
-                  </capacityUsageInfo>
-                  <feature>dfw</feature>
-                </featureCapacityUsageInfo>
-                <featureCapacityUsageInfo>
-                  <capacityUsageInfo>
-                    <capacityType>CPU_CAPACITY_TYPE</capacityType>
-                    <usageCount>16</usageCount>
-                  </capacityUsageInfo>
-                  <capacityUsageInfo>
-                    <capacityType>VM_CAPACITY_TYPE</capacityType>
-                    <usageCount>3</usageCount>
-                  </capacityUsageInfo>
-                  <capacityUsageInfo>
-                    <capacityType>CONCURRENT_USER_CAPACITY_TYPE</capacityType>
-                    <usageCount>3</usageCount>
-                  </capacityUsageInfo>
-                  <feature>vxlan</feature>
-                </featureCapacityUsageInfo>
-              </featureCapacityUsageList>
+      Working With Licensing Capacity
+      ---------------
+      The licensing capacity usage API command reports usage of CPUs, VMs and
+      concurrent users for the distributed firewall and VXLAN. 
+
+    get:
+      displayName: capacityUsageRead
+      description: |
+        Retrieve capacity usage information on the usage of CPUs, VMs and concurrent
+        users for the distributed firewall and VXLAN.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.2.3 | Method introduced.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <featureCapacityUsageList>
+                  <featureCapacityUsageInfo>
+                    <capacityUsageInfo>
+                      <capacityType>CPU_CAPACITY_TYPE</capacityType>
+                      <usageCount>16</usageCount>
+                    </capacityUsageInfo>
+                    <capacityUsageInfo>
+                      <capacityType>VM_CAPACITY_TYPE</capacityType>
+                      <usageCount>3</usageCount>
+                    </capacityUsageInfo>
+                    <capacityUsageInfo>
+                      <capacityType>CONCURRENT_USER_CAPACITY_TYPE</capacityType>
+                      <usageCount>3</usageCount>
+                    </capacityUsageInfo>
+                    <feature>dfw</feature>
+                  </featureCapacityUsageInfo>
+                  <featureCapacityUsageInfo>
+                    <capacityUsageInfo>
+                      <capacityType>CPU_CAPACITY_TYPE</capacityType>
+                      <usageCount>16</usageCount>
+                    </capacityUsageInfo>
+                    <capacityUsageInfo>
+                      <capacityType>VM_CAPACITY_TYPE</capacityType>
+                      <usageCount>3</usageCount>
+                    </capacityUsageInfo>
+                    <capacityUsageInfo>
+                      <capacityType>CONCURRENT_USER_CAPACITY_TYPE</capacityType>
+                      <usageCount>3</usageCount>
+                    </capacityUsageInfo>
+                    <feature>vxlan</feature>
+                  </featureCapacityUsageInfo>
+                </featureCapacityUsageList>
+  /status:
+    displayName: licensingStatus
+    description: |
+      Working With Licensing Status
+      -----------
+      The licensing status API command displays details about the assigned NSX license.
+
+    get:
+      displayName: licensingStatusRead
+      description: |
+        Retrieve details about the assigned NSX license.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <licenseStatus>
+                  <key>R00U4-8WJDP-J83D9-0U904-38T0L</key>
+                  <edition>NSX for vSphere - Enterprise (CPUs)</edition>
+                  <eval>false</eval>
+                  <expiry>1546214400000</expiry>
+                  <currentTime>1510035564506</currentTime>
+                </licenseStatus>
 /2.0/services/securitytags:
   displayName: securitytags
   description: |
