@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#100;&#x6f;&#x63;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#109;">&#100;&#x6f;&#x63;&#102;&#x65;&#101;&#100;&#98;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#98;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#x6f;&#x6d;">&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#98;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -25993,7 +25993,16 @@ address.</p>
   ><h2>GET /4.0/edges/{edgeId}/ipsec/statistics</h2></a>
   <div class="content">
     <p><p>Retrieve IPsec statistics.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. New parameter <strong>channelIkeVersion</strong> added under <strong>IkeStatus</strong> section. New parameters <strong>failureMessage</strong>, <strong>packetsOut</strong>, <strong>packetSentErrors</strong>, <strong>encryptionFailures</strong>, <strong>sequenceNumberOverFlowErrors</strong>, <strong>packetsIn</strong>, <strong>packetReceivedErrors</strong>, <strong>decryptionFailures</strong>, <strong>replayErrorsintegrityErrors</strong> added under <strong>tunnelStatus</strong> section. </td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -26026,6 +26035,13 @@ address.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">localIpAddress</span>&gt;</span>10.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localIpAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">peerIpAddress</span>&gt;</span>10.0.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">peerIpAddress</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">localSubnets</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>65.0.0.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">localSubnets</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>45.0.0.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">channelIkeVersion</span>&gt;</span>IKEv2<span class="hljs-tag">&lt;/<span class="hljs-name">channelIkeVersion</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ikeStatus</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStats</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStatus</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStatus</span>&gt;</span>
@@ -26033,6 +26049,23 @@ address.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">lastInformationalMessage</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">lastInformationalMessage</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">localSubnet</span>&gt;</span>192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">localSubnet</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnet</span>&gt;</span>192.168.11.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>aes-cbc<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">authenticationAlgorithm</span>&gt;</span>hmac-sha256<span class="hljs-tag">&lt;/<span class="hljs-name">authenticationAlgorithm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">localSPI</span>&gt;</span>cb3289ac<span class="hljs-tag">&lt;/<span class="hljs-name">localSPI</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">peerSPI</span>&gt;</span>cc6d464a<span class="hljs-tag">&lt;/<span class="hljs-name">peerSPI</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">establishedDate</span>&gt;</span>Jul 31 14:56:22 2017           <span class="hljs-tag">&lt;/<span class="hljs-name">establishedDate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">txBytesFromLocalSubnet</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">txBytesFromLocalSubnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rxBytesOnLocalSubnet</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rxBytesOnLocalSubnet</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">packetsOut</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">packetsOut</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">packetSentErrors</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">packetSentErrors</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">encryptionFailures</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionFailures</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sequenceNumberOverFlowErrors</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">sequenceNumberOverFlowErrors</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">packetsIn</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">packetsIn</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">packetReceivedErrors</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">packetReceivedErrors</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">decryptionFailures</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">decryptionFailures</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">replayErrors</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">replayErrors</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">integrityErrors</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">integrityErrors</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastUpdatedTime</span>&gt;</span>Jul 31 14:56:28 2017<span class="hljs-tag">&lt;/<span class="hljs-name">lastUpdatedTime</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStats</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">siteStatistics</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">timeStamp</span>&gt;</span>1325766138<span class="hljs-tag">&lt;/<span class="hljs-name">timeStamp</span>&gt;</span>

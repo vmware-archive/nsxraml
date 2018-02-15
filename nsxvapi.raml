@@ -19157,7 +19157,14 @@ securitySchemes:
         ---
       get:
         displayName: ipsecStatsRead
-        description: Retrieve IPsec statistics.
+        description: | 
+          Retrieve IPsec statistics.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. New parameter **channelIkeVersion** added under **IkeStatus** section. New parameters **failureMessage**, **packetsOut**, **packetSentErrors**, **encryptionFailures**, **sequenceNumberOverFlowErrors**, **packetsIn**, **packetReceivedErrors**, **decryptionFailures**, **replayErrorsintegrityErrors** added under **tunnelStatus** section. 
         responses:
           200:
             body:
@@ -19189,6 +19196,13 @@ securitySchemes:
                         <localIpAddress>10.0.0.11</localIpAddress>
                         <peerId>11.0.0.11</peerId>
                         <peerIpAddress>10.0.0.1</peerIpAddress>
+                          <localSubnets>
+                              <string>65.0.0.0/24</string>
+                          </localSubnets>
+                          <peerSubnets>
+                              <string>45.0.0.0/24</string>
+                          </peerSubnets>
+                        <channelIkeVersion>IKEv2</channelIkeVersion>
                       </ikeStatus>
                       <tunnelStats>
                         <tunnelStatus>up</tunnelStatus>
@@ -19196,6 +19210,23 @@ securitySchemes:
                         <lastInformationalMessage></lastInformationalMessage>
                         <localSubnet>192.168.1.0/24</localSubnet>
                         <peerSubnet>192.168.11.0/24</peerSubnet>
+                        <encryptionAlgorithm>aes-cbc</encryptionAlgorithm>
+                        <authenticationAlgorithm>hmac-sha256</authenticationAlgorithm>
+                        <localSPI>cb3289ac</localSPI>
+                        <peerSPI>cc6d464a</peerSPI>
+                        <establishedDate>Jul 31 14:56:22 2017           </establishedDate>
+                        <txBytesFromLocalSubnet>0</txBytesFromLocalSubnet>
+                        <rxBytesOnLocalSubnet>0</rxBytesOnLocalSubnet>
+                        <packetsOut>0</packetsOut>
+                        <packetSentErrors>0</packetSentErrors>
+                        <encryptionFailures>0</encryptionFailures>
+                        <sequenceNumberOverFlowErrors>0</sequenceNumberOverFlowErrors>
+                        <packetsIn>0</packetsIn>
+                        <packetReceivedErrors>0</packetReceivedErrors>
+                        <decryptionFailures>0</decryptionFailures>
+                        <replayErrors>0</replayErrors>
+                        <integrityErrors>0</integrityErrors>
+                        <lastUpdatedTime>Jul 31 14:56:28 2017</lastUpdatedTime>
                       </tunnelStats>
                     </siteStatistics>
                     <timeStamp>1325766138</timeStamp>
