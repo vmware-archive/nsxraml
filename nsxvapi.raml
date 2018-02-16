@@ -5101,7 +5101,14 @@ securitySchemes:
       -----
     get:
       displayName: systemCPUInfoRead # dupfix systemCPUInfo
-      description: Retrieve NSX Manager CPU information.
+      description: | 
+        Retrieve NSX Manager CPU information.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method updated. Added **cpuUsageIndicator** parameter.
       responses:
         200:
           body:
@@ -5113,7 +5120,41 @@ securitySchemes:
                   <usedCapacity>47 MHZ</usedCapacity>
                   <freeCapacity>2752 MHZ</freeCapacity>
                   <usedPercentage>2</usedPercentage>
+                  <cpuUsageIndicator>LOW</cpuUsageIndicator>
                 </cpuInfo>
+    /cpuinfo/details:
+      displayName: systemCPUInfoDetails
+      description: |
+        NSX Manager CPU Details
+        -----
+      get:
+        displayName: systemCPUInfoDetailsRead o
+        description: | 
+          Retrieve details about NSX Manager CPU usage.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <cpuUsageDetails>
+                      <highCPUPeriodInSeconds>30</highCPUPeriodInSeconds>
+                      <cpuConsumedTasks>
+                          <taskCPUDetails>
+                              <moduleName>DynamicCriteriaEvaluation</moduleName>
+                              <taskType>com.vmware.vshield.vsm.task.utils.SimpleTaskManager$1</taskType>
+                              <totalTasks>66</totalTasks>
+                              <displayName>DynamicCriteriaEvaluation</displayName>
+                              <totalCPU>17274</totalCPU>
+                          </taskCPUDetails>
+                      </cpuConsumedTasks>
+                      <queuedTasks/>
+                  </cpuUsageDetails>     
   /system/uptime:
     displayName: systemUptime
     description: |
