@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#100;&#x62;&#x61;&#x63;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;">&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#100;&#x62;&#x61;&#x63;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#99;&#111;&#x6d;">&#x64;&#111;&#x63;&#102;&#x65;&#101;&#100;&#x62;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -37979,7 +37979,7 @@ usage crosses these thresholds.</p>
   <div class="content">
     <p><p>Retrieve threshold configuration for distributed firewall. </p>
 <p><strong>Note</strong>: This API will not display new threshold types such as 
-process memory, different types of heap memory, and concurrent connections. Use the new API introduced in NSX 6.4 which is <em>GET: /api/4.0/firewall/stats/thresholds/host/<hostId>?type=&lt;&gt;&amp;thresholdValue=&lt;&gt;</em>.</p>
+process memory, different types of heap memory, and concurrent connections. Use the new API introduced in NSX 6.4 which is <em>GET: /api/4.0/firewall/stats/thresholds/host/<hostId>?type=&lt;&gt;&thresholdValue;=&lt;&gt;</em>.</p>
 </p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
@@ -38164,6 +38164,8 @@ usage crosses these thresholds.</p>
     <span class="badge">required</span>
   </dt>
   <dd>
+      <p>ID of the host to check.</p>
+
   </dd>
 </dl>
   </div>
@@ -38174,8 +38176,31 @@ usage crosses these thresholds.</p>
     href="#GET/4.0/firewall/thresholds/host/{hostId}"
   ><h2>GET /4.0/firewall/thresholds/host/{hostId}</h2></a>
   <div class="content">
-    <p><p>Retrieve threshold configuration for distributed firewall like  CPU utilization, heap memory, calls per second, concurrent connections, process memory.<br>Use <em>GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=&lt;&gt;&amp;thresholdValue=&lt;&gt;</em>.</p>
+    <p><p>Retrieve threshold configuration for distributed firewall like  CPU utilization, heap memory, calls per second, concurrent connections, process memory.<br>Use <em>GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=&lt;&gt;&thresholdValue;=&lt;&gt;</em>.</p>
 </p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">type</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>DFW threshold types. Values are <em>CpuUtilization</em>, <em>HeapMemory</em>, <em>CallsPerSecond</em>, <em>ConcurrentConnections</em>, <em>ProcessMemory</em>,  <em>ALL</em>. Use <em>ALL</em> to retrieve  all threshold types.</p>
+
+  </dd>
+  <dt>
+    <span class="param">thresholdValue</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Objects with the current value greater than or equal to the <em>thresholdValue</em> are retrieved.</p>
+
+  </dd>
+</dl>
+    </div>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>

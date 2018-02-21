@@ -12243,7 +12243,7 @@ securitySchemes:
         Retrieve threshold configuration for distributed firewall. 
         
         **Note**: This API will not display new threshold types such as 
-        process memory, different types of heap memory, and concurrent connections. Use the new API introduced in NSX 6.4 which is *GET: /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue=<>*.
+        process memory, different types of heap memory, and concurrent connections. Use the new API introduced in NSX 6.4 which is *GET: /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue;=<>*.
     
       responses:
         200:
@@ -12346,12 +12346,27 @@ securitySchemes:
                 </thresholds>
             </firewallThresholds>
   /thresholds/host/{hostId}:
+      uriParameters:
+        hostId:
+          required: true
+          displayName: hostId
+          description: ID of the host to check.
       get:
         displayName: dfwThresholdstypeshostRead
         description: |
           Retrieve threshold configuration for distributed firewall like  CPU utilization, heap memory, calls per second, concurrent connections, process memory.  
-          Use *GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue=<>*.
-        
+          Use *GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue;=<>*.
+        queryParameters:
+          type:
+            displayName: type
+            description: |
+              DFW threshold types. Values are *CpuUtilization*, *HeapMemory*, *CallsPerSecond*, *ConcurrentConnections*, *ProcessMemory*,  *ALL*. Use *ALL* to retrieve  all threshold types.
+            required: false
+          thresholdValue :
+            displayName: thresholdValue 
+            description: |
+              Objects with the current value greater than or equal to the *thresholdValue* are retrieved.
+            required: false  
         responses:
           200:
             body:
