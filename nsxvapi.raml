@@ -19078,7 +19078,14 @@ securitySchemes:
         **extension** |Default value is *securelocaltrafficbyip=192.168.11.1*. To disable this extension, replace with securelocaltrafficbyip=0.|
       get:
         displayName: ipsecConfigRead
-        description: Retrieve IPsec configuration.
+        description: | 
+         Retrieve IPsec configuration.
+        
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added.
         responses:
           200:
             body:
@@ -19137,12 +19144,22 @@ securitySchemes:
                         <peerSubnets>
                           <subnet>192.168.2.0/24</subnet>
                         </peerSubnets>
+                        <ikeOption>ikev2</ikeOption> 
+                        <digestAlgorithm>sha-256</digestAlgorithm> 
+                        <responderOnly>false</responderOnly> 
                       </site>
-                    </sites>
+                      </sites>
                   </ipsec>
       put:
         displayName: ipsecConfigUpdate
-        description: Update IPsec VPN configuration.
+        description: |  
+         Update IPsec VPN configuration.
+        
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added.
         body:
           application/xml:
             example: |
@@ -19199,9 +19216,11 @@ securitySchemes:
                     <peerSubnets>
                       <subnet>192.168.2.0/24</subnet>
                     </peerSubnets>
-                    <extension>securelocaltrafficbyip=192.168.11.1</extension>
+                    <ikeOption>ikev2</ikeOption> 
+                    <digestAlgorithm>sha-256</digestAlgorithm> 
+                    <responderOnly>false</responderOnly> 
                   </site>
-                </sites>
+                  </sites>
               </ipsec>
       delete:
         displayName: ipsecConfigDelete
