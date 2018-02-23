@@ -20466,1044 +20466,212 @@ securitySchemes:
               </actionsByCategory>
             </securityPolicy>
           schema: securityPolicyCreate
-    /{ID}:
-      displayName: securityPolicyID
+    /all:
+      displayName: securityPolicyAll
       description: |
-        Working With a Specific Security Policy
-        ------------------
-      uriParameters:
-        ID:
-          required: true
-          displayName: ID
-          description: |
-            Security policy, for example, *policy-5*.
-      get:
-        displayName: securityPolicyIDRead
-        description: |
-          Retrieve security policy information. To view all security policies,
-          specify *all* as the security policy ID.
-        responses:
-          200:
-            body:
-              application/xml:
-                example: |
-                  <securityPolicy>
-                    <objectId>policy-5</objectId>
-                    <objectTypeName>Policy</objectTypeName>
-                    <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                    <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                    <revision>10</revision>
-                    <type>
-                      <typeName>Policy</typeName>
-                    </type>
-                    <name>Test Security Policy</name>
-                    <description></description>
-                    <scope>
-                      <id>globalroot-0</id>
-                      <objectTypeName>GlobalRoot</objectTypeName>
-                      <name>Global</name>
-                    </scope>
-                    <clientHandle></clientHandle>
-                    <extendedAttributes/>
-                    <isUniversal>false</isUniversal>
-                    <universalRevision>0</universalRevision>
-                    <inheritanceAllowed>false</inheritanceAllowed>
-                    <precedence>4300</precedence>
-                    <securityGroupBinding>
-                      <objectId>securitygroup-10</objectId>
-                      <objectTypeName>SecurityGroup</objectTypeName>
-                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                      <revision>2</revision>
-                      <type>
-                        <typeName>SecurityGroup</typeName>
-                      </type>
-                      <name>Local_Web_Tier</name>
-                      <description></description>
-                      <scope>
-                        <id>globalroot-0</id>
-                        <objectTypeName>GlobalRoot</objectTypeName>
-                        <name>Global</name>
-                      </scope>
-                      <clientHandle></clientHandle>
-                      <extendedAttributes/>
-                      <isUniversal>false</isUniversal>
-                      <universalRevision>0</universalRevision>
-                    </securityGroupBinding>
-                    <actionsByCategory>
-                      <category>firewall</category>
-                      <action class="firewallSecurityAction">
-                        <objectId>firewallpolicyaction-1</objectId>
-                        <objectTypeName>FirewallPolicyAction</objectTypeName>
-                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                        <revision>7</revision>
-                        <type>
-                          <typeName>FirewallPolicyAction</typeName>
-                        </type>
-                        <name>allow to DB_SG</name>
-                        <scope>
-                          <id>globalroot-0</id>
-                          <objectTypeName>GlobalRoot</objectTypeName>
-                          <name>Global</name>
-                        </scope>
-                        <clientHandle></clientHandle>
-                        <extendedAttributes/>
-                        <isUniversal>false</isUniversal>
-                        <universalRevision>0</universalRevision>
-                        <category>firewall</category>
-                        <executionOrder>1</executionOrder>
-                        <isEnabled>true</isEnabled>
-                        <isActionEnforced>false</isActionEnforced>
-                        <secondarySecurityGroup>
-                          <objectId>securitygroup-12</objectId>
-                          <objectTypeName>SecurityGroup</objectTypeName>
-                          <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                          <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                          <revision>2</revision>
-                          <type>
-                            <typeName>SecurityGroup</typeName>
-                          </type>
-                          <name>Local_DB_Tier</name>
-                          <description></description>
-                          <scope>
-                            <id>globalroot-0</id>
-                            <objectTypeName>GlobalRoot</objectTypeName>
-                            <name>Global</name>
-                          </scope>
-                          <clientHandle></clientHandle>
-                          <extendedAttributes/>
-                          <isUniversal>false</isUniversal>
-                          <universalRevision>0</universalRevision>
-                        </secondarySecurityGroup>
-                        <invalidSecondaryContainers>false</invalidSecondaryContainers>
-                        <invalidApplications>false</invalidApplications>
-                        <logged>true</logged>
-                        <action>allow</action>
-                        <direction>outbound</direction>
-                        <outsideSecondaryContainer>false</outsideSecondaryContainer>
-                      </action>
-                    </actionsByCategory>
-                    <statusesByCategory>
-                      <category>firewall</category>
-                      <status>in_sync</status>
-                    </statusesByCategory>
-                  </securityPolicy>
-      put:
-        displayName: securityPolicyIDUpdate
-        description: |
-          Edit a security policy.
-          
-          To update a security policy, you must first fetch it.
-          Then edit the received XML and pass it back as the input. The
-          specified configuration replaces the current configuration.
-          
-          Security group mappings provided in the PUT call replaces the
-          security group mappings for the security policy. To remove all
-          mappings, delete the securityGroupBindings parameter.
-          
-          You can add or update actions for the security policy by editing the
-          actionsByCategory parameter. To remove all actions (belonging to all
-          categories), delete the actionsByCategory parameter. To remove
-          actions belonging to a specific category, delete the block for that
-          category.
-        body:
-          application/xml:
-            example: |
-              <securityPolicy>
-                <securityPolicy>
-                  <name></name>
-                  <description></description>
-                  <precedence></precedence>
-                  <parent>
-                    <objectId></objectId>
-                  </parent>
-                  <securityGroupBinding>
-                    <objectId></objectId>
-                  </securityGroupBinding>
-                  <actionsByCategory>
-                    <category></category>
-                    <action class="">
-                      <name></name>
-                      <description></description>
-                      <category></category>
-                      <actionType></actionType>
-                      <isActionEnforced></isActionEnforced>
-                      <isActive></isActive>
-                      <isEnabled></isEnabled>
-                      <secondarySecurityGroup>
-                        <objectId></objectId>
-                      </secondarySecurityGroup>
-                      <applications>
-                        <application>
-                          <objectId></objectId>
-                        </application>
-                        <applicationGroup>
-                          <objectId></objectId>
-                        </applicationGroup>
-                      </applications>
-                      <logged></logged>
-                      <scope>
-                        <id></id>
-                        <name></name>
-                        <objectTypeName></objectTypeName>
-                      </scope>
-                    </action>
-                    <direction></direction>
-                    <outsideSecondaryContainer></outsideSecondaryContainer>
-                  </actionsByCategory>
-                </securityPolicy>
-              </securityPolicy>
-            schema: securityPolicyIDUpdate
-      delete:
-        displayName: securityPolicyIDDelete
-        description: |
-          Delete a security policy.
-          
-          When you delete a security policy, its child security policies and
-          all the actions in it are deleted as well.
-        queryParameters:
-          force:
-            type: boolean
-            displayName: force
-            description: |
-              If set to true, the security policy is deleted even if it is in use.
-            required: false
-      /sgbinding/{securityGroupId}:
-        displayName: securityPolicyBind
-        description: |
-          Working With Security Group Bindings
-          ----
-        uriParameters:
-          securityGroupId:
-            displayName: securityGroupId
-            description: Security group ID, for example, *securitygroup-11*.
-            required: true
-        put:
-          displayName: securityPolicyBindingUpdate
-          description: |
-            Apply the specified security policy to the specified security group.
-      /securityactions:
-        displayName: securityActions
-        description: |
-          Working With Security Actions on a Security Policy
-          -------------
-        get:
-          displayName: securityActionsRead
-          description: |
-            Retrieve all security actions applicable on a security policy.
-            
-            This list includes security actions from associated parent
-            security policies, if any. Security actions per Execution Order
-            Category are sorted based on the weight of security actions in
-            descending order.
-          responses:
-            200:
-              body:
-                application/xml:
-                  example: |
-                    <securityPolicies>
-                      <securityPolicy></securityPolicy>
-                      <securityPolicy></securityPolicy>
-                    </securityPolicies>
-    /maxprecedence:
-      displayName: securityPolicyPrecedence
-      description: |
-        Working with Service Composer Policy Precedence
-        --------
-      get:
-        displayName: securityPolicyPrecedenceRead
-        description: |
-          Retrieve the highest precedence (or weight) of the Service Composer
-          security policies.
-          
-          The response body contains only the maximum precedence.
-          
-          Example:
-          
-          ```
-          6300
-          ```
-    /status:
-      displayName: securityPolicyStatus
-      description: |
-        Working With Service Composer Status
-        ------------------------------------
-      get:
-        displayName: securityPolicyStatusRead
-        description: |
-          Retrieve the consolidated status of Service Composer.
-          
-          The possible return of value for status are: *in_sync*,
-          *in_progress*, *out_of_sync*, and *pending*.
-          
-          **Method history:**
-          
-          Release | Modification
-          --------|-------------
-          6.2.3 | Method introduced.
-        responses:
-          200:
-            body:
-              application/xml:
-                example: |
-                  <serviceComposerStatus>
-                    <status>in_sync</status>
-                  </serviceComposerStatus>
-    /alarms/all:
-      displayName: securityPolicyAlarmsAll
-      description: |
-        Working With All Service Composer Alarms
-        ------------
-      get:
-        displayName: securityPolicyAlarmsAllList # update existing addition securityPolicyAlarmsAllRead
-        description: |
-          Retrieve all system alarms that are raised at Service Composer
-          level and policy level.
-          
-          **Method history:**
-          
-          Release | Modification
-          --------|-------------
-          6.2.3 | Method introduced.
-        responses:
-          200:
-            body:
-              application/xml:
-                example: |
-                  <systemAlarms>
-                    <systemAlarm>
-                      <eventId></eventId>
-                      <timestamp></timestamp>
-                      <severity></severity>
-                      <eventSource></eventSource>
-                      <eventCode></eventCode>
-                      <message></message>
-                      <module></module>
-                      <objectId></objectId>
-                      <reporterName></reporterName>
-                      <reporterType></reporterType>
-                      <sourceType></sourceType>
-                      <displayName></displayName>
-                      <eventMetadata>
-                        <data>
-                        <key></key>
-                        <value></value>
-                        </data>
-                        <data>
-                        ...
-                        </data>
-                        ...
-                        <data>
-                        ...
-                        </data>
-                      </eventMetadata>
-                      <resolutionAttempted></resolutionAttempted>
-                      <resolvable></resolvable>
-                      <alarmId></alarmId>
-                      <alarmCode></alarmCode>
-                      <alarmSource></alarmSource>
-                      <alarmBeingResolved></alarmBeingResolved>
-                      <alarmMetadata>
-                        <data>
-                        <key></key>
-                        <value></value>
-                        </data>
-                        <data>
-                        ...
-                        </data>
-                        ...
-                        <data>
-                        ...
-                        </data>
-                      </alarmMetadata>
-                    </systemAlarm>
-                  </systemAlarms>
-    /serviceprovider/firewall:
-      displayName: serviceComposerFirewallAppliedTo
-      description: |
-        Working With Service Composer Firewall Applied To Setting
-        -------------
-        You can set the applied to setting for all firewall rules created
-        though Service Composer to either Distributed Firewall or Policy's
-        Security Groups. By default, the applied to is set to Distributed
-        Firewall. When Service Composer firewall rules have an applied to
-        setting of distributed firewall, the rules are applied to all clusters
-        on which distributed firewall is installed. If the firewall rules are
-        set to apply to the policy's security groups, you have more granular
-        control over the firewall rules, but may need multiple security
-        policies or firewall rules to get the desired result.
-        
-        **Applied To Values for Service Composer Firewall Rules**
-        
-        Value | Description
-        ------|----------
-        dfw_only | Firewall rules are applied to all clusters on which Distributed Firewall is installed.
-        policy_security_group | Firewall rules are applied to security groups on which the security policy is applied.
-      get:
-        displayName: serviceComposerFirewallAppliedToRead
-        description: |
-          Retrieve the Service Composer firewall applied to setting.
-        responses:
-          200:
-            body:
-              application/xml:
-                example: |
-                  <SecurityPolicyFirewallConfig>
-                    <appliedTo>dfw_only</appliedTo>
-                  </SecurityPolicyFirewallConfig>
-      put:
-        displayName: serviceComposerFirewallAppliedToUpdate
-        description: |
-          Update the Service Composer firewall applied to setting.
-        body:
-          application/xml:
-            example: |
-              <SecurityPolicyFirewallConfig>
-                <appliedTo>policy_security_group</appliedTo>
-              </SecurityPolicyFirewallConfig>
-    /hierarchy:
-      displayName: hierarchy
-      description: |
-        Working With Service Composer Configuration Import and Export
+        Working With all Security Policies
         -----
-      post:
-        displayName: hierarchyCreate
-        description: |
-          Import a security policy configuration
-          
-          You can create multiple security policies and parent-child
-          hierarchies using the data fetched through export. All objects
-          including security policies, security groups and security actions
-          are created on a global scope.
-          
-          The policy that is being imported needs to be included in the
-          request body.
-          
-          If a suffix is specified, it is added after the names of the
-          security policy, security action, and security group objects in the
-          exported XML. The suffix can thus be used to differentiate locally
-          created objects from imported ones.
-          
-          The location of the newly created security policy objects (multiple
-          locations are separated by commas) is populated in the Location
-          header of the response.
-        queryParameters:
-          suffix:
-            displayName: suffix
-            description:
-              A suffix to add after the names of the objects in the imported
-              XML.
-            required: false
-        body:
-          application/xml:
-            example: |
-              <securityPolicyHierarchy>
-                <name></name>
-                <description></description>
-                <securityPolicy></securityPolicy>
-                <securityGroup></securityGroup>
-              </securityPolicyHierarchy>
-            schema: hierarchyCreate
+          Retrieve information for all security policies. The **startIndex** and **pageSize** query parameters control how this information is displayed. **startIndex** determines
+          which security policy to begin the list with, and **pageSize** determines how many security policies to list.
       get:
-        displayName: hierarchyRead
+        displayName: securityPolicyRead
         description: |
-          Export a Service Composer configuration (along with the
-          security groups to which the security policies are mapped).
-          You can save the response to a file.  The saved configuration can be
-          used as a backup for situations where you may accidentally delete a
-          policy configuration, or it can be exported for use in another NSX
-          Manager environment.
+          Retrieve information for all security policies.
           
-          If a prefix is specified, it is added before the names of the
-          security policy, security action, and security group objects in the
-          exported XML. The prefix can thus be used to indicate the remote
-          source from where the hierarchy was exported.
-        queryParameters:
-          policyIds:
-            displayName: policyIds
-            description: |
-              Comma separated list of security policy IDs to export. If
-              omitted, all security policy IDs are exported.
-            required: false
-          prefix:
-            displayName: prefix
-            description: |
-              A prefix to add before the names of the objects in the exported
-              XML.
-            required: false
-  /securityaction/{category}/virtualmachines:
-    displayName: securityActionVM
-    description: |
-      Working With Virtual Machines with Security Actions Applied
-      --------------
-    uriParameters:
-      category:
-        displayName: category
-        description: |
-          Category of security action. Choice of *endpoint* (Guest
-          Introspection), *firewall* (Distributed Firewall) or
-          *traffic_steering* (Network Introspection/Network Extensibility).
-    get:
-      displayName: securityActionVMRead
-      description: |
-        Retrieve all VirtualMachine objects on which security action of a
-        given category and attribute has been applied.
-      queryParameters:
-        attributeKey:
-          displayName: attributeKey
-          description: Attribute key.
-        attributeValue:
-          displayName: attributeValue
-          description: Attribute value.
-      responses:
-        200:
-          body:
-            application/xml:
-              example: |
-                <vmnodes>
-                  <vmnode>
-                    <vmId></vmId>
-                    <vmName></vmName>
-                  </vmnode>
-                  <vmnode>
-                    <vmId></vmId>
-                    <vmName></vmName>
-                  </vmnode>
-                </vmnodes>
-  /securitygroup/{ID}/securityactions:
-    displayName: securityActionSecGroup
-    description: |
-      Working With Security Actions Applicable on a Security Group
-      ----
-    uriParameters:
-      ID:
-        required: true
-        displayName: ID
-        description: Specified security group.
-    get:
-      displayName: securityActionRead
-      description: |
-        Retrieve all security actions applicable on a security group for all
-        ExecutionOrderCategories. The list is sorted based on the weight of
-        security actions in descending order.  The **isActive** tag indicates
-        if a securityaction will be applied (by the enforcement engine) on the
-        security group.
-      responses:
-        200:
-          body:
-            application/xml:
-              example: |
-                <securityActionsByCategoryMap>
-                  <actionsByCategory>
-                    <category>firewall</category>
-                    <action  class="firewallSecurityAction">
-                      <objectId></objectId>
-                      <objectTypeName></objectTypeName>
-                      <vsmUuid></vsmUuid>
-                      <revision></revision>
-                      <type>
-                        <typeName></typeName>
-                      </type>
-                      <name>name</name>
-                      <description>description</description>
-                      <category></category>
-                      <executionOrder></executionOrder>
-                      <actionType></actionType>
-                      <isActionEnforced></isActionEnforced>
-                      <isActive></isActive>
-                      <isEnabled></isEnabled>
-                      <secondarySecurityGroup>
-                        <objectId></objectId>
-                        <objectTypeName></objectTypeName>
-                        <vsmUuid></vsmUuid>
-                        <revision></revision>
-                        <type>
-                          <typeName></typeName>
-                        </type>
-                        <name>name</name>
-                        <description>description</description>
-                        <scope>
-                          <id></id>
-                          <objectTypeName></objectTypeName>
-                          <name>name</name>
-                          <description>description</description>
-                        </scope>
-                        <extendedAttributes></extendedAttributes>
-                      </secondarySecurityGroup>
-                      <secondarySecurityGroup>
-                        ...
-                      </secondarySecurityGroup>
-                      ...
-                      ...
-                      <secondarySecurityGroup>
-                        ...
-                      </secondarySecurityGroup>
-                      <securityPolicy>
-                        <objectId></objectId>
-                        <objectTypeName></objectTypeName>
-                        <vsmUuid></vsmUuid>
-                        <revision></revision>
-                        <type>
-                          <typeName></typeName>
-                        </type>
-                        <name>name</name>
-                        <description>description</description>
-                        <scope>
-                          <id></id>
-                          <objectTypeName></objectTypeName>
-                          <name>name</name>
-                          <description>description</description>
-                        </scope>
-                      </securityPolicy>
-                      <invalidSecondaryContainers></invalidSecondaryContainers>
-                      <applications>
-                        <application>
-                          <objectId></objectId>
-                          <objectTypeName></objectTypeName>
-                          <vsmUuid></vsmUuid>
-                          <revision></revision>
-                          <type>
-                            <typeName></typeName>
-                          </type>
-                          <name></name>
-                          <scope>
-                            <id></id>
-                            <objectTypeName></objectTypeName>
-                            <name></name>
-                          </scope>
-                          <clientHandle></clientHandle>
-                           <extendedAttributes></extendedAttributes>
-                          <inheritanceAllowed></inheritanceAllowed>
-                          <element>
-                            <applicationProtocol></applicationProtocol>
-                            <value></value>
-                          </element>
-                        </application>
-                        <application>
-                          ...
-                        </application>
-                        ...
-                        ...
-                      </applications>
-                      <invalidApplications>false</invalidApplications>
-                      <logged>false</logged>
-                      <action>block</action>
-                      <direction>inbound</direction>
-                      <outsideSecondaryContainer>true</outsideSecondaryContainer>
-                    </action>
-                    <action>
-                    </action>
-                    ...
-                    ...
-                    <action>
-                      ...
-                    </action>
-                  </actionsByCategory>
-                  <actionsByCategory>
-                    <category>endpoint</category>
-                    <action class="endpointSecurityAction">
-                      <objectId></objectId>
-                      <objectTypeName></objectTypeName>
-                      <vsmUuid></vsmUuid>
-                      <revision></revision>
-                      <type>
-                        <typeName></typeName>
-                      </type>
-                      <name>name</name>
-                      <description>description</description>
-                      <category></category>
-                      <executionOrder></executionOrder>
-                      <actionType></actionType>
-                      <isActionEnforced></isActionEnforced>
-                      <isActive></isActive>
-                      <isEnabled></isEnabled>
-                      <securityPolicy>
-                        <objectId></objectId>
-                        <objectTypeName></objectTypeName>
-                        <vsmUuid></vsmUuid>
-                        <revision></revision>
-                        <type>
-                          <typeName></typeName>
-                        </type>
-                        <name></name>
-                        <description></description>
-                        <scope>
-                          <id></id>
-                          <objectTypeName></objectTypeName>
-                          <name>name</name>
-                          <description>description</description>
-                        </scope>
-                      </securityPolicy>
-                      <serviceName></serviceName>
-                      <serviceId></serviceId>
-                      <invalidServiceId></invalidServiceId>
-                      <ServiceProfile>
-                        <objectId>serviceprofile-1</objectId>
-                        ...
-                      </ServiceProfile>
-                      <invalidServiceProfile>false</invalidServiceProfile>
-                    </action>
-                    <action>
-                    </action>
-                    ...
-                    ...
-                    <action>
-                      ...
-                    </action>
-                  </actionsByCategory>
-                  <actionsByCategory>
-                    <category>traffic_steering</category>
-                    <action class="trafficSteeringSecurityAction">
-                      <objectId></objectId>
-                      <objectTypeName></objectTypeName>
-                      <vsmUuid></vsmUuid>
-                      <revision></revision>
-                      <type>
-                        <typeName></typeName>
-                      </type>
-                      <name>name</name>
-                      <description>description</description>
-                      <category></category>
-                      <executionOrder></executionOrder>
-                      <actionType></actionType>
-                      <isActionEnforced></isActionEnforced>
-                      <isActive></isActive>
-                      <isEnabled></isEnabled>
-                      <securityPolicy>
-                        <objectId></objectId>
-                        <objectTypeName></objectTypeName>
-                        <vsmUuid></vsmUuid>
-                        <revision></revision>
-                        <type>
-                          <typeName></typeName>
-                        </type>
-                        <name>name</name>
-                        <description>description</description>
-                        <scope>
-                          <id></id>
-                          <objectTypeName></objectTypeName>
-                          <name>name</name>
-                          <description>description</description>
-                        </scope>
-                      </securityPolicy>
-                      <logged></logged>
-                      <serviceProfile>
-                        <objectId></objectId>
-                        <objectTypeName></objectTypeName>
-                        <vsmUuid></vsmUuid>
-                        <revision></revision>
-                        <type>
-                          <typeName></typeName>
-                        </type>
-                        <name>P</name>
-                        <clientHandle>
-                        </clientHandle>
-                         <extendedAttributes></extendedAttributes>
-                        <profileAttributes>
-                          <id></id>
-                          <revision></revision>
-                          <attribute>
-                            <id></id>
-                            <revision></revision>
-                            <key></key>
-                            <name></name>
-                            <value></value>
-                          </attribute>
-                          <attribute>
-                            ...
-                          </attribute>
-                        </profileAttributes>
-                        <service>
-                          <objectId></objectId>
-                          <objectTypeName></objectTypeName>
-                          <vsmUuid></vsmUuid>
-                          <revision></revision>
-                          <type>
-                            <typeName></typeName>
-                          </type>
-                          <name>name</name>
-                          <clientHandle></clientHandle>
-                           <extendedAttributes></extendedAttributes>
-                        </service>
-                        <category></category>
-                        <vendorTemplate>
-                          <id></id>
-                          <revision></revision>
-                          <name>name</name>
-                          <idFromVendor></idFromVendor>
-                          <vendorAttributes>
-                            <id></id>
-                            <revision></revision>
-                          </vendorAttributes>
-                        </vendorTemplate>
-                        <status></status>
-                        <vendorAttributes>
-                          <id></id>
-                          <revision></revision>
-                        </vendorAttributes>
-                        <runtime>
-                          <nonCompliantDvpg/>
-                          <nonCompliantVwire></nonCompliantVwire>
-                        </runtime>
-                        <serviceProfileBinding>
-                          <distributedVirtualPortGroups></distributedVirtualPortGroups>
-                          <virtualWires></virtualWires>
-                          <excludedVnics></excludedVnics>
-                          <virtualServers></virtualServers>
-                        </serviceProfileBinding>
-                      </serviceProfile>
-                      <redirect></redirect>
-                    </action>
-                    <action>
-                    </action>
-                    ...
-                    ...
-                    <action>
-                      ...
-                    </action>
-                  </actionsByCategory>
-                </securityActionsByCategoryMap>
-  /virtualmachine/{ID}/securityactions:
-    displayName: vmApplicableSecurityAction
-    description: |
-      Working With Security Actions Applicable on a Virtual Machine
-      ----
-    uriParameters:
-      ID:
-        displayName: ID
-        description: VM ID.
-        required: true
-    get:
-      displayName: vmApplicableSecurityActionRead # dupfix vmApplicableSecurityAction
-      description: |
-        You can retrieve the security actions applicable on a virtual machine for
-        all ExecutionOrderCategories. The list of SecurityActions per
-        ExecutionOrderCategory is sorted based on the weight of security actions
-        in descending order. The **isActive** tag indicates whether a security
-        action will be applied (by the enforcement engine) on the virtual
-        machine.
-      responses:
-        200:
-          body:
-            application/xml:
-              example: |
-                <securityPolicies>
-                  <securityPolicy></securityPolicy>
-                  <securityPolicy></securityPolicy>
-                </securityPolicies>
-  /serviceprovider/firewall:
-    displayName: serviceComposerDFW # existing change serviceComposerDFWSync
-    description: |
-      Working With Service Composer Firewall
-      --------------
-    get:
-      displayName: serviceComposerDFWRead # existing change serviceComposerDFWSyncRead
-      description: |
-        If Service Composer goes out of sync with Distributed Firewall, you
-        must re-synchronize Service Composer rules with firewall rules. If
-        Service Composer stays out of sync, firewall configuration may not
-        stay enforced as expected.
-        
-        This GET method can perform the following functions, depending on the
-        request body provided. **Note:** Some REST clients do not allow you to
-        specify a request body with a GET request.
-        
-        ### Check if Service Composer firewall and Distributed Firewall are in sync
-        
-        **Note: Deprecated.** Use `GET /2.0/services/policy/securitypolicy/status` instead. 
-        
-        * If they are in sync, the response body does not contain any data.  
-        * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>getServiceComposerFirewallOutOfSyncTimestamp</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Synchronize Service Composer firewall with Distributed Firewall
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>forceSync</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Retrieve the state of the auto save draft property in Service Composer
-        
-        Retrieve the state of the auto save draft property in Service
-        Composer. Response is true or false.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>getAutoSaveDraft</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Change the state of the auto save draft property in Service Composer
-        
-        **Note: Deprecated.**
-        
-        Change the state of the auto save draft property in Service Composer.
-        Provide request body value of true or false.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>autoSaveDraft</key>
-            <value>false</value>
-          </keyValue>
-        </keyValues> 
-        ```
-        
-        **Method history:**
-        
+          **Method history:**
+          
           Release | Modification
           --------|-------------
-          6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
-      body:
-        application/xml:
-          example: |
-            <keyValues>
-              <keyValue>
-                <key></key>
-                <value></value>
-              </keyValue>
-            </keyValues> 
-  /securitygroup/{ID}/securitypolicies:
-    displayName: secGroupPolicies
-    description: |
-      Working With Security Policies Mapped to a Security Group
-      -----
-    uriParameters:
-      ID:
-        displayName: ID
-        description: Specified security group ID
-        required: true
-    get:
-      displayName: secGroupPoliciesRead
-      description: |
-        Retrieve security policies mapped to a security group.
-        
-        The list is sorted based on the precedence of security policy precedence
-        in descending order. The security policy with the highest precedence
-        (highest numeric value) is the first entry (index = 0) in the list.
-      responses:
-        200:
-          body:
-            application/xml:
-              example: |
-                <securityPolicies>
-                  <securityPolicy>
-                    <objectId>policy-5</objectId>
-                    <objectTypeName>Policy</objectTypeName>
-                    <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                    <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                    <revision>10</revision>
-                    <type>
-                      <typeName>Policy</typeName>
-                    </type>
-                    <name>Test Security Policy</name>
-                    <description></description>
-                    <scope>
-                      <id>globalroot-0</id>
-                      <objectTypeName>GlobalRoot</objectTypeName>
-                      <name>Global</name>
-                    </scope>
-                    <clientHandle></clientHandle>
-                    <extendedAttributes/>
-                    <isUniversal>false</isUniversal>
-                    <universalRevision>0</universalRevision>
-                    <inheritanceAllowed>false</inheritanceAllowed>
-                    <precedence>4300</precedence>
-                    <securityGroupBinding>
-                      <objectId>securitygroup-10</objectId>
-                      <objectTypeName>SecurityGroup</objectTypeName>
-                      <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                      <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                      <revision>2</revision>
-                      <type>
-                        <typeName>SecurityGroup</typeName>
-                      </type>
-                      <name>Local_Web_Tier</name>
-                      <description></description>
-                      <scope>
-                        <id>globalroot-0</id>
-                        <objectTypeName>GlobalRoot</objectTypeName>
-                        <name>Global</name>
-                      </scope>
-                      <clientHandle></clientHandle>
-                      <extendedAttributes/>
-                      <isUniversal>false</isUniversal>
-                      <universalRevision>0</universalRevision>
-                    </securityGroupBinding>
-                    <actionsByCategory>
-                      <category>firewall</category>
-                      <action class="firewallSecurityAction">
-                        <objectId>firewallpolicyaction-1</objectId>
-                        <objectTypeName>FirewallPolicyAction</objectTypeName>
-                        <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                        <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                        <revision>7</revision>
+          6.4.0 | Method updated. Output is now paginated. **pageSize** and **startIndex** query parameters added.
+        queryParameters:
+          startIndex:
+            displayName: startIndex
+            description: Use *all?startIndex=2&pageSize=20*. Default value is 0.
+            default: 0
+          pageSize:
+              displayName: pageSize
+              description: Use *all?startIndex=2&pageSize=20*. Default value is 1024.
+              default: 1024
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <securityPolicies>
+                    <pagingInfo>
+                        <pageSize>20</pageSize>
+                        <startIndex>2</startIndex>
+                        <totalCount>4</totalCount>
+                        <sortOrderAscending>false</sortOrderAscending>
+                        <sortBy>precedence</sortBy>
+                    </pagingInfo>
+                    <securityPolicy>
+                        <objectId>policy-2</objectId>
+                        <objectTypeName>Policy</objectTypeName>
+                        <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                        <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                        <revision>6</revision>
                         <type>
-                          <typeName>FirewallPolicyAction</typeName>
+                            <typeName>Policy</typeName>
                         </type>
-                        <name>allow to DB_SG</name>
+                        <name>spo_eventcontrol_collect_listen_stop</name>
                         <scope>
-                          <id>globalroot-0</id>
-                          <objectTypeName>GlobalRoot</objectTypeName>
-                          <name>Global</name>
-                        </scope>
-                        <clientHandle></clientHandle>
-                        <extendedAttributes/>
-                        <isUniversal>false</isUniversal>
-                        <universalRevision>0</universalRevision>
-                        <category>firewall</category>
-                        <executionOrder>1</executionOrder>
-                        <isEnabled>true</isEnabled>
-                        <isActionEnforced>false</isActionEnforced>
-                        <secondarySecurityGroup>
-                          <objectId>securitygroup-12</objectId>
-                          <objectTypeName>SecurityGroup</objectTypeName>
-                          <vsmUuid>423A993F-BEE6-1285-58F1-54E48D508D90</vsmUuid>
-                          <nodeId>916287b3-761d-430b-8ab2-83878dfe3e7f</nodeId>
-                          <revision>2</revision>
-                          <type>
-                            <typeName>SecurityGroup</typeName>
-                          </type>
-                          <name>Local_DB_Tier</name>
-                          <description></description>
-                          <scope>
                             <id>globalroot-0</id>
                             <objectTypeName>GlobalRoot</objectTypeName>
                             <name>Global</name>
-                          </scope>
-                          <clientHandle></clientHandle>
-                          <extendedAttributes/>
-                          <isUniversal>false</isUniversal>
-                          <universalRevision>0</universalRevision>
-                        </secondarySecurityGroup>
-                        <invalidSecondaryContainers>false</invalidSecondaryContainers>
-                        <invalidApplications>false</invalidApplications>
-                        <logged>true</logged>
-                        <action>allow</action>
-                        <direction>outbound</direction>
-                        <outsideSecondaryContainer>false</outsideSecondaryContainer>
-                      </action>
-                    </actionsByCategory>
-                    <statusesByCategory>
-                      <category>firewall</category>
-                      <status>in_sync</status>
-                    </statusesByCategory>
-                  </securityPolicy>
-                </securityPolicies>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes>
+                            <extendedAttribute>
+                                <name>isHidden</name>
+                                <value>true</value>
+                            </extendedAttribute>
+                        </extendedAttributes>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <inheritanceAllowed>false</inheritanceAllowed>
+                        <precedence>3100</precedence>
+                        <securityGroupBinding>
+                            <objectId>securitygroup-3</objectId>
+                            <objectTypeName>SecurityGroup</objectTypeName>
+                            <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                            <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                            <revision>4</revision>
+                            <type>
+                                <typeName>SecurityGroup</typeName>
+                            </type>
+                            <name>sg_eventcontrol_collect_listen_stop</name>
+                            <scope>
+                                <id>globalroot-0</id>
+                                <objectTypeName>GlobalRoot</objectTypeName>
+                                <name>Global</name>
+                            </scope>
+                            <clientHandle></clientHandle>
+                            <extendedAttributes>
+                                <extendedAttribute>
+                                    <name>isHidden</name>
+                                    <value>true</value>
+                                </extendedAttribute>
+                            </extendedAttributes>
+                            <isUniversal>false</isUniversal>
+                            <universalRevision>0</universalRevision>
+                        </securityGroupBinding>
+                        <actionsByCategory>
+                            <category>eventcontrol</category>
+                            <action class="eventcontrolSecurityAction">
+                                <objectId>eventcontrolpolicyaction-2</objectId>
+                                <objectTypeName>EventControlPolicyAction</objectTypeName>
+                                <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                                <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                                <revision>3</revision>
+                                <type>
+                                    <typeName>EventControlPolicyAction</typeName>
+                                </type>
+                                <name>policyaction_eventcontrol_collect_listen_stop</name>
+                                <scope>
+                                    <id>globalroot-0</id>
+                                    <objectTypeName>GlobalRoot</objectTypeName>
+                                    <name>Global</name>
+                                </scope>
+                                <clientHandle></clientHandle>
+                                <extendedAttributes/>
+                                <isUniversal>false</isUniversal>
+                                <universalRevision>0</universalRevision>
+                                <category>eventcontrol</category>
+                                <executionOrder>1</executionOrder>
+                                <isEnabled>true</isEnabled>
+                                <isActionEnforced>false</isActionEnforced>
+                                <serviceId>service-4</serviceId>
+                                <serviceName>SAM Data Collection Service</serviceName>
+                                <vendorTemplateId>142</vendorTemplateId>
+                                <vendorTemplateName>Collect Listen Stop Events</vendorTemplateName>
+                            </action>
+                        </actionsByCategory>
+                    </securityPolicy>
+                    <securityPolicy>
+                        <objectId>policy-1</objectId>
+                        <objectTypeName>Policy</objectTypeName>
+                        <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                        <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                        <revision>6</revision>
+                        <type>
+                            <typeName>Policy</typeName>
+                        </type>
+                        <name>spo_eventcontrol_collect_listen_start</name>
+                        <scope>
+                            <id>globalroot-0</id>
+                            <objectTypeName>GlobalRoot</objectTypeName>
+                            <name>Global</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes>
+                            <extendedAttribute>
+                                <name>isHidden</name>
+                                <value>true</value>
+                            </extendedAttribute>
+                        </extendedAttributes>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <inheritanceAllowed>false</inheritanceAllowed>
+                        <precedence>3000</precedence>
+                        <securityGroupBinding>
+                            <objectId>securitygroup-2</objectId>
+                            <objectTypeName>SecurityGroup</objectTypeName>
+                            <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                            <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                            <revision>4</revision>
+                            <type>
+                                <typeName>SecurityGroup</typeName>
+                            </type>
+                            <name>sg_eventcontrol_collect_listen_start</name>
+                            <scope>
+                                <id>globalroot-0</id>
+                                <objectTypeName>GlobalRoot</objectTypeName>
+                                <name>Global</name>
+                            </scope>
+                            <clientHandle></clientHandle>
+                            <extendedAttributes>
+                                <extendedAttribute>
+                                    <name>isHidden</name>
+                                    <value>true</value>
+                                </extendedAttribute>
+                            </extendedAttributes>
+                            <isUniversal>false</isUniversal>
+                            <universalRevision>0</universalRevision>
+                        </securityGroupBinding>
+                        <actionsByCategory>
+                            <category>eventcontrol</category>
+                            <action class="eventcontrolSecurityAction">
+                                <objectId>eventcontrolpolicyaction-1</objectId>
+                                <objectTypeName>EventControlPolicyAction</objectTypeName>
+                                <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                                <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                                <revision>3</revision>
+                                <type>
+                                    <typeName>EventControlPolicyAction</typeName>
+                                </type>
+                                <name>policyaction_eventcontrol_collect_listen_start</name>
+                                <scope>
+                                    <id>globalroot-0</id>
+                                    <objectTypeName>GlobalRoot</objectTypeName>
+                                    <name>Global</name>
+                                </scope>
+                                <clientHandle></clientHandle>
+                                <extendedAttributes/>
+                                <isUniversal>false</isUniversal>
+                                <universalRevision>0</universalRevision>
+                                <category>eventcontrol</category>
+                                <executionOrder>1</executionOrder>
+                                <isEnabled>true</isEnabled>
+                                <isActionEnforced>false</isActionEnforced>
+                                <serviceId>service-4</serviceId>
+                                <serviceName>SAM Data Collection Service</serviceName>
+                                <vendorTemplateId>136</vendorTemplateId>
+                                <vendorTemplateName>Collect Listen Start Events</vendorTemplateName>
+                            </action>
+                        </actionsByCategory>
+                    </securityPolicy>
+                  </securityPolicies>
 /2.0/services/snmp:
   displayName: snmp
   description: |
