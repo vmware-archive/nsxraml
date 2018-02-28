@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x64;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x64;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#x76;&#109;&#119;&#x61;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;">&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#x76;&#109;&#119;&#x61;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -13507,8 +13507,6 @@ You can enable or disable BFD to monitor tunnel health of a hypervisor. By defau
 <td>Method Added.</td>
 </tr>
 </tbody></table></p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">bfdConfigCreate</code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bfdGlobalConfiguration</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
@@ -15789,6 +15787,8 @@ the specified switch and hardware gateway.</p>
 <td>Method Added.</td>
 </tr>
 </tbody></table></div>
+</section>
+<section class="resource">
 <div class="method get">
   <a
     class="verb get"
@@ -15814,7 +15814,7 @@ the specified switch and hardware gateway.</p>
     
   </dt>
   <dd>
-      <p>Specify the host status as UP, DOWN, DEGRADED. Default value is none.</p>
+      <p>Specify UP, DOWN, DEGRADED to filter by status. Default value is none.</p>
 
   </dd>
   <dt>
@@ -15828,42 +15828,40 @@ the specified switch and hardware gateway.</p>
   </dd>
 </dl>
     </div>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">hostHealthRead</code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hostStatus</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-23<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">controlConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">controlConnectionStatus</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">pnicStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-23<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controlConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">controlConnectionStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pnicStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatus</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStatus</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdStatusCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdUpCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdUpCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdDownCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdInitCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdInitCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;/<span class="hljs-name">bfdStatusCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">noDiagnosticCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">noDiagnosticCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">pathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">pathDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">administrativelyDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">administrativelyDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;/<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bfdStatusCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdUpCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdUpCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdInitCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdInitCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bfdStatusCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">noDiagnosticCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">noDiagnosticCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">pathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">pathDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">administrativelyDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">administrativelyDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStatus</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatus</span>&gt;</span>
 </code></pre>
@@ -15888,9 +15886,9 @@ the specified switch and hardware gateway.</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/2.0/vdn/host/status/{hostId}/remote-host-status"
-    href="#GET/2.0/vdn/host/status/{hostId}/remote-host-status"
-  ><h2>GET /2.0/vdn/host/status/{hostId}/remote-host-status</h2></a>
+    id="GET/2.0/vdn/host/{hostId}/remote-host-status"
+    href="#GET/2.0/vdn/host/{hostId}/remote-host-status"
+  ><h2>GET /2.0/vdn/host/{hostId}/remote-host-status</h2></a>
   <div class="content">
     <p><p>Retrieve status of all hosts with tunnel connections to the given host.</p>
 <p><strong>Method history:</strong></p>
@@ -15921,7 +15919,7 @@ the specified switch and hardware gateway.</p>
     
   </dt>
   <dd>
-      <p>Specify the tunnel status as UP, DOWN, or DEGRADED. Default value is none.</p>
+      <p>Specify UP, DOWN, or DEGRADED to filter by tunnel status. Default value is none.</p>
 
   </dd>
   <dt>
@@ -15935,26 +15933,24 @@ the specified switch and hardware gateway.</p>
   </dd>
 </dl>
     </div>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">hostIdRemoteStatusRead</code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bfdTunnels</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">tunnel</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>192.168.250.101<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">bfd</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteState</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">remoteState</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteDiagnostic</span>&gt;</span>CONTROL_DETECTION_TIME_EXPIRED<span class="hljs-tag">&lt;/<span class="hljs-name">remoteDiagnostic</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">active</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">active</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">state</span>&gt;</span>INIT<span class="hljs-tag">&lt;/<span class="hljs-name">state</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">forwarding</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">forwarding</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">diagnostic</span>&gt;</span>NEIGHBOR_SIGNALED_SESSION_DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">diagnostic</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">bfd</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteIp</span>&gt;</span>192.168.250.100<span class="hljs-tag">&lt;/<span class="hljs-name">remoteIp</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">egressInterface</span>&gt;</span>vmk10<span class="hljs-tag">&lt;/<span class="hljs-name">egressInterface</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>stt3232299620<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">encap</span>&gt;</span>VXLAN<span class="hljs-tag">&lt;/<span class="hljs-name">encap</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteNodeId</span>&gt;</span>host-31<span class="hljs-tag">&lt;/<span class="hljs-name">remoteNodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>192.168.250.101<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bfd</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteState</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">remoteState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteDiagnostic</span>&gt;</span>CONTROL_DETECTION_TIME_EXPIRED<span class="hljs-tag">&lt;/<span class="hljs-name">remoteDiagnostic</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">active</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">active</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">state</span>&gt;</span>INIT<span class="hljs-tag">&lt;/<span class="hljs-name">state</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">forwarding</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">forwarding</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">diagnostic</span>&gt;</span>NEIGHBOR_SIGNALED_SESSION_DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">diagnostic</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bfd</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">remoteIp</span>&gt;</span>192.168.250.100<span class="hljs-tag">&lt;/<span class="hljs-name">remoteIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">egressInterface</span>&gt;</span>vmk10<span class="hljs-tag">&lt;/<span class="hljs-name">egressInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>stt3232299620<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">encap</span>&gt;</span>VXLAN<span class="hljs-tag">&lt;/<span class="hljs-name">encap</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">remoteNodeId</span>&gt;</span>host-31<span class="hljs-tag">&lt;/<span class="hljs-name">remoteNodeId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">tunnel</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">bfdTunnels</span>&gt;</span>
 </code></pre>
@@ -15979,9 +15975,9 @@ the specified switch and hardware gateway.</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/2.0/vdn/host/status/{hostId}/status"
-    href="#GET/2.0/vdn/host/status/{hostId}/status"
-  ><h2>GET /2.0/vdn/host/status/{hostId}/status</h2></a>
+    id="GET/2.0/vdn/host/{hostId}/status"
+    href="#GET/2.0/vdn/host/{hostId}/status"
+  ><h2>GET /2.0/vdn/host/{hostId}/status</h2></a>
   <div class="content">
     <p><p>Retrieve tunnel health status for the specific host.</p>
 <p><strong>Method history:</strong></p>
@@ -16006,44 +16002,60 @@ the specified switch and hardware gateway.</p>
       <p>Specify <em>source</em> as REALTIME, or CACHED. Default value is CACHED. Use <em>status?source=REALTIME</em> to get current status. Use <em>status?source=CACHED</em> to get cached status.</p>
 
   </dd>
+  <dt>
+    <span class="param">status</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Specify UP, DOWN, DEGRADED to filter by status. Default value is none.</p>
+
+  </dd>
+  <dt>
+    <span class="param">host_id</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Specify host list to query status. ID of hosts as string [ ].</p>
+
+  </dd>
 </dl>
     </div>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">hostIdHealthRead</code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">hostStatus</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-23<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">controlConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">controlConnectionStatus</span>&gt;</span>
- <span class="hljs-tag">&lt;<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">pnicStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostId</span>&gt;</span>host-23<span class="hljs-tag">&lt;/<span class="hljs-name">hostId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controlConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">controlConnectionStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">mgmtConnectionStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pnicStatus</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatus</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">tunnelStatus</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdStatusCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdUpCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdUpCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdDownCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdInitCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdInitCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;/<span class="hljs-name">bfdStatusCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">noDiagnosticCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">noDiagnosticCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">pathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">pathDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">administrativelyDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">administrativelyDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>
-                 <span class="hljs-tag">&lt;<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>
-              <span class="hljs-tag">&lt;/<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">upCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">upCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">downCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">downCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">degradedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">degradedCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bfdStatusCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdAdminDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdUpCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdUpCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">bfdDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">bfdInitCount</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">bfdInitCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bfdStatusCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">echoFunctionFailedCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">noDiagnosticCount</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">noDiagnosticCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">pathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">pathDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">administrativelyDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">administrativelyDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">controlDetectionTimeExpiredCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingPlaneResetCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">reverseConcatenatedPathDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">neighborSignaledSessionDownCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">concatenatedPathDownCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bfdDiagnostic</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">tunnelStatus</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">hostStatus</span>&gt;</span>
 </code></pre>
@@ -16068,9 +16080,9 @@ the specified switch and hardware gateway.</p>
 <div class="method get">
   <a
     class="verb get"
-    id="GET/2.0/vdn/host/status/{hostId}/tunnel"
-    href="#GET/2.0/vdn/host/status/{hostId}/tunnel"
-  ><h2>GET /2.0/vdn/host/status/{hostId}/tunnel</h2></a>
+    id="GET/2.0/vdn/host/{hostId}/tunnel"
+    href="#GET/2.0/vdn/host/{hostId}/tunnel"
+  ><h2>GET /2.0/vdn/host/{hostId}/tunnel</h2></a>
   <div class="content">
     <p><p>Retrieve tunnel connections for the specific host.</p>
 <p><strong>Method history:</strong></p>
@@ -16083,26 +16095,24 @@ the specified switch and hardware gateway.</p>
 <td>Method Added.</td>
 </tr>
 </tbody></table></p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">hostIdTunnelRead</code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">bfdTunnels</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">tunnel</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>192.168.250.101<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">bfd</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteState</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">remoteState</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteDiagnostic</span>&gt;</span>CONTROL_DETECTION_TIME_EXPIRED<span class="hljs-tag">&lt;/<span class="hljs-name">remoteDiagnostic</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">active</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">active</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">state</span>&gt;</span>INIT<span class="hljs-tag">&lt;/<span class="hljs-name">state</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">forwarding</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">forwarding</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">diagnostic</span>&gt;</span>NEIGHBOR_SIGNALED_SESSION_DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">diagnostic</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">bfd</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteIp</span>&gt;</span>192.168.250.100<span class="hljs-tag">&lt;/<span class="hljs-name">remoteIp</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">egressInterface</span>&gt;</span>vmk10<span class="hljs-tag">&lt;/<span class="hljs-name">egressInterface</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>stt3232299620<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">encap</span>&gt;</span>VXLAN<span class="hljs-tag">&lt;/<span class="hljs-name">encap</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteNodeId</span>&gt;</span>host-31<span class="hljs-tag">&lt;/<span class="hljs-name">remoteNodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>192.168.250.101<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bfd</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteState</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">remoteState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">remoteDiagnostic</span>&gt;</span>CONTROL_DETECTION_TIME_EXPIRED<span class="hljs-tag">&lt;/<span class="hljs-name">remoteDiagnostic</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">active</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">active</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">state</span>&gt;</span>INIT<span class="hljs-tag">&lt;/<span class="hljs-name">state</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">forwarding</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">forwarding</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">diagnostic</span>&gt;</span>NEIGHBOR_SIGNALED_SESSION_DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">diagnostic</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bfd</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">remoteIp</span>&gt;</span>192.168.250.100<span class="hljs-tag">&lt;/<span class="hljs-name">remoteIp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">egressInterface</span>&gt;</span>vmk10<span class="hljs-tag">&lt;/<span class="hljs-name">egressInterface</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>stt3232299620<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">encap</span>&gt;</span>VXLAN<span class="hljs-tag">&lt;/<span class="hljs-name">encap</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">remoteNodeId</span>&gt;</span>host-31<span class="hljs-tag">&lt;/<span class="hljs-name">remoteNodeId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">tunnel</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">bfdTunnels</span>&gt;</span>
 </code></pre>
@@ -16292,12 +16302,10 @@ You can enable or disable pNIC to monitor tunnel health of a hypervisor. By defa
 <td>Method Added.</td>
 </tr>
 </tbody></table></p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">pniccheckConfigCreate</code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-   <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
 </code></pre>
   </div>
@@ -16328,7 +16336,7 @@ You can enable or disable pNIC to monitor tunnel health of a hypervisor. By defa
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-   <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>120<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>120<span class="hljs-tag">&lt;/<span class="hljs-name">pollingIntervalSecondsForHost</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">pnicStatusCheckGlobalConfiguration</span>&gt;</span>
 </code></pre>
   </div>

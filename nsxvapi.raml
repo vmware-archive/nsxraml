@@ -2468,7 +2468,7 @@ securitySchemes:
             </controllerCredential>
           schema: nsxControllerPasswordUpdate
 
-/2.0/vdn/host/status:
+/2.0/vdn/host:
   displayName: hostHealth
   description: |
     Working With Hypervisor Tunnel Health Status Using BFD
@@ -2481,62 +2481,62 @@ securitySchemes:
     --------|-------------
     6.4.0 | Method Added.
 
-  get:
-      queryParameters:
-        source:
-          displayName: source
-          description: |
-            Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
-          required: false
-        status:
-          displayName: status
-          required: false
-          description: |
-            Specify the host status as UP, DOWN, DEGRADED. Default value is none.
-        host_id:
-          displayName: host_id
-          required: false
-          description: |
-            Specify host list to query status. ID of hosts as string [ ].
-      body:
-        application/xml:
-          example: |
-            <hostStatus>
-             <hostId>host-23</hostId>
-             <status>UP</status>
-             <controlConnectionStatus>UP</controlConnectionStatus>
-             <mgmtConnectionStatus>UP</mgmtConnectionStatus>
-            <pnicStatus>
-              <status>UP</status>
-              <upCount>1</upCount>
-              <downCount>0</downCount>
-              <degradedCount>0</degradedCount>
-            </pnicStatus>
-              <tunnelStatus>
-              <status>UP</status>
-              <upCount>1</upCount>
-              <downCount>0</downCount>
-              <degradedCount>0</degradedCount>
-                          <bfdStatusCount>
-                          <bfdAdminDownCount>0</bfdAdminDownCount>
-                          <bfdUpCount>3</bfdUpCount>
-                          <bfdDownCount>0</bfdDownCount>
-                          <bfdInitCount>3</bfdInitCount>
-                          </bfdStatusCount>
-                          <bfdDiagnostic>
-                             <echoFunctionFailedCount>0</echoFunctionFailedCount>
-                             <noDiagnosticCount>1</noDiagnosticCount>
-                             <pathDownCount>0</pathDownCount>
-                             <administrativelyDownCount>0</administrativelyDownCount>
-                             <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
-                             <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
-                             <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
-                             <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
-                             <concatenatedPathDownCount>0</concatenatedPathDownCount>
-                          </bfdDiagnostic>
-              </tunnelStatus>
-            </hostStatus>
-          schema: hostHealthRead
+  /status:
+    get:
+        queryParameters:
+          source:
+            displayName: source
+            description: |
+              Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
+            required: false
+          status:
+            displayName: status
+            required: false
+            description: |
+              Specify UP, DOWN, DEGRADED to filter by status. Default value is none.
+          host_id:
+            displayName: host_id
+            required: false
+            description: |
+              Specify host list to query status. ID of hosts as string [ ].
+        body:
+          application/xml:
+            example: |
+              <hostStatus>
+                <hostId>host-23</hostId>
+                <status>UP</status>
+                <controlConnectionStatus>UP</controlConnectionStatus>
+                <mgmtConnectionStatus>UP</mgmtConnectionStatus>
+                <pnicStatus>
+                  <status>UP</status>
+                  <upCount>1</upCount>
+                  <downCount>0</downCount>
+                  <degradedCount>0</degradedCount>
+                </pnicStatus>
+                <tunnelStatus>
+                  <status>UP</status>
+                  <upCount>1</upCount>
+                  <downCount>0</downCount>
+                  <degradedCount>0</degradedCount>
+                  <bfdStatusCount>
+                    <bfdAdminDownCount>0</bfdAdminDownCount>
+                    <bfdUpCount>3</bfdUpCount>
+                    <bfdDownCount>0</bfdDownCount>
+                    <bfdInitCount>3</bfdInitCount>
+                  </bfdStatusCount>
+                  <bfdDiagnostic>
+                    <echoFunctionFailedCount>0</echoFunctionFailedCount>
+                    <noDiagnosticCount>1</noDiagnosticCount>
+                    <pathDownCount>0</pathDownCount>
+                    <administrativelyDownCount>0</administrativelyDownCount>
+                    <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
+                    <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
+                    <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
+                    <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
+                    <concatenatedPathDownCount>0</concatenatedPathDownCount>
+                  </bfdDiagnostic>
+                </tunnelStatus>
+              </hostStatus>
 
   /{hostId}/status:
     uriParameters:
@@ -2561,45 +2561,54 @@ securitySchemes:
           required: false
           description: |
             Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
+        status:
+          displayName: status
+          required: false
+          description: |
+            Specify UP, DOWN, DEGRADED to filter by status. Default value is none.
+        host_id:
+          displayName: host_id
+          required: false
+          description: |
+            Specify host list to query status. ID of hosts as string [ ].
       body:
         application/xml:
           example: |
             <hostStatus>
-             <hostId>host-23</hostId>
-             <status>UP</status>
-             <controlConnectionStatus>UP</controlConnectionStatus>
-             <mgmtConnectionStatus>UP</mgmtConnectionStatus>
-            <pnicStatus>
+              <hostId>host-23</hostId>
               <status>UP</status>
-              <upCount>1</upCount>
-              <downCount>0</downCount>
-              <degradedCount>0</degradedCount>
-            </pnicStatus>
+              <controlConnectionStatus>UP</controlConnectionStatus>
+              <mgmtConnectionStatus>UP</mgmtConnectionStatus>
+              <pnicStatus>
+                <status>UP</status>
+                <upCount>1</upCount>
+                <downCount>0</downCount>
+                <degradedCount>0</degradedCount>
+              </pnicStatus>
               <tunnelStatus>
-              <status>UP</status>
-              <upCount>1</upCount>
-              <downCount>0</downCount>
-              <degradedCount>0</degradedCount>
-                          <bfdStatusCount>
-                          <bfdAdminDownCount>0</bfdAdminDownCount>
-                          <bfdUpCount>3</bfdUpCount>
-                          <bfdDownCount>0</bfdDownCount>
-                          <bfdInitCount>3</bfdInitCount>
-                          </bfdStatusCount>
-                          <bfdDiagnostic>
-                             <echoFunctionFailedCount>0</echoFunctionFailedCount>
-                             <noDiagnosticCount>1</noDiagnosticCount>
-                             <pathDownCount>0</pathDownCount>
-                             <administrativelyDownCount>0</administrativelyDownCount>
-                             <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
-                             <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
-                             <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
-                             <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
-                             <concatenatedPathDownCount>0</concatenatedPathDownCount>
-                          </bfdDiagnostic>
+                <status>UP</status>
+                <upCount>1</upCount>
+                <downCount>0</downCount>
+                <degradedCount>0</degradedCount>
+                <bfdStatusCount>
+                  <bfdAdminDownCount>0</bfdAdminDownCount>
+                  <bfdUpCount>3</bfdUpCount>
+                  <bfdDownCount>0</bfdDownCount>
+                  <bfdInitCount>3</bfdInitCount>
+                </bfdStatusCount>
+                <bfdDiagnostic>
+                  <echoFunctionFailedCount>0</echoFunctionFailedCount>
+                  <noDiagnosticCount>1</noDiagnosticCount>
+                  <pathDownCount>0</pathDownCount>
+                  <administrativelyDownCount>0</administrativelyDownCount>
+                  <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
+                  <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
+                  <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
+                  <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
+                  <concatenatedPathDownCount>0</concatenatedPathDownCount>
+                </bfdDiagnostic>
               </tunnelStatus>
             </hostStatus>
-          schema: hostIdHealthRead
 
   /{hostId}/tunnel:
     uriParameters:
@@ -2624,24 +2633,23 @@ securitySchemes:
           example: |
             <bfdTunnels>
               <tunnel>
-              <localIp>192.168.250.101</localIp>
-              <bfd>
-              <remoteState>DOWN</remoteState>
-              <remoteDiagnostic>CONTROL_DETECTION_TIME_EXPIRED</remoteDiagnostic>
-              <active>true</active>
-              <state>INIT</state>
-              <forwarding>false</forwarding>
-              <diagnostic>NEIGHBOR_SIGNALED_SESSION_DOWN</diagnostic>
-              </bfd>
-              <remoteIp>192.168.250.100</remoteIp>
-              <egressInterface>vmk10</egressInterface>
-              <name>stt3232299620</name>
-              <encap>VXLAN</encap>
-              <status>DOWN</status>
-              <remoteNodeId>host-31</remoteNodeId>
+                <localIp>192.168.250.101</localIp>
+                <bfd>
+                  <remoteState>DOWN</remoteState>
+                  <remoteDiagnostic>CONTROL_DETECTION_TIME_EXPIRED</remoteDiagnostic>
+                  <active>true</active>
+                  <state>INIT</state>
+                  <forwarding>false</forwarding>
+                  <diagnostic>NEIGHBOR_SIGNALED_SESSION_DOWN</diagnostic>
+                </bfd>
+                <remoteIp>192.168.250.100</remoteIp>
+                <egressInterface>vmk10</egressInterface>
+                <name>stt3232299620</name>
+                <encap>VXLAN</encap>
+                <status>DOWN</status>
+                <remoteNodeId>host-31</remoteNodeId>
               </tunnel>
             </bfdTunnels>
-          schema: hostIdTunnelRead
 
   /{hostId}/remote-host-status:
     uriParameters:
@@ -2670,7 +2678,7 @@ securitySchemes:
           displayName: tunnel_status
           required: false
           description: |
-            Specify the tunnel status as UP, DOWN, or DEGRADED. Default value is none.
+            Specify UP, DOWN, or DEGRADED to filter by tunnel status. Default value is none.
         bfd_diagnostic_code:
           displayName: bfd_diagnostic_code
           required: false
@@ -2681,24 +2689,23 @@ securitySchemes:
           example: |
             <bfdTunnels>
               <tunnel>
-              <localIp>192.168.250.101</localIp>
-              <bfd>
-              <remoteState>DOWN</remoteState>
-              <remoteDiagnostic>CONTROL_DETECTION_TIME_EXPIRED</remoteDiagnostic>
-              <active>true</active>
-              <state>INIT</state>
-              <forwarding>false</forwarding>
-              <diagnostic>NEIGHBOR_SIGNALED_SESSION_DOWN</diagnostic>
-              </bfd>
-              <remoteIp>192.168.250.100</remoteIp>
-              <egressInterface>vmk10</egressInterface>
-              <name>stt3232299620</name>
-              <encap>VXLAN</encap>
-              <status>DOWN</status>
-              <remoteNodeId>host-31</remoteNodeId>
+                <localIp>192.168.250.101</localIp>
+                <bfd>
+                  <remoteState>DOWN</remoteState>
+                  <remoteDiagnostic>CONTROL_DETECTION_TIME_EXPIRED</remoteDiagnostic>
+                  <active>true</active>
+                  <state>INIT</state>
+                  <forwarding>false</forwarding>
+                  <diagnostic>NEIGHBOR_SIGNALED_SESSION_DOWN</diagnostic>
+                </bfd>
+                <remoteIp>192.168.250.100</remoteIp>
+                <egressInterface>vmk10</egressInterface>
+                <name>stt3232299620</name>
+                <encap>VXLAN</encap>
+                <status>DOWN</status>
+                <remoteNodeId>host-31</remoteNodeId>
               </tunnel>
             </bfdTunnels>
-          schema: hostIdRemoteStatusRead
 
 /2.0/vdn/bfd/configuration/global:
   displayName: bfdConfig
@@ -2735,7 +2742,7 @@ securitySchemes:
             <pollingIntervalSecondsForHost>180</pollingIntervalSecondsForHost>
             <bfdIntervalMillSecondsForHost>120000</bfdIntervalMillSecondsForHost>
           </bfdGlobalConfiguration>
-        schema: bfdConfigCreate
+
   put:
     displayName: bfdConfigUpdate
     description: |
@@ -2757,7 +2764,7 @@ securitySchemes:
                 <pollingIntervalSecondsForHost>190</pollingIntervalSecondsForHost>
                 <bfdIntervalMillSecondsForHost>300</bfdIntervalMillSecondsForHost>
               </bfdGlobalConfiguration>
-            schema: bfdConfigUpdate
+
 /2.0/vdn/pnic-check/configuration/global:
   displayName: pniccheckConfig
   description: |
@@ -2789,9 +2796,9 @@ securitySchemes:
         example: |
           <pnicStatusCheckGlobalConfiguration>
             <enabled>false</enabled>
-             <pollingIntervalSecondsForHost>180</pollingIntervalSecondsForHost>
+            <pollingIntervalSecondsForHost>180</pollingIntervalSecondsForHost>
           </pnicStatusCheckGlobalConfiguration>
-        schema: pniccheckConfigCreate
+
   put:
     displayName: pniccheckConfigUpdate
     description: |
@@ -2810,10 +2817,9 @@ securitySchemes:
             example: |
               <pnicStatusCheckGlobalConfiguration>
                 <enabled>true</enabled>
-                 <pollingIntervalSecondsForHost>120</pollingIntervalSecondsForHost>
+                <pollingIntervalSecondsForHost>120</pollingIntervalSecondsForHost>
               </pnicStatusCheckGlobalConfiguration>
-            schema: pniccheckConfigUpdate
-                                  
+
 /2.0/services/application:
   displayName: servicesApps # existing reorg URI
   description: |
