@@ -7,7 +7,7 @@ documentation:
  - title: update-number
    content: Update 3
  - title: update-date
-   content: Modified on 1 MAR 2018
+   content: Modified on 2 MAR 2018
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
@@ -20879,43 +20879,43 @@ securitySchemes:
               If set to true, the security policy is deleted even if it is in use.
             required: false
               
-    /sgbinding/{securityGroupId}:
-        displayName: securityPolicyBind
-        description: |
-          Working With Security Group Bindings
-          ----
-        uriParameters:
-          securityGroupId:
-            displayName: securityGroupId
-            description: Security group ID, for example, *securitygroup-11*.
-            required: true
-        put:
-          displayName: securityPolicyBindingUpdate
+      /sgbinding/{securityGroupId}:
+          displayName: securityPolicyBind
           description: |
-            Apply the specified security policy to the specified security group.
-    /securityactions:
-      displayName: securityActions
-      description: |
-        Working With Security Actions on a Security Policy
-        -------------
-      get:
-        displayName: securityActionsRead
+            Working With Security Group Bindings
+            ----
+          uriParameters:
+            securityGroupId:
+              displayName: securityGroupId
+              description: Security group ID, for example, *securitygroup-11*.
+              required: true
+          put:
+            displayName: securityPolicyBindingUpdate
+            description: |
+              Apply the specified security policy to the specified security group.
+      /securityactions:
+        displayName: securityActions
         description: |
-          Retrieve all security actions applicable on a security policy.
-          
-          This list includes security actions from associated parent
-          security policies, if any. Security actions per Execution Order
-          Category are sorted based on the weight of security actions in
-          descending order.
-        responses:
-          200:
-            body:
-              application/xml:
-                example: |
-                  <securityPolicies>
-                    <securityPolicy></securityPolicy>
-                    <securityPolicy></securityPolicy>
-                  </securityPolicies>
+          Working With Security Actions on a Security Policy
+          -------------
+        get:
+          displayName: securityActionsRead
+          description: |
+            Retrieve all security actions applicable on a security policy.
+            
+            This list includes security actions from associated parent
+            security policies, if any. Security actions per Execution Order
+            Category are sorted based on the weight of security actions in
+            descending order.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <securityPolicies>
+                      <securityPolicy></securityPolicy>
+                      <securityPolicy></securityPolicy>
+                    </securityPolicies>
     /maxprecedence:
       displayName: securityPolicyPrecedence
       description: |
@@ -21503,91 +21503,91 @@ securitySchemes:
                   <securityPolicy></securityPolicy>
                   <securityPolicy></securityPolicy>
                 </securityPolicies>
-    /serviceprovider/firewall:
-      displayName: serviceComposerDFW # existing change serviceComposerDFWSync
+  /serviceprovider/firewall:
+    displayName: serviceComposerDFW # existing change serviceComposerDFWSync
+    description: |
+      Working With Service Composer Firewall
+      --------------
+    get:
+      displayName: serviceComposerDFWRead # existing change serviceComposerDFWSyncRead
       description: |
-        Working With Service Composer Firewall
-        --------------
-      get:
-        displayName: serviceComposerDFWRead # existing change serviceComposerDFWSyncRead
-        description: |
-          If Service Composer goes out of sync with Distributed Firewall, you
-          must re-synchronize Service Composer rules with firewall rules. If
-          Service Composer stays out of sync, firewall configuration may not
-          stay enforced as expected.
-          
-          This GET method can perform the following functions, depending on the
-          request body provided. **Note:** Some REST clients do not allow you to
-          specify a request body with a GET request.
-          
-          ### Check if Service Composer firewall and Distributed Firewall are in sync
-          
-          **Note: Deprecated.** Use `GET /2.0/services/policy/securitypolicy/status` instead. 
-          
-          * If they are in sync, the response body does not contain any data.  
-          * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
-          
-          ```
-          <keyValues>
-            <keyValue>
-              <key>getServiceComposerFirewallOutOfSyncTimestamp</key>
-            </keyValue>
-          </keyValues>
-          ```
-          
-          ### Synchronize Service Composer firewall with Distributed Firewall
-          
-          ```
-          <keyValues>
-            <keyValue>
-              <key>forceSync</key>
-            </keyValue>
-          </keyValues>
-          ```
-          
-          ### Retrieve the state of the auto save draft property in Service Composer
-          
-          Retrieve the state of the auto save draft property in Service
-          Composer. Response is true or false.
-          
-          ```
-          <keyValues>
-            <keyValue>
-              <key>getAutoSaveDraft</key>
-            </keyValue>
-          </keyValues>
-          ```
-          
-          ### Change the state of the auto save draft property in Service Composer
-          
-          **Note: Deprecated.**
-          
-          Change the state of the auto save draft property in Service Composer.
-          Provide request body value of true or false.
-          
-          ```
-          <keyValues>
-            <keyValue>
-              <key>autoSaveDraft</key>
-              <value>false</value>
-            </keyValue>
-          </keyValues> 
-          ```
-          
-          **Method history:**
-          
-            Release | Modification
-            --------|-------------
-            6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
-        body:
-          application/xml:
-            example: |
-              <keyValues>
-                <keyValue>
-                  <key></key>
-                  <value></value>
-                </keyValue>
-              </keyValues> 
+        If Service Composer goes out of sync with Distributed Firewall, you
+        must re-synchronize Service Composer rules with firewall rules. If
+        Service Composer stays out of sync, firewall configuration may not
+        stay enforced as expected.
+        
+        This GET method can perform the following functions, depending on the
+        request body provided. **Note:** Some REST clients do not allow you to
+        specify a request body with a GET request.
+        
+        ### Check if Service Composer firewall and Distributed Firewall are in sync
+        
+        **Note: Deprecated.** Use `GET /2.0/services/policy/securitypolicy/status` instead. 
+        
+        * If they are in sync, the response body does not contain any data.  
+        * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
+        
+        ```
+        <keyValues>
+          <keyValue>
+            <key>getServiceComposerFirewallOutOfSyncTimestamp</key>
+          </keyValue>
+        </keyValues>
+        ```
+        
+        ### Synchronize Service Composer firewall with Distributed Firewall
+        
+        ```
+        <keyValues>
+          <keyValue>
+            <key>forceSync</key>
+          </keyValue>
+        </keyValues>
+        ```
+        
+        ### Retrieve the state of the auto save draft property in Service Composer
+        
+        Retrieve the state of the auto save draft property in Service
+        Composer. Response is true or false.
+        
+        ```
+        <keyValues>
+          <keyValue>
+            <key>getAutoSaveDraft</key>
+          </keyValue>
+        </keyValues>
+        ```
+        
+        ### Change the state of the auto save draft property in Service Composer
+        
+        **Note: Deprecated.**
+        
+        Change the state of the auto save draft property in Service Composer.
+        Provide request body value of true or false.
+        
+        ```
+        <keyValues>
+          <keyValue>
+            <key>autoSaveDraft</key>
+            <value>false</value>
+          </keyValue>
+        </keyValues> 
+        ```
+        
+        **Method history:**
+        
+          Release | Modification
+          --------|-------------
+          6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
+      body:
+        application/xml:
+          example: |
+            <keyValues>
+              <keyValue>
+                <key></key>
+                <value></value>
+              </keyValue>
+            </keyValues> 
   /securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
     description: |
