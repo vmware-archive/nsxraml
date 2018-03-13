@@ -4748,6 +4748,156 @@ securitySchemes:
                   <connected>true</connected>
                   <lastInventorySyncTime>1492568145678</lastInventorySyncTime>
                 </vcConfigStatus>
+/2.0/services/configuration:
+  displayName: CPUconfiguration
+  description: |
+    Configuring the High CPU Usage Reporting Tool 
+    =========
+    You can configure the monitoring of high CPU usage for a defined time period using the High CPU Usage Reporting tool.  The CPU Usage Monitoring Tool uses this configuration to monitor CPU utilization of the NSX Manager. 
+    You can configure the parameter values to monitor the CPU utilization. 
+    
+    **CPU Configuration Parameters**
+    
+      Parameter | Comments
+      ----|----
+      **delay** | Time between two monitoring sessions in milliseconds.
+      **intervals** | The number of monitoring sessions. This is a positive integer value.   
+      **highcputhreshold** | Enter threshold value for high CPU usage. Threshold value is a percentage value ranging from 1 to 100.
+      **mediumcputhreshold** | Enter threshold value for medium CPU usage. Threshold value is a percentage value ranging from 1 to 100.
+      **monitoringfeatureenabled** | Enter *true* to enable CPU usage monitoring feature. Enter *false* to disable CPU usage monitoring feature.
+  
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method Added.
+  get:
+    displayName: CPUConfigRead
+    description: Get the configuration details for the High CPU Usage Reporting Tool.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <configurations>
+                <configuration>
+                  <context>HighCPUReportingTool</context>
+                  <name>delay</name>
+                  <value>10000</value>
+                </configuration>
+                <configuration>
+                  <context>HighCPUReportingTool</context>
+                  <name>intervals</name>
+                  <value>3</value>
+                </configuration>
+                <configuration>
+                  <context>HighCPUReportingTool</context>
+                  <name>highcputhreshold</name>
+                  <value>10</value>
+                </configuration>
+                <configuration>
+                  <context>HighCPUReportingTool</context>
+                  <name>mediumcputhreshold</name>
+                  <value>5</value>
+                </configuration>
+                <configuration>
+                  <context>HighCPUReportingTool</context>
+                  <name>monitoringfeatureenabled</name>
+                  <value>true</value>
+                </configuration>
+              </configurations>
+  put:
+    displayName: CPUConfigUpdate
+    description: Update the configuration for the High CPU Usage Reporting Tool.
+    body:
+      application/xml:
+        example: |
+          <configurations>
+            <configuration>
+              <context>HighCPUReportingTool</context>
+              <name>delay</name>
+              <value>10000</value>
+            </configuration>
+            <configuration>
+              <context>HighCPUReportingTool</context>
+              <name>intervals</name>
+              <value>3</value>
+            </configuration>
+            <configuration>
+              <context>HighCPUReportingTool</context>
+              <name>highcputhreshold</name>
+              <value>10</value>
+            </configuration>
+            <configuration>
+              <context>HighCPUReportingTool</context>
+              <name>mediumcputhreshold</name>
+              <value>5</value>
+            </configuration>
+            <configuration>
+              <context>HighCPUReportingTool</context>
+              <name>monitoringfeatureenabled</name>
+              <value>true</value>
+            </configuration>
+          </configurations>
+
+/2.0/system-monitor/cpuusage:
+  displayName: CPUUsage
+  description: |
+    Working with the CPU Usage Monitoring Tool 
+    =========
+    Monitoring tool monitors CPU usage of the NSX Manager. The configurations for the CPU usage are defined in the High CPU Usage Reporting Tool. 
+    Monitoring tool displays values for CPU utilization as High, Medium, and Low.
+  
+    **Method history:**
+    
+    Release | Modification
+    --------|-------------
+    6.4.0 | Method Added.
+
+  /indicator:
+    displayName: CPUUsageIndicatorStatus
+    description: |
+      Working With CPU Usage Indicator
+      ----
+    get:
+      displayName: CPUUsageIndicatorStatusRead
+      description: Retrieve the CPU utilization status and the CPU usage percentage.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <cpuUsageSummary>
+                  <cpuUsageIndicator>HIGH</cpuUsageIndicator>
+                  <cpuUsagePercent>89</cpuUsagePercent>
+                </cpuUsageSummary>
+          
+  /details:
+    displayName: CPUUsageDetailsStatus
+    description: |
+      Working With CPU Usage Details
+      -------------        
+    get:
+      displayName: CPUUsageDetailsStatusRead
+      description: Retrieve the details of the module which is causing high CPU utilization for the NSX Manager.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <cpuUsageDetails>
+                  <highCPUPeriodInSeconds>30</highCPUPeriodInSeconds>
+                  <cpuConsumedTasks>
+                    <taskCPUDetails>
+                      <moduleName>DynamicCriteriaEvaluation</moduleName>
+                      <taskType>com.vmware.vshield.vsm.task.utils.SimpleTaskManager$1</taskType>
+                      <totalTasks>66</totalTasks>
+                      <displayName>DynamicCriteriaEvaluation</displayName>
+                      <totalCPU>17274</totalCPU>
+                    </taskCPUDetails>
+                  </cpuConsumedTasks>
+                  <queuedTasks/>
+                </cpuUsageDetails>
 /2.0/universalsync:
   displayName: universalSync
   description: |

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#100;&#111;&#x63;&#x66;&#101;&#x65;&#100;&#98;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;">&#100;&#111;&#x63;&#x66;&#101;&#x65;&#100;&#98;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#101;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x64;&#111;&#x63;&#102;&#x65;&#101;&#x64;&#98;&#x61;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#109;">&#x64;&#111;&#x63;&#102;&#x65;&#101;&#x64;&#98;&#x61;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -6088,6 +6088,131 @@ other configuration.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h1 id="configuring-the-high-cpu-usage-reporting-tool-">Configuring the High CPU Usage Reporting Tool </h1>
+<p>You can configure the monitoring of high CPU usage for a defined time period using the High CPU Usage Reporting tool.  The CPU Usage Monitoring Tool uses this configuration to monitor CPU utilization of the NSX Manager. 
+You can configure the parameter values to monitor the CPU utilization. The CPU Usage Monitoring Tool API displays the CPU utilization as High, Medium, and Low. </p>
+<p><strong>CPU Configuration Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td>  <strong>delay</strong></td>
+<td>Time between two monitoring sessions in milliseconds.</td>
+</tr>
+<tr>
+<td>  <strong>intervals</strong></td>
+<td>The number of monitoring sessions. This is a positive integer value.   </td>
+</tr>
+<tr>
+<td>  <strong>highcputhreshold</strong></td>
+<td>Enter threshold value for high CPU usage. Threshold value is a percentage value ranging from 1 to 100.</td>
+</tr>
+<tr>
+<td>  <strong>mediumcputhreshold</strong></td>
+<td>Enter threshold value for medium CPU usage. Threshold value is a percentage value ranging from 1 to 100.</td>
+</tr>
+<tr>
+<td>  <strong>monitoringfeatureenabled</strong></td>
+<td>Enter <em>true</em> to enable CPU usage monitoring feature. Enter <em>false</em> to disable CPU usage monitoring feature.</td>
+</tr>
+</tbody></table><p>  <strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>  6.4.0</td>
+<td>Method Added.</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/configuration"
+    href="#GET/2.0/services/configuration"
+  ><h2>GET /2.0/services/configuration</h2></a>
+  <div class="content">
+    <p><p>Get the configuration details for the High CPU Usage Reporting Tool.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">configurations</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>delay<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>intervals<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>highcputhreshold<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mediumcputhreshold<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>monitoringfeatureenabled<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configurations</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/services/configuration"
+    href="#PUT/2.0/services/configuration"
+  ><h2>PUT /2.0/services/configuration</h2></a>
+  <div class="content">
+    <p><p>Update the configuration for the High CPU Usage Reporting Tool.</p>
+</p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">configurations</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>delay<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>intervals<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>highcputhreshold<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mediumcputhreshold<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">context</span>&gt;</span>HighCPUReportingTool<span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>monitoringfeatureenabled<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configurations</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h1 id="working-with-custom-dashboard-widget">Working With Custom Dashboard Widget</h1>
 <p>You can add up to five custom widgets to the dashboard. You can also share widgets with other users by setting the <strong>shared</strong> parameter to <em>true</em> in the widget configuration. It is recommended to have total of maximum 10 widgets on your dashboard. 
 The following two types of widgets are supported:</p>
@@ -7610,7 +7735,6 @@ the IP to reserve in the <strong>ipAddress</strong> parameter.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
@@ -7796,7 +7920,6 @@ secondary managers.</p>
   <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">macset</span>&gt;</span>
@@ -14145,6 +14268,82 @@ that agent.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">initialData</span>&gt;</span>partner data if present<span class="hljs-tag">&lt;/<span class="hljs-name">initialData</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">agent</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">fabricAgents</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="working-with-the-cpu-usage-monitoring-tool-">Working with the CPU Usage Monitoring Tool </h1>
+<p>Monitoring tool monitors CPU usage of the NSX Manager. The configurations for the CPU usage are defined in the High CPU Usage Reporting Tool. 
+Monitoring tool displays values for CPU utilization as High, Medium, and Low.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method Added.</td>
+</tr>
+</tbody></table></div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-cpu-usage-details">Working With CPU Usage Details</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/system-monitor/cpuusage/details"
+    href="#GET/2.0/system-monitor/cpuusage/details"
+  ><h2>GET /2.0/system-monitor/cpuusage/details</h2></a>
+  <div class="content">
+    <p><p>Retrieve the details of the module which is causing high CPU utilization for the NSX Manager.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">cpuUsageDetails</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">highCPUPeriodInSeconds</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">highCPUPeriodInSeconds</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuConsumedTasks</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">taskCPUDetails</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">moduleName</span>&gt;</span>DynamicCriteriaEvaluation<span class="hljs-tag">&lt;/<span class="hljs-name">moduleName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">taskType</span>&gt;</span>com.vmware.vshield.vsm.task.utils.SimpleTaskManager$1<span class="hljs-tag">&lt;/<span class="hljs-name">taskType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalTasks</span>&gt;</span>66<span class="hljs-tag">&lt;/<span class="hljs-name">totalTasks</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">displayName</span>&gt;</span>DynamicCriteriaEvaluation<span class="hljs-tag">&lt;/<span class="hljs-name">displayName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">totalCPU</span>&gt;</span>17274<span class="hljs-tag">&lt;/<span class="hljs-name">totalCPU</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">taskCPUDetails</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">cpuConsumedTasks</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">queuedTasks</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">cpuUsageDetails</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-cpu-usage-indicator">Working With CPU Usage Indicator</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/system-monitor/cpuusage/indicator"
+    href="#GET/2.0/system-monitor/cpuusage/indicator"
+  ><h2>GET /2.0/system-monitor/cpuusage/indicator</h2></a>
+  <div class="content">
+    <p><p>Retrieve the CPU utilization status and the CPU usage percentage.</p>
+</p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">cpuUsageSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuUsageIndicator</span>&gt;</span>HIGH<span class="hljs-tag">&lt;/<span class="hljs-name">cpuUsageIndicator</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cpuUsagePercent</span>&gt;</span>89<span class="hljs-tag">&lt;/<span class="hljs-name">cpuUsagePercent</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">cpuUsageSummary</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -38236,115 +38435,6 @@ id). For example, <em>1004</em>.</p>
 <td>Method introduced.</td>
 </tr>
 </tbody></table></p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="distributed-firewall-state-realization-for-containers">Distributed Firewall State Realization for containers</h2>
-<p>Use this API to verify whether changes made in the container (grouping objects such as security group) has been realized or not. The API takes the VM ID, the list of container IDs, and the list of <em>appliedTo</em> parameter as an input request and returns the list of IPs realized for each vNIC of the VM for each container for the provided appliedTo parameters. The API supports maximum of five containers IDs and five <em>appliedTo</em> parameters. The API is for Layer3 rules.</p>
-<p>Realized status can be:
-<em>Yes: If the container has any one of the IPs of the vNIC
-</em>No: If the container has none of the IPs of the vNIC
-*Not found:  If the host could find the vNIC or the container</p>
-<p>The API does not support:
-<em>Excluded vNICs
-</em>IPSET/MACSET containers
-<em>DFW/ Edge/ All Edges/ Any in the </em>appliedToList*  parameter</p>
-<p><strong>Method history:</strong></p>
-<table class="table"><thead><tr>
-<th>Release</th>
-<th>Modification</th>
-</tr>
-</thead><tbody><tr>
-<td>6.4.0</td>
-<td>Method introduced.</td>
-</tr>
-</tbody></table></div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">vm_ID</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>VM ID.</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/4.0/firewall/objects/status/vm/{vm_ID}/containers"
-    href="#POST/4.0/firewall/objects/status/vm/{vm_ID}/containers"
-  ><h2>POST /4.0/firewall/objects/status/vm/{vm_ID}/containers</h2></a>
-  <div class="content">
-    <p><p>Get VM Status for containers.</p>
-</p>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">vmContainerList</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sourceOrDestList</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">container</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>sg-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>securitygroup-10<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>SecurityGroup<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">container</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">sourceOrDestList</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">appliedToList</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">appliedTo</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>sg-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>securitygroup-10<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>SecurityGroup<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">appliedTo</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">appliedToList</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">vmContainerList</span>&gt;</span>
-</code></pre>
-    <h3>Responses</h3>
-        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
-          <h5>
-            Response Example
-              (<tt>application/xml</tt>)
-          </h5>
-          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallVMStatus</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">sourceOrDest</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">container</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>securitygroup-10<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">realized</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">realized</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vmVnic</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">uuid</span>&gt;</span>101905b3-3782-44a8-8021-51baa3ff6483.001<span class="hljs-tag">&lt;/<span class="hljs-name">uuid</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">realized</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">realized</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>fe80::250:56ff:fea6:b4d3<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">vmVnic</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vmVnic</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">uuid</span>&gt;</span>101905b3-3782-44a8-8021-51baa3ff6483.000<span class="hljs-tag">&lt;/<span class="hljs-name">uuid</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">realized</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">realized</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>fd01:1:2:2916:69f0:cad0:5882:7f53<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>10.192.202.68<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>fe80::20c:29ff:fe36:5a01<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>fd01:1:2:2916:20c:29ff:fe36:5a01<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>fd01:1:2:2916:7d49:c3b:1915:7567<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>fd01:1:2:2916:edc4:6e09:9121:9c31<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">vmVnic</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">container</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">sourceOrDest</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">appliedTos</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">container</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>securitygroup-10<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">realized</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">realized</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vmVnic</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">uuid</span>&gt;</span>101905b3-3782-44a8-8021-51baa3ff6483.001<span class="hljs-tag">&lt;/<span class="hljs-name">uuid</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">realized</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">realized</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">vmVnic</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">vmVnic</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">uuid</span>&gt;</span>101905b3-3782-44a8-8021-51baa3ff6483.000<span class="hljs-tag">&lt;/<span class="hljs-name">uuid</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">realized</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">realized</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">vmVnic</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">container</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">appliedTos</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">firewallVMStatus</span>&gt;</span>
-</code></pre>
   </div>
 </div>
 </section>
