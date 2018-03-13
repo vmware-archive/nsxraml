@@ -5252,12 +5252,12 @@ securitySchemes:
   /system/cpuinfo:
     displayName: systemCPUInfo
     description: |
-      NSX Manager CPU Information
+      NSX Manager Appliance CPU Information
       -----
     get:
       displayName: systemCPUInfoRead # dupfix systemCPUInfo
       description: | 
-        Retrieve NSX Manager CPU information.
+        Retrieve NSX Manager Appliance CPU information.
         
         **Method history:**
         
@@ -5280,12 +5280,12 @@ securitySchemes:
     /details:
       displayName: systemCPUInfoDetails
       description: |
-        NSX Manager CPU Details
+        NSX Manager Appliance CPU Details
         -----
       get:
         displayName: systemCPUInfoDetailsRead o
         description: | 
-          Retrieve details about NSX Manager CPU usage.
+          Retrieve details about CPU utilization for the NSX Manager Appliance.
           
           **Method history:**
           
@@ -12706,6 +12706,98 @@ securitySchemes:
       displayName: dfwIPFixDelete
       description: |
         Deleting IPFIX configuration resets the configuration to default values.
+  /objects/status/vm/{vm_ID}/containers:
+    displayName: dfwstateRealize
+    description: |
+      Distributed Firewall State Realization for Containers
+      ----
+      Use this API to verify whether changes made in the container (grouping objects such as security group) has been realized or not. The API takes the VM ID, the list of container IDs, and the list of *appliedTo* parameter as an input request and returns the list of IPs realized for each vNIC of the VM for each container for the provided appliedTo parameters. The API supports maximum of five containers IDs and five *appliedTo* parameters. The API is for Layer3 rules.
+      
+      Realized status can be:
+      * **Yes**: If the container has any one of the IPs of the vNIC
+      * **No**: If the container has none of the IPs of the vNIC
+      * **Not found**:  If the host could find the vNIC or the container
+      
+      The API does not support:
+      * Excluded vNICs
+      * IPSET/MACSET containers
+      * DFW/ Edge/ All Edges/ Any in the *appliedToList*  parameter
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method introduced.
+
+    uriParameters:
+      vm_ID:
+        required: true
+        displayName: vm_ID
+        description: VM ID.
+    post:
+      displayName: dfwstateRealize
+      description: Get VM Status for containers. The parameters in the *container* field are mandatory, and parameters in the *appliedTo* field are optional in the POST request body.
+      body:
+        application/xml:
+          example: |
+            <vmContainerList>
+              <sourceOrDestList>
+                <container>
+                  <name>sg-1</name>
+                  <value>securitygroup-10</value>
+                  <type>SecurityGroup</type>
+                </container>
+              </sourceOrDestList>
+              <appliedToList>
+                <appliedTo>
+                  <name>sg-1</name>
+                  <value>securitygroup-10</value>
+                  <type>SecurityGroup</type>
+                </appliedTo>
+              </appliedToList>
+            </vmContainerList>
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <firewallVMStatus>
+                  <sourceOrDest>
+                    <container>
+                      <id>securitygroup-10</id>
+                      <realized>yes</realized>
+                      <vmVnic>
+                        <uuid>101905b3-3782-44a8-8021-51baa3ff6483.001</uuid>
+                        <realized>yes</realized>
+                        <ipAddress>fe80::250:56ff:fea6:b4d3</ipAddress>
+                      </vmVnic>
+                      <vmVnic>
+                        <uuid>101905b3-3782-44a8-8021-51baa3ff6483.000</uuid>
+                        <realized>yes</realized>
+                        <ipAddress>fd01:1:2:2916:69f0:cad0:5882:7f53</ipAddress>
+                        <ipAddress>10.192.202.68</ipAddress>
+                        <ipAddress>fe80::20c:29ff:fe36:5a01</ipAddress>
+                        <ipAddress>fd01:1:2:2916:20c:29ff:fe36:5a01</ipAddress>
+                        <ipAddress>fd01:1:2:2916:7d49:c3b:1915:7567</ipAddress>
+                        <ipAddress>fd01:1:2:2916:edc4:6e09:9121:9c31</ipAddress>
+                      </vmVnic>
+                    </container>
+                  </sourceOrDest>
+                  <appliedTos>
+                    <container>
+                      <id>securitygroup-10</id>
+                      <realized>yes</realized>
+                      <vmVnic>
+                        <uuid>101905b3-3782-44a8-8021-51baa3ff6483.001</uuid>
+                        <realized>yes</realized>
+                      </vmVnic>
+                      <vmVnic>
+                        <uuid>101905b3-3782-44a8-8021-51baa3ff6483.000</uuid>
+                        <realized>yes</realized>
+                      </vmVnic>
+                    </container>
+                  </appliedTos>
+                </firewallVMStatus>
 /4.0/services/spoofguard:
   displayName: spoofGuard
   description: |
