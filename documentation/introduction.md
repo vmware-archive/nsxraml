@@ -38,32 +38,33 @@ The NSX Manager requires port 443/TCP for REST API requests.
 
 ### Configuring REST Clients for the NSX REST API
 
-Some browser-based clients include the Chrome app, Postman, or the Firefox
-add-on, RESTClient. Curl is a command-line tool that can function as a REST
-client. The details of REST client configuration will vary from client to
-client, but this general information should help you configure your REST client
-correctly.
+Some common REST clients include Postman, RESTClient (a Firefox add-on), and
+curl (a command-line tool). The details of REST client configuration will vary
+from client to client, but this general information should help you configure
+your REST client correctly.
 
-* **The NSX REST API uses basic authentication.**   
-You must configure your REST client to send the NSX Manager authentication
-credentials using basic authentication.
+* **The NSX REST API can use basic authentication or JSON Web Token authentication.**   
+You can authenticate using basic authentication or JSON Web Tokens. See "Working
+with API Tokens" for information on creating and using JSON Web Tokens. You must
+configure your REST client to send the NSX Manager authentication credentials.
+See the documentation for your REST client for details. 
 
 * **You must use https to send API requests to the NSX Manager.**   
 You might need to import the certificate from the NSX Manager to your REST
 client to allow it to connect to the NSX Manager.
 
-* **When you submit an API request with an XML request body, you must include the  
-`Content-Type: application/xml` header.**   
-Some requests require additional headers, for example, firewall configuration
-changes require the `If-Match` header. This is noted on each method
-description.
-
-* **To ensure you always receive the correct response bodies, set the `Accept` header**
+* **When you submit an API request with a request body, you must include the 
+appropriate `Content-Type` header.**   
 Starting in NSX 6.4, both XML and JSON are supported. This guide documents XML
-examples. Set the `Accept` header to `application/xml` or `application/json` as
+examples. Set the **Content-Type** header to *application/xml* or *application/json* as needed.  
+Some requests require additional headers, for example, firewall configuration
+changes require the **If-Match** header. This is noted on each method
+description.
+* **To ensure you always receive the correct response bodies, set the `Accept` header**   
+Starting in NSX 6.4, both XML and JSON are supported. This guide documents XML
+examples. Set the **Accept** header to *application/xml* or *application/json* as
 needed.  
-**Note:** Some methods, for example, the central CLI method, `POST /1.0/nsx/cli`, might
-require a different Accept header.
+**Note:** Some methods, for example, the central CLI method, `POST /1.0/nsx/cli`, might require a different Accept header.
 
 The following API method will return a response on a newly deployed NSX
 Manager appliance, even if you have not made any configuration changes. You

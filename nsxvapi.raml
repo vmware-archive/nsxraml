@@ -3991,6 +3991,100 @@ securitySchemes:
       description: |
         Retrieve a list of objects that can be used to define a user's access
         scope.
+/2.0/services/auth:
+  displayName: servicesAuth 
+  description: |
+    Working with API Authentication
+    ==========
+
+  /token:
+    displayName: authToken
+    description: |
+      Working with API Tokens
+      --------
+      You can create a JSON Web Token and use it to authenticate with the 
+      NSX Manager appliance in subsequent API requests.
+    post:
+      displayName: authTokenCreate
+      description: |
+        Create a new authentication token.
+        
+        You can use this token in your REST client to access the API. Send the
+        token in the Authorization header with the AUTHTOKEN keyword. See the
+        documentation for your REST client for more information.
+        
+        **Example Authorization header:**
+        ```
+        Authorization: AUTHTOKEN eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTUyMDU1NTU0NH0.bXPVyHp6uR4HmCmyIMcgJQIS-E1xeb6MLz_3BDk7Lzw
+        ```
+        
+        By default, this token is created with the default expiry value. You 
+        can also set a custom expiration using the *expiresInMinutes* query 
+        parameter.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method added. 
+      queryParameters:
+        expiresInMinutes:
+          displayName: expiresInMinutes
+          description: |
+            Specify number of minutes for the token expiration. Valid values
+            are *1-1440*.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <authToken>
+                  <value>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTUyMDU1NTU0NH0
+                         .bXPVyHp6uR4HmCmyIMcgJQIS-E1xeb6MLz_3BDk7Lzw</value>
+                </authToken>
+  /tokenexpiration:
+    displayName: tokenExpire
+    description: |
+      Working With API Token Expiration
+      ---------
+      You can configure the default expiry time of API tokens. New tokens are
+      created with this expiry time.
+    put:
+      displayName: tokenExpireUpdate
+      description: |
+        Update the default token expiry time.
+        
+        The default expiry time is 90 minutes. The maximum expiry time is 24 hours.
+       
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method added. 
+      body:
+        application/xml:
+          example: |
+            <authTokenExpiry>
+              <defaultExpiryInMinutes>90</defaultExpiryInMinutes>  
+            </authTokenExpiry>
+    get:
+      displayName: tokenExpireRead
+      description: |
+        Retrieve the default token expiry time.
+      
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method added. 
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <authTokenExpiry>
+                  <defaultExpiryInMinutes>180</defaultExpiryInMinutes>  
+                </authTokenExpiry>
 /2.0/services/securitygroup:
   displayName: secGroup
   description: |
