@@ -14165,20 +14165,20 @@ securitySchemes:
         ----
       get:
         displayName: bridgingRead
-        description: Retrieve bridge configuration.
+        description: Retrieve bridge configuration. The value of the *enabled* field is always *true* for a Distributed Logical Router.
       put:
         displayName: bridingUpdate
-        description: Configure a bridge.
+        description: Configure a bridge. Note that the bridging is always enabled for Distributed Logical Router and is unsupported for Edge Services Gateway.  You cannot disable the bridging by setting the *enable* field to *false*. The value for the *enable* field is not honored.
         body:
           application/xml:
             example: |
               <bridges>
-                <version></version>
-                <enabled></enabled>
+                <version>9</version>
+                <enabled>true</enabled>
                 <bridge>
-                  <name></name>
-                  <virtualWire></virtualWire>
-                  <dvportGroup></dvportGroup>
+                  <name>br001</name>
+                  <virtualWire>1s001_03</virtualWire>
+                  <dvportGroup>dvportgroup-32</dvportGroup>
                 </bridge>
               </bridges>
             schema: bridingUpdate
