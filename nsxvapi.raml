@@ -13394,7 +13394,112 @@ securitySchemes:
     =========
   get:
     displayName: dfwExclusionRead
-    description: Retrieve the set of VMs in the exclusion list.
+    description: | 
+      Retrieve the set of VMs in the exclusion list.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method updated. Added query parameter *excludelist?listSystemResources=true* to list the system resources in the exclude list.
+    queryParameters:
+      listSystemResources:
+        type: boolean
+        displayName: listSystemResources
+        description: |
+          If *true* lists the system resources in the exclude list.  
+        required: false
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <VshieldAppConfiguration>
+                <excludeListConfiguration>
+                  <objectId>excludeList-1</objectId>
+                  <objectTypeName>ExcludeList</objectTypeName>
+                  <vsmUuid>420EB7D7-674D-9453-E716-0C452E984C94</vsmUuid>
+                  <nodeId>4d4d502e-26ea-4d85-aa8b-01b132728053</nodeId>
+                  <revision>1</revision>
+                  <type>
+                    <typeName>ExcludeList</typeName>
+                  </type>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes/>
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                  <excludeMember>
+                    <member>
+                      <objectId>vm-28</objectId>
+                      <objectTypeName>VirtualMachine</objectTypeName>
+                      <vsmUuid>420EB7D7-674D-9453-E716-0C452E984C94</vsmUuid>
+                      <nodeId>4d4d502e-26ea-4d85-aa8b-01b132728053</nodeId>
+                      <revision>3</revision>
+                      <type>
+                        <typeName>VirtualMachine</typeName>
+                      </type>
+                      <name>ttylinux-1</name>
+                      <scope>
+                        <id>domain-c18</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>ComputeCluster1-$$</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </member>
+                    <systemResource>false</systemResource>
+                  </excludeMember>
+                  <excludeMember>
+                    <member>
+                      <objectId>vm-24</objectId>
+                      <objectTypeName>VirtualMachine</objectTypeName>
+                      <vsmUuid>420EB7D7-674D-9453-E716-0C452E984C94</vsmUuid>
+                      <nodeId>4d4d502e-26ea-4d85-aa8b-01b132728053</nodeId>
+                      <revision>6</revision>
+                      <type>
+                        <typeName>VirtualMachine</typeName>
+                      </type>
+                      <name>NSX_Controller_7ca44fbf-4387-460d-827e-1f8b3b08eede</name>
+                      <scope>
+                        <id>domain-c8</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>ControlCluster1-$$</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </member>
+                    <systemResource>true</systemResource>
+                  </excludeMember>
+                  <excludeMember>
+                    <member>
+                      <objectId>vm-33</objectId>
+                      <objectTypeName>VirtualMachine</objectTypeName>
+                      <vsmUuid>420EB7D7-674D-9453-E716-0C452E984C94</vsmUuid>
+                      <nodeId>4d4d502e-26ea-4d85-aa8b-01b132728053</nodeId>
+                      <revision>7</revision>
+                      <type>
+                        <typeName>VirtualMachine</typeName>
+                      </type>
+                      <name>edge-vm-01-0</name>
+                      <scope>
+                        <id>domain-c18</id>
+                        <objectTypeName>ClusterComputeResource</objectTypeName>
+                        <name>ComputeCluster1-$$</name>
+                      </scope>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                    </member>
+                    <systemResource>true</systemResource>
+                  </excludeMember>
+                </excludeListConfiguration>
+              </VshieldAppConfiguration>
+    
   /{memberID}:
     displayName: dfwExcludeMember
     description: |

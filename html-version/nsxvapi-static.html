@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#107;&#64;&#118;&#x6d;&#x77;&#x61;&#x72;&#101;&#46;&#99;&#x6f;&#x6d;">&#100;&#x6f;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#99;&#107;&#64;&#118;&#x6d;&#x77;&#x61;&#x72;&#101;&#46;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#99;&#x66;&#101;&#x65;&#100;&#x62;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -20222,7 +20222,122 @@ universal logical switches on secondary NSX Managers.</p>
   ><h2>GET /2.1/app/excludelist</h2></a>
   <div class="content">
     <p><p>Retrieve the set of VMs in the exclusion list.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. Added query parameter <em>excludelist?listSystemResources=true</em> to list the system resources in the exclude list.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">listSystemResources</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>If <em>true</em> lists the system resources in the exclude list.  </p>
+
+  </dd>
+</dl>
+    </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">VshieldAppConfiguration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">excludeListConfiguration</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>excludeList-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ExcludeList<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>420EB7D7-674D-9453-E716-0C452E984C94<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>4d4d502e-26ea-4d85-aa8b-01b132728053<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>ExcludeList<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeMember</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-28<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>420EB7D7-674D-9453-E716-0C452E984C94<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>4d4d502e-26ea-4d85-aa8b-01b132728053<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ttylinux-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c18<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ComputeCluster1-$$<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">systemResource</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">systemResource</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">excludeMember</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeMember</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-24<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>420EB7D7-674D-9453-E716-0C452E984C94<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>4d4d502e-26ea-4d85-aa8b-01b132728053<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>NSX_Controller_7ca44fbf-4387-460d-827e-1f8b3b08eede<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c8<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ControlCluster1-$$<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">systemResource</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResource</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">excludeMember</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">excludeMember</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">member</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vm-33<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>420EB7D7-674D-9453-E716-0C452E984C94<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>4d4d502e-26ea-4d85-aa8b-01b132728053<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>7<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualMachine<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>edge-vm-01-0<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>domain-c18<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>ClusterComputeResource<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>ComputeCluster1-$$<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">systemResource</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">systemResource</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">excludeMember</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">excludeListConfiguration</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">VshieldAppConfiguration</span>&gt;</span>
+</code></pre>
   </div>
 </div>
 </section>
