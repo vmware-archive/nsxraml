@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#100;&#111;&#99;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#100;&#111;&#99;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#64;&#x76;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#100;&#111;&#x63;&#x66;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#114;&#101;&#46;&#99;&#111;&#x6d;">&#100;&#111;&#x63;&#x66;&#x65;&#x65;&#x64;&#x62;&#97;&#99;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#114;&#101;&#46;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -35060,6 +35060,45 @@ configuration.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="working-with-the-distributed-firewall-universal-configuration">Working With the Distributed Firewall Universal Configuration</h2>
+<p>You can use this <em>delete</em> API to delete all universal sections when NSX Manager is in <em>transit</em> mode. This API only works when  NSX Manager is in transit mode and universal section are only allowed to be deleted from primary NSX Manager. This API does not work for secondary NSX Manager.</p>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/4.0/firewall/config/sections"
+    href="#DELETE/4.0/firewall/config/sections"
+  ><h2>DELETE /4.0/firewall/config/sections</h2></a>
+  <div class="content">
+    <p><p>Delete the universal sections when NSX Manager is in transit mode.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method added. </td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Use <em>delete_universal_sections</em> to delete all universal sections when NSX Manager is in transit mode. For example: <em>/sections?action=delete_universal_sections</em></p>
+
+  </dd>
+</dl>
+    </div>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h2 id="synchronize-firewall">Synchronize Firewall</h2>
 <p>Synchronize hosts and clusters with the last good configuration in NSX
 Manager database.</p>
@@ -35308,7 +35347,16 @@ associated with L3 redirect rule. Search is case insensitive.</p>
     
   </dt>
   <dd>
-      <p>Filter for specific <strong>action</strong> (<em>allow</em>, <em>deny</em>)</p>
+      <p>Filter for specific <strong>action</strong> (<em>allow</em>, <em>deny</em>).</p>
+
+  </dd>
+  <dt>
+    <span class="param">sectionName</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Filter firewall configuration based on section name. Example <em>config?ruleType=LAYER3&amp;sectionName=Test&amp;action=Deny</em></p>
 
   </dd>
 </dl>

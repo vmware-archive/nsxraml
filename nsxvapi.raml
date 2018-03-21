@@ -10906,7 +10906,12 @@ securitySchemes:
           required: false
           displayName: action
           description: |
-            Filter for specific **action** (*allow*, *deny*)
+            Filter for specific **action** (*allow*, *deny*).
+        sectionName:
+          required: false
+          displayName: sectionName
+          description: |
+            Filter firewall configuration based on section name. Example *config?ruleType=LAYER3&sectionName=Test&action=Deny*
     put:
       displayName: dfwConfigUpdate
       description: !include documentation/reuse/firewall/dfwConfigUpdate
@@ -12779,6 +12784,29 @@ securitySchemes:
               <autoDraftDisabled>true</autoDraftDisabled>
             </globalConfiguration>
           schema: dfwPerformanceUpdate
+  /config/sections:
+    displayName: dfwUniversalSectionConfig
+    description: |
+      Working With the Distributed Firewall Universal Configuration
+      ----------------------------------------------------------
+      You can use this *delete* API to delete all universal sections when NSX Manager is in *transit* mode. This API only works when  NSX Manager is in transit mode and universal section are only allowed to be deleted from primary NSX Manager. This API does not work for secondary NSX Manager.
+    delete:
+      displayName: dfwUniversalSectionDelete
+      description: |
+        Delete the universal sections when NSX Manager is in transit mode.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method added. 
+      queryParameters:
+        action:
+          displayName: action
+          description: |
+            Use *delete_universal_sections* to delete all universal sections when NSX Manager is in transit mode. For example: */sections?action=delete_universal_sections*
+          required: false
+  
   /forceSync/{ID}:
     displayName: dfwSync
     description: |
