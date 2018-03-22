@@ -22513,6 +22513,46 @@ securitySchemes:
                 <oid>1.3.6.1.4.1.6876.90.1.2.3.0.1</oid>
                 <enabled>false</enabled>
               </trapConfig>
+/2.0/services/translation/virtualmachine/{vmId}/ipaddresses:
+  displayName: vmtranslation
+  description: |
+    Working With Translation of Virtual Machines to IP Addresses
+    =================
+    Support translation of Virtual Machines (VM) to IP addresses. Input VM ID and receive the corresponding IP addresses.
+  uriParameters:
+    vmId:
+      required: true
+      displayName: vmId
+      description: VM ID.
+  get:
+    displayName: vmtranslationIPRead
+    description: |
+      Retrieve IP addresses of the provided virtual machine.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method introduced.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <ipNodes>
+                <ipNode>
+                  <ipAddresses>
+                    <string>fe80::250:56ff:feaf:8dda</string>
+                    <string>10.16.181.134</string>
+                  </ipAddresses>
+                </ipNode>
+                <ipNode>
+                  <ipAddresses>
+                    <string>192.168.0.18</string>
+                    <string>fe80::250:56ff:feaf:7d5b</string>
+                  </ipAddresses>
+                </ipNode>
+              </ipNodes>
 /2.0/techsupportbundle:
   displayName: TechSupportBundle
   description: |
