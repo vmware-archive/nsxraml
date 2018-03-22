@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#100;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#x6d;">&#100;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#x6b;&#64;&#118;&#x6d;&#119;&#97;&#114;&#x65;&#x2e;&#99;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#100;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#119;&#x61;&#x72;&#101;&#46;&#x63;&#x6f;&#109;">&#100;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#x6d;&#119;&#x61;&#x72;&#101;&#46;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -38039,6 +38039,129 @@ the request body of <code>PUT
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="import-a-firewall-configuration">Import a Firewall Configuration</h2>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/firewall/globalroot-0/drafts/action/import"
+    href="#POST/4.0/firewall/globalroot-0/drafts/action/import"
+  ><h2>POST /4.0/firewall/globalroot-0/drafts/action/import</h2></a>
+  <div class="content">
+    <p><p>Import a configuration.</p>
+</p>
+      <h3>Request Schema</h3>
+      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="firewallDraft"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="description"/&gt;
+        &lt;xs:element type="xs:string" name="preserve"/&gt;
+        &lt;xs:element type="xs:string" name="user"/&gt;
+        &lt;xs:element type="xs:string" name="mode"/&gt;
+        &lt;xs:element name="config"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element type="xs:string" name="contextId"/&gt;
+              &lt;xs:element name="layer3Sections"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name="section"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element name="rule"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element type="xs:string" name="name"/&gt;
+                                &lt;xs:element type="xs:string" name="action"/&gt;
+                                &lt;xs:element type="xs:string" name="precedence"/&gt;
+                              &lt;/xs:sequence&gt;
+                              &lt;xs:attribute type="xs:string" name="id"/&gt;
+                              &lt;xs:attribute type="xs:string" name="disabled"/&gt;
+                              &lt;xs:attribute type="xs:string" name="logged"/&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                        &lt;/xs:sequence&gt;
+                        &lt;xs:attribute type="xs:string" name="name"/&gt;
+                        &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element name="layer2Sections"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element name="section"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:sequence&gt;
+                          &lt;xs:element name="rule"&gt;
+                            &lt;xs:complexType&gt;
+                              &lt;xs:sequence&gt;
+                                &lt;xs:element type="xs:string" name="name"/&gt;
+                                &lt;xs:element type="xs:string" name="action"/&gt;
+                                &lt;xs:element type="xs:string" name="precedence"/&gt;
+                              &lt;/xs:sequence&gt;
+                              &lt;xs:attribute type="xs:string" name="id"/&gt;
+                              &lt;xs:attribute type="xs:string" name="disabled"/&gt;
+                              &lt;xs:attribute type="xs:string" name="logged"/&gt;
+                            &lt;/xs:complexType&gt;
+                          &lt;/xs:element&gt;
+                        &lt;/xs:sequence&gt;
+                        &lt;xs:attribute type="xs:string" name="name"/&gt;
+                        &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+              &lt;xs:element type="xs:string" name="generationNumber"/&gt;
+            &lt;/xs:sequence&gt;
+            &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:string" name="id"/&gt;
+      &lt;xs:attribute type="xs:string" name="name"/&gt;
+      &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;
+</code></pre>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallDraft</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"2326"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"Imported via API"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1508964034322"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">preserve</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">preserve</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mode</span>&gt;</span>imported<span class="hljs-tag">&lt;/<span class="hljs-name">mode</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">config</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">contextId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">contextId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">layer3Sections</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"true|false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true|false"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">precedence</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">precedence</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">layer3Sections</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">layer2Sections</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"true|false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true|false"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">precedence</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">precedence</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">layer2Sections</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">config</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">firewallDraft</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h2 id="working-with-a-specific-saved-firewall-configuration">Working With a Specific Saved Firewall Configuration</h2>
 </div>
   <div class="params">
@@ -38216,129 +38339,6 @@ secondary NSX manager.</p>
   </dd>
 </dl>
     </div>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="import-a-firewall-configuration">Import a Firewall Configuration</h2>
-</div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/4.0/firewall/globalroot-0/drafts/{draftID}/action/import"
-    href="#POST/4.0/firewall/globalroot-0/drafts/{draftID}/action/import"
-  ><h2>POST /4.0/firewall/globalroot-0/drafts/{draftID}/action/import</h2></a>
-  <div class="content">
-    <p><p>Import a configuration.</p>
-</p>
-      <h3>Request Schema</h3>
-      <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;xs:element name="firewallDraft"&gt;
-    &lt;xs:complexType&gt;
-      &lt;xs:sequence&gt;
-        &lt;xs:element type="xs:string" name="description"/&gt;
-        &lt;xs:element type="xs:string" name="preserve"/&gt;
-        &lt;xs:element type="xs:string" name="user"/&gt;
-        &lt;xs:element type="xs:string" name="mode"/&gt;
-        &lt;xs:element name="config"&gt;
-          &lt;xs:complexType&gt;
-            &lt;xs:sequence&gt;
-              &lt;xs:element type="xs:string" name="contextId"/&gt;
-              &lt;xs:element name="layer3Sections"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element name="section"&gt;
-                      &lt;xs:complexType&gt;
-                        &lt;xs:sequence&gt;
-                          &lt;xs:element name="rule"&gt;
-                            &lt;xs:complexType&gt;
-                              &lt;xs:sequence&gt;
-                                &lt;xs:element type="xs:string" name="name"/&gt;
-                                &lt;xs:element type="xs:string" name="action"/&gt;
-                                &lt;xs:element type="xs:string" name="precedence"/&gt;
-                              &lt;/xs:sequence&gt;
-                              &lt;xs:attribute type="xs:string" name="id"/&gt;
-                              &lt;xs:attribute type="xs:string" name="disabled"/&gt;
-                              &lt;xs:attribute type="xs:string" name="logged"/&gt;
-                            &lt;/xs:complexType&gt;
-                          &lt;/xs:element&gt;
-                        &lt;/xs:sequence&gt;
-                        &lt;xs:attribute type="xs:string" name="name"/&gt;
-                        &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
-                      &lt;/xs:complexType&gt;
-                    &lt;/xs:element&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-              &lt;xs:element name="layer2Sections"&gt;
-                &lt;xs:complexType&gt;
-                  &lt;xs:sequence&gt;
-                    &lt;xs:element name="section"&gt;
-                      &lt;xs:complexType&gt;
-                        &lt;xs:sequence&gt;
-                          &lt;xs:element name="rule"&gt;
-                            &lt;xs:complexType&gt;
-                              &lt;xs:sequence&gt;
-                                &lt;xs:element type="xs:string" name="name"/&gt;
-                                &lt;xs:element type="xs:string" name="action"/&gt;
-                                &lt;xs:element type="xs:string" name="precedence"/&gt;
-                              &lt;/xs:sequence&gt;
-                              &lt;xs:attribute type="xs:string" name="id"/&gt;
-                              &lt;xs:attribute type="xs:string" name="disabled"/&gt;
-                              &lt;xs:attribute type="xs:string" name="logged"/&gt;
-                            &lt;/xs:complexType&gt;
-                          &lt;/xs:element&gt;
-                        &lt;/xs:sequence&gt;
-                        &lt;xs:attribute type="xs:string" name="name"/&gt;
-                        &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
-                      &lt;/xs:complexType&gt;
-                    &lt;/xs:element&gt;
-                  &lt;/xs:sequence&gt;
-                &lt;/xs:complexType&gt;
-              &lt;/xs:element&gt;
-              &lt;xs:element type="xs:string" name="generationNumber"/&gt;
-            &lt;/xs:sequence&gt;
-            &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
-          &lt;/xs:complexType&gt;
-        &lt;/xs:element&gt;
-      &lt;/xs:sequence&gt;
-      &lt;xs:attribute type="xs:string" name="id"/&gt;
-      &lt;xs:attribute type="xs:string" name="name"/&gt;
-      &lt;xs:attribute type="xs:string" name="timestamp"/&gt;
-    &lt;/xs:complexType&gt;
-  &lt;/xs:element&gt;
-&lt;/xs:schema&gt;
-</code></pre>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallDraft</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">preserve</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">preserve</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">mode</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mode</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">config</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">contextId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">contextId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">layer3Sections</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"true|false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true|false"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">precedence</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">precedence</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">layer3Sections</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">layer2Sections</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"true|false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true|false"</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-name">precedence</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">precedence</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">rule</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">layer2Sections</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">generationNumber</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">generationNumber</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">config</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">firewallDraft</span>&gt;</span>
-</code></pre>
   </div>
 </div>
 </section>
