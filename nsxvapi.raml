@@ -780,8 +780,8 @@ securitySchemes:
       This method can be used to perform the following tasks: 
       * Update the CDO mode: POST /api/2.0/vdn/cdo?action=update
       * Resync the CDO mode: POST /api/2.0/vdn/cdo?action=resync
-      * Enable the CDO mode: POST /api/2.0/vdn/cdo?action=disable
-      * Disable the CDO mode: POST /api/2.0/vdn/cdo?action=enable
+      * Enable the CDO mode: POST /api/2.0/vdn/cdo?action=enable
+      * Disable the CDO mode: POST /api/2.0/vdn/cdo?action=disable
       
       **Method history:**
       
@@ -790,22 +790,13 @@ securitySchemes:
       6.4.0 | Method introduced.
     
     queryParameters:
-        enable:
-          displayName: enable
+        action:
+          displayName: action
           description: |
-            Use *action=enable* to enable the CDO mode. Return value is job ID.
-        disable:
-          displayName: disable
-          description: |
-            Use *action=enable* to disable the CDO mode. Return value is job ID.
-        resync:
-          displayName: resync
-          description: |
-            Use *action=resync* to resync the CDO mode. Return value is job ID.
-        update:
-          displayName: update
-          description: |
-            Use *action=update* to update the CDO mode detect time. CDO detect time indicates how much time the NSX Manager 
+            * Use *action=enable* to enable the CDO mode. Return value is job ID.
+            * Use *action=disable* to disable the CDO mode. Return value is job ID.
+            * Use *action=resync* to resync the CDO mode. Return value is job ID.
+            * Use *action=update* to update the CDO mode detect time. CDO detect time indicates how much time the NSX Manager 
             waits to detect the CDO mode. CDO mode detect time value should be between 2 minutes to 120 minutes. Return value is job ID.   
     body:
       application/xml:
@@ -19331,7 +19322,20 @@ securitySchemes:
             type: boolean
       get:
         displayName: l2VPNRead
-        description: Retrieve the current L2VPN configuration for NSX Edge.
+        description: | 
+          Retrieve the current L2VPN configuration for NSX Edge.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.3.5 | Method updated. *showSensitiveData* query parameter added. 
+        queryParameters:
+          showSensitiveData:
+            displayName: showSensitiveData
+            required: false
+            description: Set to *true* to enable, *false* to disable. L2 VPN passwords are displayed in the response body if the *showSenstiveData* query parameter is *true*. Example `config?showSensitiveData=true`. 
+            type: boolean
         responses:
           200:
             body:
@@ -19359,6 +19363,7 @@ securitySchemes:
                           </configuration>
                           <l2VpnUser>
                             <userId>apple</userId>
+                            <password>apple</password>
                           </l2VpnUser>
                           <proxySetting>
                             <type>https</type>
@@ -19619,7 +19624,14 @@ securitySchemes:
           
           Release | Modification
           --------|-------------
+          6.3.5 | Method updated. *showSensitiveData* query parameter added. 
           6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added.
+        queryParameters:
+          showSensitiveData:
+            displayName: showSensitiveData
+            required: false
+            description: Set to *true* to enable, *false* to disable. PSK  passwords are displayed in the response body in a plain text if the *showSenstiveData* query parameter is *true*. Example `config?showSensitiveData=true`. 
+            type: boolean
         responses:
           200:
             body:
