@@ -16925,7 +16925,19 @@ securitySchemes:
             type: boolean
       get:
         displayName: l2VPNRead
-        description: Retrieve the current L2VPN configuration for NSX Edge.
+        description: | 
+          Retrieve the current L2VPN configuration for NSX Edge.
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.3.5 | Method updated. *showSensitiveData* query parameter added. 
+        queryParameters:
+          showSensitiveData:
+            displayName: showSensitiveData
+            required: false
+            description: Set to *true* to enable, *false* to disable. L2 VPN passwords are displayed in the response body if the *showSenstiveData* query parameter is *true*. Example `config?showSensitiveData=true`. 
+            type: boolean
         responses:
           200:
             body:
@@ -16953,6 +16965,7 @@ securitySchemes:
                           </configuration>
                           <l2VpnUser>
                             <userId>apple</userId>
+                            <password>apple</password>
                           </l2VpnUser>
                           <proxySetting>
                             <type>https</type>
@@ -17206,7 +17219,19 @@ securitySchemes:
         **extension** |Default value is *securelocaltrafficbyip=192.168.11.1*. To disable this extension, replace with securelocaltrafficbyip=0.|
       get:
         displayName: ipsecConfigRead
-        description: Retrieve IPsec configuration.
+        description: | 
+          Retrieve IPsec configuration.
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.3.5 | Method updated. *showSensitiveData* query parameter added. 
+        queryParameters:
+          showSensitiveData:
+            displayName: showSensitiveData
+            required: false
+            description: Set to *true* to enable, *false* to disable. PSK  passwords are displayed in the response body in a plain text if the *showSenstiveData* query parameter is *true*. Example `config?showSensitiveData=true`. 
+            type: boolean
         responses:
           200:
             body:
