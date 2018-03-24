@@ -2460,76 +2460,87 @@ securitySchemes:
           schema: nsxControllerPasswordUpdate
 
 /2.0/vdn/host:
-  displayName: hostHealth
+  displayName: hostsHealth
   description: |
     Working With Hypervisor Tunnel Health Status Using BFD
     ==============
     Provides overall information about tunnel health of hypervisor. Tunnel, pNIC, control plane, and management plane statuses are displayed.
-    
-    **Method history:**
-    
-    Release | Modification
-    --------|-------------
-    6.4.0 | Method Added.
 
   /status:
+    displayName: hostsHealthStatus
+    description: | 
+      Working with overall information about tunnel health of a hypervisor
+      ----
     get:
-        queryParameters:
-          source:
-            displayName: source
-            description: |
-              Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
-            required: false
-          status:
-            displayName: status
-            required: false
-            description: |
-              Specify UP, DOWN, DEGRADED to filter by status. Default value is none.
-          host_id:
-            displayName: host_id
-            required: false
-            description: |
-              Specify host list to query status. ID of hosts as string [ ].
-        body:
-          application/xml:
-            example: |
-              <hostStatus>
-                <hostId>host-23</hostId>
+      displayName: hostsHealthStatusRead
+      description: | 
+        Retrieve  overall information about tunnel health of a hypervisor.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      queryParameters:
+        source:
+          displayName: source
+          description: |
+            Specify *source* as REALTIME, or CACHED. Default value is CACHED. Use *status?source=REALTIME* to get current status. Use *status?source=CACHED* to get cached status.
+          required: false
+        status:
+          displayName: status
+          required: false
+          description: |
+            Specify UP, DOWN, DEGRADED to filter by status. Default value is NONE.
+        host_id:
+          displayName: host_id
+          required: false
+          description: |
+            Specify host ID.
+      body:
+        application/xml:
+          example: |
+            <hostStatus>
+              <hostId>host-23</hostId>
+              <status>UP</status>
+              <controlConnectionStatus>UP</controlConnectionStatus>
+              <mgmtConnectionStatus>UP</mgmtConnectionStatus>
+              <pnicStatus>
                 <status>UP</status>
-                <controlConnectionStatus>UP</controlConnectionStatus>
-                <mgmtConnectionStatus>UP</mgmtConnectionStatus>
-                <pnicStatus>
-                  <status>UP</status>
-                  <upCount>1</upCount>
-                  <downCount>0</downCount>
-                  <degradedCount>0</degradedCount>
-                </pnicStatus>
-                <tunnelStatus>
-                  <status>UP</status>
-                  <upCount>1</upCount>
-                  <downCount>0</downCount>
-                  <degradedCount>0</degradedCount>
-                  <bfdStatusCount>
-                    <bfdAdminDownCount>0</bfdAdminDownCount>
-                    <bfdUpCount>3</bfdUpCount>
-                    <bfdDownCount>0</bfdDownCount>
-                    <bfdInitCount>3</bfdInitCount>
-                  </bfdStatusCount>
-                  <bfdDiagnostic>
-                    <echoFunctionFailedCount>0</echoFunctionFailedCount>
-                    <noDiagnosticCount>1</noDiagnosticCount>
-                    <pathDownCount>0</pathDownCount>
-                    <administrativelyDownCount>0</administrativelyDownCount>
-                    <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
-                    <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
-                    <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
-                    <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
-                    <concatenatedPathDownCount>0</concatenatedPathDownCount>
-                  </bfdDiagnostic>
-                </tunnelStatus>
-              </hostStatus>
+                <upCount>1</upCount>
+                <downCount>0</downCount>
+                <degradedCount>0</degradedCount>
+              </pnicStatus>
+              <tunnelStatus>
+                <status>UP</status>
+                <upCount>1</upCount>
+                <downCount>0</downCount>
+                <degradedCount>0</degradedCount>
+                <bfdStatusCount>
+                  <bfdAdminDownCount>0</bfdAdminDownCount>
+                  <bfdUpCount>3</bfdUpCount>
+                  <bfdDownCount>0</bfdDownCount>
+                  <bfdInitCount>3</bfdInitCount>
+                </bfdStatusCount>
+                <bfdDiagnostic>
+                  <echoFunctionFailedCount>0</echoFunctionFailedCount>
+                  <noDiagnosticCount>1</noDiagnosticCount>
+                  <pathDownCount>0</pathDownCount>
+                  <administrativelyDownCount>0</administrativelyDownCount>
+                  <controlDetectionTimeExpiredCount>0</controlDetectionTimeExpiredCount>
+                  <forwardingPlaneResetCount>0</forwardingPlaneResetCount>
+                  <reverseConcatenatedPathDownCount>0</reverseConcatenatedPathDownCount>
+                  <neighborSignaledSessionDownCount>0</neighborSignaledSessionDownCount>
+                  <concatenatedPathDownCount>0</concatenatedPathDownCount>
+                </bfdDiagnostic>
+              </tunnelStatus>
+            </hostStatus>
 
   /{hostId}/status:
+    displayName: hostIdHealthStatus
+    description: | 
+      Working with tunnel health status for a specific host
+      ----
     uriParameters:
       hostId:
         displayName: hostId
@@ -2538,8 +2549,8 @@ securitySchemes:
           ID of the host.
     get:
       displayName: hostIdHealthRead
-      description: |
-        Retrieve tunnel health status for the specific host.
+      description: | 
+        Retrieve information about tunnel health status for a specific host.
        
         **Method history:**
         
@@ -2556,12 +2567,12 @@ securitySchemes:
           displayName: status
           required: false
           description: |
-            Specify UP, DOWN, DEGRADED to filter by status. Default value is none.
+            Specify UP, DOWN, DEGRADED to filter by status. Default value is NONE.
         host_id:
           displayName: host_id
           required: false
           description: |
-            Specify host list to query status. ID of hosts as string [ ].
+            Specify host ID.
       body:
         application/xml:
           example: |
@@ -2602,6 +2613,10 @@ securitySchemes:
             </hostStatus>
 
   /{hostId}/tunnel:
+    displayName: hostIdTunnelStatus
+    description: | 
+      Working with tunnel connections for a specific host
+      ----
     uriParameters:
       hostId:
         displayName: hostId
@@ -2611,13 +2626,13 @@ securitySchemes:
     get:
       displayName: hostIdTunnelRead
       description: |
-        Retrieve tunnel connections for the specific host.
+        Retrieve tunnel connections for a specific host.
        
         **Method history:**
         
         Release | Modification
         --------|-------------
-        6.4.0 | Method Added.
+        6.4.0 | Method introduced.
 
       body:
         application/xml:
@@ -2643,6 +2658,10 @@ securitySchemes:
             </bfdTunnels>
 
   /{hostId}/remote-host-status:
+    displayName: hostIdRemoteHostStatus
+    description: | 
+      Working with remote host status 
+      ----
     uriParameters:
       hostId:
         displayName: hostId
@@ -2652,13 +2671,13 @@ securitySchemes:
     get:
       displayName: hostIdRemoteStatusRead
       description: |
-        Retrieve status of all hosts with tunnel connections to the given host.
+        Retrieve status of all remote hosts with tunnel connections to the given host.
        
         **Method history:**
         
         Release | Modification
         --------|-------------
-        6.4.0 | Method Added.
+        6.4.0 | Method introduced.
       queryParameters:
         source:
           displayName: source
@@ -2669,7 +2688,7 @@ securitySchemes:
           displayName: tunnel_status
           required: false
           description: |
-            Specify UP, DOWN, or DEGRADED to filter by tunnel status. Default value is none.
+            Specify UP, DOWN, or DEGRADED to filter by tunnel status. Default value is NONE.
         bfd_diagnostic_code:
           displayName: bfd_diagnostic_code
           required: false
