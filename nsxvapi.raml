@@ -13644,6 +13644,7 @@ securitySchemes:
         **bgpNeighbour > protocolAddress** | An IP address on the same subnet as the forwarding address. | Logical (distributed) router only.
         **bgpNeighbour > remoteAS**  | The 2 byte remote Autonomous System number that is assigned to the the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-65535) for the remote AS. Either **remoteAS** or **remoteASNumber** is required. 
         **bgpNeighbour > remoteASNumber**  | The 2 or 4 byte remote Autonomous System number that is assigned to the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-4294967295) for the remote AS. Can be in plain or dotted format (e.g. 2 byte: 65001 or 0.65001, 4 byte: 65545 or 1.9). Either **remoteAS** or **remoteASNumber** is required. 
+        **bgpNeighbour > removePrivateAS** | Determines whether to remove private AS number while redistributing routes. | Boolean. You can set to *true* only when remote and local AS are different.
         **bgpNeighbour > weight**  | Weight for the neighbor connection | Optional. Integer. By default, weight is set to 60.
         **bgpNeighbour > holdDownTimer**  | Interval for the hold down timer | Optional. Integer. The NSX Edge uses the standard, default values for the keep alive timer (60 seconds) and the hold down timer. The default value for the hold down timer is 3x keepalive or 180 seconds. Once peering between two neighbors is achieved, the NSX Edge  starts a hold down timer. Every keep alive message it receives from the neighbor resets the hold down timer to 0.  When the NSX Edge fails to receive three consecutive keep alive messages, so that the hold down timer reaches 180 seconds, the NSX Edge considers the neighbor down and deletes the routes from this neighbor.
         **bgpNeighbour > keepAliveTimer**  | Interval for the keep alive timer. | Optional. Integer. Default is *60*. Valid values are 1-65534.
@@ -13701,6 +13702,7 @@ securitySchemes:
           --------|-------------
           6.2.3 | Method updated. **isis** configuration section removed. 
           6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+          6.3.6 | Method updated. Parameter **removePrivateAS** added.
 #          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
       put:
         displayName: routingConfigUpdate
@@ -13714,6 +13716,7 @@ securitySchemes:
           --------|-------------
           6.2.3 | Method updated. **isis** configuration section removed. 
           6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+          6.3.6 | Method updated. Parameter **removePrivateAS** added.
 #          6.3.0 | Method updated. **isis** parameter removed from route redistributions rule sections.
         body:
           application/xml:
@@ -13990,7 +13993,6 @@ securitySchemes:
                       <rule>
                         <prefixName>a</prefixName>
                         <from>
-                          <isis>true</isis>
                           <ospf>false</ospf>
                           <bgp>false</bgp>
                           <static>false</static>
@@ -14001,7 +14003,6 @@ securitySchemes:
                       <rule>
                         <prefixName>b</prefixName>
                         <from>
-                          <isis>false</isis>
                           <ospf>false</ospf>
                           <bgp>true</bgp>
                           <static>false</static>
@@ -14032,65 +14033,6 @@ securitySchemes:
           displayName: routingBGPRead
           description: |
             Retrieve BGP configuration.
-            responses:
-              200:
-                body:
-                  application/xml:
-                    example: |
-                    <bgp>
-                      <enabled>true</enabled>
-                      <localAS>65535</localAS>
-                      <bgpNeighbours>
-                        <bgpNeighbour>
-                          <ipAddress>192.168.1.10</ipAddress>
-                          <remoteAS>65500</remoteAS>
-                          <weight>60</weight>
-                          <holdDownTimer>180</holdDownTimer>
-                          <keepAliveTimer>60</keepAliveTimer>
-                          <password>vmware123</password>
-                          <bgpFilters>
-                            <bgpFilter>
-                              <direction>in</direction>
-                              <action>permit</action>
-                              <network>10.0.0.0/8</network>
-                              <ipPrefixGe>17</ipPrefixGe>
-                              <ipPrefixLe>32</ipPrefixLe>
-                            </bgpFilter>
-                            <bgpFilter>
-                              <direction>out</direction>
-                              <action>deny</action>
-                              <network>20.0.0.0/26</network>
-                            </bgpFilter>
-                          </bgpFilters>
-                        </bgpNeighbour>
-                      </bgpNeighbours>
-                      <redistribution>
-                        <enabled>true</enabled>
-                        <rules>
-                          <rule>
-                            <id>1</id>
-                            <prefixName>a</prefixName>
-                            <from>
-                              <ospf>true</ospf>
-                              <bgp>false</bgp>
-                              <static>true</static>
-                              <connected>false</connected>
-                            </from>
-                            <action>deny</action>
-                          </rule>
-                          <rule>
-                            <id>0</id>
-                            <from>
-                              <ospf>false</ospf>
-                              <bgp>false</bgp>
-                              <static>false</static>
-                              <connected>true</connected>
-                            </from>
-                            <action>permit</action>
-                          </rule>
-                        </rules>
-                      </redistribution>
-                    </bgp>
             
             **Method history:**
             
@@ -14098,7 +14040,68 @@ securitySchemes:
             --------|-------------
             6.2.3 | Method updated. **isis** configuration section removed. 
             6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+            6.3.6 | Method updated. Parameter **removePrivateAS** added.
 #            6.3.0 | Method updated. **isis** parameter removed from route redistribution rules configuration.
+          responses:
+            200:
+                body:
+                  application/xml:
+                    example: |
+                      <bgp>
+                        <enabled>true</enabled>
+                        <localAS>65535</localAS>
+                        <bgpNeighbours>
+                          <bgpNeighbour>
+                            <ipAddress>192.168.1.10</ipAddress>
+                            <remoteAS>65500</remoteAS>
+                            <weight>60</weight>
+                            <holdDownTimer>180</holdDownTimer>
+                            <keepAliveTimer>60</keepAliveTimer>
+                            <password>vmware123</password>
+                            <bgpFilters>
+                              <bgpFilter>
+                                <direction>in</direction>
+                                <action>permit</action>
+                                <network>10.0.0.0/8</network>
+                                <ipPrefixGe>17</ipPrefixGe>
+                                <ipPrefixLe>32</ipPrefixLe>
+                              </bgpFilter>
+                              <bgpFilter>
+                                <direction>out</direction>
+                                <action>deny</action>
+                                <network>20.0.0.0/26</network>
+                              </bgpFilter>
+                            </bgpFilters>
+                            <removePrivateAS>true</removePrivateAS>
+                          </bgpNeighbour>
+                        </bgpNeighbours>
+                        <redistribution>
+                          <enabled>true</enabled>
+                          <rules>
+                            <rule>
+                              <id>1</id>
+                              <prefixName>a</prefixName>
+                              <from>
+                                <ospf>true</ospf>
+                                <bgp>false</bgp>
+                                <static>true</static>
+                                <connected>false</connected>
+                              </from>
+                              <action>deny</action>
+                            </rule>
+                            <rule>
+                              <id>0</id>
+                              <from>
+                                <ospf>false</ospf>
+                                <bgp>false</bgp>
+                                <static>false</static>
+                                <connected>true</connected>
+                              </from>
+                              <action>permit</action>
+                            </rule>
+                          </rules>
+                        </redistribution>
+                      </bgp>
         put:
           displayName: routingBGPUpdate
           description: |
