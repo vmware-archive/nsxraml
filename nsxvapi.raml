@@ -14912,6 +14912,13 @@ securitySchemes:
             *RED*.
           * *GREY*: unknown status.
           * *RED*: None of the appliances for this NSX Edge are in a serving state.
+          
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. The **detailed** query parameter now specifies whether detailed info is displayed for **featureStatuses** only. Detailed info is now always displayed for **edgeVMStatus**. <br>The **systemStatus** parameter is deprecated, and might be removed in a future release.
         queryParameters:
           getlatest:
             type: boolean
@@ -14924,7 +14931,7 @@ securitySchemes:
             type: boolean
             displayName: detailed
             description: |
-              If *true*: retrieve detailed status per feature.   
+              If *true*: retrieve detailed status per feature.  
               If *false*: retrieve aggregated summary of status per feature.
             required: false
           preRulesStatus:
@@ -15015,6 +15022,137 @@ securitySchemes:
                       </featureStatus>
                     </featureStatuses>
                   </edgeStatus>
+    /healthsummary:
+      displayName: healthsummary
+      description: |
+        Working With NSX Edge Health Summary
+        -----
+      get:
+        displayName: healthsummaryRead
+        description: |
+          Retrieve detailed health information about an NSX Edge. 
+          
+          This includes features, VM health status, upgrade availability, alarms
+          and pending jobs. 
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <edgeHealthSummary>
+                    <id>edge-1</id>
+                    <name>EdgeTest1</name>
+                    <edgeType>gatewayServices</edgeType>
+                    <buildNumber>6.4.0-7056811</buildNumber>
+                    <configVersion>4</configVersion>
+                    <publishStatus>APPLIED</publishStatus>
+                    <isUpgradeAvailable>false</isUpgradeAvailable>
+                    <preRulesExists>false</preRulesExists>
+                    <isUniversal>false</isUniversal>
+                    <haVnicInUse>vNic_0</haVnicInUse>
+                    <enabledFeatures>
+                      <featureSummary>
+                        <featureName>routing</featureName>
+                        <featureVersion>4</featureVersion>
+                      </featureSummary>
+                      <featureSummary>
+                        <featureName>firewall</featureName>
+                        <featureVersion>4</featureVersion>
+                      </featureSummary>
+                      <featureSummary>
+                        <featureName>highAvailability</featureName>
+                        <featureVersion>4</featureVersion>
+                      </featureSummary>
+                      <featureSummary>
+                        <featureName>nat</featureName>
+                        <featureVersion>1</featureVersion>
+                      </featureSummary>
+                    </enabledFeatures>
+                    <edgeVmsHealthSummary>
+                      <vmHealthSummary>
+                        <id>vm-28</id>
+                        <name>EdgeTest1-0</name>
+                        <haAdminState>up</haAdminState>
+                        <mpConnectivityStatus>DOWN</mpConnectivityStatus>
+                        <haIndex>0</haIndex>
+                        <lastHeartBeatTimeStamp>1509719278437</lastHeartBeatTimeStamp>
+                      </vmHealthSummary>
+                      <vmHealthSummary>
+                        <id>vm-30</id>
+                        <name>EdgeTest1-1</name>
+                        <haAdminState>up</haAdminState>
+                        <haState>active</haState>
+                        <mpConnectivityStatus>UP</mpConnectivityStatus>
+                        <haIndex>1</haIndex>
+                        <lastHeartBeatTimeStamp>1509719278478</lastHeartBeatTimeStamp>
+                        <vmConfigVersion>4</vmConfigVersion>
+                      </vmHealthSummary>
+                    </edgeVmsHealthSummary>
+                    <pendingJobs>
+                      <edgeJob>
+                        <jobId>jobdata-1120</jobId>
+                        <message>Deploying NSX Edge Virtual Machine edge-2-jobdata-1120-0</message>
+                        <jobType>edge.redeploy.job.name;edge-2</jobType>
+                        <status>RUNNING</status>
+                        <submitTime>1506510927486</submitTime>
+                        <result>
+                          <key>edgeId</key>
+                          <value>edge-2</value>
+                        </result>
+                      </edgeJob>
+                    </pendingJobs>
+                    <activeAlarms>
+                      <edgeAlarm>
+                        <alarmId>158</alarmId>
+                        <alarmCode>130200</alarmCode>
+                        <eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>edge-1</eventSourceId>
+                            <eventSourceType>Edge</eventSourceType>
+                          </eventSourceInfo>
+                        </eventSourceInfo>
+                        <severity>High</severity>
+                        <message>NSX Edge HighAvailability heartbeat channel of VM : vm-30 is disconnected from peer node.</message>
+                        <timeOfOccurence>1509719267000</timeOfOccurence>
+                      </edgeAlarm>
+                      <edgeAlarm>
+                        <alarmId>160</alarmId>
+                        <alarmCode>130027</alarmCode>
+                        <eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>edge-1</eventSourceId>
+                            <eventSourceType>Edge</eventSourceType>
+                          </eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>vm-28</eventSourceId>
+                            <eventSourceType>Edge Vm Id</eventSourceType>
+                          </eventSourceInfo>
+                        </eventSourceInfo>
+                        <severity>High</severity>
+                        <message>NSX Edge VM (vmId : vm-28) is powered off. Please use vsphere client to power on Edge VM</message>
+                        <timeOfOccurence>1509719272066</timeOfOccurence>
+                      </edgeAlarm>
+                      <edgeAlarm>
+                        <alarmId>163</alarmId>
+                        <alarmCode>130033</alarmCode>
+                        <eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>edge-1</eventSourceId>
+                            <eventSourceType>Edge</eventSourceType>
+                          </eventSourceInfo>
+                        </eventSourceInfo>
+                        <severity>High</severity>
+                        <message>NSX Edge VM (vmId : vm-28) is not responding to NSX manager health check. Please check NSX manager logs for details.</message>
+                        <timeOfOccurence>1509719278437</timeOfOccurence>
+                      </edgeAlarm>
+                    </activeAlarms>
+                  </edgeHealthSummary>
     /techsupportlogs:
       displayName: techSupportLogs
       description: |

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#100;&#x6f;&#99;&#102;&#101;&#101;&#x64;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#114;&#101;&#46;&#x63;&#111;&#x6d;">&#100;&#x6f;&#99;&#102;&#101;&#101;&#x64;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#114;&#101;&#46;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;">&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#97;&#114;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -26340,6 +26340,147 @@ using the query parameter, indicating the desired ruleID.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="working-with-nsx-edge-health-summary">Working With NSX Edge Health Summary</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/edges/{edgeId}/healthsummary"
+    href="#GET/4.0/edges/{edgeId}/healthsummary"
+  ><h2>GET /4.0/edges/{edgeId}/healthsummary</h2></a>
+  <div class="content">
+    <p><p>Retrieve detailed health information about an NSX Edge. </p>
+<p>This includes features, VM health status, upgrade availability, alarms
+and pending jobs. </p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">edgeHealthSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>edge-1<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>EdgeTest1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeType</span>&gt;</span>gatewayServices<span class="hljs-tag">&lt;/<span class="hljs-name">edgeType</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">buildNumber</span>&gt;</span>6.4.0-7056811<span class="hljs-tag">&lt;/<span class="hljs-name">buildNumber</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">configVersion</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">configVersion</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">publishStatus</span>&gt;</span>APPLIED<span class="hljs-tag">&lt;/<span class="hljs-name">publishStatus</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isUpgradeAvailable</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUpgradeAvailable</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">preRulesExists</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">preRulesExists</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">haVnicInUse</span>&gt;</span>vNic_0<span class="hljs-tag">&lt;/<span class="hljs-name">haVnicInUse</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabledFeatures</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureSummary</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureName</span>&gt;</span>routing<span class="hljs-tag">&lt;/<span class="hljs-name">featureName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureSummary</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureSummary</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureName</span>&gt;</span>firewall<span class="hljs-tag">&lt;/<span class="hljs-name">featureName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureSummary</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureSummary</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureName</span>&gt;</span>highAvailability<span class="hljs-tag">&lt;/<span class="hljs-name">featureName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureSummary</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">featureSummary</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureName</span>&gt;</span>nat<span class="hljs-tag">&lt;/<span class="hljs-name">featureName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">featureVersion</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">featureVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">featureSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">enabledFeatures</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">edgeVmsHealthSummary</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmHealthSummary</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vm-28<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>EdgeTest1-0<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mpConnectivityStatus</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">mpConnectivityStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">haIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">haIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastHeartBeatTimeStamp</span>&gt;</span>1509719278437<span class="hljs-tag">&lt;/<span class="hljs-name">lastHeartBeatTimeStamp</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vmHealthSummary</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmHealthSummary</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>vm-30<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>EdgeTest1-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">haAdminState</span>&gt;</span>up<span class="hljs-tag">&lt;/<span class="hljs-name">haAdminState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">haState</span>&gt;</span>active<span class="hljs-tag">&lt;/<span class="hljs-name">haState</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mpConnectivityStatus</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">mpConnectivityStatus</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">haIndex</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">haIndex</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastHeartBeatTimeStamp</span>&gt;</span>1509719278478<span class="hljs-tag">&lt;/<span class="hljs-name">lastHeartBeatTimeStamp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vmConfigVersion</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">vmConfigVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vmHealthSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">edgeVmsHealthSummary</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pendingJobs</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">edgeJob</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">jobId</span>&gt;</span>jobdata-1120<span class="hljs-tag">&lt;/<span class="hljs-name">jobId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>Deploying NSX Edge Virtual Machine edge-2-jobdata-1120-0<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">jobType</span>&gt;</span>edge.redeploy.job.name;edge-2<span class="hljs-tag">&lt;/<span class="hljs-name">jobType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">submitTime</span>&gt;</span>1506510927486<span class="hljs-tag">&lt;/<span class="hljs-name">submitTime</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">result</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>edgeId<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>edge-2<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">result</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">edgeJob</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pendingJobs</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">activeAlarms</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">edgeAlarm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmId</span>&gt;</span>158<span class="hljs-tag">&lt;/<span class="hljs-name">alarmId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmCode</span>&gt;</span>130200<span class="hljs-tag">&lt;/<span class="hljs-name">alarmCode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceId</span>&gt;</span>edge-1<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceType</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceType</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">severity</span>&gt;</span>High<span class="hljs-tag">&lt;/<span class="hljs-name">severity</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>NSX Edge HighAvailability heartbeat channel of VM : vm-30 is disconnected from peer node.<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">timeOfOccurence</span>&gt;</span>1509719267000<span class="hljs-tag">&lt;/<span class="hljs-name">timeOfOccurence</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">edgeAlarm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">edgeAlarm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmId</span>&gt;</span>160<span class="hljs-tag">&lt;/<span class="hljs-name">alarmId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmCode</span>&gt;</span>130027<span class="hljs-tag">&lt;/<span class="hljs-name">alarmCode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceId</span>&gt;</span>edge-1<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceType</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceType</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceId</span>&gt;</span>vm-28<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceType</span>&gt;</span>Edge Vm Id<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceType</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">severity</span>&gt;</span>High<span class="hljs-tag">&lt;/<span class="hljs-name">severity</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>NSX Edge VM (vmId : vm-28) is powered off. Please use vsphere client to power on Edge VM<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">timeOfOccurence</span>&gt;</span>1509719272066<span class="hljs-tag">&lt;/<span class="hljs-name">timeOfOccurence</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">edgeAlarm</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">edgeAlarm</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmId</span>&gt;</span>163<span class="hljs-tag">&lt;/<span class="hljs-name">alarmId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">alarmCode</span>&gt;</span>130033<span class="hljs-tag">&lt;/<span class="hljs-name">alarmCode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceId</span>&gt;</span>edge-1<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceId</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">eventSourceType</span>&gt;</span>Edge<span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceType</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">eventSourceInfo</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">severity</span>&gt;</span>High<span class="hljs-tag">&lt;/<span class="hljs-name">severity</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>NSX Edge VM (vmId : vm-28) is not responding to NSX manager health check. Please check NSX manager logs for details.<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">timeOfOccurence</span>&gt;</span>1509719278437<span class="hljs-tag">&lt;/<span class="hljs-name">timeOfOccurence</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">edgeAlarm</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">activeAlarms</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">edgeHealthSummary</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h2 id="working-with-nsx-edge-high-availability">Working With NSX Edge High Availability</h2>
 <p>High Availability (HA) ensures that a NSX Edge appliance is always
 available on your virtualized network. You can enable HA either when
@@ -33794,7 +33935,16 @@ for five consecutive times for all appliances, status will turn
 <li><em>GREY</em>: unknown status.</li>
 <li><em>RED</em>: None of the appliances for this NSX Edge are in a serving state.</li>
 </ul>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. The <strong>detailed</strong> query parameter now specifies whether detailed info is displayed for <strong>featureStatuses</strong> only. Detailed info is now always displayed for <strong>edgeVMStatus</strong>. <br>The <strong>systemStatus</strong> parameter is deprecated, and might be removed in a future release.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
