@@ -21603,7 +21603,7 @@ securitySchemes:
           ```
           6300
           ```
-    /status:
+    /status/:
       displayName: securityPolicyStatus
       description: |
         Working With Service Composer Status
@@ -22180,74 +22180,22 @@ securitySchemes:
     get:
       displayName: serviceComposerDFWRead # existing change serviceComposerDFWSyncRead
       description: |
-        If Service Composer goes out of sync with Distributed Firewall, you
-        must re-synchronize Service Composer rules with firewall rules. If
-        Service Composer stays out of sync, firewall configuration may not
-        stay enforced as expected.
+        **Deprecated.** Use `GET /api/2.0/services/serviceprovider/firewall/info` instead.
         
-        This GET method can perform the following functions, depending on the
+        You can also use `GET /api/2.0/services/policy/securitypolicy/status/` to
+        retrieve the sync status of Service Composer firewall with Distributed
+        Firewall.
+        
+        This GET method can perform certain functions, depending on the
         request body provided. **Note:** Some REST clients do not allow you to
         specify a request body with a GET request.
-        
-        ### Check if Service Composer firewall and Distributed Firewall are in sync
-        
-        **Note: Deprecated.** Use `GET /2.0/services/policy/securitypolicy/status` instead. 
-        
-        * If they are in sync, the response body does not contain any data.  
-        * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>getServiceComposerFirewallOutOfSyncTimestamp</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Synchronize Service Composer firewall with Distributed Firewall
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>forceSync</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Retrieve the state of the auto save draft property in Service Composer
-        
-        Retrieve the state of the auto save draft property in Service
-        Composer. Response is true or false.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>getAutoSaveDraft</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Change the state of the auto save draft property in Service Composer
-        
-        **Note: Deprecated.**
-        
-        Change the state of the auto save draft property in Service Composer.
-        Provide request body value of true or false.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>autoSaveDraft</key>
-            <value>false</value>
-          </keyValue>
-        </keyValues> 
-        ```
         
         **Method history:**
         
           Release | Modification
           --------|-------------
-          6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
+          6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /api/2.0/services/policy/securitypolicy/status/` instead.
+          6.4.0 | All functions deprecated. Use `GET /api/2.0/services/serviceprovider/firewall/info` instead.
       body:
         application/xml:
           example: |
@@ -22257,6 +22205,50 @@ securitySchemes:
                 <value></value>
               </keyValue>
             </keyValues> 
+    /info:
+      displayName: serviceComposerDFWInfo # existing change serviceComposerDFWSync
+      description: |
+        Working With Service Composer Firewall Information
+        --------------
+      get:
+        displayName: serviceComposerDFWInfoRead # existing change serviceComposerDFWSyncRead
+        description: |
+          If Service Composer goes out of sync with Distributed Firewall, you
+          must re-synchronize Service Composer rules with firewall rules. If
+          Service Composer stays out of sync, firewall configuration may not
+          stay enforced as expected.
+          
+          Using query parameters, you can get the sync status, force a sync,
+          and retrieve or update the auto save draft propertly. 
+          
+          You can also use `GET /api/2.0/services/policy/securitypolicy/status/` to
+          retrieve the sync status of Service Composer firewall with distributed
+          Firewall.
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        queryParameters:
+          key:
+            displayName: key
+            description: |
+              Specify one of the following keys:
+                * *getServiceComposerFirewallOutOfSyncTimestamp*: Check if Service Composer firewall and Distributed Firewall are in sync.
+                  * If they are in sync, the response body does not contain any data.  
+                  * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
+                * *forceSync*: Synchronize Service Composer firewall with Distributed Firewall.
+                * *getAutoSaveDraft*: Retrieve the state of the auto save draft property in Service Composer.
+            required: false
+          value:
+            displayName: value
+            description: |
+              If you specify *getAutoSaveDraft* as a value for **key**, you can set
+              **value** to *true* or *false* to enable or disable the auto save
+              draft property.
+              
+              **Note:** Setting the auto save draft property to *true* might cause performance
+              degradation.
+            required: false
   /securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
     description: |
