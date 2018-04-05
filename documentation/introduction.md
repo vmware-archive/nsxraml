@@ -116,6 +116,14 @@ code, it indicates whether the request succeeded or failed, and might be
 accompanied by a URL that points to a location from which additional
 information can be retrieved.
 
+### Revision Numbers
+
+Some API objects include a configuration version number. In some cases, this
+revision number is used to prevent concurrent changes to an object. As a best
+practice, before you change the configuration of an object, retrieve the latest
+configuration using GET. Modify the response body as needed and use it as your
+PUT request body. If the object has been modified since your GET operation, you
+might see an error message.
 
 ## Finding vCenter Object IDs
 
