@@ -57,6 +57,34 @@ This section lists API removals and behavior changes. See **Method
 history** information throughout the *NSX API Guide* for details of
 other changes, such as parameter additions.
 
+### Deprecations in NSX 6.4.0
+
+The following items are deprecated, and might be removed in a future release.
+
+* The *systemStatus* parameter in `GET /api/4.0/edges/edgeID/status` is deprecated. 
+* `GET /api/2.0/services/policy/serviceprovider/firewall/` is deprecated. Use
+  `GET /api/2.0/services/policy/serviceprovider/firewall/info` instead.
+* Setting the *tcpStrict* in the global configuration section of Distributed
+  Firewall is deprecated. Starting in NSX 6.4.0, *tcpStrict* is defined at 
+  the section level. 
+  **Note:** If you upgrade to NSX 6.4.0 or later, the global configuration setting for
+  **tcpStrict** is used to configure **tcpStrict** in each existing layer 3
+  section. **tcpStrict** is set to *false* in layer 2 sections and layer 3
+  redirect sections. **stateless** and **useSid** are new attributes in NSX
+  6.4.0 and are set to the default values during upgrade. See "Working with
+  Distributed Firewall Configuration" for more information.
+
+### Behavior Changes in NSX 6.4.0
+
+NSX 6.4.0 introduces these changes in error handling:
+
+* Previously `POST /api/2.0/vdn/controller` responded with *201 Created* to
+  indicate the controller creation job is created. However, the creation of the
+  controller might still fail. Starting in NSX 6.4.0 the response is *202 Accepted*.
+* Previously if you sent an API request which is not allowed in transit or
+  standalone mode, the response status was *400 Bad Request*. Starting in 6.4.0
+  the response status is *403 Forbidden*.
+
 ### Behavior Changes in NSX 6.3.5
 
 NSX 6.3.5 introduces these changes in error handling:
