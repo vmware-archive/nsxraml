@@ -15293,14 +15293,21 @@ securitySchemes:
         ----
       put:
         displayName: cliSettingsUpdate
-        description: Modify CLI credentials and enable/disable SSH for Edge.
+        description: | 
+          Modify CLI credentials and enable/disable SSH for Edge.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. Modified existing API to enable SSH on edge without changing the password. Now you can enable SSH without mentioning the password. If password is provided, the provided password is saved in the database. If password is not provided, NSX Manager will retain password from the database.
         body:
           application/xml:
             example: |
               <cliSettings>
-                <userName></userName>
-                <password></password>
-                <remoteAccess></remoteAccess>
+                <userName>admin</userName>
+                <password>Default123</password>
+                <remoteAccess>true</remoteAccess>
                 <passwordExpiry></passwordExpiry>
                 <sshLoginBannerText></sshLoginBannerText>
               </cliSettings>

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#100;&#111;&#x63;&#x66;&#101;&#101;&#100;&#x62;&#x61;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#100;&#111;&#x63;&#x66;&#101;&#101;&#100;&#x62;&#x61;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#x40;&#x76;&#109;&#x77;&#97;&#x72;&#x65;&#x2e;&#99;&#111;&#x6d;">&#x64;&#x6f;&#x63;&#x66;&#x65;&#x65;&#100;&#98;&#x61;&#99;&#107;&#x40;&#x76;&#109;&#x77;&#97;&#x72;&#x65;&#x2e;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -24336,7 +24336,16 @@ become active.</p>
   ><h2>PUT /4.0/edges/{edgeId}/clisettings</h2></a>
   <div class="content">
     <p><p>Modify CLI credentials and enable/disable SSH for Edge.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. Modified existing API to enable SSH on edge without changing the password. Now you can enable SSH without mentioning the password. If password is provided, the provided password is saved in the database. If password is not provided, NSX Manager will retain password from the database.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="cliSettings"&gt;
@@ -24354,9 +24363,9 @@ become active.</p>
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">cliSettings</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">remoteAccess</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">remoteAccess</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">userName</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">userName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>Default123<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">remoteAccess</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">remoteAccess</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">passwordExpiry</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">passwordExpiry</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">sshLoginBannerText</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">sshLoginBannerText</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">cliSettings</span>&gt;</span>
