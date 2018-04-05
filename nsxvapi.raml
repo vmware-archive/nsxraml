@@ -10787,7 +10787,7 @@ securitySchemes:
   /globalroot-0/config:
     displayName: dfwConfig
     description: |
-      Distributed Firewall Rules Configuration
+      Working with Distributed Firewall Configuration
       ---
       The following table lists the elements that can be used in firewall
       rules.
@@ -10816,6 +10816,25 @@ securitySchemes:
       | virtual app | VirtualApp | source/destination |
       | virtual machine | VirtualMachine | source/destination<br>appliedTo |
       | vNIC | Vnic | source/destination<br>appliedTo |
+      
+      Starting in NSX 6.4.0, the following attributes can be configured at the section level.
+      
+      Attribute | Description | Default for new sections
+      ----|----
+      **tcpStrict** | If TCP strict is enabled on a rule and a packet matches that rule, the following check will be performed. If the packet does not belong to an existing session, the kernel will check to see if the SYN flag of the packet is set. If it is not, then it will drop the packet. | *false* for all section types.
+      **stateless** | If stateless is enabled on a rule, traffic is monitored statically, and the state of network connections will be ignored. | *true* for L2, *false* for L3 and L3 redirect.
+      **useSid** | If useSid is enabled on a rule, the source field of the rule must be an Active Directory Security Group.  | *false* for all section types.
+      
+      **tcpStrict** was previously configured in the global firewall
+      configuration: `PUT /api/4.0/firewall/config/globalconfiguration`. If you
+      upgrade to NSX 6.4.0 or later, the global configuration setting
+      for **tcpStrict** is used to configure **tcpStrict** in each existing
+      layer 3 section. **tcpStrict** is set to *false* in layer 2 sections and
+      layer 3 redirect sections. **stateless** and **useSid** are new attributes
+      in NSX 6.4.0 and are set to the default values during upgrade.
+      
+      Once all hosts are upgraded to NSX 6.4.0, the global **tcpStrict** parameter
+      is ignored.
     get:
       displayName: dfwConfigShow
       description: |
@@ -10823,15 +10842,21 @@ securitySchemes:
         
         If no query parameters are used, all rule configuration is retrieved.
         Use the query parameters to filter the rule configuration information.
+        
+        **Method history:**
+       
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
       responses:
         200:
           body:
             application/xml:
               example: |
-                <firewallConfiguration timestamp="1360144793284">
+                <firewallConfiguration timestamp="1510700045886">
                   <contextId>globalroot-0</contextId>
                   <layer3Sections>
-                    <section id="2" name="defaultSectionLayer3" generationNumber="1360144793284" timestamp="1360144793284">
+                    <section id="2" name="defaultSectionLayer3" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                       <rule id="2" disabled="false" logged="false">
                         <name>Default Rule</name>
                         <action>DENY</action>
@@ -10848,7 +10873,7 @@ securitySchemes:
                     </section>
                   </layer3Sections>
                   <layer2Sections>
-                    <section id="1" name="defaultSectionLayer2" generationNumber="1360144793284" timestamp="1360144793284">
+                    <section id="1" name="defaultSectionLayer2" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER2">
                       <rule id="1" disabled="false" logged="false">
                         <name>Default Rule</name>
                         <action>ALLOW</action>
@@ -10933,10 +10958,10 @@ securitySchemes:
       body:
         application/xml:
           example: |
-            <firewallConfiguration timestamp="1359979620727">
+            <firewallConfiguration timestamp="1510700045886">
               <contextId>globalroot-0</contextId>
               <layer3Sections>
-                <section id="2" name="defaultSectionLayer3" generationNumber="1359979620727" timestamp="1359979620727">
+                <section id="2" name="defaultSectionLayer3" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                   <rule disabled="false" logged="true">
                     <name>okn-1</name>
                     <action>ALLOW</action>
@@ -10999,7 +11024,7 @@ securitySchemes:
                 </section>
               </layer3Sections>
               <layer2Sections>
-                <section id="1" name="defaultSectionLayer2" generationNumber="1359979620727" timestamp="1359979620727">
+                <section id="1" name="defaultSectionLayer2" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER2">
                   <rule id="1" disabled="false" logged="false">
                     <name>Default Rule</name>
                     <action>ALLOW</action>
@@ -11020,8 +11045,13 @@ securitySchemes:
       get:
         displayName: dfwL3SectionRead
         description: |
-          Retrieve rules from the layer 3 section specified by section
-          **name**.
+          Retrieve rules from the layer 3 section specified by section **name**.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           name:
             required: true
@@ -11032,7 +11062,7 @@ securitySchemes:
             body:
               application/xml:
                 example: |
-                  <section id="4" name="TestSection" generationNumber="1360149234572" timestamp="1360149234572">
+                  <section id="4" name="TestSection" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                     <rule id="16" disabled="false" logged="true">
                       <name>okn-2</name>
                       <action>ALLOW</action>
@@ -11154,13 +11184,22 @@ securitySchemes:
           By default, the section is created at the top of the firewall table.
           You can specify a location for the section with the **operation**
           and **anchorId** query parameters.
+          
+          See "Working with Distributed Firewall Configuration" for information
+          about configuring **tcpStrict**, **stateless**, and **useSid** for a section.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           operation: !include documentation/reuse/firewall/operation.raml
           anchorId: !include documentation/reuse/firewall/anchorId.raml
         body:
           application/xml:
             example: |
-              <section name="TestSection">
+              <section name="TestSection" tcpStrict="true" stateless="false" useSid="false">
                 <rule disabled="false" logged="true">
                   <name>okn-2</name>
                   <action>ALLOW</action>
@@ -11240,13 +11279,20 @@ securitySchemes:
             description: The ID of the section to modify.
         get:
           displayName: dfwL3SectionIdRead
-          description: Retrieve information about the specified layer 3 section.
+          description: |
+            Retrieve information about the specified layer 3 section.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
           responses:
             200:
               body:
                 application/xml:
                   example: |
-                    <section id="4" name="TestSection" generationNumber="1360149234572" timestamp="1360149234572">
+                    <section id="4" name="TestSection" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                       <rule id="16" disabled="false" logged="true">
                         <name>okn-2</name>
                         <action>ALLOW</action>
@@ -11417,7 +11463,7 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <section id="4" name="TestSectionRenamed" generationNumber="1336034461743" timestamp="1360149234572">
+                <section id="4" name="TestSectionRenamed" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                   <rule id="16" disabled="false" logged="false">
                     <name>okn-2</name>
                     <action>ALLOW</action>
@@ -11605,8 +11651,13 @@ securitySchemes:
       get:
         displayName: dfwL2SectionRead
         description: |
-          Retrieve rules from the layer 2 section specified by section
-          **name**.
+          Retrieve rules from the layer 2 section specified by section **name**.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           name:
             required: false
@@ -11622,13 +11673,22 @@ securitySchemes:
           By default, the section is created at the top of the firewall table.
           You can specify a location for the section with the **operation**
           and **anchorId** query parameters.
+          
+          See "Working with Distributed Firewall Configuration" for information
+          about configuring **tcpStrict**, **stateless**, and **useSid** for a section.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           operation: !include documentation/reuse/firewall/operation.raml
           anchorId: !include documentation/reuse/firewall/anchorId.raml
         body:
          application/xml:
            example: |
-            <section name="" managedBy="" type="">
+            <section name="" managedBy="" tcpStrict="" stateless="" useSid="" type="">
               <rule disabled="" logged="">
                 <name></name>
                 <action></action>
@@ -11678,7 +11738,14 @@ securitySchemes:
             description: The ID of the section to modify.
         get:
           displayName: dfwL2SectionIdRead
-          description: Retrieve information about the specified layer 2 section.
+          description: |
+            Retrieve information about the specified layer 2 section.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         post:
           displayName: dfwL2SectionIdAction # update existing addtion dfwL2SectionIdRevise
           description: |
@@ -11738,7 +11805,7 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <section id="" name="" generationNumber="" timestamp="">
+                <section id="" name="" generationNumber="" timestamp="" tcpStrict="" stateless="" useSid="" type="">
                   <rule id="" disabled="" logged="">
                     <name></name>
                     <action></action>
@@ -11908,11 +11975,18 @@ securitySchemes:
         ----
       post:
         displayName: layer3RedirectSectionsCreate
-        description: Add L3 redirect section
+        description: |
+          Add L3 redirect section
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         body:
           application/xml:
             example: |
-              <section>
+              <section tcpStrict="" stateless="" useSid="">
                 <name></name>
                 <action></action>
                 <appliedToList>
@@ -11938,13 +12012,26 @@ securitySchemes:
             description: Specify section by ID or name
         get:
           displayName: sectionRead
-          description: Get L3 redirect section configuration
+          description: |
+            Get L3 redirect section configuration
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         put:
           displayName: sectionUpdate
           description: |
             Modify layer 3 redirect section. You will need to get the Etag
             value out of the GET first. Then pass the modified version of the
             whole redirect section configuration in the GET body.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
           headers:
             If-Match:
               required: true
@@ -11953,7 +12040,7 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <section id="" name="" generationNumber="" timestamp="">
+                <section id="" name="" generationNumber="" timestamp="" tcpStrict="" stateless="" useSid="" type="">
                   <rule id="" disabled="" logged="">
                     <name></name>
                     <action></action>
@@ -12744,7 +12831,10 @@ securitySchemes:
       on/off rule optimization.
       * **tcpStrictOption** determines whether or not to drop an established
       TCP connection when the firewall does not see the initial three-way
-      handshake. If set to true, the connection will be dropped.
+      handshake. If set to true, the connection will be dropped.   
+      **Note**: starting in NSX 6.4.0 this setting in the global configuration is 
+      ignored. **tcpStrict** is instead configured at the section level. See 
+      "Working with Distributed Firewall Configuration" for more information.
       * **autoDraftDisabled** improves performances when making large numbers
       of changes to firewall rules.
       
@@ -12763,7 +12853,14 @@ securitySchemes:
       configuration.
     get:
       displayName: dfwPerformanceRead
-      description: Retrieve performance configuration for distributed firewall.
+      description: | 
+        Retrieve performance configuration for distributed firewall.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level.
       responses:
         200:
           body:
@@ -12784,6 +12881,7 @@ securitySchemes:
         Release | Modification
         --------|-------------
         6.2.3 | Method updated. **autoDraftDisabled** parameter added.
+        6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level. 
       body:
         application/xml:
           example: |

@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x64;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;">&#x64;&#x6f;&#99;&#x66;&#101;&#101;&#x64;&#98;&#x61;&#99;&#x6b;&#64;&#x76;&#x6d;&#119;&#97;&#x72;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#46;&#99;&#111;&#x6d;">&#x64;&#x6f;&#x63;&#102;&#x65;&#101;&#x64;&#x62;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#46;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -35070,7 +35070,9 @@ configure Edge Service Gateway interfaces.</p>
 on/off rule optimization.</li>
 <li><strong>tcpStrictOption</strong> determines whether or not to drop an established
 TCP connection when the firewall does not see the initial three-way
-handshake. If set to true, the connection will be dropped.</li>
+handshake. If set to true, the connection will be dropped.<br><strong>Note</strong>: starting in NSX 6.4.0 this setting in the global configuration is 
+ignored. <strong>tcpStrict</strong> is instead configured at the section level. See 
+&quot;Working with Distributed Firewall Configuration&quot; for more information.</li>
 <li><strong>autoDraftDisabled</strong> improves performances when making large numbers
 of changes to firewall rules.</li>
 </ul>
@@ -35095,7 +35097,16 @@ configuration.</p>
   ><h2>GET /4.0/firewall/config/globalconfiguration</h2></a>
   <div class="content">
     <p><p>Retrieve performance configuration for distributed firewall.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong> in the global configuration is ignored. Instead, configure <strong>tcpStrict</strong> at the section level.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -35126,6 +35137,10 @@ configuration.</p>
 </thead><tbody><tr>
 <td>6.2.3</td>
 <td>Method updated. <strong>autoDraftDisabled</strong> parameter added.</td>
+</tr>
+<tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong> in the global configuration is ignored. Instead, configure <strong>tcpStrict</strong> at the section level. </td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -35224,7 +35239,7 @@ Manager database.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="distributed-firewall-rules-configuration">Distributed Firewall Rules Configuration</h2>
+  <div class="description"><h2 id="working-with-distributed-firewall-configuration">Working with Distributed Firewall Configuration</h2>
 <p>The following table lists the elements that can be used in firewall
 rules.</p>
 <table class="table"><thead><tr>
@@ -35342,7 +35357,37 @@ rules.</p>
 <td>Vnic</td>
 <td>source/destination<br>appliedTo</td>
 </tr>
-</tbody></table></div>
+</tbody></table><p>Starting in NSX 6.4.0, the following attributes can be configured at the section level.</p>
+<table class="table"><thead><tr>
+<th>Attribute</th>
+<th>Description</th>
+<th>Default for new sections</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>tcpStrict</strong></td>
+<td>If TCP strict is enabled on a rule and a packet matches that rule, the following check will be performed. If the packet does not belong to an existing session, the kernel will check to see if the SYN flag of the packet is set. If it is not, then it will drop the packet.</td>
+<td><em>false</em> for all section types.</td>
+</tr>
+<tr>
+<td><strong>stateless</strong></td>
+<td>If stateless is enabled on a rule, traffic is monitored statically, and the state of network connections will be ignored.</td>
+<td><em>true</em> for L2, <em>false</em> for L3 and L3 redirect.</td>
+</tr>
+<tr>
+<td><strong>useSid</strong></td>
+<td>If useSid is enabled on a rule, the source field of the rule must be an Active Directory Security Group.</td>
+<td><em>false</em> for all section types.</td>
+</tr>
+</tbody></table><p><strong>tcpStrict</strong> was previously configured in the global firewall
+configuration: <code>PUT /api/4.0/firewall/config/globalconfiguration</code>. If you
+upgrade to NSX 6.4.0 or later, the global configuration setting
+for <strong>tcpStrict</strong> is used to configure <strong>tcpStrict</strong> in each existing
+layer 3 section. <strong>tcpStrict</strong> is set to <em>false</em> in layer 2 sections and
+layer 3 redirect sections. <strong>stateless</strong> and <strong>useSid</strong> are new attributes
+in NSX 6.4.0 and are set to the default values during upgrade.</p>
+<p>Once all hosts are upgraded to NSX 6.4.0, the global <strong>tcpStrict</strong> parameter
+is ignored.</p>
+</div>
 <div class="method get">
   <a
     class="verb get"
@@ -35353,7 +35398,16 @@ rules.</p>
     <p><p>Retrieve distributed firewall rule configuration.</p>
 <p>If no query parameters are used, all rule configuration is retrieved.
 Use the query parameters to filter the rule configuration information.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -35461,10 +35515,10 @@ associated with L3 redirect rule. Search is case insensitive.</p>
             Response Example
               (<tt>application/xml</tt>)
           </h5>
-          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallConfiguration</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360144793284"</span>&gt;</span>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallConfiguration</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">contextId</span>&gt;</span>globalroot-0<span class="hljs-tag">&lt;/<span class="hljs-name">contextId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">layer3Sections</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"2"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer3"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1360144793284"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360144793284"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"2"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer3"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"2"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"false"</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Default Rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>DENY<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -35481,7 +35535,7 @@ associated with L3 redirect rule. Search is case insensitive.</p>
     <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">layer3Sections</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">layer2Sections</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer2"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1360144793284"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360144793284"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer2"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER2"</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"false"</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Default Rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>ALLOW<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -35533,7 +35587,16 @@ unreachable code packets are sent for UDP, ICMP, and other IP connections</li>
 exclude tag for 1.1.1.1 in the source parameter, the rule looks for traffic
 originating from all IPs other than 1.1.1.1.</li>
 </ul>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Request Headers</h3>
         <dl>
@@ -35550,10 +35613,10 @@ configuration you want to modify.</p>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallConfiguration</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1359979620727"</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">firewallConfiguration</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">contextId</span>&gt;</span>globalroot-0<span class="hljs-tag">&lt;/<span class="hljs-name">contextId</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">layer3Sections</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"2"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer3"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1359979620727"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1359979620727"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"2"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer3"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true"</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>okn-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>ALLOW<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -35616,7 +35679,7 @@ configuration you want to modify.</p>
     <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">layer3Sections</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">layer2Sections</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer2"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1359979620727"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1359979620727"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"defaultSectionLayer2"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER2"</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"false"</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Default Rule<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>ALLOW<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -35782,9 +35845,17 @@ Distributed Firewall REST APIs.</p>
     href="#GET/4.0/firewall/globalroot-0/config/layer2sections"
   ><h2>GET /4.0/firewall/globalroot-0/config/layer2sections</h2></a>
   <div class="content">
-    <p><p>Retrieve rules from the layer 2 section specified by section
-<strong>name</strong>.</p>
-</p>
+    <p><p>Retrieve rules from the layer 2 section specified by section <strong>name</strong>.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -35812,7 +35883,18 @@ Distributed Firewall REST APIs.</p>
 <p>By default, the section is created at the top of the firewall table.
 You can specify a location for the section with the <strong>operation</strong>
 and <strong>anchorId</strong> query parameters.</p>
-</p>
+<p>See &quot;Working with Distributed Firewall Configuration&quot; for information
+about configuring <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> for a section.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -35927,7 +36009,7 @@ and <strong>anchorId</strong> query parameters.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">managedBy</span>=<span class="hljs-string">""</span> <span class="hljs-attr">type</span>=<span class="hljs-string">""</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">managedBy</span>=<span class="hljs-string">""</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">""</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">""</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">""</span> <span class="hljs-attr">type</span>=<span class="hljs-string">""</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">""</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">""</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -35993,7 +36075,16 @@ and <strong>anchorId</strong> query parameters.</p>
   ><h2>GET /4.0/firewall/globalroot-0/config/layer2sections/{sectionId}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified layer 2 section.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 <div class="method post">
@@ -36117,7 +36208,16 @@ in the XML called managedBy. You should not modify Service Composer
 firewall sections using Distributed Firewall REST APIs. If you do, you
 must synchronize firewall rules from Service Composer using the <code>GET
 /api/2.0/services/policy/serviceprovider/firewall</code> API.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Request Headers</h3>
         <dl>
@@ -36134,7 +36234,7 @@ configuration you want to modify.</p>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">""</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">""</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">""</span> <span class="hljs-attr">type</span>=<span class="hljs-string">""</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">""</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">""</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -36532,7 +36632,16 @@ layer3 redirect rules.</p>
   ><h2>POST /4.0/firewall/globalroot-0/config/layer3redirectsections</h2></a>
   <div class="content">
     <p><p>Add L3 redirect section</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;xs:element name="section"&gt;
@@ -36563,7 +36672,7 @@ layer3 redirect rules.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">""</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">""</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">""</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">appliedToList</span>&gt;</span>
@@ -36605,7 +36714,16 @@ layer3 redirect rules.</p>
   ><h2>GET /4.0/firewall/globalroot-0/config/layer3redirectsections/{section}</h2></a>
   <div class="content">
     <p><p>Get L3 redirect section configuration</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
   </div>
 </div>
 <div class="method put">
@@ -36618,7 +36736,16 @@ layer3 redirect rules.</p>
     <p><p>Modify layer 3 redirect section. You will need to get the Etag
 value out of the GET first. Then pass the modified version of the
 whole redirect section configuration in the GET body.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Request Headers</h3>
         <dl>
@@ -36677,7 +36804,7 @@ configuration you want to modify.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">""</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">""</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">""</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">""</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">""</span> <span class="hljs-attr">type</span>=<span class="hljs-string">""</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">""</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">""</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -36906,9 +37033,17 @@ Distributed Firewall REST APIs.</p>
     href="#GET/4.0/firewall/globalroot-0/config/layer3sections"
   ><h2>GET /4.0/firewall/globalroot-0/config/layer3sections</h2></a>
   <div class="content">
-    <p><p>Retrieve rules from the layer 3 section specified by section
-<strong>name</strong>.</p>
-</p>
+    <p><p>Retrieve rules from the layer 3 section specified by section <strong>name</strong>.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -36929,7 +37064,7 @@ Distributed Firewall REST APIs.</p>
             Response Example
               (<tt>application/xml</tt>)
           </h5>
-          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSection"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1360149234572"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360149234572"</span>&gt;</span>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSection"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"16"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>okn-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>ALLOW<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -37055,7 +37190,18 @@ Distributed Firewall REST APIs.</p>
 <p>By default, the section is created at the top of the firewall table.
 You can specify a location for the section with the <strong>operation</strong>
 and <strong>anchorId</strong> query parameters.</p>
-</p>
+<p>See &quot;Working with Distributed Firewall Configuration&quot; for information
+about configuring <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> for a section.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -37170,7 +37316,7 @@ and <strong>anchorId</strong> query parameters.</p>
 &lt;/xs:schema&gt;
 </code></pre>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSection"</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSection"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>okn-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>ALLOW<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -37266,14 +37412,23 @@ and <strong>anchorId</strong> query parameters.</p>
   ><h2>GET /4.0/firewall/globalroot-0/config/layer3sections/{sectionId}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified layer 3 section.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
             Response Example
               (<tt>application/xml</tt>)
           </h5>
-          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSection"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1360149234572"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360149234572"</span>&gt;</span>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSection"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"16"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"true"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>okn-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>ALLOW<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
@@ -37509,7 +37664,16 @@ in the XML called managedBy. You should not modify Service Composer
 firewall sections using Distributed Firewall REST APIs. If you do, you
 must synchronize firewall rules from Service Composer using the <code>GET
 /api/2.0/services/policy/serviceprovider/firewall</code> API.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method updated. <strong>tcpStrict</strong>, <strong>stateless</strong>, and <strong>useSid</strong> added as <strong>section</strong> attributes.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Request Headers</h3>
         <dl>
@@ -37526,7 +37690,7 @@ configuration you want to modify.</p>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSectionRenamed"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1336034461743"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1360149234572"</span>&gt;</span>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"TestSectionRenamed"</span> <span class="hljs-attr">generationNumber</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">timestamp</span>=<span class="hljs-string">"1510700045886"</span> <span class="hljs-attr">tcpStrict</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">stateless</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">useSid</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"LAYER3"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">rule</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"16"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">logged</span>=<span class="hljs-string">"false"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>okn-2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span>&gt;</span>ALLOW<span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
