@@ -8359,6 +8359,37 @@ securitySchemes:
     delete:
       displayName: domainDeleteDelete # dupfix domainDelete
       description: Delete domain.
+  /verifyRootDn:
+    displayName: verifyRootDn
+    description: |
+      Working with Root Distinguised Names
+      ---------------
+      Retrieve the list of individual root distinguished names under which each domain sub-tree synchronization is executed.
+      
+    post:
+      displayName: verifyRootDnCreate
+      description: | 
+       Verify that the rootDNs in the rootDNList are independent to each other.
+       Verify that the rootDNs in the rootDNList exist in Active Director server.
+       
+       **Method history:**
+       
+       Release | Modification
+       --------|-------------
+       6.4.0 | Method introduced.
+       
+      body:
+        RootDNVerify/xml:
+          example: |
+            <RootDnVerify>
+              <domainName>nimbustest.com</domainName>
+              <baseDn>Example</baseDn>
+              <rootDnItem>CN=nimbustest,DC=com</rootDnItem>
+              <rootDnItem>CN=nimbustest,DC=com</rootDnItem>
+              <hostName>10.142.72.70</hostName>
+              <username>Administrator</username>
+              <password>xxx</password>
+            </RootDnVerify>
   /updateLdapServer:
     displayName: ldapServerCreate
     description: |
@@ -8389,6 +8420,49 @@ securitySchemes:
     get:
       displayName: ldapServerDomainRead
       description: Query LDAP servers for a domain.
+  /ldapSyncSettings:
+    displayName: ldapSyncSettings
+    description: |
+      Update AD Sync Settings
+      ----
+        Update AD sync settings (both delta sync and full sync).
+        Change delta sync interval, and enable or disable full sync, as well as full sync frequency.
+    post:
+      displayName: ldapSyncSettings 
+      description: | 
+        LDAP full sync settings
+      
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      queryParameters:
+          deltaSyncIntervalInMin:
+            displayName: deltaSyncIntervalInMin
+            description:  AD delta sync interval (in minutes).
+            required: false
+          fullSyncCronExpr:
+            displayName: fullSyncCronExpr
+            description: AD full sync frequency (as cron expression), not used if enableFullSync is false.
+            required: false
+          enableFullSync: 
+           displayName: enableFullSync
+           description: Whether to enable/disable AD full sync.
+           required: false 
+          restartSync:
+            displayName: restartSync
+            description: Restart LDAP sync at the end of request.
+            required: false
+      body:
+        application/xml:
+          example: |
+            <LdapSyncSettings>
+              <deltaSyncIntervalInMin>180</deltaSyncIntervalInMin>
+              <fullSyncCronExpr>"0 0 0 ? * SUN *"</fullSyncCronExpr>
+              <enableFullSync>true</enableFullSync>
+            </LdapSyncSettings>
+
   /fullSync/{domainID}:
     displayName: ldapServerSync
     description: |

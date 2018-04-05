@@ -45,7 +45,11 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
+<<<<<<< Updated upstream
 <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#100;&#98;&#97;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#x72;&#101;&#46;&#99;&#111;&#x6d;">&#x64;&#x6f;&#99;&#102;&#x65;&#101;&#100;&#98;&#97;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#x72;&#101;&#46;&#99;&#111;&#x6d;</a>.</p>
+=======
+<a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x64;&#111;&#99;&#x66;&#101;&#x65;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#114;&#x65;&#46;&#x63;&#111;&#x6d;">&#x64;&#111;&#99;&#x66;&#101;&#x65;&#x64;&#98;&#97;&#99;&#107;&#x40;&#118;&#109;&#x77;&#x61;&#114;&#x65;&#46;&#x63;&#111;&#x6d;</a>.</p>
+>>>>>>> Stashed changes
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -2572,6 +2576,80 @@ the users of a domain.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="update-ad-sync-settings">Update AD Sync Settings</h2>
+<p>  Update AD sync settings (both delta sync and full sync)
+  Change delta sync interval, and enable/disable full sync as well as full sync frequency.</p>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/directory/ldapSyncSettings"
+    href="#POST/1.0/directory/ldapSyncSettings"
+  ><h2>POST /1.0/directory/ldapSyncSettings</h2></a>
+  <div class="content">
+    <p><p>LDAP full sync settings</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">deltaSyncIntervalInMin</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>AD delta sync interval (in minutes).</p>
+
+  </dd>
+  <dt>
+    <span class="param">fullSyncCronExpr</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>AD full sync frequency (as cron expression), not used if enableFullSync is false.</p>
+
+  </dd>
+  <dt>
+    <span class="param">enableFullSync</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Whether to enable/disable AD full sync.</p>
+
+  </dd>
+  <dt>
+    <span class="param">restartSync</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Restart LDAP sync at the end of request.</p>
+
+  </dd>
+</dl>
+    </div>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">LdapSyncSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>"0 0 0 ? * SUN *"<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enableFullSync</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableFullSync</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">LdapSyncSettings</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h2 id="retrieve-ldap-domains">Retrieve LDAP Domains</h2>
 </div>
 <div class="method get">
@@ -2840,6 +2918,43 @@ applications accessed by users within an Active Directory domain.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.142.72.70<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">LDAPServer</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-root-distinguised-names">Working with Root Distinguised Names</h2>
+<p>Retrieve the list of individual root distinguished names under which each domain sub-tree synchronization is executed.</p>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/1.0/directory/verifyRootDn"
+    href="#POST/1.0/directory/verifyRootDn"
+  ><h2>POST /1.0/directory/verifyRootDn</h2></a>
+  <div class="content">
+    <p><p>Verify that the rootDNs in the rootDNList are independent to each other.
+Verify that the rootDNs in the rootDNList exist in Active Director server.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>RootDNVerify/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">RootDnVerify</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span>nimbustest.com<span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">baseDn</span>&gt;</span>Example<span class="hljs-tag">&lt;/<span class="hljs-name">baseDn</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">rootDnItem</span>&gt;</span>CN=nimbustest,DC=com<span class="hljs-tag">&lt;/<span class="hljs-name">rootDnItem</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">rootDnItem</span>&gt;</span>CN=nimbustest,DC=com<span class="hljs-tag">&lt;/<span class="hljs-name">rootDnItem</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hostName</span>&gt;</span>10.142.72.70<span class="hljs-tag">&lt;/<span class="hljs-name">hostName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>Administrator<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>xxx<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">RootDnVerify</span>&gt;</span>
 </code></pre>
   </div>
 </div>
