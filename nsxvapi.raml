@@ -6646,6 +6646,52 @@ securitySchemes:
           </systemEvent>
           </dataPage>
           </pagedSystemEventList>
+/2.0/hostevents:
+  displayName: hostevents
+  description: |
+    Working with Host Event Notifications
+    ==========
+  get:
+    displayName: hostEventsRead
+    description: | 
+      Retrieve configuration of host event notifications.
+        
+      **Method history:**
+        
+      Release | Modification
+        --------|-------------
+      6.4.0 |  Method added.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <hostEventsDto>
+                <enabled>true</enabled>
+                <notificationInterval>300</notificationInterval>
+              </hostEventsDto>
+  post:          
+    displayName: hostEventsAdd
+    description: |
+      Add configuration of host event notifications on the NSX Manager and host.
+      
+      **Method history:**
+        
+      Release | Modification
+        --------|-------------
+      6.4.0 |  Method added.
+    
+      Request body parameters:
+      
+        * **enabled** - Required. Enable or disable host event notifications. Options are True or False.
+        * **notificationInterval** - Required. Time interval in seconds at which the NSX Manager receives host event notifications. Valid range is 300 to 3600.
+    body:
+      application/xml:
+        example: |
+          <hostEventsDto>
+            <enabled>true</enabled>
+            <notificationInterval>300</notificationInterval>
+          </hostEventsDto>
 /2.0/auditlog:
   displayName: auditLogs
   description: |
