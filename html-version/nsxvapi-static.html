@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#100;&#x6f;&#x63;&#102;&#x65;&#x65;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#109;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;">&#100;&#x6f;&#x63;&#102;&#x65;&#x65;&#x64;&#98;&#97;&#x63;&#x6b;&#x40;&#x76;&#109;&#119;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x64;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#x62;&#x61;&#99;&#107;&#x40;&#118;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#109;">&#x64;&#111;&#x63;&#102;&#x65;&#x65;&#100;&#x62;&#x61;&#99;&#107;&#x40;&#118;&#x6d;&#x77;&#x61;&#114;&#x65;&#x2e;&#x63;&#111;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -5885,6 +5885,117 @@ other configuration.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">inheritanceAllowed</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">inheritanceAllowed</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">applicationGroup</span>&gt;</span>
 </code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h1 id="configuring-index-maintainance-">Configuring Index Maintainance </h1>
+<p>If you have few tables in the database that is taking up most of the space, you can configure your index maintenance activities. 
+You can reindex the tables and tables with index bloat size greater than 75% are reindexed.</p>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/services/housekeeping/management/index_maintenance"
+    href="#GET/2.0/services/housekeeping/management/index_maintenance"
+  ><h2>GET /2.0/services/housekeeping/management/index_maintenance</h2></a>
+  <div class="content">
+    <p><p>Retrieve the default settings for the index maintenance activities.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.3</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">housekeepingModule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">moduleName</span>&gt;</span>index_maintenance<span class="hljs-tag">&lt;/<span class="hljs-name">moduleName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">housekeepingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">housekeepingEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">scheduleType</span>&gt;</span>cron<span class="hljs-tag">&lt;/<span class="hljs-name">scheduleType</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">scheduleTimeMillis</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">scheduleTimeMillis</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cronExpression</span>&gt;</span>0 0 0 1-7 * SAT<span class="hljs-tag">&lt;/<span class="hljs-name">cronExpression</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">housekeepingModule</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/services/housekeeping/management/index_maintenance"
+    href="#PUT/2.0/services/housekeeping/management/index_maintenance"
+  ><h2>PUT /2.0/services/housekeeping/management/index_maintenance</h2></a>
+  <div class="content">
+    <p><p>Update the index maintenance default settings. You can enable or disable the settings and change the CRON configuration. To make the changes effective, you must restart the NSX Manager. To change the CRON expression, 
+make sure the new CRON expression is correct using any CRON evaluators. Note that incorrect CRON expression will not run the reindexing task at the expected frequency.</p>
+<p><strong>CRON expression guidelines</strong>: </p>
+<p>  CRON expression pattern is a list of six single space-separated fields,representing second, minute, hour, day, month, weekday. Month and weekday can be given as first three letters of the English names.
+  You can refer to the following Web sites for details:</p>
+<ul>
+<li><a href="https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html">https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html</a></li>
+<li><a href="http://www.manpagez.com/man/5/crontab/">http://www.manpagez.com/man/5/crontab/</a></li>
+</ul>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.3</td>
+<td>Method introduced. </td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">housekeepingModule</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">moduleName</span>&gt;</span>index_maintenance<span class="hljs-tag">&lt;/<span class="hljs-name">moduleName</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">housekeepingEnabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">housekeepingEnabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">scheduleType</span>&gt;</span>cron<span class="hljs-tag">&lt;/<span class="hljs-name">scheduleType</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">scheduleTimeMillis</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">scheduleTimeMillis</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">cronExpression</span>&gt;</span>0 0 0 1-5 * SAT<span class="hljs-tag">&lt;/<span class="hljs-name">cronExpression</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">housekeepingModule</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/services/housekeeping/management/index_maintenance"
+    href="#POST/2.0/services/housekeeping/management/index_maintenance"
+  ><h2>POST /2.0/services/housekeeping/management/index_maintenance</h2></a>
+  <div class="content">
+    <p><p>Trigger the reindexing task on demand. Tables with index bloat size greater than 75% are reindexed.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.3</td>
+<td>Method introduced. </td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Use <em>action=invokenow</em> to trigger the reindexing task.</p>
+
+  </dd>
+</dl>
+    </div>
   </div>
 </div>
 </section>
