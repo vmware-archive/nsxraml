@@ -13184,25 +13184,19 @@ securitySchemes:
   /objects/status/vm/{vm_ID}/containers:
     displayName: dfwStateRealize
     description: |
-      Distributed Firewall State Realization for Containers
+      Distributed Firewall State Realization for Grouping Objects
       ----
-      Use this API to verify whether changes made in the container (grouping objects such as security group) has been realized or not. The API takes the VM ID, the list of container IDs, and the list of *appliedTo* parameter as an input request and returns the list of IPs realized for each vNIC of the VM for each container for the provided appliedTo parameters. The API supports maximum of five containers IDs and five *appliedTo* parameters. The API is for Layer3 rules.
+        Use this API to verify whether changes made in the grouping object (container), such as security group, has been realized or not. The API takes the VM ID, the list of container IDs, and the list of *appliedTo* parameter as an input request and returns the list of IPs realized for each vNIC of the VM for each container for the provided *appliedTo* parameters. The API supports maximum of five containers IDs and five *appliedTo* parameters. The API is for Layer3 rules.
       
       Realized status can be:
-      * **Yes**: If the container has any one of the IPs of the vNIC
-      * **No**: If the container has none of the IPs of the vNIC
-      * **Not found**:  If the host could find the vNIC or the container
+      * **Yes**: If the grouping object (container) has any one of the IPs of the vNIC
+      * **No**: If the grouping object (container) has none of the IPs of the vNIC
+      * **Not found**:  If the host could find the vNIC or the grouping object (container)
       
       The API does not support:
       * Excluded vNICs
-      * IPSET/MACSET containers
+      * IPSET/MACSET grouping objects (containers)
       * DFW/ Edge/ All Edges/ Any in the *appliedToList*  parameter
-      
-      **Method history:**
-      
-      Release | Modification
-      --------|-------------
-      6.4.0 | Method introduced.
 
     uriParameters:
       vm_ID:
@@ -13211,7 +13205,14 @@ securitySchemes:
         description: VM ID.
     post:
       displayName: dfwsStateRealizeCreate
-      description: Get VM Status for containers. The parameters in the *container* field are mandatory, and parameters in the *appliedTo* field are optional in the POST request body.
+      description: | 
+        Get VM Status for the grouping object (container). The parameters in the *container* field are mandatory, and parameters in the *appliedTo* field are optional in the POST request body.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
       body:
         application/xml:
           example: |
