@@ -66,13 +66,12 @@ The following items are deprecated, and might be removed in a future release.
   `GET /api/2.0/services/policy/serviceprovider/firewall/info` instead.
 * Setting the *tcpStrict* in the global configuration section of Distributed
   Firewall is deprecated. Starting in NSX 6.4.0, *tcpStrict* is defined at 
-  the section level. 
+  the section level.   
   **Note:** If you upgrade to NSX 6.4.0 or later, the global configuration setting for
   **tcpStrict** is used to configure **tcpStrict** in each existing layer 3
   section. **tcpStrict** is set to *false* in layer 2 sections and layer 3
-  redirect sections. **stateless** and **useSid** are new attributes in NSX
-  6.4.0 and are set to the default values during upgrade. See "Working with
-  Distributed Firewall Configuration" for more information.
+  redirect sections. See "Working with Distributed Firewall Configuration" for
+  more information.
 
 ### Behavior Changes in NSX 6.4.0
 
