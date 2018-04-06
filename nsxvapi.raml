@@ -4866,6 +4866,81 @@ securitySchemes:
                   <connected>true</connected>
                   <lastInventorySyncTime>1492568145678</lastInventorySyncTime>
                 </vcConfigStatus>
+/2.0/services/housekeeping/management/index_maintenance:
+  displayName: IndexMaintenanceConfig
+  description: |
+    Configuring Index Maintainance 
+    =========
+    If you have few tables in the database that is taking up most of the space, you can configure your index maintenance activities. 
+    You can reindex the tables, and tables with index bloat size greater than 75% are reindexed.
+
+  get:
+    displayName: IndexMaintenanceConfigRead
+    description: | 
+      Retrieve the default settings for the index maintenance activities.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.3.3 | Method introduced.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <housekeepingModule>
+                <moduleName>index_maintenance</moduleName>
+                <housekeepingEnabled>true</housekeepingEnabled>
+                <scheduleType>cron</scheduleType>
+                <scheduleTimeMillis>0</scheduleTimeMillis>
+                <cronExpression>0 0 0 1-7 * SAT</cronExpression>
+              </housekeepingModule>
+  put:
+    displayName: IndexMaintenanceConfigUpdate
+    description: | 
+      Update the index maintenance default settings. You can enable or disable the settings and change the CRON configuration. To make the changes effective, you must restart the NSX Manager. To change the CRON expression, 
+      make sure the new CRON expression is correct using any CRON evaluators. Note that incorrect CRON expression will not run the reindexing task at the expected frequency.
+      
+      **CRON expression guidelines**: 
+        
+        CRON expression pattern is a list of six single space-separated fields,representing second, minute, hour, day, month, weekday. Month and weekday can be given as first three letters of the English names.
+        You can refer to the following Web sites for details:
+          
+        *  https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html
+        *  http://www.manpagez.com/man/5/crontab/
+      
+      **Method history:**
+        
+      Release | Modification
+        --------|-------------
+      6.3.3 | Method introduced. 
+    body:
+      application/xml:
+        example: |
+          <housekeepingModule>
+            <moduleName>index_maintenance</moduleName>
+            <housekeepingEnabled>true</housekeepingEnabled>
+            <scheduleType>cron</scheduleType>
+            <scheduleTimeMillis>0</scheduleTimeMillis>
+            <cronExpression>0 0 0 1-5 * SAT</cronExpression>
+          </housekeepingModule>
+  post:
+    displayName: IndexMaintenanceConfigCreate
+    description: | 
+      Trigger the reindexing task on demand. Tables with index bloat size greater than 75% are reindexed.
+      
+      **Method history:**
+        
+      Release | Modification
+        --------|-------------
+      6.3.3 | Method introduced. 
+    queryParameters:
+      action:
+        required: true
+        displayName: action
+        description: Use *action=invokenow* to trigger the reindexing task.
+
 /2.0/services/configuration:
   displayName: CPUConfiguration
   description: |
