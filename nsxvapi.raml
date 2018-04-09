@@ -5,9 +5,9 @@ documentation:
  - title: Introduction
    content: !include documentation/introduction.md
  - title: update-number
-   content: Update 3
+   content: Update 4
  - title: update-date
-   content: Modified on 2 MAR 2018
+   content: Modified on 06 APR 2018
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
@@ -1594,6 +1594,12 @@ securitySchemes:
     displayName: logicalSwitchesRead
     description: |
       Retrieve information about all logical switches in all transport zones.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.4.0 | Method updated. Added *name* query parameter.
     queryParameters:
       startindex:
         displayName: startindex
@@ -1603,6 +1609,10 @@ securitySchemes:
         displayName: pagesize
         description: !include documentation/reuse/pagesize-1024
         default: 20
+      name:
+        displayName: name
+        description: Sort using the *virtual wire name*. For example /virtualwires?name=*virtual wire name*.
+        default: 0  
     responses:
       200:
         body:
@@ -2556,7 +2566,7 @@ securitySchemes:
         
         Release | Modification
         --------|-------------
-        6.4.0 | Method Added.
+        6.4.0 | Method introduced.
       queryParameters:
         source:
           displayName: source
@@ -2742,7 +2752,7 @@ securitySchemes:
       
       Release | Modification
       --------|-------------
-      6.4.0 | Method Added.
+      6.4.0 | Method introduced.
 
     body:
       application/xml:
@@ -2762,7 +2772,7 @@ securitySchemes:
       
       Release | Modification
       --------|-------------
-      6.4.0 | Method Added.
+      6.4.0 | Method introduced.
 
     responses:
       200:
@@ -2799,7 +2809,7 @@ securitySchemes:
       
       Release | Modification
       --------|-------------
-      6.4.0 | Method Added.
+      6.4.0 | Method introduced.
 
     body:
       application/xml:
@@ -2818,7 +2828,7 @@ securitySchemes:
       
       Release | Modification
       --------|-------------
-      6.4.0 | Method Added.
+      6.4.0 | Method introduced.
 
     responses:
       200:
@@ -4032,11 +4042,15 @@ securitySchemes:
         can also set a custom expiration using the *expiresInMinutes* query 
         parameter.
         
+        If a user authenticates with a token, and the user is deleted or their
+        NSX access is disabled, their token will remain valid until the token
+        expires.
+        
         **Method history:**
         
         Release | Modification
         --------|-------------
-        6.4.0 | Method added. 
+        6.4.0 | Method introduced. 
       queryParameters:
         expiresInMinutes:
           displayName: expiresInMinutes
@@ -4070,7 +4084,7 @@ securitySchemes:
         
         Release | Modification
         --------|-------------
-        6.4.0 | Method added. 
+        6.4.0 | Method introduced. 
       body:
         application/xml:
           example: |
@@ -4086,7 +4100,7 @@ securitySchemes:
         
         Release | Modification
         --------|-------------
-        6.4.0 | Method added. 
+        6.4.0 | Method introduced. 
       responses:
         200:
           body:
@@ -4852,6 +4866,81 @@ securitySchemes:
                   <connected>true</connected>
                   <lastInventorySyncTime>1492568145678</lastInventorySyncTime>
                 </vcConfigStatus>
+/2.0/services/housekeeping/management/index_maintenance:
+  displayName: IndexMaintenanceConfig
+  description: |
+    Configuring Index Maintainance 
+    =========
+    If you have few tables in the database that is taking up most of the space, you can configure your index maintenance activities. 
+    You can reindex the tables, and tables with index bloat size greater than 75% are reindexed.
+
+  get:
+    displayName: IndexMaintenanceConfigRead
+    description: | 
+      Retrieve the default settings for the index maintenance activities.
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+      6.3.3 | Method introduced.
+    responses:
+      200:
+        body:
+          application/xml:
+            example: |
+              <housekeepingModule>
+                <moduleName>index_maintenance</moduleName>
+                <housekeepingEnabled>true</housekeepingEnabled>
+                <scheduleType>cron</scheduleType>
+                <scheduleTimeMillis>0</scheduleTimeMillis>
+                <cronExpression>0 0 0 1-7 * SAT</cronExpression>
+              </housekeepingModule>
+  put:
+    displayName: IndexMaintenanceConfigUpdate
+    description: | 
+      Update the index maintenance default settings. You can enable or disable the settings and change the CRON configuration. To make the changes effective, you must restart the NSX Manager. To change the CRON expression, 
+      make sure the new CRON expression is correct using any CRON evaluators. Note that incorrect CRON expression will not run the reindexing task at the expected frequency.
+      
+      **CRON expression guidelines**: 
+        
+        CRON expression pattern is a list of six single space-separated fields,representing second, minute, hour, day, month, weekday. Month and weekday can be given as first three letters of the English names.
+        You can refer to the following Web sites for details:
+          
+        *  https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html
+        *  http://www.manpagez.com/man/5/crontab/
+      
+      **Method history:**
+        
+      Release | Modification
+        --------|-------------
+      6.3.3 | Method introduced. 
+    body:
+      application/xml:
+        example: |
+          <housekeepingModule>
+            <moduleName>index_maintenance</moduleName>
+            <housekeepingEnabled>true</housekeepingEnabled>
+            <scheduleType>cron</scheduleType>
+            <scheduleTimeMillis>0</scheduleTimeMillis>
+            <cronExpression>0 0 0 1-5 * SAT</cronExpression>
+          </housekeepingModule>
+  post:
+    displayName: IndexMaintenanceConfigCreate
+    description: | 
+      Trigger the reindexing task on demand. Tables with index bloat size greater than 75% are reindexed.
+      
+      **Method history:**
+        
+      Release | Modification
+        --------|-------------
+      6.3.3 | Method introduced. 
+    queryParameters:
+      action:
+        required: true
+        displayName: action
+        description: Use *action=invokenow* to trigger the reindexing task.
+
 /2.0/services/configuration:
   displayName: CPUConfiguration
   description: |
@@ -4874,7 +4963,7 @@ securitySchemes:
       
       Release | Modification
       --------|-------------
-      6.4.0 | Method Added.
+      6.4.0 | Method introduced.
   get:
     displayName: CPUConfigRead
     description: Get the configuration details for the High CPU Usage Reporting Tool.
@@ -4956,7 +5045,7 @@ securitySchemes:
     
     Release | Modification
     --------|-------------
-    6.4.0 | Method Added.
+    6.4.0 | Method introduced.
 
   /indicator:
     displayName: CPUUsageIndicatorStatus
@@ -5475,6 +5564,12 @@ securitySchemes:
       displayName: networkSettingsRead
       description: |
         Retrieve network information for the NSX Manager appliance. i.e. host name, IP address, DNS settings.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method updated. New parameter *dynamicIPAddress* added. The parameter tells whether the IP address of the NSX Appliance Manager is dynamically allocated or not. If *dynamicIPAddress* parameter is *true*, then the Unconfigure ipv4/ipv6 button on the UI is disabled.
       responses:
         200:
           body:
@@ -5490,6 +5585,7 @@ securitySchemes:
                   <dns>
                     <ipv4Address>192.168.110.10</ipv4Address>
                     <domainList>corp.local</domainList>
+                    <isDynamicIPAddress>true</isDynamicIPAddress>
                   </dns>
                 </network>
     put:
@@ -5748,15 +5844,17 @@ securitySchemes:
     description: |
       Working With Multiple Syslog Servers
       -----
+
+    get:
+      displayName: systemSyslogServersRead
+      description: | 
+        Retrieves all syslog servers configured on the NSX Manager.
         
         **Method history:**
         
         Release | Modification
         --------|-------------
         6.4.0 | Method introduced.
-    get:
-      displayName: systemSyslogServersRead
-      description: Retrieves all syslog servers configured on the NSX Manager.
       responses:
         200:
           body:
@@ -5776,7 +5874,14 @@ securitySchemes:
                 </syslogservers>
     put:
       displayName: systemSyslogServersUpdate
-      description: Configure one or more syslog servers. Unconfigures all servers that were previously configured, and configures the one provided in the request body for this API. Duplicates are ignored. 
+      description: | 
+        Configure one or more syslog servers. Unconfigures all servers that were previously configured, and configures the one provided in the request body for this API. Duplicates are ignored. 
+      
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
       body:
         application/xml:
           example: |
@@ -5795,7 +5900,14 @@ securitySchemes:
           schema: systemSyslogServersUpdate
     delete:
       displayName: systemSyslogServersDelete
-      description: Deletes all the syslog servers. Same as *DELETE /system/syslogserver* API.
+      description: | 
+        Deletes all the syslog servers. Same as *DELETE /system/syslogserver* API.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
   /components:
     displayName: componentsManagement
     description: |
@@ -6368,7 +6480,7 @@ securitySchemes:
           Release | Modification
           --------|-------------
           6.3.3 | Method introduced.
-          6.4.0 | Method modified. FTP protocol support added.
+          6.4.0 | Method updated. FTP protocol support added.
     
     /information/{componentID}:
       displayName: upgradeBundleInformation
@@ -8397,6 +8509,37 @@ securitySchemes:
     delete:
       displayName: domainDeleteDelete # dupfix domainDelete
       description: Delete domain.
+  /verifyRootDn:
+    displayName: verifyRootDn
+    description: |
+      Working with Root Distinguished Names
+      ---------------
+      Retrieve the list of individual root distinguished names under which each domain sub-tree synchronization is executed.
+      
+    post:
+      displayName: verifyRootDnCreate
+      description: | 
+       Verify that the rootDNs in the rootDNList are independent to each other.
+       Verify that the rootDNs in the rootDNList exist in Active Director server.
+       
+       **Method history:**
+       
+       Release | Modification
+       --------|-------------
+       6.4.0 | Method introduced.
+       
+      body:
+        RootDNVerify/xml:
+          example: |
+            <RootDnVerify>
+              <domainName>nimbustest.com</domainName>
+              <baseDn>Example</baseDn>
+              <rootDnItem>CN=nimbustest,DC=com</rootDnItem>
+              <rootDnItem>CN=nimbustest,DC=com</rootDnItem>
+              <hostName>10.142.72.70</hostName>
+              <username>Administrator</username>
+              <password>xxx</password>
+            </RootDnVerify>
   /updateLdapServer:
     displayName: ldapServerCreate
     description: |
@@ -8427,6 +8570,49 @@ securitySchemes:
     get:
       displayName: ldapServerDomainRead
       description: Query LDAP servers for a domain.
+  /ldapSyncSettings:
+    displayName: ldapSyncSettings
+    description: |
+      Update AD Sync Settings
+      ----
+        Update AD sync settings (both delta sync and full sync).
+        Change delta sync interval, and enable or disable full sync, as well as full sync frequency.
+    post:
+      displayName: ldapSyncSettings 
+      description: | 
+        LDAP full sync settings
+      
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      queryParameters:
+          deltaSyncIntervalInMin:
+            displayName: deltaSyncIntervalInMin
+            description:  AD delta sync interval (in minutes).
+            required: false
+          fullSyncCronExpr:
+            displayName: fullSyncCronExpr
+            description: AD full sync frequency (as cron expression), not used if enableFullSync is false.
+            required: false
+          enableFullSync: 
+           displayName: enableFullSync
+           description: Whether to enable/disable AD full sync.
+           required: false 
+          restartSync:
+            displayName: restartSync
+            description: Restart LDAP sync at the end of request.
+            required: false
+      body:
+        application/xml:
+          example: |
+            <LdapSyncSettings>
+              <deltaSyncIntervalInMin>180</deltaSyncIntervalInMin>
+              <fullSyncCronExpr>"0 0 0 ? * SUN *"</fullSyncCronExpr>
+              <enableFullSync>true</enableFullSync>
+            </LdapSyncSettings>
+
   /fullSync/{domainID}:
     displayName: ldapServerSync
     description: |
@@ -10833,7 +11019,7 @@ securitySchemes:
   /globalroot-0/config:
     displayName: dfwConfig
     description: |
-      Distributed Firewall Rules Configuration
+      Working with Distributed Firewall Configuration
       ---
       The following table lists the elements that can be used in firewall
       rules.
@@ -10862,6 +11048,25 @@ securitySchemes:
       | virtual app | VirtualApp | source/destination |
       | virtual machine | VirtualMachine | source/destination<br>appliedTo |
       | vNIC | Vnic | source/destination<br>appliedTo |
+      
+      Starting in NSX 6.4.0, the following attributes can be configured at the section level.
+      
+      Attribute | Description | Default for new sections
+      ----|----
+      **tcpStrict** | If TCP strict is enabled on a rule and a packet matches that rule, the following check will be performed. If the packet does not belong to an existing session, the kernel will check to see if the SYN flag of the packet is set. If it is not, then it will drop the packet. | *false* for all section types.
+      **stateless** | If stateless is enabled on a rule, traffic is monitored statically, and the state of network connections will be ignored. | *true* for L2, *false* for L3 and L3 redirect.
+      **useSid** | If useSid is enabled on a rule, the source field of the rule must be an Active Directory Security Group.  | *false* for all section types.
+      
+      **tcpStrict** was previously configured in the global firewall
+      configuration: `PUT /api/4.0/firewall/config/globalconfiguration`. If you
+      upgrade to NSX 6.4.0 or later, the global configuration setting
+      for **tcpStrict** is used to configure **tcpStrict** in each existing
+      layer 3 section. **tcpStrict** is set to *false* in layer 2 sections and
+      layer 3 redirect sections. **stateless** and **useSid** are new attributes
+      in NSX 6.4.0 and are set to the default values during upgrade.
+      
+      Once all hosts are upgraded to NSX 6.4.0, the global **tcpStrict** parameter
+      is ignored.
     get:
       displayName: dfwConfigShow
       description: |
@@ -10869,15 +11074,21 @@ securitySchemes:
         
         If no query parameters are used, all rule configuration is retrieved.
         Use the query parameters to filter the rule configuration information.
+        
+        **Method history:**
+       
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
       responses:
         200:
           body:
             application/xml:
               example: |
-                <firewallConfiguration timestamp="1360144793284">
+                <firewallConfiguration timestamp="1510700045886">
                   <contextId>globalroot-0</contextId>
                   <layer3Sections>
-                    <section id="2" name="defaultSectionLayer3" generationNumber="1360144793284" timestamp="1360144793284">
+                    <section id="2" name="defaultSectionLayer3" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                       <rule id="2" disabled="false" logged="false">
                         <name>Default Rule</name>
                         <action>DENY</action>
@@ -10894,7 +11105,7 @@ securitySchemes:
                     </section>
                   </layer3Sections>
                   <layer2Sections>
-                    <section id="1" name="defaultSectionLayer2" generationNumber="1360144793284" timestamp="1360144793284">
+                    <section id="1" name="defaultSectionLayer2" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER2">
                       <rule id="1" disabled="false" logged="false">
                         <name>Default Rule</name>
                         <action>ALLOW</action>
@@ -10979,10 +11190,10 @@ securitySchemes:
       body:
         application/xml:
           example: |
-            <firewallConfiguration timestamp="1359979620727">
+            <firewallConfiguration timestamp="1510700045886">
               <contextId>globalroot-0</contextId>
               <layer3Sections>
-                <section id="2" name="defaultSectionLayer3" generationNumber="1359979620727" timestamp="1359979620727">
+                <section id="2" name="defaultSectionLayer3" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                   <rule disabled="false" logged="true">
                     <name>okn-1</name>
                     <action>ALLOW</action>
@@ -11045,7 +11256,7 @@ securitySchemes:
                 </section>
               </layer3Sections>
               <layer2Sections>
-                <section id="1" name="defaultSectionLayer2" generationNumber="1359979620727" timestamp="1359979620727">
+                <section id="1" name="defaultSectionLayer2" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER2">
                   <rule id="1" disabled="false" logged="false">
                     <name>Default Rule</name>
                     <action>ALLOW</action>
@@ -11066,8 +11277,13 @@ securitySchemes:
       get:
         displayName: dfwL3SectionRead
         description: |
-          Retrieve rules from the layer 3 section specified by section
-          **name**.
+          Retrieve rules from the layer 3 section specified by section **name**.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           name:
             required: true
@@ -11078,7 +11294,7 @@ securitySchemes:
             body:
               application/xml:
                 example: |
-                  <section id="4" name="TestSection" generationNumber="1360149234572" timestamp="1360149234572">
+                  <section id="4" name="TestSection" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                     <rule id="16" disabled="false" logged="true">
                       <name>okn-2</name>
                       <action>ALLOW</action>
@@ -11200,13 +11416,22 @@ securitySchemes:
           By default, the section is created at the top of the firewall table.
           You can specify a location for the section with the **operation**
           and **anchorId** query parameters.
+          
+          See "Working with Distributed Firewall Configuration" for information
+          about configuring **tcpStrict**, **stateless**, and **useSid** for a section.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           operation: !include documentation/reuse/firewall/operation.raml
           anchorId: !include documentation/reuse/firewall/anchorId.raml
         body:
           application/xml:
             example: |
-              <section name="TestSection">
+              <section name="TestSection" tcpStrict="true" stateless="false" useSid="false">
                 <rule disabled="false" logged="true">
                   <name>okn-2</name>
                   <action>ALLOW</action>
@@ -11286,13 +11511,20 @@ securitySchemes:
             description: The ID of the section to modify.
         get:
           displayName: dfwL3SectionIdRead
-          description: Retrieve information about the specified layer 3 section.
+          description: |
+            Retrieve information about the specified layer 3 section.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
           responses:
             200:
               body:
                 application/xml:
                   example: |
-                    <section id="4" name="TestSection" generationNumber="1360149234572" timestamp="1360149234572">
+                    <section id="4" name="TestSection" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                       <rule id="16" disabled="false" logged="true">
                         <name>okn-2</name>
                         <action>ALLOW</action>
@@ -11463,7 +11695,7 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <section id="4" name="TestSectionRenamed" generationNumber="1336034461743" timestamp="1360149234572">
+                <section id="4" name="TestSectionRenamed" generationNumber="1510700045886" timestamp="1510700045886" tcpStrict="true" stateless="false" useSid="false" type="LAYER3">
                   <rule id="16" disabled="false" logged="false">
                     <name>okn-2</name>
                     <action>ALLOW</action>
@@ -11651,8 +11883,13 @@ securitySchemes:
       get:
         displayName: dfwL2SectionRead
         description: |
-          Retrieve rules from the layer 2 section specified by section
-          **name**.
+          Retrieve rules from the layer 2 section specified by section **name**.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           name:
             required: false
@@ -11668,13 +11905,22 @@ securitySchemes:
           By default, the section is created at the top of the firewall table.
           You can specify a location for the section with the **operation**
           and **anchorId** query parameters.
+          
+          See "Working with Distributed Firewall Configuration" for information
+          about configuring **tcpStrict**, **stateless**, and **useSid** for a section.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         queryParameters:
           operation: !include documentation/reuse/firewall/operation.raml
           anchorId: !include documentation/reuse/firewall/anchorId.raml
         body:
          application/xml:
            example: |
-            <section name="" managedBy="" type="">
+            <section name="" managedBy="" tcpStrict="" stateless="" useSid="" type="">
               <rule disabled="" logged="">
                 <name></name>
                 <action></action>
@@ -11724,7 +11970,14 @@ securitySchemes:
             description: The ID of the section to modify.
         get:
           displayName: dfwL2SectionIdRead
-          description: Retrieve information about the specified layer 2 section.
+          description: |
+            Retrieve information about the specified layer 2 section.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         post:
           displayName: dfwL2SectionIdAction # update existing addtion dfwL2SectionIdRevise
           description: |
@@ -11784,7 +12037,7 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <section id="" name="" generationNumber="" timestamp="">
+                <section id="" name="" generationNumber="" timestamp="" tcpStrict="" stateless="" useSid="" type="">
                   <rule id="" disabled="" logged="">
                     <name></name>
                     <action></action>
@@ -11954,11 +12207,18 @@ securitySchemes:
         ----
       post:
         displayName: layer3RedirectSectionsCreate
-        description: Add L3 redirect section
+        description: |
+          Add L3 redirect section
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         body:
           application/xml:
             example: |
-              <section>
+              <section tcpStrict="" stateless="" useSid="">
                 <name></name>
                 <action></action>
                 <appliedToList>
@@ -11984,13 +12244,26 @@ securitySchemes:
             description: Specify section by ID or name
         get:
           displayName: sectionRead
-          description: Get L3 redirect section configuration
+          description: |
+            Get L3 redirect section configuration
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
         put:
           displayName: sectionUpdate
           description: |
             Modify layer 3 redirect section. You will need to get the Etag
             value out of the GET first. Then pass the modified version of the
             whole redirect section configuration in the GET body.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
           headers:
             If-Match:
               required: true
@@ -11999,7 +12272,7 @@ securitySchemes:
           body:
             application/xml:
               example: |
-                <section id="" name="" generationNumber="" timestamp="">
+                <section id="" name="" generationNumber="" timestamp="" tcpStrict="" stateless="" useSid="" type="">
                   <rule id="" disabled="" logged="">
                     <name></name>
                     <action></action>
@@ -12790,7 +13063,10 @@ securitySchemes:
       on/off rule optimization.
       * **tcpStrictOption** determines whether or not to drop an established
       TCP connection when the firewall does not see the initial three-way
-      handshake. If set to true, the connection will be dropped.
+      handshake. If set to true, the connection will be dropped.   
+      **Note**: starting in NSX 6.4.0 this setting in the global configuration is 
+      ignored. **tcpStrict** is instead configured at the section level. See 
+      "Working with Distributed Firewall Configuration" for more information.
       * **autoDraftDisabled** improves performances when making large numbers
       of changes to firewall rules.
       
@@ -12809,7 +13085,14 @@ securitySchemes:
       configuration.
     get:
       displayName: dfwPerformanceRead
-      description: Retrieve performance configuration for distributed firewall.
+      description: | 
+        Retrieve performance configuration for distributed firewall.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level.
       responses:
         200:
           body:
@@ -12830,6 +13113,7 @@ securitySchemes:
         Release | Modification
         --------|-------------
         6.2.3 | Method updated. **autoDraftDisabled** parameter added.
+        6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level. 
       body:
         application/xml:
           example: |
@@ -12855,7 +13139,7 @@ securitySchemes:
         
         Release | Modification
         --------|-------------
-        6.4.0 | Method added. 
+        6.4.0 | Method introduced. 
       queryParameters:
         action:
           displayName: action
@@ -12946,25 +13230,19 @@ securitySchemes:
   /objects/status/vm/{vm_ID}/containers:
     displayName: dfwStateRealize
     description: |
-      Distributed Firewall State Realization for Containers
+      Distributed Firewall State Realization for Grouping Objects
       ----
-      Use this API to verify whether changes made in the container (grouping objects such as security group) has been realized or not. The API takes the VM ID, the list of container IDs, and the list of *appliedTo* parameter as an input request and returns the list of IPs realized for each vNIC of the VM for each container for the provided appliedTo parameters. The API supports maximum of five containers IDs and five *appliedTo* parameters. The API is for Layer3 rules.
+        Use this API to verify whether changes made in the grouping object (container), such as security group, has been realized or not. The API takes the VM ID, the list of container IDs, and the list of *appliedTo* parameter as an input request and returns the list of IPs realized for each vNIC of the VM for each container for the provided *appliedTo* parameters. The API supports maximum of five containers IDs and five *appliedTo* parameters. The API is for Layer3 rules.
       
       Realized status can be:
-      * **Yes**: If the container has any one of the IPs of the vNIC
-      * **No**: If the container has none of the IPs of the vNIC
-      * **Not found**:  If the host could find the vNIC or the container
+      * **Yes**: If the grouping object (container) has any one of the IPs of the vNIC
+      * **No**: If the grouping object (container) has none of the IPs of the vNIC
+      * **Not found**:  If the host could find the vNIC or the grouping object (container)
       
       The API does not support:
       * Excluded vNICs
-      * IPSET/MACSET containers
+      * IPSET/MACSET grouping objects (containers)
       * DFW/ Edge/ All Edges/ Any in the *appliedToList*  parameter
-      
-      **Method history:**
-      
-      Release | Modification
-      --------|-------------
-      6.4.0 | Method introduced.
 
     uriParameters:
       vm_ID:
@@ -12973,7 +13251,14 @@ securitySchemes:
         description: VM ID.
     post:
       displayName: dfwsStateRealizeCreate
-      description: Get VM Status for containers. The parameters in the *container* field are mandatory, and parameters in the *appliedTo* field are optional in the POST request body.
+      description: | 
+        Get VM Status for the grouping object (container). The parameters in the *container* field are mandatory, and parameters in the *appliedTo* field are optional in the POST request body.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
       body:
         application/xml:
           example: |
@@ -14860,6 +15145,13 @@ securitySchemes:
             *RED*.
           * *GREY*: unknown status.
           * *RED*: None of the appliances for this NSX Edge are in a serving state.
+          
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. The **detailed** query parameter now specifies whether detailed info is displayed for **featureStatuses** only. Detailed info is now always displayed for **edgeVMStatus**. <br>The **systemStatus** parameter is deprecated, and might be removed in a future release.
         queryParameters:
           getlatest:
             type: boolean
@@ -14872,7 +15164,7 @@ securitySchemes:
             type: boolean
             displayName: detailed
             description: |
-              If *true*: retrieve detailed status per feature.   
+              If *true*: retrieve detailed status per feature.  
               If *false*: retrieve aggregated summary of status per feature.
             required: false
           preRulesStatus:
@@ -14963,6 +15255,137 @@ securitySchemes:
                       </featureStatus>
                     </featureStatuses>
                   </edgeStatus>
+    /healthsummary:
+      displayName: healthsummary
+      description: |
+        Working With NSX Edge Health Summary
+        -----
+      get:
+        displayName: healthsummaryRead
+        description: |
+          Retrieve detailed health information about an NSX Edge. 
+          
+          This includes features, VM health status, upgrade availability, alarms
+          and pending jobs. 
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <edgeHealthSummary>
+                    <id>edge-1</id>
+                    <name>EdgeTest1</name>
+                    <edgeType>gatewayServices</edgeType>
+                    <buildNumber>6.4.0-7056811</buildNumber>
+                    <configVersion>4</configVersion>
+                    <publishStatus>APPLIED</publishStatus>
+                    <isUpgradeAvailable>false</isUpgradeAvailable>
+                    <preRulesExists>false</preRulesExists>
+                    <isUniversal>false</isUniversal>
+                    <haVnicInUse>vNic_0</haVnicInUse>
+                    <enabledFeatures>
+                      <featureSummary>
+                        <featureName>routing</featureName>
+                        <featureVersion>4</featureVersion>
+                      </featureSummary>
+                      <featureSummary>
+                        <featureName>firewall</featureName>
+                        <featureVersion>4</featureVersion>
+                      </featureSummary>
+                      <featureSummary>
+                        <featureName>highAvailability</featureName>
+                        <featureVersion>4</featureVersion>
+                      </featureSummary>
+                      <featureSummary>
+                        <featureName>nat</featureName>
+                        <featureVersion>1</featureVersion>
+                      </featureSummary>
+                    </enabledFeatures>
+                    <edgeVmsHealthSummary>
+                      <vmHealthSummary>
+                        <id>vm-28</id>
+                        <name>EdgeTest1-0</name>
+                        <haAdminState>up</haAdminState>
+                        <mpConnectivityStatus>DOWN</mpConnectivityStatus>
+                        <haIndex>0</haIndex>
+                        <lastHeartBeatTimeStamp>1509719278437</lastHeartBeatTimeStamp>
+                      </vmHealthSummary>
+                      <vmHealthSummary>
+                        <id>vm-30</id>
+                        <name>EdgeTest1-1</name>
+                        <haAdminState>up</haAdminState>
+                        <haState>active</haState>
+                        <mpConnectivityStatus>UP</mpConnectivityStatus>
+                        <haIndex>1</haIndex>
+                        <lastHeartBeatTimeStamp>1509719278478</lastHeartBeatTimeStamp>
+                        <vmConfigVersion>4</vmConfigVersion>
+                      </vmHealthSummary>
+                    </edgeVmsHealthSummary>
+                    <pendingJobs>
+                      <edgeJob>
+                        <jobId>jobdata-1120</jobId>
+                        <message>Deploying NSX Edge Virtual Machine edge-2-jobdata-1120-0</message>
+                        <jobType>edge.redeploy.job.name;edge-2</jobType>
+                        <status>RUNNING</status>
+                        <submitTime>1506510927486</submitTime>
+                        <result>
+                          <key>edgeId</key>
+                          <value>edge-2</value>
+                        </result>
+                      </edgeJob>
+                    </pendingJobs>
+                    <activeAlarms>
+                      <edgeAlarm>
+                        <alarmId>158</alarmId>
+                        <alarmCode>130200</alarmCode>
+                        <eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>edge-1</eventSourceId>
+                            <eventSourceType>Edge</eventSourceType>
+                          </eventSourceInfo>
+                        </eventSourceInfo>
+                        <severity>High</severity>
+                        <message>NSX Edge HighAvailability heartbeat channel of VM : vm-30 is disconnected from peer node.</message>
+                        <timeOfOccurence>1509719267000</timeOfOccurence>
+                      </edgeAlarm>
+                      <edgeAlarm>
+                        <alarmId>160</alarmId>
+                        <alarmCode>130027</alarmCode>
+                        <eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>edge-1</eventSourceId>
+                            <eventSourceType>Edge</eventSourceType>
+                          </eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>vm-28</eventSourceId>
+                            <eventSourceType>Edge Vm Id</eventSourceType>
+                          </eventSourceInfo>
+                        </eventSourceInfo>
+                        <severity>High</severity>
+                        <message>NSX Edge VM (vmId : vm-28) is powered off. Please use vsphere client to power on Edge VM</message>
+                        <timeOfOccurence>1509719272066</timeOfOccurence>
+                      </edgeAlarm>
+                      <edgeAlarm>
+                        <alarmId>163</alarmId>
+                        <alarmCode>130033</alarmCode>
+                        <eventSourceInfo>
+                          <eventSourceInfo>
+                            <eventSourceId>edge-1</eventSourceId>
+                            <eventSourceType>Edge</eventSourceType>
+                          </eventSourceInfo>
+                        </eventSourceInfo>
+                        <severity>High</severity>
+                        <message>NSX Edge VM (vmId : vm-28) is not responding to NSX manager health check. Please check NSX manager logs for details.</message>
+                        <timeOfOccurence>1509719278437</timeOfOccurence>
+                      </edgeAlarm>
+                    </activeAlarms>
+                  </edgeHealthSummary>
     /techsupportlogs:
       displayName: techSupportLogs
       description: |
@@ -15015,14 +15438,21 @@ securitySchemes:
         ----
       put:
         displayName: cliSettingsUpdate
-        description: Modify CLI credentials and enable/disable SSH for Edge.
+        description: | 
+          Modify CLI credentials and enable/disable SSH for Edge.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method updated. Modified existing API to enable SSH on edge without changing the password. Now you can enable SSH without mentioning the password. If password is provided, the provided password is saved in the database. If password is not provided, NSX Manager will retain password from the database.
         body:
           application/xml:
             example: |
               <cliSettings>
-                <userName></userName>
-                <password></password>
-                <remoteAccess></remoteAccess>
+                <userName>admin</userName>
+                <password>Default123</password>
+                <remoteAccess>true</remoteAccess>
                 <passwordExpiry></passwordExpiry>
                 <sshLoginBannerText></sshLoginBannerText>
               </cliSettings>
@@ -21099,11 +21529,11 @@ securitySchemes:
         queryParameters:
           startIndex:
             displayName: startIndex
-            description: Use *all?startIndex=2&pageSize=20*. Default value is 0.
+            description: The starting point for returning results. Example, `all?startIndex=2`. Default value is 0.
             default: 0
           pageSize:
               displayName: pageSize
-              description: Use *all?startIndex=2&pageSize=20*. Default value is 1024.
+              description: The number of results to return. Example, `all?startIndex=2&pageSize=20`. Default value is 1024.
               default: 1024
         responses:
           200:
@@ -21551,7 +21981,7 @@ securitySchemes:
           ```
           6300
           ```
-    /status:
+    /status/:
       displayName: securityPolicyStatus
       description: |
         Working With Service Composer Status
@@ -22128,74 +22558,22 @@ securitySchemes:
     get:
       displayName: serviceComposerDFWRead # existing change serviceComposerDFWSyncRead
       description: |
-        If Service Composer goes out of sync with Distributed Firewall, you
-        must re-synchronize Service Composer rules with firewall rules. If
-        Service Composer stays out of sync, firewall configuration may not
-        stay enforced as expected.
+        **Deprecated.** Use `GET /api/2.0/services/serviceprovider/firewall/info` instead.
         
-        This GET method can perform the following functions, depending on the
+        You can also use `GET /api/2.0/services/policy/securitypolicy/status/` to
+        retrieve the sync status of Service Composer firewall with Distributed
+        Firewall.
+        
+        This GET method can perform certain functions, depending on the
         request body provided. **Note:** Some REST clients do not allow you to
         specify a request body with a GET request.
-        
-        ### Check if Service Composer firewall and Distributed Firewall are in sync
-        
-        **Note: Deprecated.** Use `GET /2.0/services/policy/securitypolicy/status` instead. 
-        
-        * If they are in sync, the response body does not contain any data.  
-        * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>getServiceComposerFirewallOutOfSyncTimestamp</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Synchronize Service Composer firewall with Distributed Firewall
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>forceSync</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Retrieve the state of the auto save draft property in Service Composer
-        
-        Retrieve the state of the auto save draft property in Service
-        Composer. Response is true or false.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>getAutoSaveDraft</key>
-          </keyValue>
-        </keyValues>
-        ```
-        
-        ### Change the state of the auto save draft property in Service Composer
-        
-        **Note: Deprecated.**
-        
-        Change the state of the auto save draft property in Service Composer.
-        Provide request body value of true or false.
-        
-        ```
-        <keyValues>
-          <keyValue>
-            <key>autoSaveDraft</key>
-            <value>false</value>
-          </keyValue>
-        </keyValues> 
-        ```
         
         **Method history:**
         
           Release | Modification
           --------|-------------
-          6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /2.0/services/policy/securitypolicy/status` instead.
+          6.2.3 | Method updated and some functions deprecated. Changing auto save draft with the **autoSaveDraft** parameter is deprecated, and will be removed in a future release.  <br>The default setting of **autoSaveDraft** is changed from *true* to *false*.<br>Method to check if Service Composer and Distributed Firewall are in sync is deprecated, and will be removed in a future release. Use `GET /api/2.0/services/policy/securitypolicy/status/` instead.
+          6.4.0 | All functions deprecated. Use `GET /api/2.0/services/serviceprovider/firewall/info` instead.
       body:
         application/xml:
           example: |
@@ -22205,6 +22583,50 @@ securitySchemes:
                 <value></value>
               </keyValue>
             </keyValues> 
+    /info:
+      displayName: serviceComposerDFWInfo # existing change serviceComposerDFWSync
+      description: |
+        Working With Service Composer Firewall Information
+        --------------
+      get:
+        displayName: serviceComposerDFWInfoRead # existing change serviceComposerDFWSyncRead
+        description: |
+          If Service Composer goes out of sync with Distributed Firewall, you
+          must re-synchronize Service Composer rules with firewall rules. If
+          Service Composer stays out of sync, firewall configuration may not
+          stay enforced as expected.
+          
+          Using query parameters, you can get the sync status, force a sync,
+          and retrieve or update the auto save draft propertly. 
+          
+          You can also use `GET /api/2.0/services/policy/securitypolicy/status/` to
+          retrieve the sync status of Service Composer firewall with distributed
+          Firewall.
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        queryParameters:
+          key:
+            displayName: key
+            description: |
+              Specify one of the following keys:
+                * *getServiceComposerFirewallOutOfSyncTimestamp*: Check if Service Composer firewall and Distributed Firewall are in sync.
+                  * If they are in sync, the response body does not contain any data.  
+                  * If they are out of sync, the response body contains the unix timestamp representing the time since when Service Composer firewall is out of sync.
+                * *forceSync*: Synchronize Service Composer firewall with Distributed Firewall.
+                * *getAutoSaveDraft*: Retrieve the state of the auto save draft property in Service Composer.
+            required: false
+          value:
+            displayName: value
+            description: |
+              If you specify *getAutoSaveDraft* as a value for **key**, you can set
+              **value** to *true* or *false* to enable or disable the auto save
+              draft property.
+              
+              **Note:** Setting the auto save draft property to *true* might cause performance
+              degradation.
+            required: false
   /securitygroup/{ID}/securitypolicies:
     displayName: secGroupPolicies
     description: |
