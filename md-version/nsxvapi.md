@@ -1188,7 +1188,7 @@ Working With Specific IPs Allocated to an IP Pool
 
 * **delete** *(secured)*: Release an IP address allocation in the pool.
 
-## capacityUsage
+## nsxLicensing
 Working With Licensing 
 ============
 The licensing capacity usage API command reports usage of CPUs, VMs and
@@ -4623,7 +4623,6 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
-
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -7675,6 +7674,48 @@ configure Edge Service Gateway interfaces.
 * **get** *(secured)*: Retrieve the specified interface.
 * **put** *(secured)*: Update the specified interface.
 * **delete** *(secured)*: Delete interface
+
+### /4.0/edges/{edgeId}/vnics/{parentVnicIndex}/subinterfaces/{subInterfaceIndex}
+Working With a Sub-Interface of a Backing Type 
+----
+View, modify, or delete a sub-interface for a backing type VLAN or Network.
+
+* **get** *(secured)*: Retrieve the specified sub-interface.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
+* **put** *(secured)*: Update the specified sub-interface.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
+* **delete** *(secured)*: Delete a sub-interface. 
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
+### /4.0/edges/{edgeId}/{parentVnicIndex}/subinterfaces
+Creating a Sub-Interface of a Backing Type
+----
+Create a sub-interface with backing type, VLAN or Network.
+
+* **post** *(secured)*: Add an sub-interface of backing type VLAN or Network.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
 
 ### /4.0/edges/{edgeId}/mgmtinterface
 Working With Logical Router HA (Management) Interface
