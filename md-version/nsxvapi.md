@@ -3391,6 +3391,18 @@ Release | Modification
 --------|-------------
 6.4.0 | Method introduced.
 
+### /1.0/directory/deleteDomainRootDN/{domainID}
+Delete DomainRootDN
+-------
+
+* **delete** *(secured)*: Delete individual root distinguished name under which each domain sub-tree synchronization is not to be executed.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
 ### /1.0/directory/updateLdapServer
 Create LDAP Server
 ------------
