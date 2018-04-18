@@ -7301,19 +7301,22 @@ Working With NSX Edge Firewall Dashboard Statistics
 ----
 
 * **get** *(secured)*: Retrieve number of ongoing connections for the firewall
-configuration.
+configuration. 
+This API is not supported for Distributed Logical Routers.
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/sslvpn
 Working With SSL VPN Dashboard Statistics
 ---
 
 * **get** *(secured)*: Retrieve SSL VPN statistics on the specified NSX Edge.
+This API is not supported for Distributed Logical Routers. 
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/ipsec
 Working With Tunnel Traffic Dashboard Statistics
 ----
 
 * **get** *(secured)*: Retrieve tunnel traffic statistics for specified time interval.
+This API is not supported for Distributed Logical Routers.
 
 ### /4.0/edges/{edgeId}/statistics/dashboard/interface
 Working With Interface Dashboard Statistics
@@ -7324,6 +7327,7 @@ times. When start and end time are not specified, all statistics
 since the Edge deployed are displayed. When no end time is specified,
 the current Edge Manager time is set as endTime. Each record has the
 stats of 5 minutes granularity.
+This API is not supported for Distributed Logical Routers.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces
 Working With Interface Statistics
