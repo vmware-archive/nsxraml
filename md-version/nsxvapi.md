@@ -5641,6 +5641,7 @@ Working With a Specific NSX Edge
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
+6.4.0 | Method updated. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter.
 
 * **put** *(secured)*: Update the NSX Edge configuration.
 
@@ -5650,6 +5651,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. **haAdminState** parameter added.
 6.3.0 | Method updated. **dnatMatchSourceAddress**, **snatMatchDestinationAddress**, **dnatMatchSourcePort**, **snatMatchDestinationPort** parameters added. <br>**protocol**, **originalPort**, and **translatedPort** now supported in SNAT rules.
+6.4.0 | Method updated. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter, and optional if used in a PUT call. If used, it must be set to *policybasedSession*.
 
 * **delete** *(secured)*: Delete specified NSX Edge configuration. Associated appliances are
 also deleted.
@@ -7534,7 +7536,7 @@ Parameter |  Description | Comments
  Release | Modification
  --------|-------------
  6.3.5 | Method updated. *showSensitiveData* query parameter added. 
- 6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added.
+ 6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter.
 
 * **put** *(secured)*: Update IPsec VPN configuration.
 
@@ -7542,7 +7544,7 @@ Parameter |  Description | Comments
  
  Release | Modification
  --------|-------------
- 6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added.
+ 6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter, and optional if used in a PUT call. If used, it must be set to *policybasedSession*.
 
 * **delete** *(secured)*: Delete the IPsec configuration.
 
