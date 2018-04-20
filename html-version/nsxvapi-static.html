@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x64;&#111;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#x61;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#x6d;">&#x64;&#111;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#x61;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#46;&#x63;&#111;&#x6d;</a>.</p>
+<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#100;&#x6f;&#x63;&#102;&#101;&#101;&#x64;&#98;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#x63;&#102;&#101;&#101;&#x64;&#98;&#97;&#99;&#x6b;&#x40;&#x76;&#x6d;&#x77;&#97;&#114;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -2706,6 +2706,7 @@ the users of a domain.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>"0 0 0 ? * SUN *"<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enableFullSync</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableFullSync</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">restartSync</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">restartSync</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">LdapSyncSettings</span>&gt;</span>
 </code></pre>
   </div>
@@ -3007,6 +3008,83 @@ Verify that the rootDNs in the rootDNList exist in Active Director server.</p>
 <td>Method introduced.</td>
 </tr>
 </tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">domainName</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Parent domain name this root distinguished name belongs to. It is a string type.</p>
+
+  </dd>
+  <dt>
+    <span class="param">baseDN</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Domain&#39;s base distinguished name. It is a string type.</p>
+
+  </dd>
+  <dt>
+    <span class="param">rootDnlists</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>The list of individual root distinguished name. It is a list of string type.</p>
+
+  </dd>
+  <dt>
+    <span class="param">hostName</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Domain LDAP server host name or IP address. It is a list of string type.</p>
+
+  </dd>
+  <dt>
+    <span class="param">port</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Domain LDAP server port. It is an integer type.</p>
+
+  </dd>
+  <dt>
+    <span class="param">username</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Account credential of user name to access LDAP server. It is a string type.</p>
+
+  </dd>
+  <dt>
+    <span class="param">password</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Account credential of password to access ldap server. It is a string type.</p>
+
+  </dd>
+  <dt>
+    <span class="param">protocol</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Domain LDAP server protocol used. It is a string type.</p>
+
+  </dd>
+</dl>
+    </div>
       <h3>Request Example (<tt>RootDNVerify/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">RootDnVerify</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">domainName</span>&gt;</span>nimbustest.com<span class="hljs-tag">&lt;/<span class="hljs-name">domainName</span>&gt;</span>

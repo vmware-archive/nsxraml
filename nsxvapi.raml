@@ -8541,6 +8541,39 @@ securitySchemes:
        --------|-------------
        6.4.0 | Method introduced.
        
+      queryParameters:
+         domainName:
+           displayName: domainName
+           description: Parent domain name this root distinguished name belongs to. It is a string type.
+           required: true
+         baseDN:
+           displayName: baseDN
+           description: Domain's base distinguished name. It is a string type.
+           required: true
+         rootDnlists: 
+          displayName: rootDnList
+          description: The list of individual root distinguished name. It is a list of string type.
+          required: true 
+         hostName:
+           displayName: hostNameIPAddress
+           description: Domain LDAP server host name or IP address. It is a list of string type.
+           required: true
+         port: 
+           displayName: port
+           description: Domain LDAP server port. It is an integer type.
+           required: false
+         username:
+           displayName: username
+           description: Account credential of user name to access LDAP server. It is a string type.
+           required: true
+         password:
+           displayName: password
+           description: Account credential of password to access ldap server. It is a string type.
+           required: true
+         protocol:
+           displayName: protocol
+           description: Domain LDAP server protocol used. It is a string type.
+           required: false
       body:
         RootDNVerify/xml:
           example: |
@@ -8644,6 +8677,7 @@ securitySchemes:
               <deltaSyncIntervalInMin>180</deltaSyncIntervalInMin>
               <fullSyncCronExpr>"0 0 0 ? * SUN *"</fullSyncCronExpr>
               <enableFullSync>true</enableFullSync>
+              <restartSync>true</restartSync>
             </LdapSyncSettings>
 
   /fullSync/{domainID}:
