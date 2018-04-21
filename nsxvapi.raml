@@ -4866,6 +4866,30 @@ securitySchemes:
                   <connected>true</connected>
                   <lastInventorySyncTime>1492568145678</lastInventorySyncTime>
                 </vcConfigStatus>
+  /connectionstatus:
+    displayName: vCenterConnectionStatus
+    description: |
+      Working with vCenter Server Connection 
+      -----
+       Validates the vCenter connection by actually trying connection to vCenter Server with the available credentials instead of the cached state. Returns *true* if vCenter connectivity is successful and *false* if fails. If the vCenter connectivity has issues, then it disconnects the default connection. 
+      
+      Note: If previously connected, this API tries to re-connect to the vCenter Server which may take response time. If vCenter Server is non-responsive, then the API may result in timeout error.
+    
+      **Method history:**
+        
+      Release | Modification
+        --------|-------------
+      6.4.0 | Method introduced. 
+    post:
+      displayName: vCenterConnectionStatusUpdate
+      description: Update the vCenter Server connection status.
+        
+      queryParameters:
+        action:
+          required: false
+          displayName: action
+          description: Use *action=update* to update the vCenter connection. If the action is not specified then the default value is *update*. 
+
 /2.0/services/housekeeping/management/index_maintenance:
   displayName: IndexMaintenanceConfig
   description: |

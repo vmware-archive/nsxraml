@@ -1761,6 +1761,21 @@ Connection Status for vCenter Server
 
 * **get** *(secured)*: Get default vCenter Server connection status.
 
+### /2.0/services/vcconfig/connectionstatus
+Working with vCenter Server Connection 
+-----
+ Validates the vCenter connection by actually trying connection to vCenter Server with the available credentials instead of the cached state. Returns *true* if vCenter connectivity is successful and *false* if fails. If the vCenter connectivity has issues, then it disconnects the default connection. 
+
+Note: If previously connected, this API tries to re-connect to the vCenter Server which may take response time. If vCenter Server is non-responsive, then the API may result in timeout error.
+
+**Method history:**
+  
+Release | Modification
+  --------|-------------
+6.4.0 | Method introduced. 
+
+* **post** *(secured)*: Update the vCenter Server connection status.
+
 ## IndexMaintenanceConfig
 Configuring Index Maintainance 
 =========
