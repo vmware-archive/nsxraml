@@ -120,6 +120,15 @@ code, it indicates whether the request succeeded or failed, and might be
 accompanied by a URL that points to a location from which additional
 information can be retrieved.
 
+### Revision Numbers
+
+Some API objects include a configuration version number. In some cases, this
+revision number is used to prevent concurrent changes to an object. As a best
+practice, before you change the configuration of an object, retrieve the latest
+configuration using GET. Modify the response body as needed and use it as your
+PUT request body. If the object has been modified since your GET operation, you
+might see an error message.
+
 ## Finding vCenter Object IDs
 
 Many API methods reference vCenter object IDs in URI parameters, query
@@ -200,8 +209,11 @@ IDs via the vCenter Managed Object Browser.
    lists the VM instance UUID. For example,
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
-### part-number
-EN-002339-02
+### update-number
+Update 5
+
+### update-date
+Modified on 29 MAR 2018
 
 ---
 
@@ -770,18 +782,21 @@ only) traffic, and the learning is stored on the host and the controller.
 
 ### /2.0/vdn/controller
 
-* **post** *(secured)*: Adds a new NSX controller on the specified given cluster. The *hostId*
+* **post** *(secured)*: Add a new NSX Controller on the specified cluster. The *hostId*
 parameter is optional. The *resourcePoolId* can be either the
 *clusterId* or *resourcePoolId*.
 
 The IP address of the controller node will be allocated
-from the specified IP pool. The *deployType* property determines the
-controller node memory size and can be small, medium, or large. However,
-different controller deployment types are not currently supported because
-the OVF overrides it and different OVF types require changes in the
-manager build scripts. Despite not being supported, an arbitrary
-*deployType* size must still be specified or an error will be returned.
-Request without body to upgrade controller cluster.
+from the specified IP pool. 
+
+**Note:** Controller nodes are deployed with 4 GB of memory regardless of 
+which **deployType** value is provided.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method updated. **deployType** is no longer required.
 
 * **get** *(secured)*: Retrieves details and runtime status for all controllers.  Runtime status
 can be one of the following:
@@ -875,6 +890,26 @@ Working With the NSX Controller Password
 
 * **put** *(secured)*: Change the NSX controller password.
 
+### /2.0/vdn/controller/synchronize
+Working With Controller Synchronization
+-------
+You can resynchronize the NSX Controller cluster with NSX Manager. You
+might want to do this if you notice that the controller cluster has extra,
+stale, or missing configuration items.
+
+* **put** *(secured)*: Synchronize the controller cluster with the NSX Manager database.
+
+### /2.0/vdn/controller/synchronize/status
+Working with Controller Synchronization Status 
+----
+Retrieve the status of the controller synchronization.
+
+* **get** *(secured)*: Get the status of the controller synchronization.
+
+If the sync is in progress, the response includes the status
+*JOB_IN_PROGRESS*, and the jobId.
+If the sync has finished, the response includes the status *NOT_RUNNING*.
+
 ## servicesApps
 Working With Services Grouping Objects
 =============
@@ -906,11 +941,16 @@ service.
 Working With Service Groups Grouping Objects
 ============
 
+### /2.0/services/applicationgroup/{scopeId}
+Creating Service Groups on a Specific Scope
+-------
+
+* **post** *(secured)*: Create a new service group on the specified scope.
+
 ### /2.0/services/applicationgroup/scope/{scopeId}
 Working With Service Groups on a Specific Scope
 -------
 
-* **post** *(secured)*: Create a new service group on the specified scope.
 * **get** *(secured)*: Retrieve a list of service groups that have been created on the scope.
 
 ### /2.0/services/applicationgroup/{applicationgroupId}
@@ -968,10 +1008,25 @@ Working With IP Pool Address Allocations
 
 * **get** *(secured)*: Retrieves all allocated IP addresses from the specified pool.
 
-* **post** *(secured)*: Allocate an IP address from the pool. Use *ALLOCATE* in the
-**allocationMode** field in the body to allocate the next available
-IP. To allocate a specific IP use *RESERVE* and pass the IP to
-reserve in the **ipAddress** fields in the body.
+* **post** *(secured)*: Allocate an IP address from the pool. 
+
+To allocate the next available IP, set **allocationMode** to *ALLOCATE*  
+
+```
+<ipAddressRequest>
+  <allocationMode>ALLOCATE</allocationMode>
+</ipAddressRequest>
+```
+
+To allocate a specific IP, set **allocationMode** to *RESERVE* and pass
+the IP to reserve in the **ipAddress** parameter.
+
+```
+<ipAddressRequest>
+  <allocationMode>RESERVE</allocationMode>
+  <ipAddress>192.168.1.2</ipAddress>
+</ipAddressRequest>
+```
 
 ### /2.0/services/ipam/pools/{poolId}/ipaddresses/{ipAddress}
 Working With Specific IPs Allocated to an IP Pool
@@ -1024,6 +1079,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.3.0 | Method updated. Added **isUniversal** query parameter to filter universal security tags.
+6.3.3 | Method updated. Output is now paginated. **startIndex**, **pageSize**, **sortOrderAscending**, **sortBy**, **filterBy**, and **filterValue** query parameters added.
 
 ### /2.0/services/securitytags/tag/{tagId}
 Delete a Security Tag
@@ -1183,6 +1239,13 @@ Manage Users on NSX Manager
 * **get** *(secured)*: Get information about a user.
 * **delete** *(secured)*: Remove the NSX role for a vCenter user.
 
+### /2.0/services/usermgmt/user/{userId}/enablestate/{value}
+Working With User Account State
+-----
+
+* **put** *(secured)*: You can disable or enable a user account, either local user or vCenter
+user. When a user account is created, the account is enabled by default.
+
 ### /2.0/services/usermgmt/role/{userId}
 Manage NSX Roles for Users
 -----
@@ -1195,12 +1258,6 @@ Manage NSX Roles for Users
 * **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role
 is deleted, the user is removed from NSX Manager. You cannot delete the
 role for a local user.
-
-### /2.0/services/usermgmt/enablestate/{value}
-Working With User Account State
------
-
-* **put** *(secured)*: Enable or disable a user account.
 
 ### /2.0/services/usermgmt/users/vsm
 Working With NSX Manager Role Assignment
@@ -1387,6 +1444,12 @@ Working With Virtual Machine Security Group Membership
 is a direct or indirect member. Indirect membership involves nesting of
 security groups.
 
+### /2.0/services/securitygroup/lookup/ipaddress/{ipAddress}
+Working With IP Address in a Security Group
+------
+
+* **get** *(secured)*: Retrieve all the security groups that contain the specified IP address.
+
 ### /2.0/services/securitygroup/internal/scope/{scopeId}
 Working With Internal Security Groups
 ----
@@ -1467,6 +1530,47 @@ Connection Status for vCenter Server
 -----
 
 * **get** *(secured)*: Get default vCenter Server connection status.
+
+## IndexMaintenanceConfig
+Configuring Index Maintainance 
+=========
+If you have few tables in the database that is taking up most of the space, you can configure your index maintenance activities. 
+You can reindex the tables and tables with index bloat size greater than 75% are reindexed.
+
+### /2.0/services/housekeeping/management/index_maintenance
+
+* **get** *(secured)*: Retrieve the default settings for the index maintenance activities.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method introduced.
+
+* **put** *(secured)*: Update the index maintenance default settings. You can enable or disable the settings and change the CRON configuration. To make the changes effective, you must restart the NSX Manager. To change the CRON expression, 
+make sure the new CRON expression is correct using any CRON evaluators. Note that incorrect CRON expression will not run the reindexing task at the expected frequency.
+
+**CRON expression guidelines**: 
+  
+  CRON expression pattern is a list of six single space-separated fields,representing second, minute, hour, day, month, weekday. Month and weekday can be given as first three letters of the English names.
+  You can refer to the following Web sites for details:
+    
+  *  https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html
+  *  http://www.manpagez.com/man/5/crontab/
+
+**Method history:**
+  
+Release | Modification
+  --------|-------------
+6.3.3 | Method introduced. 
+
+* **post** *(secured)*: Trigger the reindexing task on demand. Tables with index bloat size greater than 75% are reindexed.
+
+**Method history:**
+  
+Release | Modification
+  --------|-------------
+6.3.3 | Method introduced. 
 
 ## universalSync
 Working With Universal Sync Configuration in Cross-vCenter NSX
@@ -1771,6 +1875,9 @@ Parameter | Description | Comments
 **backupDirectory** | Directory location to save backup files on backup server. |  Required.
 **fileNamePrefix** | Prefix for backup files. | Required. 
 **passPhrase** | Passphrase to encrypt and decrypt backups. | Required.
+**passiveMode** | Use passive mode. | Optional. Default is *true*.
+**useEPRT** | Use EPRT. | Optional. Default is *false*.
+**useEPSV** | Use EPSV. | Optional. Default is *true*.
 
 **Backup frequency parameters**
 
@@ -1790,6 +1897,12 @@ to encrypt and decrypt backup files. If you do not set a passphrase, backups
 will fail. If you forget the passphrase set on a backup file, you cannot
 restore that backup file.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method updated. Parameters **passiveMode** and **useEPSV** previously defaulted to *false*, now default to *true*.
+
 * **delete** *(secured)*: Delete appliance manager backup configuration.
 
 ### /1.0/appliance-management/backuprestore/backupsettings/ftpsettings
@@ -1798,6 +1911,12 @@ NSX Manager Appliance Backup FTP Settings
 See *NSX Manager Appliance Backup Settings* for details.
 
 * **put** *(secured)*: Configure FTP settings.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method updated. Parameters **passiveMode** and **useEPSV** previously defaulted to *false*, now default to *true*.
 
 ### /1.0/appliance-management/backuprestore/backupsettings/excludedata
 NSX Manager Appliance Backup Exclusion Settings
@@ -1874,11 +1993,10 @@ To upgrade NSX Manager, you must do the following:
   * retrieve the upgrade information   
     `GET /api/1.0/appliance-management/upgrade/information/{componentID}`
   * edit the **preUpgradeQuestionsAnswers** section of the upgrade
-    information response, if needed
+    information response to include answers
   * start the upgrade, providing the edited **preUpgradeQuestionsAnswers**
     section as the request body   
     `POST /api/1.0/appliance-management/upgrade/start/{componentID}`
-  
 
 ### /1.0/appliance-management/upgrade/uploadbundle/{componentID}
 Upload an NSX Manager Upgrade Bundle
@@ -1901,6 +2019,23 @@ https://192.168.110.42/api/1.0/appliance-management/upgrade/uploadbundle/NSX
 
 * **post** *(secured)*: Upload upgrade bundle.
 
+### /1.0/appliance-management/upgrade/uploadbundlefromurl
+Upload an NSX Manager Upgrade Bundle from URL
+----
+You can upload the upgrade bundle using the URL. Supported protocols are HTTP, and HTTPS.  
+
+You must provide the URL of the upgrade bundle file. 
+  **For example**: 
+  * NSX?fileurl=http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz
+  
+
+* **post** *(secured)*: Upload upgrade bundle from URL.           
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method introduced.
+
 ### /1.0/appliance-management/upgrade/information/{componentID}
 Prepare for NSX Manager Upgrade
 ---
@@ -1908,16 +2043,22 @@ Prepare for NSX Manager Upgrade
 * **get** *(secured)*: Once you have uploaded an upgrade bundle, you must retrieve
 information about the upgrade. This request contains pre-upgrade
 validation warnings and error messages, along with pre-upgrade
-questions with default answers. Review the information and edit the
-answers in the **preUpgradeQuestionsAnswers** section if needed before
-providing the section as the request body to the `POST
-/api/1.0/appliance-management/upgrade/start/{componentID}` method.
+questions. 
+
+You use the **preUpgradeQuestionsAnswers** section with the addition of
+your answers to create the request body for the `POST
+/api/1.0/appliance-management/upgrade/start/{componentID}` request to
+start the backup.  See *Start the NSX Manager Upgrade* for more
+information.
 
 ### /1.0/appliance-management/upgrade/start/{componentID}
 Start the NSX Manager Upgrade
 ----
 
 * **post** *(secured)*: Start upgrade process.
+
+If you want to enable SSH or join the VMware CEIP program, you must
+specify *Yes* (not *YES*) for the **answer** parameter.
 
 ### /1.0/appliance-management/upgrade/status/{componentID}
 NSX Manager Upgrade Status
@@ -2062,7 +2203,7 @@ Parameter | Description | Comments
 **frequency** | Frequency of data collection | *daily*, *weekly*, or *monthly*.
 **dayOfWeek** | Day to collect data | *SUNDAY*, *MONDAY*, ... *SATURDAY*.
 **hourOfDay** | Hour to collect data | *0-23*.
-**minutes** | Minute to collect data | *0-59*. Read only.
+**minutes** | Minute to collect data | *0-59*.
 **lastCollectionTime** | Time of last collection. | Timestamp in milliseconds. Read only.
 
 * **get** *(secured)*: Retrieve the CEIP configuration.
@@ -2080,6 +2221,42 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method introduced. 
+6.3.3 | Method updated. *minutes* parameter is configurable.
+
+### /1.0/telemetry/proxy
+Working With Proxy Setting for VMware CEIP 
+-----
+  
+If your NSX Manager appliance does not have a direct connection to the 
+internet, you can configure a proxy server for the purpose of sending
+information collected by CEIP to VMware.
+
+**CEIP Proxy Parameters**
+
+Parameter | Description | Comments
+---|---|---
+**enabled** | Enabled status of proxy | Required. Default is *AUTO*.<br>*OFF*: use direct connection<br>*MANUAL*: use settings defined here<br>*AUTO*: use proxy auto-discovery.
+**scheme** | Proxy scheme. | Required if **enabled** is set to *MANUAL*. Valid value: *http*. Default is *http*.
+**hostname** | Hostname of proxy server | Required if **enabled** is set to *MANUAL*.
+**port** | Port used for proxy server | Required if **enabled** is set to *MANUAL*. Default is *0*.
+**username** | Proxy server username | Optional.
+**password** | Proxy server password | Optional. Not included in GET response.
+
+* **get** *(secured)*: Retrieve the NSX Manager proxy settings for CEIP.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method introduced. 
+
+* **put** *(secured)*: Retrieve the NSX Manager proxy settings for CEIP.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method introduced. 
 
 ## nwfabric
 Working With Network Fabric Configuration
@@ -3038,12 +3215,99 @@ secondary managers.
 
 * **get** *(secured)*: List MAC address sets on the specified scope.
 
+## eam
+Working With ESX Agent Manager
+========
+vSphere ESX Agent Manager (EAM) automates the process of deploying and
+managing NSX networking and security services.
+
+### /2.0/eam/status
+Working With EAM Status
+--------
+
+* **get** *(secured)*: Retrieve EAM status from vCenter.
+
+You can verify the status is UP before proceeding with an NSX install or
+upgrade.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.5 | Method introduced.
+
+## servicesSystemAlarms
+Working With Alarms
+========
+
+Alarms are notifications that are activated in response to an event, a set
+of conditions, or the state of an object. Alarms, along with other alerts,
+are displayed on the NSX Dashboard and other screens on the vSphere Web
+Client UI.
+
+See "Alarms" in the *NSX Logging and System Events Guide* for more information.
+
+Generally, an alarm gets automatically deleted by the system when the error
+condition is rectified.  Some alarms are not automatically cleared on a
+configuration update. Once the issue is resolved, you have to clear the
+alarms manually.   
+
+**Alarm Parameters**
+
+Paramter | Description | Comments
+----|-----|------
+**resolutionAttempted** | Was resolution of the alarm was attempted? | *true* or *false*. 
+**resolvable** | Can the alarm be resolved? | *true* or *false*
+**alarmId** | ID of the alarm. | For example, *79965*.
+**alarmCode** | Event code which uniquely identifies the system event. | For example, *130027*. 
+**alarmSource** | The domain object identifier of the source where you can resolve the reported alarm. | For example, *edge-3*.
+**totalCount** | The total number of unresolved alarms. | 
+
+### /2.0/services/systemalarms
+
+* **get** *(secured)*: Retrieve all unresolved alarms on NSX Manager.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.3 | Method introduced.
+
+### /2.0/services/systemalarms/{alarmId}
+Working With a Specific System Alarm
+-------
+You can view and resolve alarms by alarm ID. 
+
+* **get** *(secured)*: Retrieve information about the specified alarm. Both resolved and
+unresolved alarms can be retrieved.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
+* **post** *(secured)*: Resolve the specified alarm.
+
+System alarms resolve automatically when the cause of the alarm is resolved.
+For example, if an NSX Edge appliance is powered off, this triggers a
+alarm. If you power the NSX Edge appliance back on, the alarm resolves.
+If however, you delete the NSX Edge appliance, the alarm persists,
+because the alarm cause was never resolved. In this case, you might want
+to manually resolve the alarm. Resolving the alarm will clear it from
+the NSX Dashboard.         
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.0 | Method introduced.
+
 ## servicesAlarmsSource
 Working With Alarms from a Specific Source
 =====
 
-Some system alerts will show up as alarms in the NSX dashboard. You can
-view and resolve alarms from a specific source.
+You can view and resolve alarms from a specific source.
 
 ### /2.0/services/alarms/{sourceId}
 
@@ -3057,52 +3321,11 @@ will trigger an alarm. If you power the NSX Edge appliance back on, the
 alarm will resolve. If however, you delete the NSX Edge appliance, the
 alarm will persist, because the alarm cause was never resolved. In this
 case, you may want to manually resolve the alarm. Resolving the alarms
-will clear them from the NSX dashboard.
+will clear them from the NSX Dashboard.
 
 Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
 alarms for the source. Use this response as the request body for the
 `POST` call.
-
-## servicesSystemAlarms
-Working With System Alarms
-========
-Some system alerts will show up as alarms in the NSX dashboard. 
-You can view
-all unresolved system alarms on NSX Manager.
-
-### /2.0/services/systemalarms
-
-* **get** *(secured)*: Retrieve all unresolved system alarms on NSX Manager.
-
-### /2.0/services/systemalarms/{alarmId}
-Working With a Specific Alarm
--------
-Some system alerts will show up as alarms in the NSX dashboard. You can
-view and resolve alarms by alarm ID.
-
-* **get** *(secured)*: Retrieve information about the specified alarm.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
-
-* **post** *(secured)*: Resolve the specified alarm.
-
-Alarms will resolve automatically when the cause of the alarm is
-resolved.  For example, if an NSX Edge appliance is powered off, this
-will trigger an alarm. If you power the NSX Edge appliance back on, the
-alarm will resolve. If however, you delete the NSX Edge appliance, the
-alarm will persist, because the alarm cause was never resolved. In this
-case, you may want to manually resolve the alarm. Resolving the alarm 
-will clear it from the NSX dashboard.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.3.0 | Method introduced.
 
 ## taskFramework
 Working With the Task Framework
@@ -3268,6 +3491,30 @@ Working With Solution Activation Status
 
 * **get** *(secured)*: Retrieve the endpoint protection solution activation status, either true (activated) or false (not activated).
 * **delete** *(secured)*: Deactivate an endpoint protection solution on a host.
+
+### /2.0/endpointsecurity/usvmstats/usvmhealththresholds
+Working With Guest Introspection SVM Health Thresholds 
+============
+System events are generated when the Guest Introspection service VM memory
+and CPU usage reach the defined thresholds.
+
+* **get** *(secured)*: Retrieve Guest Introspection service VM CPU and memory usage thresholds.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.5 | Method introduced.
+
+* **put** *(secured)*: Update Guest Introspection service VM CPU and memory usage thresholds.
+
+Valid values are *0-100*. The default value is *75*.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.5 | Method introduced.
 
 ## dfw
 Working With Distributed Firewall
@@ -3823,7 +4070,7 @@ Export a Firewall Configuration
 
 * **get** *(secured)*: Export a configuration.
 
-### /4.0/firewall/globalroot-0/drafts/{draftID}/action/import
+### /4.0/firewall/globalroot-0/drafts/action/import
 Import a Firewall Configuration
 -----
 
@@ -3963,17 +4210,33 @@ Enable Firewall
 ----
 Enable or disable firewall components on a cluster.
 
-* **post** *(secured)*: Enable or disable firewall components on a cluster
+* **put** *(secured)*: Enable or disable firewall components on a cluster
 
-### /4.0/firewall/{contextId}/config/ipfix
+### /4.0/firewall/globalroot-0/config/ipfix
 Working With IPFIX
 ---
 Configuring IPFIX exports specific flows directly from Distributed
 Firewall to a flow collector.
 
-* **get** *(secured)*: Query IPFIX configuration.
-* **put** *(secured)*: Configure IPFIX.
-* **delete** *(secured)*: Deleting IPFIX configuration resets the config to default values
+Parameter |  Description | Comments
+---|---|---
+**ipfixEnabled** | Enabled status of IPFIX | Valid values: *true* or *false*.
+**observationDomainId** | Observation domain ID for IPFIX | Required. Must be greater than *0*.
+**flowTimeout** | Flow timeout | Required. Valid values: *1-60*.
+**collector** | IPFIX collector configuration | Can define multiple.
+**collector > ip** | IPFIX collector IP address |
+**collector > port** | IPFIX collector port | Valid values: *0-65535*. Default is *4739*. 
+
+* **get** *(secured)*: Retrieve IPFIX configuration.
+* **put** *(secured)*: Update IPFIX configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.5 | Default value for collector port changed from *0* to *4739*.
+
+* **delete** *(secured)*: Deleting IPFIX configuration resets the configuration to default values.
 
 ## spoofGuard
 Working With SpoofGuard
@@ -3990,7 +4253,7 @@ machines collected from the VMX files and vSphere SDK. Operating
 separately from Firewall rules, you can use SpoofGuard to block traffic
 determined to be spoofed.
 
-### /4.0/services/spoofguard/policies
+### /4.0/services/spoofguard/policies/
 Working With SpoofGuard Policies
 ---------
 You can create a SpoofGuard policy to specify the operation mode for
@@ -4007,7 +4270,13 @@ use
 
 * **post** *(secured)*: Create a SpoofGuard policy to specify the operation mode for networks.
 
+**Note:** you must include the trailing slash for this URI:
+`/api/4.0/services/spoofguard/policies/`.
+
 * **get** *(secured)*: Retrieve information about all SpoofGuard policies.
+
+**Note:** you must include the trailing slash for this URI:
+`/api/4.0/services/spoofguard/policies/`.
 
 ### /4.0/services/spoofguard/policies/{policyID}
 Working With a Specific SpoofGuard Policy
@@ -4732,13 +5001,6 @@ Working With the Default Firewall Policy for an Edge
 * **get** *(secured)*: Retrieve default firewall policy
 * **put** *(secured)*: Configure default firewall policy
 
-### /4.0/edges/{edgeId}/firewall/statistics/firewall
-Working With NSX Edge Firewall Statistics
-----
-
-* **get** *(secured)*: Retrieve number of ongoing connections for the firewall
-configuration.
-
 ### /4.0/edges/{edgeId}/firewall/statistics/{ruleId}
 Working With Statistics for a Specific Firewall Rule
 -----
@@ -4920,6 +5182,7 @@ Parameter  |   Description  | Comments
 **bgpNeighbour > protocolAddress** | An IP address on the same subnet as the forwarding address. | Logical (distributed) router only.
 **bgpNeighbour > remoteAS**  | The 2 byte remote Autonomous System number that is assigned to the the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-65535) for the remote AS. Either **remoteAS** or **remoteASNumber** is required. 
 **bgpNeighbour > remoteASNumber**  | The 2 or 4 byte remote Autonomous System number that is assigned to the border device you are creating the connection for. | Integer. A value (a globally unique number between 1-4294967295) for the remote AS. Can be in plain or dotted format (e.g. 2 byte: 65001 or 0.65001, 4 byte: 65545 or 1.9). Either **remoteAS** or **remoteASNumber** is required. 
+**bgpNeighbour > removePrivateAS** | Determines whether to remove private AS number while redistributing routes. | Boolean. You can set to *true* only when remote and local AS are different.
 **bgpNeighbour > weight**  | Weight for the neighbor connection | Optional. Integer. By default, weight is set to 60.
 **bgpNeighbour > holdDownTimer**  | Interval for the hold down timer | Optional. Integer. The NSX Edge uses the standard, default values for the keep alive timer (60 seconds) and the hold down timer. The default value for the hold down timer is 3x keepalive or 180 seconds. Once peering between two neighbors is achieved, the NSX Edge  starts a hold down timer. Every keep alive message it receives from the neighbor resets the hold down timer to 0.  When the NSX Edge fails to receive three consecutive keep alive messages, so that the hold down timer reaches 180 seconds, the NSX Edge considers the neighbor down and deletes the routes from this neighbor.
 **bgpNeighbour > keepAliveTimer**  | Interval for the keep alive timer. | Optional. Integer. Default is *60*. Valid values are 1-65534.
@@ -4975,6 +5238,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
 6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+6.3.6 | Method updated. Parameter **removePrivateAS** added.
 
 * **put** *(secured)*: Configure NSX Edge global routing configuration, static routing, and
 dynamic routing (OSPF and BGP).
@@ -4985,6 +5249,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
 6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+6.3.6 | Method updated. Parameter **removePrivateAS** added.
 
 * **delete** *(secured)*: Delete the routing config stored in the NSX Manager database and the
 default routes from the specified NSX Edge appliance.
@@ -5054,65 +5319,6 @@ the connection is established, the BGP speakers exchange routes and synchronize
 their tables.
 
 * **get** *(secured)*: Retrieve BGP configuration.
-responses:
-  200:
-    body:
-      application/xml:
-        example: |
-        <bgp>
-          <enabled>true</enabled>
-          <localAS>65535</localAS>
-          <bgpNeighbours>
-            <bgpNeighbour>
-              <ipAddress>192.168.1.10</ipAddress>
-              <remoteAS>65500</remoteAS>
-              <weight>60</weight>
-              <holdDownTimer>180</holdDownTimer>
-              <keepAliveTimer>60</keepAliveTimer>
-              <password>vmware123</password>
-              <bgpFilters>
-                <bgpFilter>
-                  <direction>in</direction>
-                  <action>permit</action>
-                  <network>10.0.0.0/8</network>
-                  <ipPrefixGe>17</ipPrefixGe>
-                  <ipPrefixLe>32</ipPrefixLe>
-                </bgpFilter>
-                <bgpFilter>
-                  <direction>out</direction>
-                  <action>deny</action>
-                  <network>20.0.0.0/26</network>
-                </bgpFilter>
-              </bgpFilters>
-            </bgpNeighbour>
-          </bgpNeighbours>
-          <redistribution>
-            <enabled>true</enabled>
-            <rules>
-              <rule>
-                <id>1</id>
-                <prefixName>a</prefixName>
-                <from>
-                  <ospf>true</ospf>
-                  <bgp>false</bgp>
-                  <static>true</static>
-                  <connected>false</connected>
-                </from>
-                <action>deny</action>
-              </rule>
-              <rule>
-                <id>0</id>
-                <from>
-                  <ospf>false</ospf>
-                  <bgp>false</bgp>
-                  <static>false</static>
-                  <connected>true</connected>
-                </from>
-                <action>permit</action>
-              </rule>
-            </rules>
-          </redistribution>
-        </bgp>
 
 **Method history:**
 
@@ -5120,6 +5326,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. **isis** configuration section removed. 
 6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
+6.3.6 | Method updated. Parameter **removePrivateAS** added.
 
 * **put** *(secured)*: Configure BGP.
 
@@ -5136,8 +5343,8 @@ Release | Modification
 Working With Layer 2 Bridging
 ----
 
-* **get** *(secured)*: Retrieve bridge configuration.
-* **put** *(secured)*: Configure a bridge.
+* **get** *(secured)*: Retrieve bridge configuration. The value of the *enabled* field is always *true* for a Distributed Logical Router.
+* **put** *(secured)*: Configure a bridge. Note that the bridging is always enabled for Distributed Logical Router and is unsupported for Edge Services Gateway.  You cannot disable the bridging by setting the *enable* field to *false*. The value for the *enable* field is not honored.
 * **delete** *(secured)*: Delete bridges.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config
@@ -6017,6 +6224,13 @@ Working With a Specific Active Client Session
 
 * **delete** *(secured)*: Disconnect an active client.
 
+### /4.0/edges/{edgeId}/statistics/dashboard/firewall
+Working With NSX Edge Firewall Dashboard Statistics
+----
+
+* **get** *(secured)*: Retrieve number of ongoing connections for the firewall
+configuration.
+
 ### /4.0/edges/{edgeId}/statistics/dashboard/sslvpn
 Working With SSL VPN Dashboard Statistics
 ---
@@ -6068,6 +6282,13 @@ provide all services to VMs on the other site.
 * **post** *(secured)*: Enable or disable L2 VPN service.
 
 * **get** *(secured)*: Retrieve the current L2VPN configuration for NSX Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.5 | Method updated. *showSensitiveData* query parameter added. 
+
 * **put** *(secured)*: Configure L2VPN for server or client.
 
 You first enable the L2 VPN service on the NSX Edge instance and then
@@ -6237,6 +6458,13 @@ Parameter |  Description | Comments
 **extension** |Default value is *securelocaltrafficbyip=192.168.11.1*. To disable this extension, replace with securelocaltrafficbyip=0.|
 
 * **get** *(secured)*: Retrieve IPsec configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.3.5 | Method updated. *showSensitiveData* query parameter added. 
+
 * **put** *(secured)*: Update IPsec VPN configuration.
 * **delete** *(secured)*: Delete the IPsec configuration.
 
@@ -6759,6 +6987,21 @@ security policies, if any. Security actions per Execution Order
 Category are sorted based on the weight of security actions in
 descending order.
 
+### /2.0/services/policy/securitypolicy/maxprecedence
+Working with Service Composer Policy Precedence
+--------
+
+* **get** *(secured)*: Retrieve the highest precedence (or weight) of the Service Composer
+security policies.
+
+The response body contains only the maximum precedence.
+
+Example:
+
+```
+6300
+```
+
 ### /2.0/services/policy/securitypolicy/status
 Working With Service Composer Status
 ------------------------------------
@@ -7081,10 +7324,12 @@ Working With the Central CLI
 NSX Manager command line, and retrieve information from the NSX Manager and other
 devices. These commands can also be executed in the API.
 
-You can insert any valid Central CLI command as the **command**
-parameter. For a complete list of the Central CLI commands executable
-through the API, please see the Central CLI chapter of the *NSX Command
+You can insert any valid central CLI command as the **command**
+parameter. For a complete list of the central CLI commands executable
+through the API, please see the central CLI chapter of the *NSX Command
 Line Interface Reference*.
+
+You must set the **Accept** header to *text/plain*.
 
 ## inventoryStatus
 Communication Status
@@ -7228,7 +7473,11 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-### /2.0/vdn/hardwaregateways/bindings
+## hardwareGateway
+Working With Hardware Gateway Bindings and BFD
+=====
+
+### /2.0/vdn/hardwaregateway/bindings
 Working With Hardware Gateway Bindings
 -----
 
@@ -7248,7 +7497,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-### /2.0/vdn/hardwaregateways/bindings/{bindingId}
+### /2.0/vdn/hardwaregateway/bindings/{bindingId}
 Working With a Specific Hardware Gateway Binding
 -----
 
@@ -7282,7 +7531,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-### /2.0/vdn/hardwaregateways/bindings/{bindingId}/statistic
+### /2.0/vdn/hardwaregateway/bindings/{bindingId}/statistic
 Working With Hardware Gateway Binding Statistics
 ----
 
@@ -7294,7 +7543,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-### /2.0/vdn/hardwaregateways/bindings/manage
+### /2.0/vdn/hardwaregateway/bindings/manage
 Working With Hardware Gateway Binding Objects
 ----
 
@@ -7313,11 +7562,11 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-### /2.0/vdn/hardwaregateways/bfd
+### /2.0/vdn/hardwaregateway/bfd
 Working With Hardware Gateway BFD (Bidirectional Forwarding Detection)
 -----
 
-### /2.0/vdn/hardwaregateways/bfd/config
+### /2.0/vdn/hardwaregateway/bfd/config
 Working With Hardware Gateway BFD Configuration
 -----
 
@@ -7337,7 +7586,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
-### /2.0/vdn/hardwaregateways/bfd/status
+### /2.0/vdn/hardwaregateway/bfd/status
 Working With Hardware Gateway BFD Tunnel Status
 ------
 
