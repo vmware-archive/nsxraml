@@ -941,6 +941,29 @@ Working With the NSX Controller Cluster Configuration
 
 * **put** *(secured)*: Modify cluster wide configuration information for controller.
 
+### /2.0/vdn/controller/cluster/ntp
+Working With Controller NTP Settings
+-----
+You can configure up to 5 NTP servers on your NSX Controller cluster. 
+You can specify NTP servers by IPv4 address or hostname. The same 
+NTP settings are applied to all controller nodes in the cluster.
+
+* **get** *(secured)*: Retrieve NTP configuration for the NSX Controller cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
+* **put** *(secured)*: Update NTP configuration for the NSX Controller cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
 ### /2.0/vdn/controller/credential
 Working With the NSX Controller Password
 ------
@@ -4649,6 +4672,7 @@ must synchronize firewall rules from Service Composer using the `GET
 Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
+
 
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 

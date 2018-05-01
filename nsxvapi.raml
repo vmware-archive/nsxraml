@@ -2453,6 +2453,53 @@ securitySchemes:
               <sslEnabled></sslEnabled>
             </controllerConfig>
           schema: clusterUpdate
+    /ntp:
+      displayName: nsxControllerClusterNtp
+      description: |
+        Working With Controller NTP Settings
+        -----
+        You can configure up to 5 NTP servers on your NSX Controller cluster. 
+        You can specify NTP servers by IPv4 address or hostname. The same 
+        NTP settings are applied to all controller nodes in the cluster.
+      get:
+        description: |
+          Retrieve NTP configuration for the NSX Controller cluster.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <ControllerClusterNtpServers>
+                    <ntpServers>
+                      <string>192.168.110.10</string>
+                      <string>192.168.110.11</string>
+                    </ntpServers>
+                  </ControllerClusterNtpServers>
+      put:
+        description: |
+          Update NTP configuration for the NSX Controller cluster.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.0 | Method introduced.
+        body:
+          application/xml:
+            example: |
+              <ControllerClusterNtpServers>
+                <ntpServers>
+                  <string>192.168.110.10</string>
+                  <string>192.168.110.11</string>
+                  <string>ntp-1.example.com</string>
+                </ntpServers>
+              </ControllerClusterNtpServers>
   /credential:
     displayName: nsxControllerPassword
     description: |
