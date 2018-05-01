@@ -970,6 +970,26 @@ Working With the NSX Controller Password
 
 * **put** *(secured)*: Change the NSX controller password.
 
+### /2.0/vdn/controller/synchronize
+Working With Controller Synchronization
+-------
+You can resynchronize the NSX Controller cluster with NSX Manager. You
+might want to do this if you notice that the controller cluster has extra,
+stale, or missing configuration items.
+
+* **put** *(secured)*: Synchronize the controller cluster with the NSX Manager database.
+
+### /2.0/vdn/controller/synchronize/status
+Working with Controller Synchronization Status
+----
+Retrieve the status of the controller synchronization.
+
+* **get** *(secured)*: Get the status of the controller synchronization.
+
+If the sync is in progress, the response includes the status
+*JOB_IN_PROGRESS*, and the jobId.
+If the sync has finished, the response includes the status *NOT_RUNNING*.
+
 ## hostsHealth
 Working With Hypervisor Tunnel Health Status Using BFD
 ==============

@@ -2515,7 +2515,41 @@ securitySchemes:
               <apiPassword></apiPassword>
             </controllerCredential>
           schema: nsxControllerPasswordUpdate
-
+  /synchronize:
+    displayName: nsxControllerSync
+    description: |
+      Working With Controller Synchronization
+      -------
+      You can resynchronize the NSX Controller cluster with NSX Manager. You
+      might want to do this if you notice that the controller cluster has extra,
+      stale, or missing configuration items.
+    put:
+      displayName: nsxControllerSyncUpdate
+      description: |
+        Synchronize the controller cluster with the NSX Manager database.
+    /status:
+      displayName: nsxControllerSyncStatus
+      description: |
+        Working with Controller Synchronization Status
+        ----
+        Retrieve the status of the controller synchronization.
+      get:
+        displayName: nsxControllerSyncStatusRead
+        description: |
+          Get the status of the controller synchronization.
+          
+          If the sync is in progress, the response includes the status
+          *JOB_IN_PROGRESS*, and the jobId.
+          If the sync has finished, the response includes the status *NOT_RUNNING*.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <controllerSyncStatus>
+                    <status>JOB_IN_PROGRESS</status>
+                    <jobId>jobdata-201</jobId>
+                  </controllerSyncStatus>
 /2.0/vdn/host:
   displayName: hostsHealth
   description: |
