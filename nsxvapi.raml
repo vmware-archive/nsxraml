@@ -2268,6 +2268,29 @@ securitySchemes:
           description: |
             Specify *remediate* to recover from controller shutdown or deletion.
           required: true
+    put:
+      displayName: nsxControllerUpdate
+      description: |
+        Update the name of the controller. The name must not contain spaces 
+        or underscores.
+        
+        When you update the controller name, the following changes are made:
+        
+        * the name displayed in the Networking & Security UI is changed to *newName*
+        * the VM's hostname is changed to *newName-NSX-&lt;controller_id&gt;* 
+        * the VM name is vSphere is changed to *newName-NSX-&lt;controller_id&gt;*
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.0 | Method introduced.
+      body:
+        application/xml:
+          example: |
+            <controller>
+              <name>newName</name>
+            </controller>
     /systemStats:
       displayName: nsxControllerStats
       description: |

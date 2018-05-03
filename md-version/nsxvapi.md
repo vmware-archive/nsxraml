@@ -897,6 +897,21 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
+* **put** *(secured)*: Update the name of the controller. The name must not contain spaces 
+or underscores.
+
+When you update the controller name, the following changes are made:
+
+* the name displayed in the Networking & Security UI is changed to *newName*
+* the VM's hostname is changed to *newName-NSX-&lt;controller_id&gt;* 
+* the VM name is vSphere is changed to *newName-NSX-&lt;controller_id&gt;*
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
 ### /2.0/vdn/controller/{controllerId}/systemStats
 Working With NSX Controller System Statistics
 ----
