@@ -4708,7 +4708,6 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
-
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -7932,13 +7931,34 @@ Working With Certificates and Certificate Chains
 * **post** *(secured)*: Import a certificate or a certificate chain against a certificate
 signing request.
 
-### /2.0/services/truststore/certificate/scope/{scopeId}
+### /2.0/services/truststore/config
+Working With Certificate Configuration
+----
+
+* **get** *(secured)*: View certificate expiry notification duration in days. This API is available for all roles.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.1 | Method introduced.
+
+* **put** *(secured)*: Update certificate expiry notification duration in days. This duration is used to generate notification before the certificate expires, which helps you to monitor and renew certificates. 
+Default value for the expiry notification is 7 days. This API is available to Enterprise Administrator, NSX Administrator, and Security Administrator roles.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.1 | Method introduced.
+
+### /2.0/services/truststore/config/scope/{scopeId}
 Working With Certificates on a Specific Scope
 ----
 
 * **get** *(secured)*: Retrieve all certificates on the specified scope.
 
-### /2.0/services/truststore/certificate/{scopeId}
+### /2.0/services/truststore/config/{scopeId}
 Working With Self-Signed Certificates
 ------
 
@@ -7948,7 +7968,7 @@ You can create a certificate for a specific NSX Edge, or if you
 specify a scope of *globalroot-0* you can create a global certificate
 in NSX Manager which is available to all NSX Edges.
 
-### /2.0/services/truststore/certificate/{certificateId}
+### /2.0/services/truststore/config/{certificateId}
 Working With a Specific Certificate
 -----
 
