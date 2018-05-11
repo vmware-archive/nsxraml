@@ -57,6 +57,10 @@ This section lists API removals and behavior changes. See **Method
 history** information throughout the *NSX API Guide* for details of
 other changes, such as parameter additions.
 
+### Behavior changes in NSX 6.4.1
+
+When you create a new IP pool with `POST /api/2.0/services/ipam/pools/scope/globalroot-0`, or modify an existing IP pool with `PUT /api/2.0/services/ipam/pools/`, and the pool has multiple IP ranges defined, validation is done to ensure that the ranges do not overlap. This validation was not previously done.
+
 ### Deprecations in NSX 6.4.0
 
 The following items are deprecated, and might be removed in a future release.

@@ -4708,6 +4708,7 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
+
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
