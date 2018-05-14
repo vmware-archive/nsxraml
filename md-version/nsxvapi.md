@@ -2362,6 +2362,16 @@ Restoring Data from an NSX Manager Appliance Backup File
 
 Retrieve a list of restore files using `GET /api/1.0/appliance-management/backuprestore/backups`.
 
+Restore the backup to a newly deployed, unconfigured NSX Manager
+appliance. Restoring to an NSX Manager which is in use might result in
+inconsistent behavior.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.1 | Method updated. Query parameter *forceRestore* added.
+
 ### /1.0/appliance-management/techsupportlogs/{componentID}
 Working With Tech Support Logs by Component
 ----

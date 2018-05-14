@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x64;&#111;&#x63;&#x66;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#107;&#x40;&#x76;&#109;&#119;&#97;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;">&#x64;&#111;&#x63;&#x66;&#101;&#x65;&#x64;&#98;&#x61;&#x63;&#107;&#x40;&#x76;&#109;&#119;&#97;&#x72;&#x65;&#46;&#x63;&#x6f;&#109;</a>.</p>
+<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#111;&#x63;&#x66;&#x65;&#101;&#x64;&#98;&#97;&#x63;&#107;&#64;&#x76;&#x6d;&#119;&#x61;&#114;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -684,7 +684,19 @@ restore that backup file.</p>
   <div class="content">
     <p><p>Restore data from a backup file.</p>
 <p>Retrieve a list of restore files using <code>GET /api/1.0/appliance-management/backuprestore/backups</code>.</p>
-</p>
+<p>Restore the backup to a newly deployed, unconfigured NSX Manager
+appliance. Restoring to an NSX Manager which is in use might result in
+inconsistent behavior.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.1</td>
+<td>Method updated. Query parameter <em>forceRestore</em> added.</td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -695,6 +707,16 @@ restore that backup file.</p>
   </dt>
   <dd>
       <p>File name of restore file.</p>
+
+  </dd>
+  <dt>
+    <span class="param">forceRestore</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>With <em>forceRestore=true</em> you can restore a backup to an NSX Manager
+that is in use. This might result in inconsistent behavior.</p>
 
   </dd>
 </dl>

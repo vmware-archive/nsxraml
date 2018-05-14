@@ -6480,11 +6480,29 @@ securitySchemes:
         Restore data from a backup file.
         
         Retrieve a list of restore files using `GET /api/1.0/appliance-management/backuprestore/backups`.
+        
+        Restore the backup to a newly deployed, unconfigured NSX Manager
+        appliance. Restoring to an NSX Manager which is in use might result in
+        inconsistent behavior.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.1 | Method updated. Query parameter *forceRestore* added.
       queryParameters:
         restoreFile:
           required: true
           displayName: restoreFile
           description: File name of restore file.
+        forceRestore:
+          required: false
+          type: boolean
+          default: false
+          displayName: forceRestore
+          description: |
+            With *forceRestore=true* you can restore a backup to an NSX Manager
+            that is in use. This might result in inconsistent behavior.
   /techsupportlogs/{componentID}:
     displayName: techLogs
     description: |
