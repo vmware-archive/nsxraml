@@ -1567,6 +1567,18 @@ Release | Modification
 --------|-------------
 6.4.0 | Method introduced. 
 
+### /2.0/services/auth/tokeninvalidation
+Working With Token Invalidation
+----
+
+* **post** *(secured)*: Invalidate tokens created by the specified user.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.1 | Method introduced. 
+
 ## secGroup
 Working With Security Group Grouping Objects
 ===========
