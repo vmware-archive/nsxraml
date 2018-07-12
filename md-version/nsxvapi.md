@@ -1250,7 +1250,8 @@ Working With Specific IPs Allocated to an IP Pool
 Working With Licensing 
 ============
 The licensing capacity usage API command reports usage of CPUs, VMs and
-concurrent users for the distributed firewall and VXLAN. The licensing status API command displays details about the assigned NSX license.
+concurrent users for the distributed firewall and VXLAN. The licensing
+status API command displays details about the assigned NSX license.
 
 ### /2.0/services/licensing/capacityusage
 Working With Licensing Capacity
