@@ -4731,7 +4731,6 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
-
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -7607,28 +7606,33 @@ You can have a maximum of 64 tunnels across a maximum of 10 sites.
 
 Parameter |  Description | Comments
 ---|---|---
-**logging**      |IPsec VPN logging setting.|Optional. Disable by default.
-**logging > logLevel**      |Logging level.|Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is *INFO*.
-**logging > enable**      |Whether logging is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *False*.
+**logging**      |IPsec VPN logging setting.|Optional. Default is *Enabled*.
+**logging > logLevel** |Logging level.|Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is *WARNING*.
+**logging > enable** |Whether logging is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*.
 **psk**  |Indicates that the secret key shared between NSX Edge and the peer site is to be used for authentication. |Optional. Required only when peerIp is specified as *Any* in site configuration.
-**encryptionAlgorithm** | Encryption algorithm for communication. |Mandatory. Supported ciphers are *AES*, *AES256*, *Triple DES*, and *AES-GCM*.
+**site > psk**  |Indicates that the secret key shared between NSX Edge and the peer site is to be used for authentication. |Required when site > AuthenticationMode is specified *psk*. Optional only when peerIp is specified as *Any* in site configuration.
+**site > encryptionAlgorithm** | Encryption algorithm for communication. |Optional. Supported ciphers are *AES*, *AES256*, *Triple DES*, and *AES-GCM*. Deault is *AES*.
 **serviceCertificate** | Select the certificate to be bound to IPsec VPN server. |Optional. Required when *x.509* certificate mode is selected.
 **caCertificate**| List of CA certificates. |Optional. 
 **crlCertificate**| List of CRL certificates. |Optional. 
-**enablePfs** |Perfect Forward Secrecy (PFS) ensures that each new cryptographic key is unrelated to any previous key. | Optional. Boolean. Options are *True* or *False*. Default is *True*. 
-**authenticationMode** |Select authentication mode as *psk* or *x.509*.| Required.
+**site > enablePfs** |Perfect Forward Secrecy (PFS) ensures that each new cryptographic key is unrelated to any previous key. | Optional. Boolean. Options are *True* or *False*. Default is *True*. 
+**site > authenticationMode** |Select authentication mode as *psk* or *x.509*.| Required.
 **site **| To connect multiple sites to the IPsec VPN server. |Required. Minimum one site must be configured to enable IPsec VPN server service. 
-**site > enabled**      |Whether site is enabled.|Optional. Boolean. Options are *True* or *False*. Default is *True*. 
-**site > name **| Unique name for the site getting configured. |Optional.
-**site > description **| Description about the site. |Optional.
-**localId**| Type the IP address of the NSX Edge instance. |
-**localIp**| Type the IP address of the local endpoint. |
-**localSubnets** |Type the subnets to share between the sites. | 
-**peerId**| Type the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is *x.509*. |
-**peerIp > index** | Select the virtual machine NIC to bind to the IP address. This can be a IPv4 address such as 11.0.0.3.|
-**egressOptimization** | The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel. |Optional.
-**dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh2* is selected by default.
-**extension** |Default value is *securelocaltrafficbyip=192.168.11.1*. To disable this extension, replace with securelocaltrafficbyip=0.|
+**site > enabled**  |Enables site.|Optional. Boolean. Options are *True* or *False*. Default is *True*. 
+**site > name **| Unique name for the site being configured. |Optional.
+**site > description **| Site description. |Optional.
+**site > digestAlgorithm** | Secure Hashing Algorithm (SHA) used for digitial signatures. | Optional. Options are *SHA1*, and *SHA256*. Default is *SHA1*.
+**site > ikeOption** | IKE protocol version to be used. Use IKEFlex to always initiate using IKEv2, and while responding accept any of IKEv1 and IKEv2.| Optional. Options are *IKEv1*, *IKEv2*, and *IKEFlex*. Default is *IKEv1*.
+**site > localId**| Enter the IP address of the NSX Edge instance. |Required.
+**site > localIp**| Enter the IP address of the local endpoint. |Required.
+**site > localSubnets** |Enter the subnets to share between the sites. |Required.
+**site > peerId**| Enter the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is *x.509*. | Required.
+**site > peerIp** | Enter the IP address of the peer endpoint.| Required.
+**site > peerSubnets** | Enter the subnets from peer site.|Required.
+**site > responderOnly** |When set to true, the edge doesn't initiate negotiation, instead it waits for peer to initiate negotiation.| Optional. Options are *True* or *False*. Default is *False*.
+**site > dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh14* is selected by default.
+**extension** |When add_spd is set to on, security policies are installed regardless of whether the tunnel is established. ike_fragment_size is used to avoid failure in the IKE negotiation when the link MTU size is small. For example, ike_frament_size=900.|Optional. Global extensions: add_spf and ike_frament_size. <br> add_spd options are *off* or *on*. The default is *on*. 
+**site > extension** | To disable securelocaltrafficbyip=&lt;IPAddress&gt;, replace with securelocaltrafficbyip=0. <br> Users can explicitly set this value to one of the other local IP addresses configured in the local subnets of Edge.  passthroughSubnets is used to exclude specific subnets from VPN policy enforcement if they overlap with the peerSubnets configured for the same site.|Optional. Configurable per site level: securelocaltrafficbyip=&lt;IPAddress&gt; and passthroughSubnets=&lt;PeerSubnetIPAddress&gt;. <br> By default, securelocaltrafficbyip=&lt;IPAddress&gt; is *enabled* and set to one of the local IP addresses configured on the local subnets of Edge.
 
 * **get** *(secured)*: Retrieve IPsec configuration.
 

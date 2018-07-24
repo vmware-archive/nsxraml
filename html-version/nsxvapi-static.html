@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#98;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#111;&#109;">&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#98;&#x61;&#x63;&#107;&#64;&#118;&#x6d;&#119;&#x61;&#114;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#100;&#x6f;&#99;&#102;&#x65;&#101;&#100;&#x62;&#x61;&#x63;&#x6b;&#x40;&#x76;&#109;&#119;&#x61;&#x72;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#99;&#102;&#x65;&#101;&#100;&#x62;&#x61;&#x63;&#x6b;&#x40;&#x76;&#109;&#119;&#x61;&#x72;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -7174,19 +7174,19 @@ The following two types of widgets are supported:</p>
     “V1 + <span class="hljs-number">2</span>” 
     “aString.length()” <span class="hljs-keyword">and</span> so <span class="hljs-keyword">on</span> because these expressions require the definition <span class="hljs-keyword">of</span> “V1” <span class="hljs-keyword">and</span> “aString” <span class="hljs-keyword">to</span> be present <span class="hljs-keyword">in</span> the context, <span class="hljs-keyword">and</span> there <span class="hljs-keyword">is</span> no place <span class="hljs-keyword">in</span> widget configuration <span class="hljs-keyword">to</span> define it. 
      * No Java statements are supported, only expressions are supported.</code></pre><p>  <strong>Anatomy of an Expression in Widget Configuration</strong></p>
-<pre><code class="code-block hljs lang-routeros">  * Expression
-   * Basic form: #{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}
-   * Examples:
-       * Expression:   #{default.si.versionInfo.majorVersion}       
-       * API: api/1.0/appliance-management/summary<span class="hljs-built_in">/system </span>            
-  * Expression:   #{default.si.cpuInfoDto.totalNoOfCPUs}                             
-       * API:  api/1.0/appliance-management/summary<span class="hljs-built_in">/system
-</span>       * Expression:  #{default.summary.preparedHostsTotalNumber}                           
-       * API: api/2.0/vdn/inventory/hosts/status/summary
-       * Function form: #{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()
-       * Example:
-  * Expression:  #{default.se.dataPage.data}.size()                    
-       * API: api/2.0/systemevent</code></pre><p>  <strong>Anatomy of a Condition in Widget Configuration</strong></p>
+<pre><code class="code-block hljs lang-yaml">  <span class="hljs-string">*</span> <span class="hljs-string">Expression</span>
+   <span class="hljs-string">*</span> <span class="hljs-string">Basic</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}</span>
+   <span class="hljs-string">*</span> <span class="hljs-attr">Examples:</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>   <span class="hljs-comment">#{default.si.versionInfo.majorVersion}       </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/1.0/appliance-management/summary/system</span>             
+  <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>   <span class="hljs-comment">#{default.si.cpuInfoDto.totalNoOfCPUs}                             </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span>  <span class="hljs-string">api/1.0/appliance-management/summary/system</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.summary.preparedHostsTotalNumber}                           </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/2.0/vdn/inventory/hosts/status/summary</span>
+       <span class="hljs-string">*</span> <span class="hljs-string">Function</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Example:</span>
+  <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.se.dataPage.data}.size()                    </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/2.0/systemevent</span></code></pre><p>  <strong>Anatomy of a Condition in Widget Configuration</strong></p>
 <pre><code class="code-block hljs lang-dust"><span class="xml">   * Condition
       * Evaluates to a boolean (true or false)
        * Form: expression == value
@@ -27605,17 +27605,17 @@ address.</p>
 </thead><tbody><tr>
 <td><strong>logging</strong></td>
 <td>IPsec VPN logging setting.</td>
-<td>Optional. Disable by default.</td>
+<td>Optional. Default is <em>Enabled</em>.</td>
 </tr>
 <tr>
 <td><strong>logging &gt; logLevel</strong></td>
 <td>Logging level.</td>
-<td>Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is <em>INFO</em>.</td>
+<td>Optional. Options are: EMERGENCY, ALERT, CRITICAL, ERROR, WARNING, NOTICE, INFO, and DEBUG. Default is <em>WARNING</em>.</td>
 </tr>
 <tr>
 <td><strong>logging &gt; enable</strong></td>
 <td>Whether logging is enabled.</td>
-<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+<td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>.</td>
 </tr>
 <tr>
 <td><strong>psk</strong></td>
@@ -27623,9 +27623,14 @@ address.</p>
 <td>Optional. Required only when peerIp is specified as <em>Any</em> in site configuration.</td>
 </tr>
 <tr>
-<td><strong>encryptionAlgorithm</strong></td>
+<td><strong>site &gt; psk</strong></td>
+<td>Indicates that the secret key shared between NSX Edge and the peer site is to be used for authentication.</td>
+<td>Required when site &gt; AuthenticationMode is specified <em>psk</em>. Optional only when peerIp is specified as <em>Any</em> in site configuration.</td>
+</tr>
+<tr>
+<td><strong>site &gt; encryptionAlgorithm</strong></td>
 <td>Encryption algorithm for communication.</td>
-<td>Mandatory. Supported ciphers are <em>AES</em>, <em>AES256</em>, <em>Triple DES</em>, and <em>AES-GCM</em>.</td>
+<td>Optional. Supported ciphers are <em>AES</em>, <em>AES256</em>, <em>Triple DES</em>, and <em>AES-GCM</em>. Deault is <em>AES</em>.</td>
 </tr>
 <tr>
 <td><strong>serviceCertificate</strong></td>
@@ -27643,12 +27648,12 @@ address.</p>
 <td>Optional. </td>
 </tr>
 <tr>
-<td><strong>enablePfs</strong></td>
+<td><strong>site &gt; enablePfs</strong></td>
 <td>Perfect Forward Secrecy (PFS) ensures that each new cryptographic key is unrelated to any previous key.</td>
 <td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>. </td>
 </tr>
 <tr>
-<td><strong>authenticationMode</strong></td>
+<td><strong>site &gt; authenticationMode</strong></td>
 <td>Select authentication mode as <em>psk</em> or <em>x.509</em>.</td>
 <td>Required.</td>
 </tr>
@@ -27659,58 +27664,78 @@ address.</p>
 </tr>
 <tr>
 <td><strong>site &gt; enabled</strong></td>
-<td>Whether site is enabled.</td>
+<td>Enables site.</td>
 <td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>. </td>
 </tr>
 <tr>
 <td><strong>site &gt; name </strong></td>
-<td>Unique name for the site getting configured.</td>
+<td>Unique name for the site being configured.</td>
 <td>Optional.</td>
 </tr>
 <tr>
 <td><strong>site &gt; description </strong></td>
-<td>Description about the site.</td>
+<td>Site description.</td>
 <td>Optional.</td>
 </tr>
 <tr>
-<td><strong>localId</strong></td>
-<td>Type the IP address of the NSX Edge instance.</td>
-<td></td>
+<td><strong>site &gt; digestAlgorithm</strong></td>
+<td>Secure Hashing Algorithm (SHA) used for digitial signatures.</td>
+<td>Optional. Options are <em>SHA1</em>, and <em>SHA256</em>. Default is <em>SHA1</em>.</td>
 </tr>
 <tr>
-<td><strong>localIp</strong></td>
-<td>Type the IP address of the local endpoint.</td>
-<td></td>
+<td><strong>site &gt; ikeOption</strong></td>
+<td>IKE protocol version to be used. Use IKEFlex to always initiate using IKEv2, and while responding accept any of IKEv1 and IKEv2.</td>
+<td>Optional. Options are <em>IKEv1</em>, <em>IKEv2</em>, and <em>IKEFlex</em>. Default is <em>IKEv1</em>.</td>
 </tr>
 <tr>
-<td><strong>localSubnets</strong></td>
-<td>Type the subnets to share between the sites.</td>
-<td></td>
+<td><strong>site &gt; localId</strong></td>
+<td>Enter the IP address of the NSX Edge instance.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>peerId</strong></td>
-<td>Type the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is <em>x.509</em>.</td>
-<td></td>
+<td><strong>site &gt; localIp</strong></td>
+<td>Enter the IP address of the local endpoint.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>peerIp &gt; index</strong></td>
-<td>Select the virtual machine NIC to bind to the IP address. This can be a IPv4 address such as 11.0.0.3.</td>
-<td></td>
+<td><strong>site &gt; localSubnets</strong></td>
+<td>Enter the subnets to share between the sites.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>egressOptimization</strong></td>
-<td>The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel.</td>
-<td>Optional.</td>
+<td><strong>site &gt; peerId</strong></td>
+<td>Enter the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is <em>x.509</em>.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>dhGroup</strong></td>
+<td><strong>site &gt; peerIp</strong></td>
+<td>Enter the IP address of the peer endpoint.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>site &gt; peerSubnets</strong></td>
+<td>Enter the subnets from peer site.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>site &gt; responderOnly</strong></td>
+<td>When set to true, the edge doesn&#39;t initiate negotiation, instead it waits for peer to initiate negotiation.</td>
+<td>Optional. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
+</tr>
+<tr>
+<td><strong>site &gt; dhGroup</strong></td>
 <td>In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel.</td>
-<td>Optional. <em>dh2</em> is selected by default.</td>
+<td>Optional. <em>dh14</em> is selected by default.</td>
 </tr>
 <tr>
 <td><strong>extension</strong></td>
-<td>Default value is <em>securelocaltrafficbyip=192.168.11.1</em>. To disable this extension, replace with securelocaltrafficbyip=0.</td>
-<td></td>
+<td>When add_spd is set to on, security policies are installed regardless of whether the tunnel is established. ike_fragment_size is used to avoid failure in the IKE negotiation when the link MTU size is small. For example, ike_frament_size=900.</td>
+<td>Optional. Global extensions: add_spf and ike_frament_size. <br> add_spd options are <em>off</em> or <em>on</em>. The default is <em>on</em>. </td>
+</tr>
+<tr>
+<td><strong>site &gt; extension</strong></td>
+<td>To disable securelocaltrafficbyip=&lt;IPAddress&gt;, replace with securelocaltrafficbyip=0. <br> Users can explicitly set this value to one of the other local IP addresses configured in the local subnets of Edge.  passthroughSubnets is used to exclude specific subnets from VPN policy enforcement if they overlap with the peerSubnets configured for the same site.</td>
+<td>Optional. Configurable per site level: securelocaltrafficbyip=&lt;IPAddress&gt; and passthroughSubnets=&lt;PeerSubnetIPAddress&gt;. <br> By default, securelocaltrafficbyip=&lt;IPAddress&gt; is <em>enabled</em> and set to one of the local IP addresses configured on the local subnets of Edge.</td>
 </tr>
 </tbody></table></div>
 <div class="method get">
