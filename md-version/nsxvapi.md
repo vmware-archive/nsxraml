@@ -2540,6 +2540,19 @@ Working With Certificate Chains
 Input is certificate chain file which is a PEM encoded chain of
 certificates received from the CA after signing a CSR.
 
+## threaddump
+Working with NSX Manager Debug APIs
+=========
+
+You can use the NSX Manager debug APIs to troubleshoot problems on the NSX Manager.
+
+### /1.0/services/debug/threaddump
+
+* **get** *(secured)*: Generates the thread dump of the NSX Manager and captures the output of the **top** command. 
+The **top** output helps you to monitor the processes and the usage of the system resources on the NSX Manager.
+The combined output (**top** output + thread dump) is saved in a separate **threaddump_top** log file. 
+To view the files, download the NSX Manager tech support bundle. The files are available inside *Bundle_Name*\logs\threaddump.
+
 ## systemEvents
 Working With NSX Manager System Events
 ==========
@@ -4730,6 +4743,7 @@ must synchronize firewall rules from Service Composer using the `GET
 Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
+
 
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
@@ -7444,16 +7458,16 @@ Working With Internal Interface Statistics
 * **get** *(secured)*: Retrieve internal interface statistics.
 
 ### /4.0/edges/{edgeId}/l2vpn/config
-Working With L2 VPN
+Working With L2 VPN Over SSL
 ----
 L2 VPN allows you to configure a tunnel between two sites. 
 VMs can move between the sites and stay on the same subnet,
 enabling you to extend your datacenter. An NSX Edge at one site can
 provide all services to VMs on the other site.
 
-* **post** *(secured)*: Enable or disable L2 VPN service.
+* **post** *(secured)*: Enable or disable the L2 VPN over SSL service.
 
-* **get** *(secured)*: Retrieve the current L2VPN configuration for NSX Edge.
+* **get** *(secured)*: Retrieve the current L2 VPN over SSL configuration for the NSX Edge.
 
 **Method history:**
 
@@ -7461,12 +7475,12 @@ Release | Modification
 --------|-------------
 6.3.5 | Method updated. *showSensitiveData* query parameter added. 
 
-* **put** *(secured)*: Configure L2VPN for server or client.
+* **put** *(secured)*: Configure L2 VPN over SSL service for the server or client.
 
 You first enable the L2 VPN service on the NSX Edge instance and then
 configure a server and a client.
 
-**L2 VPN Parameters**
+**L2 VPN Over SSL Parameters**
 
 Parameter |  Description | Comments
 ---|---|---
@@ -7569,40 +7583,174 @@ Parameter |  Description | Comments
       </l2VpnSites>
     </l2Vpn>
 
-* **delete** *(secured)*: Delete the L2 VPN configuration.
+* **delete** *(secured)*: Delete the L2 VPN over SSL configuration.
 
 ### /4.0/edges/{edgeId}/l2vpn/config/statistics
-Working With L2 VPN Statistics
+Working With L2 VPN Over SSL Statistics
 ---
 
-* **get** *(secured)*: Retrieve L2 VPN statistics, which has information such as tunnel status,
+* **get** *(secured)*: Retrieve L2 VPN over SSL statistics, which has information such as tunnel status,
 sent bytes, received bytes for the specified Edge.
 
-### /4.0/edges/{edgeId}/ipsec/config
-Working With IPsec VPN
+### /4.0/edges/{edgeId}/l2t/config
+Working with L2 VPN Over IPSec
 -----
-NSX Edge supports site-to-site IPsec VPN between an NSX Edge instance
+Starting with NSX Data Center for vSphere 6.4.2, you can stretch your 
+layer 2 networks between two sites with L2 VPN service over IPSec. 
+Before configuring the L2 VPN service over IPSec, you must first create 
+a route-based IPSec VPN tunnel. You then consume this route-based IPSec
+VPN tunnel to create a L2 VPN tunnel between the two sites.
+
+In NSX Data Center for vSphere 6.4.2, you cannot create and edit 
+route-based IPSec VPN tunnel by using the vSphere Web Client. You must 
+use the NSX Data Center for vSphere REST APIs.
+
+For a detailed workflow of configuring the L2 VPN service over IPSec,
+see the *NSX Data Center for vSphere Administration Guide*.
+
+**L2 VPN Over IPSec Parameters**
+  
+Parameter |  Description | Comments
+  ---|---|---
+**L2TunnelsConfig > mode**    |Mode can be either *hub* or *spoke*.|Optional. Default value is *hub*.
+**L2Tunnel > enabled**  |Whether L2 VPN over IPSec service is enabled.|Boolean. Optional. Default value is *True*.
+**L2TTunnel > name**  |Name of the tunnel.|String. Optional.
+**L2Tunnel > Description**  |Description of the tunnel.|Optional.
+**StretchedSubInterfaces > index**  |Index of the subinterface that you want to stretch.|Integer. Required.
+**TransportSession > protocol**  |Protocol supported.|Optional. Default value is *ipsec*.
+**IpsecSession > ipsecSiteId**  |Site ID assigned to the route-based IPSec site.|String value. Required.
+**IpsecSession > sharedcode**  |Validates the local IPSec site configuration. It contains VTI IP address to be assigned to the local VTI.|Required if the L2TunnelsConfig mode is *spoke*.
+
+* **get** *(secured)*: Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.   
+ 
+ **Method history:**
+ 
+ Release | Modification
+ --------|-------------
+ 6.4.2 | Method introduced.
+
+* **post** *(secured)*: Enable the L2 VPN over IPSec service on the Edge.
+
+**Method history:**
+  
+  Release | Modification
+  --------|-------------
+  6.4.2 | Method introduced.
+
+### /4.0/edges/{edgeId}/l2t/config/l2tunnels
+
+* **post** *(secured)*: Create a L2 VPN tunnel on the NSX Edge by consuming a route-based IPSec VPN tunnel.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+
+### /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}
+
+* **put** *(secured)*: Update a specific L2 VPN over IPSec tunnel on the NSX Edge.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+
+* **delete** *(secured)*: Delete a specific L2 VPN over IPSec tunnel on the Edge.
+
+**Method history:**
+
+ Release | Modification
+ --------|-------------
+ 6.4.2 | Method introduced.
+
+* **get** *(secured)*: Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.
+
+ **Method history:**
+
+ Release | Modification
+ --------|-------------
+ 6.4.2 | Method introduced.
+
+### /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}/peercodes
+
+* **get** *(secured)*: Retrieve the peer code of the client from the NSX Edge that is configured as the server (hub).
+
+This peer code becomes the input code (shared code) for configuring L2 VPN over IPSec service on the client Edge.
+
+  **Method history:**
+
+  Release | Modification
+  --------|-------------
+  6.4.2 | Method introduced.
+
+### /4.0/edges/{edgeId}/l2t/config/globalconfig
+
+* **get** *(secured)*: Retrieve the mode of the L2 VPN over IPSec service on the Edge.
+  
+  **Method history:**
+
+   Release | Modification
+   --------|-------------
+   6.4.2 | Method introduced.
+
+* **put** *(secured)*: Modify the mode of the L2 VPN over IPSec service on the Edge.
+
+  **Method history:**
+            
+  Release | Modification
+  --------|-------------
+  6.4.2 | Method introduced.
+
+### /4.0/edges/{edgeId}/ipsec/config
+Working With IPSec VPN
+-----
+NSX Edge supports site-to-site IPSec VPN between an NSX Edge instance
 and remote sites. NSX Edge supports certificate authentication,
-preshared key mode, IP unicast traffic, and no dynamic routing protocol
-between the NSX Edge instance and remote VPN routers. Behind each
-remote VPN router, you can configure multiple subnets to connect to the
-internal network behind an NSX Edge through IPsec tunnels. These
-subnets and the internal network behind a NSX Edge must have address
-ranges that do not overlap.  
+preshared key mode, and IP unicast traffic between the NSX Edge instance 
+and remote VPN sites. 
 
-You can deploy an NSX Edge agent behind a NAT device. In this
-deployment, the NAT device translates the VPN address of an NSX Edge
-instance to a publicly accessible address facing the Internet. Remote
-VPN routers use this public address to access the NSX Edge instance.  
+Starting with NSX Data Center for vSphere 6.4.2, you can configure both 
+policy-based IPSec VPN service and route-based IPSec VPN service. However, 
+you can configure, manage, and edit route-based IPSec VPN parameters only 
+by using REST APIs. 
 
-You can place remote VPN routers behind a NAT device as well. You must
-provide the VPN native address and the VPN Gateway ID to set up the
-tunnel. On both ends, static one-to-one NAT is required for the VPN
-address.
+### Policy-based IPSec VPN
+In a policy-based IPSec VPN, you can connect multiple local subnets 
+behind the NSX Edge with the peer subnets on the remote VPN site by 
+using IPSec tunnels.
+The local subnets behind an NSX Edge must have address ranges that do not
+overlap with the IP addresses on the peer VPN site. 
 
-You can have a maximum of 64 tunnels across a maximum of 10 sites.
+If the local and remote peer across an IPsec VPN tunnel have overlapping
+IP addresses, traffic forwarding across the tunnel might not be consistent.
+ 
+### Route-based IPSec VPN
+Route-based IPSec VPN is similar to Generic Routing Encapsulation (GRE) 
+over IPSec, with the exception that no additional encapsulation is added
+to the packet before applying IPSec processing.
 
-**IPsec VPN Parameters**
+In a route-based IPSec tunnel configuration, you must define a VTI with a 
+private IP address on both the local and peer sites. 
+Traffic from the local subnets is routed through the VTI to the peer subnets. 
+Use a dynamic routing protocol, such as BGP, to route traffic through the 
+IPSec tunnel. The dynamic routing protocol decides traffic from which local 
+subnet is routed using the IPSec tunnel to the peer subnet.
+
+**Note:** The VTI that you configure is a static VTI. Therefore, it 
+cannot have more than one IP address. A good practice is to ensure that
+the IP address of the VTI on both the local and peer sites are on the same subnet.
+
+**Important:** In NSX Data Center for vSphere 6.4.2, static routing and OSPF 
+dynamic routing through an IPSec tunnel is not supported.
+
+For a detailed example of configuring a route-based IPSec VPN tunnel between 
+an NSX Edge and a Cisco CSR 1000V Virtual Appliance, see the 
+*NSX Data Center for vSphere Administration Guide*.
+                        
+
+**IPSec VPN Parameters**
 
 Parameter |  Description | Comments
 ---|---|---
@@ -7625,45 +7773,389 @@ Parameter |  Description | Comments
 **site > ikeOption** | IKE protocol version to be used. Use IKEFlex to always initiate using IKEv2, and while responding accept any of IKEv1 and IKEv2.| Optional. Options are *IKEv1*, *IKEv2*, and *IKEFlex*. Default is *IKEv1*.
 **site > localId**| Enter the IP address of the NSX Edge instance. |Required.
 **site > localIp**| Enter the IP address of the local endpoint. |Required.
-**site > localSubnets** |Enter the subnets to share between the sites. |Required.
+**site > localSubnets** |Type the subnets to share between the sites in CIDR format. |Required if **ipsecSessionType** parameter value is *policybasedsession*. For route-based IPSec site, the default and only valid subnet is *0.0.0.0/0*.
 **site > peerId**| Enter the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is *x.509*. | Required.
 **site > peerIp** | Enter the IP address of the peer endpoint.| Required.
-**site > peerSubnets** | Enter the subnets from peer site.|Required.
+**site > peerSubnets** |Type the subnets to share between the sites in CIDR format.|Required if **ipsecSessionType** parameter value is *policybasedsession*. For route-based IPSec site, the default and only valid subnet is *0.0.0.0/0*.
 **site > responderOnly** |When set to true, the edge doesn't initiate negotiation, instead it waits for peer to initiate negotiation.| Optional. Options are *True* or *False*. Default is *False*.
 **site > dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh14* is selected by default.
 **extension** |When add_spd is set to on, security policies are installed regardless of whether the tunnel is established. ike_fragment_size is used to avoid failure in the IKE negotiation when the link MTU size is small. For example, ike_frament_size=900.|Optional. Global extensions: add_spf and ike_frament_size. <br> add_spd options are *off* or *on*. The default is *on*. 
 **site > extension** | To disable securelocaltrafficbyip=&lt;IPAddress&gt;, replace with securelocaltrafficbyip=0. <br> Users can explicitly set this value to one of the other local IP addresses configured in the local subnets of Edge.  passthroughSubnets is used to exclude specific subnets from VPN policy enforcement if they overlap with the peerSubnets configured for the same site.|Optional. Configurable per site level: securelocaltrafficbyip=&lt;IPAddress&gt; and passthroughSubnets=&lt;PeerSubnetIPAddress&gt;. <br> By default, securelocaltrafficbyip=&lt;IPAddress&gt; is *enabled* and set to one of the local IP addresses configured on the local subnets of Edge.
+**ipsecSessionType** |Configure whether the site is used for policy-based VPN or route-based VPN. Default value is *policybasedsession*. | Optional. Allowed values are *policybasedsession* and *routebasedsession*.
+**tunnelInterface** | Configure tunnel interface parameters.|Required if **ipsecSessionType** parameter value is *routebasedsession*. This parameter is not valid for *routebasedsession*. 
+**tunnelInterface > ipAddress**  |Specify a valid IPv4 address.|Required if **ipsecSessionType** parameter value is *routebasedsession*. Allowed value is an IPv4 address. IPv6 address is not allowed.
+**tunnelInterface > mtu**  |Specify the maximum transmission unit.|Optional. Default is *1416*. Valid range is *152 - 8916*.
 
-* **get** *(secured)*: Retrieve IPsec configuration.
+* **get** *(secured)*: Retrieve IPSec VPN configuration.
 
  **Method history:**
  
  Release | Modification
  --------|-------------
  6.3.5 | Method updated. *showSensitiveData* query parameter added. 
- 6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter.
+ 6.4.0 | Method updated. New parameters **ikeOption**, **responderOnly**, and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter.
+ 6.4.2 | Method updated. Added a new value *routebasedsession* for **ipsecSessionType** parameter. Added a new parameter **tunnelInterface** when the value of **ipsecSessionType** is set to *routebasedsession*.
 
-* **put** *(secured)*: Update IPsec VPN configuration.
+ **Response: Policy-based IPSec site**
+ ```  
+   <ipsec>
+     <version>38</version>
+     <enabled>true</enabled>
+     <disableEvent>false</disableEvent>
+     <logging>
+       <enable>true</enable>
+       <logLevel>debug</logLevel>
+     </logging>
+     <sites>
+       <site>
+         <enabled>true</enabled>
+         <name>VPN to edge-pa-1</name>
+         <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
+         <localId>11.0.0.11</localId>
+         <localIp>11.0.0.11</localIp>
+         <peerId>11.0.0.1</peerId>
+         <peerIp>any</peerIp>
+         <ipsecSessionType>policybasedsession</ipsecSessionType>
+         <encryptionAlgorithm>aes256</encryptionAlgorithm>
+         <authenticationMode>psk</authenticationMode>
+         <enablePfs>true</enablePfs>
+         <dhGroup>dh2</dhGroup>
+         <localSubnets>
+           <subnet>192.168.11.0/24</subnet>
+         </localSubnets>
+         <peerSubnets>
+           <subnet>192.168.1.0/24</subnet>
+         </peerSubnets>
+       </site>
+     </sites>
+     <global>
+       <psk>*****</psk>
+       <serviceCertificate>certificate-4</serviceCertificate>
+       <caCertificates>
+         <caCertificate>certificate-3</caCertificate>
+       </caCertificates>
+       <crlCertificates>
+         <crlCertificate>crl-1</crlCertificate>
+       </crlCertificates>
+     </global>
+   </ipsec>
+ ```
+ **Response: Route-based IPSec site**
+ ```
+   <ipsec>
+     <version>143</version>
+     <enabled>true</enabled>
+     <disableEvent>false</disableEvent>
+     <logging>
+       <enable>true</enable>
+       <logLevel>debug</logLevel>
+     </logging>
+     <sites>
+       <site>
+         <enabled>true</enabled>
+         <name>RBVPN-252</name>
+         <description>Route-based VPN to edge 19</description>
+         <localId>10.109.229.252</localId>
+         <localIp>10.109.229.252</localIp>
+         <peerId>10.109.229.251</peerId>
+         <peerIp>10.109.229.251</peerIp>
+         <ipsecSessionType>routebasedsession</ipsecSessionType>
+         <tunnelInterface>
+           <label>vti-1</label>
+           <ipAddress>2.2.2.2/24</ipAddress>
+           <mtu>1416</mtu>
+         </tunnelInterface>
+         <encryptionAlgorithm>aes256</encryptionAlgorithm>
+         <enablePfs>true</enablePfs>
+         <dhGroup>dh2</dhGroup>
+         <localSubnets>
+           <subnet>0.0.0.0/0</subnet>
+         </localSubnets>
+         <peerSubnets>
+           <subnet>0.0.0.0/0</subnet>
+         </peerSubnets>
+         <psk>******</psk>
+         <authenticationMode>psk</authenticationMode>
+         <siteId>ipsecsite-34</siteId>
+         <ikeOption>ikev2</ikeOption>
+         <digestAlgorithm>sha1</digestAlgorithm>
+         <responderOnly>false</responderOnly>
+       </site>
+     </sites>
+     <global>
+       <psk>******</psk>
+       <caCertificates/>
+       <crlCertificates/>
+     </global>
+   </ipsec>
+ ```
+
+* **put** *(secured)*: Update IPSec VPN configuration.
 
  **Method history:**
  
  Release | Modification
  --------|-------------
- 6.4.0 | Method updated. New parameters **ikeOptions** and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter, and optional if used in a PUT call. If used, it must be set to *policybasedSession*.
+ 6.4.0 | Method updated. New parameters **ikeOption**, **responderOnly**, and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter, and optional if used in a PUT call. If used, it must be set to *policybasedSession*.
+ 6.4.2 | Method updated. Added a new value *routebasedsession* for **ipsecSessionType** parameter. Added a new parameter **tunnelInterface** when the value of **ipsecSessionType** is set to *routebasedsession*.
+ 
+ **Request: Policy-based IPSec site**
+ ```
+   <ipsec>
+     <enabled>true</enabled>
+     <disableEvent>false</disableEvent>
+     <logging>
+       <enable>true</enable>
+       <logLevel>debug</logLevel>
+     </logging>
+     <sites>
+       <site>
+         <enabled>true</enabled>
+         <name>VPN to edge-pa-1</name>
+         <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
+         <localId>11.0.0.11</localId>
+         <localIp>11.0.0.11</localIp>
+         <peerId>11.0.0.1</peerId>
+         <peerIp>any</peerIp>
+         <ipsecSessionType>policybasedsession</ipsecSessionType>
+         <encryptionAlgorithm>aes256</encryptionAlgorithm>
+         <authenticationMode>psk</authenticationMode>
+         <enablePfs>true</enablePfs>
+         <dhGroup>dh2</dhGroup>
+         <localSubnets>
+           <subnet>192.168.11.0/24</subnet>
+         </localSubnets>
+         <peerSubnets>
+           <subnet>192.168.1.0/24</subnet>
+         </peerSubnets>
+       </site>
+     </sites>
+     <global>
+       <psk>*****</psk>
+       <serviceCertificate>certificate-4</serviceCertificate>
+       <caCertificates>
+         <caCertificate>certificate-3</caCertificate>
+       </caCertificates>
+       <crlCertificates>
+         <crlCertificate>crl-1</crlCertificate>
+       </crlCertificates>
+     </global>
+   </ipsec>
+ ```
+ **Request: Route-based IPSec site**
+ ```
+   <ipsec>
+     <enabled>true</enabled>
+     <disableEvent>false</disableEvent>
+     <logging>
+       <enable>true</enable>
+       <logLevel>debug</logLevel>
+     </logging>
+     <sites>
+       <site>
+         <enabled>true</enabled>
+         <name>RBVPN-252</name>
+         <description>Route-based VPN to edge 19</description>
+         <localId>10.109.229.252</localId>
+         <localIp>10.109.229.252</localIp>
+         <peerId>10.109.229.251</peerId>
+         <peerIp>10.109.229.251</peerIp>
+         <ipsecSessionType>routebasedsession</ipsecSessionType>
+         <tunnelInterface>
+           <label>vti-1</label>
+           <ipAddress>2.2.2.2/24</ipAddress>
+           <mtu>1416</mtu>
+         </tunnelInterface>
+         <encryptionAlgorithm>aes256</encryptionAlgorithm>
+         <enablePfs>true</enablePfs>
+         <dhGroup>dh2</dhGroup>
+         <localSubnets>
+           <subnet>0.0.0.0/0</subnet>
+         </localSubnets>
+         <peerSubnets>
+           <subnet>0.0.0.0/0</subnet>
+         </peerSubnets>
+         <psk>******</psk>
+         <authenticationMode>psk</authenticationMode>
+         <siteId>ipsecsite-34</siteId>
+         <ikeOption>ikev2</ikeOption>
+         <digestAlgorithm>sha1</digestAlgorithm>
+         <responderOnly>false</responderOnly>
+       </site>
+     </sites>
+     <global>
+       <psk>******</psk>
+       <caCertificates/>
+       <crlCertificates/>
+     </global>
+   </ipsec>
+ ```        
 
-* **delete** *(secured)*: Delete the IPsec configuration.
+* **delete** *(secured)*: Delete the IPSec VPN configuration.
+
+### /4.0/edges/{edgeId}/peerconfig
+Downloading IPSec VPN and BGP Neighbor Configuration
+---            
+
+* **get** *(secured)*: Retrieve the IPSec VPN configuration, or the BGP neighbor configuration, or both 
+for the NSX Edge either in plain text format or JSON format. 
+You can use the configuration details as reference to configure the IPSec VPN parameters and 
+the BGP neighbor on the third-party VPN Gateway at the peer site.
+For a policy-based IPSec VPN site, BGP neighbor configuration is not applicable.
+                
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.          
+
+**Response: Text (Route-based IPSec VPN and BGP Neighbor Configuration)**
+```
+# Configuration for IPsec VPN connection
+#
+# Peer NSX Edge and IPSec Site configuration details.
+#
+# IPsec site Id : ipsecsite-4
+# IPsec site name : SecondSite
+# IPsec site description:
+# IPsec site enabled : true
+# IPsec site vpn type : Route-based VPN
+# NSX Edge Id : edge-1
+# Feature version : 4
+# Time stamp : 122817_181701GMT
+#
+# Internet Key Exchange Configuration
+# Phase 1
+# Configure the IKE SA as outlined below
+-
+Connection initiation mode : initiator
+IKE version : ikev1
+Authentication method : psk
+Pre shared key : vmware
+Authentication algorithm : sha1
+Encryption algorithm : aes
+SA life time : 28800 seconds
+Phase 1 negotiation mode : main
+DH group : DH14
+# IPsec_configuration
+# Phase 2
+# Configure the IPsec SA as outlined below
+Protocol : ESP
+Authentication algorithm : sha1
+Encryption algorithm : aes
+Sa life time : 3600 seconds
+Encapsulation mode : Tunnel mode
+Enable perfect forward secrecy : true
+Perfect forward secrecy DH group: DH14
+# Peer configuration
+Peer address : 10.10.10.10 # Peer gateway public IP.
+Peer id : 10.10.10.10
+Peer subnets : [ 0.0.0.0./0 ]
+# IPsec Dead Peer Detection (DPD) settings
+DPD enabled : true
+DPD interval : 30 seconds
+DPD timeout : 150 seconds
+# Local configuration
+Local address : 10.10.10.30 # Local gateway public IP.
+Local id : 10.10.10.30
+Local subnets : [ 0.0.0.0/0 ]
+# Virtual Tunnel Interface
+Peer VTI address : 172.16.2.45
+Local VTI address : Your tunnel interface IP address
+Tunnel Interface MTU : 1416 bytes
+# BGP Configuration
+#
+BGP neighbour IP : 172.16.2.45
+BGP neighbour AS number : 65000
+BGP local IP : 172.16.3.45
+BGP local AS number : 65300
+BGP secret : VMWare
+BGP weight : 60 (optional)
+BGP hold down timer : 180
+BGP keep alive timer : 60 
+```
+
+**Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)**          
+```
+{
+  "peer_config": {
+    "ipsecSiteConfig_ipsecsite-4": {
+      "ipsec_site_config": {
+      "ipsec_site_id": "ipsecsite-4",
+      "ipsec_site_name": "SecondSite",
+      "ipsec_site_description": "",
+      "ipsec_site_enabled": true,
+      "ipsec_site_vpn_type": "Route based VPN",
+      "edge_id": "edge-1",
+      "feature_version": "4",
+      "time_stamp": "122817_181701GMT",
+      
+      "ike_configuration": {
+        "ike_version": "ikev1",
+        "connection_initiation_mode": "initiator",
+        "authentication_method": "psk",
+        "pre_shared_key": "vmware",
+        "authentication_algorithm": "sha1",
+        "encryption_algorithm": "aes",
+        "sa_life_time": "28800 seconds",
+        "negotiation_mode": "main",
+        "dh_group": "DH14"
+      },
+      "ipsec_configuration": {
+        "protocol": "ESP",
+        "authentication_algorithm": "sha1",
+        "encryption_algorithm": "aes",
+        "sa_life_time": "3600 seconds",
+        "encapsulation_mode": "Tunnel mode",
+        "enable_perfect_forward_secrecy": true,
+        "perfect_forward_secrecy_dh_group": "DH14"
+      },
+      "peer_configuration": {
+        "peer_address": "10.10.10.10",
+        "peer_id": "10.10.10.10",
+        "peer_subnets": "[ 0.0.0.0/0 ]",
+        "dpd_enabled": true,
+        "dpd_interval": "30 seconds",
+        "dpd_timeout": "150 seconds"
+      },
+      "local_configuration": {
+        "local_address": "10.10.10.30",
+        "local_id": "10.10.10.30",
+        "local_subnets": "[ 0.0.0.0/0 ]"
+      },
+      "virtual_tunnel_interface": {
+        "peer_vti_address": "172.16.2.45",
+        "local_vti_address": "172.16.3.45",
+        "tunnel_interface_mtu": "1416 bytes"
+      }
+    },
+     "bgpNeighbourConfig_172.16.3.45": {"bgp_config": {
+        "bgp_neighbour_ip": "172.16.2.45",
+        "bgp_neighbour_as": "65000",
+        "bgp_local_ip": "172.16.3.45",
+        "bgp_local_as": "65300",
+        "bgp_secret": "VMWare",
+        "bgp_weight": "60 (optional)",
+        "bgp_hold_down_timer": "180",
+        "bgp_keep_alive_timer": "60"
+      }
+  }
+}
+}
+```
 
 ### /4.0/edges/{edgeId}/ipsec/statistics
-Working With IPsec Statistics
+Working With IPSec VPN Statistics
 ---
 
-* **get** *(secured)*: Retrieve IPsec statistics.
+* **get** *(secured)*: Retrieve IPSec VPN statistics.
 
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.4.0 | Method updated. New parameter **channelIkeVersion** added under **IkeStatus** section. New parameters **failureMessage**, **packetsOut**, **packetSentErrors**, **encryptionFailures**, **sequenceNumberOverFlowErrors**, **packetsIn**, **packetReceivedErrors**, **decryptionFailures**, **replayErrorsintegrityErrors** added under **tunnelStatus** section. New parameter **siteId** added.
+6.4.2 | Method updated. Added **virtualTunnelInterfaceStats**, **globalPacketDropStatistics** and **ikeStatistics** sections in the API response. 
 
 ### /4.0/edges/{edgeId}/autoconfiguration
 Automatic Configuration of Firewall Rules
@@ -8702,13 +9194,19 @@ Working With Hardware Gateways
 
 * **post** *(secured)*: Install a hardware gateway.
 
-**bfdEnabled** is true by default.
-
+### Request body parameters
+  
+Parameter |  Description | Comments 
+---|---|---
+**bfdEnabled** |Enable or disable Bidirectional Forwarding Detection (BFD) between the hardware gateway and the replication cluster.| Optional. Default value is *true*. 
+**replicationClusterId** | Object ID of the replication cluster that this hardware gateway will use.|Optional. If not specified, then default replication cluster ID is used.
+      
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
+6.4.2 | Method updated. New request body parameter **replicationClusterId** added.
 
 * **get** *(secured)*: Retrieve information about all hardware gateways.
 
@@ -8732,11 +9230,17 @@ Release | Modification
 
 * **put** *(secured)*: Update the specified hardware gateway.
 
+### Request body parameters
+
+  * **replicationClusterId** - Optional. Object ID of the replication cluster that this hardware gateway will use.
+    If not specified, then default replication cluster ID is used in the hardware gateway.
+  
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
+6.4.2 | Method updated. A new request body parameter **replicationClusterId** added.
 
 * **delete** *(secured)*: Delete the specified hardware gateway.
 
@@ -8776,27 +9280,64 @@ Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
 
+### /2.0/vdn/hardwaregateways/replicationclusters
+Working With All Hardware Gateway Replication Clusters
+----
+
+* **get** *(secured)*: Retrieve information about all hardware gateway replication clusters.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+    
+
 ### /2.0/vdn/hardwaregateways/replicationcluster
-Working With the Hardware Gateway Replication Cluster
+Working With a Specific Hardware Gateway Replication Cluster
 ----
 
 * **put** *(secured)*: Update the hardware gateway replication cluster.
 
 Add or remove hosts on a replication cluster.
 
-**Method history:**
+### Request body parameters
 
-Release | Modification
---------|-------------
-6.2.3 | Method introduced.
-
-* **get** *(secured)*: Retrieve information about the hardware gateway replication cluster.
+* **replicationClusterName** - Optional. Specify any UTF-8 string to change the replication cluster name. 
+  If the parameter is not specified, then cluster name is not changed. 
 
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.2.3 | Method introduced.
+6.4.2 | Method updated. Query parameter **id** and request body parameter **replicationClusterName** added.
+
+* **get** *(secured)*: Retrieve information about a hardware gateway replication cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method introduced.
+6.4.2 | Method updated. Query parameter **id** added.
+
+* **post** *(secured)*: Create a hardware gateway replication cluster.
+
+### Request body parameters
+
+Parameter |  Description | Comments 
+---|---|---
+**replicationClusterName** |Specify any UTF-8 string for the name of the hardware gateway replication cluster. |Required. 
+**hosts** | Specify the object IDs of the hosts on which VXLAN is configured. Specified hosts will be added to the replication cluster.|Optional. Default value is *empty*.
+
+* **delete** *(secured)*: Delete a specific hardware gateway replication cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
 
 ## hardwareGateway
 Working With Hardware Gateway Bindings and BFD
