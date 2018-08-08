@@ -4744,7 +4744,6 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
-
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -6284,6 +6283,19 @@ If both parameters are present (for example **localAS** and
 **localASNumber**), and you update one parameter (**localAS**)
 subsequent GET requests will show both parameters updated.  
 
+### Multicast Configuration
+
+Parameter  |   Description  | Comments  
+--- | --- | --- 
+**enabled**  | Multicast routing enable/disable status. | Optional. By default, enabled is set to false.
+**igmp > queryInterval**  | Configures the frequency at which the designated router sends IGMP host-query messages | Optional. Default is *30 seconds*. Allowed values: 1-3744 seconds.
+**igmp > queryMaxResponseTimee**  | Sets the maximum query response time advertised in IGMP queries | Optional.  Default is *10 seconds*. Allowed values: 1-25 seconds.
+**igmp > lastMemberQueryInterval** | Configures the interval at which the router sends IGMP group-specific query messages. | Optional. Default is *1 second*.
+**igmp > robustnessVariable**  | Robustness variable tunes the expected number of packet loss on a subnet. This variable is used to calculate the group membership timeout value.| Optional. Default is *2 seconds*. Allowed values: 1-255 seconds  
+**pim > static-rendezvous-point-address**  | The IP address of a PIM RP. | Optional.  
+**interface index list** | List of index of edge interface where PIM to be enabled. Max size of this list is one as PIM can be enabled on any one of the edge uplink interface.| Edge router only.
+**IGMP Interface index list** | List of index of edge and vdr interfaces where IGMP to be enabled. | Optional.
+
 ### Route Redistribution Configuration for OSPF or BGP
 
 Parameter  |   Description  | Comments  
@@ -6407,6 +6419,122 @@ Release | Modification
 6.4.0 | Method updated. Parameter **removePrivateAS** added.
 
 * **delete** *(secured)*: Delete BGP Routing
+
+### /4.0/edges/{edgeId}/routing/config/multicast
+Working With Multicast Routing 
+----
+NSX Edge supports Multicast routing on Edge Services Gateways and on Distributed Logical Routers. 
+
+* **get** *(secured)*: Retrieve Multicast configuration. A GET example for Edge Services Gateway is shown below. 
+```
+<multicast>
+  <enabled>true</enabled>
+  <igmp>
+    <globalConfig>
+      <queryInterval>30</queryInterval>
+      <queryMaxResponseTime>10</queryMaxResponseTime>
+      <lastMemberQueryInterval>1</lastMemberQueryInterval>
+      <robustnessVariable>2</robustnessVariable>
+    </globalConfig>
+  </igmp>
+  <pim>
+    <sparseMode>
+      <globalConfig>
+        <staticRendezvousPointAddress>198.168.23.2</staticRendezvousPointAddress>
+      </globalConfig>
+      <interface>
+        <index>0</index>
+      </interface>
+      <interface>
+        <index>1</index>
+      </interface>
+    </sparseMode>
+  </pim>
+</multicast>
+```
+A GET example for a Distributed Logical Router is shown below. 
+```
+multicast>
+  <enabled>true<.enabled>
+      <replicationMulticastRange>229.0.0.0/24</replicationMulticastRange>
+      <igmp>
+        <interface>
+          <index>0</index>
+        </interface>
+        <interface>
+          <index>10</index>
+        </interface>
+        <globalConfig>
+          <queryInterval>30</queryInterval>
+          <queryMaxResponseTime>10</queryMaxResponseTime>
+          <lastMemberQueryInterval>10</lastMemberQueryInterval>
+          <robustnessVariable>2</robustnessVariable>
+        </globalConfig>
+      </igmp>
+    </multicast>
+    ``` 
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 |  Method introduced
+
+* **put** *(secured)*: Configure Multicast. A PUT example for Edge Services Gateway is shown below. The uplink index interface is index 0, and the internal interface is index 1.
+  ```
+  <multicast>
+    <enabled>true</enabled>
+    <igmp>
+      <globalConfig>
+        <queryInterval>30</queryInterval>
+        <queryMaxResponseTime>10</queryMaxResponseTime>
+        <lastMemberQueryInterval>10</lastMemberQueryInterval>
+        <robustnessVariable>2</robustnessVariable>
+      </globalConfig>
+    </igmp>
+    <pim>
+      <sparseMode>
+        <interface>
+          <index>0</index>
+        </interface>
+        <interface>
+          <index>1</index>
+        </interface>
+        <globalConfig>
+          <staticRendezvousPointAddress>10.1.1.10</staticRendezvousPointAddress>
+        </globalConfig>
+      </sparseMode>
+    </pim>
+  </multicast>
+  ```
+A PUT example for a Distributed Logical Router is shown below. The uplink interface is index 0, and the internal interface is index 10.
+```
+<multicast>
+  <enabled>true<.enabled>
+      <replicationMulticastRange>229.0.0.0/24</replicationMulticastRange>
+      <igmp>
+        <interface>
+          <index>0</index>
+        </interface>
+        <interface>
+          <index>10</index>
+        </interface>
+        <globalConfig>
+          <queryInterval>30</queryInterval>
+          <queryMaxResponseTime>10</queryMaxResponseTime>
+          <lastMemberQueryInterval>10</lastMemberQueryInterval>
+          <robustnessVariable>2</robustnessVariable>
+        </globalConfig>
+      </igmp>
+    </multicast>
+    ```
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced. 
+
+* **delete** *(secured)*: Delete Multicast routing.
 
 ### /4.0/edges/{edgeId}/tunnels
 Working With GRE Tunnels

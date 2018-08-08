@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="mailto:&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#111;&#109;">&#100;&#x6f;&#99;&#x66;&#x65;&#x65;&#100;&#98;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#97;&#x72;&#101;&#46;&#x63;&#111;&#109;</a>.</p>
+<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#100;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#99;&#102;&#x65;&#101;&#x64;&#x62;&#x61;&#x63;&#107;&#64;&#x76;&#x6d;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -2441,7 +2441,7 @@ https:<span class="hljs-comment">//192.168.110.42/api/1.0/appliance-management/u
   <strong>For example</strong>: </p>
 <ul>
 <li>NSX?fileurl=<a href="http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz">http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz</a></li>
-<li>NSX?fileurl=<a href="ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz">ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</a></li>
+<li>NSX?fileurl=ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</li>
 </ul>
 </div>
 <div class="method post">
@@ -5232,7 +5232,7 @@ VXLAN, create vmknics.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>resourceId<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span> </code></pre></p>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span></code></pre></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -7198,19 +7198,19 @@ The following two types of widgets are supported:</p>
     “V1 + <span class="hljs-number">2</span>” 
     “aString.length()” <span class="hljs-keyword">and</span> so <span class="hljs-keyword">on</span> because these expressions require the definition <span class="hljs-keyword">of</span> “V1” <span class="hljs-keyword">and</span> “aString” <span class="hljs-keyword">to</span> be present <span class="hljs-keyword">in</span> the context, <span class="hljs-keyword">and</span> there <span class="hljs-keyword">is</span> no place <span class="hljs-keyword">in</span> widget configuration <span class="hljs-keyword">to</span> define it. 
      * No Java statements are supported, only expressions are supported.</code></pre><p>  <strong>Anatomy of an Expression in Widget Configuration</strong></p>
-<pre><code class="code-block hljs lang-routeros">  * Expression
-   * Basic form: #{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}
-   * Examples:
-       * Expression:   #{default.si.versionInfo.majorVersion}       
-       * API: api/1.0/appliance-management/summary<span class="hljs-built_in">/system </span>            
-  * Expression:   #{default.si.cpuInfoDto.totalNoOfCPUs}                             
-       * API:  api/1.0/appliance-management/summary<span class="hljs-built_in">/system
-</span>       * Expression:  #{default.summary.preparedHostsTotalNumber}                           
-       * API: api/2.0/vdn/inventory/hosts/status/summary
-       * Function form: #{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()
-       * Example:
-  * Expression:  #{default.se.dataPage.data}.size()                    
-       * API: api/2.0/systemevent</code></pre><p>  <strong>Anatomy of a Condition in Widget Configuration</strong></p>
+<pre><code class="code-block hljs lang-yaml">  <span class="hljs-string">*</span> <span class="hljs-string">Expression</span>
+   <span class="hljs-string">*</span> <span class="hljs-string">Basic</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}</span>
+   <span class="hljs-string">*</span> <span class="hljs-attr">Examples:</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>   <span class="hljs-comment">#{default.si.versionInfo.majorVersion}       </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/1.0/appliance-management/summary/system</span>             
+  <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>   <span class="hljs-comment">#{default.si.cpuInfoDto.totalNoOfCPUs}                             </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span>  <span class="hljs-string">api/1.0/appliance-management/summary/system</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.summary.preparedHostsTotalNumber}                           </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/2.0/vdn/inventory/hosts/status/summary</span>
+       <span class="hljs-string">*</span> <span class="hljs-string">Function</span> <span class="hljs-attr">form:</span> <span class="hljs-comment">#{&lt;datasource&gt;.&lt;url-alias&gt;.&lt;jsonpath&gt;}.function()</span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">Example:</span>
+  <span class="hljs-string">*</span> <span class="hljs-attr">Expression:</span>  <span class="hljs-comment">#{default.se.dataPage.data}.size()                    </span>
+       <span class="hljs-string">*</span> <span class="hljs-attr">API:</span> <span class="hljs-string">api/2.0/systemevent</span></code></pre><p>  <strong>Anatomy of a Condition in Widget Configuration</strong></p>
 <pre><code class="code-block hljs lang-dust"><span class="xml">   * Condition
       * Evaluates to a boolean (true or false)
        * Form: expression == value
@@ -21180,7 +21180,7 @@ the <strong>packetSize</strong> parameter.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">vlan</span>&gt;</span>v1<span class="hljs-tag">&lt;/<span class="hljs-name">vlan</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">switchName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">switchName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">portName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">portName</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span> </code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
+<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span></code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
 <p><code>POST /api/2.0/vdn/virtualwires/&lt;virtualwireId&gt;/hardwaregateways/{bindingId}?action=attach</code></p>
 <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
   ...
@@ -32192,7 +32192,7 @@ For a policy-based IPSec VPN site, BGP neighbor configuration is not applicable.
 <td>Method introduced.          </td>
 </tr>
 </tbody></table><p><strong>Response: Text (Route-based IPSec VPN and BGP Neighbor Configuration)</strong></p>
-<pre><code class="code-block hljs lang-routeros"><span class="hljs-comment"># Configuration for IPsec VPN connection</span>
+<pre><code class="code-block hljs lang-ldif"><span class="hljs-comment"># Configuration for IPsec VPN connection</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment"># Peer NSX Edge and IPSec Site configuration details.</span>
 <span class="hljs-comment">#</span>
@@ -32208,52 +32208,52 @@ For a policy-based IPSec VPN site, BGP neighbor configuration is not applicable.
 <span class="hljs-comment"># Internet Key Exchange Configuration</span>
 <span class="hljs-comment"># Phase 1</span>
 <span class="hljs-comment"># Configure the IKE SA as outlined below</span>
--<span class="hljs-built_in">
-Connection </span>initiation mode : initiator
-IKE version : ikev1
-Authentication method : psk
-Pre shared key : vmware
-Authentication algorithm : sha1
-Encryption algorithm : aes
-SA life time : 28800 seconds
-Phase 1 negotiation mode : main
-DH<span class="hljs-built_in"> group </span>: DH14
+<span class="hljs-literal">-</span>
+<span class="hljs-attribute">Connection initiation mode </span>: initiator
+<span class="hljs-attribute">IKE version </span>: ikev1
+<span class="hljs-attribute">Authentication method </span>: psk
+<span class="hljs-attribute">Pre shared key </span>: vmware
+<span class="hljs-attribute">Authentication algorithm </span>: sha1
+<span class="hljs-attribute">Encryption algorithm </span>: aes
+<span class="hljs-attribute">SA life time </span>: 28800 seconds
+<span class="hljs-attribute">Phase 1 negotiation mode </span>: main
+<span class="hljs-attribute">DH group </span>: DH14
 <span class="hljs-comment"># IPsec_configuration</span>
 <span class="hljs-comment"># Phase 2</span>
 <span class="hljs-comment"># Configure the IPsec SA as outlined below</span>
-Protocol : ESP
-Authentication algorithm : sha1
-Encryption algorithm : aes
-Sa life time : 3600 seconds
-Encapsulation mode : Tunnel mode
-<span class="hljs-builtin-name">Enable</span> perfect forward secrecy : <span class="hljs-literal">true</span>
-Perfect forward secrecy DH group: DH14
-<span class="hljs-comment"># Peer configuration</span><span class="hljs-built_in">
-Peer address </span>: 10.10.10.10 #<span class="hljs-built_in"> Peer </span>gateway public IP.<span class="hljs-built_in">
-Peer </span>id : 10.10.10.10<span class="hljs-built_in">
-Peer </span>subnets : [ 0.0.0.0./0 ]
+<span class="hljs-attribute">Protocol </span>: ESP
+<span class="hljs-attribute">Authentication algorithm </span>: sha1
+<span class="hljs-attribute">Encryption algorithm </span>: aes
+<span class="hljs-attribute">Sa life time </span>: 3600 seconds
+<span class="hljs-attribute">Encapsulation mode </span>: Tunnel mode
+<span class="hljs-attribute">Enable perfect forward secrecy </span>: true
+<span class="hljs-attribute">Perfect forward secrecy DH group</span>: DH14
+<span class="hljs-comment"># Peer configuration</span>
+<span class="hljs-attribute">Peer address </span>: 10.10.10.10 # Peer gateway public IP.
+<span class="hljs-attribute">Peer id </span>: 10.10.10.10
+<span class="hljs-attribute">Peer subnets </span>: [ 0.0.0.0./0 ]
 <span class="hljs-comment"># IPsec Dead Peer Detection (DPD) settings</span>
-DPD enabled : <span class="hljs-literal">true</span>
-DPD interval : 30 seconds
-DPD timeout : 150 seconds
+<span class="hljs-attribute">DPD enabled </span>: true
+<span class="hljs-attribute">DPD interval </span>: 30 seconds
+<span class="hljs-attribute">DPD timeout </span>: 150 seconds
 <span class="hljs-comment"># Local configuration</span>
-Local<span class="hljs-built_in"> address </span>: 10.10.10.30 # Local gateway public IP.
-Local id : 10.10.10.30
-Local subnets : [ 0.0.0.0/0 ]
-<span class="hljs-comment"># Virtual Tunnel Interface</span><span class="hljs-built_in">
-Peer </span>VTI<span class="hljs-built_in"> address </span>: 172.16.2.45
-Local VTI<span class="hljs-built_in"> address </span>: Your tunnel<span class="hljs-built_in"> interface IP address
-</span>Tunnel<span class="hljs-built_in"> Interface </span>MTU : 1416 bytes
+<span class="hljs-attribute">Local address </span>: 10.10.10.30 # Local gateway public IP.
+<span class="hljs-attribute">Local id </span>: 10.10.10.30
+<span class="hljs-attribute">Local subnets </span>: [ 0.0.0.0/0 ]
+<span class="hljs-comment"># Virtual Tunnel Interface</span>
+<span class="hljs-attribute">Peer VTI address </span>: 172.16.2.45
+<span class="hljs-attribute">Local VTI address </span>: Your tunnel interface IP address
+<span class="hljs-attribute">Tunnel Interface MTU </span>: 1416 bytes
 <span class="hljs-comment"># BGP Configuration</span>
-<span class="hljs-comment">#</span><span class="hljs-built_in">
-BGP </span>neighbour<span class="hljs-built_in"> IP </span>: 172.16.2.45<span class="hljs-built_in">
-BGP </span>neighbour AS number : 65000<span class="hljs-built_in">
-BGP </span>local<span class="hljs-built_in"> IP </span>: 172.16.3.45<span class="hljs-built_in">
-BGP </span>local AS number : 65300<span class="hljs-built_in">
-BGP secret </span>: VMWare<span class="hljs-built_in">
-BGP </span>weight : 60 (optional)<span class="hljs-built_in">
-BGP </span>hold down timer : 180<span class="hljs-built_in">
-BGP </span>keep alive timer : 60 </code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
+<span class="hljs-comment">#</span>
+<span class="hljs-attribute">BGP neighbour IP </span>: 172.16.2.45
+<span class="hljs-attribute">BGP neighbour AS number </span>: 65000
+<span class="hljs-attribute">BGP local IP </span>: 172.16.3.45
+<span class="hljs-attribute">BGP local AS number </span>: 65300
+<span class="hljs-attribute">BGP secret </span>: VMWare
+<span class="hljs-attribute">BGP weight </span>: 60 (optional)
+<span class="hljs-attribute">BGP hold down timer </span>: 180
+<span class="hljs-attribute">BGP keep alive timer </span>: 60</code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
 <pre><code class="code-block hljs lang-json">{
   <span class="hljs-attr">"peer_config"</span>: {
     <span class="hljs-attr">"ipsecSiteConfig_ipsecsite-4"</span>: {
@@ -32715,7 +32715,53 @@ byte parameter is returned (<strong>localASNumber</strong>).  </p>
 <p>If both parameters are present (for example <strong>localAS</strong> and
 <strong>localASNumber</strong>), and you update one parameter (<strong>localAS</strong>)
 subsequent GET requests will show both parameters updated.  </p>
-<h3 id="route-redistribution-configuration-for-ospf-or-bgp">Route Redistribution Configuration for OSPF or BGP</h3>
+<h3 id="multicast-configuration">Multicast Configuration</h3>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>enabled</strong></td>
+<td>Multicast routing enable/disable status.</td>
+<td>Optional. By default, enabled is set to false.</td>
+</tr>
+<tr>
+<td><strong>igmp &gt; queryInterval</strong></td>
+<td>Configures the frequency at which the designated router sends IGMP host-query messages</td>
+<td>Optional. Default is <em>30 seconds</em>. Allowed values: 1-3744 seconds.</td>
+</tr>
+<tr>
+<td><strong>igmp &gt; queryMaxResponseTimee</strong></td>
+<td>Sets the maximum query response time advertised in IGMP queries</td>
+<td>Optional.  Default is <em>10 seconds</em>. Allowed values: 1-25 seconds.</td>
+</tr>
+<tr>
+<td><strong>igmp &gt; lastMemberQueryInterval</strong></td>
+<td>Configures the interval at which the router sends IGMP group-specific query messages.</td>
+<td>Optional. Default is <em>1 second</em>.</td>
+</tr>
+<tr>
+<td><strong>igmp &gt; robustnessVariable</strong></td>
+<td>Robustness variable tunes the expected number of packet loss on a subnet. This variable is used to calculate the group membership timeout value.</td>
+<td>Optional. Default is <em>2 seconds</em>. Allowed values: 1-255 seconds  </td>
+</tr>
+<tr>
+<td><strong>pim &gt; static-rendezvous-point-address</strong></td>
+<td>The IP address of a PIM RP.</td>
+<td>Optional.  </td>
+</tr>
+<tr>
+<td><strong>interface index list</strong></td>
+<td>List of index of edge interface where PIM to be enabled. Max size of this list is one as PIM can be enabled on any one of the edge uplink interface.</td>
+<td>Edge router only.</td>
+</tr>
+<tr>
+<td><strong>IGMP Interface index list</strong></td>
+<td>List of index of edge and vdr interfaces where IGMP to be enabled.</td>
+<td>Optional.</td>
+</tr>
+</tbody></table><h3 id="route-redistribution-configuration-for-ospf-or-bgp">Route Redistribution Configuration for OSPF or BGP</h3>
 <table class="table"><thead><tr>
 <th>Parameter</th>
 <th>Description</th>
@@ -33627,6 +33673,190 @@ settings, static route configurations).</p>
   </dd>
 </dl>
     </div>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-multicast-routing-">Working With Multicast Routing </h2>
+<p>NSX Edge supports Multicast routing on Edge Services Gateways and on Distributed Logical Routers. </p>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/4.0/edges/{edgeId}/routing/config/multicast"
+    href="#GET/4.0/edges/{edgeId}/routing/config/multicast"
+  ><h2>GET /4.0/edges/{edgeId}/routing/config/multicast</h2></a>
+  <div class="content">
+    <p><p>Retrieve Multicast configuration. A GET example for Edge Services Gateway is shown below. </p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicast</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">igmp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">queryInterval</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">queryInterval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">robustnessVariable</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">robustnessVariable</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">igmp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pim</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sparseMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">staticRendezvousPointAddress</span>&gt;</span>198.168.23.2<span class="hljs-tag">&lt;/<span class="hljs-name">staticRendezvousPointAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">sparseMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pim</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">multicast</span>&gt;</span></code></pre><p>A GET example for a Distributed Logical Router is shown below. </p>
+<pre><code class="code-block hljs lang-javascript">multicast&gt;
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;<span class="hljs-name">.enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">replicationMulticastRange</span>&gt;</span>229.0.0.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">replicationMulticastRange</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">igmp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">queryInterval</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">queryInterval</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">robustnessVariable</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">robustnessVariable</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">igmp</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">multicast</span>&gt;</span></span></code></pre><p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.2</td>
+<td>Method introduced</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicast</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">replicationMulticastRange</span>&gt;</span>229.0.0.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">replicationMulticastRange</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">igmp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">queryInterval</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">queryInterval</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">robustnessVariable</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">robustnessVariable</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">igmp</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">multicast</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/4.0/edges/{edgeId}/routing/config/multicast"
+    href="#PUT/4.0/edges/{edgeId}/routing/config/multicast"
+  ><h2>PUT /4.0/edges/{edgeId}/routing/config/multicast</h2></a>
+  <div class="content">
+    <p><p>Configure Multicast. A PUT example for Edge Services Gateway is shown below. The uplink index interface is index 0, and the internal interface is index 1.</p>
+<pre><code class="code-block hljs lang-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">multicast</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">igmp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">queryInterval</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">queryInterval</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">robustnessVariable</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">robustnessVariable</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">igmp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pim</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">sparseMode</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">staticRendezvousPointAddress</span>&gt;</span>10.1.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">staticRendezvousPointAddress</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">sparseMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">pim</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">multicast</span>&gt;</span></code></pre><p>A PUT example for a Distributed Logical Router is shown below. The uplink interface is index 0, and the internal interface is index 10.</p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicast</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;<span class="hljs-name">.enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">replicationMulticastRange</span>&gt;</span>229.0.0.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">replicationMulticastRange</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">igmp</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">queryInterval</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">queryInterval</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">robustnessVariable</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">robustnessVariable</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">igmp</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">multicast</span>&gt;</span></code></pre><p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.2</td>
+<td>Method introduced. </td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">multicast</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">igmp</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">queryInterval</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">queryInterval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">queryMaxResponseTime</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>10<span class="hljs-tag">&lt;/<span class="hljs-name">lastMemberQueryInterval</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">robustnessVariable</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">robustnessVariable</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">igmp</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pim</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sparseMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">index</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">index</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">globalConfig</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">staticRendezvousPointAddress</span>&gt;</span>10.1.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">staticRendezvousPointAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">globalConfig</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">sparseMode</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pim</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">multicast</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/4.0/edges/{edgeId}/routing/config/multicast"
+    href="#DELETE/4.0/edges/{edgeId}/routing/config/multicast"
+  ><h2>DELETE /4.0/edges/{edgeId}/routing/config/multicast</h2></a>
+  <div class="content">
+    <p><p>Delete Multicast routing.</p>
+</p>
   </div>
 </div>
 </section>
