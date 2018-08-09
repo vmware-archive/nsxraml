@@ -4744,6 +4744,7 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
+
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -6365,24 +6366,24 @@ between routes of equal cost. An OSPF network is divided into routing areas to
 optimize traffic. An area is a logical collection of OSPF networks, routers,
 and links that have the same area identification.  
 
-Areas are identified by an Area ID.
+Areas are identified by an Area ID.          
 
-* **get** *(secured)*: Retrieve OSPF configuration.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.2.3 | Method updated. **isis** configuration section removed. 
-6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. 
-
-* **put** *(secured)*: Configure OSPF.
+* **get** *(secured)*: Retrieve OSPF configuration.            
 
 **Method history:**
 
 Release | Modification
 --------|-------------
-6.2.3 | Method updated. **isis** configuration section removed. 
+6.2.3 | Method updated. **isis** parameter removed from route redistribution rules configuration. 
+6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section.
+
+* **put** *(secured)*: Configure OSPF.            
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.2.3 | Method updated. **isis** parameter removed from route redistribution rules configuration. 
 6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. 
 
 * **delete** *(secured)*: Delete OSPF routing.
@@ -7571,19 +7572,28 @@ This API is not supported for Distributed Logical Routers.
 Working With Interface Statistics
 ----
 
-* **get** *(secured)*: Retrieve interface statistics.
+* **get** *(secured)*: Retrieve the statistics of all configured vnics between a specified duration. 
+If the duration is not specified, then all the statistics collected since
+the deployment of the NSX Edge are retrieved. The statistics are retrieved 
+after an interval of 5 minutes.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces/uplink
 Working With Uplink Interface Statistics
 ----
 
-* **get** *(secured)*: Retrieve uplink interface statistics.
+* **get** *(secured)*: Retrieve the statistics of all uplink interfaces between a specified duration. 
+If the duration is not specified, then all the statistics collected since
+the deployment of the NSX Edge are retrieved. The statistics are retrieved 
+after an interval of 5 minutes.
 
 ### /4.0/edges/{edgeId}/statistics/interfaces/internal
 Working With Internal Interface Statistics
 -----
 
-* **get** *(secured)*: Retrieve internal interface statistics.
+* **get** *(secured)*: Retrieve the statistics of all internal interfaces between a specified duration. 
+If the duration is not specified, then all the statistics collected since
+the deployment of the NSX Edge are retrieved. The statistics are retrieved 
+after an interval of 5 minutes.
 
 ### /4.0/edges/{edgeId}/l2vpn/config
 Working With L2 VPN Over SSL
@@ -7749,13 +7759,13 @@ Parameter |  Description | Comments
 **IpsecSession > ipsecSiteId**  |Site ID assigned to the route-based IPSec site.|String value. Required.
 **IpsecSession > sharedcode**  |Validates the local IPSec site configuration. It contains VTI IP address to be assigned to the local VTI.|Required if the L2TunnelsConfig mode is *spoke*.
 
-* **get** *(secured)*: Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.   
- 
- **Method history:**
- 
- Release | Modification
- --------|-------------
- 6.4.2 | Method introduced.
+* **get** *(secured)*: Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.           
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
 
 * **post** *(secured)*: Enable the L2 VPN over IPSec service on the Edge.
 
@@ -7769,6 +7779,11 @@ Parameter |  Description | Comments
 
 * **post** *(secured)*: Create a L2 VPN tunnel on the NSX Edge by consuming a route-based IPSec VPN tunnel.
 
+**Note:** The shared code in the L2 VPN configuration contains the sensitive pre-shared key in plain text format.
+This code must be kept securely according to the client security policy.
+
+Specify the shared code as an input only when you are creating or updating the L2 VPN over IPSec tunnel in the client (spoke) mode.
+
 **Method history:**
 
 Release | Modification
@@ -7778,6 +7793,11 @@ Release | Modification
 ### /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}
 
 * **put** *(secured)*: Update a specific L2 VPN over IPSec tunnel on the NSX Edge.
+
+**Note:** The shared code in the L2 VPN configuration contains the sensitive pre-shared key in plain text format.
+This code must be kept securely according to the client security policy.
+
+Specify the shared code as an input only when you are creating or updating the L2 VPN over IPSec tunnel in the client (spoke) mode.
 
 **Method history:**
 
@@ -7793,9 +7813,9 @@ Release | Modification
  --------|-------------
  6.4.2 | Method introduced.
 
-* **get** *(secured)*: Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.
+* **get** *(secured)*: Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.              
 
- **Method history:**
+**Method history:**
 
  Release | Modification
  --------|-------------
@@ -7806,6 +7826,9 @@ Release | Modification
 * **get** *(secured)*: Retrieve the peer code of the client from the NSX Edge that is configured as the server (hub).
 
 This peer code becomes the input code (shared code) for configuring L2 VPN over IPSec service on the client Edge.
+
+**Note:** The peer code contains the sensitive pre-shared key in plain text format. 
+The peer code must be kept securely according to the client security policy.
 
   **Method history:**
 
@@ -7916,6 +7939,9 @@ Parameter |  Description | Comments
 
 * **get** *(secured)*: Retrieve IPSec VPN configuration.
 
+**Note:** The Pre-shared Key (PSK) in IPSec VPN configuration is a shared secret or sensitive data in plain text format.
+This pre-shared key must be kept securely according to the client security policy.
+
  **Method history:**
  
  Release | Modification
@@ -8019,6 +8045,9 @@ Parameter |  Description | Comments
  ```
 
 * **put** *(secured)*: Update IPSec VPN configuration.
+
+**Note:** The Pre-shared Key (PSK) in IPSec VPN configuration is a shared secret or sensitive data in plain text format.
+This pre-shared key must be kept securely according to the client security policy.
 
  **Method history:**
  
@@ -8130,6 +8159,9 @@ for the NSX Edge either in plain text format or JSON format.
 You can use the configuration details as reference to configure the IPSec VPN parameters and 
 the BGP neighbor on the third-party VPN Gateway at the peer site.
 For a policy-based IPSec VPN site, BGP neighbor configuration is not applicable.
+
+**Note:** The Pre-shared Key (PSK) in IPSec VPN configuration is a shared secret or sensitive data in plain text format.
+This pre-shared key must be kept securely according to the client security policy.
                 
 **Method history:**
 

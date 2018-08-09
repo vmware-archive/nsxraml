@@ -16787,84 +16787,156 @@ securitySchemes:
           optimize traffic. An area is a logical collection of OSPF networks, routers,
           and links that have the same area identification.  
           
-          Areas are identified by an Area ID.
+          Areas are identified by an Area ID.          
         get:
           displayName: routingOSPFRead
           description: |
-            Retrieve OSPF configuration.
+            Retrieve OSPF configuration.            
             
             **Method history:**
             
             Release | Modification
             --------|-------------
-            6.2.3 | Method updated. **isis** configuration section removed. 
-            6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. 
-#            6.3.0 | Method updated. **isis** parameter removed from route redistribution rules configuration.
+            6.2.3 | Method updated. **isis** parameter removed from route redistribution rules configuration. 
+            6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section.
+#            6.3.0 | Method updated. **isis** parameter removed from route redistribution rules configuration.            
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <ospf>
+                      <enabled>true</enabled>
+                      <protocolAddress>1.1.1.10</protocolAddress>    /* Required only for Distributed Logical Router */
+                      <forwardingAddress>1.1.1.1</forwardingAddress> /* Required only for Distributed Logical Router */
+                      <ospfAreas>
+                        <ospfArea>
+                          <areaId>51</areaId>
+                          <type>nssa</type>
+                          <authentication>
+                            <type>none</type>
+                          </authentication>
+                          <translateType7ToType5>false</translateType7ToType5>
+                        </ospfArea>
+                        <ospfArea>
+                          <areaId>0</areaId>
+                          <type>normal</type>
+                          <authentication>
+                            <type>none</type>
+                          </authentication>
+                        </ospfArea>
+                      </ospfAreas>
+                      <ospfInterfaces>
+                        <ospfInterface>
+                          <vnic>0</vnic>
+                          <areaId>0</areaId>
+                          <helloInterval>10</helloInterval>
+                          <deadInterval>40</deadInterval>
+                          <priority>128</priority>
+                          <cost>1</cost>
+                          <mtuIgnore>false</mtuIgnore>
+                        </ospfInterface>
+                        <ospfInterface>
+                          <vnic>1</vnic>
+                          <areaId>51</areaId>
+                          <helloInterval>10</helloInterval>
+                          <deadInterval>40</deadInterval>
+                          <priority>128</priority>
+                          <cost>1</cost>
+                          <mtuIgnore>false</mtuIgnore>
+                        </ospfInterface>
+                      </ospfInterfaces>
+                      <redistribution>
+                        <enabled>true</enabled>
+                        <rules>
+                          <rule>
+                            <id>0</id>
+                            <from>
+                              <ospf>false</ospf>
+                              <bgp>false</bgp>
+                              <static>false</static>
+                              <connected>true</connected>
+                            </from>
+                            <action>permit</action>
+                          </rule>
+                        </rules>
+                      </redistribution>
+                      <gracefulRestart>true</gracefulRestart>
+                      <defaultOriginate>false</defaultOriginate>
+                    </ospf>                            
         put:
           displayName: routingOSPFUpdate
           description: |
-            Configure OSPF.
+            Configure OSPF.            
             
             **Method history:**
             
             Release | Modification
             --------|-------------
-            6.2.3 | Method updated. **isis** configuration section removed. 
+            6.2.3 | Method updated. **isis** parameter removed from route redistribution rules configuration. 
             6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section. 
-#            6.3.0 | Method updated. **isis** parameter removed from route redistribution rules configuration.
+#            6.3.0 | Method updated. **isis** parameter removed from route redistribution rules configuration.            
           body:
             application/xml:
               example: |
                 <ospf>
                   <enabled>true</enabled>
+                  <protocolAddress>1.1.1.10</protocolAddress>    /* Required only for Distributed Logical Router */
+                  <forwardingAddress>1.1.1.1</forwardingAddress> /* Required only for Distributed Logical Router */
                   <ospfAreas>
                     <ospfArea>
-                      <areaId>100</areaId>
-                      <translateType7ToType5></translateType7ToType5>
+                      <areaId>51</areaId>
+                      <type>nssa</type>
+                      <authentication>
+                        <type>none</type>
+                      </authentication>
+                      <translateType7ToType5>false</translateType7ToType5>
+                    </ospfArea>
+                    <ospfArea>
+                      <areaId>0</areaId>
                       <type>normal</type>
                       <authentication>
-                        <type>password</type>
-                        <value>vmware123</value>
+                        <type>none</type>
                       </authentication>
                     </ospfArea>
                   </ospfAreas>
                   <ospfInterfaces>
                     <ospfInterface>
                       <vnic>0</vnic>
-                      <areaId>100</areaId>
+                      <areaId>0</areaId>
                       <helloInterval>10</helloInterval>
                       <deadInterval>40</deadInterval>
                       <priority>128</priority>
-                      <cost>10</cost>
+                      <cost>1</cost>
+                      <mtuIgnore>false</mtuIgnore>
+                    </ospfInterface>
+                    <ospfInterface>
+                      <vnic>1</vnic>
+                      <areaId>51</areaId>
+                      <helloInterval>10</helloInterval>
+                      <deadInterval>40</deadInterval>
+                      <priority>128</priority>
+                      <cost>1</cost>
+                      <mtuIgnore>false</mtuIgnore>
                     </ospfInterface>
                   </ospfInterfaces>
                   <redistribution>
                     <enabled>true</enabled>
                     <rules>
                       <rule>
-                        <prefixName>a</prefixName>
+                        <id>0</id>
                         <from>
-                          <isis>true</isis>
                           <ospf>false</ospf>
                           <bgp>false</bgp>
                           <static>false</static>
                           <connected>true</connected>
                         </from>
-                        <action>deny</action>
-                      </rule>
-                      <rule>
-                        <prefixName>b</prefixName>
-                        <from>
-                          <isis>false</isis>
-                          <ospf>false</ospf>
-                          <bgp>true</bgp>
-                          <static>false</static>
-                          <connected>false</connected>
-                        </from>
                         <action>permit</action>
                       </rule>
                     </rules>
                   </redistribution>
+                  <gracefulRestart>true</gracefulRestart>
+                  <defaultOriginate>false</defaultOriginate>
                 </ospf>
               schema: routingOSPFUpdate
         delete:
@@ -20234,7 +20306,51 @@ securitySchemes:
         ----
       get:
         displayName: vnicStatsRead
-        description: Retrieve interface statistics.
+        description: |
+          Retrieve the statistics of all configured vnics between a specified duration. 
+          If the duration is not specified, then all the statistics collected since
+          the deployment of the NSX Edge are retrieved. The statistics are retrieved 
+          after an interval of 5 minutes.
+        queryParameters:
+          startTime:
+            displayName: startTime
+            required: false
+            description: |
+              Specify the start time of the duration in *seconds*.
+          endTime:
+            displayName: endTime
+            required: false
+            description: |
+              Specify the end time of the duration in *seconds*.
+              When not specified, the current NSX Manager time is considered as the end time.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <statistics>
+                    <meta>
+                      <startTime>1336068000</startTime>
+                      <endTime>1336100700</endTime>
+                      <interval>300</interval>
+                    </meta>
+                    <data>
+                      <statistic>
+                        <vnic>0</vnic>
+                        <timestamp>1336068000</timestamp>
+                        <in>9.1914285714e+02</in>
+                        <out>5.1402857143e+02</out>
+                      </statistic>
+                      ...
+                      ...
+                      <statistic>
+                        <vnic>1</vnic>
+                        <timestamp>1336100700</timestamp>
+                        <in>9.2914285714e+02</in>
+                        <out>5.2402857143e+02</out>
+                        </statistic>
+                    </data>
+                  </statistics>     
       /uplink:
         displayName: uplinkVNICStats
         description: |
@@ -20242,7 +20358,51 @@ securitySchemes:
           ----
         get:
           displayName: uplinkVNICStatsRead
-          description: Retrieve uplink interface statistics.
+          description: |
+            Retrieve the statistics of all uplink interfaces between a specified duration. 
+            If the duration is not specified, then all the statistics collected since
+            the deployment of the NSX Edge are retrieved. The statistics are retrieved 
+            after an interval of 5 minutes.
+          queryParameters:
+            startTime:
+              displayName: startTime
+              required: false
+              description: |
+                Specify the start time of the duration in *seconds*.
+            endTime:
+              displayName: endTime
+              required: false
+              description: |
+                Specify the end time of the duration in *seconds*.
+                When not specified, the current NSX Manager time is considered as the end time.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <statistics>
+                      <meta>
+                        <startTime>1336068000</startTime>
+                        <endTime>1336100700</endTime>
+                        <interval>300</interval>
+                      </meta>
+                      <data>
+                        <statistic>
+                          <vnic>0</vnic>
+                          <timestamp>1336068000</timestamp>
+                          <in>9.1914285714e+02</in>
+                          <out>5.1402857143e+02</out>
+                        </statistic>
+                        ...
+                        ...
+                        <statistic>
+                          <vnic>1</vnic>
+                          <timestamp>1336100700</timestamp>
+                          <in>9.2914285714e+02</in>
+                          <out>5.2402857143e+02</out>
+                          </statistic>
+                      </data>
+                    </statistics>
       /internal:
         displayName: internalVNICStats
         description: |
@@ -20250,7 +20410,51 @@ securitySchemes:
           -----
         get:
           displayName: internalVNICStatsRead
-          description: Retrieve internal interface statistics.
+          description: |
+            Retrieve the statistics of all internal interfaces between a specified duration. 
+            If the duration is not specified, then all the statistics collected since
+            the deployment of the NSX Edge are retrieved. The statistics are retrieved 
+            after an interval of 5 minutes.
+          queryParameters:
+            startTime:
+              displayName: startTime
+              required: false
+              description: |
+                Specify the start time of the duration in *seconds*.
+            endTime:
+              displayName: endTime
+              required: false
+              description: |
+                Specify the end time of the duration in *seconds*.
+                When not specified, the current NSX Manager time is considered as the end time.  
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <statistics>
+                      <meta>
+                        <startTime>1336068000</startTime>
+                        <endTime>1336100700</endTime>
+                        <interval>300</interval>
+                      </meta>
+                      <data>
+                        <statistic>
+                          <vnic>0</vnic>
+                          <timestamp>1336068000</timestamp>
+                          <in>9.1914285714e+02</in>
+                          <out>5.1402857143e+02</out>
+                        </statistic>
+                        ...
+                        ...
+                        <statistic>
+                          <vnic>1</vnic>
+                          <timestamp>1336100700</timestamp>
+                          <in>9.2914285714e+02</in>
+                          <out>5.2402857143e+02</out>
+                          </statistic>
+                      </data>
+                    </statistics>            
     /l2vpn/config:
       displayName: l2VPN
       description: |
@@ -20547,7 +20751,7 @@ securitySchemes:
       get:
         displayName: l2tConfigReadAll
         description: | 
-         Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.   
+          Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.           
           
           **Method history:**
           
@@ -20576,14 +20780,7 @@ securitySchemes:
                           <transportSession>
                             <protocol>ipsec</protocol>
                             <ipsecSession>
-                              <ipsecSiteId>ipsecsite-3</ipsecSiteId>
-                              <sharedCode>
-                                MCw3Y2YzNmZiLHsic2l0ZU5hbWUiOiJGaXJzdFNpdGUiLCJzcmNUYXBJcCI6IjE2OS4yNTQuNj
-                                QuMiIsImRzdFRhcElwIjoiMTY5LjI1NC42NC4xIiwiZGhHcm91cCI6Imdyb3VwIDE0IiwiZW5j
-                                cnlwdEFuZERpZ2VzdCI6ImFlcy9zaGExIiwiZW5jYXBQcm90byI6ImdyZSIsInBzayI6InZtd2
-                                FyZSIsInR1bm5lbHMiOlt7ImxvY2FsSWQiOiIxMC4xOTIuMjIzLjUyIiwibG9jYWxWdGlJcCI6
-                                bnVsbCwicGVlcklkIjoiMTAuMTkyLjIyMy41MSJ9XX0=                           
-                              </sharedCode>
+                              <ipsecSiteId>ipsecsite-3</ipsecSiteId>                              
                             </ipsecSession>
                           </transportSession>
                         </transportSessions>
@@ -20612,6 +20809,11 @@ securitySchemes:
           displayName: l2tCreate
           description: | 
             Create a L2 VPN tunnel on the NSX Edge by consuming a route-based IPSec VPN tunnel.
+            
+            **Note:** The shared code in the L2 VPN configuration contains the sensitive pre-shared key in plain text format.
+            This code must be kept securely according to the client security policy.
+            
+            Specify the shared code as an input only when you are creating or updating the L2 VPN over IPSec tunnel in the client (spoke) mode.
             
             **Method history:**
             
@@ -20655,6 +20857,11 @@ securitySchemes:
             displayName: l2tUpdate
             description: |
               Update a specific L2 VPN over IPSec tunnel on the NSX Edge.
+              
+              **Note:** The shared code in the L2 VPN configuration contains the sensitive pre-shared key in plain text format.
+              This code must be kept securely according to the client security policy.
+              
+              Specify the shared code as an input only when you are creating or updating the L2 VPN over IPSec tunnel in the client (spoke) mode.
             
               **Method history:**
             
@@ -20699,9 +20906,9 @@ securitySchemes:
           get:
             displayName: l2tConfigRead
             description: |
-              Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.
+              Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.              
               
-               **Method history:**
+              **Method history:**
           
                Release | Modification
                --------|-------------
@@ -20722,13 +20929,7 @@ securitySchemes:
                           <transportSession>
                             <protocol>ipsec</protocol>
                             <ipsecSession>
-                              <ipsecSiteId>ipsecsite-3</ipsecSiteId>
-                              <sharedCode>
-                              MCw3Y2YzNmZiLHsic2l0ZU5hbWUiOiJGaXJzdFNpdGUiLCJzcmNUYXBJcCI6IjE2OS4yNTQuNjQuMiIsImRzd
-                              FRhcElwIjoiMTY5LjI1NC42NC4xIiwiZGhHcm91cCI6Imdyb3VwIDE0IiwiZW5jcnlwdEFuZERpZ2VzdCI6Im
-                              Flcy9zaGExIiwiZW5jYXBQcm90byI6ImdyZSIsInBzayI6InZtd2FyZSIsInR1bm5lbHMiOlt7ImxvY2FsSWQ
-                              iOiIxMC4xOTIuMjIzLjUyIiwibG9jYWxWdGlJcCI6bnVsbCwicGVlcklkIjoiMTAuMTkyLjIyMy41MSJ9XX0=
-                              </sharedCode>
+                              <ipsecSiteId>ipsecsite-3</ipsecSiteId>                              
                             </ipsecSession>
                           </transportSession>
                         </transportSessions>
@@ -20742,6 +20943,9 @@ securitySchemes:
                 Retrieve the peer code of the client from the NSX Edge that is configured as the server (hub).
                 
                 This peer code becomes the input code (shared code) for configuring L2 VPN over IPSec service on the client Edge.
+                
+                **Note:** The peer code contains the sensitive pre-shared key in plain text format. 
+                The peer code must be kept securely according to the client security policy.
                 
                   **Method history:**
           
@@ -20895,6 +21099,9 @@ securitySchemes:
         displayName: ipsecConfigRead
         description: | 
          Retrieve IPSec VPN configuration.
+         
+         **Note:** The Pre-shared Key (PSK) in IPSec VPN configuration is a shared secret or sensitive data in plain text format.
+         This pre-shared key must be kept securely according to the client security policy.
         
           **Method history:**
           
@@ -21007,6 +21214,9 @@ securitySchemes:
         displayName: ipsecConfigUpdate
         description: |  
          Update IPSec VPN configuration.
+         
+         **Note:** The Pre-shared Key (PSK) in IPSec VPN configuration is a shared secret or sensitive data in plain text format.
+         This pre-shared key must be kept securely according to the client security policy.
         
           **Method history:**
           
@@ -21144,6 +21354,9 @@ securitySchemes:
           You can use the configuration details as reference to configure the IPSec VPN parameters and 
           the BGP neighbor on the third-party VPN Gateway at the peer site.
           For a policy-based IPSec VPN site, BGP neighbor configuration is not applicable.
+          
+          **Note:** The Pre-shared Key (PSK) in IPSec VPN configuration is a shared secret or sensitive data in plain text format.
+          This pre-shared key must be kept securely according to the client security policy.
                           
           **Method history:**
         
