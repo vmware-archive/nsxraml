@@ -3377,8 +3377,10 @@ need to adjust identity firewall in your environment.
 
 **Example:** View user activities to VM ID 1 originating from application
 ID 1  
-`GET /api/3.0/ai/records?query=resource&interval=60m&param=src:DIRECTORY_GROUP`  
-`&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1`
+```
+GET /api/3.0/ai/records?query=resource&interval=60m&
+param=src:DIRECTORY_GROUP&param=dest:VIRTUAL_MACHINE:1&param=app:SRC_APP:1
+```
 
 ### View Inbound Activity
 
@@ -3400,8 +3402,10 @@ group, or AD group.
 
 **Example:** View user activities to VM ID 1 originating from
 application ID 1  
-`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
-`&param=src:SECURITY_GROUP:1`
+```
+GET /api/3.0/ai/records?query=containers&interval=60m&
+param=dest:SECURITY_GROUP:1:EXCLUDE &param=src:SECURITY_GROUP:1
+```
 
 ### View Interaction between Inventory Containers
 You can view the traffic passing between defined containers such as AD
@@ -3422,8 +3426,10 @@ AD groups.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
 
 **Example:** View interaction between inventory containers  
-`GET /api/3.0/ai/records?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
-`&param=src:SECURITY_GROUP:1`
+```
+GET /api/3.0/ai/records?query=containers&interval=60m&
+param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1
+```
 
 ### View Outbound AD Group Activity
 
@@ -3442,8 +3448,10 @@ groups and can use this data to fine tune your firewall rules.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default * is *INCLUDE*).
 
 **Example:** View outbound AD group activity    
-`GET https://NSX-Manager-IP-Address/api/3.0/ai/records?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
-`&param=src:SECURITY_GROUP:1:EXCLUDE`
+```
+GET /api/3.0/ai/records?query=adg&interval=24h&
+param=adg:USER:1:INCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE
+```
 
 ### /3.0/ai/userdetails
 Working With User Details
@@ -3471,8 +3479,10 @@ if you need to adjust identity firewall in your environment.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
 **Example:** View user activities to VM ID 1 originating from application ID 1  
-`GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00`  
-`&param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52`
+```
+GET /api/3.0/ai/userdetails?query=resource&stime=2012-10-15T00:00:00&etime=2012-10-20T00:00:00&
+param=src:DIRECTORY_GROUP:2&param=app:SRC_APP:16&param=dest:IP:172.16.4.52
+```
 
 ### View Inbound Activity
 
@@ -3494,8 +3504,10 @@ group, or AD group.
 
 **Example:** View user activities to VM ID 1 originating from
 application ID 1  
-`GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE`  
-`&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE`
+```
+GET /api/3.0/userdetails?query=sam&interval=60m&param=app:DEST_APP:1:EXCLUDE
+&param=dest:IP:1:EXCLUDE&param=src:SECURITY_GROUP:1:EXCLUDE
+```
 
 ### View Interaction between Inventory Containers
 You can view the traffic passing between defined containers such as AD
@@ -3516,8 +3528,10 @@ AD groups.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE*, or *NOT* (default * is *INCLUDE*).
 
 **Example:** View interaction between inventory containers  
-`GET /api/3.0/ai/userdetails?query=containers&interval=60m&param=dest:SECURITY_GROUP:1:EXCLUDE`  
-`&param=src:SECURITY_GROUP:1`
+```
+GET /api/3.0/ai/userdetails?query=containers&interval=60m&
+param=dest:SECURITY_GROUP:1:EXCLUDE&param=src:SECURITY_GROUP:1
+```
 
 ### View Outbound AD Group Activity
 
@@ -3535,9 +3549,11 @@ groups and can use this data to fine tune your firewall rules.
   * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
-**Example:** View outbound AD group activity    
-`GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE`  
-`&param=src:SECURITY_GROUP:1:EXCLUDE`
+**Example:** View outbound AD group activity
+```
+GET /api/3.0/ai/userdetails?query=adg&interval=24h&param=adg:USER:1:INCLUDE
+&param=src:SECURITY_GROUP:1:EXCLUDE
+```
 
 ### View Virtual Machine Activity Report
 
@@ -3556,9 +3572,11 @@ groups and can use this data to fine tune your firewall rules.
   * &lt;comma-separated-values&gt; is a comma-separated numbers (optional). If none specified then no filter is applied.
   * &lt;operator&gt; is one of *INCLUDE*, *EXCLUDE* (default is *INCLUDE*).
 
-**Example:** View outbound AD group activity    
-`GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1
-&param=app:DEST_APP:16`
+**Example:** View outbound AD group activity
+```
+GET /api/3.0/ai/userdetails?query=vma&interval=60m&param=dest:VIRTUAL_MACHINE:1&
+param=app:DEST_APP:16
+```
 
 ### /3.0/ai/user/{userID}
 Working With a Specific User
@@ -8009,6 +8027,7 @@ Release | Modification
 
 ### /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}
 Working With a Specific L2 VPN Tunnel
+-------
 
 * **put** *(secured)*: Update a specific L2 VPN over IPSec tunnel on the NSX Edge.
 
@@ -8027,9 +8046,9 @@ Release | Modification
 
 **Method history:**
 
- Release | Modification
- --------|-------------
- 6.4.2 | Method introduced.
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
 
 * **get** *(secured)*: Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.
 
@@ -8058,6 +8077,7 @@ Release | Modification
 
 ### /4.0/edges/{edgeId}/l2t/config/globalconfig
 Working With Global Configuration for L2 VPN Over IPSec 
+-------
 
 * **get** *(secured)*: Retrieve the mode of the L2 VPN over IPSec service on the Edge.
   
