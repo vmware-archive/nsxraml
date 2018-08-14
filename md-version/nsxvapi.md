@@ -1,18 +1,19 @@
-# VMware NSX for vSphere API documentation version 6.4
+# VMware NSX Data Center for vSphere API documentation version 6.4
 https://{nsxmanager}/api
 
 ### Introduction
-This manual, the NSX for vSphere API Guide, describes how to install,
-configure, monitor, and maintain the VMware® NSX system by using REST API
-requests.
+This manual, the *NSX API Guide*, describes how to install, configure, monitor, and maintain the
+VMware NSX® Data Center for vSphere® system by using REST API requests.
+
+**Important**: NSX for vSphere is now known as NSX Data Center for vSphere.
 
 ## Intended Audience
 
-This manual is intended for anyone who wants to use REST API to
-programmatically control NSX in a VMware vSphere environment. The information
+This manual is intended for anyone who wants to use the REST API to
+programmatically control an NSX Data Center for vSphere environment. The information
 in this manual is written for experienced developers who are familiar with
 virtual machine technology, virtualized datacenter operations, and REST APIs.
-This manual also assumes familiarity with NSX for vSphere.
+This manual also assumes familiarity with NSX Data Center for vSphere.
 
 ## VMware Technical Publications Glossary
 
@@ -28,7 +29,7 @@ http://www.vmware.com/support/.
 The VMware Web site also provides the latest product updates.
 
 If you have comments about this documentation, submit your feedback to:
-<docfeedback@vmware.com>.
+&lt;docfeedback@vmware.com&gt;.
 
 ## Using the NSX REST API
 
@@ -75,7 +76,9 @@ Manager appliance, even if you have not made any configuration changes. You
 can use this as a test to verify that your REST client is configured correctly
 to communicate with the NSX Manager API.
 
-`GET /api/2.0/services/usermgmt/user/admin`
+```
+GET /api/2.0/services/usermgmt/user/admin
+```
 
 ### URI and Query Parameters
 
@@ -86,7 +89,9 @@ using ampersands (**&**).
 
 For example, you can use this method to get a list of logical switches on a transport zone: 
 
-`GET /api/2.0/vdn/scopes/{scopeId}/virtualwires`
+```
+GET /api/2.0/vdn/scopes/{scopeId}/virtualwires
+```
 
 **scopeId** is a URI parameter that represents a transport zone.
 
@@ -103,7 +108,10 @@ To view the first 20 logical switches on transport zone vdnscope-1, use the foll
 
 These parameters are combined to create this request:
 
-`GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?startindex=0&pagesize=20`
+```
+GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?
+startindex=0&pagesize=20
+```
 
 ### RESTful Workflow Patterns
 
@@ -211,10 +219,10 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### update-number
-Update 6
+Update 7
 
 ### update-date
-Modified on 12 JULY 2018
+Modified AUG 2018
 
 ---
 
@@ -1365,7 +1373,7 @@ Working With Licensing
 ============
 The licensing capacity usage API command reports usage of CPUs, VMs and
 concurrent users for the distributed firewall and VXLAN. The licensing
-status API command displays details about the assigned NSX license.
+status API command displays details about the assigned license.
 
 ### /2.0/services/licensing/capacityusage
 Working With Licensing Capacity
@@ -1385,9 +1393,9 @@ Release | Modification
 ### /2.0/services/licensing/status
 Working With Licensing Status
 -----------
-The licensing status API command displays details about the assigned NSX license.
+The licensing status API command displays details about the assigned license.
 
-* **get** *(secured)*: Retrieve details about the assigned NSX license.
+* **get** *(secured)*: Retrieve details about the assigned license.
 
 **Method history:**
 
@@ -2539,7 +2547,7 @@ See *NSX Manager Appliance Backup Settings* for details.
 NSX Manager Appliance On-Demand Backup
 ----
 
-* **post** *(secured)*: Start an on-demand NSX backup.
+* **post** *(secured)*: Start an on-demand NSX Manager backup.
 
 You must set the **Content-Type** header to *application/xml* for the
 backup to run successfully.
@@ -2849,7 +2857,7 @@ SECURITY_TAG | Security Tag
 Working With the VMware Customer Experience Improvement Program
 =====
 
-NSX participates in VMware’s Customer Experience Improvement Program (CEIP).
+NSX Data Center for vSphere participates in VMware’s Customer Experience Improvement Program (CEIP).
 
 See "Customer Experience Improvement Program" in the *NSX Administration
 Guide* for more information.
@@ -3318,7 +3326,7 @@ Working With Activity Monitoring
 Working With Aggregated User Activity
 --------------
 Get aggregated user activity (action records) using parameters. Requires
-that NSX Guest Introspection is configured, NSX Manager must be
+that Guest Introspection is configured, NSX Manager must be
 registered with Active Directory, and data collection is enabled on one
 or more VMs.
 
@@ -3924,7 +3932,7 @@ secondary managers.
 Working With ESX Agent Manager
 ========
 vSphere ESX Agent Manager (EAM) automates the process of deploying and
-managing NSX networking and security services.
+managing NSX Data Center for vSphere networking and security services.
 
 ### /2.0/eam/status
 Working With EAM Status
@@ -3932,8 +3940,8 @@ Working With EAM Status
 
 * **get** *(secured)*: Retrieve EAM status from vCenter.
 
-You can verify the status is UP before proceeding with an NSX install or
-upgrade.
+You can verify the status is UP before proceeding with an NSX Data Center 
+for vSphere install or upgrade.
 
 **Method history:**
 
@@ -3947,7 +3955,7 @@ Working With Alarms
 
 Alarms are notifications that are activated in response to an event, a set
 of conditions, or the state of an object. Alarms, along with other alerts,
-are displayed on the NSX Dashboard and other screens on the vSphere Web
+are displayed on the Dashboard and other screens on the vSphere Web
 Client UI.
 
 See "Alarms" in the *NSX Logging and System Events Guide* for more information.
@@ -4026,7 +4034,7 @@ will trigger an alarm. If you power the NSX Edge appliance back on, the
 alarm will resolve. If however, you delete the NSX Edge appliance, the
 alarm will persist, because the alarm cause was never resolved. In this
 case, you may want to manually resolve the alarm. Resolving the alarms
-will clear them from the NSX Dashboard.
+will clear them from the Dashboard.
 
 Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
 alarms for the source. Use this response as the request body for the
@@ -6724,8 +6732,9 @@ Release | Modification
 Working With GRE Tunnels
 --------------
 
-You can create GRE tunnels between your NSX environment and another
-site. Routing using BGP and static routes is supported.
+You can create GRE tunnels between your NSX Data Center for vSphere
+environment and another site. Routing using BGP and static routes is
+supported.
 
 You can create up to 32 tunnels.
 
@@ -7916,18 +7925,18 @@ sent bytes, received bytes for the specified Edge.
 ### /4.0/edges/{edgeId}/l2t/config
 Working with L2 VPN Over IPSec
 -----
-Starting with NSX Data Center for vSphere 6.4.2, you can stretch your 
+Starting with NSX 6.4.2, you can stretch your 
 layer 2 networks between two sites with L2 VPN service over IPSec. 
 Before configuring the L2 VPN service over IPSec, you must first create 
 a route-based IPSec VPN tunnel. You then consume this route-based IPSec
 VPN tunnel to create a L2 VPN tunnel between the two sites.
 
-In NSX Data Center for vSphere 6.4.2, you cannot create and edit 
-route-based IPSec VPN tunnel by using the vSphere Web Client. You must 
-use the NSX Data Center for vSphere REST APIs.
+In NSX 6.4.2, you cannot create and edit route-based IPSec VPN tunnel by
+using the vSphere Web Client. You must use the NSX Data Center for
+vSphere REST APIs.
 
 For a detailed workflow of configuring the L2 VPN service over IPSec,
-see the *NSX Data Center for vSphere Administration Guide*.
+see the *NSX Administration Guide*.
 
 **L2 VPN Over IPSec Parameters**
   
@@ -8045,7 +8054,7 @@ and remote sites. NSX Edge supports certificate authentication,
 preshared key mode, and IP unicast traffic between the NSX Edge instance 
 and remote VPN sites. 
 
-Starting with NSX Data Center for vSphere 6.4.2, you can configure both 
+Starting with NSX 6.4.2, you can configure both 
 policy-based IPSec VPN service and route-based IPSec VPN service. However, 
 you can configure, manage, and edit route-based IPSec VPN parameters only 
 by using REST APIs. 
@@ -8076,12 +8085,12 @@ subnet is routed using the IPSec tunnel to the peer subnet.
 cannot have more than one IP address. A good practice is to ensure that
 the IP address of the VTI on both the local and peer sites are on the same subnet.
 
-**Important:** In NSX Data Center for vSphere 6.4.2, static routing and OSPF 
+**Important:** In NSX 6.4.2, static routing and OSPF 
 dynamic routing through an IPSec tunnel is not supported.
 
 For a detailed example of configuring a route-based IPSec VPN tunnel between 
 an NSX Edge and a Cisco CSR 1000V Virtual Appliance, see the 
-*NSX Data Center for vSphere Administration Guide*.
+*NSX Administration Guide*.
                         
 
 **IPSec VPN Parameters**
@@ -9286,8 +9295,8 @@ in descending order. The security policy with the highest precedence
 ## snmp
 Working With SNMP
 =================
-NSX Manager receives events from other NSX components, including NSX Edge,
-network fabric, and hypervisors.
+NSX Manager receives events from other NSX Data Center for vSphere
+components, including NSX Edge, network fabric, and hypervisors.
 
 You can configure NSX Manager to forward SNMP traps to an SNMP Manager.
 
@@ -9415,9 +9424,10 @@ Release | Modification
 ## TechSupportBundle
 Working With Support Bundle
 ====================================
-You can collect the support bundle data for NSX components like NSX Manager, hosts, edges, and 
-controllers. 
-These support bundles are required to troubleshoot any problem related to NSX. 
+You can collect the support bundle data for NSX Data Center for vSphere
+components like NSX Manager, hosts, edges, and controllers. 
+These support bundles are required to troubleshoot problems in the NSX
+Data Center for vSphere environment.
 Bundle Status has the following values:
 * Pending: Wait for the process to start.
 * In Progress: Wait for process to complete.

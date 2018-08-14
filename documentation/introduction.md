@@ -1,14 +1,15 @@
-This manual, the NSX for vSphere API Guide, describes how to install,
-configure, monitor, and maintain the VMware® NSX system by using REST API
-requests.
+This manual, the *NSX API Guide*, describes how to install, configure, monitor, and maintain the
+VMware NSX® Data Center for vSphere® system by using REST API requests.
+
+**Important**: NSX for vSphere is now known as NSX Data Center for vSphere.
 
 ## Intended Audience
 
-This manual is intended for anyone who wants to use REST API to
-programmatically control NSX in a VMware vSphere environment. The information
+This manual is intended for anyone who wants to use the REST API to
+programmatically control an NSX Data Center for vSphere environment. The information
 in this manual is written for experienced developers who are familiar with
 virtual machine technology, virtualized datacenter operations, and REST APIs.
-This manual also assumes familiarity with NSX for vSphere.
+This manual also assumes familiarity with NSX Data Center for vSphere.
 
 ## VMware Technical Publications Glossary
 
@@ -24,7 +25,7 @@ http://www.vmware.com/support/.
 The VMware Web site also provides the latest product updates.
 
 If you have comments about this documentation, submit your feedback to:
-<docfeedback@vmware.com>.
+&lt;docfeedback@vmware.com&gt;.
 
 ## Using the NSX REST API
 
@@ -71,7 +72,9 @@ Manager appliance, even if you have not made any configuration changes. You
 can use this as a test to verify that your REST client is configured correctly
 to communicate with the NSX Manager API.
 
-`GET /api/2.0/services/usermgmt/user/admin`
+```
+GET /api/2.0/services/usermgmt/user/admin
+```
 
 ### URI and Query Parameters
 
@@ -82,7 +85,9 @@ using ampersands (**&**).
 
 For example, you can use this method to get a list of logical switches on a transport zone: 
 
-`GET /api/2.0/vdn/scopes/{scopeId}/virtualwires`
+```
+GET /api/2.0/vdn/scopes/{scopeId}/virtualwires
+```
 
 **scopeId** is a URI parameter that represents a transport zone.
 
@@ -99,7 +104,10 @@ To view the first 20 logical switches on transport zone vdnscope-1, use the foll
 
 These parameters are combined to create this request:
 
-`GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?startindex=0&pagesize=20`
+```
+GET https://192.168.110.42/api/2.0/vdn/scopes/vdnscope-1/virtualwires?
+startindex=0&pagesize=20
+```
 
 ### RESTful Workflow Patterns
 

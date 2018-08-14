@@ -1,13 +1,13 @@
 #%RAML 0.8
-title: VMware NSX for vSphere
+title: VMware NSX Data Center for vSphere
 baseUri: https://{nsxmanager}/api
 documentation:
  - title: Introduction
    content: !include documentation/introduction.md
  - title: update-number
-   content: Update 6
+   content: Update 7
  - title: update-date
-   content: Modified on 12 JULY 2018
+   content: Modified AUG 2018
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
@@ -3650,7 +3650,7 @@ securitySchemes:
     ============
     The licensing capacity usage API command reports usage of CPUs, VMs and
     concurrent users for the distributed firewall and VXLAN. The licensing
-    status API command displays details about the assigned NSX license.
+    status API command displays details about the assigned license.
 
   /capacityusage:
     displayName: capacityUsage
@@ -3713,12 +3713,12 @@ securitySchemes:
     description: |
       Working With Licensing Status
       -----------
-      The licensing status API command displays details about the assigned NSX license.
+      The licensing status API command displays details about the assigned license.
 
     get:
       displayName: licensingStatusRead
       description: |
-        Retrieve details about the assigned NSX license.
+        Retrieve details about the assigned license.
         
         **Method history:**
         
@@ -6754,7 +6754,7 @@ securitySchemes:
     post:
       displayName: applianceMgrBackupCreate # existing dupfix applianceMgrBackup
       description: |
-        Start an on-demand NSX backup.
+        Start an on-demand NSX Manager backup.
         
         You must set the **Content-Type** header to *application/xml* for the
         backup to run successfully.
@@ -7385,7 +7385,7 @@ securitySchemes:
     Working With the VMware Customer Experience Improvement Program
     =====
     
-    NSX participates in VMware’s Customer Experience Improvement Program (CEIP).
+    NSX Data Center for vSphere participates in VMware’s Customer Experience Improvement Program (CEIP).
     
     See "Customer Experience Improvement Program" in the *NSX Administration
     Guide* for more information.
@@ -8473,7 +8473,7 @@ securitySchemes:
       Working With Aggregated User Activity
       --------------
       Get aggregated user activity (action records) using parameters. Requires
-      that NSX Guest Introspection is configured, NSX Manager must be
+      that Guest Introspection is configured, NSX Manager must be
       registered with Active Directory, and data collection is enabled on one
       or more VMs.
     get:
@@ -9880,7 +9880,7 @@ securitySchemes:
     Working With ESX Agent Manager
     ========
     vSphere ESX Agent Manager (EAM) automates the process of deploying and
-    managing NSX networking and security services.
+    managing NSX Data Center for vSphere networking and security services.
 
   /status:
     displayName: eamStatus
@@ -9892,8 +9892,8 @@ securitySchemes:
       description: |
         Retrieve EAM status from vCenter.
         
-        You can verify the status is UP before proceeding with an NSX install or
-        upgrade.
+        You can verify the status is UP before proceeding with an NSX Data Center 
+        for vSphere install or upgrade.
         
         **Method history:**
         
@@ -9918,7 +9918,7 @@ securitySchemes:
     
     Alarms are notifications that are activated in response to an event, a set
     of conditions, or the state of an object. Alarms, along with other alerts,
-    are displayed on the NSX Dashboard and other screens on the vSphere Web
+    are displayed on the Dashboard and other screens on the vSphere Web
     Client UI.
     
     See "Alarms" in the *NSX Logging and System Events Guide* for more information.
@@ -10216,7 +10216,7 @@ securitySchemes:
       alarm will resolve. If however, you delete the NSX Edge appliance, the
       alarm will persist, because the alarm cause was never resolved. In this
       case, you may want to manually resolve the alarm. Resolving the alarms
-      will clear them from the NSX Dashboard.
+      will clear them from the Dashboard.
       
       Use `GET /api/2.0/services/alarms/{sourceId}` to retrieve the list of
       alarms for the source. Use this response as the request body for the
@@ -17565,8 +17565,9 @@ securitySchemes:
         Working With GRE Tunnels
         --------------
         
-        You can create GRE tunnels between your NSX environment and another
-        site. Routing using BGP and static routes is supported.
+        You can create GRE tunnels between your NSX Data Center for vSphere
+        environment and another site. Routing using BGP and static routes is
+        supported.
         
         You can create up to 32 tunnels.
         
@@ -21018,18 +21019,18 @@ securitySchemes:
       description: |
         Working with L2 VPN Over IPSec
         -----
-        Starting with NSX Data Center for vSphere 6.4.2, you can stretch your 
+        Starting with NSX 6.4.2, you can stretch your 
         layer 2 networks between two sites with L2 VPN service over IPSec. 
         Before configuring the L2 VPN service over IPSec, you must first create 
         a route-based IPSec VPN tunnel. You then consume this route-based IPSec
         VPN tunnel to create a L2 VPN tunnel between the two sites.
         
-        In NSX Data Center for vSphere 6.4.2, you cannot create and edit 
-        route-based IPSec VPN tunnel by using the vSphere Web Client. You must 
-        use the NSX Data Center for vSphere REST APIs.
+        In NSX 6.4.2, you cannot create and edit route-based IPSec VPN tunnel by
+        using the vSphere Web Client. You must use the NSX Data Center for
+        vSphere REST APIs.
         
         For a detailed workflow of configuring the L2 VPN service over IPSec,
-        see the *NSX Data Center for vSphere Administration Guide*.
+        see the *NSX Administration Guide*.
         
         **L2 VPN Over IPSec Parameters**
           
@@ -21317,7 +21318,7 @@ securitySchemes:
         preshared key mode, and IP unicast traffic between the NSX Edge instance 
         and remote VPN sites. 
         
-        Starting with NSX Data Center for vSphere 6.4.2, you can configure both 
+        Starting with NSX 6.4.2, you can configure both 
         policy-based IPSec VPN service and route-based IPSec VPN service. However, 
         you can configure, manage, and edit route-based IPSec VPN parameters only 
         by using REST APIs. 
@@ -21348,12 +21349,12 @@ securitySchemes:
         cannot have more than one IP address. A good practice is to ensure that
         the IP address of the VTI on both the local and peer sites are on the same subnet.
         
-        **Important:** In NSX Data Center for vSphere 6.4.2, static routing and OSPF 
+        **Important:** In NSX 6.4.2, static routing and OSPF 
         dynamic routing through an IPSec tunnel is not supported.
         
         For a detailed example of configuring a route-based IPSec VPN tunnel between 
         an NSX Edge and a Cisco CSR 1000V Virtual Appliance, see the 
-        *NSX Data Center for vSphere Administration Guide*.
+        *NSX Administration Guide*.
                                 
         
         **IPSec VPN Parameters**
@@ -24527,8 +24528,8 @@ securitySchemes:
   description: |
     Working With SNMP
     =================
-    NSX Manager receives events from other NSX components, including NSX Edge,
-    network fabric, and hypervisors.
+    NSX Manager receives events from other NSX Data Center for vSphere
+    components, including NSX Edge, network fabric, and hypervisors.
     
     You can configure NSX Manager to forward SNMP traps to an SNMP Manager.
 
@@ -24824,9 +24825,10 @@ securitySchemes:
   description: |
       Working With Support Bundle
       ====================================
-      You can collect the support bundle data for NSX components like NSX Manager, hosts, edges, and 
-      controllers. 
-      These support bundles are required to troubleshoot any problem related to NSX. 
+      You can collect the support bundle data for NSX Data Center for vSphere
+      components like NSX Manager, hosts, edges, and controllers. 
+      These support bundles are required to troubleshoot problems in the NSX
+      Data Center for vSphere environment.
       Bundle Status has the following values:
       * Pending: Wait for the process to start.
       * In Progress: Wait for process to complete.
