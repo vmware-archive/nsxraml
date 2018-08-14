@@ -1627,6 +1627,36 @@ scope.
 Working with API Authentication
 ==========
 
+### /2.0/services/auth/basic
+Working with Basic Authentication
+---------------
+
+* **put** *(secured)*: Update whether basic authentication is enabled. 
+
+Authentication headers are ignored, and the credentials used 
+in the request body are used instead. This request works whether 
+or not basic authenication is enabled.
+
+All NSX Manager systems in a cross-vCenter NSX environment must 
+have the same enabled/disabled status for basic authentication. If you
+disable basic authentication on one NSX Manager in a cross-vCenter 
+NSX environment, you must disable it on all NSX Manager systems in the 
+environment.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+
+* **get** *(secured)*: Retrieve basic authentication configuration.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+
 ### /2.0/services/auth/token
 Working with API Tokens
 --------
@@ -1651,6 +1681,9 @@ parameter.
 If a user authenticates with a token, and the user is deleted or their
 NSX access is disabled, their token will remain valid until the token
 expires.
+
+To create a token when basic authentication is disabled, see 
+`POST /api/3.0/services/auth/token`.
 
 **Method history:**
 
@@ -1693,6 +1726,42 @@ Working With Token Invalidation
 Release | Modification
 --------|-------------
 6.4.1 | Method introduced. 
+
+## 3AuthToken
+Working with API Authentication
+======
+
+### /3.0/services/auth/token
+
+* **post** *(secured)*: Create a new authentication token.
+
+Authentication headers are ignored, and the credentials used 
+in the request body are used instead. This request works whether 
+or not Basic Authenication is enabled.
+  
+You can use this token in your REST client to access the API. Send the
+token in the Authorization header with the AUTHTOKEN keyword. See the
+documentation for your REST client for more information.
+
+**Example Authorization header:**
+```
+Authorization: AUTHTOKEN eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTUyMDU1NTU0NH0.bXPVyHp6uR4HmCmyIMcgJQIS-E1xeb6MLz_3BDk7Lzw
+```
+
+By default, this token is created with the default expiry value
+(see `GET/PUT /api/2.0/services/auth/tokenexpiration`). You 
+can also set a custom expiration using the *expiresInMinutes* query 
+parameter.
+
+If a user authenticates with a token, and the user is deleted or their
+NSX access is disabled, their token will remain valid until the token
+expires.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
 
 ## secGroup
 Working With Security Group Grouping Objects
