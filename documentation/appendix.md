@@ -57,6 +57,12 @@ This section lists API removals and behavior changes. See **Method
 history** information throughout the *NSX API Guide* for details of
 other changes, such as parameter additions.
 
+### Deprecations in NSX 6.4.2
+
+The following item is deprecated, and might be removed in a future release.
+* GET/POST/DELETE /api/2.0/vdn/controller/{controllerId}/syslog. Use 
+  GET/PUT /api/2.0/vdn/controller/cluster/syslog instead.
+
 ### Behavior changes in NSX 6.4.1
 
 When you create a new IP pool with `POST /api/2.0/services/ipam/pools/scope/globalroot-0`, or modify an existing IP pool with `PUT /api/2.0/services/ipam/pools/`, and the pool has multiple IP ranges defined, validation is done to ensure that the ranges do not overlap. This validation was not previously done.

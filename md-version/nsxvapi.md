@@ -903,8 +903,12 @@ or underscores.
 When you update the controller name, the following changes are made:
 
 * the name displayed in the Networking & Security UI is changed to *newName*
-* the VM's hostname is changed to *newName-NSX-&lt;controller_id&gt;* 
 * the VM name is vSphere is changed to *newName-NSX-&lt;controller_id&gt;*
+* the VM's hostname is changed to *newName-NSX-&lt;controller_id&gt;* 
+
+**Note**: The VM hostname is used in controller log entries. If you
+change the controller hostname, the log entries display the new
+hostname. 
 
 **Method history:**
 
@@ -933,13 +937,38 @@ application/octet-stream and response header is filename. This
 streams a fairly large bundle back (possibly hundreds of MB).
 
 ### /2.0/vdn/controller/{controllerId}/syslog
-Working With Controller Syslog
+Working With Controller Syslog Configuration
 -----
 
 * **post** *(secured)*: Add controller syslog exporter on the controller.
+
+**Deprecated**: Starting in 6.4.2, `POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog` are deprecated.
+
+Use `GET/PUT /api/2.0/vdn/controller/cluster/syslog` instead.
+
+Using both these methods is not supported and might result in an
+inconsistent state on the controller nodes.
+
 * **get** *(secured)*: Retrieve details about the syslog exporter on the controller.
 
+**Deprecated**: Starting in 6.4.2, `POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog` are deprecated.
+
+Use `GET/PUT /api/2.0/vdn/controller/cluster/syslog` instead.
+
+Using both these methods is not supported and might result in an
+inconsistent state on the controller nodes.
+
 * **delete** *(secured)*: Deletes syslog exporter on the specified controller node.
+
+**Deprecated**: Starting in 6.4.2, `POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog` are deprecated.
+
+Use `GET/PUT /api/2.0/vdn/controller/cluster/syslog` instead.
+
+Using both these methods is not supported and might result in an
+inconsistent state on the controller nodes.
 
 ### /2.0/vdn/controller/{controllerId}/snapshot
 Working With Controller Cluster Snapshots
@@ -957,10 +986,11 @@ Working With the NSX Controller Cluster Configuration
 * **put** *(secured)*: Modify cluster wide configuration information for controller.
 
 ### /2.0/vdn/controller/cluster/ntp
-Working With Controller NTP Settings
+Working With Controller Cluster NTP Settings
 -----
-You can configure up to 5 NTP servers on your NSX Controller cluster. 
-You can specify NTP servers by IPv4 address or hostname. The same 
+You can configure up to five NTP servers on the NSX Controller cluster. 
+You can specify NTP servers by IPv4 address or FQDN. If an FQDN is used, 
+DNS settings must also be configured. The same 
 NTP settings are applied to all controller nodes in the cluster.
 
 * **get** *(secured)*: Retrieve NTP configuration for the NSX Controller cluster.
@@ -973,11 +1003,95 @@ Release | Modification
 
 * **put** *(secured)*: Update NTP configuration for the NSX Controller cluster.
 
+If the settings fail to apply to one or more controller nodes,
+an error message is returned. Check the controller node status, and retry 
+the request.
+
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.4.0 | Method introduced.
+
+### /2.0/vdn/controller/cluster/dns
+Working With Controller Cluster DNS Settings 
+-----
+  
+When you configure DNS on the NSX Controller cluster, the same 
+settings are applied to all nodes in the cluster.
+
+Controller cluster DNS settings override any DNS settings 
+configured on the controller IP pool.
+
+**DNS Parameters**
+
+Parameter |  Description | Comments
+---|---|---
+**dnsServer** | DNS server IP address | Required. Specify up to 3. Valid input: IPv4 addresses.
+**dnsSuffix** | DNS suffix for search order | Optional. Specify up to 3. Valid input: domain name suffix. At least one **dnsServer** must be configured.
+
+* **get** *(secured)*: Retrieve DNS settings for the NSX Controller cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+
+* **put** *(secured)*: Update DNS settings for all nodes in the NSX Controller cluster.
+
+**Note:** If the settings fail to apply to one or more controller nodes,
+an error message is returned. Check the controller node status, and retry 
+the request.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+
+### /2.0/vdn/controller/cluster/syslog
+Working With Controller Cluster Syslog Configuration
+-----
+  
+When you configure syslog on the NSX Controller cluster, the same 
+settings are applied to all nodes in the cluster.
+
+**Syslog Parameters**
+
+Parameter |  Description | Comments
+---|---|---
+**syslogServer** | Syslog server address | Required. Specify up to 10. Valid input: IPv4 addresses or FQDN. If FQDN is used, DNS must also be configured.
+**port** | Syslog exporter port | Optional. Default is *6514*. Valid ports: *1-65535*. 
+**level** | Syslog logging level | Optional. Default is *INFO*. Valid values: *INFO*, *ERROR*, *WARN*. 
+**protocol** | Syslog protocol | Optional. Default is *TLS*. Valid values: *TLS*, *UDP*, *TCP*.
+**certificate** | Certificate | Required if **protocol** is set to *TLS*. Valid value: X.509 PEM encoded certificate.
+
+* **get** *(secured)*: Retrieve syslog settings for the NSX Controller cluster.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
+
+* **put** *(secured)*: Update syslog settings for all nodes in the NSX Controller cluster.
+
+If the settings fail to apply to one or more controller nodes,
+an error message is returned. Check the controller node status, and retry 
+the request.
+
+**Important**: You can also configure syslog on an individual
+controller node with the deprecated API `POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog`. Using both these
+methods is not supported and might result in an inconsistent state on
+the controller nodes.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
 
 ### /2.0/vdn/controller/credential
 Working With the NSX Controller Password

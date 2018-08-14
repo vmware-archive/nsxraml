@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="mailto:&#100;&#x6f;&#x63;&#x66;&#101;&#x65;&#x64;&#98;&#x61;&#99;&#107;&#64;&#118;&#109;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#100;&#x6f;&#x63;&#x66;&#101;&#x65;&#x64;&#98;&#x61;&#99;&#107;&#64;&#118;&#109;&#x77;&#97;&#114;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a>.</p>
+<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#x2e;&#99;&#111;&#x6d;">&#x64;&#x6f;&#x63;&#x66;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#x76;&#x6d;&#119;&#97;&#114;&#101;&#x2e;&#99;&#111;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -2441,7 +2441,7 @@ https:<span class="hljs-comment">//192.168.110.42/api/1.0/appliance-management/u
   <strong>For example</strong>: </p>
 <ul>
 <li>NSX?fileurl=<a href="http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz">http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz</a></li>
-<li>NSX?fileurl=<a href="ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz">ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</a></li>
+<li>NSX?fileurl=ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</li>
 </ul>
 </div>
 <div class="method post">
@@ -5232,7 +5232,7 @@ VXLAN, create vmknics.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>resourceId<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span> </code></pre></p>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span></code></pre></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -16951,9 +16951,100 @@ invocation.</li>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-controller-ntp-settings">Working With Controller NTP Settings</h2>
-<p>You can configure up to 5 NTP servers on your NSX Controller cluster. 
-You can specify NTP servers by IPv4 address or hostname. The same 
+  <div class="description"><h2 id="working-with-controller-cluster-dns-settings-">Working With Controller Cluster DNS Settings </h2>
+<p>When you configure DNS on the NSX Controller cluster, the same 
+settings are applied to all nodes in the cluster.</p>
+<p>Controller cluster DNS settings override any DNS settings 
+configured on the controller IP pool.</p>
+<p><strong>DNS Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>dnsServer</strong></td>
+<td>DNS server IP address</td>
+<td>Required. Specify up to 3. Valid input: IPv4 addresses.</td>
+</tr>
+<tr>
+<td><strong>dnsSuffix</strong></td>
+<td>DNS suffix for search order</td>
+<td>Optional. Specify up to 3. Valid input: domain name suffix. At least one <strong>dnsServer</strong> must be configured.</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/controller/cluster/dns"
+    href="#GET/2.0/vdn/controller/cluster/dns"
+  ><h2>GET /2.0/vdn/controller/cluster/dns</h2></a>
+  <div class="content">
+    <p><p>Retrieve DNS settings for the NSX Controller cluster.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.2</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ControllerClusterDns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer</span>&gt;</span>10.1.140.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer</span>&gt;</span>10.1.150.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>example.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>dns1.example.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ControllerClusterDns</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/vdn/controller/cluster/dns"
+    href="#PUT/2.0/vdn/controller/cluster/dns"
+  ><h2>PUT /2.0/vdn/controller/cluster/dns</h2></a>
+  <div class="content">
+    <p><p>Update DNS settings for all nodes in the NSX Controller cluster.</p>
+<p><strong>Note:</strong> If the settings fail to apply to one or more controller nodes,
+an error message is returned. Check the controller node status, and retry 
+the request.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.2</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ControllerClusterDns</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer</span>&gt;</span>10.1.140.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer</span>&gt;</span>10.1.150.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsServer</span>&gt;</span>10.1.160.1<span class="hljs-tag">&lt;/<span class="hljs-name">dnsServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>example.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>dns1.example.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dnsSuffix</span>&gt;</span>dns2.example.com<span class="hljs-tag">&lt;/<span class="hljs-name">dnsSuffix</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ControllerClusterDns</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-controller-cluster-ntp-settings">Working With Controller Cluster NTP Settings</h2>
+<p>You can configure up to five NTP servers on the NSX Controller cluster. 
+You can specify NTP servers by IPv4 address or FQDN. If an FQDN is used, 
+DNS settings must also be configured. The same 
 NTP settings are applied to all controller nodes in the cluster.</p>
 </div>
 <div class="method get">
@@ -16997,6 +17088,9 @@ NTP settings are applied to all controller nodes in the cluster.</p>
   ><h2>PUT /2.0/vdn/controller/cluster/ntp</h2></a>
   <div class="content">
     <p><p>Update NTP configuration for the NSX Controller cluster.</p>
+<p>If the settings fail to apply to one or more controller nodes,
+an error message is returned. Check the controller node status, and retry 
+the request.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -17015,6 +17109,134 @@ NTP settings are applied to all controller nodes in the cluster.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ntp-1.example.com<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">ntpServers</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">ControllerClusterNtpServers</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-controller-cluster-syslog-configuration">Working With Controller Cluster Syslog Configuration</h2>
+<p>When you configure syslog on the NSX Controller cluster, the same 
+settings are applied to all nodes in the cluster.</p>
+<p><strong>Syslog Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>syslogServer</strong></td>
+<td>Syslog server address</td>
+<td>Required. Specify up to 10. Valid input: IPv4 addresses or FQDN. If FQDN is used, DNS must also be configured.</td>
+</tr>
+<tr>
+<td><strong>port</strong></td>
+<td>Syslog exporter port</td>
+<td>Optional. Default is <em>6514</em>. Valid ports: <em>1-65535</em>. </td>
+</tr>
+<tr>
+<td><strong>level</strong></td>
+<td>Syslog logging level</td>
+<td>Optional. Default is <em>INFO</em>. Valid values: <em>INFO</em>, <em>ERROR</em>, <em>WARN</em>. </td>
+</tr>
+<tr>
+<td><strong>protocol</strong></td>
+<td>Syslog protocol</td>
+<td>Optional. Default is <em>TLS</em>. Valid values: <em>TLS</em>, <em>UDP</em>, <em>TCP</em>.</td>
+</tr>
+<tr>
+<td><strong>certificate</strong></td>
+<td>Certificate</td>
+<td>Required if <strong>protocol</strong> is set to <em>TLS</em>. Valid value: X.509 PEM encoded certificate.</td>
+</tr>
+</tbody></table></div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/controller/cluster/syslog"
+    href="#GET/2.0/vdn/controller/cluster/syslog"
+  ><h2>GET /2.0/vdn/controller/cluster/syslog</h2></a>
+  <div class="content">
+    <p><p>Retrieve syslog settings for the NSX Controller cluster.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.2</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ControllerSyslogServerList</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">syslogServer</span>&gt;</span>syslog1.com<span class="hljs-tag">&lt;/<span class="hljs-name">syslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>6514<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>TLS<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">level</span>&gt;</span>ERROR<span class="hljs-tag">&lt;/<span class="hljs-name">level</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">certificate</span>&gt;</span>-----BEGIN CERTIFICATE-----
+MIICWjCCAcMCAgGlMA0GCSqGSIb3DQEBBAUAMHUxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw ...
+-----END CERTIFICATE-----<span class="hljs-tag">&lt;/<span class="hljs-name">certificate</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">syslogServer</span>&gt;</span>syslog5.com<span class="hljs-tag">&lt;/<span class="hljs-name">syslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>514<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>UDP<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">level</span>&gt;</span>INFO<span class="hljs-tag">&lt;/<span class="hljs-name">level</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ControllerSyslogServerList</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method put">
+  <a
+    class="verb put"
+    id="PUT/2.0/vdn/controller/cluster/syslog"
+    href="#PUT/2.0/vdn/controller/cluster/syslog"
+  ><h2>PUT /2.0/vdn/controller/cluster/syslog</h2></a>
+  <div class="content">
+    <p><p>Update syslog settings for all nodes in the NSX Controller cluster.</p>
+<p>If the settings fail to apply to one or more controller nodes,
+an error message is returned. Check the controller node status, and retry 
+the request.</p>
+<p><strong>Important</strong>: You can also configure syslog on an individual
+controller node with the deprecated API <code>POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog</code>. Using both these
+methods is not supported and might result in an inconsistent state on
+the controller nodes.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.2</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ControllerSyslogServerList</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">syslogServer</span>&gt;</span>syslog1.com<span class="hljs-tag">&lt;/<span class="hljs-name">syslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>6514<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>TLS<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">level</span>&gt;</span>ERROR<span class="hljs-tag">&lt;/<span class="hljs-name">level</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">certificate</span>&gt;</span>-----BEGIN CERTIFICATE-----
+MIICWjCCAcMCAgGlMA0GCSqGSIb3DQEBBAUAMHUxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw ...
+-----END CERTIFICATE-----<span class="hljs-tag">&lt;/<span class="hljs-name">certificate</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">syslogServer</span>&gt;</span>syslog5.com<span class="hljs-tag">&lt;/<span class="hljs-name">syslogServer</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">port</span>&gt;</span>514<span class="hljs-tag">&lt;/<span class="hljs-name">port</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">protocol</span>&gt;</span>UDP<span class="hljs-tag">&lt;/<span class="hljs-name">protocol</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">level</span>&gt;</span>INFO<span class="hljs-tag">&lt;/<span class="hljs-name">level</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">controllerSyslogServer</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ControllerSyslogServerList</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -17251,9 +17473,12 @@ or underscores.</p>
 <p>When you update the controller name, the following changes are made:</p>
 <ul>
 <li>the name displayed in the Networking &amp; Security UI is changed to <em>newName</em></li>
-<li>the VM&#39;s hostname is changed to <em>newName-NSX-&lt;controller_id&gt;</em> </li>
 <li>the VM name is vSphere is changed to <em>newName-NSX-&lt;controller_id&gt;</em></li>
+<li>the VM&#39;s hostname is changed to <em>newName-NSX-&lt;controller_id&gt;</em> </li>
 </ul>
+<p><strong>Note</strong>: The VM hostname is used in controller log entries. If you
+change the controller hostname, the log entries display the new
+hostname. </p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -17289,7 +17514,7 @@ node.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-controller-syslog">Working With Controller Syslog</h2>
+  <div class="description"><h2 id="working-with-controller-syslog-configuration">Working With Controller Syslog Configuration</h2>
 </div>
 <div class="method post">
   <a
@@ -17299,6 +17524,11 @@ node.</p>
   ><h2>POST /2.0/vdn/controller/{controllerId}/syslog</h2></a>
   <div class="content">
     <p><p>Add controller syslog exporter on the controller.</p>
+<p><strong>Deprecated</strong>: Starting in 6.4.2, <code>POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog</code> are deprecated.</p>
+<p>Use <code>GET/PUT /api/2.0/vdn/controller/cluster/syslog</code> instead.</p>
+<p>Using both these methods is not supported and might result in an
+inconsistent state on the controller nodes.</p>
 </p>
       <h3>Request Schema</h3>
       <pre><code class="code-block hljs lang-undefined">&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
@@ -17332,6 +17562,11 @@ node.</p>
   ><h2>GET /2.0/vdn/controller/{controllerId}/syslog</h2></a>
   <div class="content">
     <p><p>Retrieve details about the syslog exporter on the controller.</p>
+<p><strong>Deprecated</strong>: Starting in 6.4.2, <code>POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog</code> are deprecated.</p>
+<p>Use <code>GET/PUT /api/2.0/vdn/controller/cluster/syslog</code> instead.</p>
+<p>Using both these methods is not supported and might result in an
+inconsistent state on the controller nodes.</p>
 </p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
@@ -17356,6 +17591,11 @@ node.</p>
   ><h2>DELETE /2.0/vdn/controller/{controllerId}/syslog</h2></a>
   <div class="content">
     <p><p>Deletes syslog exporter on the specified controller node.</p>
+<p><strong>Deprecated</strong>: Starting in 6.4.2, <code>POST/DELETE
+/api/2.0/vdn/controller/{controllerId}/syslog</code> are deprecated.</p>
+<p>Use <code>GET/PUT /api/2.0/vdn/controller/cluster/syslog</code> instead.</p>
+<p>Using both these methods is not supported and might result in an
+inconsistent state on the controller nodes.</p>
 </p>
   </div>
 </div>
@@ -21180,7 +21420,7 @@ the <strong>packetSize</strong> parameter.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">vlan</span>&gt;</span>v1<span class="hljs-tag">&lt;/<span class="hljs-name">vlan</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">switchName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">switchName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">portName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">portName</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span> </code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
+<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span></code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
 <p><code>POST /api/2.0/vdn/virtualwires/&lt;virtualwireId&gt;/hardwaregateways/{bindingId}?action=attach</code></p>
 <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
   ...
@@ -32254,7 +32494,7 @@ BGP </span>local AS number : 65300<span class="hljs-built_in">
 BGP secret </span>: VMWare<span class="hljs-built_in">
 BGP </span>weight : 60 (optional)<span class="hljs-built_in">
 BGP </span>hold down timer : 180<span class="hljs-built_in">
-BGP </span>keep alive timer : 60 </code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
+BGP </span>keep alive timer : 60</code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
 <pre><code class="code-block hljs lang-json">{
   <span class="hljs-attr">"peer_config"</span>: {
     <span class="hljs-attr">"ipsecSiteConfig_ipsecsite-4"</span>: {
