@@ -7951,7 +7951,7 @@ Parameter |  Description | Comments
 **IpsecSession > ipsecSiteId**  |Site ID assigned to the route-based IPSec site.|String value. Required.
 **IpsecSession > sharedcode**  |Validates the local IPSec site configuration. It contains VTI IP address to be assigned to the local VTI.|Required if the L2TunnelsConfig mode is *spoke*.
 
-* **get** *(secured)*: Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.           
+* **get** *(secured)*: Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.
 
 **Method history:**
 
@@ -7968,6 +7968,8 @@ Release | Modification
   6.4.2 | Method introduced.
 
 ### /4.0/edges/{edgeId}/l2t/config/l2tunnels
+Working With L2 VPN Tunnels
+-----
 
 * **post** *(secured)*: Create a L2 VPN tunnel on the NSX Edge by consuming a route-based IPSec VPN tunnel.
 
@@ -7983,6 +7985,7 @@ Release | Modification
 6.4.2 | Method introduced.
 
 ### /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}
+Working With a Specific L2 VPN Tunnel
 
 * **put** *(secured)*: Update a specific L2 VPN over IPSec tunnel on the NSX Edge.
 
@@ -8005,15 +8008,17 @@ Release | Modification
  --------|-------------
  6.4.2 | Method introduced.
 
-* **get** *(secured)*: Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.              
+* **get** *(secured)*: Retrieve the configuration of a specific L2 VPN over IPSec tunnel on the Edge.
 
 **Method history:**
 
- Release | Modification
+Release | Modification
  --------|-------------
- 6.4.2 | Method introduced.
+6.4.2 | Method introduced.
 
 ### /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}/peercodes
+Working With Peer Codes for L2 VPN over IPSec
+-------
 
 * **get** *(secured)*: Retrieve the peer code of the client from the NSX Edge that is configured as the server (hub).
 
@@ -8022,29 +8027,30 @@ This peer code becomes the input code (shared code) for configuring L2 VPN over 
 **Note:** The peer code contains the sensitive pre-shared key in plain text format. 
 The peer code must be kept securely according to the client security policy.
 
-  **Method history:**
+**Method history:**
 
-  Release | Modification
-  --------|-------------
-  6.4.2 | Method introduced.
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
 
 ### /4.0/edges/{edgeId}/l2t/config/globalconfig
+Working With Global Configuration for L2 VPN Over IPSec 
 
 * **get** *(secured)*: Retrieve the mode of the L2 VPN over IPSec service on the Edge.
   
-  **Method history:**
+**Method history:**
 
-   Release | Modification
-   --------|-------------
-   6.4.2 | Method introduced.
+ Release | Modification
+ --------|-------------
+ 6.4.2 | Method introduced.
 
 * **put** *(secured)*: Modify the mode of the L2 VPN over IPSec service on the Edge.
 
-  **Method history:**
-            
-  Release | Modification
-  --------|-------------
-  6.4.2 | Method introduced.
+**Method history:**
+          
+Release | Modification
+--------|-------------
+6.4.2 | Method introduced.
 
 ### /4.0/edges/{edgeId}/ipsec/config
 Working With IPSec VPN
@@ -8091,7 +8097,6 @@ dynamic routing through an IPSec tunnel is not supported.
 For a detailed example of configuring a route-based IPSec VPN tunnel between 
 an NSX Edge and a Cisco CSR 1000V Virtual Appliance, see the 
 *NSX Administration Guide*.
-                        
 
 **IPSec VPN Parameters**
 
@@ -8144,96 +8149,96 @@ This pre-shared key must be kept securely according to the client security polic
 
  **Response: Policy-based IPSec site**
  ```  
-   <ipsec>
-     <version>38</version>
-     <enabled>true</enabled>
-     <disableEvent>false</disableEvent>
-     <logging>
-       <enable>true</enable>
-       <logLevel>debug</logLevel>
-     </logging>
-     <sites>
-       <site>
-         <enabled>true</enabled>
-         <name>VPN to edge-pa-1</name>
-         <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
-         <localId>11.0.0.11</localId>
-         <localIp>11.0.0.11</localIp>
-         <peerId>11.0.0.1</peerId>
-         <peerIp>any</peerIp>
-         <ipsecSessionType>policybasedsession</ipsecSessionType>
-         <encryptionAlgorithm>aes256</encryptionAlgorithm>
-         <authenticationMode>psk</authenticationMode>
-         <enablePfs>true</enablePfs>
-         <dhGroup>dh2</dhGroup>
-         <localSubnets>
-           <subnet>192.168.11.0/24</subnet>
-         </localSubnets>
-         <peerSubnets>
-           <subnet>192.168.1.0/24</subnet>
-         </peerSubnets>
-       </site>
-     </sites>
-     <global>
-       <psk>*****</psk>
-       <serviceCertificate>certificate-4</serviceCertificate>
-       <caCertificates>
-         <caCertificate>certificate-3</caCertificate>
-       </caCertificates>
-       <crlCertificates>
-         <crlCertificate>crl-1</crlCertificate>
-       </crlCertificates>
-     </global>
-   </ipsec>
+ <ipsec>
+   <version>38</version>
+   <enabled>true</enabled>
+   <disableEvent>false</disableEvent>
+   <logging>
+     <enable>true</enable>
+     <logLevel>debug</logLevel>
+   </logging>
+   <sites>
+     <site>
+       <enabled>true</enabled>
+       <name>VPN to edge-pa-1</name>
+       <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
+       <localId>11.0.0.11</localId>
+       <localIp>11.0.0.11</localIp>
+       <peerId>11.0.0.1</peerId>
+       <peerIp>any</peerIp>
+       <ipsecSessionType>policybasedsession</ipsecSessionType>
+       <encryptionAlgorithm>aes256</encryptionAlgorithm>
+       <authenticationMode>psk</authenticationMode>
+       <enablePfs>true</enablePfs>
+       <dhGroup>dh2</dhGroup>
+       <localSubnets>
+         <subnet>192.168.11.0/24</subnet>
+       </localSubnets>
+       <peerSubnets>
+         <subnet>192.168.1.0/24</subnet>
+       </peerSubnets>
+     </site>
+   </sites>
+   <global>
+     <psk>*****</psk>
+     <serviceCertificate>certificate-4</serviceCertificate>
+     <caCertificates>
+       <caCertificate>certificate-3</caCertificate>
+     </caCertificates>
+     <crlCertificates>
+       <crlCertificate>crl-1</crlCertificate>
+     </crlCertificates>
+   </global>
+ </ipsec>
  ```
  **Response: Route-based IPSec site**
  ```
-   <ipsec>
-     <version>143</version>
-     <enabled>true</enabled>
-     <disableEvent>false</disableEvent>
-     <logging>
-       <enable>true</enable>
-       <logLevel>debug</logLevel>
-     </logging>
-     <sites>
-       <site>
-         <enabled>true</enabled>
-         <name>RBVPN-252</name>
-         <description>Route-based VPN to edge 19</description>
-         <localId>10.109.229.252</localId>
-         <localIp>10.109.229.252</localIp>
-         <peerId>10.109.229.251</peerId>
-         <peerIp>10.109.229.251</peerIp>
-         <ipsecSessionType>routebasedsession</ipsecSessionType>
-         <tunnelInterface>
-           <label>vti-1</label>
-           <ipAddress>2.2.2.2/24</ipAddress>
-           <mtu>1416</mtu>
-         </tunnelInterface>
-         <encryptionAlgorithm>aes256</encryptionAlgorithm>
-         <enablePfs>true</enablePfs>
-         <dhGroup>dh2</dhGroup>
-         <localSubnets>
-           <subnet>0.0.0.0/0</subnet>
-         </localSubnets>
-         <peerSubnets>
-           <subnet>0.0.0.0/0</subnet>
-         </peerSubnets>
-         <psk>******</psk>
-         <authenticationMode>psk</authenticationMode>
-         <siteId>ipsecsite-34</siteId>
-         <ikeOption>ikev2</ikeOption>
-         <digestAlgorithm>sha1</digestAlgorithm>
-         <responderOnly>false</responderOnly>
-       </site>
-     </sites>
-     <global>
+ <ipsec>
+   <version>143</version>
+   <enabled>true</enabled>
+   <disableEvent>false</disableEvent>
+   <logging>
+     <enable>true</enable>
+     <logLevel>debug</logLevel>
+   </logging>
+   <sites>
+     <site>
+       <enabled>true</enabled>
+       <name>RBVPN-252</name>
+       <description>Route-based VPN to edge 19</description>
+       <localId>10.109.229.252</localId>
+       <localIp>10.109.229.252</localIp>
+       <peerId>10.109.229.251</peerId>
+       <peerIp>10.109.229.251</peerIp>
+       <ipsecSessionType>routebasedsession</ipsecSessionType>
+       <tunnelInterface>
+         <label>vti-1</label>
+         <ipAddress>2.2.2.2/24</ipAddress>
+         <mtu>1416</mtu>
+       </tunnelInterface>
+       <encryptionAlgorithm>aes256</encryptionAlgorithm>
+       <enablePfs>true</enablePfs>
+       <dhGroup>dh2</dhGroup>
+       <localSubnets>
+         <subnet>0.0.0.0/0</subnet>
+       </localSubnets>
+       <peerSubnets>
+         <subnet>0.0.0.0/0</subnet>
+       </peerSubnets>
        <psk>******</psk>
-       <caCertificates/>
-       <crlCertificates/>
-     </global>
-   </ipsec>
+       <authenticationMode>psk</authenticationMode>
+       <siteId>ipsecsite-34</siteId>
+       <ikeOption>ikev2</ikeOption>
+       <digestAlgorithm>sha1</digestAlgorithm>
+       <responderOnly>false</responderOnly>
+     </site>
+   </sites>
+   <global>
+     <psk>******</psk>
+     <caCertificates/>
+     <crlCertificates/>
+   </global>
+ </ipsec>
  ```
 
 * **put** *(secured)*: Update IPSec VPN configuration.
@@ -8250,95 +8255,95 @@ This pre-shared key must be kept securely according to the client security polic
  
  **Request: Policy-based IPSec site**
  ```
-   <ipsec>
-     <enabled>true</enabled>
-     <disableEvent>false</disableEvent>
-     <logging>
-       <enable>true</enable>
-       <logLevel>debug</logLevel>
-     </logging>
-     <sites>
-       <site>
-         <enabled>true</enabled>
-         <name>VPN to edge-pa-1</name>
-         <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
-         <localId>11.0.0.11</localId>
-         <localIp>11.0.0.11</localIp>
-         <peerId>11.0.0.1</peerId>
-         <peerIp>any</peerIp>
-         <ipsecSessionType>policybasedsession</ipsecSessionType>
-         <encryptionAlgorithm>aes256</encryptionAlgorithm>
-         <authenticationMode>psk</authenticationMode>
-         <enablePfs>true</enablePfs>
-         <dhGroup>dh2</dhGroup>
-         <localSubnets>
-           <subnet>192.168.11.0/24</subnet>
-         </localSubnets>
-         <peerSubnets>
-           <subnet>192.168.1.0/24</subnet>
-         </peerSubnets>
-       </site>
-     </sites>
-     <global>
-       <psk>*****</psk>
-       <serviceCertificate>certificate-4</serviceCertificate>
-       <caCertificates>
-         <caCertificate>certificate-3</caCertificate>
-       </caCertificates>
-       <crlCertificates>
-         <crlCertificate>crl-1</crlCertificate>
-       </crlCertificates>
-     </global>
-   </ipsec>
+ <ipsec>
+   <enabled>true</enabled>
+   <disableEvent>false</disableEvent>
+   <logging>
+     <enable>true</enable>
+     <logLevel>debug</logLevel>
+   </logging>
+   <sites>
+     <site>
+       <enabled>true</enabled>
+       <name>VPN to edge-pa-1</name>
+       <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
+       <localId>11.0.0.11</localId>
+       <localIp>11.0.0.11</localIp>
+       <peerId>11.0.0.1</peerId>
+       <peerIp>any</peerIp>
+       <ipsecSessionType>policybasedsession</ipsecSessionType>
+       <encryptionAlgorithm>aes256</encryptionAlgorithm>
+       <authenticationMode>psk</authenticationMode>
+       <enablePfs>true</enablePfs>
+       <dhGroup>dh2</dhGroup>
+       <localSubnets>
+         <subnet>192.168.11.0/24</subnet>
+       </localSubnets>
+       <peerSubnets>
+         <subnet>192.168.1.0/24</subnet>
+       </peerSubnets>
+     </site>
+   </sites>
+   <global>
+     <psk>*****</psk>
+     <serviceCertificate>certificate-4</serviceCertificate>
+     <caCertificates>
+       <caCertificate>certificate-3</caCertificate>
+     </caCertificates>
+     <crlCertificates>
+       <crlCertificate>crl-1</crlCertificate>
+     </crlCertificates>
+   </global>
+ </ipsec>
  ```
  **Request: Route-based IPSec site**
  ```
-   <ipsec>
-     <enabled>true</enabled>
-     <disableEvent>false</disableEvent>
-     <logging>
-       <enable>true</enable>
-       <logLevel>debug</logLevel>
-     </logging>
-     <sites>
-       <site>
-         <enabled>true</enabled>
-         <name>RBVPN-252</name>
-         <description>Route-based VPN to edge 19</description>
-         <localId>10.109.229.252</localId>
-         <localIp>10.109.229.252</localIp>
-         <peerId>10.109.229.251</peerId>
-         <peerIp>10.109.229.251</peerIp>
-         <ipsecSessionType>routebasedsession</ipsecSessionType>
-         <tunnelInterface>
-           <label>vti-1</label>
-           <ipAddress>2.2.2.2/24</ipAddress>
-           <mtu>1416</mtu>
-         </tunnelInterface>
-         <encryptionAlgorithm>aes256</encryptionAlgorithm>
-         <enablePfs>true</enablePfs>
-         <dhGroup>dh2</dhGroup>
-         <localSubnets>
-           <subnet>0.0.0.0/0</subnet>
-         </localSubnets>
-         <peerSubnets>
-           <subnet>0.0.0.0/0</subnet>
-         </peerSubnets>
-         <psk>******</psk>
-         <authenticationMode>psk</authenticationMode>
-         <siteId>ipsecsite-34</siteId>
-         <ikeOption>ikev2</ikeOption>
-         <digestAlgorithm>sha1</digestAlgorithm>
-         <responderOnly>false</responderOnly>
-       </site>
-     </sites>
-     <global>
+ <ipsec>
+   <enabled>true</enabled>
+   <disableEvent>false</disableEvent>
+   <logging>
+     <enable>true</enable>
+     <logLevel>debug</logLevel>
+   </logging>
+   <sites>
+     <site>
+       <enabled>true</enabled>
+       <name>RBVPN-252</name>
+       <description>Route-based VPN to edge 19</description>
+       <localId>10.109.229.252</localId>
+       <localIp>10.109.229.252</localIp>
+       <peerId>10.109.229.251</peerId>
+       <peerIp>10.109.229.251</peerIp>
+       <ipsecSessionType>routebasedsession</ipsecSessionType>
+       <tunnelInterface>
+         <label>vti-1</label>
+         <ipAddress>2.2.2.2/24</ipAddress>
+         <mtu>1416</mtu>
+       </tunnelInterface>
+       <encryptionAlgorithm>aes256</encryptionAlgorithm>
+       <enablePfs>true</enablePfs>
+       <dhGroup>dh2</dhGroup>
+       <localSubnets>
+         <subnet>0.0.0.0/0</subnet>
+       </localSubnets>
+       <peerSubnets>
+         <subnet>0.0.0.0/0</subnet>
+       </peerSubnets>
        <psk>******</psk>
-       <caCertificates/>
-       <crlCertificates/>
-     </global>
-   </ipsec>
- ```        
+       <authenticationMode>psk</authenticationMode>
+       <siteId>ipsecsite-34</siteId>
+       <ikeOption>ikev2</ikeOption>
+       <digestAlgorithm>sha1</digestAlgorithm>
+       <responderOnly>false</responderOnly>
+     </site>
+   </sites>
+   <global>
+     <psk>******</psk>
+     <caCertificates/>
+     <crlCertificates/>
+   </global>
+ </ipsec>
+ ```
 
 * **delete** *(secured)*: Delete the IPSec VPN configuration.
 
@@ -8354,12 +8359,12 @@ For a policy-based IPSec VPN site, BGP neighbor configuration is not applicable.
 
 **Note:** The Pre-shared Key (PSK) in IPSec VPN configuration is a shared secret or sensitive data in plain text format.
 This pre-shared key must be kept securely according to the client security policy.
-                
+
 **Method history:**
 
 Release | Modification
 --------|-------------
-6.4.2 | Method introduced.          
+6.4.2 | Method introduced.
 
 **Response: Text (Route-based IPSec VPN and BGP Neighbor Configuration)**
 ```
@@ -8491,8 +8496,8 @@ BGP keep alive timer : 60
         "bgp_hold_down_timer": "180",
         "bgp_keep_alive_timer": "60"
       }
+    }
   }
-}
 }
 ```
 
@@ -9644,7 +9649,6 @@ Working With All Hardware Gateway Replication Clusters
 Release | Modification
 --------|-------------
 6.4.2 | Method introduced.
-    
 
 ### /2.0/vdn/hardwaregateways/replicationcluster
 Working With a Specific Hardware Gateway Replication Cluster
