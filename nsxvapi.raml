@@ -4228,6 +4228,16 @@ securitySchemes:
     description: |
       Manage NSX Roles for Users
       -----
+      Possible roles are:
+      * *super_user* - built-in admin user
+      * *vshield_admin* - NSX Administrator
+      * *enterprise_admin* - Enterprise Administrator
+      * *security_admin* - Security Administrator
+      * *auditor* - Auditor
+      
+      Two additional roles are introduced in NSX 6.4.2.
+      * *security_engineer* - Security Engineer
+      * *network_engineer* - Network Engineer
     uriParameters:
       userId:
         required: true
@@ -4237,11 +4247,17 @@ securitySchemes:
     get:
       displayName: userMgmtRoleRead
       description: |
-        Retrieve a user's role (possible roles are *super_user*, *vshield_admin*,
-        *enterprise_admin*, *security_admin*, and *audit*).
+        Retrieve a user's role. 
     post:
       displayName: userMgmtRoleCreate
-      description: Add role and resources for a user.
+      description: |
+        Add role and resources for a user.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
       queryParameters:
         isGroup:
           displayName: isGroup
@@ -4262,7 +4278,14 @@ securitySchemes:
           schema: userRoleMgmtCreate
     put:
       displayName: userMgmtRoleUpdate
-      description: Change a user's role.
+      description: |
+        Change a user's role.
+        
+        **Method history:**
+        
+        Release | Modification
+        --------|-------------
+        6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
       body:
         application/xml:
           example: |

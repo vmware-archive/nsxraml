@@ -1601,12 +1601,35 @@ user. When a user account is created, the account is enabled by default.
 ### /2.0/services/usermgmt/role/{userId}
 Manage NSX Roles for Users
 -----
+Possible roles are:
+* *super_user* - built-in admin user
+* *vshield_admin* - NSX Administrator
+* *enterprise_admin* - Enterprise Administrator
+* *security_admin* - Security Administrator
+* *auditor* - Auditor
 
-* **get** *(secured)*: Retrieve a user's role (possible roles are *super_user*, *vshield_admin*,
-*enterprise_admin*, *security_admin*, and *audit*).
+Two additional roles are introduced in NSX 6.4.2.
+* *security_engineer* - Security Engineer
+* *network_engineer* - Network Engineer
+
+* **get** *(secured)*: Retrieve a user's role. 
 
 * **post** *(secured)*: Add role and resources for a user.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
+
 * **put** *(secured)*: Change a user's role.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
+
 * **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role
 is deleted, the user is removed from NSX Manager. You cannot delete the
 role for a local user.
