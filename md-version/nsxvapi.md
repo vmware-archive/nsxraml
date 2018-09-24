@@ -4976,7 +4976,6 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
-
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -5351,6 +5350,30 @@ Use *GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue
 ### /4.0/firewall/stats/thresholds/types
 
 * **get** *(secured)*: Get the different types of thresholds for distributed firewall.
+
+### /4.0/firewall/stats/rules
+Working With Distributed Firewall Rule Hit Counts
+----
+You can retrieve and reset the rule hit count statistics for a given rule.
+
+Parameter |  Description 
+---|---
+**ruleId** |Rule identification number.  
+**hitcount** | Number of times the rule was hit. 
+**firstHitTime** | First time the rule is hit. 
+**lastHitTime** | Most recent time the rule was hit.  
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+  6.4.2 | Method introduced.
+
+* **post** *(secured)*: Globally clears the rule hit count statistics for all rules. 
+
+### /4.0/firewall/stats/rules/{ruleId}
+
+* **get** *(secured)*: Retrieves the rule hit count statistics for a given rule. 
 
 ### /4.0/firewall/config/globalconfiguration
 Working With the Distributed Firewall Global Configuration

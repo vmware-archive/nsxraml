@@ -13637,7 +13637,6 @@ securitySchemes:
                 displayName: dfwThresholdstypesRead
                 description: |
                   Get the different types of thresholds for distributed firewall.
-
                 body:
                   application/xml:
                     example: |
@@ -13649,6 +13648,51 @@ securitySchemes:
                        <type>ProcessMemory</type>
                       </thresholdTypes>
                     schema: dfwThresholdstypesRead
+                    
+  /stats/rules:
+    displayName: dfHitCount
+    description: |
+      Working With Distributed Firewall Rule Hit Counts
+      ----
+      You can retrieve and reset the rule hit count statistics for a given rule.
+      
+      Parameter |  Description 
+      ---|---
+      **ruleId** |Rule identification number.  
+      **hitcount** | Number of times the rule was hit. 
+      **firstHitTime** | First time the rule is hit. 
+      **lastHitTime** | Most recent time the rule was hit.  
+      
+      **Method history:**
+      
+      Release | Modification
+      --------|-------------
+        6.4.2 | Method introduced.
+    post:
+      displayName: dfwHitCount
+      description: |
+        Globally clears the rule hit count statistics for all rules. 
+      queryParameters:
+        action:
+          displayName: action
+          description: Specify *reset* to  globally clear the rule hit count statistics. 
+    /{ruleId}:
+      get:
+        displayName: dfwHitCount
+        description: |
+          Retrieves the rule hit count statistics for a given rule. 
+          
+        body:
+          application/xml:
+            example: |
+              <ruleStats>
+               <ruleId>1001</ruleId>
+               <hitCount>111</hitCount>
+               <firstHitCount>1525987274749</firstHitCount>
+               <lastHitCount>1525987274749</lastHitCount>
+              </ruleStats>
+
+
   /config/globalconfiguration:
     displayName: dfwPerformance
     description: |
