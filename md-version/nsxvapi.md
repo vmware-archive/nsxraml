@@ -5398,7 +5398,7 @@ ignored. **tcpStrict** is instead configured at the section level. See
 "Working with Distributed Firewall Configuration" for more information.
 * **autoDraftDisabled** improves performances when making large numbers
 of changes to firewall rules.
-* **ruleStatsDisabled** describes the state of the rule stats collection
+* **ruleStatsDisabled** describes the state of the rule stats collection. Default value for this field is *false* meaning rule stats collection will be enabled by default. Set the value to true to disable rule stats collection on NSX Manager and hosts.
 
 You can disable the auto draft feature by setting **autoDraftDisabled** to
 true. Distributed Firewall saves up to 100 configurations, including
