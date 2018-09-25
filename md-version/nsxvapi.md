@@ -5354,7 +5354,7 @@ Use *GET /api/4.0/firewall/stats/thresholds/host/<hostId>?type=<>&thresholdValue
 ### /4.0/firewall/stats/rules
 Working With Distributed Firewall Rule Hit Counts
 ----
-You can retrieve and reset the rule hit count statistics for a given rule.
+You can review and reset the distributed firewall hit count.
 
 Parameter |  Description 
 ---|---
@@ -5363,17 +5363,25 @@ Parameter |  Description
 **firstHitTime** | First time the rule is hit. 
 **lastHitTime** | Most recent time the rule was hit.  
 
+* **post** *(secured)*: Globally clears the rule hit count statistics for all rules. 
+
 **Method history:**
 
 Release | Modification
 --------|-------------
   6.4.2 | Method introduced.
 
-* **post** *(secured)*: Globally clears the rule hit count statistics for all rules. 
-
 ### /4.0/firewall/stats/rules/{ruleId}
+Working with Rule Hit Counts for a Specific Rule
+----
 
 * **get** *(secured)*: Retrieves the rule hit count statistics for a given rule. 
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+  6.4.2 | Method introduced.
 
 ### /4.0/firewall/config/globalconfiguration
 Working With the Distributed Firewall Global Configuration
