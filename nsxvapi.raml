@@ -13719,6 +13719,7 @@ securitySchemes:
       "Working with Distributed Firewall Configuration" for more information.
       * **autoDraftDisabled** improves performances when making large numbers
       of changes to firewall rules.
+      * **ruleStatsDisabled** describes the state of the rule stats collection
       
       You can disable the auto draft feature by setting **autoDraftDisabled** to
       true. Distributed Firewall saves up to 100 configurations, including
@@ -13743,6 +13744,7 @@ securitySchemes:
         Release | Modification
         --------|-------------
         6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level.
+        6.4.2 | *ruleStatsDisabled* introduced.
       responses:
         200:
           body:
@@ -13752,6 +13754,7 @@ securitySchemes:
                   <layer3RuleOptimize>false</layer3RuleOptimize>
                   <layer2RuleOptimize>true</layer2RuleOptimize>
                   <tcpStrictOption>false</tcpStrictOption>
+                  <ruleStatsDisabled>false</ruleStatsDisabled>
                 </globalConfiguration>
     put:
       displayName: dfwPerformanceUpdate
@@ -13764,6 +13767,7 @@ securitySchemes:
         --------|-------------
         6.2.3 | Method updated. **autoDraftDisabled** parameter added.
         6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level. 
+        6.4.2 | *ruleStatsDisabled* introduced.
       body:
         application/xml:
           example: |
@@ -13771,6 +13775,7 @@ securitySchemes:
               <layer3RuleOptimize>false</layer3RuleOptimize>
               <layer2RuleOptimize>true</layer2RuleOptimize>
               <tcpStrictOption>false</tcpStrictOption>
+              <ruleStatsDisabled>false</ruleStatsDisabled>
               <autoDraftDisabled>true</autoDraftDisabled>
             </globalConfiguration>
           schema: dfwPerformanceUpdate

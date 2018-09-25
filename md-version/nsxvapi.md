@@ -5398,6 +5398,7 @@ ignored. **tcpStrict** is instead configured at the section level. See
 "Working with Distributed Firewall Configuration" for more information.
 * **autoDraftDisabled** improves performances when making large numbers
 of changes to firewall rules.
+* **ruleStatsDisabled** describes the state of the rule stats collection
 
 You can disable the auto draft feature by setting **autoDraftDisabled** to
 true. Distributed Firewall saves up to 100 configurations, including
@@ -5420,6 +5421,7 @@ configuration.
 Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level.
+6.4.2 | *ruleStatsDisabled* introduced.
 
 * **put** *(secured)*: Update the distributed firewall performance configuration.
 
@@ -5429,6 +5431,7 @@ Release | Modification
 --------|-------------
 6.2.3 | Method updated. **autoDraftDisabled** parameter added.
 6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level. 
+6.4.2 | *ruleStatsDisabled* introduced.
 
 ### /4.0/firewall/config/sections
 Working With the Distributed Firewall Universal Configuration
