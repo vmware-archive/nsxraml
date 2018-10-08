@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#100;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#99;&#107;&#64;&#x76;&#109;&#119;&#x61;&#x72;&#x65;&#x2e;&#99;&#x6f;&#109;">&#100;&#x6f;&#x63;&#x66;&#x65;&#x65;&#x64;&#98;&#97;&#99;&#107;&#64;&#x76;&#109;&#119;&#x61;&#x72;&#x65;&#x2e;&#99;&#x6f;&#109;</a>.</p>
+<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x64;&#x6f;&#99;&#102;&#101;&#x65;&#x64;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x64;&#x6f;&#99;&#102;&#101;&#x65;&#x64;&#x62;&#x61;&#x63;&#x6b;&#x40;&#118;&#109;&#x77;&#x61;&#x72;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -23481,7 +23481,7 @@ address.</p>
 <td>Optional. Required only when peerIp is specified as <em>Any</em> in site configuration.</td>
 </tr>
 <tr>
-<td><strong>encryptionAlgorithm</strong></td>
+<td><strong>site &gt; encryptionAlgorithm</strong></td>
 <td>Encryption algorithm for communication.</td>
 <td>Mandatory. Supported ciphers are <em>AES</em>, <em>AES256</em>, <em>Triple DES</em>, and <em>AES-GCM</em>.</td>
 </tr>
@@ -23501,12 +23501,12 @@ address.</p>
 <td>Optional. </td>
 </tr>
 <tr>
-<td><strong>enablePfs</strong></td>
+<td><strong>site &gt; enablePfs</strong></td>
 <td>Perfect Forward Secrecy (PFS) ensures that each new cryptographic key is unrelated to any previous key.</td>
 <td>Optional. Boolean. Options are <em>True</em> or <em>False</em>. Default is <em>True</em>. </td>
 </tr>
 <tr>
-<td><strong>authenticationMode</strong></td>
+<td><strong>site &gt; authenticationMode</strong></td>
 <td>Select authentication mode as <em>psk</em> or <em>x.509</em>.</td>
 <td>Required.</td>
 </tr>
@@ -23531,44 +23531,49 @@ address.</p>
 <td>Optional.</td>
 </tr>
 <tr>
-<td><strong>localId</strong></td>
+<td><strong>site &gt; localId</strong></td>
 <td>Type the IP address of the NSX Edge instance.</td>
-<td></td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>localIp</strong></td>
+<td><strong>site &gt; localIp</strong></td>
 <td>Type the IP address of the local endpoint.</td>
-<td></td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>localSubnets</strong></td>
+<td><strong>site &gt; localSubnets</strong></td>
 <td>Type the subnets to share between the sites.</td>
-<td></td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>peerId</strong></td>
-<td>Type the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is <em>x.509</em>.</td>
-<td></td>
+<td><strong>site &gt; peerId</strong></td>
+<td>Enter the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is <em>x.509</em>.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>peerIp &gt; index</strong></td>
-<td>Select the virtual machine NIC to bind to the IP address. This can be a IPv4 address such as 11.0.0.3.</td>
-<td></td>
+<td><strong>site &gt; peerIp</strong></td>
+<td>Enter the IP address of the peer endpoint.</td>
+<td>Required.</td>
 </tr>
 <tr>
-<td><strong>egressOptimization</strong></td>
-<td>The gateway IP addresses for which the traffic should be locally routed or for which traffic is to be blocked over the tunnel.</td>
-<td>Optional.</td>
+<td><strong>site &gt; peerSubnets</strong></td>
+<td>Enter the subnets to share between the sites in CIDR format.</td>
+<td>Required if <strong>ipsecSessionType</strong> parameter value is <em>policybasedsession</em>. For route-based IPSec site, the default and only valid subnet is <em>0.0.0.0/0</em></td>
 </tr>
 <tr>
-<td><strong>dhGroup</strong></td>
+<td><strong>site &gt; dhGroup</strong></td>
 <td>In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel.</td>
 <td>Optional. <em>dh2</em> is selected by default.</td>
 </tr>
 <tr>
 <td><strong>extension</strong></td>
-<td>Default value is <em>securelocaltrafficbyip=192.168.11.1</em>. To disable this extension, replace with securelocaltrafficbyip=0.</td>
-<td></td>
+<td>When add_spd is set to on, security policies are installed regardless of whether the tunnel is established. ike_fragment_size is used to avoid failure in the IKE negotiation when the link MTU size is small. For example, ike_frament_size=900.</td>
+<td>Optional. Global extensions: add_spd and ike_frament_size. <br> add_spd options are <em>off</em> or <em>on</em>. The default is <em>on</em>. </td>
+</tr>
+<tr>
+<td><strong>site &gt; extension</strong></td>
+<td>To disable this value, replace with securelocaltrafficbyip=0. Users can explicitly set this value to one of the other local IP addresses configured in the local subnets of Edge.  passthroughSubnets is used to exclude specific subnets from VPN policy enforcement if they overlap with the peerSubnets configured for the same site.</td>
+<td>Optional. Configurable per site level: securelocaltrafficbyip<IPAddress> and passthroughSubnets<PeerSubnetIPAddress>. By default, securelocaltrafficbyip<IPAddress> is <em>enabled</em> and set to one of the local IP addresses configured on the local subnets of Edge. </td>
 </tr>
 </tbody></table></div>
 <div class="method get">
