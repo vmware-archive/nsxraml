@@ -9190,7 +9190,7 @@ securitySchemes:
             required: false
           fullSyncCronExpr:
             displayName: fullSyncCronExpr
-            description: AD full sync frequency (as cron expression), not used if enableFullSync is false.
+            description: AD full sync frequency (as cron expression), not used if enableFullSync is false. The cron expresssion has 6 fields (second, minute, hour, day of month, month, day(s) of week). An asterisk means match any.
             required: false
           enableFullSync: 
            displayName: enableFullSync
@@ -9198,18 +9198,17 @@ securitySchemes:
            required: false 
           restartSync:
             displayName: restartSync
-            description: Restart LDAP sync at the end of request.
+            description: Restart LDAP sync at the end of request. To see an immediate change in the domain sync schedule, this parameter must be set to true. If this paramter is not included in the post body it is false. When false, even if the delta sync interval is changed, the current domain sync schedule is not impacted because it only saves the configuration in the datbase and run time behavior is not changed.
             required: false
       body:
         application/xml:
           example: |
             <LdapSyncSettings>
-              <deltaSyncIntervalInMin>180</deltaSyncIntervalInMin>
-              <fullSyncCronExpr>"0 0 0 ? * SUN *"</fullSyncCronExpr>
+              <deltaSyncIntervalInMin>1</deltaSyncIntervalInMin>
+              <fullSyncCronExpr>0 */5 * ? * *</fullSyncCronExpr>
               <enableFullSync>true</enableFullSync>
               <restartSync>true</restartSync>
             </LdapSyncSettings>
-
   /fullSync/{domainID}:
     displayName: ldapServerSync
     description: |

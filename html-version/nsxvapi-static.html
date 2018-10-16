@@ -2698,7 +2698,7 @@ the users of a domain.</p>
     
   </dt>
   <dd>
-      <p>AD full sync frequency (as cron expression), not used if enableFullSync is false.</p>
+      <p>AD full sync frequency (as cron expression), not used if enableFullSync is false. The cron expresssion has 6 fields (second, minute, hour, day of month, month, day(s) of week). An asterisk means match any.</p>
 
   </dd>
   <dt>
@@ -2716,15 +2716,15 @@ the users of a domain.</p>
     
   </dt>
   <dd>
-      <p>Restart LDAP sync at the end of request.</p>
+      <p>Restart LDAP sync at the end of request. To see an immediate change in the domain sync schedule, this parameter must be set to true. If this paramter is not included in the post body it is false. When false, even if the delta sync interval is changed, the current domain sync schedule is not impacted because it only saves the configuration in the datbase and run time behavior is not changed.</p>
 
   </dd>
 </dl>
     </div>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">LdapSyncSettings</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>180<span class="hljs-tag">&lt;/<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>"0 0 0 ? * SUN *"<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">deltaSyncIntervalInMin</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>0 */5 * ? * *<span class="hljs-tag">&lt;/<span class="hljs-name">fullSyncCronExpr</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enableFullSync</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enableFullSync</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">restartSync</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">restartSync</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">LdapSyncSettings</span>&gt;</span>
@@ -38201,7 +38201,7 @@ ignored. <strong>tcpStrict</strong> is instead configured at the section level. 
 &quot;Working with Distributed Firewall Configuration&quot; for more information.</li>
 <li><strong>autoDraftDisabled</strong> improves performances when making large numbers
 of changes to firewall rules.</li>
-<li><strong>ruleStatsDisabled</strong> describes the state of the rule stats collection. Default value for this field is <em>false</em> meaning rule stats collection will be enabled by default. Set the value to true to disable rule stats collection on NSX Manager and hosts.</li>
+<li><strong>ruleStatsDisabled</strong> describes the state of the rule stats collection. Default value for this field is <em>false</em> meaning rule stats collection will be enabled by default. Set the value to <em>true</em> to disable rule stats collection on NSX Manager and hosts.</li>
 </ul>
 <p>You can disable the auto draft feature by setting <strong>autoDraftDisabled</strong> to
 true. Distributed Firewall saves up to 100 configurations, including
