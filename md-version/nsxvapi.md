@@ -2727,7 +2727,13 @@ Input is PKCS#12 formatted NSX file along with password.
 NSX Manager Certificate Manager
 --------
 
-* **get** *(secured)*: Retrieve certificate information from NSX Manager.
+* **get** *(secured)*: Retrieve certificate information from the NSX Manager.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.4 | Method updated. PEM encoding of the certificate is added in the response body.
 
 ### /1.0/appliance-management/certificatemanager/csr/nsx
 Working With Certificate Signing Requests
@@ -4976,6 +4982,7 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
+
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -6612,11 +6619,67 @@ settings, static route configurations).
 ### /4.0/edges/{edgeId}/routing/config/static
 Working With Static and Default Routes
 ----
+Prior to NSX Data Center for vSphere 6.4.4, the maximum number of static routes
+is limited to 2048 (2K) for all Edge appliance form factors.
+Starting with NSX Data Center for vSphere 6.4.4, the maximum number of static
+routes depends on the Edge appliance form factor.
+However, for a Distributed Logical Router appliance, the maximum number of static routes
+remains unchanged (2048) because the edge form factor is always *Compact*.
+
+The following table shows the maximum number of permitted static routes for various 
+Edge appliance form factors.
+
+Edge Form Factor | Maximum Number of Static Routes
+---|---
+Compact  |2048 (2K)
+Large  |2048 (2K)
+Quad Large  |10240 (10K)
+Xlarge  |10240 (10K)
 
 * **get** *(secured)*: Read static and default routes.
 * **put** *(secured)*: Configure static and default routes.
 * **delete** *(secured)*: Delete both static and default routing config stored in the NSX
 Manager database.
+
+### /4.0/edges/{edgeId}/routing/config/staticroute
+Working with Static Routes for a Specific Network
+----
+Starting with NSX Data Center for vSphere 6.4.4, you can add, update, and 
+delete hops of the static routes for a given network.
+
+* **get** *(secured)*: List all the hops for a specifed network.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.4 | Method introduced.
+
+* **put** *(secured)*: Replace all the hops for a specifed network.
+At a granular level, you can use this API to add, update, or delete next hops of static routes for a given network.
+            
+### Request body parameters
+Parameter |  Description | Comments
+---|---|---
+**nextHop > vnic**  |Virtual network interface on which the static route is added. |Required. Integer value. Range is 0 to 9. For subinterfaces, the valid range is 10 to 4094.
+**nextHop > localeId** |Locale ID associated with the static route in a cross-vCenter NSX environment.| Optional. Minimum length is 1. Maximum length is 37.
+**nextHop > adminDistance** |Admin distance. Determines which route to use when there are multiple routes for a given network. |Integer. Range is 1 to 255. Default value is 1.
+**nextHop > ipAddress** |IP address of the next hop in the static route. |Required. Specify a valid IPv4 or IPv6 address.
+**nextHop > description**|Description of the hop in the static route.|Optional. String. Description must not exceed 1024 characters.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.4 | Method introduced.
+
+* **delete** *(secured)*: Delete a static route and all its hops for a given network.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.4 | Method introduced.                              
 
 ### /4.0/edges/{edgeId}/routing/config/ospf
 Working With OSPF Routing for NSX Edge
@@ -6630,7 +6693,7 @@ routing decisions based on the destination IP address found in IP packets.
 OSPF routing policies provide a dynamic process of traffic load balancing
 between routes of equal cost. An OSPF network is divided into routing areas to
 optimize traffic. An area is a logical collection of OSPF networks, routers,
-and links that have the same area identification.  
+and links that have the same area identification.
 
 Areas are identified by an Area ID.          
 

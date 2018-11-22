@@ -7110,7 +7110,13 @@ securitySchemes:
       get:
         displayName: certificateManagerCertificatesNsxRead
         description: |
-          Retrieve certificate information from NSX Manager.
+          Retrieve certificate information from the NSX Manager.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.4 | Method updated. PEM encoding of the certificate is added in the response body.
         responses:
           200:
             body:
@@ -7137,8 +7143,11 @@ securitySchemes:
                       <isCa></isCa>
                       <isValid></isValid>
                     </x509certificate>
-                    ...
-                  </x509Certificates>
+                    <pemEncoding>----BEGIN CERTIFICATE-----
+                      ...
+                      -----END CERTIFICATE-----
+                    </pemEncoding>
+                  </x509Certificates>                    
     /csr/nsx:
       displayName: certificateCsr
       description: |
@@ -17134,6 +17143,22 @@ securitySchemes:
         description: |
           Working With Static and Default Routes
           ----
+          Prior to NSX Data Center for vSphere 6.4.4, the maximum number of static routes
+          is limited to 2048 (2K) for all Edge appliance form factors.
+          Starting with NSX Data Center for vSphere 6.4.4, the maximum number of static
+          routes depends on the Edge appliance form factor.
+          However, for a Distributed Logical Router appliance, the maximum number of static routes
+          remains unchanged (2048) because the edge form factor is always *Compact*.
+          
+          The following table shows the maximum number of permitted static routes for various 
+          Edge appliance form factors.
+          
+          Edge Form Factor | Maximum Number of Static Routes
+          ---|---
+          Compact  |2048 (2K)
+          Large  |2048 (2K)
+          Quad Large  |10240 (10K)
+          Xlarge  |10240 (10K)
         get:
           displayName: routingConfigStaticRead
           description: Read static and default routes.
@@ -17146,18 +17171,18 @@ securitySchemes:
                 <staticRouting>
                   <staticRoutes>
                     <route>
-                      <description></description>
-                      <vnic></vnic>
-                      <network></network>
-                      <nextHop></nextHop>
-                      <mtu></mtu>
+                      <description>Static Route 1</description>
+                      <vnic>0</vnic>
+                      <network>11.11.11.0/24</network>
+                      <nextHop>10.10.10.251</nextHop>
+                      <mtu>1600</mtu>
                     </route>
                   </staticRoutes>
                   <defaultRoute>
-                    <description></description>
-                    <vnic></vnic>
-                    <gatewayAddress></gatewayAddress>
-                    <mtu></mtu>
+                    <description>Default Route 1</description>
+                    <vnic>1</vnic>
+                    <gatewayAddress>10.10.10.253</gatewayAddress>
+                    <mtu>1600</mtu>
                   </defaultRoute>
                 </staticRouting>
               schema: routingConfigStaticUpdate
@@ -17166,6 +17191,146 @@ securitySchemes:
           description: |
             Delete both static and default routing config stored in the NSX
             Manager database.
+      /staticroute:
+        displayName: staticRoutes
+        description: |
+          Working with Static Routes for a Specific Network
+          ----
+          Starting with NSX Data Center for vSphere 6.4.4, you can add, update, and 
+          delete hops of the static routes for a given network.
+        get:
+          queryParameters:
+            network:
+              displayName: network
+              description: |
+                Specify a network address in CIDR format. For example, 192.168.10.0/24
+              required: true
+            async:
+              displayName: async
+              description: |
+                Set it to *true* or *false*. Default is *false*.
+              required: false
+          displayName: NetworkHopsList
+          description: |
+            List all the hops for a specifed network.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.4 | Method introduced.
+          responses:
+            200:
+              body:
+                application/xml:
+                  example: |
+                    <staticRouteForNetwork>
+                      <network>11.11.11.0/24</network>
+                      <nextHops>
+                        <nextHop>
+                          <vnic>0</vnic>
+                          <localeId>FF</localeId>
+                          <adminDistance>11</adminDistance>
+                          <description>Static Route</description>
+                          <ipAddress>10.10.10.251</ipAddress>
+                        </nextHop>
+                        <nextHop>
+                          <vnic>0</vnic>
+                          <localeId>FF</localeId>
+                          <adminDistance>11</adminDistance>
+                          <description>Static Route</description>
+                          <ipAddress>10.10.10.252</ipAddress>
+                        </nextHop>
+                        <nextHop>
+                          <vnic>0</vnic>
+                          <localeId>FF</localeId>
+                          <adminDistance>100</adminDistance>
+                          <description>Static Route New</description>
+                          <ipAddress>10.10.10.253</ipAddress>
+                        </nextHop>
+                      </nextHops>
+                    </staticRouteForNetwork>
+        put:
+          queryParameters:
+            network:
+              displayName: network
+              description: |
+                Specify a network address in CIDR format. For example, 192.168.10.0/24
+              required: true
+            async:
+              displayName: async
+              description: |
+                Set it to *true* or *false*. Default is *false*.
+              required: false
+          displayName: NetworkHopsUpdate
+          description: |
+            Replace all the hops for a specifed network.
+            At a granular level, you can use this API to add, update, or delete next hops of static routes for a given network.
+                        
+            ### Request body parameters
+            Parameter |  Description | Comments
+            ---|---|---
+            **nextHop > vnic**  |Virtual network interface on which the static route is added. |Required. Integer value. Range is 0 to 9. For subinterfaces, the valid range is 10 to 4094.
+            **nextHop > localeId** |Locale ID associated with the static route in a cross-vCenter NSX environment.| Optional. Minimum length is 1. Maximum length is 37.
+            **nextHop > adminDistance** |Admin distance. Determines which route to use when there are multiple routes for a given network. |Integer. Range is 1 to 255. Default value is 1.
+            **nextHop > ipAddress** |IP address of the next hop in the static route. |Required. Specify a valid IPv4 or IPv6 address.
+            **nextHop > description**|Description of the hop in the static route.|Optional. String. Description must not exceed 1024 characters.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.4 | Method introduced.
+          body:
+            application/xml:
+              example: |
+                <staticRouteForNetwork>
+                  <network>11.11.11.0/24</network>
+                  <nextHops>
+                    <nextHop>
+                      <vnic>0</vnic>
+                      <localeId>FF</localeId>
+                      <adminDistance>11</adminDistance>
+                      <description>Static Route</description>
+                      <ipAddress>10.10.10.251</ipAddress>
+                    </nextHop>
+                    <nextHop>
+                      <vnic>0</vnic>
+                      <localeId>FF</localeId>
+                      <adminDistance>11</adminDistance>
+                      <description>Static Route</description>
+                      <ipAddress>10.10.10.252</ipAddress>
+                    </nextHop>
+                    <nextHop>
+                      <vnic>0</vnic>
+                      <localeId>FF</localeId>
+                      <adminDistance>100</adminDistance>
+                      <description>Static Route New</description>
+                      <ipAddress>10.10.10.253</ipAddress>
+                    </nextHop>
+                  </nextHops>
+                </staticRouteForNetwork>
+        delete:
+          queryParameters:
+            network:
+              displayName: network
+              description: |
+                Specify a network address in CIDR format. For example, 192.168.10.0/24
+              required: true
+            async:
+              displayName: async
+              description: |
+                Set it to *true* or *false*. Default is *false*.
+              required: false
+          displayName: NetworkHopsDelete
+          description: |
+            Delete a static route and all its hops for a given network.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.4 | Method introduced.                              
       /ospf:
         displayName: routingOSPF
         description: |
@@ -17180,7 +17345,7 @@ securitySchemes:
           OSPF routing policies provide a dynamic process of traffic load balancing
           between routes of equal cost. An OSPF network is divided into routing areas to
           optimize traffic. An area is a logical collection of OSPF networks, routers,
-          and links that have the same area identification.  
+          and links that have the same area identification.
           
           Areas are identified by an Area ID.          
         get:
