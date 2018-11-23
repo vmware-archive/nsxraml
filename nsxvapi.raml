@@ -7092,12 +7092,23 @@ securitySchemes:
       description: |
         Working With Keystore Files
         ------------
+        You must upload a key store file by using the *form-data* content-type in the request body. 
+        See the documentation of your REST client for instructions.
+        
+        To upload a file with form-data as the content-type, specify a **key** and a **value** for the file. 
+        The **key** is *file* with type as *File*, and the **value** is the keystore file that you want to upload.
+        
+        **Example using curl**
+        ```
+        /usr/bin/curl -v -k -i -F file=@/tmp/cert.p12 -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+        https://192.168.110.42/api/1.0/appliance-management/certificatemanager/pkcs12keystore/nsx?password=password
+        ```
       post:
         displayName: certificatesKeystoreUpdate
         description: |
           Upload keystore file.
           
-          Input is PKCS#12 formatted NSX file along with password.
+          Input is PKCS#12 formatted NSX file with form-data.
         queryParameters:
           password:
             displayName: password
@@ -7189,13 +7200,24 @@ securitySchemes:
       description: |
         Working With Certificate Chains
         -----
+        You must upload a certificate chain file by using the *form-data* content-type in the request body. 
+        See the documentation of your REST client for instructions.
+        
+        To upload a file with form-data as the content-type, specify a **key** and a **value** for the file. 
+        The **key** is *file* with type as *File*, and the **value** is the certificate chain file that you want to upload.
+        
+        **Example using curl**
+        ```
+        /usr/bin/curl -v -k -i -F file=@/tmp/cert.pem -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX=='
+        https://192.168.110.42/api/1.0/appliance-management/certificatemanager/uploadchain/nsx
+        ```
       post:
         displayName: certificateChainUpload
         description: |
           Upload certificate chain.
           
           Input is certificate chain file which is a PEM encoded chain of
-          certificates received from the CA after signing a CSR.
+          certificates received from the certification authority after signing a CSR.
 
 /1.0/services/debug/threaddump:
   displayName: threaddump

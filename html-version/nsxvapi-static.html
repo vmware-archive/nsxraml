@@ -835,7 +835,13 @@ that is in use. This might result in inconsistent behavior.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-keystore-files">Working With Keystore Files</h2>
-</div>
+<p>You must upload a key store file by using the <em>form-data</em> content-type in the request body. 
+See the documentation of your REST client for instructions.</p>
+<p>To upload a file with form-data as the content-type, specify a <strong>key</strong> and a <strong>value</strong> for the file. 
+The <strong>key</strong> is <em>file</em> with type as <em>File</em>, and the <strong>value</strong> is the keystore file that you want to upload.</p>
+<p><strong>Example using curl</strong></p>
+<pre><code class="code-block hljs lang-stylus">/usr/bin/curl -v -k -<span class="hljs-selector-tag">i</span> -F file=@/tmp/cert<span class="hljs-selector-class">.p12</span> -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span> 
+https:<span class="hljs-comment">//192.168.110.42/api/1.0/appliance-management/certificatemanager/pkcs12keystore/nsx?password=password</span></code></pre></div>
 <div class="method post">
   <a
     class="verb post"
@@ -844,7 +850,7 @@ that is in use. This might result in inconsistent behavior.</p>
   ><h2>POST /1.0/appliance-management/certificatemanager/pkcs12keystore/nsx</h2></a>
   <div class="content">
     <p><p>Upload keystore file.</p>
-<p>Input is PKCS#12 formatted NSX file along with password.</p>
+<p>Input is PKCS#12 formatted NSX file with form-data.</p>
 </p>
     <div class="params">
       <h3>Query Parameters</h3>
@@ -865,7 +871,13 @@ that is in use. This might result in inconsistent behavior.</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-certificate-chains">Working With Certificate Chains</h2>
-</div>
+<p>You must upload a certificate chain file by using the <em>form-data</em> content-type in the request body. 
+See the documentation of your REST client for instructions.</p>
+<p>To upload a file with form-data as the content-type, specify a <strong>key</strong> and a <strong>value</strong> for the file. 
+The <strong>key</strong> is <em>file</em> with type as <em>File</em>, and the <strong>value</strong> is the certificate chain file that you want to upload.</p>
+<p><strong>Example using curl</strong></p>
+<pre><code class="code-block hljs lang-stylus">/usr/bin/curl -v -k -<span class="hljs-selector-tag">i</span> -F file=@/tmp/cert<span class="hljs-selector-class">.pem</span> -H <span class="hljs-string">'Authorization: Basic YWRtaW46ZGXXXXXXXX=='</span>
+https:<span class="hljs-comment">//192.168.110.42/api/1.0/appliance-management/certificatemanager/uploadchain/nsx</span></code></pre></div>
 <div class="method post">
   <a
     class="verb post"
@@ -875,7 +887,7 @@ that is in use. This might result in inconsistent behavior.</p>
   <div class="content">
     <p><p>Upload certificate chain.</p>
 <p>Input is certificate chain file which is a PEM encoded chain of
-certificates received from the CA after signing a CSR.</p>
+certificates received from the certification authority after signing a CSR.</p>
 </p>
   </div>
 </div>

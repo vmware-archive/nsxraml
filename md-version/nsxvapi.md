@@ -2718,10 +2718,21 @@ Working With Certificates on the NSX Manager Appliance
 ### /1.0/appliance-management/certificatemanager/pkcs12keystore/nsx
 Working With Keystore Files
 ------------
+You must upload a key store file by using the *form-data* content-type in the request body. 
+See the documentation of your REST client for instructions.
+
+To upload a file with form-data as the content-type, specify a **key** and a **value** for the file. 
+The **key** is *file* with type as *File*, and the **value** is the keystore file that you want to upload.
+
+**Example using curl**
+```
+/usr/bin/curl -v -k -i -F file=@/tmp/cert.p12 -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX==' 
+https://192.168.110.42/api/1.0/appliance-management/certificatemanager/pkcs12keystore/nsx?password=password
+```
 
 * **post** *(secured)*: Upload keystore file.
 
-Input is PKCS#12 formatted NSX file along with password.
+Input is PKCS#12 formatted NSX file with form-data.
 
 ### /1.0/appliance-management/certificatemanager/certificates/nsx
 NSX Manager Certificate Manager
@@ -2754,11 +2765,22 @@ Release | Modification
 ### /1.0/appliance-management/certificatemanager/uploadchain/nsx
 Working With Certificate Chains
 -----
+You must upload a certificate chain file by using the *form-data* content-type in the request body. 
+See the documentation of your REST client for instructions.
+
+To upload a file with form-data as the content-type, specify a **key** and a **value** for the file. 
+The **key** is *file* with type as *File*, and the **value** is the certificate chain file that you want to upload.
+
+**Example using curl**
+```
+/usr/bin/curl -v -k -i -F file=@/tmp/cert.pem -H 'Authorization: Basic YWRtaW46ZGXXXXXXXX=='
+https://192.168.110.42/api/1.0/appliance-management/certificatemanager/uploadchain/nsx
+```
 
 * **post** *(secured)*: Upload certificate chain.
 
 Input is certificate chain file which is a PEM encoded chain of
-certificates received from the CA after signing a CSR.
+certificates received from the certification authority after signing a CSR.
 
 ## threaddump
 Working with NSX Manager Debug APIs
