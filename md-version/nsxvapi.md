@@ -6758,6 +6758,7 @@ Release | Modification
 6.2.3 | Method updated. **isis** configuration section removed. 
 6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameters **localASNumber** and **remoteASNumber** added to BGP section.
 6.4.0 | Method updated. Parameter **removePrivateAS** added.
+6.4.4 | Method updated. Query parameter **showSensitiveData** added.
 
 * **put** *(secured)*: Configure BGP.
 
