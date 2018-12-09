@@ -2859,67 +2859,67 @@ applications accessed by users within an Active Directory domain.</p>
 <table class="table"><thead><tr>
 <th>Parameter Name</th>
 <th>Description</th>
-<th>Mandatory? </th>
+<th>Required? </th>
 </tr>
 </thead><tbody><tr>
 <td>ID</td>
 <td>Domain id.  If you want to create a new domain, do not provide this value.  Otherwise, the system will find an existing domain object by this ID and update it.</td>
-<td>true if update existing domain </td>
+<td>Required if updating existing domain </td>
 </tr>
 <tr>
 <td>name</td>
-<td>Domain name.  This should be domain&#39;s full qualified name. In case agent discovered, this will be NetBIOS name, so you need to update it to FQN in order to support LDAP sync and event log reader.</td>
-<td>true if creating a new domain. </td>
+<td>Domain name.  This should be the domain&#39;s fully qualified name. If it&#39;s agent discovered, this will be the NetBIOS name, so you need to update it to FQN in order to support LDAP sync and event log reader.</td>
+<td>Required if creating a new domain. </td>
 </tr>
 <tr>
 <td>description</td>
 <td>Domain description</td>
-<td>false </td>
+<td>Optional. </td>
 </tr>
 <tr>
 <td>type</td>
-<td>Domain type. Valid value include: AGENT_DISCOVERED, ActiveDirectory, SPECIAL (Do NOT modify SPECIAL domain). For LDAP sync and event log reader work, this need to be set to ActiveDirectory.</td>
-<td>true if creating a new domain </td>
+<td>Domain type. Valid values include: AGENT_DISCOVERED, ACTIVE_DIRECTORY, SPECIAL (Do NOT modify SPECIAL domain). For LDAP sync and event log reader work, this need to be set to ACTIVE_DIRECTORY.</td>
+<td>Optional. Default is ACTIVE_DIRECTORY.</td>
 </tr>
 <tr>
 <td>netbiosName</td>
-<td>NetBIOS name of domain. This is Domain&#39;s NetBIOS name. Check windows domain setting, for value of it. Normally Agent report domain name is NetBIOS name. But confirm from Windows domain setting.</td>
-<td>false </td>
+<td>NetBIOS name of domain. This is the domain&#39;s NetBIOS name. Normally Agent reported domain name is the NetBIOS name. Confirm from Windows domain settings.</td>
+<td>Optional. </td>
 </tr>
 <tr>
 <td>baseDn</td>
-<td>Domain&#39;s Base DN (for LDAP sync).  Base DN is REQUIRED for LDAP Sync. If you have a domain like: w2k3.vshield.vmware.com, the base DN is very likely to be: DC=w2k3,DC=vshield,DC=vmware,DC=com. Another example is: domain name is: vs4.net, the base DN should be: DC=vs4,DC=net. You can use a LDAP client and connect to domain controller to find the domain&#39;s base DN.</td>
-<td>false </td>
+<td>Domain&#39;s Base DN (for LDAP sync).  Base DN is required for LDAP Sync. If you have a domain like: w2k3.vshield.vmware.com, the base DN is very likely to be: DC=w2k3,DC=vshield,DC=vmware,DC=com. Another example is: domain name is: vs4.net, the base DN should be: DC=vs4,DC=net. You can use a LDAP client and connect to domain controller to find the domain&#39;s base DN.</td>
+<td>Optional. Required for LDAP sync.</td>
 </tr>
 <tr>
 <td>rootDn</td>
-<td>LDAP Sync root DN.  Specify where should LDAP sync start from LDAP tree. This could be absolute path, for example: OU=Engineer,DC=vs4,DC=net, or relative path (relate to Base DN), for example: OU=Engineer.</td>
-<td>false</td>
+<td>LDAP Sync root DN.  Specify where should LDAP sync start from LDAP tree. This could be an absolute path, for example: OU=Engineer,DC=vs4,DC=net, or a relative path (relative to Base DN), for example: OU=Engineer.</td>
+<td>Optional.</td>
 </tr>
 <tr>
 <td>securityId</td>
 <td>Domain&#39;s Security ID (SID). This should be filled by LDAP sync process, and should not need to be modified.</td>
-<td>false </td>
+<td>Optional. </td>
 </tr>
 <tr>
 <td>username</td>
 <td>Domain&#39;s User name (Used for LDAP Sync and/or Event Log reader)</td>
-<td>false </td>
+<td>Optional. </td>
 </tr>
 <tr>
 <td>password</td>
 <td>User password</td>
-<td>false</td>
+<td>Optional.</td>
 </tr>
 <tr>
 <td>eventLogUsername</td>
 <td>Domain&#39;s event log reader username (will use above username if this is NULL)</td>
-<td>false</td>
+<td>Optional.</td>
 </tr>
 <tr>
 <td>eventLogPassword</td>
 <td>Domain&#39;s event log reader password</td>
-<td>false</td>
+<td>Optional.</td>
 </tr>
 </tbody></table></div>
 <div class="method post">
