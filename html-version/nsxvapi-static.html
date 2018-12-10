@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-<a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#x64;&#111;&#99;&#102;&#101;&#101;&#100;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#x6d;&#x77;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;">&#x64;&#111;&#99;&#102;&#101;&#101;&#100;&#98;&#x61;&#99;&#x6b;&#x40;&#118;&#x6d;&#x77;&#97;&#x72;&#101;&#x2e;&#99;&#111;&#109;</a>.</p>
+<a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#100;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#x61;&#99;&#x6b;&#64;&#x76;&#109;&#119;&#97;&#114;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#100;&#x6f;&#99;&#102;&#x65;&#x65;&#x64;&#x62;&#x61;&#99;&#x6b;&#64;&#x76;&#109;&#119;&#97;&#114;&#101;&#x2e;&#99;&#x6f;&#x6d;</a>.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -4503,7 +4503,7 @@ VXLAN, create vmknics.</li>
 </tr>
 </thead><tbody><tr>
 <td><strong>resourceId</strong></td>
-<td>vCenter MOB ID of cluster. For example, <em>domain-7</em>. A host can be specified when resetting communication. For example, <em>host-24</em>.</td>
+<td>vCenter MOB ID of cluster. For example, <em>domain-c7</em>. A host can be specified when resetting communication. For example, <em>host-24</em>.</td>
 </tr>
 <tr>
 <td><strong>featureId</strong></td>
@@ -4694,7 +4694,7 @@ from the cluster.</p>
 </tr>
 </thead><tbody><tr>
 <td><strong>resourceId</strong></td>
-<td>vCenter MOB ID of cluster. For example, domain-7.</td>
+<td>vCenter MOB ID of cluster. For example, domain-c7.</td>
 </tr>
 <tr>
 <td><strong>featureId</strong></td>
@@ -4754,6 +4754,8 @@ from the cluster.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="working-with-network-fabric-features">Working With Network Fabric Features</h2>
+</div>
 <div class="method get">
   <a
     class="verb get"
@@ -4844,6 +4846,36 @@ from the cluster.</p>
   ><h2>DELETE /2.0/nwfabric/hosts/{hostID}</h2></a>
   <div class="content">
     <p><p>Delete the locale ID for the specified host.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="resolving-host-preparation-issues">Resolving Host Preparation Issues</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">clusterID</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>MOID of the cluster to resolve. For example, <em>domain-c27</em>.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/nwfabric/resolveIssues/{clusterID}"
+    href="#POST/2.0/nwfabric/resolveIssues/{clusterID}"
+  ><h2>POST /2.0/nwfabric/resolveIssues/{clusterID}</h2></a>
+  <div class="content">
+    <p><p>Resolve all issues associated with host preparation (VIB installation). You can
+resolve issues only at the cluster level.</p>
 </p>
   </div>
 </div>

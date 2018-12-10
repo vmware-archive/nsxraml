@@ -2286,7 +2286,7 @@ This method can be used to perform the following tasks:
 
 | Name | Comments |
 |------|----------|
-|**resourceId** | vCenter MOB ID of cluster. For example, *domain-7*. A host can be specified when resetting communication. For example, *host-24*. |
+|**resourceId** | vCenter MOB ID of cluster. For example, *domain-c7*. A host can be specified when resetting communication. For example, *host-24*. |
 |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations, *com.vmware.vshield.vsm.messagingInfra* for message bus operations.|
 |**ipPoolId** | Used for VXLAN installation. If not specified, DHCP is used for VTEP address assignment.|
 |**teaming** | Used for VXLAN installation. Options are *FAILOVER_ORDER*, *ETHER_CHANNEL*, *LACP_ACTIVE*, *LACP_PASSIVE*, *LOADBALANCE_LOADBASED*, *LOADBALANCE_SRCID*, *LOADBALANCE_SRCMAC*, *LACP_V2*|
@@ -2397,7 +2397,7 @@ from the cluster.
 
 | Name | Comments |
 |------|----------|
-|**resourceId** | vCenter MOB ID of cluster. For example, domain-7.|
+|**resourceId** | vCenter MOB ID of cluster. For example, domain-c7.|
 |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations.|
 
 ### Remove Network Virtualization Components
@@ -2438,7 +2438,16 @@ from the cluster.
 </nwFabricFeatureConfig>
 ```
 
+### /2.0/nwfabric/resolveIssues/{clusterID}
+Resolving Host Preparation Issues
+---
+
+* **post** *(secured)*: Resolve all issues associated with host preparation (VIB installation). You can
+resolve issues only at the cluster level.
+
 ### /2.0/nwfabric/features
+Working With Network Fabric Features
+---
 
 * **get** *(secured)*: Retrieves all network fabric features available on the cluster. Multiple
 **featureInfo** sections may be returned.
