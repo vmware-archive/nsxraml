@@ -8118,7 +8118,7 @@ Parameter |  Description | Comments
 **StretchedSubInterfaces > index**  |Index of the subinterface that you want to stretch.|Integer. Required.
 **TransportSession > protocol**  |Protocol supported.|Optional. Default value is *ipsec*.
 **IpsecSession > ipsecSiteId**  |Site ID assigned to the route-based IPSec site.|String value. Required.
-**IpsecSession > sharedcode**  |Validates the local IPSec site configuration. It contains VTI IP address to be assigned to the local VTI.|Required if the L2TunnelsConfig mode is *spoke*.
+**IpsecSession > sharedCode**  |Validates the local IPSec site configuration. It contains VTI IP address to be assigned to the local VTI.|Required if the L2TunnelsConfig mode is *spoke*.
 
 * **get** *(secured)*: Retrieve the configuration of all L2 VPN over IPSec tunnels on the specific NSX Edge.
 
@@ -8127,6 +8127,7 @@ Parameter |  Description | Comments
 Release | Modification
 --------|-------------
 6.4.2 | Method introduced.
+6.4.4 | Method updated. **showSensitiveData** query parameter added. Output no longer includes sharedCode information by default.
 
 * **post** *(secured)*: Enable the L2 VPN over IPSec service on the Edge.
 
@@ -8159,16 +8160,25 @@ Working With a Specific L2 VPN Tunnel
 
 * **put** *(secured)*: Update a specific L2 VPN over IPSec tunnel on the NSX Edge.
 
-**Note:** The shared code in the L2 VPN configuration contains the sensitive pre-shared key in plain text format.
-This code must be kept securely according to the client security policy.
+**Note:** The shared code in the L2 VPN configuration contains the
+sensitive pre-shared key in plain text format. This code must be
+kept securely according to the client security policy.
 
-Specify the shared code as an input only when you are creating or updating the L2 VPN over IPSec tunnel in the client (spoke) mode.
+Specify the shared code as an input only when you are creating or
+updating the L2 VPN over IPSec tunnel in the client (spoke) mode.
+
+Starting in NSX 6.4.4, if an **ipsecSiteId** already exists, you
+can omit the corresponding **sharedCode** information from the PUT
+request body, and the existing **sharedCode** configuration will
+be retained. If the **ipsecSiteId** does not exist, **sharedCode**
+is required. 
 
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.4.2 | Method introduced.
+6.4.4 | Method updated. **sharedCode** is optional if the associated **ipsecSiteId** already exists.
 
 * **delete** *(secured)*: Delete a specific L2 VPN over IPSec tunnel on the Edge.
 
@@ -8185,6 +8195,7 @@ Release | Modification
 Release | Modification
  --------|-------------
 6.4.2 | Method introduced.
+6.4.4 | Method updated. **showSensitiveData** query parameter added. Output no longer includes sharedCode information by default.
 
 ### /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}/peercodes
 Working With Peer Codes for L2 VPN over IPSec

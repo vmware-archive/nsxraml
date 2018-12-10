@@ -28949,7 +28949,7 @@ see the <em>NSX Administration Guide</em>.</p>
 <td>String value. Required.</td>
 </tr>
 <tr>
-<td><strong>IpsecSession &gt; sharedcode</strong></td>
+<td><strong>IpsecSession &gt; sharedCode</strong></td>
 <td>Validates the local IPSec site configuration. It contains VTI IP address to be assigned to the local VTI.</td>
 <td>Required if the L2TunnelsConfig mode is <em>spoke</em>.</td>
 </tr>
@@ -28971,7 +28971,26 @@ see the <em>NSX Administration Guide</em>.</p>
 <td>6.4.2</td>
 <td>Method introduced.</td>
 </tr>
+<tr>
+<td>6.4.4</td>
+<td>Method updated. <strong>showSensitiveData</strong> query parameter added. Output no longer includes sharedCode information by default.</td>
+</tr>
 </tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">showSensitiveData</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Specify <strong>showSensitiveData</strong> to view sharedCode information when
+l2t mode is set to spoke.</p>
+
+  </dd>
+</dl>
+    </div>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -29174,9 +29193,16 @@ This code must be kept securely according to the client security policy.</p>
   ><h2>PUT /4.0/edges/{edgeId}/l2t/config/l2tunnels/{l2tunnelId}</h2></a>
   <div class="content">
     <p><p>Update a specific L2 VPN over IPSec tunnel on the NSX Edge.</p>
-<p><strong>Note:</strong> The shared code in the L2 VPN configuration contains the sensitive pre-shared key in plain text format.
-This code must be kept securely according to the client security policy.</p>
-<p>Specify the shared code as an input only when you are creating or updating the L2 VPN over IPSec tunnel in the client (spoke) mode.</p>
+<p><strong>Note:</strong> The shared code in the L2 VPN configuration contains the
+sensitive pre-shared key in plain text format. This code must be
+kept securely according to the client security policy.</p>
+<p>Specify the shared code as an input only when you are creating or
+updating the L2 VPN over IPSec tunnel in the client (spoke) mode.</p>
+<p>Starting in NSX 6.4.4, if an <strong>ipsecSiteId</strong> already exists, you
+can omit the corresponding <strong>sharedCode</strong> information from the PUT
+request body, and the existing <strong>sharedCode</strong> configuration will
+be retained. If the <strong>ipsecSiteId</strong> does not exist, <strong>sharedCode</strong>
+is required. </p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -29185,6 +29211,10 @@ This code must be kept securely according to the client security policy.</p>
 </thead><tbody><tr>
 <td>6.4.2</td>
 <td>Method introduced.</td>
+</tr>
+<tr>
+<td>6.4.4</td>
+<td>Method updated. <strong>sharedCode</strong> is optional if the associated <strong>ipsecSiteId</strong> already exists.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
@@ -29250,7 +29280,26 @@ This code must be kept securely according to the client security policy.</p>
 <td>6.4.2</td>
 <td>Method introduced.</td>
 </tr>
+<tr>
+<td>6.4.4</td>
+<td>Method updated. <strong>showSensitiveData</strong> query parameter added. Output no longer includes sharedCode information by default.</td>
+</tr>
 </tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">showSensitiveData</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Specify <strong>showSensitiveData</strong> to view sharedCode information when
+l2t mode is set to spoke.</p>
+
+  </dd>
+</dl>
+    </div>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
