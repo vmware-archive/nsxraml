@@ -7604,7 +7604,7 @@ securitySchemes:
         
         | Name | Comments |
         |------|----------|
-        |**resourceId** | vCenter MOB ID of cluster. For example, *domain-7*. A host can be specified when resetting communication. For example, *host-24*. |
+        |**resourceId** | vCenter MOB ID of cluster. For example, *domain-c7*. A host can be specified when resetting communication. For example, *host-24*. |
         |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations, *com.vmware.vshield.vsm.messagingInfra* for message bus operations.|
         |**ipPoolId** | Used for VXLAN installation. If not specified, DHCP is used for VTEP address assignment.|
         |**teaming** | Used for VXLAN installation. Options are *FAILOVER_ORDER*, *ETHER_CHANNEL*, *LACP_ACTIVE*, *LACP_PASSIVE*, *LOADBALANCE_LOADBASED*, *LOADBALANCE_SRCID*, *LOADBALANCE_SRCMAC*, *LACP_V2*|
@@ -7752,7 +7752,7 @@ securitySchemes:
         
         | Name | Comments |
         |------|----------|
-        |**resourceId** | vCenter MOB ID of cluster. For example, domain-7.|
+        |**resourceId** | vCenter MOB ID of cluster. For example, domain-c7.|
         |**featureId** | Feature to act upon. Omit for network virtualization components operations. Use *com.vmware.vshield.vsm.vxlan* for VXLAN operations.|
         
         ### Remove Network Virtualization Components
@@ -7802,8 +7802,25 @@ securitySchemes:
                </resourceConfig>
             </nwFabricFeatureConfig>
           schema: nwFabricConfig
+  /resolveIssues/{clusterID}:
+    uriParameters:
+      clusterID:
+        displayName: clusterID
+        description: MOID of the cluster to resolve. For example, *domain-c27*.
+    displayName: nwfabricResolve
+    description: |
+      Resolving Host Preparation Issues
+      ---
+    post:
+      displayName: nwfabricResolveExecute
+      description: |
+        Resolve all issues associated with host preparation (VIB installation). You can
+        resolve issues only at the cluster level.
   /features:
     displayName: nwfabricFeatures
+    description: |
+      Working With Network Fabric Features
+      ---
     get:
       displayName: nwfabricFeaturesList # dupfix nwfabricFeatures
       description: |
