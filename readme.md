@@ -1,11 +1,11 @@
-# NSX for vSphere RAML
+# NSX Data Center for vSphere RAML
 
-This repository holds a RAML specification of the NSX for vSphere 6.x API.
+This repository holds a RAML specification of the NSX Data Center for vSphere 6.x API.
 For more details on RAML, please visit http://raml.org.
 
-This RAML file has been generated from information that can be found in the "NSX vSphere API Guide" documentation that is  available in PDF format at vmware.com.
+This RAML file has been generated from information that can be found in the "NSX for vSphere API Guide" documentation that is available in PDF format at vmware.com.
 
-The purpose of this package is to be used as the basis in building dynamic API clients for the NSX for vSphere API and for the automatic generation of API documentation.
+The purpose of this package is to be used as the basis in building dynamic API clients for the NSX Data Center for vSphere API and for the automatic generation of API documentation.
 
 An example of one such dynamic client that uses the NSX RAML specification is the Python 'nsxramlclient' that can be found at:
 http://github.com/vmware/nsxramlclient
@@ -62,20 +62,20 @@ Once the pre-requisites packages are installed you can run the following script:
 
 # Branching and Release
 
-Each major or minor release train of NSX for vSphere in a major.minor.patch versioning scheme will be a branch in this project. These are considered stable for that release train. Example: 6.3 will be a branch.
+Each major or minor release train of NSX Data Center for vSphere in a major.minor.patch versioning scheme will be a branch in this project. These are considered stable for that release train. Example: 6.3 will be a branch.
 
-For each generally available (GA) release of the NSX for vSphere platform there will be a GitHub release (tag) of this project that is named to match the GA version of NSX for vSphere using the major.minor.patch (e.g. 6.2.7) numbering system.
+For each generally available (GA) release of the NSX Data Center for vSphere platform there will be a GitHub release (tag) of this project that is named to match the GA version of NSX Data Center for vSphere using the major.minor.patch (e.g. 6.2.7) numbering system.
 
 The master branch is considered the development branch for new updates and features. It may or may not be stable.
 
 # Support Lifecycle
 
-The supported versions of this project match the supported versions of the NSX for vSphere platform. For specific dates please see the VMware Lifecycle Product Matrix here:
+The supported versions of this project match the supported versions of the NSX Data Center for vSphere platform. For specific dates please see the VMware Lifecycle Product Matrix here:
 
 http://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/support/product-lifecycle-matrix.pdf
 
 # Credits
-Special credits and thanks go to Conner Mullaney. He has created more than 80% of the original content in the RAML File out of the NSX-v 6.1.4 API Documentation available as PDF, and with this effort brought this project forward significantly.
+Special credits and thanks go to Conner Mullaney. He has created more than 80% of the original content in the RAML File out of the NSX 6.1.4 API Documentation available as PDF, and with this effort brought this project forward significantly.
 
 # License
 Copyright © 2015-2018 VMware, Inc. All Rights Reserved.
