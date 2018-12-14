@@ -42,19 +42,43 @@ If you are interested in building the artifacts you will need a modified version
 
 *Note that if you want a local install do not supply the -g argument.*
 
-You will also need to install raml-fleece. To install it globally use the following command:
+You will also need to install some additional packages. To install it globally use the following commands:
 
-    npm install -g raml-fleece
+    npm install -g janrain/raml-fleece
+    npm install -g raml2md
+
+In some systems you may also have to manually install the following:
+
+    npm install -g commander
+    npm install -g node-uuid
+    npm install -g postman_validator
+    npm install -g raml-parser
+    npm install -g lodash
+    npm install -g async
 
 Once the pre-requisites packages are installed you can run the following script:
 
     create_artifacts.sh
 
+# Branching and Release
+
+Each major or minor release train of NSX for vSphere in a major.minor.patch versioning scheme will be a branch in this project. These are considered stable for that release train. Example: 6.3 will be a branch.
+
+For each generally available (GA) release of the NSX for vSphere platform there will be a GitHub release (tag) of this project that is named to match the GA version of NSX for vSphere using the major.minor.patch (e.g. 6.2.7) numbering system.
+
+The master branch is considered the development branch for new updates and features. It may or may not be stable.
+
+# Support Lifecycle
+
+The supported versions of this project match the supported versions of the NSX for vSphere platform. For specific dates please see the VMware Lifecycle Product Matrix here:
+
+http://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/support/product-lifecycle-matrix.pdf
+
 # Credits
 Special credits and thanks go to Conner Mullaney. He has created more than 80% of the original content in the RAML File out of the NSX-v 6.1.4 API Documentation available as PDF, and with this effort brought this project forward significantly.
 
 # License
-Copyright © 2015-2016 VMware, Inc. All Rights Reserved.
+Copyright © 2015-2018 VMware, Inc. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation
