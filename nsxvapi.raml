@@ -9385,6 +9385,30 @@ securitySchemes:
     get:
       displayName: userIpMappingRead
       description: Query user-to-ip mapping list from database.
+      queryParameters:
+        domainId:
+          displayName: domainId
+          description: | 
+            Filter results on specified domain ID. Use `GET
+            /api/1.0/directory/listDomains` to retrieve all domain IDs.
+          required: false
+        userId:
+          displayName: userId
+          description: | 
+            Filter results on specified user ID. Use `GET
+            /api/3.0/ai/user` to retrieve all user IDs.
+          required: false
+        ip:
+          displayName: ip
+          description: | 
+            Filter results on specified IP address.
+          required: false
+        time:
+          displayName: time
+          description: | 
+            Filter results on specified time. Specify time in format
+            yyyy-MM-dd'T'HH:mm:ss. For example, *2018-12-08T11:26:21*.
+          required: false
   /hostIpMapping:
     displayName: hostIpMapping
     description: |
@@ -9393,6 +9417,30 @@ securitySchemes:
     get:
       displayName: hostIpMappingRead
       description: Query host-to-ip mapping list from database.
+      queryParameters:
+        domainId:
+          displayName: domainId
+          description: | 
+            Filter results on specified domain ID. Use `GET
+            /api/1.0/directory/listDomains` to retrieve all domain IDs.
+          required: false
+        userId:
+          displayName: userId
+          description: | 
+            Filter results on specified user ID. Use `GET
+            /api/3.0/ai/user` to retrieve all user IDs.
+          required: false
+        ip:
+          displayName: ip
+          description: | 
+            Filter results on specified IP address.
+          required: false
+        time:
+          displayName: time
+          description: | 
+            Filter results on specified time. Specify time in format
+            yyyy-MM-dd'T'HH:mm:ss. For example, *2018-12-08T11:26:21*.
+          required: false
   /ipToUserMapping:
     displayName: ipToUserMapping
     description: |
@@ -9405,6 +9453,25 @@ securitySchemes:
         a specified time period. Since more than one user can be associated
         with a single IP address during the specified time period, each IP
         address can be associated with zero or more (i.e a SET of) users.
+      queryParameters:
+        ipStringCsv:
+          displayName: ipStringCsv
+          description: | 
+            Filter on one or more IP addresses. Specify IPv4 IP addresses in 
+            a comma separated list.
+          required: false
+        startTime:
+          displayName: startTime
+          description: | 
+            Start of the time period of interest. Specify time in format
+            yyyy-MM-dd'T'HH:mm:ss. For example, *2018-12-08T11:26:21*.
+          required: false
+        endTime:
+          displayName: endTime
+          description: | 
+            End of the time period of interest. Specify time in format
+            yyyy-MM-dd'T'HH:mm:ss. For example, *2018-12-08T11:26:21*.
+          required: false
   /directoryGroupsForUser:
     displayName: userDirGroups
     description: |
@@ -9422,7 +9489,7 @@ securitySchemes:
           required: false
         domainName:
           displayName: domainName
-          description: Specify the full domain name (not the  NetBIOS (Network Basic Input/Output System)).
+          description: Specify the full domain name (not the NetBIOS name).
           required: false
       body:
         application/xml:
