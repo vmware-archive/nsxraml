@@ -210,10 +210,10 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### update-number
-Update 5
+Update 6
 
 ### update-date
-Modified on 29 MAR 2018
+Modified DEC 2018
 
 ---
 
