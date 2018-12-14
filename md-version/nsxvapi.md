@@ -3728,20 +3728,50 @@ applications accessed by users within an Active Directory domain.
 
 Parameter Name | Description | Required? 
 ----------------|-------------|------------
-ID |  Domain id.  If you want to create a new domain, do not provide this value.  Otherwise, the system will find an existing domain object by this ID and update it. | Required if updating existing domain 
-name |  Domain name.  This should be the domain's fully qualified name. If it's agent discovered, this will be the NetBIOS name, so you need to update it to FQN in order to support LDAP sync and event log reader. | Required if creating a new domain. 
-description | Domain description | Optional. 
-type | Domain type. Valid values include: AGENT_DISCOVERED, ACTIVE_DIRECTORY, SPECIAL (Do NOT modify SPECIAL domain). For LDAP sync and event log reader work, this need to be set to ACTIVE_DIRECTORY. | Optional. Default is ACTIVE_DIRECTORY.
-netbiosName |  NetBIOS name of domain. This is the domain's NetBIOS name. Normally Agent reported domain name is the NetBIOS name. Confirm from Windows domain settings. | Optional. 
-baseDn | Domain's Base DN (for LDAP sync).  Base DN is required for LDAP Sync. If you have a domain like: w2k3.vshield.vmware.com, the base DN is very likely to be: DC=w2k3,DC=vshield,DC=vmware,DC=com. Another example is: domain name is: vs4.net, the base DN should be: DC=vs4,DC=net. You can use a LDAP client and connect to domain controller to find the domain's base DN. |  Optional. Required for LDAP sync.
-rootDn | LDAP Sync root DN.  Specify where should LDAP sync start from LDAP tree. This could be an absolute path, for example: OU=Engineer,DC=vs4,DC=net, or a relative path (relative to Base DN), for example: OU=Engineer. |  Optional.
-securityId | Domain's Security ID (SID). This should be filled by LDAP sync process, and should not need to be modified. |  Optional. 
-username |  Domain's User name (Used for LDAP Sync and/or Event Log reader) | Optional. 
-password | User password | Optional.
-eventLogUsername | Domain's event log reader username (will use above username if this is NULL) | Optional.
-eventLogPassword | Domain's event log reader password | Optional.
+**ID** |  Domain id.  If you want to create a new domain, do not provide this value.  Otherwise, the system will find an existing domain object by this ID and update it. | Required if updating existing domain 
+**name** |  Domain name.  This should be the domain's fully qualified name. If it's agent discovered, this will be the NetBIOS name, so you need to update it to FQN in order to support LDAP sync and event log reader. | Required if creating a new domain. 
+**description** | Domain description | Optional. 
+**type** | Domain type. Valid values include: AGENT_DISCOVERED, ACTIVE_DIRECTORY, SPECIAL (Do NOT modify SPECIAL domain). For LDAP sync and event log reader work, this need to be set to ACTIVE_DIRECTORY. | Optional. Default is ACTIVE_DIRECTORY.
+**netbiosName** |  NetBIOS name of domain. This is the domain's NetBIOS name. Normally Agent reported domain name is the NetBIOS name. Confirm from Windows domain settings. | Optional. 
+**baseDn** | Domain's Base DN (for LDAP sync).  Base DN is required for LDAP Sync. If you have a domain like: w2k3.vshield.vmware.com, the base DN is very likely to be: DC=w2k3,DC=vshield,DC=vmware,DC=com. Another example is: domain name is: vs4.net, the base DN should be: DC=vs4,DC=net. You can use a LDAP client and connect to domain controller to find the domain's base DN. |  Optional. Required for LDAP sync.
+**rootDn** | LDAP Sync root DN.  Specify where should LDAP sync start from LDAP tree. This could be an absolute path, for example: OU=Engineer,DC=vs4,DC=net, or a relative path (relative to Base DN), for example: OU=Engineer. |  Optional.
+**rootDnItem** | Root DN item. Use instead of **rootDn** if the domain has multiple rootDn values. | Optional.
+**securityId** | Domain's Security ID (SID). This should be filled by LDAP sync process, and should not need to be modified. |  Optional. 
+**username** |  Domain's User name (Used for LDAP Sync and/or Event Log reader) | Optional. 
+**password** | User password | Optional.
+**eventLogUsername** | Domain's event log reader username (will use above username if this is NULL) | Optional.
+**eventLogPassword** | Domain's event log reader password | Optional.
 
 * **post** *(secured)*: Register or update a domain with NSX Manager
+
+**Example: Domain with one root DN**
+  
+    <DirectoryDomain>
+      <name>example.com</name>
+      <netbiosName>Example</netbiosName>
+      <baseDn>DC=example,DC=com</baseDn>
+      <rootDn>OU=prod,DC=example,DC=com</rootDnItem>
+      <username>Administrator</username>
+      <password>xxx</password>
+    </DirectoryDomain>
+
+**Example: Domain with multiple root DN**
+
+    <DirectoryDomain>
+      <name>example.com</name>
+      <netbiosName>Example</netbiosName>
+      <baseDn>DC=example,DC=com</baseDn>
+      <rootDnItem>OU=prod,DC=example,DC=com</rootDnItem>
+      <rootDnItem>OU=test,DC=example,DC=com</rootDnItem>
+      <username>Administrator</username>
+      <password>xxx</password>
+    </DirectoryDomain>
+    
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method updated. **rootDnItem** parameter added.
 
 ### /1.0/directory/listDomains
 Retrieve LDAP Domains
