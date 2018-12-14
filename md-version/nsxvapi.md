@@ -3750,7 +3750,7 @@ Parameter Name | Description | Required?
       <name>example.com</name>
       <netbiosName>Example</netbiosName>
       <baseDn>DC=example,DC=com</baseDn>
-      <rootDn>OU=prod,DC=example,DC=com</rootDnItem>
+      <rootDn>OU=prod,DC=example,DC=com</rootDn>
       <username>Administrator</username>
       <password>xxx</password>
     </DirectoryDomain>
