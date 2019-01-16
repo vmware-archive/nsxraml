@@ -5043,6 +5043,7 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
+
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -7083,7 +7084,7 @@ Parameter |  Description | Comments
  Parameter |  Description | Comments
  ---|---|---
   **monitor**      |Monitor list.|Optional.
-  **monitorId**     |Generated monitor identifier.|Optional. Required if it is used in a pool.
+  **monitorId**     |Generated monitor identifier.|Optional. However, for the monitors that are consumed by the pool, the ID must be specified in the format *monitor-&lt;number&gt;*.
   **name**     |Name of the monitor.|Required.
   **type**     |Monitor type.|Required. Options are : *HTTP*, *HTTPS*, *TCP*, *ICMP*, *UDP*.
   **interval**     |Interval in seconds in which a server is to be tested.|Optional. Default is *5*.
@@ -7119,7 +7120,7 @@ Parameter |  Description | Comments
  Parameter |  Description | Comments
  ---|---|---
   **pool**      |Pool list.|Optional.
-  **poolId**     |Generated pool identifier.|Optional. Required if you specify pool object.
+  **poolId**     |Generated pool identifier.|Optional. However, for the pools that are consumed by the virtual server, the ID must be specified in the format *pool-&lt;number&gt;*.
   **name**     |Name of the pool.|Required.
   **description**     |Description of the pool.|Optional.
   **algorithm**     |Pool member balancing algorithm.|Optional. Options are: *round-robin*, *ip-hash*, *uri*, *leastconn*, *url*, *httpheader*. Default is *round-robin*.
@@ -7144,7 +7145,7 @@ Parameter |  Description | Comments
 Parameter |  Description | Comments
 ---|---|---
   **applicationProfile**      |Application profile list.|Optional.
-  **applicationProfileId**     |Generated application profile identifier.|Optional. Required if it is used in virtual server.
+  **applicationProfileId**     |Generated application profile identifier.|Optional. However, for the application profiles that are consumed by the virtual server, the ID must be specified in the format *applicationProfile-&lt;number&gt;*.
   **name**     |Name of application profile.|Required.
   **persistence**     |Persistence setting.|Optional.
   **method**    |Persistent method.|Required. Options are: *cookie*, *ssl_sessionid*, *sourceip*, *msrdp*.
@@ -7174,7 +7175,7 @@ Parameter |  Description | Comments
 Parameter |  Description | Comments
 ---|---|---
   **applicationRule**      |Application rule list.|Optional. 
-  **applicationRuleId**     |Generated application rule identifier.|Optional. 
+  **applicationRuleId**     |Generated application rule identifier.|Optional. However, for the application rules that are consumed by the virtual server, the rule ID must be specified in the format *applicationRule-&lt;number&gt;*. 
   **name**     |Name of application rule.|Required.
   **script**     |Application rule script.|Required.
   
