@@ -9081,7 +9081,7 @@ Working With Certificates and Certificate Chains
 * **post** *(secured)*: Import a certificate or a certificate chain against a certificate
 signing request.
 
-### /2.0/services/truststore/config
+### /2.0/services/truststore/certificate/config
 Working With Certificate Configuration
 ----
 
@@ -9102,13 +9102,13 @@ Release | Modification
 --------|-------------
 6.4.1 | Method introduced.
 
-### /2.0/services/truststore/config/scope/{scopeId}
+### /2.0/services/truststore/certificate/scope/{scopeId}
 Working With Certificates on a Specific Scope
 ----
 
 * **get** *(secured)*: Retrieve all certificates on the specified scope.
 
-### /2.0/services/truststore/config/{scopeId}
+### /2.0/services/truststore/certificate/{scopeId}
 Working With Self-Signed Certificates
 ------
 
@@ -9118,7 +9118,7 @@ You can create a certificate for a specific NSX Edge, or if you
 specify a scope of *globalroot-0* you can create a global certificate
 in NSX Manager which is available to all NSX Edges.
 
-### /2.0/services/truststore/config/{certificateId}
+### /2.0/services/truststore/certificate/{certificateId}
 Working With a Specific Certificate
 -----
 
