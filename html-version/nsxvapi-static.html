@@ -28585,6 +28585,11 @@ an NSX Edge and a Cisco CSR 1000V Virtual Appliance, see the
 <td>Required if <strong>ipsecSessionType</strong> parameter value is <em>policybasedsession</em>. For route-based IPSec site, the default and only valid subnet is <em>0.0.0.0/0</em>.</td>
 </tr>
 <tr>
+<td><strong>site &gt; complianceSuite</strong></td>
+<td>Specify a compliance suite to configure the security profile of the IPSec VPN site with predefined values defined by that suite.</td>
+<td>Optional. Default is <em>none</em>.  Options are <em>cnsa</em>, <em>prime</em>, <em>suite-b-gcm-128</em>, <em>suite-b-gcm-256</em>, <em>suite-b-gmac-128</em>, <em>suite-b-gmac-256</em>, and <em>foundation</em>. <br> Only when compliance suite is <em>none</em>, specify values for <strong>encryptionAlgorithm</strong>, <strong>digestAlgorithm</strong>, <strong>dhGroup</strong>, <strong>ikeOption</strong>, and <strong>authenticationMode</strong> parameters.</td>
+</tr>
+<tr>
 <td><strong>site &gt; responderOnly</strong></td>
 <td>When set to true, the edge doesn&#39;t initiate negotiation, instead it waits for peer to initiate negotiation.</td>
 <td>Optional. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
@@ -28652,6 +28657,10 @@ This pre-shared key must be kept securely according to the client security polic
 <td> 6.4.2</td>
 <td>Method updated. Added a new value <em>routebasedsession</em> for <strong>ipsecSessionType</strong> parameter. Added a new parameter <strong>tunnelInterface</strong> when the value of <strong>ipsecSessionType</strong> is set to <em>routebasedsession</em>.</td>
 </tr>
+<tr>
+<td> 6.4.5</td>
+<td>Method updated. Added <strong>complianceSuite</strong> parameter.</td>
+</tr>
 </tbody></table><p> <strong>Response: Policy-based IPSec site</strong></p>
 <pre><code class="code-block hljs lang-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>
    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>38<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
@@ -28671,6 +28680,7 @@ This pre-shared key must be kept securely according to the client security polic
        <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">ipsecSessionType</span>&gt;</span>policybasedsession<span class="hljs-tag">&lt;/<span class="hljs-name">ipsecSessionType</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">complianceSuite</span>&gt;</span>none<span class="hljs-tag">&lt;/<span class="hljs-name">complianceSuite</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>aes256<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">authenticationMode</span>&gt;</span>psk<span class="hljs-tag">&lt;/<span class="hljs-name">authenticationMode</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
@@ -28681,6 +28691,10 @@ This pre-shared key must be kept securely according to the client security polic
        <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
          <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
        <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">siteId</span>&gt;</span>ipsecsite-34<span class="hljs-tag">&lt;/<span class="hljs-name">siteId</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">ikeOption</span>&gt;</span>ikev2<span class="hljs-tag">&lt;/<span class="hljs-name">ikeOption</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">digestAlgorithm</span>&gt;</span>sha1<span class="hljs-tag">&lt;/<span class="hljs-name">digestAlgorithm</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">responderOnly</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">responderOnly</span>&gt;</span>
      <span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
    <span class="hljs-tag">&lt;/<span class="hljs-name">sites</span>&gt;</span>
    <span class="hljs-tag">&lt;<span class="hljs-name">global</span>&gt;</span>
@@ -28712,6 +28726,7 @@ This pre-shared key must be kept securely according to the client security polic
        <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>10.109.229.251<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>10.109.229.251<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">ipsecSessionType</span>&gt;</span>routebasedsession<span class="hljs-tag">&lt;/<span class="hljs-name">ipsecSessionType</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">complianceSuite</span>&gt;</span>none<span class="hljs-tag">&lt;/<span class="hljs-name">complianceSuite</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">tunnelInterface</span>&gt;</span>
          <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>vti-1<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
          <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>2.2.2.2/24<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
@@ -28779,7 +28794,11 @@ This pre-shared key must be kept securely according to the client security polic
 <td> 6.4.2</td>
 <td>Method updated. Added a new value <em>routebasedsession</em> for <strong>ipsecSessionType</strong> parameter. Added a new parameter <strong>tunnelInterface</strong> when the value of <strong>ipsecSessionType</strong> is set to <em>routebasedsession</em>.</td>
 </tr>
-</tbody></table><p> <strong>Request: Policy-based IPSec site</strong></p>
+<tr>
+<td> 6.4.5</td>
+<td>Method updated. Added <strong>complianceSuite</strong> parameter.</td>
+</tr>
+</tbody></table><p> <strong>Request: Policy-based IPSec site and compliance suite=none</strong></p>
 <pre><code class="code-block hljs lang-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>
    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
    <span class="hljs-tag">&lt;<span class="hljs-name">disableEvent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">disableEvent</span>&gt;</span>
@@ -28797,6 +28816,7 @@ This pre-shared key must be kept securely according to the client security polic
        <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">ipsecSessionType</span>&gt;</span>policybasedsession<span class="hljs-tag">&lt;/<span class="hljs-name">ipsecSessionType</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">complianceSuite</span>&gt;</span>none<span class="hljs-tag">&lt;/<span class="hljs-name">complianceSuite</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>aes256<span class="hljs-tag">&lt;/<span class="hljs-name">encryptionAlgorithm</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">authenticationMode</span>&gt;</span>psk<span class="hljs-tag">&lt;/<span class="hljs-name">authenticationMode</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
@@ -28807,6 +28827,11 @@ This pre-shared key must be kept securely according to the client security polic
        <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
          <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
        <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">psk</span>&gt;</span>******<span class="hljs-tag">&lt;/<span class="hljs-name">psk</span>&gt;</span> 
+       <span class="hljs-tag">&lt;<span class="hljs-name">siteId</span>&gt;</span>ipsecsite-34<span class="hljs-tag">&lt;/<span class="hljs-name">siteId</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">ikeOption</span>&gt;</span>ikev2<span class="hljs-tag">&lt;/<span class="hljs-name">ikeOption</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">digestAlgorithm</span>&gt;</span>sha1<span class="hljs-tag">&lt;/<span class="hljs-name">digestAlgorithm</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">responderOnly</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">responderOnly</span>&gt;</span>
      <span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
    <span class="hljs-tag">&lt;/<span class="hljs-name">sites</span>&gt;</span>
    <span class="hljs-tag">&lt;<span class="hljs-name">global</span>&gt;</span>
@@ -28819,7 +28844,48 @@ This pre-shared key must be kept securely according to the client security polic
        <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificate</span>&gt;</span>crl-1<span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificate</span>&gt;</span>
      <span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificates</span>&gt;</span>
    <span class="hljs-tag">&lt;/<span class="hljs-name">global</span>&gt;</span>
- <span class="hljs-tag">&lt;/<span class="hljs-name">ipsec</span>&gt;</span></code></pre><p> <strong>Request: Route-based IPSec site</strong></p>
+ <span class="hljs-tag">&lt;/<span class="hljs-name">ipsec</span>&gt;</span></code></pre><p> <strong>Request: Policy-based IPSec site and compliance suite=prime</strong></p>
+<pre><code class="code-block hljs lang-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">disableEvent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">disableEvent</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">logging</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">enable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enable</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">logLevel</span>&gt;</span>debug<span class="hljs-tag">&lt;/<span class="hljs-name">logLevel</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">logging</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">sites</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">site</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>VPN to edge-pa-1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">localId</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localId</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">localIp</span>&gt;</span>11.0.0.11<span class="hljs-tag">&lt;/<span class="hljs-name">localIp</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>11.0.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>any<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">ipsecSessionType</span>&gt;</span>policybasedsession<span class="hljs-tag">&lt;/<span class="hljs-name">ipsecSessionType</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">complianceSuite</span>&gt;</span>prime<span class="hljs-tag">&lt;/<span class="hljs-name">complianceSuite</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">enablePfs</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enablePfs</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">localSubnets</span>&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.11.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+       <span class="hljs-tag">&lt;/<span class="hljs-name">localSubnets</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">peerSubnets</span>&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">subnet</span>&gt;</span>192.168.1.0/24<span class="hljs-tag">&lt;/<span class="hljs-name">subnet</span>&gt;</span>
+       <span class="hljs-tag">&lt;/<span class="hljs-name">peerSubnets</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">psk</span>&gt;</span>******<span class="hljs-tag">&lt;/<span class="hljs-name">psk</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">siteId</span>&gt;</span>ipsecsite-34<span class="hljs-tag">&lt;/<span class="hljs-name">siteId</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">responderOnly</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">responderOnly</span>&gt;</span>
+     <span class="hljs-tag">&lt;/<span class="hljs-name">site</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">sites</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">global</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">psk</span>&gt;</span>*****<span class="hljs-tag">&lt;/<span class="hljs-name">psk</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">serviceCertificate</span>&gt;</span>certificate-4<span class="hljs-tag">&lt;/<span class="hljs-name">serviceCertificate</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">caCertificates</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">caCertificate</span>&gt;</span>certificate-3<span class="hljs-tag">&lt;/<span class="hljs-name">caCertificate</span>&gt;</span>
+     <span class="hljs-tag">&lt;/<span class="hljs-name">caCertificates</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificates</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">crlCertificate</span>&gt;</span>crl-1<span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificate</span>&gt;</span>
+     <span class="hljs-tag">&lt;/<span class="hljs-name">crlCertificates</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">global</span>&gt;</span>
+ <span class="hljs-tag">&lt;/<span class="hljs-name">ipsec</span>&gt;</span></code></pre><p> <strong>Request: Route-based IPSec site and compliance suite=none</strong></p>
 <pre><code class="code-block hljs lang-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>
    <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
    <span class="hljs-tag">&lt;<span class="hljs-name">disableEvent</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">disableEvent</span>&gt;</span>
@@ -28837,6 +28903,7 @@ This pre-shared key must be kept securely according to the client security polic
        <span class="hljs-tag">&lt;<span class="hljs-name">peerId</span>&gt;</span>10.109.229.251<span class="hljs-tag">&lt;/<span class="hljs-name">peerId</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">peerIp</span>&gt;</span>10.109.229.251<span class="hljs-tag">&lt;/<span class="hljs-name">peerIp</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">ipsecSessionType</span>&gt;</span>routebasedsession<span class="hljs-tag">&lt;/<span class="hljs-name">ipsecSessionType</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-name">complianceSuite</span>&gt;</span>none<span class="hljs-tag">&lt;/<span class="hljs-name">complianceSuite</span>&gt;</span>
        <span class="hljs-tag">&lt;<span class="hljs-name">tunnelInterface</span>&gt;</span>
          <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>vti-1<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
          <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>2.2.2.2/24<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>

@@ -21826,6 +21826,7 @@ securitySchemes:
         **site > peerId**| Enter the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is *x.509*. | Required.
         **site > peerIp** | Enter the IP address of the peer endpoint.| Required.
         **site > peerSubnets** |Type the subnets to share between the sites in CIDR format.|Required if **ipsecSessionType** parameter value is *policybasedsession*. For route-based IPSec site, the default and only valid subnet is *0.0.0.0/0*.
+        **site > complianceSuite** | Specify a compliance suite to configure the security profile of the IPSec VPN site with predefined values defined by that suite.| Optional. Default is *none*.  Options are *cnsa*, *prime*, *suite-b-gcm-128*, *suite-b-gcm-256*, *suite-b-gmac-128*, *suite-b-gmac-256*, and *foundation*. <br> Only when compliance suite is *none*, specify values for **encryptionAlgorithm**, **digestAlgorithm**, **dhGroup**, **ikeOption**, and **authenticationMode** parameters.
         **site > responderOnly** |When set to true, the edge doesn't initiate negotiation, instead it waits for peer to initiate negotiation.| Optional. Options are *True* or *False*. Default is *False*.
         **site > dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh14* is selected by default.
         **extension** |When add_spd is set to on, security policies are installed regardless of whether the tunnel is established. ike_fragment_size is used to avoid failure in the IKE negotiation when the link MTU size is small. For example, ike_frament_size=900.|Optional. Global extensions: add_spf and ike_frament_size. <br> add_spd options are *off* or *on*. The default is *on*. 
@@ -21849,6 +21850,7 @@ securitySchemes:
           6.3.5 | Method updated. *showSensitiveData* query parameter added. 
           6.4.0 | Method updated. New parameters **ikeOption**, **responderOnly**, and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter.
           6.4.2 | Method updated. Added a new value *routebasedsession* for **ipsecSessionType** parameter. Added a new parameter **tunnelInterface** when the value of **ipsecSessionType** is set to *routebasedsession*.
+          6.4.5 | Method updated. Added **complianceSuite** parameter.
         
           **Response: Policy-based IPSec site**
           ```  
@@ -21870,6 +21872,7 @@ securitySchemes:
                 <peerId>11.0.0.1</peerId>
                 <peerIp>any</peerIp>
                 <ipsecSessionType>policybasedsession</ipsecSessionType>
+                <complianceSuite>none</complianceSuite>
                 <encryptionAlgorithm>aes256</encryptionAlgorithm>
                 <authenticationMode>psk</authenticationMode>
                 <enablePfs>true</enablePfs>
@@ -21880,6 +21883,10 @@ securitySchemes:
                 <peerSubnets>
                   <subnet>192.168.1.0/24</subnet>
                 </peerSubnets>
+                <siteId>ipsecsite-34</siteId>
+                <ikeOption>ikev2</ikeOption>
+                <digestAlgorithm>sha1</digestAlgorithm>
+                <responderOnly>false</responderOnly>
               </site>
             </sites>
             <global>
@@ -21914,6 +21921,7 @@ securitySchemes:
                 <peerId>10.109.229.251</peerId>
                 <peerIp>10.109.229.251</peerIp>
                 <ipsecSessionType>routebasedsession</ipsecSessionType>
+                <complianceSuite>none</complianceSuite>
                 <tunnelInterface>
                   <label>vti-1</label>
                   <ipAddress>2.2.2.2/24</ipAddress>
@@ -21963,8 +21971,9 @@ securitySchemes:
           --------|-------------
           6.4.0 | Method updated. New parameters **ikeOption**, **responderOnly**, and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter, and optional if used in a PUT call. If used, it must be set to *policybasedSession*.
           6.4.2 | Method updated. Added a new value *routebasedsession* for **ipsecSessionType** parameter. Added a new parameter **tunnelInterface** when the value of **ipsecSessionType** is set to *routebasedsession*.
+          6.4.5 | Method updated. Added **complianceSuite** parameter.
           
-          **Request: Policy-based IPSec site**
+          **Request: Policy-based IPSec site and compliance suite=none**
           ```
           <ipsec>
             <enabled>true</enabled>
@@ -21983,6 +21992,7 @@ securitySchemes:
                 <peerId>11.0.0.1</peerId>
                 <peerIp>any</peerIp>
                 <ipsecSessionType>policybasedsession</ipsecSessionType>
+                <complianceSuite>none</complianceSuite>
                 <encryptionAlgorithm>aes256</encryptionAlgorithm>
                 <authenticationMode>psk</authenticationMode>
                 <enablePfs>true</enablePfs>
@@ -21993,6 +22003,11 @@ securitySchemes:
                 <peerSubnets>
                   <subnet>192.168.1.0/24</subnet>
                 </peerSubnets>
+                <psk>******</psk> 
+                <siteId>ipsecsite-34</siteId>
+                <ikeOption>ikev2</ikeOption>
+                <digestAlgorithm>sha1</digestAlgorithm>
+                <responderOnly>false</responderOnly>
               </site>
             </sites>
             <global>
@@ -22007,7 +22022,51 @@ securitySchemes:
             </global>
           </ipsec>
           ```
-          **Request: Route-based IPSec site**
+          **Request: Policy-based IPSec site and compliance suite=prime**
+          ```
+          <ipsec>
+            <enabled>true</enabled>
+            <disableEvent>false</disableEvent>
+            <logging>
+              <enable>true</enable>
+              <logLevel>debug</logLevel>
+            </logging>
+            <sites>
+              <site>
+                <enabled>true</enabled>
+                <name>VPN to edge-pa-1</name>
+                <description>psk VPN to edge-pa-1 192.168.11.0/24 == 192.168.1.0/24</description>
+                <localId>11.0.0.11</localId>
+                <localIp>11.0.0.11</localIp>
+                <peerId>11.0.0.1</peerId>
+                <peerIp>any</peerIp>
+                <ipsecSessionType>policybasedsession</ipsecSessionType>
+                <complianceSuite>prime</complianceSuite>
+                <enablePfs>true</enablePfs>
+                <localSubnets>
+                  <subnet>192.168.11.0/24</subnet>
+                </localSubnets>
+                <peerSubnets>
+                  <subnet>192.168.1.0/24</subnet>
+                </peerSubnets>
+                <psk>******</psk>
+                <siteId>ipsecsite-34</siteId>
+                <responderOnly>false</responderOnly>
+              </site>
+            </sites>
+            <global>
+              <psk>*****</psk>
+              <serviceCertificate>certificate-4</serviceCertificate>
+              <caCertificates>
+                <caCertificate>certificate-3</caCertificate>
+              </caCertificates>
+              <crlCertificates>
+                <crlCertificate>crl-1</crlCertificate>
+              </crlCertificates>
+            </global>
+          </ipsec>
+          ```
+          **Request: Route-based IPSec site and compliance suite=none**
           ```
           <ipsec>
             <enabled>true</enabled>
@@ -22026,6 +22085,7 @@ securitySchemes:
                 <peerId>10.109.229.251</peerId>
                 <peerIp>10.109.229.251</peerIp>
                 <ipsecSessionType>routebasedsession</ipsecSessionType>
+                <complianceSuite>none</complianceSuite>
                 <tunnelInterface>
                   <label>vti-1</label>
                   <ipAddress>2.2.2.2/24</ipAddress>
