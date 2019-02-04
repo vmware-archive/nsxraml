@@ -4234,10 +4234,9 @@ securitySchemes:
       * *enterprise_admin* - Enterprise Administrator
       * *security_admin* - Security Administrator
       * *auditor* - Auditor
-      
-      Two additional roles are introduced in NSX 6.4.2.
-      * *security_engineer* - Security Engineer
-      * *network_engineer* - Network Engineer
+      * *security_engineer* - Security Engineer (introduced in NSX 6.4.2)
+      * *network_engineer* - Network Engineer (introduced in NSX 6.4.2)
+      * *security_role_admin* - Security & Role Administrator (introduced in NSX 6.4.5)
     uriParameters:
       userId:
         required: true
@@ -4257,7 +4256,8 @@ securitySchemes:
         
         Release | Modification
         --------|-------------
-        6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
+        6.4.2 | Method updated. Added *security_engineer* and *network_engineer* roles.
+        6.4.5 | Method updated. Added *security_role_admin* role.
       queryParameters:
         isGroup:
           displayName: isGroup
@@ -4285,7 +4285,8 @@ securitySchemes:
         
         Release | Modification
         --------|-------------
-        6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
+        6.4.2 | Method updated. Added *security_engineer* and *network_engineer* roles.
+        6.4.5 | Method updated. Added *security_role_admin* role.
       body:
         application/xml:
           example: |
@@ -4319,7 +4320,30 @@ securitySchemes:
       ----
     get:
       displayName: userMgmtRolesRead # dupfix userMgmtRoleRead
-      description: Read all possible roles in NSX Manager
+      description: |
+        Read all possible roles in NSX Manager.
+      
+        **Method history:**
+      
+        Release | Modification
+        --------|-------------
+        6.4.2 | Method updated. Added *security_engineer* and *network_engineer* roles.
+        6.4.5 | Method updated. Added *security_role_admin* role.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <list>
+                  <string>super_user</string>
+                  <string>vshield_admin</string>
+                  <string>security_admin</string>
+                  <string>auditor</string>
+                  <string>enterprise_admin</string>
+                  <string>security_engineer</string>     /* Added in NSX 6.4.2 */
+                  <string>network_engineer</string>      /* Added in NSX 6.4.2 */
+                  <string>security_role_admin</string>   /* Added in NSX 6.4.5 */
+                </list>  
   /scopingobjects:
     displayName: userScopingObjects
     description: |

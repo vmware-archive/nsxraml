@@ -14337,11 +14337,9 @@ list (CRL).</p>
 <li><em>enterprise_admin</em> - Enterprise Administrator</li>
 <li><em>security_admin</em> - Security Administrator</li>
 <li><em>auditor</em> - Auditor</li>
-</ul>
-<p>Two additional roles are introduced in NSX 6.4.2.</p>
-<ul>
-<li><em>security_engineer</em> - Security Engineer</li>
-<li><em>network_engineer</em> - Network Engineer</li>
+<li><em>security_engineer</em> - Security Engineer (introduced in NSX 6.4.2)</li>
+<li><em>network_engineer</em> - Network Engineer (introduced in NSX 6.4.2)</li>
+<li><em>security_role_admin</em> - Security &amp; Role Administrator (introduced in NSX 6.4.5)</li>
 </ul>
 </div>
   <div class="params">
@@ -14384,7 +14382,11 @@ list (CRL).</p>
 </tr>
 </thead><tbody><tr>
 <td>6.4.2</td>
-<td>Method updated. Two roles, <em>security_engineer</em> and <em>network_engineer</em> added.</td>
+<td>Method updated. Added <em>security_engineer</em> and <em>network_engineer</em> roles.</td>
+</tr>
+<tr>
+<td>6.4.5</td>
+<td>Method updated. Added <em>security_role_admin</em> role.</td>
 </tr>
 </tbody></table></p>
     <div class="params">
@@ -14451,7 +14453,11 @@ individual user.</p>
 </tr>
 </thead><tbody><tr>
 <td>6.4.2</td>
-<td>Method updated. Two roles, <em>security_engineer</em> and <em>network_engineer</em> added.</td>
+<td>Method updated. Added <em>security_engineer</em> and <em>network_engineer</em> roles.</td>
+</tr>
+<tr>
+<td>6.4.5</td>
+<td>Method updated. Added <em>security_role_admin</em> role.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -14512,8 +14518,38 @@ role for a local user.</p>
     href="#GET/2.0/services/usermgmt/roles"
   ><h2>GET /2.0/services/usermgmt/roles</h2></a>
   <div class="content">
-    <p><p>Read all possible roles in NSX Manager</p>
-</p>
+    <p><p>Read all possible roles in NSX Manager.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.2</td>
+<td>Method updated. Added <em>security_engineer</em> and <em>network_engineer</em> roles.</td>
+</tr>
+<tr>
+<td>6.4.5</td>
+<td>Method updated. Added <em>security_role_admin</em> role.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">list</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>super_user<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>vshield_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>auditor<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>enterprise_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_engineer<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>     /* Added in NSX 6.4.2 */
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>network_engineer<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>      /* Added in NSX 6.4.2 */
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_role_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>   /* Added in NSX 6.4.5 */
+<span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span>  
+</code></pre>
   </div>
 </div>
 </section>

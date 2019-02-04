@@ -1607,10 +1607,9 @@ Possible roles are:
 * *enterprise_admin* - Enterprise Administrator
 * *security_admin* - Security Administrator
 * *auditor* - Auditor
-
-Two additional roles are introduced in NSX 6.4.2.
-* *security_engineer* - Security Engineer
-* *network_engineer* - Network Engineer
+* *security_engineer* - Security Engineer (introduced in NSX 6.4.2)
+* *network_engineer* - Network Engineer (introduced in NSX 6.4.2)
+* *security_role_admin* - Security & Role Administrator (introduced in NSX 6.4.5)
 
 * **get** *(secured)*: Retrieve a user's role. 
 
@@ -1620,7 +1619,8 @@ Two additional roles are introduced in NSX 6.4.2.
 
 Release | Modification
 --------|-------------
-6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
+6.4.2 | Method updated. Added *security_engineer* and *network_engineer* roles.
+6.4.5 | Method updated. Added *security_role_admin* role.
 
 * **put** *(secured)*: Change a user's role.
 
@@ -1628,7 +1628,8 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.4.2 | Method updated. Two roles, *security_engineer* and *network_engineer* added.
+6.4.2 | Method updated. Added *security_engineer* and *network_engineer* roles.
+6.4.5 | Method updated. Added *security_role_admin* role.
 
 * **delete** *(secured)*: Delete the role assignment for specified vCenter user. Once this role
 is deleted, the user is removed from NSX Manager. You cannot delete the
@@ -1645,7 +1646,14 @@ Working With NSX Manager Role Assignment
 Working With Available NSX Manager Roles
 ----
 
-* **get** *(secured)*: Read all possible roles in NSX Manager
+* **get** *(secured)*: Read all possible roles in NSX Manager.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.2 | Method updated. Added *security_engineer* and *network_engineer* roles.
+6.4.5 | Method updated. Added *security_role_admin* role.
 
 ### /2.0/services/usermgmt/scopingobjects
 Working With Scoping Objects
