@@ -2849,6 +2849,95 @@ Request body parameters:
   * **enabled** - Required. Enable or disable host event notifications. Options are True or False.
   * **notificationInterval** - Required. Time interval in seconds at which the NSX Manager receives host event notifications from each host. Valid range is 300 to 3600.
 
+## dhcpStarvWhitelist
+Working With DHCP Starv WhiteList
+===========
+
+Hosts use vCenter alerts and dashboard alerts to notify users about DoS attacks on the hosts.
+In NSX 6.4.4 and earlier, you can enable and disable DHCP DoS attack notifications on the hosts only at the global level.
+Starting with NSX Data Center 6.4.5, you can use APIs to enable or disable DHCP DoS attack notifications on a per port basis (dvPort).
+
+By default, DHCP DoS attack notifications are enabled on all the ports. However, you can disable these notifications on the ports that are expected to route DHCP packets.
+NSX 6.4.5 introduces APIs to create and modify a **DHCP Starv Whitelist**, which you can use to exclude selected ports from checking DHCP DoS attack notifications.
+For example, you can identify the third-party router VMs and disable notifications for the ports on those VMs by using the APIs.
+On the ESG VMs, the APIs are automatically executed to whitelist all the vNICs of the ESG VMs, and no user intervention is required.
+
+**DHCP Starv Whitelist Parameters**
+
+Parameter |  Description | Comments
+---|---|---
+**vmId** |Object ID of the virtual machine. |Required.
+**virtualWire** |Object ID of the virtualwire (logical switch). |Required. For example, *virtualwire-1*.
+**vnicUuid** |Index of the vNIC for a VM.|Optional. Use the *VMInstanceUuid.deviceId* format to specify the vNIC of a VM (vnicId). For example, *564d05d4-29f3-94ad-7fa5-47ca2be93796.000*. If you omit the **vnicUuid**, all vNICs for that VM and virtualwire combination are added to the whitelist.
+
+### /2.0/vdn/hostevents/dhcp-starv-whitelist
+
+* **post** *(secured)*: Create a new DHCP starv whitelist to exclude selected distributed virtual ports (dvPorts) from checking DoS attacks on hosts.
+In the whitelist, specify combinations of vmId, virtualwire, and vnicId to identify ports on the dvSwitch that you want to exclude.
+
+In a multi-vCenter environment, you must create a separate whitelist that is local to the NSX Manager and vCenter combination. For universal virtualwires,
+unique dvPortGroups are created on the dvSwitches that participate in the logical network. NSX Manager associated with the vCenter Server
+manages the ports created on the dvPortGroups in that vCenter.
+
+**Note**: You must update the whitelist when the following situations occur, else the whitelist might grow **unrestricted**:
+* Edge VMs or third-party router VMs are deleted.
+* vNICs on the Edge VMs or third-party router VMs are deleted.
+* Router VMs are moved from one logical switch to another logical switch.
+
+**Method history:**
+      
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.      
+
+* **get** *(secured)*: Retrieve information about all the entries in the DHCP starv whitelist.
+
+**Method history:**
+      
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
+### /2.0/vdn/hostevents/dhcp-starv-whitelist/{id}
+Working With a Specific DHCP Starv Whitelist Entry
+----
+
+* **get** *(secured)*: Retrieve information about the specified DHCP starv whitelist entry.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
+* **delete** *(secured)*: Delete the specified DHCP starv whitelist entry.
+      
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
+### /2.0/vdn/hostevents/dhcp-starv-whitelist/vm/{vmId}
+Working With DHCP Starv Whitelist Entries of a Specific VM 
+-----
+
+* **get** *(secured)*: Retrieve information about all the DHCP starv whitelist entries of the specified VM.
+  
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
+* **delete** *(secured)*: Delete all the DHCP starv whitelist entries of the specified VM.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
 ## auditLogs
 Working With NSX Manager Audit Logs
 ==========

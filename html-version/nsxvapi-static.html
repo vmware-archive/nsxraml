@@ -19559,6 +19559,292 @@ the specified switch and hardware gateway.</p>
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h1 id="working-with-dhcp-starv-whitelist">Working With DHCP Starv WhiteList</h1>
+<p>Hosts use vCenter alerts and dashboard alerts to notify users about DoS attacks on the hosts.
+In NSX 6.4.4 and earlier, you can enable and disable DHCP DoS attack notifications on the hosts only at the global level.
+Starting with NSX Data Center 6.4.5, you can use APIs to enable or disable DHCP DoS attack notifications on a per port basis (dvPort).</p>
+<p>By default, DHCP DoS attack notifications are enabled on all the ports. However, you can disable these notifications on the ports that are expected to route DHCP packets.
+NSX 6.4.5 introduces APIs to create and modify a <strong>DHCP Starv Whitelist</strong>, which you can use to exclude selected ports from checking DHCP DoS attack notifications.
+For example, you can identify the third-party router VMs and disable notifications for the ports on those VMs by using the APIs.
+On the ESG VMs, the APIs are automatically executed to whitelist all the vNICs of the ESG VMs, and no user intervention is required.</p>
+<p><strong>DHCP Starv Whitelist Parameters</strong></p>
+<table class="table"><thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead><tbody><tr>
+<td><strong>vmId</strong></td>
+<td>Object ID of the virtual machine.</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>virtualWire</strong></td>
+<td>Object ID of the virtualwire (logical switch).</td>
+<td>Required. For example, <em>virtualwire-1</em>.</td>
+</tr>
+<tr>
+<td><strong>vnicUuid</strong></td>
+<td>Index of the vNIC for a VM.</td>
+<td>Optional. Use the <em>VMInstanceUuid.deviceId</em> format to specify the vNIC of a VM (vnicId). For example, <em>564d05d4-29f3-94ad-7fa5-47ca2be93796.000</em>. If you omit the <strong>vnicUuid</strong>, all vNICs for that VM and virtualwire combination are added to the whitelist.</td>
+</tr>
+</tbody></table></div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/vdn/hostevents/dhcp-starv-whitelist"
+    href="#POST/2.0/vdn/hostevents/dhcp-starv-whitelist"
+  ><h2>POST /2.0/vdn/hostevents/dhcp-starv-whitelist</h2></a>
+  <div class="content">
+    <p><p>Create a new DHCP starv whitelist to exclude selected distributed virtual ports (dvPorts) from checking DoS attacks on hosts.
+In the whitelist, specify combinations of vmId, virtualwire, and vnicId to identify ports on the dvSwitch that you want to exclude.</p>
+<p>In a multi-vCenter environment, you must create a separate whitelist that is local to the NSX Manager and vCenter combination. For universal virtualwires,
+unique dvPortGroups are created on the dvSwitches that participate in the logical network. NSX Manager associated with the vCenter Server
+manages the ports created on the dvPortGroups in that vCenter.</p>
+<p><strong>Note</strong>: You must update the whitelist when the following situations occur, else the whitelist might grow <strong>unrestricted</strong>:</p>
+<ul>
+<li>Edge VMs or third-party router VMs are deleted.</li>
+<li>vNICs on the Edge VMs or third-party router VMs are deleted.</li>
+<li>Router VMs are moved from one logical switch to another logical switch.</li>
+</ul>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.5</td>
+<td>Method introduced.      </td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>dhcpstarvwhitelistentry-30<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-27<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vnicUuid</span>&gt;</span>500202d1-e85d-3584-5b11-149ba55dec62.002<span class="hljs-tag">&lt;/<span class="hljs-name">vnicUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/hostevents/dhcp-starv-whitelist"
+    href="#GET/2.0/vdn/hostevents/dhcp-starv-whitelist"
+  ><h2>GET /2.0/vdn/hostevents/dhcp-starv-whitelist</h2></a>
+  <div class="content">
+    <p><p>Retrieve information about all the entries in the DHCP starv whitelist.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.5</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>dhcpstarvwhitelistentry-30<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-27<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vnicUuid</span>&gt;</span>500202d1-e85d-3584-5b11-149ba55dec62.000<span class="hljs-tag">&lt;/<span class="hljs-name">vnicUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>dhcpstarvwhitelistentry-31<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-27<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vnicUuid</span>&gt;</span>500202d1-e85d-3584-5b11-149ba55dec62.001<span class="hljs-tag">&lt;/<span class="hljs-name">vnicUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-dhcp-starv-whitelist-entries-of-a-specific-vm-">Working With DHCP Starv Whitelist Entries of a Specific VM </h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">vmId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Object ID of the specified VM.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/hostevents/dhcp-starv-whitelist/vm/{vmId}"
+    href="#GET/2.0/vdn/hostevents/dhcp-starv-whitelist/vm/{vmId}"
+  ><h2>GET /2.0/vdn/hostevents/dhcp-starv-whitelist/vm/{vmId}</h2></a>
+  <div class="content">
+    <p><p>Retrieve information about all the DHCP starv whitelist entries of the specified VM.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.5</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>dhcpstarvwhitelistentry-30<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-27<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vnicUuid</span>&gt;</span>500202d1-e85d-3584-5b11-149ba55dec62.002<span class="hljs-tag">&lt;/<span class="hljs-name">vnicUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/2.0/vdn/hostevents/dhcp-starv-whitelist/vm/{vmId}"
+    href="#DELETE/2.0/vdn/hostevents/dhcp-starv-whitelist/vm/{vmId}"
+  ><h2>DELETE /2.0/vdn/hostevents/dhcp-starv-whitelist/vm/{vmId}</h2></a>
+  <div class="content">
+    <p><p>Delete all the DHCP starv whitelist entries of the specified VM.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.5</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">force</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>Set to <em>true</em> to forcefully delete a whitelist entry.</p>
+<p>If a vNIC that was whitelisted earlier is disconnected or deleted after
+whitelisting, you must forcefully delete the whitelist entry.</p>
+
+  </dd>
+</dl>
+    </div>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-a-specific-dhcp-starv-whitelist-entry">Working With a Specific DHCP Starv Whitelist Entry</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">id</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>ID of the DHCP starv whitelist entry.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/hostevents/dhcp-starv-whitelist/{id}"
+    href="#GET/2.0/vdn/hostevents/dhcp-starv-whitelist/{id}"
+  ><h2>GET /2.0/vdn/hostevents/dhcp-starv-whitelist/{id}</h2></a>
+  <div class="content">
+    <p><p>Retrieve information about the specified DHCP starv whitelist entry.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.5</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>dhcpstarvwhitelistentry-30<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vmId</span>&gt;</span>vm-27<span class="hljs-tag">&lt;/<span class="hljs-name">vmId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWire</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vnicUuid</span>&gt;</span>500202d1-e85d-3584-5b11-149ba55dec62.002<span class="hljs-tag">&lt;/<span class="hljs-name">vnicUuid</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelistEntry</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dhcpStarvWhitelist</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+<div class="method delete">
+  <a
+    class="verb delete"
+    id="DELETE/2.0/vdn/hostevents/dhcp-starv-whitelist/{id}"
+    href="#DELETE/2.0/vdn/hostevents/dhcp-starv-whitelist/{id}"
+  ><h2>DELETE /2.0/vdn/hostevents/dhcp-starv-whitelist/{id}</h2></a>
+  <div class="content">
+    <p><p>Delete the specified DHCP starv whitelist entry.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.5</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">force</span>
+    <span class="badge">boolean</span>
+    
+  </dt>
+  <dd>
+      <p>Set to <em>true</em> to forcefully delete a whitelist entry.</p>
+<p>If a vNIC that was whitelisted earlier is disconnected or deleted after
+whitelisting, you must forcefully delete the whitelist entry.</p>
+
+  </dd>
+</dl>
+    </div>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h1 id="communication-status">Communication Status</h1>
 <p>This feature allows the user to check the connection status between the
 NSX Manager and hosts. A hash map is used to hold all hosts&#39; connection
