@@ -19551,23 +19551,31 @@ securitySchemes:
         **ipAddress**    |Member IP address.
         **groupingObjectId**    |Member grouping object identifier.
         **status**    |Member status.
+        **failureCause**  |Cause of the failure when the member status is DOWN.
         **bytesIn**    |Number of bytes in.
         **bytesOut**    |Number of bytes out.
         **curSessions**    |Number of current sessions.
         **httpReqTotal**    |Total number of HTTP requests received.
         **httpReqRate**    |HTTP requests per second over last elapsed second.
         **httpReqRateMax**    |Maximum number of HTTP requests per second observed.
-        **maxSession**    |Number of maximum sessions.
+        **maxSessions**    |Number of maximum sessions.
         **rate**    |Number of sessions per second over last elapsed second.
         **rateLimit**    |Configured limit on new sessions per second.
         **rateMax**    |Maximum number of new sessions per second.
-        **totalSession**    |Total number of sessions.
+        **totalSessions**    |Total number of sessions.
         **timestamp**      |Timestamp to fetch load balancer statistics.
         **serverStatus**      |Load balancer server status.
         
       get:
         displayName: lbStatisticsRead
-        description: Retrieve load balancer statistics.
+        description: |
+          Retrieve load balancer statistics.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.5 | Method updated. *failureCause* parameter added to show reason for member DOWN status.
         responses:
           200:
             body:
@@ -19586,8 +19594,12 @@ securitySchemes:
                         <bytesIn>70771</bytesIn>
                         <bytesOut>74619</bytesOut>
                         <curSessions>0</curSessions>
+                        <httpReqTotal>0</httpReqTotal>
+                        <httpReqRate>0</httpReqRate>
+                        <httpReqRateMax>0</httpReqRateMax>
                         <maxSessions>1</maxSessions>
                         <rate>0</rate>
+                        <rateLimit>0</rateLimit>
                         <rateMax>17</rateMax>
                         <totalSessions>142</totalSessions>
                       </member>
@@ -19595,12 +19607,17 @@ securitySchemes:
                         <memberId>member-2</memberId>
                         <name>m2</name>
                         <ipAddress>192.168.101.202</ipAddress>
-                        <status>UP</status>
+                        <status>DOWN</status>
+                        <failureCause>CRITICAL - Socket timeout</failureCause>  /* Added in NSX 6.4.5 */
                         <bytesIn>70823</bytesIn>
                         <bytesOut>70605</bytesOut>
                         <curSessions>0</curSessions>
+                        <httpReqTotal>0</httpReqTotal>
+                        <httpReqRate>0</httpReqRate>
+                        <httpReqRateMax>0</httpReqRateMax>
                         <maxSessions>1</maxSessions>
                         <rate>0</rate>
+                        <rateLimit>0</rateLimit>
                         <rateMax>17</rateMax>
                         <totalSessions>141</totalSessions>
                       </member>
@@ -19608,8 +19625,12 @@ securitySchemes:
                       <bytesIn>141594</bytesIn>
                       <bytesOut>145224</bytesOut>
                       <curSessions>0</curSessions>
+                      <httpReqTotal>0</httpReqTotal>
+                      <httpReqRate>0</httpReqRate>
+                      <httpReqRateMax>0</httpReqRateMax>
                       <maxSessions>2</maxSessions>
                       <rate>0</rate>
+                      <rateLimit>0</rateLimit>
                       <rateMax>34</rateMax>
                       <totalSessions>283</totalSessions>
                     </pool>

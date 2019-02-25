@@ -7458,21 +7458,28 @@ Parameter |  Description
 **ipAddress**    |Member IP address.
 **groupingObjectId**    |Member grouping object identifier.
 **status**    |Member status.
+**failureCause**  |Cause of the failure when the member status is DOWN.
 **bytesIn**    |Number of bytes in.
 **bytesOut**    |Number of bytes out.
 **curSessions**    |Number of current sessions.
 **httpReqTotal**    |Total number of HTTP requests received.
 **httpReqRate**    |HTTP requests per second over last elapsed second.
 **httpReqRateMax**    |Maximum number of HTTP requests per second observed.
-**maxSession**    |Number of maximum sessions.
+**maxSessions**    |Number of maximum sessions.
 **rate**    |Number of sessions per second over last elapsed second.
 **rateLimit**    |Configured limit on new sessions per second.
 **rateMax**    |Maximum number of new sessions per second.
-**totalSession**    |Total number of sessions.
+**totalSessions**    |Total number of sessions.
 **timestamp**      |Timestamp to fetch load balancer statistics.
 **serverStatus**      |Load balancer server status.
 
 * **get** *(secured)*: Retrieve load balancer statistics.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method updated. *failureCause* parameter added to show reason for member DOWN status.
 
 ### /4.0/edges/{edgeId}/loadbalancer/acceleration
 Working With Load Balancer Acceleration

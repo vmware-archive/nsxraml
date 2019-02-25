@@ -32438,6 +32438,10 @@ server.</p>
 <td>Member status.</td>
 </tr>
 <tr>
+<td><strong>failureCause</strong></td>
+<td>Cause of the failure when the member status is DOWN.</td>
+</tr>
+<tr>
 <td><strong>bytesIn</strong></td>
 <td>Number of bytes in.</td>
 </tr>
@@ -32462,7 +32466,7 @@ server.</p>
 <td>Maximum number of HTTP requests per second observed.</td>
 </tr>
 <tr>
-<td><strong>maxSession</strong></td>
+<td><strong>maxSessions</strong></td>
 <td>Number of maximum sessions.</td>
 </tr>
 <tr>
@@ -32478,7 +32482,7 @@ server.</p>
 <td>Maximum number of new sessions per second.</td>
 </tr>
 <tr>
-<td><strong>totalSession</strong></td>
+<td><strong>totalSessions</strong></td>
 <td>Total number of sessions.</td>
 </tr>
 <tr>
@@ -32498,7 +32502,16 @@ server.</p>
   ><h2>GET /4.0/edges/{edgeId}/loadbalancer/statistics</h2></a>
   <div class="content">
     <p><p>Retrieve load balancer statistics.</p>
-</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.5</td>
+<td>Method updated. <em>failureCause</em> parameter added to show reason for member DOWN status.</td>
+</tr>
+</tbody></table></p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
           <h5>
@@ -32518,8 +32531,12 @@ server.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>70771<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>74619<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">httpReqTotal</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqTotal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRateMax</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRateMax</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">maxSessions</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">maxSessions</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rateLimit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rateLimit</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rateMax</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">rateMax</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">totalSessions</span>&gt;</span>142<span class="hljs-tag">&lt;/<span class="hljs-name">totalSessions</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
@@ -32527,12 +32544,17 @@ server.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">memberId</span>&gt;</span>member-2<span class="hljs-tag">&lt;/<span class="hljs-name">memberId</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>UP<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">failureCause</span>&gt;</span>CRITICAL - Socket timeout<span class="hljs-tag">&lt;/<span class="hljs-name">failureCause</span>&gt;</span>  /* Added in NSX 6.4.5 */
       <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>70823<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>70605<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">httpReqTotal</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqTotal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRateMax</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRateMax</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">maxSessions</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">maxSessions</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rate</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">rateLimit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rateLimit</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">rateMax</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">rateMax</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">totalSessions</span>&gt;</span>141<span class="hljs-tag">&lt;/<span class="hljs-name">totalSessions</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">member</span>&gt;</span>
@@ -32540,8 +32562,12 @@ server.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>141594<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>145224<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">httpReqTotal</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqTotal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">httpReqRateMax</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">httpReqRateMax</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">maxSessions</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">maxSessions</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">rate</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rate</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">rateLimit</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">rateLimit</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">rateMax</span>&gt;</span>34<span class="hljs-tag">&lt;/<span class="hljs-name">rateMax</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">totalSessions</span>&gt;</span>283<span class="hljs-tag">&lt;/<span class="hljs-name">totalSessions</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">pool</span>&gt;</span>
