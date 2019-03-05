@@ -4154,6 +4154,18 @@ Release | Modification
 --------|-------------
 6.3.5 | Method introduced.
 
+### /2.0/eam/agency/{agencyId}
+Working With a Specific EAM Agent
+-----
+
+* **get** *(secured)*: Retrieve the status of a specific EAM agent.
+
+### /2.0/eam/agency/{agencyId}/agentruntimeinfos
+Working With EAM Agent Runtime Information
+-----
+
+* **get** *(secured)*: Retrieve the runtime information of a specific EAM agent.
+
 ## servicesSystemAlarms
 Working With Alarms
 ========

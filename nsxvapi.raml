@@ -10306,6 +10306,67 @@ securitySchemes:
                   <vcName>vcsa-01a.corp.local</vcName>
                   <eamServiceName>VMware ESX Agent Manager</eamServiceName>
                 </eamStatusInfo>
+  /agency/{agencyId}:
+    displayName: eamAgency
+    description: |
+      Working With a Specific EAM Agent
+      -----
+    uriParameters:
+      agencyId:
+        required: true
+        displayName: agencyId
+        description: Managed object ID of the EAM agent.
+    get:
+      displayName: eamAgencyStatusRead
+      description: |
+        Retrieve the status of a specific EAM agent.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <agencyInfo>
+                  <agencyId>3d02f5ac-4bb0-45a3-930c-33f280313424</agencyId>
+                  <status>red</status>
+                  <goalState>enabled</goalState>
+                </agencyInfo>
+    /agentruntimeinfos:
+      displayName: AgencyRuntimeInfo
+      description: |
+        Working With EAM Agent Runtime Information
+        -----
+      get:
+        displayName: AgencyRuntimeInfoRead
+        description: |
+          Retrieve the runtime information of a specific EAM agent.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <agentRuntimeInfos>
+                    <agentRuntimeInfo>
+                      <host>host-21</host>
+                      <receivingHearBeat>false</receivingHearBeat>
+                      <vmName />
+                      <vmPowerState>poweredOff</vmPowerState>
+                      <status>red</status>
+                    </agentRuntimeInfo>
+                    <agentRuntimeInfo>
+                      <host>host-27</host>
+                      <receivingHearBeat>false</receivingHearBeat>
+                      <vmName />
+                      <vmPowerState>poweredOff</vmPowerState>
+                      <status>red</status>
+                    </agentRuntimeInfo>
+                    <agentRuntimeInfo>
+                      <host>host-15</host>
+                      <receivingHearBeat>false</receivingHearBeat>
+                      <vmName />
+                      <vmPowerState>poweredOff</vmPowerState>
+                      <status>red</status>
+                    </agentRuntimeInfo>
+                  </agentRuntimeInfos>
 /2.0/services/systemalarms:
   displayName: servicesSystemAlarms
   description: |
