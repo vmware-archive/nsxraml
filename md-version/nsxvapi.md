@@ -256,6 +256,69 @@ Working With a Specific vSphere Distributed Switch
 
 * **delete** *(secured)*: Delete the specified vSphere Distributed Switch.
 
+### /2.0/vdn/switches/{vdsId}/latency/configuration
+Working With Latency Configuration of a Specific vSphere Distributed Switch
+--------
+Starting in NSX 6.4.5, you can use APIs to configure network latency 
+information between different applications that are connected to different 
+vNICs. Usually, the network latency between the vNICs is almost identical 
+to the latency between the applications. The latency between the vNICs 
+is described more precisely with several segments. 
+
+For example, the first segment is from a source vNIC to the source hypervisor 
+(tunnel input), the second segment is from the source hypervisor (tunnel input) 
+to the destination hypervisor (tunnel output), and the third segment is from 
+the destination hypervisor (tunnel output) to the destination vNIC.
+
+With segmented latency data, you can diagnose where the network latency 
+has occurred. To measure network latency from a local vNIC to the hypervsior 
+(tunnel point), NSX uses the **timestamp** attribute of a data path packet 
+inside the hypervisor.
+
+* **get** *(secured)*: Retrieve the latency configuration of the specified vSphere Distributed Switch.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
+* **put** *(secured)*: Update the latency configuration of the specified vSphere Distributed Switch.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
+**Latency Configuration Parameters**
+
+Parameter |  Description | Comments
+---|---|---
+**enabled** |When set to *true*, the dvSwitch collects latency data. When set to *false*, the dvSwitch stops collecting latency data and releases all the reserved resources. |Optional. Boolean. Options are *True* or *False*. Default is *False*.
+**latencySamplingRateForHost** |Packet sampling rate of the dvSwitch in integer. For example, 100 means that one packet in every 100 packets is timestamped. 1 means that all packets are timestamped. |Optional. Default value is 100. Maximum value is 10000, and minimum value is 1.
+**latencyDurationMillSecondsForHost**  |Packet sampling duration of the dvSwitch in milliseconds. Denotes the frequency at which latency data is generated. |Optional. Default value is 1000 ms. Maximum value is 10000 ms, and minimum value is 1 ms.
+
+### /2.0/vdn/switches/{vdsId}/host/{hostId}/latency/configuration
+Working With Latency Configuration of a Specific Host
+-------
+
+* **get** *(secured)*: Retrieve the latency configuration of the specified vSphere Distributed Switch on the specified host.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
+* **put** *(secured)*: Update the latency configuration of the specified vSphere Distributed Switch on the specfied host.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.5 | Method introduced.
+
 ## vdnConfig
 Working With Segment ID Pools and Multicast Ranges
 ========
