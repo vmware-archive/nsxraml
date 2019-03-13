@@ -1255,8 +1255,7 @@ Parameter |  Description | Comments
 ---|---|---
   **enabled**      |Enable or disable BFD to monitor tunnel health of a hypervisor.|Required. Options are *True* or *False*. Default is *False*.
   **pollingIntervalSecondsForHost**     |Configure the BFD polling interval.|Required. Value should be greater than *30*. Default value is *180*.
-  **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session.|Required. Value should be greater than *30*. Default value is *120000*.
-  
+  **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session in milliseconds.|Required. Value should be greater than *300*. Default value is *120000*.
 
 ### /2.0/vdn/bfd/configuration/global
 
