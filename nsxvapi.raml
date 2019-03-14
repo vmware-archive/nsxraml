@@ -7504,6 +7504,8 @@ securitySchemes:
     For example, you can identify the third-party router VMs and disable notifications for the ports on those VMs by using the APIs.
     On the ESG VMs, the APIs are automatically executed to whitelist all the vNICs of the ESG VMs, and no user intervention is required.
     
+    **Note**: With NSX, you cannot whitelist ports when a VM or an Edge is connected to a VLAN-based port group.
+    
     **DHCP Starv Whitelist Parameters**
     
     Parameter |  Description | Comments
@@ -7521,16 +7523,22 @@ securitySchemes:
       unique dvPortGroups are created on the dvSwitches that participate in the logical network. NSX Manager associated with the vCenter Server
       manages the ports created on the dvPortGroups in that vCenter.
       
-      **Note**: You must update the whitelist when the following situations occur, else the whitelist might grow **unrestricted**:
-      * Edge VMs or third-party router VMs are deleted.
-      * vNICs on the Edge VMs or third-party router VMs are deleted.
-      * Router VMs are moved from one logical switch to another logical switch.
+      **Note**: It is recommended to remove the whitelist entries **before** the following situations occur, else the whitelist might grow **unrestricted**:
+      * Third-party router VMs are deleted.
+      * vNICs on the third-party router VMs are deleted or reconfigured to another logical switch (virtualwire).
+            
+      For example, imagine that you have a third-party router VM connected to dvPort1 and dvPort1 is added to the whitelist. Now, you want to move the VM
+      from dvPort1 to dvPort2. Before moving the VM, first remove dvPort1 from the whitelist, and then add dvPort2 to the whitelist.
+      To summarize, use the following workflow:
+      * Run the DELETE API request (without force option) to remove dvPort1 from the whitelist.
+      * Move the VM from dvPort1 to dvPort2.
+      * Run the POST API request to add dvPort2 to the whitelist.
       
       **Method history:**
             
       Release | Modification
       --------|-------------
-      6.4.5 | Method introduced.      
+      6.4.5 | Method introduced.
     body:
       application/xml:
         example: |

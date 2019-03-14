@@ -19653,6 +19653,7 @@ Starting with NSX Data Center 6.4.5, you can use APIs to enable or disable DHCP 
 NSX 6.4.5 introduces APIs to create and modify a <strong>DHCP Starv Whitelist</strong>, which you can use to exclude selected ports from checking DHCP DoS attack notifications.
 For example, you can identify the third-party router VMs and disable notifications for the ports on those VMs by using the APIs.
 On the ESG VMs, the APIs are automatically executed to whitelist all the vNICs of the ESG VMs, and no user intervention is required.</p>
+<p><strong>Note</strong>: With NSX, you cannot whitelist ports when a VM or an Edge is connected to a VLAN-based port group.</p>
 <p><strong>DHCP Starv Whitelist Parameters</strong></p>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -19687,11 +19688,18 @@ In the whitelist, specify combinations of vmId, virtualwire, and vnicId to ident
 <p>In a multi-vCenter environment, you must create a separate whitelist that is local to the NSX Manager and vCenter combination. For universal virtualwires,
 unique dvPortGroups are created on the dvSwitches that participate in the logical network. NSX Manager associated with the vCenter Server
 manages the ports created on the dvPortGroups in that vCenter.</p>
-<p><strong>Note</strong>: You must update the whitelist when the following situations occur, else the whitelist might grow <strong>unrestricted</strong>:</p>
+<p><strong>Note</strong>: It is recommended to remove the whitelist entries <strong>before</strong> the following situations occur, else the whitelist might grow <strong>unrestricted</strong>:</p>
 <ul>
-<li>Edge VMs or third-party router VMs are deleted.</li>
-<li>vNICs on the Edge VMs or third-party router VMs are deleted.</li>
-<li>Router VMs are moved from one logical switch to another logical switch.</li>
+<li>Third-party router VMs are deleted.</li>
+<li>vNICs on the third-party router VMs are deleted or reconfigured to another logical switch (virtualwire).</li>
+</ul>
+<p>For example, imagine that you have a third-party router VM connected to dvPort1 and dvPort1 is added to the whitelist. Now, you want to move the VM
+from dvPort1 to dvPort2. Before moving the VM, first remove dvPort1 from the whitelist, and then add dvPort2 to the whitelist.
+To summarize, use the following workflow:</p>
+<ul>
+<li>Run the DELETE API request (without force option) to remove dvPort1 from the whitelist.</li>
+<li>Move the VM from dvPort1 to dvPort2.</li>
+<li>Run the POST API request to add dvPort2 to the whitelist.</li>
 </ul>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
@@ -19700,7 +19708,7 @@ manages the ports created on the dvPortGroups in that vCenter.</p>
 </tr>
 </thead><tbody><tr>
 <td>6.4.5</td>
-<td>Method introduced.      </td>
+<td>Method introduced.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
