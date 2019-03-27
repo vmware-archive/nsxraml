@@ -7369,15 +7369,18 @@ securitySchemes:
       Generates the thread dump of the NSX Manager and captures the output of the **top** command. 
       The **top** output helps you to monitor the processes and the usage of the system resources on the NSX Manager.
       The combined output (**top** output + thread dump) is saved in a separate **threaddump_top** log file. 
-      To view the files, download the NSX Manager tech support bundle. The files are available inside *Bundle_Name*\logs\threaddump.
+      To view the files, download the NSX Manager tech support bundle. The files are available in *Bundle_Name*\logs\threaddump.
       
+      **Note:** Starting in NSX 6.4.5, the name of the log file is changed to **threaddump.top**.
+      After you upgrade to NSX 6.4.5 and generate the thread dump, the old **threaddump_top** file that existed before the upgrade is 
+      preserved in *Bundle_Name*\preupgradeslot\logs\threaddump. The new thread dump (threaddump.top) is created and 
+      saved in *Bundle_Name*\logs\threaddump.
     body:
       application/xml:
         example: |
           <processoutput>
             <status>Success</status>
           </processoutput>
-
 /2.0/systemevent:
   displayName: systemEvents
   description: |
