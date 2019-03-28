@@ -8103,7 +8103,7 @@ Working With SSL VPN Users
 ---
 
 * **put** *(secured)*: Update all users with the given list of users. If the user is
-present, it is updated. Otherwise, and new user is created. Existing
+present, it is updated. Otherwise, a new user is created. Existing
 users not included in the body are deleted.
 
 ### /4.0/edges/{edgeId}/sslvpn/activesessions
