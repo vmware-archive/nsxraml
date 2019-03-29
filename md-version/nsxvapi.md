@@ -9037,7 +9037,17 @@ Parameter | Description | Comments
 **configuredVmFolder > name** | Name of folder in which NSX Edge was originally deployed. | Read only.
 **configuredVmFolder > isValid** | True if resource pool on which NSX Edge was originally deployed currently exists. | Read only. *true* or *false*.
 
-* **post** *(secured)*: Change the size of both appliances.
+* **post** *(secured)*: * Use the *size* query parameter to change the form factor of the Edge appliance.
+* Use the *action* query parameter to reset the CPU and memory reservation of the Edge appliance to **System Managed** resource reservation.
+
+**Note:** Do not combine the *size* and *action* query parameters in a single API request by using an ampersand (&).
+In other words, run the API requests independently with a single query parameter.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.4 | Method updated. Added **action** query parameter. 
 
 * **get** *(secured)*: Retrieve appliance configuration.
 

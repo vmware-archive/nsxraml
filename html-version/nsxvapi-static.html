@@ -25951,18 +25951,41 @@ of its status.  The standby appliance becomes active immediately.  </p>
     href="#POST/4.0/edges/{edgeId}/appliances"
   ><h2>POST /4.0/edges/{edgeId}/appliances</h2></a>
   <div class="content">
-    <p><p>Change the size of both appliances.</p>
-</p>
+    <p><ul>
+<li>Use the <em>size</em> query parameter to change the form factor of the Edge appliance.</li>
+<li>Use the <em>action</em> query parameter to reset the CPU and memory reservation of the Edge appliance to <strong>System Managed</strong> resource reservation.</li>
+</ul>
+<p><strong>Note:</strong> Do not combine the <em>size</em> and <em>action</em> query parameters in a single API request by using an ampersand (&amp;).
+In other words, run the API requests independently with a single query parameter.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.4</td>
+<td>Method updated. Added <strong>action</strong> query parameter. </td>
+</tr>
+</tbody></table></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
   <dt>
     <span class="param">size</span>
     <span class="badge">string</span>
-    <span class="badge">required</span>
+    
   </dt>
   <dd>
-      <p>set to compact|large|xlarge</p>
+      <p>Set to compact|large|xlarge|quadlarge</p>
+
+  </dd>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Set to <em>applySystemResourceReservation</em> to reset CPU and memory reservation to <strong>System Managed</strong> resource reservation</p>
 
   </dd>
 </dl>

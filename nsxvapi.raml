@@ -22947,12 +22947,26 @@ securitySchemes:
       post:
         displayName: appliancesCreate
         description: |
-          Change the size of both appliances.
+          * Use the *size* query parameter to change the form factor of the Edge appliance.
+          * Use the *action* query parameter to reset the CPU and memory reservation of the Edge appliance to **System Managed** resource reservation.
+          
+          **Note:** Do not combine the *size* and *action* query parameters in a single API request by using an ampersand (&).
+          In other words, run the API requests independently with a single query parameter.
+          
+          **Method history:**
+          
+          Release | Modification
+          --------|-------------
+          6.4.4 | Method updated. Added **action** query parameter. 
         queryParameters:
           size:
-            required: true
+            required: false
             displayName: size
-            description: set to compact|large|xlarge
+            description: Set to compact|large|xlarge|quadlarge
+          action:
+            required: false
+            displayName: action
+            description: Set to *applySystemResourceReservation* to reset CPU and memory reservation to **System Managed** resource reservation
       get:
         displayName: appliancesRead
         description: | 
