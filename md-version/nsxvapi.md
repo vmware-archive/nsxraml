@@ -5227,7 +5227,6 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
-
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -9981,8 +9980,12 @@ Line Interface Reference*.
 You must set the **Accept** header to *text/plain*.
 
 ## inventoryStatus
-Communication Status
+Working with Logical Inventory Details
 ====================
+
+### /2.0/vdn/inventory/host/{hostId}/connection/status
+Communication Status of a Specific Host
+---------------------------------------
 This feature allows the user to check the connection status between the
 NSX Manager and hosts. A hash map is used to hold all hosts' connection
 status. It keeps track of the latest heartbeat from each host.  When
@@ -9995,10 +9998,6 @@ has not been prepared or the netcpa version on this host is lower than
 information is found and the host has been prepared with netcpa version no
 less than 6.2.0, it will return *DOWN*. When a host has been unprepared,
 its heartbeat information will be removed from the NSX Manager memory.
-
-### /2.0/vdn/inventory/host/{hostId}/connection/status
-Communication Status of a Specific Host
----------------------------------------
 
 * **get** *(secured)*: Retrieve the status of the specified host.
 
@@ -10017,6 +10016,21 @@ Communication Status of a List of Hosts
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. Introduced **hostToControllerConnectionErrors** array.<br>Deprecated **fullSyncCount** parameter. Parameter is still present, but always has value of -1.
+
+### /2.0/vdn/inventory/ui/vw
+Detailed Information about Logical Switches
+-----------
+
+* **get** *(secured)*: Retrieve detailed information about logical switches shown in the UI.
+This includes hosts and VM information for the logical switches.
+
+### /2.0/vdn/inventory/ui/scope/{scopeId}/vw
+Detailed Information about Logical Switches in a Specific Transport Zone
+-----------
+
+* **get** *(secured)*: Retrieve detailed information about logical switches shown in the UI 
+for the specified transport zone. 
+This includes hosts and VM information for the logical switches.
 
 ## hardwareGateways
 Working With Hardware Gateways

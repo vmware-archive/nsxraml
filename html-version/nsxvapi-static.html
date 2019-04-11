@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-&lt;<a href="mailto:docfeedback@vmware.com">docfeedback@vmware.com</a>&gt;.</p>
+&lt;docfeedback@vmware.com&gt;.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -2463,7 +2463,7 @@ https:<span class="hljs-comment">//192.168.110.42/api/1.0/appliance-management/u
   <strong>For example</strong>: </p>
 <ul>
 <li>NSX?fileurl=<a href="http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz">http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz</a></li>
-<li>NSX?fileurl=<a href="ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz">ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</a></li>
+<li>NSX?fileurl=ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</li>
 </ul>
 </div>
 <div class="method post">
@@ -5498,7 +5498,7 @@ VXLAN, create vmknics.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>resourceId<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span> </code></pre></p>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span></code></pre></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -19943,7 +19943,11 @@ whitelisting, you must forcefully delete the whitelist entry.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="communication-status">Communication Status</h1>
+  <div class="description"><h1 id="working-with-logical-inventory-details">Working with Logical Inventory Details</h1>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="communication-status-of-a-specific-host">Communication Status of a Specific Host</h2>
 <p>This feature allows the user to check the connection status between the
 NSX Manager and hosts. A hash map is used to hold all hosts&#39; connection
 status. It keeps track of the latest heartbeat from each host.  When
@@ -19956,10 +19960,6 @@ has not been prepared or the netcpa version on this host is lower than
 information is found and the host has been prepared with netcpa version no
 less than 6.2.0, it will return <em>DOWN</em>. When a host has been unprepared,
 its heartbeat information will be removed from the NSX Manager memory.</p>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="communication-status-of-a-specific-host">Communication Status of a Specific Host</h2>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -20082,6 +20082,354 @@ its heartbeat information will be removed from the NSX Manager memory.</p>
     ...
   <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatuses</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">hostConnStatusList</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="detailed-information-about-logical-switches-in-a-specific-transport-zone">Detailed Information about Logical Switches in a Specific Transport Zone</h2>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">scopeId</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>A valid transport zone ID (vdnScope objectId). For example,
+<em>vdnscope-1</em> or <em>universalvdnscope</em>.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/inventory/ui/scope/{scopeId}/vw"
+    href="#GET/2.0/vdn/inventory/ui/scope/{scopeId}/vw"
+  ><h2>GET /2.0/vdn/inventory/ui/scope/{scopeId}/vw</h2></a>
+  <div class="content">
+    <p><p>Retrieve detailed information about logical switches shown in the UI 
+for the specified transport zone. 
+This includes hosts and VM information for the logical switches.</p>
+</p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">extendedAttributes</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Display extended attributes, including active hosts, total hosts,
+connected VM count.</p>
+
+  </dd>
+  <dt>
+    <span class="param">pagesize</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Number of entries to display per page.</p>
+
+  </dd>
+  <dt>
+    <span class="param">startindex</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>The starting point for returning results.</p>
+
+  </dd>
+</dl>
+    </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">DataPage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pagingInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">startIndex</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sortOrderAscending</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sortOrderAscending</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pagingInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>virtualwire-4<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Web_Tier_Logical_Switch<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>virtual wire tenant<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdnScopeId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">vdnScopeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-143<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>21<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01-vDS-MGMT<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingType</span>&gt;</span>portgroup<span class="hljs-tag">&lt;/<span class="hljs-name">backingType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingValue</span>&gt;</span>dvportgroup-245<span class="hljs-tag">&lt;/<span class="hljs-name">backingValue</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">missingOnVc</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">missingOnVc</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-40<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>18<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01-vDS-COMP<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingType</span>&gt;</span>portgroup<span class="hljs-tag">&lt;/<span class="hljs-name">backingType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingValue</span>&gt;</span>dvportgroup-246<span class="hljs-tag">&lt;/<span class="hljs-name">backingValue</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">missingOnVc</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">missingOnVc</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdnId</span>&gt;</span>5000<span class="hljs-tag">&lt;/<span class="hljs-name">vdnId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">guestVlanAllowed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">guestVlanAllowed</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">macLearningEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">macLearningEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>OK<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">activeHosts</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">activeHosts</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalHosts</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">totalHosts</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectedVmCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">connectedVmCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"vdnScope"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA0-Global-TZ<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cdoModeEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">cdoModeEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">DataPage</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="detailed-information-about-logical-switches">Detailed Information about Logical Switches</h2>
+</div>
+<div class="method get">
+  <a
+    class="verb get"
+    id="GET/2.0/vdn/inventory/ui/vw"
+    href="#GET/2.0/vdn/inventory/ui/vw"
+  ><h2>GET /2.0/vdn/inventory/ui/vw</h2></a>
+  <div class="content">
+    <p><p>Retrieve detailed information about logical switches shown in the UI.
+This includes hosts and VM information for the logical switches.</p>
+</p>
+    <div class="params">
+      <h3>Query Parameters</h3>
+        <dl>
+  <dt>
+    <span class="param">extendedAttributes</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Display extended attributes, including active hosts, total hosts,
+connected VM count.</p>
+
+  </dd>
+  <dt>
+    <span class="param">pagesize</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Number of entries to display per page.</p>
+
+  </dd>
+  <dt>
+    <span class="param">startindex</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>The starting point for returning results.</p>
+
+  </dd>
+</dl>
+    </div>
+    <h3>Responses</h3>
+        <h4><span class="response-code response-code-2xx">200 OK</span></h4>
+          <h5>
+            Response Example
+              (<tt>application/xml</tt>)
+          </h5>
+          <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">DataPage</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pagingInfo</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pageSize</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">pageSize</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">startIndex</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">startIndex</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalCount</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">totalCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">sortOrderAscending</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">sortOrderAscending</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">pagingInfo</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>virtualwire-4<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VirtualWire<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>Web_Tier_Logical_Switch<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tenantId</span>&gt;</span>virtual wire tenant<span class="hljs-tag">&lt;/<span class="hljs-name">tenantId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdnScopeId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">vdnScopeId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-143<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>21<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01-vDS-MGMT<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingType</span>&gt;</span>portgroup<span class="hljs-tag">&lt;/<span class="hljs-name">backingType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingValue</span>&gt;</span>dvportgroup-245<span class="hljs-tag">&lt;/<span class="hljs-name">backingValue</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">missingOnVc</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">missingOnVc</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">switch</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>dvs-40<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>18<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VmwareDistributedVirtualSwitch<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01-vDS-COMP<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>datacenter-21<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>Datacenter<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA01<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">switch</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1600<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">promiscuousMode</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">promiscuousMode</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingType</span>&gt;</span>portgroup<span class="hljs-tag">&lt;/<span class="hljs-name">backingType</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">backingValue</span>&gt;</span>dvportgroup-246<span class="hljs-tag">&lt;/<span class="hljs-name">backingValue</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">missingOnVc</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">missingOnVc</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdsContextWithBacking</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdnId</span>&gt;</span>5000<span class="hljs-tag">&lt;/<span class="hljs-name">vdnId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">guestVlanAllowed</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">guestVlanAllowed</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">controlPlaneMode</span>&gt;</span>UNICAST_MODE<span class="hljs-tag">&lt;/<span class="hljs-name">controlPlaneMode</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">macLearningEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">macLearningEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>OK<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">activeHosts</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">activeHosts</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">totalHosts</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">totalHosts</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">connectedVmCount</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">connectedVmCount</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">vdnScope</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"vdnScope"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span>vdnscope-1<span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">objectTypeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">objectTypeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">vsmUuid</span>&gt;</span>42080AD5-D890-04C9-31C2-8A457C5588ED<span class="hljs-tag">&lt;/<span class="hljs-name">vsmUuid</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">nodeId</span>&gt;</span>6ff72733-03cd-4603-b7c2-bdd38c769753<span class="hljs-tag">&lt;/<span class="hljs-name">nodeId</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">revision</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">revision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">typeName</span>&gt;</span>VdnScope<span class="hljs-tag">&lt;/<span class="hljs-name">typeName</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RegionA0-Global-TZ<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">clientHandle</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">clientHandle</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">extendedAttributes</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">isTemporal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isTemporal</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">virtualWireCount</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">virtualWireCount</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">cdoModeEnabled</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">cdoModeEnabled</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">vdnScope</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">DataPage</span>&gt;</span>
 </code></pre>
   </div>
 </div>
@@ -20850,7 +21198,8 @@ the <strong>packetSize</strong> parameter.</li>
     <span class="badge">required</span>
   </dt>
   <dd>
-      <p>A valid transport zone ID (vdnScope objectId).</p>
+      <p>A valid transport zone ID (vdnScope objectId). For example,
+<em>vdnscope-1</em> or <em>universalvdnscope</em>.</p>
 
   </dd>
 </dl>
@@ -22322,7 +22671,7 @@ the <strong>packetSize</strong> parameter.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">vlan</span>&gt;</span>v1<span class="hljs-tag">&lt;/<span class="hljs-name">vlan</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">switchName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">switchName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">portName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">portName</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span> </code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
+<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span></code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
 <p><code>POST /api/2.0/vdn/virtualwires/&lt;virtualwireId&gt;/hardwaregateways/{bindingId}?action=attach</code></p>
 <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
   ...
@@ -33636,7 +33985,7 @@ BGP </span>local AS number : 65300<span class="hljs-built_in">
 BGP secret </span>: VMWare<span class="hljs-built_in">
 BGP </span>weight : 60 (optional)<span class="hljs-built_in">
 BGP </span>hold down timer : 180<span class="hljs-built_in">
-BGP </span>keep alive timer : 60 </code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
+BGP </span>keep alive timer : 60</code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
 <pre><code class="code-block hljs lang-json">{
   <span class="hljs-attr">"peer_config"</span>: {
     <span class="hljs-attr">"ipsecSiteConfig_ipsecsite-4"</span>: {
