@@ -1211,8 +1211,9 @@ securitySchemes:
       scopeId:
         required: true
         displayName: scopeId
-        description: |
-          A valid transport zone ID (vdnScope objectId).
+        description: | 
+          A valid transport zone ID (vdnScope objectId). For example,
+          *vdnscope-1* or *universalvdnscope*.
   get:
     displayName: logicalSwitchList
     description: |
@@ -20104,26 +20105,26 @@ securitySchemes:
 /2.0/vdn/inventory:
   displayName: inventoryStatus
   description: |
-    Communication Status
+    Working with Logical Inventory Details
     ====================
-    This feature allows the user to check the connection status between the
-    NSX Manager and hosts. A hash map is used to hold all hosts' connection
-    status. It keeps track of the latest heartbeat from each host.  When
-    querying a host’s connection status, NSX Manager will get the latest
-    heartbeat information to compare the last heartbeat time and current time.
-    If the duration is longer than a threshold, it returns *DOWN*, otherwise
-    it returns *UP*. If no last heartbeat information is found and this host
-    has not been prepared or the netcpa version on this host is lower than
-    6.2.0, it will return *NOT_AVAILABLE*.  But if no last heartbeat
-    information is found and the host has been prepared with netcpa version no
-    less than 6.2.0, it will return *DOWN*. When a host has been unprepared,
-    its heartbeat information will be removed from the NSX Manager memory.
 
   /host/{hostId}/connection/status:
     displayName: inventoryStatusHost
     description: |
       Communication Status of a Specific Host
       ---------------------------------------
+      This feature allows the user to check the connection status between the
+      NSX Manager and hosts. A hash map is used to hold all hosts' connection
+      status. It keeps track of the latest heartbeat from each host.  When
+      querying a host’s connection status, NSX Manager will get the latest
+      heartbeat information to compare the last heartbeat time and current time.
+      If the duration is longer than a threshold, it returns *DOWN*, otherwise
+      it returns *UP*. If no last heartbeat information is found and this host
+      has not been prepared or the netcpa version on this host is lower than
+      6.2.0, it will return *NOT_AVAILABLE*.  But if no last heartbeat
+      information is found and the host has been prepared with netcpa version no
+      less than 6.2.0, it will return *DOWN*. When a host has been unprepared,
+      its heartbeat information will be removed from the NSX Manager memory.
     uriParameters:
       hostId:
         displayName: hostId
@@ -20208,6 +20209,294 @@ securitySchemes:
                     ...
                   </hostConnStatuses>
                 </hostConnStatusList>
+  /ui/vw:
+    displayName: uiVirtualWires
+    description: |
+      Detailed Information about Logical Switches
+      -----------
+    get:
+      displayName: uiVirtualWiresList
+      description: |
+        Retrieve detailed information about logical switches shown in the UI.
+        This includes hosts and VM information for the logical switches.
+      queryParameters:
+        extendedAttributes:
+          displayName: extendedAttributes
+          description: |
+            Display extended attributes, including active hosts, total hosts,
+            connected VM count.
+          required: false
+        pagesize:
+          displayName: pagesize
+          description: Number of entries to display per page.
+          required: false
+        startindex:
+          displayName: startindex
+          description: !include documentation/reuse/startindex
+          required: false
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <DataPage>
+                  <pagingInfo>
+                    <pageSize>1</pageSize>
+                    <startIndex>0</startIndex>
+                    <totalCount>8</totalCount>
+                    <sortOrderAscending>true</sortOrderAscending>
+                  </pagingInfo>
+                  <com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto>
+                    <objectId>virtualwire-4</objectId>
+                    <objectTypeName>VirtualWire</objectTypeName>
+                    <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                    <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                    <revision>4</revision>
+                    <type>
+                      <typeName>VirtualWire</typeName>
+                    </type>
+                    <name>Web_Tier_Logical_Switch</name>
+                    <description></description>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes/>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                    <isTemporal>false</isTemporal>
+                    <tenantId>virtual wire tenant</tenantId>
+                    <vdnScopeId>vdnscope-1</vdnScopeId>
+                    <vdsContextWithBacking>
+                      <switch>
+                        <objectId>dvs-143</objectId>
+                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                        <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                        <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                        <revision>21</revision>
+                        <type>
+                          <typeName>VmwareDistributedVirtualSwitch</typeName>
+                        </type>
+                        <name>RegionA01-vDS-MGMT</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>RegionA01</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <isTemporal>false</isTemporal>
+                      </switch>
+                      <mtu>1600</mtu>
+                      <promiscuousMode>false</promiscuousMode>
+                      <backingType>portgroup</backingType>
+                      <backingValue>dvportgroup-245</backingValue>
+                      <missingOnVc>false</missingOnVc>
+                    </vdsContextWithBacking>
+                    <vdsContextWithBacking>
+                      <switch>
+                        <objectId>dvs-40</objectId>
+                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                        <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                        <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                        <revision>18</revision>
+                        <type>
+                          <typeName>VmwareDistributedVirtualSwitch</typeName>
+                        </type>
+                        <name>RegionA01-vDS-COMP</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>RegionA01</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <isTemporal>false</isTemporal>
+                      </switch>
+                      <mtu>1600</mtu>
+                      <promiscuousMode>false</promiscuousMode>
+                      <backingType>portgroup</backingType>
+                      <backingValue>dvportgroup-246</backingValue>
+                      <missingOnVc>false</missingOnVc>
+                    </vdsContextWithBacking>
+                    <vdnId>5000</vdnId>
+                    <guestVlanAllowed>false</guestVlanAllowed>
+                    <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                    <macLearningEnabled>false</macLearningEnabled>
+                    <status>OK</status>
+                    <activeHosts>1</activeHosts>
+                    <totalHosts>6</totalHosts>
+                    <connectedVmCount>2</connectedVmCount>
+                    <vdnScope class="vdnScope">
+                      <objectId>vdnscope-1</objectId>
+                      <objectTypeName>VdnScope</objectTypeName>
+                      <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                      <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>VdnScope</typeName>
+                      </type>
+                      <name>RegionA0-Global-TZ</name>
+                      <description></description>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                      <isTemporal>false</isTemporal>
+                      <virtualWireCount>0</virtualWireCount>
+                      <cdoModeEnabled>false</cdoModeEnabled>
+                    </vdnScope>
+                  </com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto>
+                </DataPage>
+  /ui/scope/{scopeId}/vw:
+    displayName: uiScopeVirtualWires
+    description: |
+      Detailed Information about Logical Switches in a Specific Transport Zone
+      -----------
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: | 
+          A valid transport zone ID (vdnScope objectId). For example,
+          *vdnscope-1* or *universalvdnscope*.
+    get:
+      displayName: uiScopeVirtualWiresList
+      description: |
+        Retrieve detailed information about logical switches shown in the UI 
+        for the specified transport zone. 
+        This includes hosts and VM information for the logical switches.
+      queryParameters:
+        extendedAttributes:
+          displayName: extendedAttributes
+          description: |
+            Display extended attributes, including active hosts, total hosts,
+            connected VM count.
+          required: false
+        pagesize:
+          displayName: pagesize
+          description: Number of entries to display per page.
+          required: false
+        startindex:
+          displayName: startindex
+          description: !include documentation/reuse/startindex
+          required: false
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <DataPage>
+                  <pagingInfo>
+                    <pageSize>1</pageSize>
+                    <startIndex>0</startIndex>
+                    <totalCount>8</totalCount>
+                    <sortOrderAscending>true</sortOrderAscending>
+                  </pagingInfo>
+                  <com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto>
+                    <objectId>virtualwire-4</objectId>
+                    <objectTypeName>VirtualWire</objectTypeName>
+                    <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                    <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                    <revision>4</revision>
+                    <type>
+                      <typeName>VirtualWire</typeName>
+                    </type>
+                    <name>Web_Tier_Logical_Switch</name>
+                    <description></description>
+                    <clientHandle></clientHandle>
+                    <extendedAttributes/>
+                    <isUniversal>false</isUniversal>
+                    <universalRevision>0</universalRevision>
+                    <isTemporal>false</isTemporal>
+                    <tenantId>virtual wire tenant</tenantId>
+                    <vdnScopeId>vdnscope-1</vdnScopeId>
+                    <vdsContextWithBacking>
+                      <switch>
+                        <objectId>dvs-143</objectId>
+                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                        <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                        <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                        <revision>21</revision>
+                        <type>
+                          <typeName>VmwareDistributedVirtualSwitch</typeName>
+                        </type>
+                        <name>RegionA01-vDS-MGMT</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>RegionA01</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <isTemporal>false</isTemporal>
+                      </switch>
+                      <mtu>1600</mtu>
+                      <promiscuousMode>false</promiscuousMode>
+                      <backingType>portgroup</backingType>
+                      <backingValue>dvportgroup-245</backingValue>
+                      <missingOnVc>false</missingOnVc>
+                    </vdsContextWithBacking>
+                    <vdsContextWithBacking>
+                      <switch>
+                        <objectId>dvs-40</objectId>
+                        <objectTypeName>VmwareDistributedVirtualSwitch</objectTypeName>
+                        <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                        <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                        <revision>18</revision>
+                        <type>
+                          <typeName>VmwareDistributedVirtualSwitch</typeName>
+                        </type>
+                        <name>RegionA01-vDS-COMP</name>
+                        <scope>
+                          <id>datacenter-21</id>
+                          <objectTypeName>Datacenter</objectTypeName>
+                          <name>RegionA01</name>
+                        </scope>
+                        <clientHandle></clientHandle>
+                        <extendedAttributes/>
+                        <isUniversal>false</isUniversal>
+                        <universalRevision>0</universalRevision>
+                        <isTemporal>false</isTemporal>
+                      </switch>
+                      <mtu>1600</mtu>
+                      <promiscuousMode>false</promiscuousMode>
+                      <backingType>portgroup</backingType>
+                      <backingValue>dvportgroup-246</backingValue>
+                      <missingOnVc>false</missingOnVc>
+                    </vdsContextWithBacking>
+                    <vdnId>5000</vdnId>
+                    <guestVlanAllowed>false</guestVlanAllowed>
+                    <controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+                    <macLearningEnabled>false</macLearningEnabled>
+                    <status>OK</status>
+                    <activeHosts>1</activeHosts>
+                    <totalHosts>6</totalHosts>
+                    <connectedVmCount>2</connectedVmCount>
+                    <vdnScope class="vdnScope">
+                      <objectId>vdnscope-1</objectId>
+                      <objectTypeName>VdnScope</objectTypeName>
+                      <vsmUuid>42080AD5-D890-04C9-31C2-8A457C5588ED</vsmUuid>
+                      <nodeId>6ff72733-03cd-4603-b7c2-bdd38c769753</nodeId>
+                      <revision>1</revision>
+                      <type>
+                        <typeName>VdnScope</typeName>
+                      </type>
+                      <name>RegionA0-Global-TZ</name>
+                      <description></description>
+                      <clientHandle></clientHandle>
+                      <extendedAttributes/>
+                      <isUniversal>false</isUniversal>
+                      <universalRevision>0</universalRevision>
+                      <isTemporal>false</isTemporal>
+                      <virtualWireCount>0</virtualWireCount>
+                      <cdoModeEnabled>false</cdoModeEnabled>
+                    </vdnScope>
+                  </com.vmware.vshield.vsm.vdn.dto.ui.UiVirtualWireDto>
+                </DataPage>
 /2.0/vdn/hardwaregateways:
   displayName: hardwareGateways
   description: |
