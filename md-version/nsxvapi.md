@@ -819,9 +819,10 @@ Working With Controller Upgrade Availability
 ### /2.0/vdn/controller/progress/{jobId}
 Working With of Controller Job Status
 -----
+  
 
-* **get** *(secured)*: Retrieves status of controller creation or removal. The progress gives
-a percentage indication of current deploy / remove procedure.
+* **get** *(secured)*: Retrieves status of controller creation or removal, or controller
+cluster upgrade.
 
 ### /2.0/vdn/controller/{controllerId}
 Working With a Specific Controller
@@ -883,6 +884,23 @@ Working With the NSX Controller Cluster Configuration
 * **get** *(secured)*: Retrieve cluster wide configuration information for controller.
 
 * **put** *(secured)*: Modify cluster wide configuration information for controller.
+
+### /2.0/vdn/controller/cluster/upgrade
+Working With Controller Cluster Upgrade
+-------
+
+* **post** *(secured)*: Start the upgrade of the NSX Controller cluster. The upgrade is 
+performed on one controller node at a time. 
+
+Before you start the controller upgrade, use `GET
+/api/2.0/vdn/controller` to ensure that all three controllers have
+**status** of *RUNNING*. It can take about 10 minutes after the NSX Manager
+upgrade and reboot for the controllers to reestablish connectivity to
+the NSX Manager.
+
+This request returns a jobId, for example, *jobdata-22307*. You can 
+use `GET /api/2.0/vdn/controller/progress/{jobId}` to get the status
+of the NSX Controller cluster upgrade.
 
 ### /2.0/vdn/controller/credential
 Working With the NSX Controller Password
