@@ -17678,6 +17678,30 @@ MIICWjCCAcMCAgGlMA0GCSqGSIb3DQEBBAUAMHUxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw ...
 </div>
 </section>
 <section class="resource">
+  <div class="description"><h2 id="working-with-controller-cluster-upgrade">Working With Controller Cluster Upgrade</h2>
+</div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/2.0/vdn/controller/cluster/upgrade"
+    href="#POST/2.0/vdn/controller/cluster/upgrade"
+  ><h2>POST /2.0/vdn/controller/cluster/upgrade</h2></a>
+  <div class="content">
+    <p><p>Start the upgrade of the NSX Controller cluster. The upgrade is 
+performed on one controller node at a time. </p>
+<p>Before you start the controller upgrade, use <code>GET
+/api/2.0/vdn/controller</code> to ensure that all three controllers have
+<strong>status</strong> of <em>RUNNING</em>. It can take about 10 minutes after the NSX Manager
+upgrade and reboot for the controllers to reestablish connectivity to
+the NSX Manager.</p>
+<p>This request returns a jobId, for example, <em>jobdata-22307</em>. You can 
+use <code>GET /api/2.0/vdn/controller/progress/{jobId}</code> to get the status
+of the NSX Controller cluster upgrade.</p>
+</p>
+  </div>
+</div>
+</section>
+<section class="resource">
   <div class="description"><h2 id="working-with-the-nsx-controller-password">Working With the NSX Controller Password</h2>
 </div>
 <div class="method put">
@@ -17732,8 +17756,8 @@ MIICWjCCAcMCAgGlMA0GCSqGSIb3DQEBBAUAMHUxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw ...
     href="#GET/2.0/vdn/controller/progress/{jobId}"
   ><h2>GET /2.0/vdn/controller/progress/{jobId}</h2></a>
   <div class="content">
-    <p><p>Retrieves status of controller creation or removal. The progress gives
-a percentage indication of current deploy / remove procedure.</p>
+    <p><p>Retrieves status of controller creation or removal, or controller
+cluster upgrade.</p>
 </p>
     <h3>Responses</h3>
         <h4><span class="response-code response-code-2xx">200 OK</span></h4>
