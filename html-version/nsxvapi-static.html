@@ -38940,10 +38940,83 @@ the syslog servers</p>
   ><h2>PUT /4.0/edges/{edgeId}/systemcontrol/config</h2></a>
   <div class="content">
     <p><p>Update the NSX Edge system control (sysctl) configuration.</p>
-</p>
+<p><strong>Available System Control Properties</strong></p>
+<table class="table"><thead><tr>
+<th>Description</th>
+<th>Parameters </th>
+</tr>
+</thead><tbody><tr>
+<td>Determine the IP address to be sent in ARP</td>
+<td>sysctl.net.ipv4.conf.all.arp_announce <br>sysctl.net.ipv4.conf.default.arp_announce</td>
+</tr>
+<tr>
+<td>ARP ignore</td>
+<td>sysctl.net.ipv4.conf.all.arp_ignore </td>
+</tr>
+<tr>
+<td>TCP timeout values for conntrack to fine tune NAT performance</td>
+<td>sysctl.net.netfilter.nf_conntrack_tcp_timeout_fin_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_close_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_max_retrans <br>sysctl.net.netfilter.nf_conntrack_tcp_timeout_unacknowledged <br>sysctl.net.netfilter.nf_conntrack_tcp_max_retrans</td>
+</tr>
+<tr>
+<td>Disable uRPF check</td>
+<td>sysctl.net.ipv4.conf.all.rp_filter <br>sysctl.net.ipv4.conf.default.rp_filter<br>sysctl.net.ipv4.conf.vNic_[0-4094].rp_filter</td>
+</tr>
+<tr>
+<td>Modify ARP limits in cache</td>
+<td>sysctl.net.ipv4.neigh.default.gc_thresh1 <br>sysctl.net.ipv6.neigh.default.gc_thresh1 <br>sysctl.net.ipv4.neigh.default.gc_thresh2 <br>sysctl.net.ipv6.neigh.default.gc_thresh2 <br>sysctl.net.ipv4.neigh.default.gc_thresh3 <br>sysctl.net.ipv6.neigh.default.gc_thresh3</td>
+</tr>
+<tr>
+<td>TIME_WAIT socket connections configuration</td>
+<td>sysctl.net.ipv4.tcp_tw_reuse <br>sysctl.net.ipv4.tcp_tw_recycle</td>
+</tr>
+<tr>
+<td>Load balancer tuning parameters</td>
+<td>lb.global.tune.bufsize <br>lb.global.tune.maxrewrite <br>sysctl.net.ipv4.vs.expire_nodest_conn <br>lb.global.tune.http.maxhdr <br>lb.global.tune.ssl.default-dh-param <br>sysctl.net.ipv4.tcp_max_orphans <br>sysctl.net.ipv4.tcp_mem</td>
+</tr>
+<tr>
+<td>IPFragment tuning parameters</td>
+<td>sysctl.net.ipv4.ipfrag_high_thresh <br>sysctl.net.ipv4.ipfrag_low_thresh <br>sysctl.net.ipv6.ip6frag_high_thresh <br>sysctl.net.ipv6.ip6frag_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_high_thresh</td>
+</tr>
+<tr>
+<td>Bridge tuning parameters</td>
+<td><br>sysctl.net.bridge.bridge-nf-call-iptables <br>sysctl.net.bridge.bridge-nf-call-ip6tables </td>
+</tr>
+</tbody></table><p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.3.2</td>
+<td>Properties added: <strong>sysctl.net.ipv4.tcp_max_orphans</strong>, <strong>sysctl.net.ipv4.tcp_mem</strong></td>
+</tr>
+<tr>
+<td>6.4.0</td>
+<td>Properties added: <strong>lb.global.tune.ssl.default-dh-param</strong>, <strong>lb.global.tune.http.maxhdr</strong></td>
+</tr>
+<tr>
+<td>6.4.2</td>
+<td>Properties added: <strong>sysctl.net.ipv4.ipfrag_high_thresh</strong>, <strong>sysctl.net.ipv4.ipfrag_low_thresh</strong>, <strong>sysctl.net.ipv6.ip6frag_high_thresh</strong>, <strong>sysctl.net.ipv6.ip6frag_low_thresh</strong>, <strong>sysctl.net.netfilter.nf_conntrack_frag6_low_thresh</strong>, <strong>sysctl.net.netfilter.nf_conntrack_frag6_high_thresh</strong>, <strong>sysctl.net.bridge.bridge-nf-call-iptables</strong>, <strong>sysctl.net.bridge.bridge-nf-call-ip6tables</strong> </td>
+</tr>
+<tr>
+<td>6.4.4</td>
+<td>Properties added: <strong>sysctl.net.ipv4.conf.all.arp_ignore</strong>.</td>
+</tr>
+</tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">systemControl</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.ipv4.conf.vNic_1.rp_filter=2<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.ipv4.conf.vNic_2.rp_filter=2<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.ipv4.conf.vNic_3.rp_filter=2<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_tcp_timeout_syn_sent=30<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_tcp_timeout_syn_recv=20<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_tcp_timeout_established=3660<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_tcp_timeout_time_wait=25<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_udp_timeout=30<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_udp_timeout_stream=40<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_icmp_timeout=20<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_icmpv6_timeout=20<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>sysctl.net.netfilter.nf_conntrack_generic_timeout=180<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">systemControl</span>&gt;</span>
 </code></pre>
   </div>
