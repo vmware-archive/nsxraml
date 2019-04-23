@@ -219,10 +219,10 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### update-number
-Update 8
+Update 9
 
 ### update-date
-Modified DEC 2018
+Modified APR 2019
 
 ---
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright © 2015-2016 VMware, Inc. All Rights Reserved.
+# Copyright © 2015-2019 VMware, Inc. All Rights Reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy 
 # of this software and associated documentation files (the "Software"), to deal
