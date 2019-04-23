@@ -4475,9 +4475,9 @@ securitySchemes:
                   <string>security_admin</string>
                   <string>auditor</string>
                   <string>enterprise_admin</string>
-                  <string>security_engineer</string>     /* Added in NSX 6.4.2 */
-                  <string>network_engineer</string>      /* Added in NSX 6.4.2 */
-                  <string>security_role_admin</string>   /* Added in NSX 6.4.5 */
+                  <string>security_engineer</string>     
+                  <string>network_engineer</string>     
+                  <string>security_role_admin</string> 
                 </list>  
   /scopingobjects:
     displayName: userScopingObjects
@@ -17967,6 +17967,10 @@ securitySchemes:
           displayName: routingOSPFRead
           description: |
             Retrieve OSPF configuration.            
+
+            Note: **protocolAddress** and **forwardingAddress** are required
+            for Distributed Logical Router only. See *Working With the NSX
+            Edge Routing Configuration* for full details of OSPF parameters.
             
             **Method history:**
             
@@ -17982,8 +17986,8 @@ securitySchemes:
                   example: |
                     <ospf>
                       <enabled>true</enabled>
-                      <protocolAddress>1.1.1.10</protocolAddress>    /* Required only for Distributed Logical Router */
-                      <forwardingAddress>1.1.1.1</forwardingAddress> /* Required only for Distributed Logical Router */
+                      <protocolAddress>1.1.1.10</protocolAddress>
+                      <forwardingAddress>1.1.1.1</forwardingAddress>
                       <ospfAreas>
                         <ospfArea>
                           <areaId>51</areaId>
@@ -18043,6 +18047,10 @@ securitySchemes:
           displayName: routingOSPFUpdate
           description: |
             Configure OSPF.            
+
+            Note: **protocolAddress** and **forwardingAddress** are required
+            for Distributed Logical Router only. See *Working With the NSX
+            Edge Routing Configuration* for full details of OSPF parameters.
             
             **Method history:**
             
@@ -18056,8 +18064,8 @@ securitySchemes:
               example: |
                 <ospf>
                   <enabled>true</enabled>
-                  <protocolAddress>1.1.1.10</protocolAddress>    /* Required only for Distributed Logical Router */
-                  <forwardingAddress>1.1.1.1</forwardingAddress> /* Required only for Distributed Logical Router */
+                  <protocolAddress>1.1.1.10</protocolAddress>
+                  <forwardingAddress>1.1.1.1</forwardingAddress>
                   <ospfAreas>
                     <ospfArea>
                       <areaId>51</areaId>
@@ -19876,7 +19884,7 @@ securitySchemes:
                         <name>m2</name>
                         <ipAddress>192.168.101.202</ipAddress>
                         <status>DOWN</status>
-                        <failureCause>CRITICAL - Socket timeout</failureCause>  /* Added in NSX 6.4.5 */
+                        <failureCause>CRITICAL - Socket timeout</failureCause>
                         <bytesIn>70823</bytesIn>
                         <bytesOut>70605</bytesOut>
                         <curSessions>0</curSessions>

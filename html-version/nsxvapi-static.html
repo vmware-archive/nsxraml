@@ -14635,9 +14635,9 @@ role for a local user.</p>
   <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>auditor<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>enterprise_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_engineer<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>     /* Added in NSX 6.4.2 */
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>network_engineer<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>      /* Added in NSX 6.4.2 */
-  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_role_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>   /* Added in NSX 6.4.5 */
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_engineer<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>     
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>network_engineer<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>     
+  <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>security_role_admin<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span> 
 <span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span>  
 </code></pre>
   </div>
@@ -33213,7 +33213,7 @@ server.</p>
       <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>m2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span>192.168.101.202<span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span>DOWN<span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">failureCause</span>&gt;</span>CRITICAL - Socket timeout<span class="hljs-tag">&lt;/<span class="hljs-name">failureCause</span>&gt;</span>  /* Added in NSX 6.4.5 */
+      <span class="hljs-tag">&lt;<span class="hljs-name">failureCause</span>&gt;</span>CRITICAL - Socket timeout<span class="hljs-tag">&lt;/<span class="hljs-name">failureCause</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">bytesIn</span>&gt;</span>70823<span class="hljs-tag">&lt;/<span class="hljs-name">bytesIn</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">bytesOut</span>&gt;</span>70605<span class="hljs-tag">&lt;/<span class="hljs-name">bytesOut</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">curSessions</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">curSessions</span>&gt;</span>
@@ -35655,6 +35655,9 @@ and links that have the same area identification.</p>
   ><h2>GET /4.0/edges/{edgeId}/routing/config/ospf</h2></a>
   <div class="content">
     <p><p>Retrieve OSPF configuration.            </p>
+<p>Note: <strong>protocolAddress</strong> and <strong>forwardingAddress</strong> are required
+for Distributed Logical Router only. See <em>Working With the NSX
+Edge Routing Configuration</em> for full details of OSPF parameters.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -35677,8 +35680,8 @@ and links that have the same area identification.</p>
           </h5>
           <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span>1.1.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>    /* Required only for Distributed Logical Router */
-  <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span>1.1.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span> /* Required only for Distributed Logical Router */
+  <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span>1.1.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span>1.1.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ospfAreas</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ospfArea</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span>51<span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>
@@ -35745,6 +35748,9 @@ and links that have the same area identification.</p>
   ><h2>PUT /4.0/edges/{edgeId}/routing/config/ospf</h2></a>
   <div class="content">
     <p><p>Configure OSPF.            </p>
+<p>Note: <strong>protocolAddress</strong> and <strong>forwardingAddress</strong> are required
+for Distributed Logical Router only. See <em>Working With the NSX
+Edge Routing Configuration</em> for full details of OSPF parameters.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -35844,8 +35850,8 @@ and links that have the same area identification.</p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
       <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ospf</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span>1.1.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>    /* Required only for Distributed Logical Router */
-  <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span>1.1.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span> /* Required only for Distributed Logical Router */
+  <span class="hljs-tag">&lt;<span class="hljs-name">protocolAddress</span>&gt;</span>1.1.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">protocolAddress</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">forwardingAddress</span>&gt;</span>1.1.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">forwardingAddress</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">ospfAreas</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ospfArea</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">areaId</span>&gt;</span>51<span class="hljs-tag">&lt;/<span class="hljs-name">areaId</span>&gt;</span>

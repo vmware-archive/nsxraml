@@ -6984,6 +6984,10 @@ Areas are identified by an Area ID.
 
 * **get** *(secured)*: Retrieve OSPF configuration.            
 
+Note: **protocolAddress** and **forwardingAddress** are required
+for Distributed Logical Router only. See *Working With the NSX
+Edge Routing Configuration* for full details of OSPF parameters.
+
 **Method history:**
 
 Release | Modification
@@ -6992,6 +6996,10 @@ Release | Modification
 6.3.0 | Method updated. Parameter **defaultOriginate** removed for logical router NSX Edges.  <br>Parameter **translateType7ToType5** added to OSPF section.
 
 * **put** *(secured)*: Configure OSPF.            
+
+Note: **protocolAddress** and **forwardingAddress** are required
+for Distributed Logical Router only. See *Working With the NSX
+Edge Routing Configuration* for full details of OSPF parameters.
 
 **Method history:**
 
