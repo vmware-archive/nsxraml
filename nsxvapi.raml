@@ -346,21 +346,17 @@ securitySchemes:
       description: |
         Working With Latency Configuration of a Specific vSphere Distributed Switch
         --------
-        Starting in NSX 6.4.5, you can use APIs to configure network latency 
-        information between different applications that are connected to different 
-        vNICs. Usually, the network latency between the vNICs is almost identical 
-        to the latency between the applications. The latency between the vNICs 
-        is described more precisely with several segments. 
+        Starting in NSX 6.4.5, you can use APIs to monitor the end-to-end network latency 
+        of a data path as traffic moves between VMs that are either on the same ESXi host 
+        or on different ESXi hosts. However, both the VMs must be attached to the 
+        same logical switch (subnet).
         
-        For example, the first segment is from a source vNIC to the source hypervisor 
-        (tunnel input), the second segment is from the source hypervisor (tunnel input) 
-        to the destination hypervisor (tunnel output), and the third segment is from 
-        the destination hypervisor (tunnel output) to the destination vNIC.
+        **Note:** NSX cannot calculate the end-to-end latency information when data 
+        traffic is routed between VMs through a distributed logical router. That is, 
+        when VMs are attached to different logical switches or subnets.
         
-        With segmented latency data, you can diagnose where the network latency 
-        has occurred. To measure network latency from a local vNIC to the hypervsior 
-        (tunnel point), NSX uses the **timestamp** attribute of a data path packet 
-        inside the hypervisor.
+        To calculate the end-to-end latency of the data path, NSX uses the **timestamp** 
+        attribute of a data path packet inside the hypervisor.
       get:
         displayName: vdsLatencyConfigRead
         description: |
@@ -3161,16 +3157,15 @@ securitySchemes:
 /2.0/vdn/bfd/configuration/global:
   displayName: bfdConfig
   description: |
-    Working With BFD Configuration Information
+    Working With BFD Global Configuration
     ==============
-    Provides information about BFD configured on the interface.
-    You can enable or disable BFD to monitor tunnel health of a hypervisor. By default, BFD is disabled.
+    You can enable or disable BFD to monitor hypervisor tunnel health statistics including tunnel latency. By default, BFD is disabled.
     
     **BFD Parameters**
     
     Parameter |  Description | Comments
     ---|---|---
-      **enabled**      |Enable or disable BFD to monitor tunnel health of a hypervisor.|Required. Options are *True* or *False*. Default is *False*.
+      **enabled**      |Enable or disable BFD to monitor hypervisor tunnel health statistics including tunnel latency.|Required. Options are *True* or *False*. Default is *False*.
       **pollingIntervalSecondsForHost**     |Configure the BFD polling interval.|Required. Value should be greater than *30*. Default value is *180*.
       **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session in milliseconds.|Required. Value should be greater than *300*. Default value is *120000*.
   get:

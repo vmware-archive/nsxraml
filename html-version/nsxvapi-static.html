@@ -45,7 +45,7 @@ technical documentation go to <a href="http://www.vmware.com/support/pubs">http:
 <a href="http://www.vmware.com/support/">http://www.vmware.com/support/</a>.</p>
 <p>The VMware Web site also provides the latest product updates.</p>
 <p>If you have comments about this documentation, submit your feedback to:
-&lt;docfeedback@vmware.com&gt;.</p>
+&lt;<a href="mailto:docfeedback@vmware.com">docfeedback@vmware.com</a>&gt;.</p>
 <h2 id="using-the-nsx-rest-api">Using the NSX REST API</h2>
 <p>To use the NSX REST API, you must configure a REST client, verify the required
 ports are open between your REST client and the NSX Manager, and understand
@@ -2463,7 +2463,7 @@ https:<span class="hljs-comment">//192.168.110.42/api/1.0/appliance-management/u
   <strong>For example</strong>: </p>
 <ul>
 <li>NSX?fileurl=<a href="http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz">http://www.vmware.com/build/mts/release/final-5934867/publish/VMware-NSX-Manager-upgrade-bundle-6.4.0-5934867.tar.gz</a></li>
-<li>NSX?fileurl=ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</li>
+<li>NSX?fileurl=<a href="ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz">ftp://10.112.11.53/backup/VMware-NSX-Manager-upgrade-bundle-6.4.0-6864920.tar.gz</a></li>
 </ul>
 </div>
 <div class="method post">
@@ -5498,7 +5498,7 @@ VXLAN, create vmknics.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">resourceConfig</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">resourceId</span>&gt;</span>resourceId<span class="hljs-tag">&lt;/<span class="hljs-name">resourceId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">resourceConfig</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span></code></pre></p>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nwFabricFeatureConfig</span>&gt;</span> </code></pre></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -16403,9 +16403,8 @@ primary NSX Manager.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h1 id="working-with-bfd-configuration-information">Working With BFD Configuration Information</h1>
-<p>Provides information about BFD configured on the interface.
-You can enable or disable BFD to monitor tunnel health of a hypervisor. By default, BFD is disabled.</p>
+  <div class="description"><h1 id="working-with-bfd-global-configuration">Working With BFD Global Configuration</h1>
+<p>You can enable or disable BFD to monitor hypervisor tunnel health statistics including tunnel latency. By default, BFD is disabled.</p>
 <p><strong>BFD Parameters</strong></p>
 <table class="table"><thead><tr>
 <th>Parameter</th>
@@ -16414,7 +16413,7 @@ You can enable or disable BFD to monitor tunnel health of a hypervisor. By defau
 </tr>
 </thead><tbody><tr>
 <td>  <strong>enabled</strong></td>
-<td>Enable or disable BFD to monitor tunnel health of a hypervisor.</td>
+<td>Enable or disable BFD to monitor hypervisor tunnel health statistics including tunnel latency.</td>
 <td>Required. Options are <em>True</em> or <em>False</em>. Default is <em>False</em>.</td>
 </tr>
 <tr>
@@ -21657,19 +21656,15 @@ is higher than the standard MTU. You must set the MTU for each switch to
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-latency-configuration-of-a-specific-vsphere-distributed-switch">Working With Latency Configuration of a Specific vSphere Distributed Switch</h2>
-<p>Starting in NSX 6.4.5, you can use APIs to configure network latency 
-information between different applications that are connected to different 
-vNICs. Usually, the network latency between the vNICs is almost identical 
-to the latency between the applications. The latency between the vNICs 
-is described more precisely with several segments. </p>
-<p>For example, the first segment is from a source vNIC to the source hypervisor 
-(tunnel input), the second segment is from the source hypervisor (tunnel input) 
-to the destination hypervisor (tunnel output), and the third segment is from 
-the destination hypervisor (tunnel output) to the destination vNIC.</p>
-<p>With segmented latency data, you can diagnose where the network latency 
-has occurred. To measure network latency from a local vNIC to the hypervsior 
-(tunnel point), NSX uses the <strong>timestamp</strong> attribute of a data path packet 
-inside the hypervisor.</p>
+<p>Starting in NSX 6.4.5, you can use APIs to monitor the end-to-end network latency 
+of a data path as traffic moves between VMs that are either on the same ESXi host 
+or on different ESXi hosts. However, both the VMs must be attached to the 
+same logical switch (subnet).</p>
+<p><strong>Note:</strong> NSX cannot calculate the end-to-end latency information when data 
+traffic is routed between VMs through a distributed logical router. That is, 
+when VMs are attached to different logical switches or subnets.</p>
+<p>To calculate the end-to-end latency of the data path, NSX uses the <strong>timestamp</strong> 
+attribute of a data path packet inside the hypervisor.</p>
 </div>
 <div class="method get">
   <a
@@ -22695,7 +22690,7 @@ the <strong>packetSize</strong> parameter.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">vlan</span>&gt;</span>v1<span class="hljs-tag">&lt;/<span class="hljs-name">vlan</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">switchName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">switchName</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">portName</span>&gt;</span>s1<span class="hljs-tag">&lt;/<span class="hljs-name">portName</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span></code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
+<span class="hljs-tag">&lt;/<span class="hljs-name">hardwareGatewayBinding</span>&gt;</span> </code></pre><h3 id="attach-a-hardware-gateway-to-a-logical-switch-specifying-an-existing-binding-by-id">Attach a hardware gateway to a logical switch, specifying an existing binding by ID</h3>
 <p><code>POST /api/2.0/vdn/virtualwires/&lt;virtualwireId&gt;/hardwaregateways/{bindingId}?action=attach</code></p>
 <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">virtualWire</span>&gt;</span>
   ...
@@ -34009,7 +34004,7 @@ BGP </span>local AS number : 65300<span class="hljs-built_in">
 BGP secret </span>: VMWare<span class="hljs-built_in">
 BGP </span>weight : 60 (optional)<span class="hljs-built_in">
 BGP </span>hold down timer : 180<span class="hljs-built_in">
-BGP </span>keep alive timer : 60</code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
+BGP </span>keep alive timer : 60 </code></pre><p><strong>Response: JSON (Route-based IPSec VPN and BGP Neighbor Configuration)</strong>          </p>
 <pre><code class="code-block hljs lang-json">{
   <span class="hljs-attr">"peer_config"</span>: {
     <span class="hljs-attr">"ipsecSiteConfig_ipsecsite-4"</span>: {
