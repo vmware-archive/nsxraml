@@ -6277,12 +6277,48 @@ Working With a Specific NSX Edge
 * **post** *(secured)*: Manage NSX Edge.
 * **get** *(secured)*: Retrieve information about the specified NSX Edge.
 
+The following table lists the error codes that can be displayed in the API response when you use the **action** query parameter.
+
+Error Code |  Description  
+---|---
+**10350** | Mismatch detected in IGMP configuration parameters for the edges.
+**10351** | Unsupported topology detected. Multiple multicast enabled edges are connected on the uplink of a multicast enabled DLR.
+**10352** | Unsupported topology detected. Multiple multicast enabled ESGs are connected on a network.
+
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **haAdminState**, **configuredResourcePool**, **configuredDataStore**, **configuredHost**, **configuredVmFolder** parameters added. 
 6.4.0 | Method updated. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter.
+6.4.5 | Method updated. New query parameter **action** added to support verification of multicast configuration of the edge only from 6.4.5 and later.
+
+**XML Response for Error 10350**
+```
+<error> 
+  <errorCode>10350</errorCode> 
+    <details>Multicast IGMP configuration mismatch detected for Edge: edge-1 with Igmp parameters: 
+      [queryInterval:30, queryMaxResponseTime:10, lastMemberQueryInterval:1, robustnessVariable:2] and Edge: edge-2 with Igmp parameters: [queryInterval:31, queryMaxResponseTime:11, lastMemberQueryInterval:1, robustnessVariable:2] 
+    </details>
+    <moduleName>vShield</moduleName>
+</error>
+```
+**XML Response for Error 10351**
+```
+<error> 
+  <errorCode>10351</errorCode> 
+    <details>Unsupported topology detected. Multiple multicast enabled NSX Edges [edge-2, edge-4, edge-5] are connected to multicast enabled Distributed Logical Router edge-3 on virtualwire-3</details> 
+    <moduleName>vShield</moduleName>
+</error>
+```
+**XML Response for Error 10352**
+```
+<error> 
+  <errorCode>10352</errorCode> 
+    <details>Unsupported topology detected. Multiple multicast enabled Edges [edge-2, edge-3, edge-5, edge-4] are connected on virtualwire-3</details>
+    <moduleName>vShield</moduleName>
+</error>
+```
 
 * **put** *(secured)*: Update the NSX Edge configuration.
 
@@ -7043,7 +7079,12 @@ Release | Modification
 ### /4.0/edges/{edgeId}/routing/config/multicast
 Working With Multicast Routing 
 ----
-NSX Edge supports Multicast routing on Edge Services Gateways and on Distributed Logical Routers. 
+NSX Edge supports Multicast routing on Edge Services Gateways and on Distributed Logical Routers.
+
+Starting in NSX 6.4.5, you can verify the multicast configuration and supported multicast topologies of the edge 
+by using the **action** query parameter in the `GET /api/4.0/edges/{edgeId}` API request.
+
+For more information, see the **Working With a Specific NSX Edge** section in this API Guide.
 
 * **get** *(secured)*: Retrieve Multicast configuration. A GET example for Edge Services Gateway is shown below. 
 ```

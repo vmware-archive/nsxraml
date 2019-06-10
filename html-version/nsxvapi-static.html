@@ -25500,7 +25500,24 @@ resource. </p>
   ><h2>GET /4.0/edges/{edgeId}</h2></a>
   <div class="content">
     <p><p>Retrieve information about the specified NSX Edge.</p>
-<p><strong>Method history:</strong></p>
+<p>The following table lists the error codes that can be displayed in the API response when you use the <strong>action</strong> query parameter.</p>
+<table class="table"><thead><tr>
+<th>Error Code</th>
+<th>Description  </th>
+</tr>
+</thead><tbody><tr>
+<td><strong>10350</strong></td>
+<td>Mismatch detected in IGMP configuration parameters for the edges.</td>
+</tr>
+<tr>
+<td><strong>10351</strong></td>
+<td>Unsupported topology detected. Multiple multicast enabled edges are connected on the uplink of a multicast enabled DLR.</td>
+</tr>
+<tr>
+<td><strong>10352</strong></td>
+<td>Unsupported topology detected. Multiple multicast enabled ESGs are connected on a network.</td>
+</tr>
+</tbody></table><p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
 <th>Modification</th>
@@ -25513,7 +25530,28 @@ resource. </p>
 <td>6.4.0</td>
 <td>Method updated. New parameter <strong>ipsecSessionType</strong> added under the <em>site</em> section. This is a read-only parameter.</td>
 </tr>
-</tbody></table></p>
+<tr>
+<td>6.4.5</td>
+<td>Method updated. New query parameter <strong>action</strong> added to support verification of multicast configuration of the edge only from 6.4.5 and later.</td>
+</tr>
+</tbody></table><p><strong>XML Response for Error 10350</strong></p>
+<pre><code class="code-block hljs lang-vim"><span class="hljs-symbol">&lt;error&gt;</span> 
+  <span class="hljs-symbol">&lt;errorCode&gt;</span><span class="hljs-number">10350</span>&lt;/errorCode&gt; 
+    <span class="hljs-symbol">&lt;details&gt;</span>Multicast IGMP configuration mismatch detected <span class="hljs-keyword">for</span> Edge: edge-<span class="hljs-number">1</span> with Igmp parameter<span class="hljs-variable">s:</span> 
+      [queryInterva<span class="hljs-variable">l:30</span>, queryMaxResponseTime:<span class="hljs-number">10</span>, lastMemberQueryInterva<span class="hljs-variable">l:1</span>, robustnessVariable:<span class="hljs-number">2</span>] <span class="hljs-built_in">and</span> Edge: edge-<span class="hljs-number">2</span> with Igmp parameter<span class="hljs-variable">s:</span> [queryInterva<span class="hljs-variable">l:31</span>, queryMaxResponseTime:<span class="hljs-number">11</span>, lastMemberQueryInterva<span class="hljs-variable">l:1</span>, robustnessVariable:<span class="hljs-number">2</span>] 
+    &lt;/details&gt;
+    <span class="hljs-symbol">&lt;moduleName&gt;</span>vShield&lt;/moduleName&gt;
+&lt;/error&gt;</code></pre><p><strong>XML Response for Error 10351</strong></p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">error</span>&gt;</span> 
+  <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>10351<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">details</span>&gt;</span>Unsupported topology detected. Multiple multicast enabled NSX Edges [edge-2, edge-4, edge-5] are connected to multicast enabled Distributed Logical Router edge-3 on virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">details</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">moduleName</span>&gt;</span>vShield<span class="hljs-tag">&lt;/<span class="hljs-name">moduleName</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">error</span>&gt;</span></code></pre><p><strong>XML Response for Error 10352</strong></p>
+<pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">error</span>&gt;</span> 
+  <span class="hljs-tag">&lt;<span class="hljs-name">errorCode</span>&gt;</span>10352<span class="hljs-tag">&lt;/<span class="hljs-name">errorCode</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">details</span>&gt;</span>Unsupported topology detected. Multiple multicast enabled Edges [edge-2, edge-3, edge-5, edge-4] are connected on virtualwire-3<span class="hljs-tag">&lt;/<span class="hljs-name">details</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">moduleName</span>&gt;</span>vShield<span class="hljs-tag">&lt;/<span class="hljs-name">moduleName</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">error</span>&gt;</span></code></pre></p>
     <div class="params">
       <h3>Query Parameters</h3>
         <dl>
@@ -25524,6 +25562,25 @@ resource. </p>
   </dt>
   <dd>
       <p>Filter output to display only universal logical routers.</p>
+
+  </dd>
+  <dt>
+    <span class="param">action</span>
+    <span class="badge">string</span>
+    
+  </dt>
+  <dd>
+      <p>Set to <em>verify</em>. Use this query parameter to: </p>
+<ul>
+<li>Verify the multicast configuration of the edge.<ul>
+<li>View errors due to mismatch in any of the four IGMP configuration parameters: <em>queryInterval</em>, <em>queryMaxResponseTime</em>, <em>lastMemberQueryInterval</em>, and <em>robustnessVariable</em>.</li>
+</ul>
+</li>
+<li>Verify the multicast topology of the edge.<ul>
+<li>View unsupported multicast topology error when multiple ESGs in the network have multicast enabled.</li>
+</ul>
+</li>
+</ul>
 
   </dd>
 </dl>
@@ -35447,7 +35504,10 @@ settings, static route configurations).</p>
 </section>
 <section class="resource">
   <div class="description"><h2 id="working-with-multicast-routing-">Working With Multicast Routing </h2>
-<p>NSX Edge supports Multicast routing on Edge Services Gateways and on Distributed Logical Routers. </p>
+<p>NSX Edge supports Multicast routing on Edge Services Gateways and on Distributed Logical Routers.</p>
+<p>Starting in NSX 6.4.5, you can verify the multicast configuration and supported multicast topologies of the edge 
+by using the <strong>action</strong> query parameter in the <code>GET /api/4.0/edges/{edgeId}</code> API request.</p>
+<p>For more information, see the <strong>Working With a Specific NSX Edge</strong> section in this API Guide.</p>
 </div>
 <div class="method get">
   <a
