@@ -33584,13 +33584,13 @@ of NAT64 are supported.</p>
 </tr>
 </thead><tbody><tr>
 <td><strong>matchIpv6DestinationPrefix</strong></td>
-<td>IPv6 address used to map IPv6 destinations to IPv4 destinations.</td>
-<td>IPv6 CIDR. Prefix length must be <em>32</em>, <em>40</em>, <em>48</em>, <em>56</em>, <em>64</em>, or <em>96</em>. The IPv4 destination address is appended to this network. For example, if the prefix is <em>64:ff9b::/96</em>, and the destination IPv4 IP is <em>120.1.1.3</em>, the IPv6 destination is <em>64:ff9b::7801:0103</em> (<em>7801:0103</em> is <em>120.1.1.3</em> in hex). You can use the well-known prefix defined in RFC 6052: <em>64:ff9b::/96</em>, or use any other IPv6 CIDR that is not already in use in your environment. You can use a network or an IP address.</td>
+<td>IPv6 address used to map IPv4 destination addresses to IPv6 destination addresses.</td>
+<td>Enter an IPv6 network prefix (network address) or a specific IPv6 address in CIDR notation. Prefix length must be <em>32</em>, <em>40</em>, <em>48</em>, <em>56</em>, <em>64</em>, or <em>96</em>. NAT64 appends the hexadecimal equivalent of the IPv4 destination address to the IPv6 network prefix. You can use the well-known prefix defined in RFC 6052: <em>64:ff9b::/96</em>, or use any other IPv6 prefix that is not already used in your environment.</td>
 </tr>
 <tr>
 <td><strong>translatedIpv4SourcePrefix</strong></td>
-<td>IPv4 address used to translate an IPv6 source address into an IPv4 source address.</td>
-<td>IPv4 CIDR. The translated IPv4 source address is assigned from this network. For example, if the prefix is <em>10.10.10.0/24</em>, the source address might be <em>10.10.10.5</em>. You can use any IPv4 CIDR that is not already in use in your environment, or optionally use the shared address defined in RFC 6598: <em>100.64.0.0/10</em>. You can use a network or an IP address.</td>
+<td>IPv4 address that is used to translate an IPv6 source address into an IPv4 source address.</td>
+<td>Optional. Enter an IPv4 network prefix (network address) or a specific IPv4 address in CIDR notation. NAT64 uses an IP address from the IPv4 network prefix to translate the IPv6 source address to an IPv4 source address.  You can use any IPv4 network prefix that is not already used in your environment, or optionally use the shared address spaced reserved for NAT64: <em>100.64.0.0/10</em>. If you omit this parameter, NAT64 automatically uses the reserved address space.</td>
 </tr>
 <tr>
 <td><strong>ruleId</strong></td>
@@ -33615,7 +33615,7 @@ of NAT64 are supported.</p>
 <tr>
 <td><strong>description</strong></td>
 <td>Description for the NAT64 rule.</td>
-<td>Optional.</td>
+<td>Optional.        </td>
 </tr>
 </tbody></table></div>
 <div class="method put">
@@ -33629,6 +33629,7 @@ of NAT64 are supported.</p>
 <p>If you use this method to add new NAT rules, you must include all
 existing rules in the request body. Any rules that are omitted will
 be deleted.</p>
+<p>For a detailed example of adding a NAT64 rule, see the <em>NSX Administration Guide</em>.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>

@@ -6690,19 +6690,21 @@ Parameter |  Description | Other information
 
 Parameter |  Description | Other information
 ---|---
-**matchIpv6DestinationPrefix** | IPv6 address used to map IPv6 destinations to IPv4 destinations. | IPv6 CIDR. Prefix length must be *32*, *40*, *48*, *56*, *64*, or *96*. The IPv4 destination address is appended to this network. For example, if the prefix is *64:ff9b::/96*, and the destination IPv4 IP is *120.1.1.3*, the IPv6 destination is *64:ff9b::7801:0103* (*7801:0103* is *120.1.1.3* in hex). You can use the well-known prefix defined in RFC 6052: *64:ff9b::/96*, or use any other IPv6 CIDR that is not already in use in your environment. You can use a network or an IP address.
-**translatedIpv4SourcePrefix** | IPv4 address used to translate an IPv6 source address into an IPv4 source address. | IPv4 CIDR. The translated IPv4 source address is assigned from this network. For example, if the prefix is *10.10.10.0/24*, the source address might be *10.10.10.5*. You can use any IPv4 CIDR that is not already in use in your environment, or optionally use the shared address defined in RFC 6598: *100.64.0.0/10*. You can use a network or an IP address.
+**matchIpv6DestinationPrefix** | IPv6 address used to map IPv4 destination addresses to IPv6 destination addresses. | Enter an IPv6 network prefix (network address) or a specific IPv6 address in CIDR notation. Prefix length must be *32*, *40*, *48*, *56*, *64*, or *96*. NAT64 appends the hexadecimal equivalent of the IPv4 destination address to the IPv6 network prefix. You can use the well-known prefix defined in RFC 6052: *64:ff9b::/96*, or use any other IPv6 prefix that is not already used in your environment.
+**translatedIpv4SourcePrefix** | IPv4 address that is used to translate an IPv6 source address into an IPv4 source address. | Optional. Enter an IPv4 network prefix (network address) or a specific IPv4 address in CIDR notation. NAT64 uses an IP address from the IPv4 network prefix to translate the IPv6 source address to an IPv4 source address.  You can use any IPv4 network prefix that is not already used in your environment, or optionally use the shared address spaced reserved for NAT64: *100.64.0.0/10*. If you omit this parameter, NAT64 automatically uses the reserved address space.
 **ruleId** | Identifier for the NAT64 rule. |Read-only. Long.
 **ruleTag** | Rule tag for the NAT64 rule. | This can be used to specify user-controlled **ruleId**. If not specified, NSX Manager will generate **ruleId**. Optional. Must be between *65537-131072*.
 **loggingEnabled** | Enable logging for the NAT64 rule. | Boolean. Optional. Default is *false*.
 **enabled** | Enable the NAT64 rule. | Boolean. Optional. Default is *true*.
-**description** | Description for the NAT64 rule. | Optional.
+**description** | Description for the NAT64 rule. | Optional.        
 
 * **put** *(secured)*: Configure NAT rules for an Edge.
 
 If you use this method to add new NAT rules, you must include all
 existing rules in the request body. Any rules that are omitted will
 be deleted.
+
+For a detailed example of adding a NAT64 rule, see the *NSX Administration Guide*.
 
 **Method history:**
 
