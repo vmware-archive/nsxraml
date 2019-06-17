@@ -4913,6 +4913,11 @@ Release | Modification
 * Retrieve the Etag value from the response headers.
 * Extract and modify the configuration from the response body as needed.
 * Set the If-Match header to the Etag value, and submit the request.
+* Starting in NSX 6.4.5, the Etag value returned in the response header of
+  `GET /api/4.0/firewall/globalroot-0/config` contains double quotes. You must 
+  strip off the double quotes before using the Etag value in the If-Match header.
+  If you are using the PUT API request in an automation script, ensure that the 
+  script strips off the double quotes in the Etag value.
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -5016,6 +5021,11 @@ query parameters to specify the destination for the section.
 * Retrieve the Etag value from the response headers.
 * Extract and modify the configuration from the response body as needed.
 * Set the If-Match header to the Etag value, and submit the request.
+* Starting in NSX 6.4.5, the Etag value returned in the response header of the 
+  GET API request contains double quotes. You must strip off the double quotes 
+  before using the Etag value in the If-Match header. If you are using the PUT API
+  request in an automation script, ensure that the script strips off the double 
+  quotes in the Etag value.
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -5064,7 +5074,7 @@ Release | Modification
 Working With Distributed Firewall Rules in a Layer 3 Section
 ----
 
-* **post** *(secured)*: Add rules to the specified layer 2 section in distributed firewall.
+* **post** *(secured)*: Add rules to the specified layer 3 section in distributed firewall.
 
 You add firewall rules at the global scope. You can then narrow down the scope
 (datacenter, cluster, distributed virtual port group, network, virtual machine,
@@ -5090,6 +5100,11 @@ Follow this procedure to add a rule:
   firewall section to which you wish to add the rule.
 * Extract and modify the configuration from the response body as needed.
 * Set the If-Match header to the section Etag value, and submit the request.
+* Starting in NSX 6.4.5, the Etag value returned in the response header of the 
+  GET API request contains double quotes. You must strip off the double quotes 
+  before using the Etag value in the If-Match header. If you are using the POST 
+  API request in an automation script, ensure that the script strips off the 
+  double quotes in the Etag value.
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -5126,6 +5141,11 @@ Working With a Specific Rule in a Specific Layer 3 Section
   keep the same Etag number.
 * Extract and modify the rule configuration from the response body as needed.
 * Set the If-Match header to the section Etag value, and submit the request.
+* Starting in NSX 6.4.5, the Etag value returned in the response header of the 
+  GET API request contains double quotes. You must strip off the double quotes 
+  before using the Etag value in the If-Match header. If you are using the PUT API 
+  request in an automation script, ensure that the script strips off the double 
+  quotes in the Etag value.
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -5208,6 +5228,11 @@ query parameters to specify the destination for the section.
 * Retrieve the Etag value from the response headers.
 * Extract and modify the configuration from the response body as needed.
 * Set the If-Match header to the Etag value, and submit the request.
+* Starting in NSX 6.4.5, the Etag value returned in the response header of the 
+  GET API request contains double quotes. You must strip off the double quotes 
+  before using the Etag value in the If-Match header. If you are using the PUT API 
+  request in an automation script, ensure that the script strips off the double 
+  quotes in the Etag value.
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -5283,6 +5308,11 @@ Follow this procedure to add a rule:
   firewall section to which you wish to add the rule.
 * Extract and modify the configuration from the response body as needed.
 * Set the If-Match header to the section Etag value, and submit the request.
+* Starting in NSX 6.4.5, the Etag value returned in the response header of the
+  GET API request contains double quotes. You must strip off the double quotes 
+  before using the Etag value in the If-Match header. If you are using the POST 
+  API request in an automation script, ensure that the script strips off the 
+  double quotes in the Etag value.
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -5319,6 +5349,12 @@ Working With a Specific Rule in a Specific Layer 2 Section
   keep the same Etag number.
 * Extract and modify the rule configuration from the response body as needed.
 * Set the If-Match header to the section Etag value, and submit the request.
+* Starting in NSX 6.4.5, the Etag value returned in the response header of the 
+  GET API request contains double quotes. You must strip off the double quotes 
+  before using the Etag value in the If-Match header. If you are using the PUT API 
+  request in an automation script, ensure that the script strips off the double
+  quotes in the Etag value.
+
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
