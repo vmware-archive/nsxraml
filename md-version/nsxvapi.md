@@ -6523,19 +6523,21 @@ ARP ignore | sysctl.net.ipv4.conf.all.arp_ignore
 TCP timeout values for conntrack to fine tune NAT performance | sysctl.net.netfilter.nf_conntrack_tcp_timeout_fin_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_close_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_max_retrans <br>sysctl.net.netfilter.nf_conntrack_tcp_timeout_unacknowledged <br>sysctl.net.netfilter.nf_conntrack_tcp_max_retrans
 Disable uRPF check | sysctl.net.ipv4.conf.all.rp\_filter <br>sysctl.net.ipv4.conf.default.rp\_filter<br>sysctl.net.ipv4.conf.vNic\_[0-4094].rp\_filter
 Modify ARP limits in cache | sysctl.net.ipv4.neigh.default.gc_thresh1 <br>sysctl.net.ipv6.neigh.default.gc_thresh1 <br>sysctl.net.ipv4.neigh.default.gc_thresh2 <br>sysctl.net.ipv6.neigh.default.gc_thresh2 <br>sysctl.net.ipv4.neigh.default.gc_thresh3 <br>sysctl.net.ipv6.neigh.default.gc_thresh3
-TIME_WAIT socket connections configuration | sysctl.net.ipv4.tcp_tw_reuse <br>sysctl.net.ipv4.tcp_tw_recycle
+TIME_WAIT socket connections configuration | sysctl.net.ipv4.tcp_tw_reuse <br>sysctl.net.ipv4.tcp_tw_recycle (removed in NSX 6.4.2)
 Load balancer tuning parameters | lb.global.tune.bufsize <br>lb.global.tune.maxrewrite <br>sysctl.net.ipv4.vs.expire_nodest_conn <br>lb.global.tune.http.maxhdr <br>lb.global.tune.ssl.default-dh-param <br>sysctl.net.ipv4.tcp_max_orphans <br>sysctl.net.ipv4.tcp_mem
 IPFragment tuning parameters | sysctl.net.ipv4.ipfrag_high_thresh <br>sysctl.net.ipv4.ipfrag_low_thresh <br>sysctl.net.ipv6.ip6frag_high_thresh <br>sysctl.net.ipv6.ip6frag_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_high_thresh
-Bridge tuning parameters | <br>sysctl.net.bridge.bridge-nf-call-iptables <br>sysctl.net.bridge.bridge-nf-call-ip6tables 
-
+Bridge tuning parameters | <br>sysctl.net.bridge.bridge-nf-call-iptables <br>sysctl.net.bridge.bridge-nf-call-ip6tables
+Disable IPv6 | sysctl.net.ipv6.conf.all.disable_ipv6 <br>sysctl.net.ipv6.conf.default.disable\_ipv6 <br>sysctl.net.ipv6.conf.vNic\_[0-4094].disable_ipv6
+          
 **Method history:**
 
 Release | Modification
 --------|-------------
 6.3.2 | Properties added: **sysctl.net.ipv4.tcp_max_orphans**, **sysctl.net.ipv4.tcp_mem**
 6.4.0 | Properties added: **lb.global.tune.ssl.default-dh-param**, **lb.global.tune.http.maxhdr**
-6.4.2 | Properties added: **sysctl.net.ipv4.ipfrag_high_thresh**, **sysctl.net.ipv4.ipfrag_low_thresh**, **sysctl.net.ipv6.ip6frag_high_thresh**, **sysctl.net.ipv6.ip6frag_low_thresh**, **sysctl.net.netfilter.nf_conntrack_frag6_low_thresh**, **sysctl.net.netfilter.nf_conntrack_frag6_high_thresh**, **sysctl.net.bridge.bridge-nf-call-iptables**, **sysctl.net.bridge.bridge-nf-call-ip6tables** 
+6.4.2 | Properties added: **sysctl.net.ipv4.ipfrag_high_thresh**, **sysctl.net.ipv4.ipfrag_low_thresh**, **sysctl.net.ipv6.ip6frag_high_thresh**, **sysctl.net.ipv6.ip6frag_low_thresh**, **sysctl.net.netfilter.nf_conntrack_frag6_low_thresh**, **sysctl.net.netfilter.nf_conntrack_frag6_high_thresh**, **sysctl.net.bridge.bridge-nf-call-iptables**, **sysctl.net.bridge.bridge-nf-call-ip6tables** <br> Properties removed:**sysctl.net.ipv4.tcp_tw_recycle**
 6.4.4 | Properties added: **sysctl.net.ipv4.conf.all.arp_ignore**.
+6.4.6 | Properties added: **sysctl.net.ipv6.conf.all.disable_ipv6**, **sysctl.net.ipv6.conf.default.disable_ipv6**, **sysctl.net.ipv6.conf.vNic_[0-4094].disable_ipv6**
 
 * **get** *(secured)*: Retrieve all NSX Edge system control configuration.
 
