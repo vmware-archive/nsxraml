@@ -6513,22 +6513,73 @@ Working With NSX Edge System Control Configuration
 -----
 
 * **put** *(secured)*: Update the NSX Edge system control (sysctl) configuration.
+ 
+The following tables provide the system control configuration parameters and their default values.
 
-**Available System Control Properties**
-
-Description | Parameters 
+#### Determine IP address to be sent in ARP
+Parameters | Default Values
 ----|----
-Determine the IP address to be sent in ARP | sysctl.net.ipv4.conf.all.arp_announce <br>sysctl.net.ipv4.conf.default.arp_announce
-ARP ignore | sysctl.net.ipv4.conf.all.arp_ignore 
-TCP timeout values for conntrack to fine tune NAT performance | sysctl.net.netfilter.nf_conntrack_tcp_timeout_fin_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_close_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_max_retrans <br>sysctl.net.netfilter.nf_conntrack_tcp_timeout_unacknowledged <br>sysctl.net.netfilter.nf_conntrack_tcp_max_retrans
-Disable uRPF check | sysctl.net.ipv4.conf.all.rp\_filter <br>sysctl.net.ipv4.conf.default.rp\_filter<br>sysctl.net.ipv4.conf.vNic\_[0-4094].rp\_filter
-Modify ARP limits in cache | sysctl.net.ipv4.neigh.default.gc_thresh1 <br>sysctl.net.ipv6.neigh.default.gc_thresh1 <br>sysctl.net.ipv4.neigh.default.gc_thresh2 <br>sysctl.net.ipv6.neigh.default.gc_thresh2 <br>sysctl.net.ipv4.neigh.default.gc_thresh3 <br>sysctl.net.ipv6.neigh.default.gc_thresh3
-TIME_WAIT socket connections configuration | sysctl.net.ipv4.tcp_tw_reuse <br>sysctl.net.ipv4.tcp_tw_recycle (removed in NSX 6.4.2)
-Load balancer tuning parameters | lb.global.tune.bufsize <br>lb.global.tune.maxrewrite <br>sysctl.net.ipv4.vs.expire_nodest_conn <br>lb.global.tune.http.maxhdr <br>lb.global.tune.ssl.default-dh-param <br>sysctl.net.ipv4.tcp_max_orphans <br>sysctl.net.ipv4.tcp_mem
-IPFragment tuning parameters | sysctl.net.ipv4.ipfrag_high_thresh <br>sysctl.net.ipv4.ipfrag_low_thresh <br>sysctl.net.ipv6.ip6frag_high_thresh <br>sysctl.net.ipv6.ip6frag_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_high_thresh
-Bridge tuning parameters | <br>sysctl.net.bridge.bridge-nf-call-iptables <br>sysctl.net.bridge.bridge-nf-call-ip6tables
-Disable IPv6 | sysctl.net.ipv6.conf.all.disable_ipv6 <br>sysctl.net.ipv6.conf.default.disable\_ipv6 <br>sysctl.net.ipv6.conf.vNic\_[0-4094].disable_ipv6
-          
+sysctl.net.ipv4.conf.all.arp_announce <br>sysctl.net.ipv4.conf.default.arp_announce | 0<br> 0<br>
+
+#### ARP ignore 
+Parameters | Default Values
+----|----
+sysctl.net.ipv4.conf.all.arp_ignore | 0
+
+#### TCP timeout values for conntrack to fine tune NAT performance
+Parameters | Default Values
+----|----
+sysctl.net.netfilter.nf_conntrack_tcp_timeout_fin_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_close_wait <br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_max_retrans <br>sysctl.net.netfilter.nf_conntrack_tcp_timeout_unacknowledged <br>sysctl.net.netfilter.nf_conntrack_tcp_max_retrans | 20<br> 60<br> 300<br> 300<br> 3
+
+#### Disable uRPF check
+Parameters | Default Values
+----|----
+sysctl.net.ipv4.conf.all.rp\_filter <br>sysctl.net.ipv4.conf.default.rp\_filter <br>sysctl.net.ipv4.conf.vNic\_[0-4094].rp\_filter | 2<br> 2<br> 2<br>
+
+#### Modify ARP limits in cache
+##### C - compact, L - large, QL - quad large, XL - xLarge, All - all form factors
+Parameters | Default Values (NSX 6.4.5 and earlier)
+----|----
+sysctl.net.ipv4.neigh.default.gc_thresh1 <br>sysctl.net.ipv6.neigh.default.gc_thresh1 <br>sysctl.net.ipv4.neigh.default.gc_thresh2 <br>sysctl.net.ipv6.neigh.default.gc_thresh2 <br>sysctl.net.ipv4.neigh.default.gc_thresh3 <br>sysctl.net.ipv6.neigh.default.gc_thresh3 | 128 (C), 256 (L, QL, XL)<br> 128 (All)<br> 512 (C), 1024 (L, QL, XL)<br> 512 (All)<br> 1024 (C), 2048 (L, QL, XL)<br> 1024 (All)
+
+In NSX 6.4.6, the default values of some sysctl properties that are used for modifying the ARP limits are increased. The following default values are applicable in NSX 6.4.6 and later.
+
+Parameters | Default Values (NSX 6.4.6 and later)
+----|----
+sysctl.net.ipv4.neigh.default.gc_thresh1 <br>sysctl.net.ipv6.neigh.default.gc_thresh1 <br>sysctl.net.ipv4.neigh.default.gc_thresh2 <br>sysctl.net.ipv6.neigh.default.gc_thresh2 <br>sysctl.net.ipv4.neigh.default.gc_thresh3 <br>sysctl.net.ipv6.neigh.default.gc_thresh3 | 128 (C), 256 (L, QL, XL)<br> 128 (C), 256 (L, QL, XL)<br> 8192 (All)<br> 16384 (All)<br> 16384 (All)<br> 16384 (All)
+
+#### TIME_WAIT socket connections configuration
+Parameters | Default Values
+----|----
+sysctl.net.ipv4.tcp_tw_reuse <br>sysctl.net.ipv4.tcp_tw_recycle (removed in NSX 6.4.2)| 1<br> 0
+
+#### Load balancer tuning
+##### C - compact, L - large, QL - quad large, XL - xLarge, All - all form factors
+Parameters | Default Values
+----|----
+sysctl.net.ipv4.vs.expire_nodest_conn<br> sysctl.net.ipv4.tcp_max_orphans<br><br> sysctl.net.ipv4.tcp_mem | 1 (All)<br> 8192 (C), 65536 (L, QL), 131072 (XL)<br> 12081 16111 24162 (C), 24177 32239 48354 (L, QL), 193137 257519 386274 (XL)
+
+The following load balancer tuning parameters are handled by HAProxy, and not NSX Edge system control configuration parameters. Figures in parentheses denote default values.
+* lb.global.tune.bufsize (16384)
+* lb.global.tune.maxrewrite (8192)
+* lb.global.tune.http.maxhdr (101)
+* lb.global.tune.ssl.default-dh-param (1024)
+
+#### IPFragment tuning
+Parameters | Default Values
+----|----
+sysctl.net.ipv4.ipfrag_high_thresh <br> sysctl.net.ipv4.ipfrag_low_thresh <br>sysctl.net.ipv6.ip6frag_high_thresh <br> sysctl.net.ipv6.ip6frag_low_thresh <br> sysctl.net.netfilter.nf_conntrack_frag6_low_thresh <br> sysctl.net.netfilter.nf_conntrack_frag6_high_thresh |4194304<br> 3145728<br> 4194304<br> 3145728<br> 3145728<br> 4194304
+
+### Bridge tuning
+Parameters | Default Values
+----|----
+sysctl.net.bridge.bridge-nf-call-iptables <br>sysctl.net.bridge.bridge-nf-call-ip6tables | 1<br> 1
+
+### Disable IPv6
+Parameters | Default Values
+----|----
+sysctl.net.ipv6.conf.all.disable_ipv6 <br>sysctl.net.ipv6.conf.default.disable\_ipv6 <br>sysctl.net.ipv6.conf.vNic\_[0-4094].disable_ipv6 | 0<br> 0<br> 0
+
 **Method history:**
 
 Release | Modification
@@ -6537,7 +6588,7 @@ Release | Modification
 6.4.0 | Properties added: **lb.global.tune.ssl.default-dh-param**, **lb.global.tune.http.maxhdr**
 6.4.2 | Properties added: **sysctl.net.ipv4.ipfrag_high_thresh**, **sysctl.net.ipv4.ipfrag_low_thresh**, **sysctl.net.ipv6.ip6frag_high_thresh**, **sysctl.net.ipv6.ip6frag_low_thresh**, **sysctl.net.netfilter.nf_conntrack_frag6_low_thresh**, **sysctl.net.netfilter.nf_conntrack_frag6_high_thresh**, **sysctl.net.bridge.bridge-nf-call-iptables**, **sysctl.net.bridge.bridge-nf-call-ip6tables** <br> Properties removed:**sysctl.net.ipv4.tcp_tw_recycle**
 6.4.4 | Properties added: **sysctl.net.ipv4.conf.all.arp_ignore**.
-6.4.6 | Properties added: **sysctl.net.ipv6.conf.all.disable_ipv6**, **sysctl.net.ipv6.conf.default.disable_ipv6**, **sysctl.net.ipv6.conf.vNic_[0-4094].disable_ipv6**
+6.4.6 | Properties added: **sysctl.net.ipv6.conf.all.disable_ipv6**, **sysctl.net.ipv6.conf.default.disable_ipv6**, **sysctl.net.ipv6.conf.vNic_[0-4094].disable_ipv6**<br> Increased default values of some sysctl parameters that are used for modifying ARP limits in cache
 
 * **get** *(secured)*: Retrieve all NSX Edge system control configuration.
 

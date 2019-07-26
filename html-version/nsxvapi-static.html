@@ -39002,50 +39002,114 @@ the syslog servers</p>
   ><h2>PUT /4.0/edges/{edgeId}/systemcontrol/config</h2></a>
   <div class="content">
     <p><p>Update the NSX Edge system control (sysctl) configuration.</p>
-<p><strong>Available System Control Properties</strong></p>
+<p>The following tables provide the system control configuration parameters and their default values.</p>
+<h4 id="determine-ip-address-to-be-sent-in-arp">Determine IP address to be sent in ARP</h4>
 <table class="table"><thead><tr>
-<th>Description</th>
-<th>Parameters </th>
+<th>Parameters</th>
+<th>Default Values</th>
 </tr>
 </thead><tbody><tr>
-<td>Determine the IP address to be sent in ARP</td>
 <td>sysctl.net.ipv4.conf.all.arp_announce <br>sysctl.net.ipv4.conf.default.arp_announce</td>
+<td>0<br> 0<br></td>
 </tr>
-<tr>
-<td>ARP ignore</td>
-<td>sysctl.net.ipv4.conf.all.arp_ignore </td>
+</tbody></table><h4 id="arp-ignore">ARP ignore</h4>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
 </tr>
-<tr>
-<td>TCP timeout values for conntrack to fine tune NAT performance</td>
-<td>sysctl.net.netfilter.nf_conntrack_tcp_timeout_fin_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_close_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_max_retrans <br>sysctl.net.netfilter.nf_conntrack_tcp_timeout_unacknowledged <br>sysctl.net.netfilter.nf_conntrack_tcp_max_retrans</td>
+</thead><tbody><tr>
+<td>sysctl.net.ipv4.conf.all.arp_ignore</td>
+<td>0</td>
 </tr>
-<tr>
-<td>Disable uRPF check</td>
-<td>sysctl.net.ipv4.conf.all.rp_filter <br>sysctl.net.ipv4.conf.default.rp_filter<br>sysctl.net.ipv4.conf.vNic_[0-4094].rp_filter</td>
+</tbody></table><h4 id="tcp-timeout-values-for-conntrack-to-fine-tune-nat-performance">TCP timeout values for conntrack to fine tune NAT performance</h4>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
 </tr>
-<tr>
-<td>Modify ARP limits in cache</td>
+</thead><tbody><tr>
+<td>sysctl.net.netfilter.nf_conntrack_tcp_timeout_fin_wait<br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_close_wait <br> sysctl.net.netfilter.nf_conntrack_tcp_timeout_max_retrans <br>sysctl.net.netfilter.nf_conntrack_tcp_timeout_unacknowledged <br>sysctl.net.netfilter.nf_conntrack_tcp_max_retrans</td>
+<td>20<br> 60<br> 300<br> 300<br> 3</td>
+</tr>
+</tbody></table><h4 id="disable-urpf-check">Disable uRPF check</h4>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
+</tr>
+</thead><tbody><tr>
+<td>sysctl.net.ipv4.conf.all.rp_filter <br>sysctl.net.ipv4.conf.default.rp_filter <br>sysctl.net.ipv4.conf.vNic_[0-4094].rp_filter</td>
+<td>2<br> 2<br> 2<br></td>
+</tr>
+</tbody></table><h4 id="modify-arp-limits-in-cache">Modify ARP limits in cache</h4>
+<h5 id="c-compact-l-large-ql-quad-large-xl-xlarge-all-all-form-factors">C - compact, L - large, QL - quad large, XL - xLarge, All - all form factors</h5>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values (NSX 6.4.5 and earlier)</th>
+</tr>
+</thead><tbody><tr>
 <td>sysctl.net.ipv4.neigh.default.gc_thresh1 <br>sysctl.net.ipv6.neigh.default.gc_thresh1 <br>sysctl.net.ipv4.neigh.default.gc_thresh2 <br>sysctl.net.ipv6.neigh.default.gc_thresh2 <br>sysctl.net.ipv4.neigh.default.gc_thresh3 <br>sysctl.net.ipv6.neigh.default.gc_thresh3</td>
+<td>128 (C), 256 (L, QL, XL)<br> 128 (All)<br> 512 (C), 1024 (L, QL, XL)<br> 512 (All)<br> 1024 (C), 2048 (L, QL, XL)<br> 1024 (All)</td>
 </tr>
-<tr>
-<td>TIME_WAIT socket connections configuration</td>
+</tbody></table><p>In NSX 6.4.6, the default values of some sysctl properties that are used for modifying the ARP limits are increased. The following default values are applicable in NSX 6.4.6 and later.</p>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values (NSX 6.4.6 and later)</th>
+</tr>
+</thead><tbody><tr>
+<td>sysctl.net.ipv4.neigh.default.gc_thresh1 <br>sysctl.net.ipv6.neigh.default.gc_thresh1 <br>sysctl.net.ipv4.neigh.default.gc_thresh2 <br>sysctl.net.ipv6.neigh.default.gc_thresh2 <br>sysctl.net.ipv4.neigh.default.gc_thresh3 <br>sysctl.net.ipv6.neigh.default.gc_thresh3</td>
+<td>128 (C), 256 (L, QL, XL)<br> 128 (C), 256 (L, QL, XL)<br> 8192 (All)<br> 16384 (All)<br> 16384 (All)<br> 16384 (All)</td>
+</tr>
+</tbody></table><h4 id="time_wait-socket-connections-configuration">TIME_WAIT socket connections configuration</h4>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
+</tr>
+</thead><tbody><tr>
 <td>sysctl.net.ipv4.tcp_tw_reuse <br>sysctl.net.ipv4.tcp_tw_recycle (removed in NSX 6.4.2)</td>
+<td>1<br> 0</td>
 </tr>
-<tr>
-<td>Load balancer tuning parameters</td>
-<td>lb.global.tune.bufsize <br>lb.global.tune.maxrewrite <br>sysctl.net.ipv4.vs.expire_nodest_conn <br>lb.global.tune.http.maxhdr <br>lb.global.tune.ssl.default-dh-param <br>sysctl.net.ipv4.tcp_max_orphans <br>sysctl.net.ipv4.tcp_mem</td>
+</tbody></table><h4 id="load-balancer-tuning">Load balancer tuning</h4>
+<h5 id="c-compact-l-large-ql-quad-large-xl-xlarge-all-all-form-factors">C - compact, L - large, QL - quad large, XL - xLarge, All - all form factors</h5>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
 </tr>
-<tr>
-<td>IPFragment tuning parameters</td>
-<td>sysctl.net.ipv4.ipfrag_high_thresh <br>sysctl.net.ipv4.ipfrag_low_thresh <br>sysctl.net.ipv6.ip6frag_high_thresh <br>sysctl.net.ipv6.ip6frag_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_low_thresh <br>sysctl.net.netfilter.nf_conntrack_frag6_high_thresh</td>
+</thead><tbody><tr>
+<td>sysctl.net.ipv4.vs.expire_nodest_conn<br> sysctl.net.ipv4.tcp_max_orphans<br><br> sysctl.net.ipv4.tcp_mem</td>
+<td>1 (All)<br> 8192 (C), 65536 (L, QL), 131072 (XL)<br> 12081 16111 24162 (C), 24177 32239 48354 (L, QL), 193137 257519 386274 (XL)</td>
 </tr>
-<tr>
-<td>Bridge tuning parameters</td>
-<td><br>sysctl.net.bridge.bridge-nf-call-iptables <br>sysctl.net.bridge.bridge-nf-call-ip6tables</td>
+</tbody></table><p>The following load balancer tuning parameters are handled by HAProxy, and not NSX Edge system control configuration parameters. Figures in parentheses denote default values.</p>
+<ul>
+<li>lb.global.tune.bufsize (16384)</li>
+<li>lb.global.tune.maxrewrite (8192)</li>
+<li>lb.global.tune.http.maxhdr (101)</li>
+<li>lb.global.tune.ssl.default-dh-param (1024)</li>
+</ul>
+<h4 id="ipfragment-tuning">IPFragment tuning</h4>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
 </tr>
-<tr>
-<td>Disable IPv6</td>
+</thead><tbody><tr>
+<td>sysctl.net.ipv4.ipfrag_high_thresh <br> sysctl.net.ipv4.ipfrag_low_thresh <br>sysctl.net.ipv6.ip6frag_high_thresh <br> sysctl.net.ipv6.ip6frag_low_thresh <br> sysctl.net.netfilter.nf_conntrack_frag6_low_thresh <br> sysctl.net.netfilter.nf_conntrack_frag6_high_thresh</td>
+<td>4194304<br> 3145728<br> 4194304<br> 3145728<br> 3145728<br> 4194304</td>
+</tr>
+</tbody></table><h3 id="bridge-tuning">Bridge tuning</h3>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
+</tr>
+</thead><tbody><tr>
+<td>sysctl.net.bridge.bridge-nf-call-iptables <br>sysctl.net.bridge.bridge-nf-call-ip6tables</td>
+<td>1<br> 1</td>
+</tr>
+</tbody></table><h3 id="disable-ipv6">Disable IPv6</h3>
+<table class="table"><thead><tr>
+<th>Parameters</th>
+<th>Default Values</th>
+</tr>
+</thead><tbody><tr>
 <td>sysctl.net.ipv6.conf.all.disable_ipv6 <br>sysctl.net.ipv6.conf.default.disable_ipv6 <br>sysctl.net.ipv6.conf.vNic_[0-4094].disable_ipv6</td>
+<td>0<br> 0<br> 0</td>
 </tr>
 </tbody></table><p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
@@ -39070,7 +39134,7 @@ the syslog servers</p>
 </tr>
 <tr>
 <td>6.4.6</td>
-<td>Properties added: <strong>sysctl.net.ipv6.conf.all.disable_ipv6</strong>, <strong>sysctl.net.ipv6.conf.default.disable_ipv6</strong>, <strong>sysctl.net.ipv6.conf.vNic_[0-4094].disable_ipv6</strong></td>
+<td>Properties added: <strong>sysctl.net.ipv6.conf.all.disable_ipv6</strong>, <strong>sysctl.net.ipv6.conf.default.disable_ipv6</strong>, <strong>sysctl.net.ipv6.conf.vNic_[0-4094].disable_ipv6</strong><br> Increased default values of some sysctl parameters that are used for modifying ARP limits in cache</td>
 </tr>
 </tbody></table></p>
       <h3>Request Example (<tt>application/xml</tt>)</h3>
