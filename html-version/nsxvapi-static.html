@@ -29485,7 +29485,7 @@ behind the NSX Edge with the peer subnets on the remote VPN site by
 using IPSec tunnels.
 The local subnets behind an NSX Edge must have address ranges that do not
 overlap with the IP addresses on the peer VPN site. </p>
-<p>If the local and remote peer across an IPsec VPN tunnel have overlapping
+<p>If the local and remote peer across an IPSec VPN tunnel have overlapping
 IP addresses, traffic forwarding across the tunnel might not be consistent.</p>
 <h3 id="route-based-ipsec-vpn">Route-based IPSec VPN</h3>
 <p>Route-based IPSec VPN is similar to Generic Routing Encapsulation (GRE) 
@@ -29500,7 +29500,7 @@ subnet is routed using the IPSec tunnel to the peer subnet.</p>
 <p><strong>Note:</strong> The VTI that you configure is a static VTI. Therefore, it 
 cannot have more than one IP address. A good practice is to ensure that
 the IP address of the VTI on both the local and peer sites are on the same subnet.</p>
-<p><strong>Important:</strong> In NSX 6.4.2, static routing and OSPF 
+<p><strong>Important:</strong> In NSX 6.4.2 and later, static routing and OSPF 
 dynamic routing through an IPSec tunnel is not supported.</p>
 <p>For a detailed example of configuring a route-based IPSec VPN tunnel between 
 an NSX Edge and a Cisco CSR 1000V Virtual Appliance, see the 
@@ -29629,7 +29629,7 @@ an NSX Edge and a Cisco CSR 1000V Virtual Appliance, see the
 <tr>
 <td><strong>site &gt; complianceSuite</strong></td>
 <td>Specify a compliance suite to configure the security profile of the IPSec VPN site with predefined values defined by that suite.</td>
-<td>Optional. Default is <em>none</em>.  Options are <em>cnsa</em>, <em>prime</em>, <em>suite-b-gcm-128</em>, <em>suite-b-gcm-256</em>, <em>suite-b-gmac-128</em>, <em>suite-b-gmac-256</em>, and <em>foundation</em>. <br> Only when compliance suite is <em>none</em>, specify values for <strong>encryptionAlgorithm</strong>, <strong>digestAlgorithm</strong>, <strong>dhGroup</strong>, <strong>ikeOption</strong>, and <strong>authenticationMode</strong> parameters.</td>
+<td>Optional. Default is <em>none</em>.  Options are <em>cnsa</em>, <em>prime</em>, <em>suite-b-gcm-128</em>, <em>suite-b-gcm-256</em>, <em>suite-b-gmac-128</em>, <em>suite-b-gmac-256</em>, and <em>foundation</em>. <br> Only when compliance suite is <em>none</em>, specify values for <strong>encryptionAlgorithm</strong>, <strong>digestAlgorithm</strong>, <strong>dhGroup</strong>, <strong>ikeOption</strong>, and <strong>authenticationMode</strong> parameters.<br> <strong>Important:</strong> Starting in NSX 6.4.6, <em>suite-b-gmac-128</em> and <em>suite-b-gmac-256</em> compliance suites are deprecated.</td>
 </tr>
 <tr>
 <td><strong>site &gt; responderOnly</strong></td>
@@ -29702,6 +29702,10 @@ This pre-shared key must be kept securely according to the client security polic
 <tr>
 <td> 6.4.5</td>
 <td>Method updated. Added <strong>complianceSuite</strong> parameter.</td>
+</tr>
+<tr>
+<td> 6.4.6</td>
+<td>Method updated. Deprecated <em>suite-b-gmac-128</em> and <em>suite-b-gmac-256</em> compliance suites.</td>
 </tr>
 </tbody></table><p> <strong>Response: Policy-based IPSec site</strong></p>
 <pre><code class="code-block hljs lang-xml"> <span class="hljs-tag">&lt;<span class="hljs-name">ipsec</span>&gt;</span>

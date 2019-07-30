@@ -22381,7 +22381,7 @@ securitySchemes:
         The local subnets behind an NSX Edge must have address ranges that do not
         overlap with the IP addresses on the peer VPN site. 
         
-        If the local and remote peer across an IPsec VPN tunnel have overlapping
+        If the local and remote peer across an IPSec VPN tunnel have overlapping
         IP addresses, traffic forwarding across the tunnel might not be consistent.
          
         ### Route-based IPSec VPN
@@ -22400,7 +22400,7 @@ securitySchemes:
         cannot have more than one IP address. A good practice is to ensure that
         the IP address of the VTI on both the local and peer sites are on the same subnet.
         
-        **Important:** In NSX 6.4.2, static routing and OSPF 
+        **Important:** In NSX 6.4.2 and later, static routing and OSPF 
         dynamic routing through an IPSec tunnel is not supported.
         
         For a detailed example of configuring a route-based IPSec VPN tunnel between 
@@ -22434,7 +22434,7 @@ securitySchemes:
         **site > peerId**| Enter the peer ID to uniquely identify the peer site. This should be a Distinguishing Name (DN) if authentication mode is *x.509*. | Required.
         **site > peerIp** | Enter the IP address of the peer endpoint.| Required.
         **site > peerSubnets** |Type the subnets to share between the sites in CIDR format.|Required if **ipsecSessionType** parameter value is *policybasedsession*. For route-based IPSec site, the default and only valid subnet is *0.0.0.0/0*.
-        **site > complianceSuite** | Specify a compliance suite to configure the security profile of the IPSec VPN site with predefined values defined by that suite.| Optional. Default is *none*.  Options are *cnsa*, *prime*, *suite-b-gcm-128*, *suite-b-gcm-256*, *suite-b-gmac-128*, *suite-b-gmac-256*, and *foundation*. <br> Only when compliance suite is *none*, specify values for **encryptionAlgorithm**, **digestAlgorithm**, **dhGroup**, **ikeOption**, and **authenticationMode** parameters.
+        **site > complianceSuite** | Specify a compliance suite to configure the security profile of the IPSec VPN site with predefined values defined by that suite.| Optional. Default is *none*.  Options are *cnsa*, *prime*, *suite-b-gcm-128*, *suite-b-gcm-256*, *suite-b-gmac-128*, *suite-b-gmac-256*, and *foundation*. <br> Only when compliance suite is *none*, specify values for **encryptionAlgorithm**, **digestAlgorithm**, **dhGroup**, **ikeOption**, and **authenticationMode** parameters.<br> **Important:** Starting in NSX 6.4.6, *suite-b-gmac-128* and *suite-b-gmac-256* compliance suites are deprecated.
         **site > responderOnly** |When set to true, the edge doesn't initiate negotiation, instead it waits for peer to initiate negotiation.| Optional. Options are *True* or *False*. Default is *False*.
         **site > dhGroup** |In Diffie-Hellman (DH) Group, select the cryptography scheme that will allow the peer site and the NSX Edge to establish a shared secret over an insecure communications channel. | Optional. *dh14* is selected by default.
         **extension** |When add_spd is set to on, security policies are installed regardless of whether the tunnel is established. ike_fragment_size is used to avoid failure in the IKE negotiation when the link MTU size is small. For example, ike_frament_size=900.|Optional. Global extensions: add_spf and ike_frament_size. <br> add_spd options are *off* or *on*. The default is *on*. 
@@ -22459,6 +22459,7 @@ securitySchemes:
           6.4.0 | Method updated. New parameters **ikeOption**, **responderOnly**, and **digestAlgorithm** added. New parameter **ipsecSessionType** added under the *site* section. This is a read-only parameter.
           6.4.2 | Method updated. Added a new value *routebasedsession* for **ipsecSessionType** parameter. Added a new parameter **tunnelInterface** when the value of **ipsecSessionType** is set to *routebasedsession*.
           6.4.5 | Method updated. Added **complianceSuite** parameter.
+          6.4.6 | Method updated. Deprecated *suite-b-gmac-128* and *suite-b-gmac-256* compliance suites.
         
           **Response: Policy-based IPSec site**
           ```  
