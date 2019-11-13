@@ -1226,7 +1226,12 @@ Working with tunnel health status for a specific host
 ----
 
 * **get** *(secured)*: Retrieve information about tunnel health status for a specific host.
-
+NSX Manager obtains tunnel status from the host periodically and updates the
+cache. When the source is specified as *realtime*, the current status of the 
+tunnel is retrieved. In the meantime, NSX Manager updates the tunnel status 
+in the cache. When the source is specified as *cached*, the tunnel status 
+is retrieved directly from the cache.
+     
 **Method history:**
 
 Release | Modification
@@ -1237,7 +1242,8 @@ Release | Modification
 Working with tunnel connections for a specific host
 ----
 
-* **get** *(secured)*: Retrieve tunnel connections for a specific host.
+* **get** *(secured)*: Retrieve tunnel connections for a specific host. Tunnel details are 
+retrieved for a maximum of 1560 tunnels on the host.
 
 **Method history:**
 
