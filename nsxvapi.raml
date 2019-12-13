@@ -2276,14 +2276,26 @@ securitySchemes:
       Retrieves details and runtime status for all controllers.  Runtime status
       can be one of the following:
       
-        * **Deploying** - controller is being deployed and the procedure has not
+        * **Deploying** - Controller is being deployed and the procedure has not
         completed yet.
-        * **Removing** - controller is being removed and the procedure has not
+        * **Removing** - Controller is being removed and the procedure has not
         completed yet.
-        * **Running** - controller has been deployed and can respond to API
+        * **Running** - Controller has been deployed and can respond to API
         invocation.
-        * **Unknown** - controller has been deployed but fails to respond to API
+        * **Unknown** - Controller has been deployed but fails to respond to API
         invocation.
+        
+        
+        When a controller is in *Running* status, the **diskLatencyAlertDetected** 
+        parameter in the API response shows whether disk latency alert is 
+        detected in the controller. This parameter can take one of the 
+        following values:
+        * **True** - Disk latency alert is detected in the controller.
+        * **False** - Disk latency is not detected in the controller.
+        * **Unknown** - After the controller connects with the NSX Manager, the 
+        NSX Manager receives the disk latency report of the controller after a
+        delay of 30 seconds.
+        
     responses:
       200:
         body:
@@ -2296,6 +2308,7 @@ securitySchemes:
                   <description></description>
                   <ipAddress></ipAddress>
                   <status></status>
+                  <diskLatencyAlertDetected></diskLatencyAlertDetected>
                 </controller>
               </controllers>
   /upgrade-available:

@@ -17304,14 +17304,25 @@ which <strong>deployType</strong> value is provided.</p>
     <p><p>Retrieves details and runtime status for all controllers.  Runtime status
 can be one of the following:</p>
 <ul>
-<li><strong>Deploying</strong> - controller is being deployed and the procedure has not
+<li><strong>Deploying</strong> - Controller is being deployed and the procedure has not
 completed yet.</li>
-<li><strong>Removing</strong> - controller is being removed and the procedure has not
+<li><strong>Removing</strong> - Controller is being removed and the procedure has not
 completed yet.</li>
-<li><strong>Running</strong> - controller has been deployed and can respond to API
+<li><strong>Running</strong> - Controller has been deployed and can respond to API
 invocation.</li>
-<li><strong>Unknown</strong> - controller has been deployed but fails to respond to API
+<li><strong>Unknown</strong> - Controller has been deployed but fails to respond to API
 invocation.</li>
+</ul>
+<p>  When a controller is in <em>Running</em> status, the <strong>diskLatencyAlertDetected</strong> 
+  parameter in the API response shows whether disk latency alert is 
+  detected in the controller. This parameter can take one of the 
+  following values:</p>
+<ul>
+<li><strong>True</strong> - Disk latency alert is detected in the controller.</li>
+<li><strong>False</strong> - Disk latency is not detected in the controller.</li>
+<li><strong>Unknown</strong> - After the controller connects with the NSX Manager, the 
+NSX Manager receives the disk latency report of the controller after a
+delay of 30 seconds.</li>
 </ul>
 </p>
     <h3>Responses</h3>
@@ -17327,6 +17338,7 @@ invocation.</li>
     <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ipAddress</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ipAddress</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">status</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">status</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">diskLatencyAlertDetected</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">diskLatencyAlertDetected</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">controller</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">controllers</span>&gt;</span>
 </code></pre>
