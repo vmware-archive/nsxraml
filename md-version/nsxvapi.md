@@ -219,10 +219,10 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### update-number
-Update 10
+Update 11
 
 ### update-date
-Modified OCT 2019
+Modified FEB 2020
 
 ---
 
@@ -1285,8 +1285,8 @@ You can enable or disable BFD to monitor hypervisor tunnel health statistics inc
 Parameter |  Description | Comments
 ---|---|---
   **enabled**      |Enable or disable BFD to monitor hypervisor tunnel health statistics including tunnel latency.|Required. Options are *True* or *False*. Default is *False*.
-  **pollingIntervalSecondsForHost**     |Configure the BFD polling interval.|Required. Value should be greater than *30*. Default value is *180*.
-  **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session in milliseconds.|Required. Value should be greater than *300*. Default value is *120000*.
+  **pollingIntervalSecondsForHost**     |Configure the BFD polling interval.|Optional. Value should be greater than *30*. Default value is *180*.
+  **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session in milliseconds.|Optional. Value should be greater than *300*. Default value is *120000*.
 
 ### /2.0/vdn/bfd/configuration/global
 
@@ -4120,14 +4120,14 @@ Working With Static User Mappings
 
 * **get** *(secured)*: Query static user IP mapping list.
 
-### /1.0/identity/staticUserMappingsbyUser/{userID}
+### /1.0/identity/staticUserMappingByUser/{userID}
 Working With Static User IP Mappings for a Specific User
 ----
 
 * **get** *(secured)*: Query static user IP mapping for specified user.
 * **delete** *(secured)*: Delete static user IP mapping for specified user.
 
-### /1.0/identity/staticUserMappingsbyIP/{IP}
+### /1.0/identity/staticUserMappingByIP/{IP}
 Working With Static User IP Mappings for a Specific IP
 ----
 
@@ -6230,7 +6230,8 @@ DHCP relay properties.
 
 Parameter |  Description | Comments 
 ---|---|---
-**datacenterMoid** |Specify vCenter Managed Object Identifier of data center on which edge has to be deployed|Required. 
+**datacenterMoid** |Specify vCenter Managed Object Identifier of data center on which edge has to be deployed.|Optional.<br>When NSX Manager is connected to vCloud Director and the edge is created from vCloud Director, this parameter is absent in the GET API response if the API call is run against NSX Manager. However, this parameter is present if the GET API call is run against vCloud Director.<br>If the edge is created using the vSphere Web Client, this parameter is always present in the GET API response.<br> If the edge is created using the NSX API, this parameter is present in the GET API response only when it was specified during the edge creation.
+**datacenterName** |Specify the name of the data center where the edge has to be deployed.|Optional. <br>This parameter is displayed in the GET API response only when **datacenterMoid** was specified during the edge creation. For more information about when this parameter is present or absent in the GET API response, see the comments for the **datacenterMoid** parameter.
 **type** | Specify which kind of NSX Edge to deploy. Choice of *distributedRouter* or *gatewayServices*. | Optional. Default is *gatewayServices*.
 **name** |Specify a name for the new NSX Edge.|Optional. Default is *NSX-&lt;edgeId&gt;*. Used as a VM name on vCenter appended by *-&lt;haIndex&gt;*. 
 **description** |NSX Edge description.|Optional. 
