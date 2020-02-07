@@ -8665,9 +8665,14 @@ you can configure, manage, and edit route-based IPSec VPN parameters only
 by using REST APIs. 
 
 ### Policy-based IPSec VPN
-In a policy-based IPSec VPN, you can connect multiple local subnets 
-behind the NSX Edge with the peer subnets on the remote VPN site by 
-using IPSec tunnels.
+In a policy-based IPSec VPN, you explicitly configure the subnets behind 
+the NSX Edge on the local site that require secure and encrypted 
+communication with the remote subnets on the peer site.
+
+When the local IPSec VPN site originates traffic from unprotected local 
+subnets to the protected remote subnets on the peer site, the traffic 
+is dropped.
+
 The local subnets behind an NSX Edge must have address ranges that do not
 overlap with the IP addresses on the peer VPN site. 
 
