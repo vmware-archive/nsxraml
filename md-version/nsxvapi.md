@@ -7648,6 +7648,7 @@ Working With a Specific Virtual Server
 ----
 
 * **get** *(secured)*: Retrieve details for the specified virtual server.
+* **put** *(secured)*: Modify the specified virtual server.
 * **delete** *(secured)*: Delete the specified virtual server.
 
 ### /4.0/edges/{edgeId}/loadbalancer/config/pools
