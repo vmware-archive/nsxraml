@@ -6451,6 +6451,7 @@ The **edgeStatus** has the following possible states:
 Release | Modification
 --------|-------------
 6.4.0 | Method updated. The **detailed** query parameter now specifies whether detailed info is displayed for **featureStatuses** only. Detailed info is now always displayed for **edgeVMStatus**. <br>The **systemStatus** parameter is deprecated, and might be removed in a future release.
+6.4.2 | API deprecated. Use the **healthsummary** API instead to retrieve the edge status.
 
 ### /4.0/edges/{edgeId}/healthsummary
 Working With NSX Edge Health Summary

@@ -62,6 +62,9 @@ other changes, such as parameter additions.
 The following item is deprecated, and might be removed in a future release.
 * GET/POST/DELETE /api/2.0/vdn/controller/{controllerId}/syslog. Use 
   GET/PUT /api/2.0/vdn/controller/cluster/syslog instead.
+  
+The following API to retrieve the edge health status is deprecated.
+* GET  api/4.0/edges/{edge-id}/status. Use GET /api/4.0/edges/{edgeId}/healthsummary instead.
 
 ### Behavior changes in NSX 6.4.1
 
