@@ -9960,7 +9960,11 @@ and Endpoint) are installed. See <em>NSX Installation Guide</em>.</li>
 </tr>
 </thead><tbody><tr>
 <td>6.4.0</td>
-<td>Method updated. <strong>tag</strong> parameter added. You can specify  <em>tag</em> for the firewall rule.</td>
+<td>Method updated. Added <strong>tag</strong> parameter. You can specify  <em>tag</em> for the firewall rule.</td>
+</tr>
+<tr>
+<td>6.4.0</td>
+<td>Method updated. Added <strong>attributesByCategory</strong> parameter to enable RDSH, TCP strict, or stateless TCP in a category.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -10064,6 +10068,13 @@ and Endpoint) are installed. See <em>NSX Installation Guide</em>.</li>
   <span class="hljs-tag">&lt;<span class="hljs-name">securityGroupBinding</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">securityGroupBinding</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">attributesByCategory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span>firewall<span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RDSH<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">attribute</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">attributesByCategory</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">actionsByCategory</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span>firewall<span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"firewallSecurityAction"</span>&gt;</span>
@@ -10751,6 +10762,13 @@ specify <em>all</em> as the security policy ID.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">isUniversal</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">isUniversal</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">universalRevision</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">universalRevision</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">securityGroupBinding</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">attributesByCategory</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span>firewall<span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>RDSH<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">attribute</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">attributesByCategory</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">actionsByCategory</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span>firewall<span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"firewallSecurityAction"</span>&gt;</span>
@@ -10828,10 +10846,14 @@ specified configuration replaces the current configuration.</p>
 security group mappings for the security policy. To remove all
 mappings, delete the securityGroupBindings parameter.</p>
 <p>You can add or update actions for the security policy by editing the
-actionsByCategory parameter. To remove all actions (belonging to all
+<strong>actionsByCategory</strong> parameter. To remove all actions (belonging to all
 categories), delete the actionsByCategory parameter. To remove
 actions belonging to a specific category, delete the block for that
 category.</p>
+<p>To enable RDSH, TCP strict, or stateless TCP for a category, use the 
+<strong>attributesByCategory</strong> parameter. This parameter is optional. 
+Category has two attributes: name and value. Name is a string, 
+for example, <em>RDSH</em>, and value is either <em>true</em> or <em>false</em>.</p>
 <p><strong>Method history:</strong></p>
 <table class="table"><thead><tr>
 <th>Release</th>
@@ -10839,7 +10861,11 @@ category.</p>
 </tr>
 </thead><tbody><tr>
 <td>6.4.0</td>
-<td>Method updated. <strong>tag</strong> parameter added. You can specify  <em>tag</em> for the firewall rule.</td>
+<td>Method updated. Added <strong>tag</strong> parameter. You can specify  <em>tag</em> for the firewall rule.</td>
+</tr>
+<tr>
+<td>6.4.0</td>
+<td>Method updated. Added <strong>attributesByCategory</strong> parameter to enable RDSH, TCP strict, or stateless TCP in a category.</td>
 </tr>
 </tbody></table></p>
       <h3>Request Schema</h3>
@@ -10947,6 +10973,13 @@ category.</p>
     <span class="hljs-tag">&lt;<span class="hljs-name">securityGroupBinding</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">objectId</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">objectId</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">securityGroupBinding</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">attributesByCategory</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">attribute</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">attribute</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">attributesByCategory</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">actionsByCategory</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">category</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">category</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">action</span> <span class="hljs-attr">class</span>=<span class="hljs-string">""</span>&gt;</span>

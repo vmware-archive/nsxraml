@@ -9726,7 +9726,8 @@ Ensure that:
 
 Release | Modification
 --------|-------------
-6.4.0 | Method updated. **tag** parameter added. You can specify  *tag* for the firewall rule.
+6.4.0 | Method updated. Added **tag** parameter. You can specify  *tag* for the firewall rule.
+6.4.0 | Method updated. Added **attributesByCategory** parameter to enable RDSH, TCP strict, or stateless TCP in a category.
 
 ### /2.0/services/policy/securitypolicy/all
 Working With all Security Policies
@@ -9760,16 +9761,22 @@ security group mappings for the security policy. To remove all
 mappings, delete the securityGroupBindings parameter.
 
 You can add or update actions for the security policy by editing the
-actionsByCategory parameter. To remove all actions (belonging to all
+**actionsByCategory** parameter. To remove all actions (belonging to all
 categories), delete the actionsByCategory parameter. To remove
 actions belonging to a specific category, delete the block for that
 category.
+
+To enable RDSH, TCP strict, or stateless TCP for a category, use the 
+**attributesByCategory** parameter. This parameter is optional. 
+Category has two attributes: name and value. Name is a string, 
+for example, *RDSH*, and value is either *true* or *false*.
 
 **Method history:**
 
 Release | Modification
 --------|-------------
-6.4.0 | Method updated. **tag** parameter added. You can specify  *tag* for the firewall rule.
+6.4.0 | Method updated. Added **tag** parameter. You can specify  *tag* for the firewall rule.
+6.4.0 | Method updated. Added **attributesByCategory** parameter to enable RDSH, TCP strict, or stateless TCP in a category.
 
 * **delete** *(secured)*: Delete a security policy.
 
