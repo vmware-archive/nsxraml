@@ -3982,6 +3982,12 @@ Retrieve LDAP Domains
 
 * **get** *(secured)*: Retrieve all agent discovered (or configured) LDAP domains.
 
+### /1.0/directory/domainSgMapping/{domainId}
+Retrieve Security Groups of a Specific Domain 
+----
+
+* **get** *(secured)*: List all the security groups of the specified domain.
+
 ### /1.0/directory/deleteDomain/{ID}
 Delete a Specific Domain
 ----

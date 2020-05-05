@@ -9505,6 +9505,30 @@ securitySchemes:
                     <baseDn>DC=vs4,DC=net</baseDn>
                   </DirectoryDomain>
                 </DirectoryDomains>
+  /domainSgMapping/{domainId}:
+    displayName: domainSecurityGroups
+    description: |
+      Retrieve Security Groups of a Specific Domain 
+      ----
+    uriParameters:
+      domainId:
+        required: true
+        displayName: domainId
+        description: Domain ID.
+    get:
+      displayName: domainSecurityGroupsList
+      description: List all the security groups of the specified domain.
+      responses:
+        200:
+          body:
+            application/xml:
+              example: |
+                <DirectoryDomainRelatedSGs>
+                  <DirectoryDomainRelatedSG>
+                    <sgId>2</sgId>
+                    <sgName>group1</sgName>
+                  </DirectoryDomainRelatedSG>
+                </DirectoryDomainRelatedSGs>      
   /deleteDomain/{ID}:
     displayName: domainDelete
     description: |
