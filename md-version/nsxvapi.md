@@ -210,10 +210,10 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### update-number
-Update 7
+Update 8
 
 ### update-date
-Modified APR 2019
+Modified MAY 2020
 
 ---
 
@@ -6117,14 +6117,7 @@ Working With a Specific SSL VPN Client Installation Package
 * **put** *(secured)*: Modify the specified installation package.
 * **delete** *(secured)*: Delete the specified installation package.
 
-### /4.0/edges/{edgeId}/sslvpn/config/layout
-Working With Portal Layout
----
-
-* **get** *(secured)*: Retrieve layout configuration.
-* **put** *(secured)*: Update the portal layout.
-
-### /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}
+### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/images/{imageType}
 Working With Image Files for SSL VPN
 ---
 
