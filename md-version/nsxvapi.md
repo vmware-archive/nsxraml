@@ -219,10 +219,10 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### update-number
-Update 11
+Update 12
 
 ### update-date
-Modified FEB 2020
+Modified MAY 2020
 
 ---
 
@@ -5289,7 +5289,6 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
-
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -5378,7 +5377,6 @@ Working With a Specific Rule in a Specific Layer 2 Section
   before using the Etag value in the If-Match header. If you are using the PUT API 
   request in an automation script, ensure that the script strips off the double
   quotes in the Etag value.
-
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -8168,14 +8166,7 @@ Working With a Specific SSL VPN Client Installation Package
 * **put** *(secured)*: Modify the specified installation package.
 * **delete** *(secured)*: Delete the specified installation package.
 
-### /4.0/edges/{edgeId}/sslvpn/config/layout
-Working With Portal Layout
----
-
-* **get** *(secured)*: Retrieve layout configuration.
-* **put** *(secured)*: Update the portal layout.
-
-### /4.0/edges/{edgeId}/sslvpn/config/layout/images/{imageType}
+### /4.0/edges/{edgeId}/sslvpn/config/client/networkextension/installpackages/images/{imageType}
 Working With Image Files for SSL VPN
 ---
 

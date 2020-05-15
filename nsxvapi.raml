@@ -5,9 +5,9 @@ documentation:
  - title: Introduction
    content: !include documentation/introduction.md
  - title: update-number
-   content: Update 11
+   content: Update 12
  - title: update-date
-   content: Modified FEB 2020
+   content: Modified MAY 2020
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
@@ -20896,6 +20896,82 @@ securitySchemes:
       get:
         displayName: sslVPNRead
         description: Retrieve SSL VPN details.
+        responses:
+          200:
+            body:
+              application/xml:
+                example: |
+                  <sslvpnConfig>
+                    <version>4</version>
+                    <enabled>true</enabled>
+                    <logging>
+                      <enable>true</enable>
+                      <logLevel>notice</logLevel>
+                    </logging>
+                    <advancedConfig>
+                      <enableCompression>false</enableCompression>
+                      <forceVirtualKeyboard>false</forceVirtualKeyboard>
+                      <randomizeVirtualkeys>false</randomizeVirtualkeys>
+                      <preventMultipleLogon>false</preventMultipleLogon>
+                      <clientNotification></clientNotification>
+                      <enablePublicUrlAccess>false</enablePublicUrlAccess>
+                      <timeout>
+                        <forcedTimeout>0</forcedTimeout>
+                        <sessionIdleTimeout>10</sessionIdleTimeout>
+                      </timeout>
+                    </advancedConfig>
+                    <clientConfiguration>
+                      <autoReconnect>true</autoReconnect>
+                      <upgradeNotification>false</upgradeNotification>
+                    </clientConfiguration>
+                    <layoutConfiguration>
+                      <portalTitle>VMware</portalTitle>
+                      <companyName>VMware</companyName>
+                      <logoExtention>jpg</logoExtention>
+                      <logoUri>/api/4.0/edges/edge-2/sslvpn/config/layout/images/portallogo</logoUri>
+                      <logoBackgroundColor>56A2D4</logoBackgroundColor>
+                      <titleColor>996600</titleColor>
+                      <topFrameColor>000000</topFrameColor>
+                      <menuBarColor>999999</menuBarColor>
+                      <rowAlternativeColor>FFFFFF</rowAlternativeColor>
+                      <bodyColor>FFFFFF</bodyColor>
+                      <rowColor>F5F5F5</rowColor>
+                    </layoutConfiguration>
+                    <authenticationConfiguration>
+                      <passwordAuthentication>
+                        <authenticationTimeout>1</authenticationTimeout>
+                        <primaryAuthServers>
+                          <adAuthServer>
+                            <authServerType>ad</authServerType>
+                            <objectId>authserver-1</objectId>
+                            <order>1</order>
+                            <isSecondaryAuthServer>false</isSecondaryAuthServer>
+                            <terminateSessionOnAuthFails>false</terminateSessionOnAuthFails>
+                            <enabled>true</enabled>
+                            <ip>10.10.10.11</ip>
+                            <port>389</port>
+                            <timeOut>10</timeOut>
+                            <searchBase>searchBaseValue</searchBase>
+                            <searchFilter>objectClass=*</searchFilter>
+                            <bindDomainName>BindDomainNameValue</bindDomainName>
+                            <loginAttributeName>sAMAccountName</loginAttributeName>
+                            <enableSsl>false</enableSsl>
+                          </adAuthServer>
+                        </primaryAuthServers>
+                        <secondaryAuthServer/>
+                      </passwordAuthentication>
+                    </authenticationConfiguration>
+                    <serverSettings>
+                      <serverAddresses>
+                        <ipAddress>192.178.14.2</ipAddress>
+                      </serverAddresses>
+                      <port>443</port>
+                      <cipherList>
+                        <cipher>AES128-GCM-SHA256</cipher>
+                      </cipherList>
+                      <sslVersionList/>
+                    </serverSettings>
+                  </sslvpnConfig>
       put:
         displayName: sslVPNUpdate
         description: |
@@ -21209,32 +21285,6 @@ securitySchemes:
           delete:
             displayName: installPackageDelete
             description: Delete the specified installation package.
-      /layout:
-        displayName: layout
-        description: |
-          Working With Portal Layout
-          ---
-        get:
-          displayName: layoutRead
-          description: Retrieve layout configuration.
-        put:
-          displayName: layoutUpdate
-          description: Update the portal layout.
-          body:
-            application/xml:
-              example: |
-                <layout>
-                  <portalTitle></portalTitle>
-                  <companyName></companyName>
-                  <logoBackgroundColor></logoBackgroundColor>
-                  <titleColor></titleColor>
-                  <topFrameColor></topFrameColor>
-                  <menuBarColor></menuBarColor>
-                  <rowAlternativeColor></rowAlternativeColor>
-                  <bodyColor></bodyColor>
-                  <rowColor></rowColor>
-                </layout>
-              schema: layoutUpdate
         /images/{imageType}:
           displayName: layoutIcons
           description: |
