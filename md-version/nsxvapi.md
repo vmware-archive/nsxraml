@@ -1217,16 +1217,25 @@ If the sync is in progress, the response includes the status
 If the sync has finished, the response includes the status *NOT_RUNNING*.
 
 ## hostsHealth
-Working With Hypervisor Tunnel Health Status Using BFD
+Working With Host Health Status Using BFD
 ==============
-Provides overall information about tunnel health of hypervisor. Tunnel, pNIC, control plane, and management plane statuses are displayed.
+Provides overall information about the host health status. Tunnel, pNIC, control plane, and management plane statuses are displayed.
 
 ### /2.0/vdn/host/status
-Working with overall information about tunnel health of a hypervisor
+Working with overall information about host health status
 ----
 
-* **get** *(secured)*: Retrieve  overall information about tunnel health of a hypervisor.
+* **get** *(secured)*: Retrieve the host health status.
 
+The status API endpoint has a known limitation in a multi-site 
+Cross-vCenter NSX deployment where the vCenter Server and the NSX Manager 
+know only the hosts that they manage.
+
+The NSX Manager can query status of only those hosts that its vCenter Server 
+manages. For example, when you run this API on the primary NSX Manager, 
+the API cannot return the status of hosts, which are managed by the 
+vCenter Servers that are paired with the secondary NSX Managers.
+        
 **Method history:**
 
 Release | Modification
@@ -1234,14 +1243,15 @@ Release | Modification
 6.4.0 | Method introduced.
 
 ### /2.0/vdn/host/{hostId}/status
-Working with tunnel health status for a specific host
+Working with health status for a specific host
 ----
 
-* **get** *(secured)*: Retrieve information about tunnel health status for a specific host.
-NSX Manager obtains tunnel status from the host periodically and updates the
+* **get** *(secured)*: Retrieve health status for a specific host.
+
+NSX Manager obtains host status from the host periodically and updates the
 cache. When the source is specified as *realtime*, the current status of the 
-tunnel is retrieved. In the meantime, NSX Manager updates the tunnel status 
-in the cache. When the source is specified as *cached*, the tunnel status 
+host is retrieved. In the meantime, NSX Manager updates the host status 
+in the cache. When the source is specified as *cached*, the host status 
 is retrieved directly from the cache.
      
 **Method history:**
@@ -1254,8 +1264,15 @@ Release | Modification
 Working with tunnel connections for a specific host
 ----
 
-* **get** *(secured)*: Retrieve tunnel connections for a specific host. Tunnel details are 
-retrieved for a maximum of 1560 tunnels on the host.
+* **get** *(secured)*: Retrieve tunnel connections for a specific host. 
+
+In NSX 6.4.6 or earlier, tunnel details are retrieved for a maximum of 
+1560 tunnels on the host. Starting in NSX 6.4.7, tunnel details are 
+retrieved for a maximum of 4096 tunnels on the host.
+
+The tunnel API endpoint has a known limitation in a multi-site Cross-vCenter 
+NSX deployment. In the API response, the **remoteNodeId** will be *Unknown* 
+if the remote host is not managed by the NSX Manager on which the API is run.
 
 **Method history:**
 
@@ -1269,6 +1286,12 @@ Working with remote host status
 
 * **get** *(secured)*: Retrieve status of all remote hosts with tunnel connections to the given host.
 
+The remote host status API endpoint has a known limitation in a multi-site 
+Cross-vCenter NSX deployment.
+This API returns the status of remote hosts that are managed by the NSX Manager 
+on which the API is run. However, the status of the remote hosts managed by 
+other NSX Managers is not returned.
+
 **Method history:**
 
 Release | Modification
@@ -1278,15 +1301,34 @@ Release | Modification
 ## bfdConfig
 Working With BFD Global Configuration
 ==============
-You can enable or disable BFD to monitor hypervisor tunnel health statistics including tunnel latency. By default, BFD is disabled.
+NSX Data Center uses Bidrectional Forwarding Detection (BFD) network protocol to obtain the tunnel health status 
+and the tunnel latency. By default, BFD is disabled.
+
+In NSX 6.4.6 or earlier, when you enable BFD, monitoring of both tunnel latency and tunnel health is enabled. 
+You cannot separately turn on or turn off the monitoring of tunnel health and tunnel latency.
+
+Starting in NSX 6.4.7, BFD global configuration includes two additional parameters to help you enable or disable the monitoring of tunnel 
+health and tunnel latency separately. These two parameters are **tunnelReportEnabled** and **tunnelLatencyEnabled**.
 
 **BFD Parameters**
 
 Parameter |  Description | Comments
 ---|---|---
-  **enabled**      |Enable or disable BFD to monitor hypervisor tunnel health statistics including tunnel latency.|Required. Options are *True* or *False*. Default is *False*.
+  **enabled**      |Enable or disable BFD. In NSX 6.4.6 or earlier, this parameter enables global BFD and monitoring of tunnel health and tunnel latency. Starting in NSX 6.4.7, this parameter enables only global BFD.|Required. Options are *True* or *False*. Default is *False*.
+  **tunnelReportEnabled** |Enable or disable monitoring of tunnel health. This parameter is available starting in NSX 6.4.7.|Optional. Options are *True* or *False*. Default is *False*.
+  **tunnelLatencyEnabled** |Enable or disable monitoring of tunnel latency. This parameter is available starting in NSX 6.4.7.|Optional. Options are *True* or *False*. Default is *False*.
   **pollingIntervalSecondsForHost**     |Configure the BFD polling interval.|Optional. Value should be greater than *30*. Default value is *180*.
   **bfdIntervalMillSecondsForHost**     |Configure the interval of BFD session in milliseconds.|Optional. Value should be greater than *300*. Default value is *120000*.
+  
+### Valid Combinations of BFD Configuration Parameters
+
+BFD | Tunnel Report | Tunnel Latency | Result
+--- | --- | --- | ---
+  False | False | False | When BFD is disabled, monitoring of tunnel health and tunnel latency must be disabled. Turning on tunnel health and tunnel latency monitoring is not permitted.
+  True | True | False | Only tunnel health is monitored. Tunnel latency is not monitored.
+  True | True | True | Both tunnel health and tunnel latency are monitored.
+  True | False | True| Only tunnel latency is monitored. Tunnel health is not monitored.
+  True | False | False | Both tunnel health and tunnel latency are not monitored.
 
 ### /2.0/vdn/bfd/configuration/global
 
@@ -1297,6 +1339,7 @@ Parameter |  Description | Comments
 Release | Modification
 --------|-------------
 6.4.0 | Method introduced.
+6.4.7 | Method updated. Added **tunnelReportEnabled** and **tunnelLatencyEnabled** parameters.
 
 * **put** *(secured)*: Update the BFD global configuration.
 
@@ -1305,18 +1348,19 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.4.0 | Method introduced.
+6.4.7 | Method updated. Added **tunnelReportEnabled** and **tunnelLatencyEnabled** parameters.
 
 ## pnicCheckConfig
 Working With pNIC Configuration Information 
 ==============
 Provides the status information about physical NIC (pNIC) global configuration.
-You can enable or disable pNIC to monitor tunnel health of a hypervisor. By default, pNIC is disabled.
+You can enable or disable pNIC to monitor health of a host. By default, pNIC is disabled.
     
 **pNIC Parameters**
 
 Parameter |  Description | Comments
 ---|---|---
-  **enabled**      |Enable or disable pNIC to monitor tunnel health of a hypervisor.|Required. Options are *True* or *False*. Default is *False*.
+  **enabled**      |Enable or disable pNIC to monitor health of a host.|Required. Options are *True* or *False*. Default is *False*.
   **pollingIntervalSecondsForHost**     |Configure the pNIC polling interval for the host.|Required. Value should be greater than *30*. Default value is *180*.
 
 ### /2.0/vdn/pnic-check/configuration/global
@@ -5289,6 +5333,7 @@ Release | Modification
 --------|-------------
 6.4.0 | Method updated. **tcpStrict**, **stateless**, and **useSid** added as **section** attributes.
 
+
 * **delete** *(secured)*: Delete the specified layer 2 section and its contents.
 
 If the default layer 2 firewall section is selected, the request is
@@ -5377,6 +5422,7 @@ Working With a Specific Rule in a Specific Layer 2 Section
   before using the Etag value in the If-Match header. If you are using the PUT API 
   request in an automation script, ensure that the script strips off the double
   quotes in the Etag value.
+
 
 Not all fields are required while sending the request. All the optional fields
 are safe to be ignored while sending the configuration to server. For example,
@@ -7201,6 +7247,18 @@ by using the **action** query parameter in the `GET /api/4.0/edges/{edgeId}` API
 
 For more information, see the **Working With a Specific NSX Edge** section in this API Guide.
 
+Starting in NSX 6.4.7, protocol independent multicast (PIM) is supported on one GRE tunnel interface per ESG. 
+You can enable PIM either on a maximum of two uplink interfaces of the NSX ESG or one GRE tunnel interface, 
+but not on both simultaneously.
+
+To reach the multicast sources, receivers, and rendezvous point (RP) outside the NSX network, static routes 
+must be configured with the IP address of the GRE virtual tunnel endpoint as the next hop IP address.
+
+The GRE virtual tunnel interface can be configured with either IPv4 address, or IPv6 address, or both.
+However, to enable PIM on the GRE tunnel interface, the tunnel interface must have an IPv4 address. 
+If the GRE virtual tunnel interface is configured with only an IPv6 address, this GRE tunnel interface 
+cannot be enabled as a PIM interface.
+
 * **get** *(secured)*: Retrieve Multicast configuration. A GET example for Edge Services Gateway is shown below. 
 ```
 <multicast>
@@ -7256,7 +7314,7 @@ Release | Modification
 --------|-------------
 6.4.2 |  Method introduced
 
-* **put** *(secured)*: Configure Multicast. A PUT example for Edge Services Gateway is shown below. The uplink index interface is index 0, and the internal interface is index 1.
+* **put** *(secured)*: Configure Multicast. A PUT example for configuring PIM on the uplink interface of Edge Services Gateway is shown below. The uplink interface is index 0, and the internal interface is index 1.
   ```
   <multicast>
     <enabled>true</enabled>
@@ -7283,10 +7341,37 @@ Release | Modification
     </pim>
   </multicast>
   ```
+A PUT example for configuring PIM on a GRE virtual tunnel interface is shown below. The label **gre-1** of the GRE tunnel interface is the PIM interface, and the internal interface is index 1.
+  ```
+  <multicast>
+    <enabled>true</enabled>
+    <igmp>
+      <globalConfig>
+        <queryInterval>30</queryInterval>
+        <queryMaxResponseTime>10</queryMaxResponseTime>
+        <lastMemberQueryInterval>1</lastMemberQueryInterval>
+        <robustnessVariable>2</robustnessVariable>
+      </globalConfig>
+    </igmp>
+    <pim>
+      <sparseMode>
+        <globalConfig>
+          <staticRendezvousPointAddress>10.10.10.51</staticRendezvousPointAddress>
+        </globalConfig>
+        <interface>
+          <index>gre-1</index>
+        </interface>
+        <interface>
+          <index>1</index>
+        </interface>
+      </sparseMode>
+    </pim>
+  </multicast>
+  ```
 A PUT example for a Distributed Logical Router is shown below. The uplink interface is index 0, and the internal interface is index 10.
-```
-<multicast>
-  <enabled>true<.enabled>
+  ```
+  <multicast>
+    <enabled>true<.enabled>
       <replicationMulticastRange>229.0.0.0/24</replicationMulticastRange>
       <igmp>
         <interface>
@@ -7302,8 +7387,8 @@ A PUT example for a Distributed Logical Router is shown below. The uplink interf
           <robustnessVariable>2</robustnessVariable>
         </globalConfig>
       </igmp>
-    </multicast>
-    ```
+  </multicast>
+  ```
 **Method history:**
 
 Release | Modification
@@ -7360,6 +7445,12 @@ Parameter  |   Description  | Comments
 
 * **post** *(secured)*: Create a tunnel on this Edge Services Gateway.
 
+**Recommendation:** The subnet of the GRE tunnel interface must not overlap 
+with the subnet of the edge vnic interfaces. In addition, subnet overlap 
+in different GRE tunnels is not recommended. If overlapping subnets
+are configured for different GRE tunnels, ensure that corresponding static
+routes are manually configured.
+
 **Method history:**
 
 Release | Modification
@@ -7375,6 +7466,12 @@ Release | Modification
 6.4.0 | Method introduced.
 
 * **put** *(secured)*: Update all tunnels on this Edge Services Gateway.
+
+**Recommendation:** The subnet of the GRE tunnel interface must not overlap 
+with the subnet of the edge vnic interfaces. In addition, subnet overlap 
+in different GRE tunnels is not recommended. If overlapping subnets
+are configured for different GRE tunnels, ensure that corresponding static
+routes are manually configured.
 
 **Method history:**
 
