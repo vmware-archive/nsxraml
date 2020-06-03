@@ -2124,6 +2124,12 @@ Working With Security Groups on a Specific Scope
 
 * **get** *(secured)*: List all the security groups created on a specific scope.
 
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.7 |  Method updated. Added two new query parameters **populateMembers** and **populateExtendedAttributes**.
+
 ### /2.0/services/securitygroup/scope/{scopeId}/memberTypes
 Working With Security Group Member Types
 ----
@@ -2145,7 +2151,13 @@ Working With IP Set Grouping Objects
 Working With IP Sets on a Specific Scope
 ----
 
-* **get** *(secured)*: Retrieve all configured IPSets
+* **get** *(secured)*: Retrieve all configured IP sets.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.7 |  Method updated. Added **populateExtendedAttributes** query parameter.
 
 ### /2.0/services/ipset/{scopeMoref}
 Creating New IP Sets

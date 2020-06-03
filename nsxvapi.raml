@@ -5366,7 +5366,70 @@ securitySchemes:
           *portgroupID* in upgrade use cases
     get:
       displayName: secGroupScopeRead
-      description: List all the security groups created on a specific scope.
+      description: |
+        List all the security groups created on a specific scope.
+        
+        **Method history:**
+      
+        Release | Modification
+        --------|-------------
+        6.4.7 |  Method updated. Added two new query parameters **populateMembers** and **populateExtendedAttributes**.
+      queryParameters:
+        populateMembers:
+          displayName: populateMembers
+          description: Display members of the security group. Default is *true*.
+          required: false
+        populateExtendedAttributes:
+          displayName: populateExtendedAttributes
+          description: Display extended attributes of the security group. Default is *true*. 
+          required: false
+      body:
+        application/xml:
+          example: |
+            <securityGroups>
+              <securitygroup>
+                <objectId>securitygroup-1</objectId>
+                <objectTypeName>SecurityGroup</objectTypeName>
+                <vsmUuid>42013FC7-556D-36E8-EB79-DF359AE8AC70</vsmUuid>
+                <nodeId>a51981cd-18e1-4f55-abeb-079d61ca72fb</nodeId>
+                <revision>5</revision>
+                <type>
+                  <typeName>SecurityGroup</typeName>
+                </type>
+                <name></name>
+                <description></description>
+                <scope>
+                  <id>globalroot-0</id>
+                  <objectTypeName>GlobalRoot</objectTypeName>
+                  <name>Global</name>
+                </scope>
+                <clientHandle></clientHandle>
+                <extendedAttributes></extendedAttributes>
+                <isUniversal>false</isUniversal>
+                <universalRevision>0</universalRevision>
+                <inheritanceAllowed>false</inheritanceAllowed>
+                <member>
+                  <objectId>vm-1</objectId>
+                  <objectTypeName>VirtualMachine</objectTypeName>
+                  <vsmUuid>42013FC7-556D-36E8-EB79-DF359AE8AC70</vsmUuid>
+                  <nodeId>a51981cd-18e1-4f55-abeb-079d61ca72fb</nodeId>
+                  <revision>7</revision>
+                  <type>
+                    <typeName>VirtualMachine</typeName>
+                  </type>
+                  <name>Web01</name>
+                  <scope>
+                    <id></id>
+                    <objectTypeName>VirtualApp</objectTypeName>
+                    <name>Three-Tier-App</name>
+                  </scope>
+                  <clientHandle></clientHandle>
+                  <extendedAttributes></extendedAttributes>
+                  <isUniversal>false</isUniversal>
+                  <universalRevision>0</universalRevision>
+                </member>
+              </securitygroup>
+            </securityGroups>
     /memberTypes:
       displayName: secGroupMemberTypes
       description: |
@@ -5410,7 +5473,49 @@ securitySchemes:
           *universalroot-0* for universal IP sets.
     get:
       displayName: ipsetListList # dupfix ipsetList
-      description: Retrieve all configured IPSets
+      description: |
+        Retrieve all configured IP sets.
+        
+        **Method history:**
+      
+        Release | Modification
+        --------|-------------
+        6.4.7 |  Method updated. Added **populateExtendedAttributes** query parameter.
+      queryParameters:
+        populateExtendedAttributes:
+          displayName: populateExtendedAttributes
+          description: Display extended attributes of the IP set. Default is *true*. 
+          required: false
+      body:
+        application/xml:
+          example: |
+            <ipset>
+              <objectId>ipset-1</objectId>
+              <objectTypeName>IPSet</objectTypeName>
+              <vsmUuid>42271168-863F-EAA7-C3FD-BCFED40B77BB</vsmUuid>
+              <nodeId>a8dfee54-210f-47f0-a9e3-401a350eb6d8</nodeId>
+              <revision>2</revision>
+              <type>
+                <typeName>IPSet</typeName>
+              </type>
+              <name>sys-gen-empty-ipset-edge-fw</name>
+              <scope>
+                <id>globalroot-0</id>
+                <objectTypeName>GlobalRoot</objectTypeName>
+                <name>Global</name>
+              </scope>
+              <clientHandle></clientHandle>
+              <extendedAttributes>
+                <extendedAttribute>
+                  <name>isReadOnly</name>
+                  <value>true</value>
+                </extendedAttribute>
+              </extendedAttributes>
+              <isUniversal>false</isUniversal>
+              <universalRevision>0</universalRevision>
+              <isTemporal>false</isTemporal>
+              <inheritanceAllowed>true</inheritanceAllowed>
+            </ipset>
   /{scopeMoref}:
     displayName: ipsetCreate
     description: |
