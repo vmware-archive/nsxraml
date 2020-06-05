@@ -5955,7 +5955,7 @@ Working With Flow Monitoring
 Working With Flow Monitoring Statistics 
 ----
 
-* **get** *(secured)*: Retrieve flow statistics for a datacenter, port group, VM, or vNIC.
+* **get** *(secured)*: Retrieve flow statistics for a port group, VM, or vNIC.
 
 Response values for flow statistics:
 * **blocked** - indicates whether traffic is blocked:
