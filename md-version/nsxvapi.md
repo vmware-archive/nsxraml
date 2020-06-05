@@ -5780,6 +5780,9 @@ ignored. **tcpStrict** is instead configured at the section level. See
 * **autoDraftDisabled** improves performances when making large numbers
 of changes to firewall rules.
 * **ruleStatsDisabled** describes the state of the rule stats collection. Default value for this field is *false* meaning rule stats collection will be enabled by default. Set the value to *true* to disable rule stats collection on NSX Manager and hosts.
+* **enableGlobalContainers** ensures that only one copy of address set is 
+available in the hypervisor instead of one per DFW filter, thereby greatly 
+reducing memory.
 
 You can disable the auto draft feature by setting **autoDraftDisabled** to
 true. Distributed Firewall saves up to 100 configurations, including
@@ -5801,7 +5804,7 @@ configuration.
 
 Release | Modification
 --------|-------------
-6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level.
+6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level. Added **enableGlobalContainers** parameter.
 6.4.2 | *ruleStatsDisabled* introduced.
 
 * **put** *(secured)*: Update the distributed firewall performance configuration.
@@ -5811,7 +5814,7 @@ Release | Modification
 Release | Modification
 --------|-------------
 6.2.3 | Method updated. **autoDraftDisabled** parameter added.
-6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level. 
+6.4.0 | Method updated. **tcpStrict** in the global configuration is ignored. Instead, configure **tcpStrict** at the section level. Added **enableGlobalContainers** parameter.
 6.4.2 | *ruleStatsDisabled* introduced.
 
 ### /4.0/firewall/config/sections
