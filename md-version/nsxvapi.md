@@ -219,10 +219,10 @@ IDs via the vCenter Managed Object Browser.
    *502e71fa-1a00-759b-e40f-ce778e915f16*.
 
 ### update-number
-Update 12
+Update 13
 
 ### update-date
-Modified MAY 2020
+Modified JUNE 2020
 
 ---
 
@@ -3264,6 +3264,14 @@ This method can be used to perform the following tasks:
 * Configure VXLAN
 * Configure VXLAN with LACPv2
 * Reset Communication Between NSX Manager and a Host or Cluster
+
+Starting in NSX 6.4.7, before installing the network virtualization 
+components on clusters that are managed by vCenter 7.0 or later, the API 
+checks whether vSphere Lifecycle Management (vLCM) image is used on the 
+clusters. If any vCenter cluster uses a vLCM image, the API throws 
+an error.
+
+Host preparation is not allowed on vCenter clusters that use a vLCM image.
 
 **Parameter Information**
 
