@@ -2577,7 +2577,7 @@ Release | Modification
 --------|-------------
 6.4.0 | Method introduced.
 
-* **put** *(secured)*: Configure one or more syslog servers. Unconfigures all servers that were previously configured, and configures the one provided in the request body for this API. Duplicates are ignored. 
+* **put** *(secured)*: Configure one or more syslog servers. Unconfigures all servers that were previously configured, and configures the one provided in the request body for this API.
 
 **Method history:**
 
