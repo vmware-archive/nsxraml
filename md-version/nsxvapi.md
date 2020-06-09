@@ -2915,7 +2915,8 @@ The response header contains the created file location.
 
 Release | Modification
 --------|-------------
-6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/csr/nsx`.
+6.2.3 | Method introduced. Replaces `PUT /api/1.0/appliance-management/certificatemanager/csr/nsx`. Added two query parameters **action** and **expires_after**.
+          
 
 * **get** *(secured)*: Retrieve generated certificate signing request (CSR).
 
