@@ -13195,6 +13195,19 @@ securitySchemes:
                 required: true
                 displayName: If-Match
                 description: !include documentation/reuse/firewall/if-match
+            queryParameters:
+              operation:
+                displayName: operation
+                required: false
+                description: Specify either *insert_after*, *insert_before*, or *insert_top*. The default is *insert_top*.
+              anchorId:
+                displayName: anchorId
+                required: false
+                description: |
+                  Specify the rule ID to use as reference for *insert_before* or *insert_after* operations.
+                  * The *anchorId*  must be present in the section that you specified in the *sectionId*.
+                  * If *anchorId* is the default rule, and the operation is *insert_after*, the API throws an error.
+                    A rule cannot be added after the default rule.
             body:
               application/xml:
                 example: |
