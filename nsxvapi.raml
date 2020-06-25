@@ -7,7 +7,7 @@ documentation:
  - title: update-number
    content: Update 13
  - title: update-date
-   content: Modified JUNE 2020
+   content: Modified JULY 2020
 baseUriParameters:
   nsxmanager:
     displayName: nsxManager
@@ -23931,12 +23931,51 @@ securitySchemes:
         delete:
           displayName: vnicDelete
           description: Delete interface
+      /{parentVnicIndex}/subinterfaces:
+        displayName: SubInterfaceVnicBackingType
+        description: |
+          Creating a Sub-Interface of a Backing Type
+          ----
+          Create a sub-interface with backing type, VLAN or Network.
+        uriParameters:
+          parentVnicIndex:
+            required: true
+            displayName: parentVnicIndex
+            description: Trunked vNIC index on which the sub-interface to be created.
+        post:
+          displayName: SubInterfaceVnicCreate
+          description: | 
+            Add a sub-interface of backing type VLAN or Network.
+            
+            **Method history:**
+            
+            Release | Modification
+            --------|-------------
+            6.4.0 | Method introduced.
+          body:
+            application/xml:
+              example: |
+                <subInterface>
+                  <isConnected>true</isConnected>
+                  <name>sub2</name>
+                  <tunnelId>14</tunnelId>
+                  <vlanId>12</vlanId>
+                  <enableSendRedirects>false</enableSendRedirects>
+                  <mtu>1200</mtu>
+                  <addressGroups>
+                    <addressGroup>
+                      <primaryAddress>1.12.123.51</primaryAddress>
+                      <subnetMask>255.255.255.0</subnetMask>
+                      <subnetPrefixLength>24</subnetPrefixLength>
+                    </addressGroup>
+                  </addressGroups>
+                </subInterface>
       /{parentVnicIndex}/subinterfaces/{subInterfaceIndex}:
         displayName: SubInterfaceVnic
         description: |
-          Working With a Sub-Interface of a Backing Type 
+          Working With a Specific Sub-Interface of a Backing Type 
           ----
-          View, modify, or delete a sub-interface for a backing type VLAN or Network.
+          View, modify, or delete the specified sub-interface for a backing type VLAN or Network.
         uriParameters:
           parentVnicIndex:
             required: true
@@ -24014,46 +24053,7 @@ securitySchemes:
             
             Release | Modification
             --------|-------------
-            6.4.0 | Method introduced.
-    /{parentVnicIndex}/subinterfaces:
-      displayName: SubInterfaceIndexVnic
-      description: |
-        Creating a Sub-Interface of a Backing Type
-        ----
-        Create a sub-interface with backing type, VLAN or Network.
-      uriParameters:
-        parentVnicIndex:
-          required: true
-          displayName: parentVnicIndex
-          description: Trunked vNIC index on which the sub-interface to be created.
-      post:
-        displayName: SubInterfaceIndexVnicCreate
-        description: | 
-          Add an sub-interface of backing type VLAN or Network.
-          
-          **Method history:**
-          
-          Release | Modification
-          --------|-------------
-          6.4.0 | Method introduced.
-        body:
-          application/xml:
-            example: |
-              <subInterface>
-                <isConnected>true</isConnected>
-                <name>sub2</name>
-                <tunnelId>14</tunnelId>
-                <vlanId>12</vlanId>
-                <enableSendRedirects>false</enableSendRedirects>
-                <mtu>1200</mtu>
-                <addressGroups>
-                  <addressGroup>
-                    <primaryAddress>1.12.123.51</primaryAddress>
-                    <subnetMask>255.255.255.0</subnetMask>
-                    <subnetPrefixLength>24</subnetPrefixLength>
-                  </addressGroup>
-                </addressGroups>
-              </subInterface>
+            6.4.0 | Method introduced.    
     /mgmtinterface:
       displayName: mgmtInterface
       description: |

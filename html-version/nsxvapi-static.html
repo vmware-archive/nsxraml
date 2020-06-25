@@ -214,7 +214,7 @@ lists the VM instance UUID. For example,
     update-date
   </a>
 </h1>
-<div class="content"><p>Modified JUNE 2020</p>
+<div class="content"><p>Modified JULY 2020</p>
 </div>
 </section>
     <section class="security-schemes">
@@ -40375,8 +40375,64 @@ configure Edge Service Gateway interfaces.</p>
 </div>
 </section>
 <section class="resource">
-  <div class="description"><h2 id="working-with-a-sub-interface-of-a-backing-type-">Working With a Sub-Interface of a Backing Type </h2>
-<p>View, modify, or delete a sub-interface for a backing type VLAN or Network.</p>
+  <div class="description"><h2 id="creating-a-sub-interface-of-a-backing-type">Creating a Sub-Interface of a Backing Type</h2>
+<p>Create a sub-interface with backing type, VLAN or Network.</p>
+</div>
+  <div class="params">
+    <h4>URI Parameters</h4>
+      <dl>
+  <dt>
+    <span class="param">parentVnicIndex</span>
+    <span class="badge">string</span>
+    <span class="badge">required</span>
+  </dt>
+  <dd>
+      <p>Trunked vNIC index on which the sub-interface to be created.</p>
+
+  </dd>
+</dl>
+  </div>
+<div class="method post">
+  <a
+    class="verb post"
+    id="POST/4.0/edges/{edgeId}/vnics/{parentVnicIndex}/subinterfaces"
+    href="#POST/4.0/edges/{edgeId}/vnics/{parentVnicIndex}/subinterfaces"
+  ><h2>POST /4.0/edges/{edgeId}/vnics/{parentVnicIndex}/subinterfaces</h2></a>
+  <div class="content">
+    <p><p>Add a sub-interface of backing type VLAN or Network.</p>
+<p><strong>Method history:</strong></p>
+<table class="table"><thead><tr>
+<th>Release</th>
+<th>Modification</th>
+</tr>
+</thead><tbody><tr>
+<td>6.4.0</td>
+<td>Method introduced.</td>
+</tr>
+</tbody></table></p>
+      <h3>Request Example (<tt>application/xml</tt>)</h3>
+      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">subInterface</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">isConnected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isConnected</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>sub2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelId</span>&gt;</span>14<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">vlanId</span>&gt;</span>12<span class="hljs-tag">&lt;/<span class="hljs-name">vlanId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">enableSendRedirects</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableSendRedirects</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1200<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>1.12.123.51<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">subnetPrefixLength</span>&gt;</span>24<span class="hljs-tag">&lt;/<span class="hljs-name">subnetPrefixLength</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroups</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">subInterface</span>&gt;</span>
+</code></pre>
+  </div>
+</div>
+</section>
+<section class="resource">
+  <div class="description"><h2 id="working-with-a-specific-sub-interface-of-a-backing-type-">Working With a Specific Sub-Interface of a Backing Type </h2>
+<p>View, modify, or delete the specified sub-interface for a backing type VLAN or Network.</p>
 </div>
   <div class="params">
     <h4>URI Parameters</h4>
@@ -40493,65 +40549,9 @@ configure Edge Service Gateway interfaces.</p>
 </tr>
 </thead><tbody><tr>
 <td>6.4.0</td>
-<td>Method introduced.</td>
+<td>Method introduced.    </td>
 </tr>
 </tbody></table></p>
-  </div>
-</div>
-</section>
-<section class="resource">
-  <div class="description"><h2 id="creating-a-sub-interface-of-a-backing-type">Creating a Sub-Interface of a Backing Type</h2>
-<p>Create a sub-interface with backing type, VLAN or Network.</p>
-</div>
-  <div class="params">
-    <h4>URI Parameters</h4>
-      <dl>
-  <dt>
-    <span class="param">parentVnicIndex</span>
-    <span class="badge">string</span>
-    <span class="badge">required</span>
-  </dt>
-  <dd>
-      <p>Trunked vNIC index on which the sub-interface to be created.</p>
-
-  </dd>
-</dl>
-  </div>
-<div class="method post">
-  <a
-    class="verb post"
-    id="POST/4.0/edges/{edgeId}/{parentVnicIndex}/subinterfaces"
-    href="#POST/4.0/edges/{edgeId}/{parentVnicIndex}/subinterfaces"
-  ><h2>POST /4.0/edges/{edgeId}/{parentVnicIndex}/subinterfaces</h2></a>
-  <div class="content">
-    <p><p>Add an sub-interface of backing type VLAN or Network.</p>
-<p><strong>Method history:</strong></p>
-<table class="table"><thead><tr>
-<th>Release</th>
-<th>Modification</th>
-</tr>
-</thead><tbody><tr>
-<td>6.4.0</td>
-<td>Method introduced.</td>
-</tr>
-</tbody></table></p>
-      <h3>Request Example (<tt>application/xml</tt>)</h3>
-      <pre><code class="code-block hljs lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">subInterface</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">isConnected</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">isConnected</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>sub2<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">tunnelId</span>&gt;</span>14<span class="hljs-tag">&lt;/<span class="hljs-name">tunnelId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">vlanId</span>&gt;</span>12<span class="hljs-tag">&lt;/<span class="hljs-name">vlanId</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">enableSendRedirects</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">enableSendRedirects</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">mtu</span>&gt;</span>1200<span class="hljs-tag">&lt;/<span class="hljs-name">mtu</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">addressGroups</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">addressGroup</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">primaryAddress</span>&gt;</span>1.12.123.51<span class="hljs-tag">&lt;/<span class="hljs-name">primaryAddress</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">subnetMask</span>&gt;</span>255.255.255.0<span class="hljs-tag">&lt;/<span class="hljs-name">subnetMask</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">subnetPrefixLength</span>&gt;</span>24<span class="hljs-tag">&lt;/<span class="hljs-name">subnetPrefixLength</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroup</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">addressGroups</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">subInterface</span>&gt;</span>
-</code></pre>
   </div>
 </div>
 </section>

@@ -222,7 +222,7 @@ IDs via the vCenter Managed Object Browser.
 Update 13
 
 ### update-date
-Modified JUNE 2020
+Modified JULY 2020
 
 ---
 
@@ -9438,10 +9438,23 @@ configure Edge Service Gateway interfaces.
 * **put** *(secured)*: Update the specified interface.
 * **delete** *(secured)*: Delete interface
 
-### /4.0/edges/{edgeId}/vnics/{parentVnicIndex}/subinterfaces/{subInterfaceIndex}
-Working With a Sub-Interface of a Backing Type 
+### /4.0/edges/{edgeId}/vnics/{parentVnicIndex}/subinterfaces
+Creating a Sub-Interface of a Backing Type
 ----
-View, modify, or delete a sub-interface for a backing type VLAN or Network.
+Create a sub-interface with backing type, VLAN or Network.
+
+* **post** *(secured)*: Add a sub-interface of backing type VLAN or Network.
+
+**Method history:**
+
+Release | Modification
+--------|-------------
+6.4.0 | Method introduced.
+
+### /4.0/edges/{edgeId}/vnics/{parentVnicIndex}/subinterfaces/{subInterfaceIndex}
+Working With a Specific Sub-Interface of a Backing Type 
+----
+View, modify, or delete the specified sub-interface for a backing type VLAN or Network.
 
 * **get** *(secured)*: Retrieve the specified sub-interface.
 
@@ -9465,20 +9478,7 @@ Release | Modification
 
 Release | Modification
 --------|-------------
-6.4.0 | Method introduced.
-
-### /4.0/edges/{edgeId}/{parentVnicIndex}/subinterfaces
-Creating a Sub-Interface of a Backing Type
-----
-Create a sub-interface with backing type, VLAN or Network.
-
-* **post** *(secured)*: Add an sub-interface of backing type VLAN or Network.
-
-**Method history:**
-
-Release | Modification
---------|-------------
-6.4.0 | Method introduced.
+6.4.0 | Method introduced.    
 
 ### /4.0/edges/{edgeId}/mgmtinterface
 Working With Logical Router HA (Management) Interface
