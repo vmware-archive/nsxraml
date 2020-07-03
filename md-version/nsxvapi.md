@@ -6517,7 +6517,8 @@ The **edgeStatus** has the following possible states:
 * *YELLOW*: Intermittent health check failure. If health check fails
   for five consecutive times for all appliances, status will turn
   *RED*.
-* *GREY*: unknown status.
+* *GREY*: Unknown Status. For a Distributed Logical Router with no edge 
+  appliance (control VM), status is Grey because no edge appliance is deployed.
 * *RED*: None of the appliances for this NSX Edge are in a serving state.
 
 **Method history:**
