@@ -1,3 +1,4 @@
+# VMware has ended active development of this project, this repository will no longer be updated.
 # NSX for vSphere RAML
 
 This repository holds a RAML specification of the NSX for vSphere 6.x API.
