@@ -2226,6 +2226,13 @@ securitySchemes:
     description: |
       Create a Service on a Specific Scope
       ------
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: |
+          For scopeMoref use "globalroot-0" for non-universal IP sets and use
+          "universalroot-0" for universal IP sets.
     post:
       displayName: servicesAppsScopeCreate # existing reorg/dupfix servicesScopeCreate
       description: |
@@ -2303,7 +2310,7 @@ securitySchemes:
     Working with Service Groups Grouping Objects
     ============
 
-  /scope/{scopeId}:
+  /{scopeId}:
     displayName: serviceGroups
     description: |
       Working with Service Groups on a Specific Scope
@@ -2328,6 +2335,18 @@ securitySchemes:
               <inheritanceAllowed></inheritanceAllowed>
             </applicationGroup>
           schema: serviceGroupsCreate
+  /scope/{scopeId}:
+    displayName: serviceGroupsScope
+    description: |
+      Working with Service Groups on a Specific Scope
+      -------
+    uriParameters:
+      scopeId:
+        required: true
+        displayName: scopeId
+        description: |
+          The scopeId can be "globalroot-0", "universalroot-0" or datacenterId
+          in upgrade use cases
     get:
       displayName: serviceGroupsRead
       description: |
